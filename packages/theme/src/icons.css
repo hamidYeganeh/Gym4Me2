@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "Sandow Duotone";
+  src: url("./fonts/sandow-duotone.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+.sandow-icon {
+  display: inline-grid;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+  direction: ltr;
+  isolation: isolate;
+}
+.sandow-icon > span {
+  grid-area: 1 / 1;
+  font-family: "Sandow Duotone" !important;
+  font-weight: 400;
+  font-style: normal;
+  font-size: inherit;
+  line-height: 1;
+  font-variant: normal;
+  font-variation-settings: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}

@@ -1,0 +1,57 @@
+import type { ClubBranch } from "../ClubBranchCard";
+import type { ClubSummary } from "../ClubCard";
+import type { ReactNode } from "react";
+
+export type ClubDetailData = ClubSummary & {
+  logo?: string;
+  branches?: ClubBranch[];
+  categories?: string[];
+  priceValue: number;
+  priceCurrency: string;
+  locale: string;
+  description: string;
+  hours: string;
+  distance: string;
+  userDistance?: string;
+  coachCount: number;
+  amenities: {
+    id: "weights" | "coaching" | "showers" | "wifi" | "group" | "air";
+    label: string;
+    description: string;
+  }[];
+};
+export type ClubDetailProps = {
+  club: ClubDetailData;
+  saved: boolean;
+  onSavedChange: (saved: boolean) => void;
+  onShare: () => void;
+  onPlanVisit: () => void;
+  coaches?: ReactNode;
+  reviews?: ReactNode;
+  availability?: ReactNode;
+  galleryPreview?: ReactNode;
+  socialShare?: ReactNode;
+  categories?: ReactNode;
+  branches?: ReactNode;
+  recommendations?: ReactNode;
+  labels: Record<
+    | "back"
+    | "save"
+    | "unsave"
+    | "share"
+    | "photo"
+    | "about"
+    | "amenities"
+    | "hours"
+    | "distance"
+    | "distanceUnavailable"
+    | "coachCount"
+    | "reviews"
+    | "visit"
+    | "perVisit"
+    | "gallery"
+    | "seeMore"
+    | "seeLess",
+    string
+  >;
+};

@@ -1,0 +1,39 @@
+{
+  "name": "@repo/i18n",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./request": "./src/request.ts",
+    "./server": "./src/server.ts",
+    "./actions": "./src/actions.ts",
+    "./client-provider": "./src/client-provider.tsx"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "next-intl": "^4.13.0"
+  },
+  "peerDependencies": {
+    "next": "^16.4.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@repo/eslint-config": "workspace:*",
+    "@types/react": "^19",
+    "@types/node": "^24",
+    "typescript": "^5.9.3",
+    "eslint": "^9",
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "typescript-eslint": "^8.20.0",
+    "@eslint/js": "^9",
+    "globals": "^17.0.0"
+  }
+}

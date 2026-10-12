@@ -1,0 +1,3 @@
+@import "@repo/theme/globals.css";
+@import "@repo/theme/icons.css";
+@source "../../../packages/ui/src";

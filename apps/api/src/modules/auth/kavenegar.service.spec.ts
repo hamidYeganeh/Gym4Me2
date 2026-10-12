@@ -1,0 +1,74 @@
+import { ConfigService } from '@nestjs/config';
+import { ServiceUnavailableException } from '@nestjs/common';
+import { validateEnvironment } from '../../config/environment';
+import { KavenegarService } from './kavenegar.service';
+import { phoneSchema } from './auth.contracts';
+const make = (key?: string) =>
+  new KavenegarService(
+    new ConfigService(
+      validateEnvironment({
+        DATABASE_URL: 'postgresql://localhost/test',
+        KAVENEGAR_API_KEY: key,
+      }),
+    ),
+  );
+afterEach(() => jest.restoreAllMocks());
+test('normalizes Persian, Arabic and international Iranian mobile formats', () => {
+  for (const input of [
+    '۰۹۱۲۳۴۵۶۷۸۹',
+    '٠٩١٢٣٤٥٦٧٨٩',
+    '0912 345 6789',
+    '+989123456789',
+    '00989123456789',
+  ])
+    expect(phoneSchema.parse(input)).toBe('+989123456789');
+  expect(phoneSchema.safeParse('02112345678').success).toBe(false);
+});
+test('missing credentials never invoke the provider', async () => {
+  const fetchMock = jest.spyOn(globalThis, 'fetch');
+  await expect(make().sendOtp('+989123456789', '12345')).rejects.toBeInstanceOf(
+    ServiceUnavailableException,
+  );
+  expect(fetchMock).not.toHaveBeenCalled();
+});
+test('sends five-digit OTP through the g4m-otp Verify Lookup template using POST', async () => {
+  const fetchMock = jest.spyOn(globalThis, 'fetch').mockResolvedValue(
+    new Response(JSON.stringify({ return: { status: 200 } }), {
+      status: 200,
+    }),
+  );
+  await make('testkey').sendOtp('+989123456789', '12345');
+  const [url, options] = fetchMock.mock.calls[0];
+  expect(url).toBe('https://api.kavenegar.com/v1/testkey/verify/lookup.json');
+  expect(options?.method).toBe('POST');
+  expect(options?.body).toBeInstanceOf(URLSearchParams);
+  const body = options!.body as URLSearchParams;
+  expect(Object.fromEntries(body)).toEqual({
+    receptor: '09123456789',
+    token: '12345',
+    template: 'g4m-otp',
+    type: 'sms',
+  });
+});
+test.each(['network', 'provider', 'malformed'])(
+  'redacts all %s errors',
+  async (failure) => {
+    const fetchMock = jest.spyOn(globalThis, 'fetch');
+    if (failure === 'network')
+      fetchMock.mockRejectedValue(new Error('secretkey phone code'));
+    else
+      fetchMock.mockResolvedValue(
+        new Response(
+          failure === 'malformed'
+            ? 'secretkey'
+            : JSON.stringify({
+                return: { status: 424, message: 'secretkey phone code' },
+              }),
+          { status: 200 },
+        ),
+      );
+    await expect(
+      make('secretkey').sendOtp('+989123456789', '12345'),
+    ).rejects.toThrow('ارسال پیامک انجام نشد. کمی بعد دوباره تلاش کنید.');
+  },
+);

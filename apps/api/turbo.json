@@ -1,0 +1,27 @@
+{
+  "extends": ["//"],
+  "tasks": {
+    "dev": {
+      "passThroughEnv": [
+        "$TURBO_EXTENDS$",
+        "DATABASE_URL",
+        "DB_*",
+        "API_DOCS_ENABLED",
+        "NODE_ENV",
+        "AUTH_*",
+        "KAVENEGAR_*"
+      ]
+    },
+    "start": {
+      "passThroughEnv": [
+        "$TURBO_EXTENDS$",
+        "DATABASE_URL",
+        "DB_*",
+        "API_DOCS_ENABLED",
+        "NODE_ENV",
+        "AUTH_*",
+        "KAVENEGAR_*"
+      ]
+    }
+  }
+}

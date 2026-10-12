@@ -36,3 +36,10 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# Font generation environment and TypeScript incremental state
+.venv-fonts/
+*.tsbuildinfo
+
+# Separate native export compilation output
+.next-native/

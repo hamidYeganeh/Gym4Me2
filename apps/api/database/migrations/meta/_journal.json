@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791716298459,
+      "tag": "0000_platform-foundation",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791722170938,
+      "tag": "0001_auth-workspaces",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791725143371,
+      "tag": "0002_club-catalog",
+      "breakpoints": true
+    }
+  ]
+}
