@@ -1,22 +1,72 @@
 "use client";
+import { MobileHeader, MobilePage } from "@repo/ui/mobile-page";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { ReviewCard } from "@repo/ui/kit/ReviewCard";
 import { ReviewsSummary } from "@repo/ui/kit/ReviewsSummary";
 import { Button } from "@repo/ui/kit/Button";
-import { ChevronLeftIcon } from "@repo/ui/icons";
-import { getReviews, getReviewCounts } from "../../lib/reviews";
-import { getClubs } from "../../lib/clubs";
+import { getReviewCounts } from "../../lib/reviews";
+import { useClubReviews } from "@repo/api/catalog";
+import { useCatalogClub } from "./use-catalog";
+import { CatalogState } from "./catalog-state";
+import { clubHref } from "../../lib/club-href";
+import { useState } from "react";
 export function ClubReviews({
   clubId,
   full = false,
+  branchId,
 }: {
   clubId: string;
   full?: boolean;
+  branchId?: string;
 }) {
   const locale = useLocale();
   const t = useTranslations("Reviews");
-  const reviews = getReviews(locale, clubId);
+  const copy = useTranslations("Catalog");
+  const [page, setPage] = useState(1);
+  const searchParams = useSearchParams();
+  const requestedBranch = branchId ?? searchParams.get("branch") ?? undefined;
+  const club = useCatalogClub(clubId, requestedBranch);
+  const currentBranch = requestedBranch ?? club.branch?.id;
+  const query = useClubReviews(clubId, currentBranch, { page });
+  const reviews = (query.data ?? []).map((review) => ({
+    id: review.id,
+    title: "",
+    body: review.body ?? "",
+    date: review.createdAt,
+    rating: review.rating,
+    author: { displayName: review.author ?? copy("anonymous") },
+  }));
+  if (!club.club || club.branchQuery.isError) {
+    const state = (
+      <CatalogState
+        loading={club.isPending}
+        missing={club.error?.status === 404}
+        retry={
+          club.isError
+            ? () => void club.refetch()
+            : club.branchQuery.isError
+              ? () => void club.branchQuery.refetch()
+              : undefined
+        }
+      />
+    );
+    return full ? (
+      <MobilePage
+        title={t("title")}
+        backHref={clubHref(
+          clubId,
+          undefined,
+          currentBranch ? { branch: currentBranch } : undefined,
+        )}
+      >
+        {state}
+      </MobilePage>
+    ) : (
+      state
+    );
+  }
   const cards = (
     <section className="flex min-w-0 flex-col gap-4" aria-label={t("title")}>
       {!full && (
@@ -24,23 +74,36 @@ export function ClubReviews({
           <h2 className="text-2xl font-semibold">{t("title")}</h2>
           {reviews.length > 5 && (
             <Button asChild variant="ghost" className="shrink-0">
-              <Link scroll={false} href={`/discovery/clubs/${clubId}/reviews`}>
+              <Link
+                scroll={false}
+                href={clubHref(
+                  clubId,
+                  "reviews",
+                  currentBranch ? { branch: currentBranch } : undefined,
+                )}
+              >
                 {t("seeAll")}
               </Link>
             </Button>
           )}
         </div>
       )}
-      <ReviewsSummary
-        counts={getReviewCounts(reviews)}
-        locale={locale}
-        labels={{
-          average: t("average"),
-          users: (count) =>
-            t("users", { count: new Intl.NumberFormat(locale).format(count) }),
-          rating: t("rating"),
-        }}
-      />
+      {!query.isPending && reviews.length < 25 && page === 1 && (
+        <ReviewsSummary
+          counts={getReviewCounts(reviews)}
+          locale={locale}
+          labels={{
+            average: t("average"),
+            users: (count) =>
+              t("users", {
+                count: new Intl.NumberFormat(locale).format(count),
+              }),
+            rating: t("rating"),
+          }}
+        />
+      )}
+      {query.isPending && <CatalogState loading />}
+      {query.isError && <CatalogState retry={() => void query.refetch()} />}
       {(full ? reviews : reviews.slice(0, 5)).map((review) => (
         <ReviewCard
           key={review.id}
@@ -56,29 +119,41 @@ export function ClubReviews({
           }}
         />
       ))}
-      {!reviews.length && <p className="text-muted-foreground">{t("empty")}</p>}
+      {!query.isPending && !query.isError && !reviews.length && (
+        <p className="text-muted-foreground">{t("empty")}</p>
+      )}
+      {full && (
+        <div className="flex gap-3">
+          <Button
+            variant="outline"
+            disabled={page === 1 || query.isFetching}
+            onClick={() => setPage(page - 1)}
+          >
+            {copy("previous")}
+          </Button>
+          <Button
+            variant="outline"
+            disabled={reviews.length < 25 || query.isFetching}
+            onClick={() => setPage(page + 1)}
+          >
+            {copy("next")}
+          </Button>
+        </div>
+      )}
     </section>
   );
   if (!full) return cards;
   return (
     <main className="mx-auto flex max-w-xl flex-col gap-6 px-6 pt-[calc(1.5rem+var(--app-safe-top))] pb-[calc(1.5rem+var(--app-safe-bottom))]">
-      <header className="flex items-center gap-3">
-        <Button asChild variant="outline" size="icon-lg">
-          <Link
-            href={`/discovery/clubs/${clubId}`}
-            scroll={false}
-            aria-label={t("back")}
-          >
-            <ChevronLeftIcon className="rtl:rotate-180" />
-          </Link>
-        </Button>
-        <div>
-          <h1 className="text-2xl font-semibold">{t("title")}</h1>
-          <p className="text-sm text-muted-foreground">
-            {getClubs(locale).find((club) => club.id === clubId)?.name}
-          </p>
-        </div>
-      </header>
+      <MobileHeader
+        title={t("title")}
+        subtitle={club.club?.name}
+        backHref={clubHref(
+          clubId,
+          undefined,
+          currentBranch ? { branch: currentBranch } : undefined,
+        )}
+      />
       {cards}
     </main>
   );

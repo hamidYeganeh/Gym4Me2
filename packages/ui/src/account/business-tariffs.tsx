@@ -1,0 +1,371 @@
+"use client";
+import { useState, type FormEvent } from "react";
+import { useLocale, useTranslations } from "@repo/i18n";
+import {
+  useBusinessTariffs,
+  useSaveTariff,
+  useSetTariffStatus,
+  useTariffHistory,
+} from "@repo/api/business";
+import type {
+  ClubDto,
+  TariffDto,
+  TariffService,
+  TariffUnit,
+} from "@repo/api/catalog";
+import { Button } from "@repo/ui/kit/Button";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@repo/ui/kit/Card";
+import { Field, FieldLabel } from "@repo/ui/kit/Field";
+import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
+import { Textarea } from "@repo/ui/kit/Textarea";
+import { Loading, QueryError, ErrorNotice, TextField, Submit } from "./common";
+
+const services = ["visit", "membership", "court", "class", "coaching"] as const;
+const units = [
+  "visit",
+  "hour",
+  "session",
+  "month",
+  "package",
+  "course",
+] as const;
+export function BusinessTariffs({
+  club,
+  editable,
+  allBranches,
+}: {
+  club: ClubDto;
+  editable: boolean;
+  allBranches: boolean;
+}) {
+  const t = useTranslations("Tariffs");
+  const locale = useLocale();
+  const query = useBusinessTariffs(club.id);
+  const status = useSetTariffStatus();
+  const [editing, setEditing] = useState<TariffDto | null>();
+  const [historyId, setHistoryId] = useState<string>();
+  const [page, setPage] = useState(1);
+  const history = useTariffHistory(club.id, historyId, page);
+  const number = new Intl.NumberFormat(locale);
+  const date = (value: string) =>
+    new Intl.DateTimeFormat(locale, {
+      dateStyle: "medium",
+      timeZone: "Asia/Tehran",
+    }).format(new Date(value));
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("title")}</CardTitle>
+        <CardDescription>{t("hint")}</CardDescription>
+      </CardHeader>
+      <CardContent className="grid gap-5">
+        <QueryError error={query.error} retry={query.refetch} />
+        {query.isLoading && <Loading />}
+        {!query.isLoading && !query.error && !query.data?.length && (
+          <p className="text-sm text-muted-foreground">{t("empty")}</p>
+        )}
+        {(query.data ?? []).map((tariff) => (
+          <article
+            key={tariff.id}
+            className="grid gap-3 rounded-2xl border p-4"
+          >
+            <div className="flex flex-wrap justify-between gap-3">
+              <h3 className="font-semibold">{tariff.name}</h3>
+              <p>
+                {number.format(tariff.priceToman)} {t("toman")} /{" "}
+                {t(`unit_${tariff.unit}`)}
+              </p>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {t(`service_${tariff.serviceType}`)} ·{" "}
+              {tariff.branchId
+                ? club.branches.find((branch) => branch.id === tariff.branchId)
+                    ?.name
+                : t("allBranches")}{" "}
+              · {t("version", { version: number.format(tariff.version) })} ·{" "}
+              {date(tariff.effectiveFrom)} ·{" "}
+              {t(tariff.isActive ? "active" : "inactive")}
+            </p>
+            <p className="whitespace-pre-line text-sm">{tariff.conditions}</p>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setHistoryId(tariff.id);
+                  setPage(1);
+                }}
+              >
+                {t("history")}
+              </Button>
+              {editable && (allBranches || tariff.branchId !== null) && (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setEditing(tariff)}
+                  >
+                    {t("revise")}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={status.isPending}
+                    onClick={() =>
+                      void status
+                        .mutateAsync({
+                          id: club.id,
+                          tariffId: tariff.id,
+                          isActive: !tariff.isActive,
+                        })
+                        .catch(() => undefined)
+                    }
+                  >
+                    {t(tariff.isActive ? "deactivate" : "activate")}
+                  </Button>
+                </>
+              )}
+            </div>
+          </article>
+        ))}
+        <ErrorNotice error={status.error} />
+        {historyId && (
+          <section className="grid gap-3 border-t pt-4">
+            <h3 className="font-semibold">{t("history")}</h3>
+            <QueryError error={history.error} retry={history.refetch} />
+            {history.isLoading && <Loading />}
+            {(history.data ?? []).map((version) => (
+              <article
+                key={version.versionId}
+                className="grid gap-2 rounded-xl bg-muted p-3 text-sm"
+              >
+                <p>
+                  {version.name} ·{" "}
+                  {t("version", { version: number.format(version.version) })} ·{" "}
+                  {date(version.effectiveFrom)}
+                </p>
+                <p>
+                  {number.format(version.priceToman)} {t("toman")} /{" "}
+                  {t(`unit_${version.unit}`)}
+                </p>
+                <p className="whitespace-pre-line">{version.conditions}</p>
+              </article>
+            ))}
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                disabled={page === 1 || history.isFetching}
+                onClick={() => setPage(page - 1)}
+              >
+                {t("previous")}
+              </Button>
+              <Button
+                variant="ghost"
+                disabled={
+                  (history.data?.length ?? 0) < 25 || history.isFetching
+                }
+                onClick={() => setPage(page + 1)}
+              >
+                {t("next")}
+              </Button>
+              <Button variant="ghost" onClick={() => setHistoryId(undefined)}>
+                {t("close")}
+              </Button>
+            </div>
+          </section>
+        )}
+        {editable && editing === undefined && (
+          <Button
+            variant="outline"
+            className="w-fit"
+            onClick={() => setEditing(null)}
+          >
+            {t("add")}
+          </Button>
+        )}
+        {editable && editing !== undefined && (
+          <TariffForm
+            key={editing?.versionId ?? "new"}
+            club={club}
+            previous={editing}
+            allBranches={allBranches}
+            onDone={() => setEditing(undefined)}
+          />
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+function TariffForm({
+  club,
+  previous,
+  allBranches,
+  onDone,
+}: {
+  club: ClubDto;
+  previous: TariffDto | null;
+  allBranches: boolean;
+  onDone: () => void;
+}) {
+  const t = useTranslations("Tariffs");
+  const save = useSaveTariff();
+  const optionalNumber = (value: FormDataEntryValue | null) =>
+    value ? Number(value) : null;
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    try {
+      await save.mutateAsync({
+        id: club.id,
+        tariffId: previous?.id,
+        input: {
+          name: String(data.get("tariffName")),
+          serviceType: String(data.get("serviceType")) as TariffService,
+          priceToman: Number(data.get("priceToman")),
+          unit: String(data.get("unit")) as TariffUnit,
+          durationDays: optionalNumber(data.get("durationDays")),
+          sessionCount: optionalNumber(data.get("sessionCount")),
+          includedServices: String(data.get("includedServices") ?? "")
+            .split("\n")
+            .map((line) => line.trim())
+            .filter(Boolean),
+          conditions: String(data.get("conditions")),
+          ...(!previous
+            ? { branchId: String(data.get("tariffBranch")) || null }
+            : {}),
+        },
+      });
+      onDone();
+    } catch {
+      /* The shared error notice preserves the entered form values. */
+    }
+  }
+  return (
+    <form onSubmit={submit} className="grid gap-5 rounded-2xl border p-4">
+      <fieldset disabled={save.isPending} className="grid gap-5">
+        <h3 className="font-semibold">{t(previous ? "revise" : "add")}</h3>
+        <TextField
+          name="tariffName"
+          label={t("name")}
+          defaultValue={previous?.name ?? ""}
+          required
+          minLength={2}
+          maxLength={120}
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field>
+            <FieldLabel htmlFor="serviceType">{t("service")}</FieldLabel>
+            <NativeSelect
+              id="serviceType"
+              name="serviceType"
+              defaultValue={previous?.serviceType ?? "visit"}
+            >
+              {services.map((service) => (
+                <NativeSelectOption key={service} value={service}>
+                  {t(`service_${service}`)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="unit">{t("unit")}</FieldLabel>
+            <NativeSelect
+              id="unit"
+              name="unit"
+              defaultValue={previous?.unit ?? "visit"}
+            >
+              {units.map((unit) => (
+                <NativeSelectOption key={unit} value={unit}>
+                  {t(`unit_${unit}`)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </Field>
+        </div>
+        {!previous && (
+          <Field>
+            <FieldLabel htmlFor="tariffBranch">{t("branch")}</FieldLabel>
+            <NativeSelect
+              id="tariffBranch"
+              name="tariffBranch"
+              defaultValue={allBranches ? "" : club.branches[0]?.id}
+            >
+              {allBranches && (
+                <NativeSelectOption value="">
+                  {t("allBranches")}
+                </NativeSelectOption>
+              )}
+              {club.branches.map((branch) => (
+                <NativeSelectOption key={branch.id} value={branch.id}>
+                  {branch.name}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </Field>
+        )}
+        <TextField
+          name="priceToman"
+          type="number"
+          label={t("price")}
+          defaultValue={previous?.priceToman ?? ""}
+          required
+          min={0}
+          max={1000000000}
+          step={1}
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <TextField
+            name="durationDays"
+            type="number"
+            label={t("duration")}
+            defaultValue={previous?.durationDays ?? ""}
+            min={1}
+            max={3660}
+            step={1}
+          />
+          <TextField
+            name="sessionCount"
+            type="number"
+            label={t("sessions")}
+            defaultValue={previous?.sessionCount ?? ""}
+            min={1}
+            max={10000}
+            step={1}
+          />
+        </div>
+        <Field>
+          <FieldLabel htmlFor="includedServices">{t("included")}</FieldLabel>
+          <Textarea
+            id="includedServices"
+            name="includedServices"
+            defaultValue={previous?.includedServices?.join("\n") ?? ""}
+          />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="conditions">{t("conditions")}</FieldLabel>
+          <Textarea
+            id="conditions"
+            name="conditions"
+            defaultValue={previous?.conditions ?? ""}
+            required
+            minLength={2}
+            maxLength={5000}
+          />
+        </Field>
+        <div className="flex gap-3">
+          <Submit busy={save.isPending}>{t("save")}</Submit>
+          <Button type="button" variant="ghost" onClick={onDone}>
+            {t("cancel")}
+          </Button>
+        </div>
+      </fieldset>
+      <ErrorNotice error={save.error} />
+    </form>
+  );
+}

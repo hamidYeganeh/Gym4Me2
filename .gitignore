@@ -43,3 +43,26 @@ yarn-error.log*
 
 # Separate native export compilation output
 .next-native/
+
+# Isolated native build staging
+.native-build-*/
+.next-native-previous/
+
+# Local acceptance evidence and disposable QA exports
+.artifacts/
+
+# Private isolated staging configuration
+.env.staging
+
+# Private local TLS keys, CA and temporary certificate generation
+.staging-tls/
+.staging-tls-*/
+
+# Isolated local staging web builds
+.next-staging/
+
+# Generated Android staging trust and bundled assets
+.staging-android/
+
+# Private backup credentials and transient captures
+.ops-private/

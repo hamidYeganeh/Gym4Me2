@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
 import { carouselStyles } from "./Carousel.styles";
 import type {
   CarouselApi,
@@ -38,6 +39,7 @@ function Carousel({
   children,
   ...props
 }: CarouselRootProps) {
+  const t = useTranslations();
   const [carouselRef, api] = useEmblaCarousel(
     {
       ...opts,
@@ -111,7 +113,7 @@ function Carousel({
         onKeyDownCapture={handleKeyDown}
         className={cn(carouselStyles.carousel(), className)}
         role="region"
-        aria-roledescription="carousel"
+        aria-roledescription={t("Kit.carousel")}
         data-slot="carousel"
         {...props}
       >
@@ -145,12 +147,13 @@ function CarouselContent({ className, ...props }: CarouselContentProps) {
 }
 
 function CarouselItem({ className, ...props }: CarouselItemProps) {
+  const t = useTranslations();
   const { orientation } = useCarousel();
 
   return (
     <div
       role="group"
-      aria-roledescription="slide"
+      aria-roledescription={t("Kit.slide")}
       data-slot="carousel-item"
       className={cn(
         carouselStyles.carouselItem(),
@@ -170,6 +173,7 @@ function CarouselPrevious({
   size = "icon-sm",
   ...props
 }: CarouselPreviousProps) {
+  const t = useTranslations();
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
@@ -189,7 +193,9 @@ function CarouselPrevious({
       {...props}
     >
       <ChevronLeftIcon className={carouselStyles.carouselPrevious5()} />
-      <span className={carouselStyles.carouselPrevious6()}>Previous slide</span>
+      <span className={carouselStyles.carouselPrevious6()}>
+        {t("Kit.previousSlide")}
+      </span>
     </Button>
   );
 }
@@ -200,6 +206,7 @@ function CarouselNext({
   size = "icon-sm",
   ...props
 }: CarouselNextProps) {
+  const t = useTranslations();
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
@@ -219,7 +226,9 @@ function CarouselNext({
       {...props}
     >
       <ChevronRightIcon className={carouselStyles.carouselNext5()} />
-      <span className={carouselStyles.carouselNext6()}>Next slide</span>
+      <span className={carouselStyles.carouselNext6()}>
+        {t("Kit.nextSlide")}
+      </span>
     </Button>
   );
 }

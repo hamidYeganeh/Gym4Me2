@@ -1,3 +1,4 @@
+import { ConsentGuard } from '../profile/consent.guard';
 import {
   Body,
   ForbiddenException,
@@ -18,12 +19,12 @@ import { ClubService } from './club.service';
 import * as c from './club.contracts';
 const business = (req: AuthRequest) => {
   if (req.principal.session.client !== 'business')
-    throw new ForbiddenException('از پنل بیزینس وارد شوید.');
+    throw new ForbiddenException('Backend.signInFromTheBusinessPanel');
   return req.principal.user.id;
 };
 @DomainController('business', 'clubs')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class BusinessClubsController {
   constructor(private readonly service: ClubService) {}
   @Post() @c.SchemaBody(c.clubCreateSchema) create(
@@ -150,10 +151,23 @@ export class BusinessClubsController {
 @DomainController('catalog', 'clubs')
 export class PublicClubsController {
   constructor(private readonly service: ClubService) {}
-  @Get() list(@Query('page') page: unknown, @Query('search') search: unknown) {
+  // Read-only lookup: local guest IDs stay in the body, not URL/history logs.
+  @Post('guest-saved') @c.SchemaBody(c.guestSavedSchema) guestSaved(
+    @Body() body: unknown,
+  ) {
+    const input = c.validate(c.guestSavedSchema, body);
+    return this.service.listPublic(input.filters, undefined, input.ids);
+  }
+  @Get() list(@Query() query: unknown) {
+    return this.service.listPublic(c.validate(c.catalogFiltersSchema, query));
+  }
+  @Get('saved')
+  @ClientHeader()
+  @UseGuards(ClientGuard, AuthGuard, ConsentGuard)
+  saved(@Query() query: unknown, @Req() req: AuthRequest) {
     return this.service.listPublic(
-      c.validate(c.pageSchema, page),
-      c.validate(z.string().trim().max(100).default(''), search),
+      c.validate(c.catalogFiltersSchema, query),
+      req.principal.user.id,
     );
   }
   @Get(':id') detail(@Param('id') id: string) {
@@ -184,7 +198,7 @@ export class PublicTaxonomiesController {
 }
 @DomainController('admin', 'taxonomies')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class AdminTaxonomiesController {
   constructor(
     private readonly service: ClubService,
@@ -194,12 +208,14 @@ export class AdminTaxonomiesController {
     @Req() req: AuthRequest,
     @Param('kind') kind: string,
     @Query('page') page: unknown,
+    @Query('search') search: unknown,
   ) {
     await this.admin.requireAdmin(req.principal);
     return this.service.listTaxonomy(
       c.validate(c.taxonomyKindSchema, kind),
       c.validate(c.pageSchema, page),
       true,
+      c.validate(z.string().trim().max(100).default(''), search),
     );
   }
   @Post(':kind') @c.SchemaBody(c.taxonomyCreateSchema) create(
@@ -242,9 +258,36 @@ export class PublicLocationsController {
 }
 @DomainController('admin', 'locations')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class AdminLocationsController {
-  constructor(private readonly service: ClubService) {}
+  constructor(
+    private readonly service: ClubService,
+    private readonly admin: AdminService,
+  ) {}
+  @Get(':kind') async list(
+    @Req() req: AuthRequest,
+    @Param('kind') kind: string,
+    @Query('parentId') parentId: unknown,
+  ) {
+    await this.admin.requireAdmin(req.principal);
+    return this.service.geography(
+      c.validate(c.geographyKindSchema, kind),
+      c.validate(c.id.optional(), parentId),
+    );
+  }
+  @Patch(':kind/:id') @c.SchemaBody(c.geographyPatchSchema) update(
+    @Req() req: AuthRequest,
+    @Param('kind') kind: string,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ) {
+    return this.service.updateGeography(
+      req.principal,
+      c.validate(c.geographyKindSchema, kind),
+      c.validate(c.id, id),
+      c.validate(c.geographyPatchSchema, body),
+    );
+  }
   @Post() @c.SchemaBody(c.geographySchema) create(
     @Req() req: AuthRequest,
     @Body() body: unknown,
@@ -257,7 +300,7 @@ export class AdminLocationsController {
 }
 @DomainController('admin', 'clubs')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class AdminClubsController {
   constructor(
     private readonly service: ClubService,
@@ -266,6 +309,13 @@ export class AdminClubsController {
   @Get(':id') async detail(@Req() req: AuthRequest, @Param('id') id: string) {
     await this.admin.requireAdmin(req.principal);
     return this.service.adminDetail(c.validate(c.id, id));
+  }
+  @Get(':id/readiness') async readiness(
+    @Req() req: AuthRequest,
+    @Param('id') id: string,
+  ) {
+    await this.admin.requireAdmin(req.principal);
+    return this.service.adminReadiness(c.validate(c.id, id));
   }
   @Get(':id/branches/:branchId') async branch(
     @Req() req: AuthRequest,

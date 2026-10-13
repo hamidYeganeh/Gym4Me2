@@ -1,9 +1,9 @@
 "use client";
+import { MobileHeader, MobilePage } from "@repo/ui/mobile-page";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
-  ArrowLeft,
   ChevronLeft,
   ChevronRight,
   Grid2X2,
@@ -20,7 +20,9 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";
 import { ScrollArea, ScrollBar } from "@repo/ui/kit/ScrollArea";
 import { cn } from "@repo/ui/lib/utils";
-import { getClubs } from "../../lib/clubs";
+import { useCatalogClub } from "./use-catalog";
+import { CatalogState } from "./catalog-state";
+import { clubHref } from "../../lib/club-href";
 import { GalleryIndicators } from "./gallery-indicators";
 
 function subscribeSearch(listener: () => void) {
@@ -30,9 +32,44 @@ function subscribeSearch(listener: () => void) {
 const getSearch = () => window.location.search;
 
 export function ClubGallery({ clubId }: { clubId: string }) {
+  const branchId = useSearchParams().get("branch") ?? undefined;
+  const query = useCatalogClub(clubId, branchId);
+  const t = useTranslations("Clubs");
+  if (!query.club)
+    return (
+      <MobilePage
+        title={t("gallery")}
+        backHref={clubHref(
+          clubId,
+          undefined,
+          branchId ? { branch: branchId } : undefined,
+        )}
+      >
+        <CatalogState
+          loading={query.isPending}
+          missing={query.error?.status === 404}
+          retry={query.isError ? () => void query.refetch() : undefined}
+        />
+      </MobilePage>
+    );
+  return (
+    <GalleryContent
+      key={query.branch?.id}
+      club={query.club}
+      branchId={branchId}
+    />
+  );
+}
+function GalleryContent({
+  club,
+  branchId,
+}: {
+  branchId?: string;
+  club: import("@repo/ui/kit/ClubDetail").ClubDetailData;
+}) {
+  const clubId = club.id;
   const locale = useLocale();
   const t = useTranslations("Gallery");
-  const club = getClubs(locale).find((item) => item.id === clubId)!;
   const photos = club.photos;
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -76,29 +113,25 @@ export function ClubGallery({ clubId }: { clubId: string }) {
   }
   return (
     <main className="mx-auto flex min-h-dvh max-w-xl flex-col gap-5 bg-background px-5 pt-[calc(1.5rem+var(--app-safe-top))] pb-[calc(1.5rem+var(--app-safe-bottom))] text-foreground">
-      <header className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
-        <Button asChild variant="ghost" size="icon-lg">
-          <Link
-            href={`/discovery/clubs/${clubId}`}
-            scroll={false}
-            aria-label={t("back")}
+      <MobileHeader
+        title={t("title", { count: number.format(photos.length) })}
+        backHref={clubHref(
+          clubId,
+          undefined,
+          branchId ? { branch: branchId } : undefined,
+        )}
+        actions={
+          <Button
+            variant="ghost"
+            size="icon-lg"
+            aria-label={t(grid ? "slideshow" : "grid")}
+            aria-pressed={grid}
+            onClick={() => setGrid(!grid)}
           >
-            <ArrowLeft className="rtl:rotate-180" />
-          </Link>
-        </Button>
-        <h1 className="text-center text-xl font-semibold">
-          {t("title", { count: number.format(photos.length) })}
-        </h1>
-        <Button
-          variant="ghost"
-          size="icon-lg"
-          aria-label={t(grid ? "slideshow" : "grid")}
-          aria-pressed={grid}
-          onClick={() => setGrid(!grid)}
-        >
-          {grid ? <GalleryHorizontal /> : <Grid2X2 />}
-        </Button>
-      </header>
+            {grid ? <GalleryHorizontal /> : <Grid2X2 />}
+          </Button>
+        }
+      />
       <p className="sr-only">{club.name}</p>
       <div className={cn("grid grid-cols-2 gap-3", !grid && "hidden")}>
         {photos.map((photo, index) => (

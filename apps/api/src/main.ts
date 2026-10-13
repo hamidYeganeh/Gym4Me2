@@ -12,6 +12,9 @@ async function bootstrap() {
     corsOrigins: config.get('CORS_ORIGINS', { infer: true }),
     docsEnabled: config.get('API_DOCS_ENABLED', { infer: true }),
   });
-  await app.listen(config.get('PORT', { infer: true }));
+  await app.listen(
+    config.get('PORT', { infer: true }),
+    config.get('API_HOST', { infer: true }),
+  );
 }
 void bootstrap();

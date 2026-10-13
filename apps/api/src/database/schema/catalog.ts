@@ -149,6 +149,9 @@ export const clubMedia = pgTable(
     width: integer('width'),
     height: integer('height'),
     durationSeconds: integer('duration_seconds'),
+    objectKey: text('object_key').unique(),
+    contentType: text('content_type'),
+    sizeBytes: integer('size_bytes'),
     createdAt: created(),
   },
   (t) => [

@@ -15,12 +15,15 @@ process.env.FONTCONFIG_FILE = path.join(fontConfigDir, "fonts.conf");
 const sharp = createRequire(require.resolve("next/package.json"))("sharp");
 const ts = require("typescript");
 const source = await readFile(path.join(root, "lib/clubs.ts"), "utf8");
-const { outputText } = ts.transpileModule(source, {
-  compilerOptions: { module: ts.ModuleKind.ESNext },
+const { createTranslator } = require("next-intl");
+const catalogs = {fa: require("../../packages/i18n/src/messages/fa.json"), en: require("../../packages/i18n/src/messages/en.json")};
+const getTranslator = locale => createTranslator({locale, messages: catalogs[locale], timeZone: "Asia/Tehran"});
+const { outputText } = ts.transpileModule(source.replace(/import \{ getTranslator \} from "@repo\/i18n\/messages";/, ""), {
+  compilerOptions: { module: ts.ModuleKind.CommonJS },
 });
-const { getClubs } = await import(
-  `data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`
-);
+const preview = {exports: {}};
+new Function("exports", "getTranslator", outputText)(preview.exports, getTranslator);
+const { getClubs } = preview.exports;
 const fontfile = path.resolve(
   root,
   "../../packages/theme/src/fonts/IRANSansXV.woff2",
@@ -49,6 +52,7 @@ async function text(value, size, color, top, left, width, bold = false) {
 }
 await mkdir(path.join(root, "public/images/og"), { recursive: true });
 for (const locale of ["fa", "en"]) {
+  const copy = getTranslator(locale);
   for (const club of getClubs(locale)) {
     const photoPath = path.join(root, "public", club.photos[0].src);
     const background = await sharp(photoPath)
@@ -75,7 +79,7 @@ for (const locale of ["fa", "en"]) {
     const layers = [
       { input: card },
       { input: photo, top: 52, left: 666 },
-      await text("Gym4Me", 27, "#29292c", 80, 74, 540, true),
+      await text(copy("Metadata.brand"), 27, "#29292c", 80, 74, 540, true),
       await text(club.name, 46, "#29292c", 178, 74, 540, true),
       await text(club.category, 24, "#606069", 255, 74, 540),
       await text(club.address, 23, "#606069", 303, 74, 540),
@@ -89,9 +93,7 @@ for (const locale of ["fa", "en"]) {
         true,
       ),
       await text(
-        locale === "fa"
-          ? "جایی برای قوی‌تر شدن"
-          : "Find your next training space",
+        copy("Preview.ogTagline"),
         21,
         "#606069",
         533,

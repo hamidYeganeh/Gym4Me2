@@ -6,7 +6,6 @@ import { MapPin, Map as MapIcon, RotateCcw } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
 import { Button } from "@repo/ui/kit/Button";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
-import { clubMapPositions } from "../../lib/club-map";
 import "./discovery-map.css";
 
 type Coordinates = [number, number];
@@ -45,10 +44,12 @@ export function NeshanMap({
   clubs,
   selectedId,
   onSelect,
+  recenter = 0,
 }: {
   clubs: ClubDetailData[];
   selectedId: string;
   onSelect: (id: string) => void;
+  recenter?: number;
 }) {
   const t = useTranslations("DiscoveryMap");
   const container = useRef<HTMLDivElement>(null);
@@ -126,12 +127,23 @@ export function NeshanMap({
     const sdk = window.nmp_mapboxgl;
     const created: MapMarker[] = [];
     clubs.forEach((club) => {
-      const position = clubMapPositions[club.id];
+      const position = club.coordinates;
       if (!position) return;
       const button = document.createElement("button");
       button.type = "button";
       button.className = "discovery-map-marker";
-      button.textContent = club.price;
+      const photo = document.createElement("img");
+      photo.src = club.photos[0].src;
+      photo.alt = "";
+      photo.draggable = false;
+      photo.addEventListener(
+        "error",
+        () => {
+          photo.src = "/images/club-placeholder.svg";
+        },
+        { once: true },
+      );
+      button.appendChild(photo);
       button.dir = club.locale.startsWith("fa") ? "rtl" : "ltr";
       button.setAttribute("aria-label", `${club.name} · ${club.price}`);
       button.addEventListener("click", () => select.current(club.id));
@@ -143,7 +155,7 @@ export function NeshanMap({
       );
     });
     const positions = clubs.flatMap((club) =>
-      clubMapPositions[club.id] ? [clubMapPositions[club.id]!] : [],
+      club.coordinates ? [club.coordinates] : [],
     );
     if (positions.length) {
       instance.fitBounds(
@@ -158,7 +170,7 @@ export function NeshanMap({
           ],
         ],
         {
-          padding: { top: 180, bottom: 260, left: 60, right: 60 },
+          padding: { top: 160, bottom: 340, left: 50, right: 50 },
           maxZoom: 14,
           duration: 500,
         },
@@ -176,7 +188,7 @@ export function NeshanMap({
       button.dataset.selected = String(id === selectedId);
       button.setAttribute("aria-pressed", String(id === selectedId));
     });
-    const center = clubMapPositions[selectedId];
+    const center = clubs.find((club) => club.id === selectedId)?.coordinates;
     // Preserve the bounds of filtered results; pan only when the user selects a club.
     if (
       center &&
@@ -188,6 +200,14 @@ export function NeshanMap({
     previousSelection.current = selectedId;
     previousClubs.current = clubs;
   }, [selectedId, clubs, sdkReady, attempt]);
+
+  useEffect(() => {
+    if (!recenter) return;
+    const center = previousClubs.current.find(
+      (club) => club.id === previousSelection.current,
+    )?.coordinates ?? [51.433, 35.808];
+    map.current?.flyTo({ center, zoom: 14, duration: 600, essential: false });
+  }, [recenter]);
 
   const missingKey = !mapKey;
   return (

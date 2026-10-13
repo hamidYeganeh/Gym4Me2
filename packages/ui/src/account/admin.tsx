@@ -1,4 +1,19 @@
 "use client";
+import type { TranslationKey } from "@repo/i18n/messages";
+import { useLabelMap } from "./common";
+import { useTranslations, useLocale } from "@repo/i18n";
+
+import {
+  useAdminUsers,
+  useAdminOrganizations,
+  useAdminAudit,
+  useSetUserStatus,
+  useReviewOrganization,
+} from "@repo/api/admin";
+import type { UserStatus } from "@repo/api/auth";
+import type { OrganizationStatus } from "@repo/api/business";
+import type { PublicationStatus } from "@repo/api/catalog";
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { Button } from "@repo/ui/kit/Button";
@@ -22,7 +37,7 @@ import {
   TableHeader,
   TableRow,
 } from "@repo/ui/kit/Table";
-import { api } from "./api";
+
 import {
   Blank,
   ErrorNotice,
@@ -31,11 +46,10 @@ import {
   Status,
   Submit,
   TextField,
-  dateLabel,
-  useQuery,
+  useDateLabel,
 } from "./common";
-type Decision = { id: string; title: string; status: string };
-function DecisionDialog({
+export type Decision = { id: string; title: string; status: string };
+export function DecisionDialog({
   decision,
   close,
   save,
@@ -44,8 +58,10 @@ function DecisionDialog({
   decision: Decision | null;
   close: () => void;
   save: (reason: string) => Promise<void>;
-  kind: "user" | "organization";
+  kind: "user" | "organization" | "review";
 }) {
+  const t = useTranslations();
+
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -57,7 +73,7 @@ function DecisionDialog({
       await save(reason);
       setReason("");
       close();
-      toast.success("تغییرات ثبت شد.");
+      toast.success(t("Copy.changesSaved"));
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -76,13 +92,17 @@ function DecisionDialog({
           <DialogTitle>{decision?.title}</DialogTitle>
           <DialogDescription>
             {kind === "user"
-              ? "با تعلیق حساب، نشست‌های فعال کاربر پایان می‌یابد. دلیل این تصمیم در رویدادهای مدیریتی ثبت می‌شود."
-              : "نتیجه بررسی و دلیل آن برای مالک مجموعه قابل مشاهده است."}
+              ? t("Copy.suspendingAnAccountRevokesItsActiveSessions")
+              : kind === "review"
+                ? t("Copy.thisDecisionAffectsThePublicReviewAnd")
+                : t("Copy.theOwnerCanSeeTheDecisionAnd")}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} className="grid gap-5">
           <Field>
-            <FieldLabel htmlFor="decisionReason">دلیل تصمیم</FieldLabel>
+            <FieldLabel htmlFor="decisionReason">
+              {t("Copy.decisionReason")}
+            </FieldLabel>
             <Textarea
               id="decisionReason"
               value={reason}
@@ -90,7 +110,7 @@ function DecisionDialog({
               required
               minLength={5}
               maxLength={500}
-              placeholder="دلیل بررسی را روشن و کوتاه بنویسید."
+              placeholder={t("Copy.writeAClearBriefReasonForThis")}
             />
           </Field>
           <ErrorNotice error={error} />
@@ -101,24 +121,30 @@ function DecisionDialog({
               disabled={busy}
               onClick={close}
             >
-              انصراف
+              {t("Copy.cancel")}{" "}
             </Button>
-            <Submit busy={busy}>ثبت تصمیم</Submit>
+            <Submit busy={busy}>{t("Copy.saveDecision")}</Submit>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
   );
 }
-function Pager({
+export function Pager({
   page,
   setPage,
   count,
+  pageSize = 25,
 }: {
   page: number;
   setPage: (p: number) => void;
   count: number;
+  pageSize?: number;
 }) {
+  const locale = useLocale();
+
+  const t = useTranslations();
+
   return (
     <div className="flex items-center justify-between">
       <Button
@@ -126,44 +152,45 @@ function Pager({
         disabled={page === 1}
         onClick={() => setPage(page - 1)}
       >
-        قبلی
+        {t("Copy.previous")}{" "}
       </Button>
       <span className="text-sm text-muted-foreground">
-        صفحه {page.toLocaleString("fa-IR")}
+        {t("Copy.page")} {page.toLocaleString(locale)}
       </span>
       <Button
         variant="outline"
-        disabled={count < 25}
+        disabled={count < pageSize}
         onClick={() => setPage(page + 1)}
       >
-        بعدی
+        {t("Copy.next")}{" "}
       </Button>
     </div>
   );
 }
-type AdminUser = {
-  id: string;
-  displayName: string | null;
-  phone: string;
-  status: string;
-  createdAt: string;
-};
+
 export function AdminUsersContent() {
+  const dateLabel = useDateLabel();
+
+  const t = useTranslations();
+
+  const statusMutation = useSetUserStatus();
+
   const [page, setPage] = useState(1);
   const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
-  const query = useQuery<AdminUser[]>(
-    "admin",
-    `admin/users?page=${page}&search=${encodeURIComponent(search)}`,
-  );
+  const [status, setStatus] = useState("");
+  const query = useAdminUsers({
+    page,
+    search,
+    status: (status || undefined) as UserStatus | undefined,
+  });
   const [decision, setDecision] = useState<Decision | null>(null);
   async function save(reason: string) {
     if (!decision) return;
-    await api("admin", `admin/users/${decision.id}/status`, "PATCH", {
-      status: decision.status,
-      reason,
+    await statusMutation.mutateAsync({
+      id: decision.id,
+      input: { status: decision.status as UserStatus, reason },
     });
-    query.reload();
   }
   return (
     <>
@@ -173,28 +200,50 @@ export function AdminUsersContent() {
           setPage(1);
           setSearch(input);
         }}
-        className="flex max-w-lg items-end gap-3"
+        className="flex flex-wrap items-end gap-3"
       >
         <TextField
-          label="جست‌وجوی کاربر"
+          label={t("Copy.findUser")}
           name="userSearch"
+          fieldClassName="w-full sm:w-64"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="نام یا شماره موبایل"
+          placeholder={t("Copy.nameOrMobileNumber")}
           maxLength={100}
         />
-        <Button type="submit">جست‌وجو</Button>
+        <Field className="w-44">
+          <FieldLabel htmlFor="userStatus">{t("Copy.status")}</FieldLabel>
+          <NativeSelect
+            id="userStatus"
+            value={status}
+            onChange={(e) => {
+              setStatus(e.target.value);
+              setPage(1);
+            }}
+          >
+            <NativeSelectOption value="">
+              {t("Copy.allUsers")}
+            </NativeSelectOption>
+            <NativeSelectOption value="active">
+              {t("Copy.active")}
+            </NativeSelectOption>
+            <NativeSelectOption value="suspended">
+              {t("Copy.suspended")}
+            </NativeSelectOption>
+          </NativeSelect>
+        </Field>
+        <Button type="submit">{t("Copy.search")}</Button>
       </form>
-      <QueryError error={query.error} retry={query.reload} />
-      {query.loading ? (
+      <QueryError error={query.error} retry={query.refetch} />
+      {query.isLoading ? (
         <Loading />
       ) : (
         query.data && (
           <>
             {!query.data.length ? (
               <Blank
-                title="کاربری پیدا نشد"
-                description="عبارت جست‌وجو را تغییر دهید."
+                title={t("Copy.noUsersFound")}
+                description={t("Copy.changeYourSearch")}
               />
             ) : (
               <Card>
@@ -202,18 +251,23 @@ export function AdminUsersContent() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>کاربر</TableHead>
-                        <TableHead>شماره موبایل</TableHead>
-                        <TableHead>وضعیت</TableHead>
-                        <TableHead>ثبت‌نام</TableHead>
-                        <TableHead>عملیات</TableHead>
+                        <TableHead>{t("Copy.user")}</TableHead>
+                        <TableHead>{t("Copy.mobileNumber")}</TableHead>
+                        <TableHead>{t("Copy.status")}</TableHead>
+                        <TableHead>{t("Copy.joined")}</TableHead>
+                        <TableHead>{t("Copy.actions")}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {query.data.map((user) => (
                         <TableRow key={user.id}>
                           <TableCell>
-                            {user.displayName ?? "بدون نام"}
+                            <Link
+                              className="font-medium hover:underline"
+                              href={`/users/${user.id}`}
+                            >
+                              {user.displayName ?? t("Copy.unnamed")}
+                            </Link>
                           </TableCell>
                           <TableCell>
                             <bdi>{user.phone}</bdi>
@@ -223,25 +277,33 @@ export function AdminUsersContent() {
                           </TableCell>
                           <TableCell>{dateLabel(user.createdAt)}</TableCell>
                           <TableCell>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() =>
-                                setDecision({
-                                  id: user.id,
-                                  title:
-                                    user.status === "active"
-                                      ? "تعلیق حساب کاربر"
-                                      : "فعال‌سازی حساب کاربر",
-                                  status:
-                                    user.status === "active"
-                                      ? "suspended"
-                                      : "active",
-                                })
-                              }
-                            >
-                              {user.status === "active" ? "تعلیق" : "فعال‌سازی"}
-                            </Button>
+                            {user.isAdmin ? (
+                              <span className="text-xs text-muted-foreground">
+                                {t("Copy.platformAdministrator")}{" "}
+                              </span>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() =>
+                                  setDecision({
+                                    id: user.id,
+                                    title:
+                                      user.status === "active"
+                                        ? t("Copy.suspendUserAccount")
+                                        : t("Copy.activateUserAccount"),
+                                    status:
+                                      user.status === "active"
+                                        ? "suspended"
+                                        : "active",
+                                  })
+                                }
+                              >
+                                {user.status === "active"
+                                  ? t("Copy.suspend")
+                                  : t("Copy.activate")}
+                              </Button>
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -264,60 +326,137 @@ export function AdminUsersContent() {
     </>
   );
 }
-type AdminOrganization = {
-  id: string;
-  name: string;
-  status: string;
-  reviewReason: string | null;
-  createdAt: string;
-};
-export function AdminOrganizationsContent() {
+
+export function AdminOrganizationsContent({
+  publicationQueue = false,
+}: {
+  publicationQueue?: boolean;
+}) {
+  const dateLabel = useDateLabel();
+
+  const t = useTranslations();
+
+  const reviewMutation = useReviewOrganization();
+
   const [page, setPage] = useState(1);
-  const [status, setStatus] = useState("pending");
-  const query = useQuery<AdminOrganization[]>(
-    "admin",
-    `admin/organizations?page=${page}${status ? `&status=${status}` : ""}`,
+  const [status, setStatus] = useState(publicationQueue ? "" : "pending");
+  const [input, setInput] = useState("");
+  const [search, setSearch] = useState("");
+  const [publicationStatus, setPublicationStatus] = useState(
+    publicationQueue ? "pending_review" : "",
   );
+  const query = useAdminOrganizations({
+    page,
+    search,
+    status: (status || undefined) as OrganizationStatus | undefined,
+    publicationStatus: (publicationStatus || undefined) as
+      PublicationStatus | undefined,
+  });
   const [decision, setDecision] = useState<Decision | null>(null);
   async function save(reason: string) {
     if (!decision) return;
-    await api("admin", `admin/organizations/${decision.id}/review`, "POST", {
-      status: decision.status,
-      reason,
+    await reviewMutation.mutateAsync({
+      id: decision.id,
+      input: {
+        status: decision.status as Exclude<OrganizationStatus, "pending">,
+        reason,
+      },
     });
-    query.reload();
   }
   return (
     <>
-      <Field className="max-w-xs">
-        <FieldLabel htmlFor="reviewStatus">وضعیت مجموعه</FieldLabel>
-        <NativeSelect
-          id="reviewStatus"
-          value={status}
-          onChange={(e) => {
-            setStatus(e.target.value);
-            setPage(1);
-          }}
-        >
-          <NativeSelectOption value="">همه مجموعه‌ها</NativeSelectOption>
-          <NativeSelectOption value="pending">
-            در انتظار بررسی
-          </NativeSelectOption>
-          <NativeSelectOption value="approved">تأییدشده</NativeSelectOption>
-          <NativeSelectOption value="rejected">ردشده</NativeSelectOption>
-          <NativeSelectOption value="suspended">تعلیق‌شده</NativeSelectOption>
-        </NativeSelect>
-      </Field>
-      <QueryError error={query.error} retry={query.reload} />
-      {query.loading ? (
+      <form
+        className="flex flex-wrap items-end gap-3"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setSearch(input);
+          setPage(1);
+        }}
+      >
+        <TextField
+          label={t("Copy.findOrganization")}
+          name="organizationSearch"
+          fieldClassName="w-full sm:w-64"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          maxLength={100}
+          placeholder={t("Copy.organizationName")}
+        />
+        <Field className="w-48">
+          <FieldLabel htmlFor="reviewStatus">
+            {t("Copy.organizationStatus")}
+          </FieldLabel>
+          <NativeSelect
+            id="reviewStatus"
+            value={status}
+            onChange={(e) => {
+              setStatus(e.target.value);
+              setPage(1);
+            }}
+          >
+            <NativeSelectOption value="">
+              {t("Copy.allOrganizations")}
+            </NativeSelectOption>
+            <NativeSelectOption value="pending">
+              {t("Copy.pendingReview")}{" "}
+            </NativeSelectOption>
+            <NativeSelectOption value="approved">
+              {t("Copy.approved")}
+            </NativeSelectOption>
+            <NativeSelectOption value="rejected">
+              {t("Copy.rejected")}
+            </NativeSelectOption>
+            <NativeSelectOption value="suspended">
+              {t("Copy.suspended")}
+            </NativeSelectOption>
+          </NativeSelect>
+        </Field>
+        <Field className="w-48">
+          <FieldLabel htmlFor="publicationStatus">
+            {t("Copy.publicationStatus")}
+          </FieldLabel>
+          <NativeSelect
+            id="publicationStatus"
+            value={publicationStatus}
+            onChange={(e) => {
+              setPublicationStatus(e.target.value);
+              setPage(1);
+            }}
+          >
+            <NativeSelectOption value="">
+              {t("Copy.allStatuses")}
+            </NativeSelectOption>
+            <NativeSelectOption value="draft">
+              {t("Copy.draft")}
+            </NativeSelectOption>
+            <NativeSelectOption value="pending_review">
+              {t("Copy.pendingPublication")}{" "}
+            </NativeSelectOption>
+            <NativeSelectOption value="published">
+              {t("Copy.published")}
+            </NativeSelectOption>
+            <NativeSelectOption value="hidden">
+              {t("Copy.hidden")}
+            </NativeSelectOption>
+          </NativeSelect>
+        </Field>
+        <Button type="submit">{t("Copy.search")}</Button>
+      </form>
+      {publicationQueue && (
+        <p className="text-sm text-muted-foreground">
+          {t("Copy.reviewTheOrganizationRecordAndPublicationReadiness")}{" "}
+        </p>
+      )}
+      <QueryError error={query.error} retry={query.refetch} />
+      {query.isLoading ? (
         <Loading />
       ) : (
         query.data && (
           <>
             {!query.data.length ? (
               <Blank
-                title="مجموعه‌ای در این وضعیت نیست"
-                description="مجموعه‌های جدید پس از ثبت توسط مالک، در صف بررسی قرار می‌گیرند."
+                title={t("Copy.noOrganizationsInThisStatus")}
+                description={t("Copy.newOrganizationsEnterTheReviewQueueAfter")}
               />
             ) : (
               <Card>
@@ -325,17 +464,23 @@ export function AdminOrganizationsContent() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>مجموعه</TableHead>
-                        <TableHead>وضعیت</TableHead>
-                        <TableHead>تاریخ ثبت</TableHead>
-                        <TableHead>بررسی</TableHead>
+                        <TableHead>{t("Copy.organization")}</TableHead>
+                        <TableHead>{t("Copy.status")}</TableHead>
+                        <TableHead>{t("Copy.publication")}</TableHead>
+                        <TableHead>{t("Copy.createdOn")}</TableHead>
+                        <TableHead>{t("Copy.review")}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {query.data.map((org) => (
                         <TableRow key={org.id}>
                           <TableCell>
-                            <p className="font-medium">{org.name}</p>
+                            <Link
+                              href={`/organizations/${org.id}`}
+                              className="font-medium hover:underline"
+                            >
+                              {org.name}
+                            </Link>
                             {org.reviewReason && (
                               <p className="mt-1 max-w-xs whitespace-normal text-xs leading-6 text-muted-foreground">
                                 {org.reviewReason}
@@ -345,13 +490,31 @@ export function AdminOrganizationsContent() {
                           <TableCell>
                             <Status value={org.status} />
                           </TableCell>
+                          <TableCell>
+                            {org.publicationStatus ? (
+                              <Status value={org.publicationStatus} />
+                            ) : (
+                              t("Copy.noClubProfile")
+                            )}
+                          </TableCell>
                           <TableCell>{dateLabel(org.createdAt)}</TableCell>
                           <TableCell>
                             <div className="flex gap-2">
+                              <Button variant="outline" size="sm" asChild>
+                                <Link href={`/organizations/${org.id}`}>
+                                  {t("Copy.record")}{" "}
+                                </Link>
+                              </Button>
                               {[
-                                { status: "approved", label: "تأیید" },
-                                { status: "rejected", label: "رد" },
-                                { status: "suspended", label: "تعلیق" },
+                                {
+                                  status: "approved",
+                                  label: t("Copy.approve"),
+                                },
+                                { status: "rejected", label: t("Copy.reject") },
+                                {
+                                  status: "suspended",
+                                  label: t("Copy.suspend"),
+                                },
                               ]
                                 .filter((item) => item.status !== org.status)
                                 .map((item) => (
@@ -362,7 +525,10 @@ export function AdminOrganizationsContent() {
                                     onClick={() =>
                                       setDecision({
                                         id: org.id,
-                                        title: `${item.label} مجموعه ${org.name}`,
+                                        title: t("Copy.organizationDecision", {
+                                          action: item.label,
+                                          name: org.name,
+                                        }),
                                         status: item.status,
                                       })
                                     }
@@ -393,44 +559,131 @@ export function AdminOrganizationsContent() {
     </>
   );
 }
-type AuditEvent = {
-  id: string;
-  action: string;
-  actorId: string | null;
-  targetId: string | null;
-  details: Record<string, string>;
-  createdAt: string;
+
+const eventKeys: Record<string, TranslationKey> = {
+  "account.password_login": "Password.auditLogin",
+  "account.password_changed": "Password.auditChanged",
+  "organization.created": "Copy.organizationCreated",
+  "branch.created": "Copy.addBranch",
+  "team.invited": "Copy.inviteColleague",
+  "team.removed": "Copy.teamAccessRemoved",
+  "invitation.revoked": "Copy.invitationRevoked",
+  "invitation.accepted": "Copy.acceptInvitation",
+  "user.status-changed": "Copy.userStatusChanged",
+  "organization.reviewed": "Copy.reviewOrganization",
+  "admin.granted-by-operator": "Copy.administratorAccessGranted",
+  "club.created": "Copy.clubCreated",
+  "club.updated": "Copy.clubUpdated",
+  "branch.updated": "Copy.branchUpdated",
+  "space.saved": "Copy.trainingSpaceSaved",
+  "coach.invited": "Copy.coachInvited",
+  "coach.ended": "Copy.coachAffiliationEnded",
+  "review.moderated": "Copy.reviewModerated",
+  "review.replied": "Copy.replyToReview",
+  "location.created": "Copy.locationCreated",
+  "location.updated": "Copy.locationUpdated",
+  "catalog.updated": "Copy.categoryChanged",
 };
-const eventNames: Record<string, string> = {
-  "organization.created": "ثبت مجموعه",
-  "branch.created": "افزودن شعبه",
-  "team.invited": "دعوت همکار",
-  "team.removed": "حذف دسترسی همکار",
-  "invitation.revoked": "لغو دعوت",
-  "invitation.accepted": "پذیرش دعوت",
-  "user.status-changed": "تغییر وضعیت کاربر",
-  "organization.reviewed": "بررسی مجموعه",
-  "admin.granted-by-operator": "اعطای دسترسی ادمین",
-};
-export function AdminAuditContent() {
+export function AdminAuditContent({
+  organizationId,
+  actorId,
+}: {
+  organizationId?: string;
+  actorId?: string;
+}) {
+  const dateLabel = useDateLabel();
+  const eventNames = useEventNames();
+
+  const t = useTranslations();
+
   const [page, setPage] = useState(1);
-  const query = useQuery<AuditEvent[]>("admin", `admin/audit?page=${page}`);
+  const [filters, setFilters] = useState({ action: "", from: "", to: "" });
+  const [input, setInput] = useState(filters);
+  const query = useAdminAudit({
+    page,
+    ...filters,
+    from: filters.from || undefined,
+    to: filters.to || undefined,
+    action: filters.action || undefined,
+    organizationId,
+    actorId,
+  });
   return (
     <>
       <p className="text-muted-foreground">
-        سابقه تغییرات دسترسی و تصمیم‌های مدیریتی؛ این رویدادها از پنل قابل
-        ویرایش نیستند.
+        {t("Copy.accessChangesAndAdministrativeDecisionsAreRecorded")}{" "}
       </p>
-      <QueryError error={query.error} retry={query.reload} />
-      {query.loading ? (
+      <form
+        className="flex flex-wrap items-end gap-3"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setFilters(input);
+          setPage(1);
+        }}
+      >
+        <Field className="w-64">
+          <FieldLabel htmlFor="auditAction">{t("Copy.event")}</FieldLabel>
+          <NativeSelect
+            id="auditAction"
+            value={input.action}
+            onChange={(e) => setInput({ ...input, action: e.target.value })}
+          >
+            <NativeSelectOption value="">
+              {t("Copy.allEvents")}
+            </NativeSelectOption>
+            {Object.entries(eventNames).map(([key, label]) => (
+              <NativeSelectOption key={key} value={key}>
+                {label}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </Field>
+        <TextField
+          label={t("Copy.fromDateGregorian")}
+          name="auditFrom"
+          fieldClassName="w-full sm:w-48"
+          type="date"
+          dir="ltr"
+          value={input.from}
+          max={input.to || undefined}
+          onChange={(e) => setInput({ ...input, from: e.target.value })}
+        />
+        <TextField
+          label={t("Copy.toDateGregorian")}
+          name="auditTo"
+          fieldClassName="w-full sm:w-48"
+          type="date"
+          dir="ltr"
+          value={input.to}
+          min={input.from || undefined}
+          onChange={(e) => setInput({ ...input, to: e.target.value })}
+        />
+        <Button type="submit">{t("Copy.applyFilters")}</Button>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => {
+            const empty = { action: "", from: "", to: "" };
+            setInput(empty);
+            setFilters(empty);
+            setPage(1);
+          }}
+        >
+          {t("Copy.clear")}{" "}
+        </Button>
+      </form>
+      <QueryError error={query.error} retry={query.refetch} />
+      {query.isLoading ? (
         <Loading />
       ) : (
         query.data && (
           <>
             {!query.data.length ? (
               <Blank
-                title="رویدادی ثبت نشده"
-                description="تغییرات مدیریتی پس از انجام در این بخش نمایش داده می‌شوند."
+                title={t("Copy.noEventsYet")}
+                description={t(
+                  "Copy.administrativeChangesAppearHereAfterTheyAre",
+                )}
               />
             ) : (
               <Card>
@@ -438,10 +691,11 @@ export function AdminAuditContent() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>رویداد</TableHead>
-                        <TableHead>عامل</TableHead>
-                        <TableHead>توضیح</TableHead>
-                        <TableHead>تاریخ</TableHead>
+                        <TableHead>{t("Copy.event")}</TableHead>
+                        <TableHead>{t("Copy.actor")}</TableHead>
+                        <TableHead>{t("Copy.organization")}</TableHead>
+                        <TableHead>{t("Copy.description")}</TableHead>
+                        <TableHead>{t("Copy.date")}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -455,13 +709,29 @@ export function AdminAuditContent() {
                               className="text-xs"
                               title={event.actorId ?? undefined}
                             >
-                              {event.actorId
-                                ? `${event.actorId.slice(0, 8)}…`
-                                : "اپراتور سیستم"}
+                              {event.actorName ??
+                                (event.actorId
+                                  ? `${event.actorId.slice(0, 8)}…`
+                                  : t("Copy.systemOperator"))}
                             </bdi>
                           </TableCell>
+                          <TableCell>
+                            {event.organizationId ? (
+                              <Link
+                                className="hover:underline"
+                                href={`/organizations/${event.organizationId}`}
+                              >
+                                {event.organizationName ??
+                                  t("Copy.organizationRecord")}
+                              </Link>
+                            ) : (
+                              "—"
+                            )}
+                          </TableCell>
                           <TableCell className="max-w-sm whitespace-normal">
-                            {event.details.reason ?? "—"}
+                            {typeof event.details.reason === "string"
+                              ? event.details.reason
+                              : "—"}
                           </TableCell>
                           <TableCell>{dateLabel(event.createdAt)}</TableCell>
                         </TableRow>
@@ -477,4 +747,8 @@ export function AdminAuditContent() {
       )}
     </>
   );
+}
+
+export function useEventNames() {
+  return useLabelMap(eventKeys);
 }

@@ -1,4 +1,8 @@
 import { INestApplication, VersioningType } from '@nestjs/common';
+import {
+  LocaleExceptionFilter,
+  ReadinessLocalizationInterceptor,
+} from './localization';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export interface ApiOptions {
@@ -17,6 +21,8 @@ export function configureApi(app: INestApplication, options: ApiOptions): void {
       next();
     },
   );
+  app.useGlobalFilters(new LocaleExceptionFilter());
+  app.useGlobalInterceptors(new ReadinessLocalizationInterceptor());
   app.setGlobalPrefix('api');
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
   app.enableCors({ origin: options.corsOrigins, credentials: true });

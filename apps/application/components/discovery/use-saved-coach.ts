@@ -36,3 +36,21 @@ export function useSavedCoach(id: string) {
     },
   ] as const;
 }
+
+export function useSavedCoachIds(ids: string[]) {
+  const snapshot = useSyncExternalStore(
+    subscribe,
+    () =>
+      ids
+        .filter((id) => {
+          try {
+            return localStorage.getItem(`gym4me:coach:${id}:saved`) === "true";
+          } catch {
+            return memory.get(id) ?? false;
+          }
+        })
+        .join(","),
+    () => "",
+  );
+  return snapshot ? snapshot.split(",") : [];
+}

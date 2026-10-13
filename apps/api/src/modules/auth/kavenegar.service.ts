@@ -8,7 +8,12 @@ export class KavenegarService {
   async sendOtp(phone: string, code: string): Promise<void> {
     const key = this.config.get('KAVENEGAR_API_KEY', { infer: true });
     if (!key)
-      throw new ServiceUnavailableException('سرویس پیامک هنوز فعال نشده است.');
+      throw new ServiceUnavailableException(
+        'Backend.smsDeliveryIsNotConfiguredYet',
+      );
+    const appHash = this.config.get('KAVENEGAR_ANDROID_APP_HASH', {
+      infer: true,
+    });
     try {
       const response = await fetch(
         `https://api.kavenegar.com/v1/${key}/verify/lookup.json`,
@@ -18,6 +23,7 @@ export class KavenegarService {
           body: new URLSearchParams({
             receptor: phone.replace('+98', '0'),
             token: code,
+            ...(appHash ? { token2: appHash } : {}),
             template: this.config.get('KAVENEGAR_OTP_TEMPLATE', {
               infer: true,
             }),
@@ -33,7 +39,7 @@ export class KavenegarService {
     } catch {
       // Provider errors can include the key, phone and OTP. Never log or return them.
       throw new ServiceUnavailableException(
-        'ارسال پیامک انجام نشد. کمی بعد دوباره تلاش کنید.',
+        'Backend.couldNotSendSmsTryAgainLater',
       );
     }
   }

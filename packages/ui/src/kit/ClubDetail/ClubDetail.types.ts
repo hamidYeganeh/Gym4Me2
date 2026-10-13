@@ -6,7 +6,11 @@ export type ClubDetailData = ClubSummary & {
   logo?: string;
   branches?: ClubBranch[];
   categories?: string[];
-  priceValue: number;
+  priceValue: number | null;
+  coordinates?: [longitude: number, latitude: number];
+  categoryIds?: string[];
+  cityId?: string | null;
+  cityName?: string | null;
   priceCurrency: string;
   locale: string;
   description: string;
@@ -15,7 +19,8 @@ export type ClubDetailData = ClubSummary & {
   userDistance?: string;
   coachCount: number;
   amenities: {
-    id: "weights" | "coaching" | "showers" | "wifi" | "group" | "air";
+    id: string;
+    icon?: "weights" | "coaching" | "showers" | "wifi" | "group" | "air";
     label: string;
     description: string;
   }[];
@@ -25,7 +30,7 @@ export type ClubDetailProps = {
   saved: boolean;
   onSavedChange: (saved: boolean) => void;
   onShare: () => void;
-  onPlanVisit: () => void;
+  onPlanVisit?: () => void;
   coaches?: ReactNode;
   reviews?: ReactNode;
   availability?: ReactNode;

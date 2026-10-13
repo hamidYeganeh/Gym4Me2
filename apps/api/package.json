@@ -26,19 +26,28 @@
     "test:db": "tsx --test test/database.integration.test.ts",
     "admin:grant": "tsx scripts/grant-admin.ts",
     "test:auth": "jest --config ./test/jest.integration.json --runInBand",
-    "test:clubs": "jest --config ./test/jest.clubs.json --runInBand"
+    "test:clubs": "jest --config ./test/jest.clubs.json --runInBand",
+    "data:retention": "ts-node scripts/retain-data.ts",
+    "test:ui": "ts-node test/ui.fixture.ts",
+    "media:retention": "ts-node scripts/retain-media.ts",
+    "backup:drill": "node --import tsx scripts/backup-drill.ts",
+    "data:deletion-ledger": "ts-node scripts/deletion-ledger.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1149.0",
+    "@aws-sdk/s3-request-presigner": "^3.1149.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.4.7",
+    "@repo/i18n": "workspace:*",
     "dotenv": "^18.0.7",
     "drizzle-orm": "^0.45.4",
     "pg": "^8.23.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "sharp": "^0.35.5",
     "zod": "^4.6.5"
   },
   "devDependencies": {
@@ -49,6 +58,7 @@
     "@nestjs/testing": "^11.0.1",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
+    "@types/multer": "^2.3.0",
     "@types/node": "^24.0.0",
     "@types/pg": "^8.23.1",
     "@types/supertest": "^7.0.0",

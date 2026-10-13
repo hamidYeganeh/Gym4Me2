@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
 import { sidebarMenuButtonVariants, sidebarStyles } from "./Sidebar.styles";
 import type {
   SidebarContentProps,
@@ -162,6 +163,7 @@ function Sidebar({
   dir,
   ...props
 }: SidebarProps) {
+  const t = useTranslations();
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
 
   if (collapsible === "none") {
@@ -193,8 +195,8 @@ function Sidebar({
           side={side}
         >
           <SheetHeader className={sidebarStyles.sidebar3()}>
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+            <SheetTitle>{t("Kit.sidebar")}</SheetTitle>
+            <SheetDescription>{t("Kit.sidebarDescription")}</SheetDescription>
           </SheetHeader>
           <div className={sidebarStyles.sidebar4()}>{children}</div>
         </SheetContent>
@@ -251,6 +253,7 @@ function Sidebar({
 }
 
 function SidebarTrigger({ className, onClick, ...props }: SidebarTriggerProps) {
+  const t = useTranslations();
   const { toggleSidebar } = useSidebar();
 
   return (
@@ -267,22 +270,25 @@ function SidebarTrigger({ className, onClick, ...props }: SidebarTriggerProps) {
       {...props}
     >
       <PanelLeftIcon className={sidebarStyles.sidebarTrigger()} />
-      <span className={sidebarStyles.sidebarTrigger2()}>Toggle Sidebar</span>
+      <span className={sidebarStyles.sidebarTrigger2()}>
+        {t("Kit.toggleSidebar")}
+      </span>
     </Button>
   );
 }
 
 function SidebarRail({ className, ...props }: SidebarRailProps) {
+  const t = useTranslations();
   const { toggleSidebar } = useSidebar();
 
   return (
     <button
       data-sidebar="rail"
       data-slot="sidebar-rail"
-      aria-label="Toggle Sidebar"
+      aria-label={t("Kit.toggleSidebar")}
       tabIndex={-1}
       onClick={toggleSidebar}
-      title="Toggle Sidebar"
+      title={t("Kit.toggleSidebar")}
       className={cn(
         sidebarStyles.sidebarRail(),
         sidebarStyles.sidebarRail2(),

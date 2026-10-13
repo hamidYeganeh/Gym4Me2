@@ -7,6 +7,7 @@ import { and, eq, inArray, isNull } from 'drizzle-orm';
 import type { DatabaseService } from '../../database/database.service';
 import * as s from '../../database/schema';
 import type { BranchPatch, ClubPatch } from './club.contracts';
+import { lockWritableAccount } from '../auth/account-lock';
 
 export type Db = DatabaseService['db'];
 export type Tx = Parameters<Parameters<Db['transaction']>[0]>[0];
@@ -20,8 +21,14 @@ export const taxonomies = {
 };
 export type TaxonomyKind = keyof typeof taxonomies;
 
-export async function lockClub(tx: Tx, userId: string, clubId: string) {
+export async function lockClub(
+  tx: Tx,
+  userId: string,
+  clubId: string,
+  branchId?: string,
+) {
   // Keep the same organization -> club -> membership lock order as admin review.
+  await lockWritableAccount(tx, userId);
   await tx
     .select({ id: s.organizations.id })
     .from(s.organizations)
@@ -32,7 +39,7 @@ export async function lockClub(tx: Tx, userId: string, clubId: string) {
     .from(s.clubs)
     .where(eq(s.clubs.id, clubId))
     .for('update');
-  if (!club) throw new NotFoundException('باشگاه پیدا نشد.');
+  if (!club) throw new NotFoundException('Backend.clubNotFound');
   const [member] = await tx
     .select()
     .from(s.organizationMembers)
@@ -44,12 +51,22 @@ export async function lockClub(tx: Tx, userId: string, clubId: string) {
     )
     .for('update');
   if (!member || !['owner', 'manager'].includes(member.role))
-    throw new ForbiddenException('مجوز ویرایش این باشگاه را ندارید.');
+    throw new ForbiddenException('Backend.youCannotEditThisClub');
+  if (member.role !== 'owner' && !member.allBranches) {
+    if (!branchId)
+      throw new ForbiddenException('Backend.youCannotEditThisClub');
+    await branchAccess(tx, member, branchId);
+  }
   if (club.archivedAt)
-    throw new BadRequestException('باشگاه بایگانی شده قابل ویرایش نیست.');
+    throw new BadRequestException('Backend.archivedClubsCannotBeEdited');
   return club;
 }
-export async function memberAccess(db: Db, userId: string, clubId: string) {
+export async function memberAccess(
+  db: Db | Tx,
+  userId: string,
+  clubId: string,
+  branchId?: string,
+) {
   const [member] = await db
     .select()
     .from(s.organizationMembers)
@@ -59,7 +76,28 @@ export async function memberAccess(db: Db, userId: string, clubId: string) {
         eq(s.organizationMembers.userId, userId),
       ),
     );
-  if (!member) throw new ForbiddenException('این باشگاه در دسترس شما نیست.');
+  if (!member)
+    throw new ForbiddenException('Backend.thisClubIsUnavailableToYou');
+  if (branchId) await branchAccess(db, member, branchId);
+  return member;
+}
+export async function branchAccess(
+  db: Db | Tx,
+  member: typeof s.organizationMembers.$inferSelect,
+  branchId: string,
+) {
+  if (member.role === 'owner' || member.allBranches) return;
+  const [access] = await db
+    .select({ id: s.organizationMemberBranches.branchId })
+    .from(s.organizationMemberBranches)
+    .where(
+      and(
+        eq(s.organizationMemberBranches.organizationId, member.organizationId),
+        eq(s.organizationMemberBranches.memberId, member.id),
+        eq(s.organizationMemberBranches.branchId, branchId),
+      ),
+    );
+  if (!access) throw new ForbiddenException('Backend.branchAccessDenied');
 }
 export async function requireBranch(
   db: Db | Tx,
@@ -75,7 +113,8 @@ export async function requireBranch(
         eq(s.branchProfiles.clubId, clubId),
       ),
     );
-  if (!row || row.archivedAt) throw new NotFoundException('شعبه پیدا نشد.');
+  if (!row || row.archivedAt)
+    throw new NotFoundException('Backend.branchNotFound');
   return row;
 }
 export async function invalidatePublication(tx: Tx, clubId: string) {
@@ -106,7 +145,10 @@ export async function activeTerms(tx: Tx, kind: TaxonomyKind, ids: string[]) {
     .from(table)
     .where(and(inArray(table.id, ids), eq(table.isActive, true)));
   if (found.length !== ids.length)
-    throw new BadRequestException(`شناسه نامعتبر یا غیرفعال در ${kind}`);
+    throw new BadRequestException({
+      message: 'Backend.invalidTaxonomyReference',
+      parameters: { kind },
+    });
 }
 async function checkMedia(
   tx: Tx,
@@ -126,9 +168,7 @@ async function checkMedia(
     found.length !== ids.length ||
     (imagesOnly && found.some((m) => m.type !== 'image'))
   )
-    throw new BadRequestException(
-      'رسانه باید متعلق به همین باشگاه باشد؛ لوگو و کاور باید تصویر باشند.',
-    );
+    throw new BadRequestException('Backend.mediaMustBelongToThisClubLogos');
 }
 async function replaceContacts(
   tx: Tx,

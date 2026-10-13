@@ -8,11 +8,18 @@
     "./request": "./src/request.ts",
     "./server": "./src/server.ts",
     "./actions": "./src/actions.ts",
-    "./client-provider": "./src/client-provider.tsx"
+    "./client-provider": "./src/client-provider.tsx",
+    "./messages": "./src/messages.ts",
+    "./backend": {
+      "types": "./src/backend.d.cts",
+      "default": "./src/backend.cjs"
+    }
   },
   "scripts": {
     "check-types": "tsc --noEmit",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0 && node scripts/check-copy.cjs",
+    "test": "node --test test/*.test.cjs",
+    "check-copy": "node scripts/check-copy.cjs"
   },
   "dependencies": {
     "next-intl": "^4.13.0"

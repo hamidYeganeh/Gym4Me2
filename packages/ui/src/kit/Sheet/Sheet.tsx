@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
 import { sheetStyles } from "./Sheet.styles";
 import type {
   SheetCloseProps,
@@ -52,6 +53,7 @@ function SheetContent({
   showCloseButton = true,
   ...props
 }: SheetContentProps) {
+  const t = useTranslations();
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -70,7 +72,9 @@ function SheetContent({
               size="icon-sm"
             >
               <XIcon />
-              <span className={sheetStyles.sheetContent3()}>Close</span>
+              <span className={sheetStyles.sheetContent3()}>
+                {t("Kit.close")}
+              </span>
             </Button>
           </SheetPrimitive.Close>
         )}

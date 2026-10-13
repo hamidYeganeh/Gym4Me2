@@ -1,0 +1,23 @@
+.discovery-tab-bar {
+  position: fixed;
+  isolation: isolate;
+  z-index: 30;
+  bottom: 0;
+  inset-inline: 0;
+  width: 100%;
+  max-width: 36rem;
+  margin-inline: auto;
+  padding: .5rem max(1rem, var(--app-safe-right)) calc(.75rem + var(--app-safe-bottom)) max(1rem, var(--app-safe-left));
+}
+.discovery-tab-bar-backdrop {
+  position: absolute;
+  inset: -2.5rem 0 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--background) 15%, color-mix(in oklch, var(--background) 85%, transparent) 45%, transparent);
+}
+.discovery-tab-bar-backdrop span { position: absolute; inset: 0; }
+.discovery-tab-bar-backdrop span:nth-child(1) { backdrop-filter: blur(3px); mask-image: linear-gradient(to top, black 70%, transparent); }
+.discovery-tab-bar-backdrop span:nth-child(2) { backdrop-filter: blur(6px); mask-image: linear-gradient(to top, black 45%, transparent 90%); }
+.discovery-tab-bar-backdrop span:nth-child(3) { backdrop-filter: blur(12px); mask-image: linear-gradient(to top, black 25%, transparent 70%); }
+.discovery-tab-bar-backdrop span:nth-child(4) { backdrop-filter: blur(20px); mask-image: linear-gradient(to top, black, transparent 50%); }

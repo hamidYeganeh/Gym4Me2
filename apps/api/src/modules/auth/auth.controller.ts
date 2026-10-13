@@ -17,6 +17,7 @@ import {
   ClientGuard,
   cookieName,
   type AuthRequest,
+  sessionTransport,
 } from './auth.guard';
 import { AuthService } from './auth.service';
 
@@ -36,6 +37,7 @@ export class OtpController {
       phone,
       parse(clientSchema, req.header('x-gym-client')),
       req.ip ?? req.socket.remoteAddress ?? 'unknown',
+      sessionTransport(req),
     );
   }
   @Post('verify')
@@ -55,16 +57,23 @@ export class OtpController {
       code,
       client,
       req.header('user-agent') ?? 'Unknown device',
+      sessionTransport(req),
     );
-    res.cookie(cookieName(client), result.token, {
-      httpOnly: true,
-      secure: this.config.get('NODE_ENV') === 'production',
-      sameSite: 'strict',
-      path: '/api/v1',
-      expires: result.expiresAt,
-    });
+    const native = sessionTransport(req) === 'native';
+    if (!native)
+      res.cookie(cookieName(client), result.token, {
+        httpOnly: true,
+        secure: this.config.get('NODE_ENV') === 'production',
+        sameSite: 'strict',
+        path: '/api/v1',
+        expires: result.expiresAt,
+      });
     res.setHeader('Cache-Control', 'no-store');
-    return { user: result.user, expiresAt: result.expiresAt };
+    return {
+      user: result.user,
+      expiresAt: result.expiresAt,
+      ...(native ? { token: result.token, sessionId: result.sessionId } : {}),
+    };
   }
 }
 @DomainController('auth', 'sessions')

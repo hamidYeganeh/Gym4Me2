@@ -1,4 +1,6 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
+
 import { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import {
@@ -23,6 +25,8 @@ export function ClubShowcase({
   locale: string;
   viewLabel: string;
 }) {
+  const copy = useTranslations();
+
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
   const openedFrom = useRef(0);
@@ -51,7 +55,9 @@ export function ClubShowcase({
                   ref={(element) => {
                     triggers.current[index] = element;
                   }}
-                  aria-label={`${fa ? "نمایش گالری" : "Open gallery"}: ${photo.alt}`}
+                  aria-label={copy("Copy.galleryPhotoLabel", {
+                    alt: photo.alt,
+                  })}
                   onClick={() => {
                     openedFrom.current = index;
                     setSelected(index);
@@ -99,7 +105,7 @@ export function ClubShowcase({
           </div>
           <Button asChild variant="outline">
             <Link
-              href={`/discovery/clubs/${club.id}`}
+              href={club.href ?? `/discovery/clubs/${club.id}`}
               scroll={false}
               aria-label={`${viewLabel} ${club.name}`}
             >
@@ -129,14 +135,14 @@ export function ClubShowcase({
             <Button
               variant="ghost"
               size="icon-lg"
-              aria-label={fa ? "بستن گالری" : "Close gallery"}
+              aria-label={copy("Copy.closeGallery")}
             >
               <X />
             </Button>
           </DialogClose>
         </div>
         <DialogDescription className="sr-only">
-          {fa ? "تصاویر باشگاه" : "Club photos"}
+          {copy("Copy.clubPhotos")}
         </DialogDescription>
         {photo && (
           <div className="relative aspect-[4/3] max-h-[60dvh] overflow-hidden rounded-2xl bg-muted">
@@ -155,7 +161,7 @@ export function ClubShowcase({
             variant="secondary"
             size="icon-lg"
             onClick={() => move(-1)}
-            aria-label={fa ? "تصویر قبلی" : "Previous photo"}
+            aria-label={copy("Copy.previousPhoto")}
           >
             <ChevronLeft />
           </Button>
@@ -167,7 +173,7 @@ export function ClubShowcase({
             variant="secondary"
             size="icon-lg"
             onClick={() => move(1)}
-            aria-label={fa ? "تصویر بعدی" : "Next photo"}
+            aria-label={copy("Copy.nextPhoto")}
           >
             <ChevronRight />
           </Button>

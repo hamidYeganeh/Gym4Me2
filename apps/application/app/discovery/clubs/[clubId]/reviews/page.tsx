@@ -1,16 +1,11 @@
-import { notFound } from "next/navigation";
-import { clubIds } from "../../../../../lib/clubs";
 import { ClubReviews } from "../../../../../components/discovery/club-reviews";
-export const dynamicParams = false;
-export function generateStaticParams() {
-  return clubIds.map((clubId) => ({ clubId }));
-}
+import { getPublicClub } from "../../../../../lib/public-catalog";
 export default async function Page({
   params,
 }: {
   params: Promise<{ clubId: string }>;
 }) {
   const { clubId } = await params;
-  if (!clubIds.some((id) => id === clubId)) notFound();
+  await getPublicClub(clubId);
   return <ClubReviews clubId={clubId} full />;
 }

@@ -1,7 +1,15 @@
 "use client";
+import { useTranslations, useLocale, getDirection } from "@repo/i18n";
+
+import { useAccount, useAccess } from "@repo/api/profile";
+import { useLogout } from "@repo/api/auth";
+import { useOrganizations } from "@repo/api/business";
+import { useAdminOverview } from "@repo/api/admin";
+import { ApiError, type ApiApplication as Client } from "@repo/api";
+import type { Account } from "@repo/api/auth";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, Suspense, type ReactNode } from "react";
 import {
   Building2,
   Dumbbell,
@@ -14,33 +22,36 @@ import {
   ScrollText,
   Mail,
   MapPin,
+  Tags,
+  MessageSquare,
 } from "lucide-react";
 import { Button } from "@repo/ui/kit/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/kit/Card";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { Field, FieldLabel } from "@repo/ui/kit/Field";
-import {
-  api,
-  ApiError,
-  type Account,
-  type Client,
-  type Organization,
-} from "./api";
-import {
-  Blank,
-  Loading,
-  QueryError,
-  Status,
-  roleNames,
-  useQuery,
-} from "./common";
+
+import { Blank, Loading, QueryError, Status, useRoleNames } from "./common";
 import { ProfileContent, SessionsContent, InvitationsContent } from "./profile";
+import { PrivacyNotice } from "./privacy";
 import { BranchesContent, OrganizationsContent, TeamContent } from "./business";
 import {
   AdminAuditContent,
   AdminOrganizationsContent,
   AdminUsersContent,
+  useEventNames,
 } from "./admin";
+import {
+  AdminTaxonomiesContent,
+  AdminLocationsContent,
+  AdminModerationContent,
+} from "./admin-catalog";
+import {
+  AdminOrganizationDetailContent,
+  AdminBranchDetailContent,
+  AdminUserDetailContent,
+} from "./admin-details";
+import { BusinessClubContent, BusinessBranchContent } from "./business-catalog";
+import { useDateLabel } from "./common";
 export type Section =
   | "overview"
   | "organizations"
@@ -50,97 +61,119 @@ export type Section =
   | "sessions"
   | "invitations"
   | "users"
-  | "audit";
+  | "audit"
+  | "catalog-reviews"
+  | "taxonomies"
+  | "locations"
+  | "moderation";
 const commonNav = [
-  { key: "profile", href: "/profile", title: "پروفایل من", icon: UserRound },
-  { key: "sessions", href: "/sessions", title: "نشست‌های فعال", icon: Monitor },
+  {
+    key: "profile",
+    href: "/profile",
+    title: "Copy.myProfile",
+    icon: UserRound,
+  },
+  {
+    key: "sessions",
+    href: "/sessions",
+    title: "Copy.activeSessions",
+    icon: Monitor,
+  },
   {
     key: "invitations",
     href: "/invitations",
-    title: "دعوت‌های همکاری",
+    title: "Copy.teamInvitations",
     icon: Mail,
   },
-];
+] as const;
 const businessNav = [
-  { key: "overview", href: "/", title: "نمای کلی", icon: LayoutDashboard },
+  { key: "overview", href: "/", title: "Copy.overview", icon: LayoutDashboard },
   {
     key: "organizations",
     href: "/organizations",
-    title: "مجموعه‌های من",
+    title: "Copy.myOrganizations",
     icon: Building2,
   },
-  { key: "branches", href: "/branches", title: "شعبه‌ها", icon: MapPin },
-  { key: "team", href: "/team", title: "اعضای تیم", icon: Users },
-];
+  { key: "branches", href: "/branches", title: "Copy.branches", icon: MapPin },
+  { key: "team", href: "/team", title: "Copy.teamMembers", icon: Users },
+] as const;
 const adminNav = [
-  { key: "overview", href: "/", title: "نمای کلی", icon: LayoutDashboard },
-  { key: "users", href: "/users", title: "کاربران", icon: Users },
+  { key: "overview", href: "/", title: "Copy.overview", icon: LayoutDashboard },
+  { key: "users", href: "/users", title: "Copy.users", icon: Users },
   {
     key: "organizations",
     href: "/organizations",
-    title: "بررسی مجموعه‌ها",
+    title: "Copy.reviewOrganizations",
     icon: Building2,
+  },
+  {
+    key: "catalog-reviews",
+    href: "/catalog-reviews",
+    title: "Copy.publicationQueue",
+    icon: ShieldCheck,
+  },
+  {
+    key: "taxonomies",
+    href: "/taxonomies",
+    title: "Copy.categories",
+    icon: Tags,
+  },
+  {
+    key: "locations",
+    href: "/locations",
+    title: "Copy.geography",
+    icon: MapPin,
+  },
+  {
+    key: "moderation",
+    href: "/moderation",
+    title: "Copy.reviewModeration",
+    icon: MessageSquare,
   },
   {
     key: "audit",
     href: "/audit",
-    title: "رویدادهای مدیریتی",
+    title: "Copy.auditLog",
     icon: ScrollText,
   },
-];
+] as const;
 export function AccountWorkspace({
   client,
   section,
+  entityId,
+  branchId,
 }: {
   client: Client;
   section: Section;
+  entityId?: string;
+  branchId?: string;
 }) {
+  const t = useTranslations();
+
   const router = useRouter();
-  const [account, setAccount] = useState<Account | null>(null);
-  const [allowed, setAllowed] = useState(client !== "admin");
-  const [ready, setReady] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [retry, setRetry] = useState(0);
+  const accountQuery = useAccount();
+  const account = accountQuery.data;
+  const accessQuery = useAccess(client === "admin" && Boolean(account));
+  const logoutMutation = useLogout();
+  const allowed = client !== "admin" || Boolean(accessQuery.data?.isAdmin);
+  const ready =
+    !accountQuery.isLoading &&
+    !(client === "admin" && account && accessQuery.isLoading);
+  const error = accountQuery.error ?? accessQuery.error ?? logoutMutation.error;
+  const busy = logoutMutation.isPending;
   useEffect(() => {
-    let active = true;
-    (async () => {
-      const user = await api<Account>(client, "profile/account");
-      const access =
-        client === "admin"
-          ? await api<{ isAdmin: boolean }>(client, "profile/access")
-          : { isAdmin: true };
-      if (active) {
-        setAccount(user);
-        setAllowed(access.isAdmin);
-        setError(null);
-        setReady(true);
-      }
-    })().catch((err: unknown) => {
-      if (!active) return;
-      if (err instanceof ApiError && err.status === 401) {
-        router.replace("/login");
-        return;
-      }
-      setError(err instanceof Error ? err.message : "ارتباط برقرار نشد.");
-      setReady(true);
-    });
-    return () => {
-      active = false;
-    };
-  }, [client, router, retry]);
-  async function logout() {
-    setBusy(true);
-    setError(null);
-    try {
-      await api(client, "auth/sessions/logout", "POST");
+    if (error instanceof ApiError && error.status === 401)
       router.replace("/login");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "خروج انجام نشد.");
-    } finally {
-      setBusy(false);
+  }, [error, router]);
+  async function logout() {
+    try {
+      await logoutMutation.mutateAsync();
+      router.replace("/login");
+    } catch {
+      /* The mutation exposes its error through the shared notice. */
     }
   }
+  const locale = useLocale();
   const nav = [
     ...(client === "business"
       ? businessNav
@@ -148,36 +181,48 @@ export function AccountWorkspace({
         ? adminNav
         : []),
     ...commonNav,
-  ];
-  const title = nav.find((item) => item.key === section)?.title ?? "حساب من";
+  ].map((item) => ({ ...item, title: t(item.title) }));
+  const title =
+    (client === "admin" || client === "business") && entityId
+      ? section === "users"
+        ? t("Copy.userRecord")
+        : branchId
+          ? t("Copy.branchRecord")
+          : t("Copy.organizationRecord")
+      : (nav.find((item) => item.key === section)?.title ??
+        t("Copy.myAccount"));
   return (
-    <div dir="rtl" className="min-h-dvh bg-muted/25 lg:flex">
+    <div dir={getDirection(locale)} className="min-h-dvh bg-muted/25 lg:flex">
       {client !== "application" && (
-        <aside className="flex flex-col border-b bg-background p-5 lg:sticky lg:top-0 lg:h-dvh lg:w-64 lg:shrink-0 lg:border-b-0 lg:border-e">
+        <aside className="flex flex-col border-b bg-background p-5 lg:sticky lg:top-0 lg:h-dvh lg:w-64 lg:shrink-0 lg:overflow-y-auto lg:border-b-0 lg:border-e">
           <Link
             href="/"
             className="mb-8 flex items-center gap-2 text-xl font-semibold"
           >
             <Dumbbell className="size-7 text-primary" />
             <span dir="ltr">
-              Gym4Me{" "}
+              {t("Copy.brand")}{" "}
               <span className="text-xs text-muted-foreground">
-                {client === "business" ? "BUSINESS" : "ADMIN"}
+                {client === "business"
+                  ? t("Copy.businessBrand")
+                  : t("Copy.adminBrand")}
               </span>
             </span>
           </Link>
           <p className="mb-3 px-3 text-xs text-muted-foreground">
-            {client === "business" ? "فضای کاری باشگاه" : "مدیریت پلتفرم"}
+            {client === "business"
+              ? t("Copy.clubWorkspace")
+              : t("Copy.platformManagement")}
           </p>
           <nav
-            aria-label="منوی پنل"
+            aria-label={t("Copy.panelNavigation")}
             className="flex gap-1 overflow-x-auto lg:flex-col"
           >
             {nav.map((item) => (
               <Button
                 key={item.key}
                 variant={section === item.key ? "secondary" : "ghost"}
-                className="justify-start"
+                className="shrink-0 justify-start"
                 asChild
               >
                 <Link
@@ -192,7 +237,7 @@ export function AccountWorkspace({
           </nav>
           <div className="mt-auto hidden pt-8 text-xs leading-6 text-muted-foreground lg:block">
             <ShieldCheck className="mb-2 size-5" />
-            دسترسی هر نفر متناسب با نقش اوست.
+            {t("Copy.accessDependsOnEachPersonSRole")}{" "}
           </div>
         </aside>
       )}
@@ -201,8 +246,8 @@ export function AccountWorkspace({
           <div>
             <p className="text-sm text-muted-foreground">
               {client === "application"
-                ? "حساب مشترک مربی و ورزشکار"
-                : "جیم‌فورمی / " + title}
+                ? t("Copy.sharedAthleteAndCoachAccount")
+                : t("Copy.panelBreadcrumb", { title })}
             </p>
             <h1 className="mt-1 text-xl font-semibold">{title}</h1>
           </div>
@@ -218,17 +263,17 @@ export function AccountWorkspace({
                 disabled={busy}
               >
                 <LogOut data-icon="inline-start" />
-                خروج
+                {t("Copy.signOut")}{" "}
               </Button>
             )}
           </div>
         </header>
         {client === "application" && (
           <nav
-            aria-label="حساب من"
+            aria-label={t("Copy.myAccount")}
             className="flex gap-2 overflow-auto border-b bg-background p-3"
           >
-            {commonNav.map((item) => (
+            {nav.map((item) => (
               <Button
                 key={item.key}
                 variant={section === item.key ? "secondary" : "ghost"}
@@ -238,26 +283,34 @@ export function AccountWorkspace({
               </Button>
             ))}
             <Button variant="ghost" asChild>
-              <Link href="/discovery">کشف باشگاه</Link>
+              <Link href="/discovery">{t("Copy.discoverClubs")}</Link>
             </Button>
           </nav>
         )}
         <main className="mx-auto grid max-w-6xl gap-7 p-5 lg:p-10">
-          <QueryError error={error} retry={() => setRetry((n) => n + 1)} />
+          {account && section !== "profile" && <PrivacyNotice />}
+          <QueryError
+            error={error}
+            retry={() => {
+              void accountQuery.refetch();
+              if (client === "admin" && account) void accessQuery.refetch();
+            }}
+          />
           {!ready ? (
             <Loading />
           ) : account ? (
             !allowed ? (
               <Blank
-                title="دسترسی ادمین برای این حساب فعال نیست"
-                description="با حساب دارای دسترسی مدیریت وارد شوید یا از مسئول پلتفرم بخواهید دسترسی شما را بررسی کند."
+                title={t("Copy.administratorAccessIsNotEnabledForThis")}
+                description={t("Copy.signInWithAnAdministratorAccountOr")}
               />
             ) : (
               <WorkspaceContent
                 client={client}
                 section={section}
                 account={account}
-                setAccount={setAccount}
+                entityId={entityId}
+                branchId={branchId}
               />
             )
           ) : null}
@@ -270,48 +323,89 @@ function WorkspaceContent({
   client,
   section,
   account,
-  setAccount,
+  entityId,
+  branchId,
 }: {
   client: Client;
   section: Section;
   account: Account;
-  setAccount: (account: Account) => void;
+  entityId?: string;
+  branchId?: string;
 }) {
   if (section === "profile")
     return (
-      <ProfileContent client={client} account={account} onSave={setAccount} />
+      <ProfileContent
+        key={`${account.id}:${account.profilePublic}`}
+        account={account}
+      />
     );
-  if (section === "sessions") return <SessionsContent client={client} />;
-  if (section === "invitations") return <InvitationsContent client={client} />;
+  if (section === "sessions") return <SessionsContent />;
+  if (section === "invitations") return <InvitationsContent />;
   if (client === "admin") {
+    if (section === "users" && entityId)
+      return <AdminUserDetailContent key={entityId} id={entityId} />;
+    if (section === "organizations" && entityId)
+      return branchId ? (
+        <AdminBranchDetailContent
+          key={branchId}
+          organizationId={entityId}
+          branchId={branchId}
+        />
+      ) : (
+        <AdminOrganizationDetailContent key={entityId} id={entityId} />
+      );
+    if (section === "catalog-reviews")
+      return <AdminOrganizationsContent publicationQueue />;
+    if (section === "taxonomies") return <AdminTaxonomiesContent />;
+    if (section === "locations") return <AdminLocationsContent />;
+    if (section === "moderation") return <AdminModerationContent />;
     if (section === "users") return <AdminUsersContent />;
     if (section === "organizations") return <AdminOrganizationsContent />;
     if (section === "audit") return <AdminAuditContent />;
     return <AdminOverview />;
   }
+  if (section === "organizations" && entityId)
+    return branchId ? (
+      <BusinessBranchContent id={entityId} branchId={branchId} />
+    ) : (
+      <BusinessClubContent id={entityId} />
+    );
   if (section === "organizations") return <OrganizationsContent />;
   if (section === "branches" || section === "team")
-    return <OrganizationScope section={section} />;
+    return (
+      <Suspense fallback={<Loading />}>
+        <OrganizationScope section={section} />
+      </Suspense>
+    );
   return <BusinessOverview name={account.displayName} />;
 }
 function OrganizationScope({ section }: { section: "branches" | "team" }) {
-  const query = useQuery<Organization[]>("business", "business/organizations");
-  const [selected, setSelected] = useState("");
+  const roleNames = useRoleNames();
+
+  const t = useTranslations();
+
+  const query = useOrganizations();
+  const searchParams = useSearchParams();
+  const [selected, setSelected] = useState(
+    searchParams.get("organization") ?? "",
+  );
   const org = query.data?.find((o) => o.id === selected) ?? query.data?.[0];
-  if (query.loading) return <Loading />;
+  if (query.isLoading) return <Loading />;
   if (query.error)
-    return <QueryError error={query.error} retry={query.reload} />;
+    return <QueryError error={query.error} retry={query.refetch} />;
   if (!org)
     return (
       <Blank
-        title="هنوز مجموعه‌ای نداری"
-        description="از بخش مجموعه‌های من، اولین مجموعه را ثبت کن یا دعوت همکاری‌ات را بپذیر."
+        title={t("Copy.noOrganizationsYet2")}
+        description={t("Copy.registerYourFirstOrganizationOrAcceptA")}
       />
     );
   return (
     <>
       <Field className="max-w-sm">
-        <FieldLabel htmlFor="organization">مجموعه فعال</FieldLabel>
+        <FieldLabel htmlFor="organization">
+          {t("Copy.activeOrganization")}
+        </FieldLabel>
         <NativeSelect
           id="organization"
           value={org.id}
@@ -341,6 +435,8 @@ export function Metric({
   value: number;
   icon: ReactNode;
 }) {
+  const locale = useLocale();
+
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between">
@@ -351,61 +447,67 @@ export function Metric({
       </CardHeader>
       <CardContent>
         <p className="text-4xl font-semibold tabular-nums">
-          {value.toLocaleString("fa-IR")}
+          {value.toLocaleString(locale)}
         </p>
       </CardContent>
     </Card>
   );
 }
 function BusinessOverview({ name }: { name: string | null }) {
-  const query = useQuery<Organization[]>("business", "business/organizations");
+  const roleNames = useRoleNames();
+
+  const t = useTranslations();
+
+  const query = useOrganizations();
   return (
     <>
       <section className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-semibold">
-            {name ? `${name}، خوش اومدی` : "به فضای کاری‌ات خوش اومدی"}
+            {name
+              ? t("Copy.welcomeName", { name: name })
+              : t("Copy.welcomeToYourWorkspace")}
           </h2>
           <p className="mt-2 text-muted-foreground">
-            مجموعه‌ها و دسترسی‌های تیمت را از اینجا مدیریت کن.
+            {t("Copy.manageYourOrganizationsAndTeamAccessHere")}{" "}
           </p>
         </div>
         <Button asChild>
-          <Link href="/organizations">ثبت مجموعه</Link>
+          <Link href="/organizations">{t("Copy.organizationCreated")}</Link>
         </Button>
       </section>
-      <QueryError error={query.error} retry={query.reload} />
-      {query.loading ? (
+      <QueryError error={query.error} retry={query.refetch} />
+      {query.isLoading ? (
         <Loading />
       ) : (
         query.data && (
           <>
             <div className="grid gap-4 sm:grid-cols-3">
               <Metric
-                label="مجموعه‌های من"
+                label={t("Copy.myOrganizations")}
                 value={query.data.length}
                 icon={<Building2 className="size-5 text-muted-foreground" />}
               />
               <Metric
-                label="مجموعه‌های تأییدشده"
+                label={t("Copy.approvedOrganizations")}
                 value={query.data.filter((o) => o.status === "approved").length}
                 icon={<ShieldCheck className="size-5 text-muted-foreground" />}
               />
               <Metric
-                label="در انتظار بررسی"
+                label={t("Copy.pendingReview")}
                 value={query.data.filter((o) => o.status === "pending").length}
                 icon={<ScrollText className="size-5 text-muted-foreground" />}
               />
             </div>
             {!query.data.length ? (
               <Blank
-                title="اولین مجموعه‌ات را ثبت کن"
-                description="نام مجموعه را وارد کن، شعبه بساز و همکارانت را دعوت کن. وضعیت بررسی مجموعه همین‌جا نمایش داده می‌شود."
+                title={t("Copy.registerYourFirstOrganization")}
+                description={t("Copy.enterANameAddBranchesAndInvite")}
               />
             ) : (
               <Card>
                 <CardHeader>
-                  <CardTitle>مجموعه‌های شما</CardTitle>
+                  <CardTitle>{t("Copy.yourOrganizations")}</CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   {query.data.map((o) => (
@@ -432,48 +534,108 @@ function BusinessOverview({ name }: { name: string | null }) {
   );
 }
 function AdminOverview() {
-  const query = useQuery<{
-    users: number;
-    organizations: number;
-    pending: number;
-  }>("admin", "admin/overview");
+  const dateLabel = useDateLabel();
+  const eventNames = useEventNames();
+
+  const t = useTranslations();
+
+  const query = useAdminOverview();
   return (
     <>
-      <h2 className="text-2xl font-semibold">وضعیت پلتفرم</h2>
-      <QueryError error={query.error} retry={query.reload} />
-      {query.loading ? (
+      <h2 className="text-2xl font-semibold">{t("Copy.platformStatus")}</h2>
+      <QueryError error={query.error} retry={query.refetch} />
+      {query.isLoading ? (
         <Loading />
       ) : (
         query.data && (
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Metric
-              label="کاربران"
-              value={query.data.users}
-              icon={<Users className="size-5 text-muted-foreground" />}
-            />
-            <Metric
-              label="مجموعه‌ها"
-              value={query.data.organizations}
-              icon={<Building2 className="size-5 text-muted-foreground" />}
-            />
-            <Metric
-              label="نیازمند بررسی"
-              value={query.data.pending}
-              icon={<ScrollText className="size-5 text-muted-foreground" />}
-            />
-          </div>
+          <>
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              <Metric
+                label={t("Copy.users")}
+                value={query.data.users}
+                icon={<Users className="size-5 text-muted-foreground" />}
+              />
+              <Metric
+                label={t("Copy.organizations")}
+                value={query.data.organizations}
+                icon={<Building2 className="size-5 text-muted-foreground" />}
+              />
+              <Metric
+                label={t("Copy.awaitingReview")}
+                value={query.data.pending}
+                icon={<ScrollText className="size-5 text-muted-foreground" />}
+              />
+              <Metric
+                label={t("Copy.publishedClubs")}
+                value={query.data.published}
+                icon={<Dumbbell className="size-5 text-muted-foreground" />}
+              />
+              <Metric
+                label={t("Copy.inPublicationQueue")}
+                value={query.data.pendingPublication}
+                icon={<ShieldCheck className="size-5 text-muted-foreground" />}
+              />
+              <Metric
+                label={t("Copy.pendingReviews")}
+                value={query.data.pendingReviews}
+                icon={
+                  <MessageSquare className="size-5 text-muted-foreground" />
+                }
+              />
+            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("Copy.recentEvents")}</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {query.data.recent.length ? (
+                  query.data.recent.map((event) => (
+                    <div
+                      key={event.id}
+                      className="flex flex-wrap justify-between gap-3 border-b pb-3 text-sm last:border-0"
+                    >
+                      <div>
+                        <p>{eventNames[event.action] ?? event.action}</p>
+                        {event.reason && (
+                          <p className="mt-1 text-muted-foreground">
+                            {event.reason}
+                          </p>
+                        )}
+                      </div>
+                      <span className="text-muted-foreground">
+                        {dateLabel(event.createdAt)}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    {t("Copy.noEventsRecorded")}{" "}
+                  </p>
+                )}
+                <Button
+                  variant="outline"
+                  className="justify-self-start"
+                  asChild
+                >
+                  <Link href="/audit">{t("Copy.allEvents")}</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </>
         )
       )}
       <Card>
         <CardHeader>
-          <CardTitle>صف بررسی مجموعه‌ها</CardTitle>
+          <CardTitle>{t("Copy.organizationReviewQueue")}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-wrap items-center justify-between gap-4">
           <p className="text-sm text-muted-foreground">
-            مجموعه‌های ثبت‌شده را بررسی کن و نتیجه را همراه دلیل ثبت کن.
+            {t("Copy.reviewRegisteredOrganizationsAndSaveADecision")}{" "}
           </p>
           <Button asChild>
-            <Link href="/organizations">بررسی مجموعه‌ها</Link>
+            <Link href="/catalog-reviews">
+              {t("Copy.reviewPublicationQueue")}
+            </Link>
           </Button>
         </CardContent>
       </Card>

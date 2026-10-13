@@ -1,11 +1,12 @@
+import { getTranslator } from "@repo/i18n/messages";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 
 const records = [
   {
     id: "atlas",
-    name: ["باشگاه اطلس", "Atlas Athletic Club"],
-    area: ["تهران، زعفرانیه", "Zaferanieh, Tehran"],
-    category: ["قدرتی و تناسب اندام", "Strength & conditioning"],
+    name: "Preview.atlasAthleticClub",
+    area: "Preview.zaferaniehTehran",
+    category: "Preview.strengthConditioning",
     price: 450000,
     rating: 4.8,
     reviews: 124,
@@ -16,9 +17,9 @@ const records = [
   },
   {
     id: "forma",
-    name: ["استودیو فرما", "Forma Fitness Studio"],
-    area: ["تهران، نیاوران", "Niavaran, Tehran"],
-    category: ["هوازی و تمرین گروهی", "Movement & cardio"],
+    name: "Preview.formaFitnessStudio",
+    area: "Preview.niavaranTehran",
+    category: "Preview.movementCardio",
     price: 350000,
     rating: 4.9,
     reviews: 86,
@@ -29,9 +30,9 @@ const records = [
   },
   {
     id: "pulse",
-    name: ["باشگاه پالس", "Pulse Training Club"],
-    area: ["تهران، ولنجک", "Velenjak, Tehran"],
-    category: ["فانکشنال و بدنسازی", "Functional training"],
+    name: "Preview.pulseTrainingClub",
+    area: "Preview.velenjakTehran",
+    category: "Preview.functionalTraining",
     price: 400000,
     rating: 4.7,
     reviews: 98,
@@ -42,9 +43,9 @@ const records = [
   },
   {
     id: "zenith",
-    name: ["باشگاه زنیت", "Zenith Fitness"],
-    area: ["تهران، زعفرانیه", "Zaferanieh, Tehran"],
-    category: ["قدرتی و تناسب اندام", "Strength & conditioning"],
+    name: "Preview.zenithFitness",
+    area: "Preview.zaferaniehTehran",
+    category: "Preview.strengthConditioning",
     price: 420000,
     rating: 4.6,
     reviews: 72,
@@ -55,9 +56,9 @@ const records = [
   },
   {
     id: "nova",
-    name: ["استودیو نوا", "Nova Movement Studio"],
-    area: ["تهران، نیاوران", "Niavaran, Tehran"],
-    category: ["هوازی و تمرین گروهی", "Movement & cardio"],
+    name: "Preview.novaMovementStudio",
+    area: "Preview.niavaranTehran",
+    category: "Preview.movementCardio",
     price: 320000,
     rating: 4.7,
     reviews: 58,
@@ -69,48 +70,39 @@ const records = [
 ] as const;
 export const clubIds = records.map((club) => club.id);
 export function getClubs(locale: string): ClubDetailData[] {
+  const text = getTranslator(locale);
   const fa = locale === "fa";
   const number = new Intl.NumberFormat(fa ? "fa-IR" : "en-US");
   const photos = {
     strength: {
       src: "/images/clubs/strength.png",
-      alt: fa
-        ? "سالن بدنسازی با دمبل‌ها و نیمکت‌های تمرین"
-        : "Strength floor with dumbbells and training benches",
+      alt: text("Preview.strengthFloorWithDumbbellsAndTrainingBenches"),
     },
     studio: {
       src: "/images/clubs/studio.png",
-      alt: fa ? "استودیوی هوازی با نور طبیعی" : "Daylit cardio studio",
+      alt: text("Preview.daylitCardioStudio"),
     },
     training: {
       src: "/images/clubs/training.png",
-      alt: fa
-        ? "فضای تمرین فانکشنال و وزنه آزاد"
-        : "Functional training and free-weight area",
+      alt: text("Preview.functionalTrainingAndFreeWeightArea"),
     },
   };
   return records.map((club) => ({
     id: club.id,
-    name: club.name[fa ? 0 : 1],
-    address: club.area[fa ? 0 : 1],
-    category: club.category[fa ? 0 : 1],
+    name: text(club.name),
+    address: text(club.area),
+    category: text(club.category),
     categories:
       club.id === "atlas" || club.id === "zenith"
-        ? fa
-          ? ["قدرتی", "تناسب اندام"]
-          : ["Strength", "Conditioning"]
+        ? [text("Copy.strength"), text("Preview.conditioning")]
         : club.id === "forma" || club.id === "nova"
-          ? fa
-            ? ["هوازی", "تمرین گروهی"]
-            : ["Cardio", "Group training"]
-          : fa
-            ? ["فانکشنال", "بدنسازی"]
-            : ["Functional", "Bodybuilding"],
-    price: `${number.format(club.price)} ${fa ? "تومان" : "toman"}`,
+          ? [text("Copy.cardio"), text("Copy.groupWorkout")]
+          : [text("Copy.functional"), text("Preview.bodybuilding")],
+    price: text("Preview.priceAmount", { amount: club.price }),
     priceValue: club.price,
-    priceCurrency: fa ? "تومان" : "toman",
+    priceCurrency: text("Preview.toman"),
     locale: fa ? "fa-IR" : "en-US",
-    pricePeriod: fa ? "جلسه" : "visit",
+    pricePeriod: text("Preview.visit"),
     rating: number.format(club.rating),
     reviews: number.format(club.reviews),
     photos: [
@@ -120,64 +112,62 @@ export function getClubs(locale: string): ClubDetailData[] {
         .map(([, photo]) => photo),
     ],
     facilities: [
-      fa ? "تجهیزات حرفه‌ای" : "Pro equipment",
-      `${number.format(club.trainers)} ${fa ? "مربی" : "trainers"}`,
-      `${number.format(club.space)} ${fa ? "متر مربع" : "m²"}`,
+      text("Preview.proEquipment"),
+      text("Preview.trainerCount", { count: club.trainers }),
+      text("Preview.spaceArea", { area: club.space }),
     ],
-    description: fa
-      ? "جایی برای قوی‌تر شدن، با ریتم خودت. از فضای وزنه آزاد و دستگاه‌های حرفه‌ای تا تمرین‌های گروهی، اینجا برای هر سبک تمرین فضایی پیدا می‌کنی. نور طبیعی، رختکن مجهز و مربیانی که در مسیرت همراهت هستند، تجربه تمرین را کامل می‌کنند."
-      : "A place to get stronger, at your own pace. From the free-weight floor and carefully selected equipment to small group sessions, find room for the way you like to move. Natural light, comfortable changing rooms, and supportive coaches make every visit feel considered.",
+    description: text("Preview.aPlaceToGetStrongerAtYour"),
     // Illustrative branch records for the multi-branch club in this preview.
     branches:
       club.id === "atlas"
         ? [
             {
               id: "atlas-zaferanieh",
-              name: fa ? "شعبه زعفرانیه" : "Zaferanieh branch",
-              address: fa ? "تهران، زعفرانیه" : "Zaferanieh, Tehran",
+              name: text("Preview.zaferaniehBranch"),
+              address: text("Preview.zaferaniehTehran"),
               photo: photos.strength,
             },
             {
               id: "atlas-elahiyeh",
-              name: fa ? "شعبه الهیه" : "Elahiyeh branch",
-              address: fa ? "تهران، الهیه" : "Elahiyeh, Tehran",
+              name: text("Preview.elahiyehBranch"),
+              address: text("Preview.elahiyehTehran"),
               photo: photos.training,
             },
           ]
         : [],
     coachCount: club.trainers,
-    hours: fa ? "۶ تا ۲۳" : "06:00–23:00",
-    distance: `${number.format(club.distance)} ${fa ? "کیلومتر" : "km"}`,
+    hours: text("Preview.label06002300"),
+    distance: text("Preview.distanceAmount", { distance: club.distance }),
     amenities: [
       {
         id: "weights",
-        label: fa ? "وزنه آزاد" : "Free weights",
-        description: fa ? "دمبل و هالتر" : "Dumbbells & barbells",
+        label: text("Preview.freeWeights"),
+        description: text("Preview.dumbbellsBarbells"),
       },
       {
         id: "coaching",
-        label: fa ? "مربی خصوصی" : "Personal coaching",
-        description: fa ? "تمرین شخصی" : "Personal training",
+        label: text("Preview.personalCoaching"),
+        description: text("Preview.personalTraining"),
       },
       {
         id: "showers",
-        label: fa ? "رختکن و دوش" : "Showers & lockers",
-        description: fa ? "فضای تعویض لباس" : "Changing rooms",
+        label: text("Preview.showersLockers"),
+        description: text("Preview.changingRooms"),
       },
       {
         id: "wifi",
-        label: fa ? "اینترنت رایگان" : "Free Wi-Fi",
-        description: fa ? "اتصال به اینترنت" : "Internet access",
+        label: text("Preview.freeWiFi"),
+        description: text("Preview.internetAccess"),
       },
       {
         id: "group",
-        label: fa ? "تمرین گروهی" : "Group training",
-        description: fa ? "تمرین در کنار هم" : "Train together",
+        label: text("Copy.groupWorkout"),
+        description: text("Preview.trainTogether"),
       },
       {
         id: "air",
-        label: fa ? "تهویه مطبوع" : "Air conditioning",
-        description: fa ? "هوای تازه" : "Fresh air",
+        label: text("Preview.airConditioning"),
+        description: text("Preview.freshAir"),
       },
     ],
   }));

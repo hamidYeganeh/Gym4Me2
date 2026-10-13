@@ -1,5 +1,17 @@
 apply plugin: 'com.android.application'
 
+def localStaging = providers.gradleProperty('gymLocalStaging').orNull == 'true'
+def localStagingDir = rootProject.file('../../../.staging-android')
+if (localStaging && !new File(localStagingDir, 'res/raw/gym_staging_ca.crt').exists()) {
+    throw new GradleException('Run node scripts/staging-android.mjs first.')
+}
+gradle.taskGraph.whenReady { graph ->
+    if ((localStaging || file('src/main/assets/public/gym4me-local-staging.json').exists()) && graph.allTasks.any { it.name.toLowerCase().contains('release') }) {
+        throw new GradleException('Local staging trust is forbidden in release builds.')
+    }
+}
+
+
 android {
     namespace = "com.gym4me.app"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,7 +19,7 @@ android {
         applicationId "com.gym4me.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 3
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
@@ -16,7 +28,23 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    if (localStaging) {
+        sourceSets {
+            main.assets.srcDirs = []
+            debug {
+                manifest.srcFile new File(localStagingDir, 'AndroidManifest.xml')
+                res.srcDir new File(localStagingDir, 'res')
+                assets.srcDirs = [new File(localStagingDir, 'assets')]
+            }
+        }
+    }
     buildTypes {
+        debug {
+            if (localStaging) {
+                applicationIdSuffix '.staging'
+                versionNameSuffix '-local-staging'
+            }
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -31,12 +59,22 @@ repositories {
 }
 
 dependencies {
+    implementation "com.google.android.gms:play-services-auth-api-phone:18.0.2"
+    constraints {
+        implementation "com.google.android.gms:play-services-base:18.5.0"
+        implementation "com.google.android.gms:play-services-basement:18.5.0"
+        implementation "com.google.android.gms:play-services-tasks:18.2.0"
+    }
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
     implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
     implementation project(':capacitor-android')
     testImplementation "junit:junit:$junitVersion"
+    // Align instrumentation transitive libraries with versions already used by
+    // the app; older test defaults request artifacts absent from this mirror.
+    androidTestImplementation 'androidx.arch.core:core-runtime:2.2.0'
+    androidTestImplementation 'androidx.annotation:annotation-experimental:1.4.1'
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')

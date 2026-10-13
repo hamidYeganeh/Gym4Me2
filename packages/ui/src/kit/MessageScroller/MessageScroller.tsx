@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
 import { messageScrollerStyles } from "./MessageScroller.styles";
 import type {
   MessageScrollerButtonProps,
@@ -84,6 +85,7 @@ function MessageScrollerButton({
   size = "icon-sm",
   ...props
 }: MessageScrollerButtonProps) {
+  const t = useTranslations();
   return (
     <MessageScrollerPrimitive.Button
       data-slot="message-scroller-button"
@@ -99,7 +101,9 @@ function MessageScrollerButton({
         <>
           <ArrowDownIcon />
           <span className={messageScrollerStyles.messageScrollerButton2()}>
-            {direction === "end" ? "Scroll to end" : "Scroll to start"}
+            {direction === "end"
+              ? t("Kit.scrollToEnd")
+              : t("Kit.scrollToStart")}
           </span>
         </>
       )}

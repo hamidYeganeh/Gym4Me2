@@ -30,5 +30,12 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules", ".next-native", "out", "android", "ios"]
+  "exclude": [
+    "node_modules",
+    ".next-native",
+    "out",
+    "android",
+    "ios",
+    ".native-build-*"
+  ]
 }

@@ -1,9 +1,10 @@
+import { StorageModule } from '../clubs/storage.module';
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../../database/database.module';
 import { HealthController } from './health/health.controller';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, StorageModule],
   controllers: [HealthController],
 })
 export class SystemModule {}

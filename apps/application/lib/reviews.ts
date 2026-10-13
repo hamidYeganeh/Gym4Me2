@@ -1,100 +1,42 @@
+import { getTranslator } from "@repo/i18n/messages";
 import type { ReviewSummary } from "@repo/ui/kit/ReviewCard";
 // Preview data until club reviews are supplied by the API.
 const feedback = [
-  [
-    "تجهیزات کامل",
-    "تنوع دستگاه‌ها برای برنامهٔ تمرینی من کافی بود.",
-    "Well equipped",
-    "The equipment selection covered my training routine.",
-  ],
-  [
-    "مربی همراه",
-    "مربی حرکت‌ها را با حوصله توضیح داد.",
-    "Helpful coaching",
-    "The coach explained the exercises patiently.",
-  ],
-  [
-    "فضای روشن",
-    "نور سالن و فضای تمرین را دوست داشتم.",
-    "Bright space",
-    "I enjoyed the light and the training space.",
-  ],
-  [
-    "تمرین خوب",
-    "برای تمرین عصر انتخاب مناسبی بود.",
-    "Good session",
-    "A good choice for an afternoon workout.",
-  ],
-  [
-    "رختکن مرتب",
-    "رختکن تمیز بود و فضای کافی داشت.",
-    "Tidy changing room",
-    "The changing room was clean and spacious.",
-  ],
-  [
-    "برخورد خوب",
-    "تیم پذیرش با حوصله راهنمایی کرد.",
-    "Welcoming team",
-    "The reception team gave helpful directions.",
-  ],
-  [
-    "ساعت شلوغ",
-    "در ساعت اوج برای بعضی دستگاه‌ها منتظر ماندم.",
-    "Busy hours",
-    "I had to wait for some equipment at peak time.",
-  ],
-  [
-    "تمرین گروهی",
-    "کلاس گروهی انرژی خوبی داشت.",
-    "Group workout",
-    "The group class had great energy.",
-  ],
-  [
-    "دسترسی مناسب",
-    "رسیدن به باشگاه برای من راحت بود.",
-    "Easy access",
-    "Getting to the club was convenient for me.",
-  ],
-  [
-    "نیاز به بهبود",
-    "تهویه در سانس شلوغ می‌تواند بهتر باشد.",
-    "Room for improvement",
-    "Ventilation could improve during busy sessions.",
-  ],
-  [
-    "برنامه منظم",
-    "سانس طبق برنامه شروع شد.",
-    "On schedule",
-    "The session started on time.",
-  ],
-  [
-    "تجربه مثبت",
-    "از فضای تمرین و تجهیزات راضی بودم.",
-    "Positive experience",
-    "I was happy with the training space and equipment.",
-  ],
-];
+  ["Preview.wellEquipped", "Preview.wellEquipped2"],
+  ["Preview.helpfulCoaching", "Preview.helpfulCoaching2"],
+  ["Preview.brightSpace", "Preview.brightSpace2"],
+  ["Preview.goodSession", "Preview.goodSession2"],
+  ["Preview.tidyChangingRoom", "Preview.tidyChangingRoom2"],
+  ["Preview.welcomingTeam", "Preview.welcomingTeam2"],
+  ["Preview.busyHours", "Preview.busyHours2"],
+  ["Copy.groupWorkout", "Preview.groupWorkout"],
+  ["Preview.easyAccess", "Preview.easyAccess2"],
+  ["Preview.roomForImprovement", "Preview.roomForImprovement2"],
+  ["Preview.onSchedule", "Preview.onSchedule2"],
+  ["Preview.positiveExperience", "Preview.positiveExperience2"],
+] as const;
 const reviewers = [
-  ["سارا محمدی", "Sara Mohammadi"],
-  ["علی رضایی", "Ali Rezaei"],
-  ["مریم احمدی", "Maryam Ahmadi"],
-  ["امیر حسینی", "Amir Hosseini"],
-  ["نرگس کریمی", "Narges Karimi"],
-  ["رضا موسوی", "Reza Mousavi"],
-  ["هانیه مرادی", "Hanieh Moradi"],
-  ["سامان نوری", "Saman Noori"],
-  ["نازنین عباسی", "Nazanin Abbasi"],
-  ["محمد کاظمی", "Mohammad Kazemi"],
-  ["ندا رحیمی", "Neda Rahimi"],
-  ["آرمان جعفری", "Arman Jafari"],
-];
+  "Preview.saraMohammadi",
+  "Preview.aliRezaei",
+  "Preview.maryamAhmadi",
+  "Preview.amirHosseini",
+  "Preview.nargesKarimi",
+  "Preview.rezaMousavi",
+  "Preview.haniehMoradi",
+  "Preview.samanNoori",
+  "Preview.nazaninAbbasi",
+  "Preview.mohammadKazemi",
+  "Preview.nedaRahimi",
+  "Preview.armanJafari",
+] as const;
 const ratings = [5, 5, 5, 4, 4, 5, 3, 4, 5, 2, 4, 5];
 export function getReviews(locale: string, clubId: string): ReviewSummary[] {
-  return feedback.map(([titleFa, bodyFa, titleEn, bodyEn], index) => ({
+  const text = getTranslator(locale);
+  return feedback.map(([title, body], index) => ({
     id: `${clubId}-review-${index}`,
-    author: { displayName: reviewers[index]![locale === "fa" ? 0 : 1]! },
-    title: locale === "fa" ? titleFa! : titleEn!,
-    body: locale === "fa" ? bodyFa! : bodyEn!,
+    author: { displayName: text(reviewers[index]!) },
+    title: text(title!),
+    body: text(body!),
     rating: ratings[index]!,
     date: `2026-09-${String(28 - index).padStart(2, "0")}`,
   }));

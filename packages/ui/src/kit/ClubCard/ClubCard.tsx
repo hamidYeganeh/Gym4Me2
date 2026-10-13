@@ -32,7 +32,7 @@ export function ClubCard({
 }: ClubCardProps) {
   const [photoIndex] = useClubPhoto(club.id);
   const photo = club.photos[photoIndex] ?? club.photos[0];
-  const href = `/discovery/clubs/${encodeURIComponent(club.id)}`;
+  const href = club.href ?? `/discovery/clubs/${encodeURIComponent(club.id)}`;
   const icons = [BarbellHorizontalIcon, UsersThreeIcon, Ruler1Icon];
   return (
     <article

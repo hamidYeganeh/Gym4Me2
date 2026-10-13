@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,6 +23,7 @@ export function CoachCard({
   priority = false,
   variant = "default",
 }: CoachCardProps) {
+  const t = useTranslations("Kit");
   const [failedPhoto, setFailedPhoto] = useState<string>();
   const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
   const rating = Math.min(
@@ -37,9 +39,9 @@ export function CoachCard({
     }
   });
   const socialNames = {
-    facebook: "Facebook",
-    instagram: "Instagram",
-    linkedin: "LinkedIn",
+    facebook: t("facebook"),
+    instagram: t("instagram"),
+    linkedin: t("linkedin"),
   };
   return (
     <article

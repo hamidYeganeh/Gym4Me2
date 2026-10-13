@@ -9,6 +9,9 @@ import {
   integer,
   index,
   jsonb,
+  boolean,
+  foreignKey,
+  primaryKey,
 } from 'drizzle-orm/pg-core';
 
 // Shared identity: an athlete and a coach can be the same user.
@@ -17,6 +20,9 @@ export const users = pgTable('users', {
   id: uuid('id').defaultRandom().primaryKey(),
   phone: varchar('phone', { length: 20 }).notNull().unique(),
   displayName: text('display_name'),
+  profilePublic: boolean('profile_public').default(false).notNull(),
+  deletionPending: boolean('deletion_pending').default(false).notNull(),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
   status: text('status', { enum: ['active', 'suspended'] })
     .default('active')
     .notNull(),
@@ -83,6 +89,16 @@ export const otpChallenges = pgTable(
     id: uuid('id').defaultRandom().primaryKey(),
     phone: varchar('phone', { length: 20 }).notNull(),
     client: text('client').notNull(),
+    transport: text('transport', { enum: ['web', 'native'] })
+      .default('web')
+      .notNull(),
+    purpose: text('purpose', { enum: ['sign-in', 'phone-change'] })
+      .default('sign-in')
+      .notNull(),
+    requestedBy: uuid('requested_by').references(() => users.id, {
+      onDelete: 'cascade',
+    }),
+    requestedSessionId: uuid('requested_session_id'),
     codeHash: text('code_hash').notNull(),
     attempts: integer('attempts').default(0).notNull(),
     sentAt: timestamp('sent_at', { withTimezone: true }),
@@ -109,6 +125,12 @@ export const authSessions = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
     client: text('client').notNull(),
+    transport: text('transport', { enum: ['web', 'native'] })
+      .default('web')
+      .notNull(),
+    authMethod: text('auth_method', { enum: ['otp', 'password'] })
+      .default('otp')
+      .notNull(),
     tokenHash: text('token_hash').notNull().unique(),
     device: text('device').notNull(),
     createdAt: timestamp('created_at', { withTimezone: true })
@@ -134,11 +156,13 @@ export const organizationMembers = pgTable(
     role: text('role', {
       enum: ['owner', 'manager', 'receptionist', 'accountant'],
     }).notNull(),
+    allBranches: boolean('all_branches').default(true).notNull(),
     createdAt: timestamp('created_at', { withTimezone: true })
       .defaultNow()
       .notNull(),
   },
   (t) => [
+    uniqueIndex('members_org_id_unique').on(t.organizationId, t.id),
     uniqueIndex('members_org_user_unique').on(t.organizationId, t.userId),
     uniqueIndex('members_org_user_role_unique').on(
       t.organizationId,
@@ -162,6 +186,7 @@ export const organizationInvitations = pgTable(
     role: text('role', {
       enum: ['manager', 'receptionist', 'accountant'],
     }).notNull(),
+    allBranches: boolean('all_branches').default(true).notNull(),
     invitedBy: uuid('invited_by')
       .notNull()
       .references(() => users.id),
@@ -172,7 +197,55 @@ export const organizationInvitations = pgTable(
       .defaultNow()
       .notNull(),
   },
-  (t) => [index('invitations_phone_idx').on(t.phone)],
+  (t) => [
+    index('invitations_phone_idx').on(t.phone),
+    uniqueIndex('invitations_org_id_unique').on(t.organizationId, t.id),
+  ],
+);
+
+export const organizationMemberBranches = pgTable(
+  'organization_member_branches',
+  {
+    organizationId: uuid('organization_id').notNull(),
+    memberId: uuid('member_id').notNull(),
+    branchId: uuid('branch_id').notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.memberId, t.branchId] }),
+    foreignKey({
+      columns: [t.organizationId, t.memberId],
+      foreignColumns: [
+        organizationMembers.organizationId,
+        organizationMembers.id,
+      ],
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [t.organizationId, t.branchId],
+      foreignColumns: [branches.organizationId, branches.id],
+    }).onDelete('cascade'),
+  ],
+);
+export const organizationInvitationBranches = pgTable(
+  'organization_invitation_branches',
+  {
+    organizationId: uuid('organization_id').notNull(),
+    invitationId: uuid('invitation_id').notNull(),
+    branchId: uuid('branch_id').notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.invitationId, t.branchId] }),
+    foreignKey({
+      columns: [t.organizationId, t.invitationId],
+      foreignColumns: [
+        organizationInvitations.organizationId,
+        organizationInvitations.id,
+      ],
+    }).onDelete('cascade'),
+    foreignKey({
+      columns: [t.organizationId, t.branchId],
+      foreignColumns: [branches.organizationId, branches.id],
+    }).onDelete('cascade'),
+  ],
 );
 
 export const platformAdmins = pgTable('platform_admins', {

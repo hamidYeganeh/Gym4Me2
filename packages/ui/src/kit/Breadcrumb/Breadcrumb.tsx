@@ -1,3 +1,5 @@
+"use client";
+import { useTranslations } from "@repo/i18n";
 import { cn } from "@repo/ui/lib/utils";
 import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
 import { Slot } from "radix-ui";
@@ -13,9 +15,10 @@ import type {
 } from "./Breadcrumb.types";
 
 function Breadcrumb({ className, ...props }: BreadcrumbProps) {
+  const t = useTranslations();
   return (
     <nav
-      aria-label="breadcrumb"
+      aria-label={t("Kit.breadcrumb")}
       data-slot="breadcrumb"
       className={cn(className)}
       {...props}
@@ -89,6 +92,7 @@ function BreadcrumbSeparator({
 }
 
 function BreadcrumbEllipsis({ className, ...props }: BreadcrumbEllipsisProps) {
+  const t = useTranslations();
   return (
     <span
       data-slot="breadcrumb-ellipsis"
@@ -98,7 +102,9 @@ function BreadcrumbEllipsis({ className, ...props }: BreadcrumbEllipsisProps) {
       {...props}
     >
       <MoreHorizontalIcon />
-      <span className={breadcrumbStyles.breadcrumbEllipsis2()}>More</span>
+      <span className={breadcrumbStyles.breadcrumbEllipsis2()}>
+        {t("Kit.more")}
+      </span>
     </span>
   );
 }

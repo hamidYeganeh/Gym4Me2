@@ -2,14 +2,14 @@ import { AppProviders } from "../components/app-providers";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { getDirection, isLocale, defaultLocale } from "@repo/i18n";
-import { getLocale } from "@repo/i18n/server";
+import { getLocale, getTranslations } from "@repo/i18n/server";
 import { iranSansX } from "@repo/theme/fonts";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Gym4Me",
-  description: "همه‌چیز برای یک تجربه ورزشی بهتر",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("Metadata");
+  return { title: t("brand"), description: t("description") };
+}
 
 export default async function RootLayout({
   children,

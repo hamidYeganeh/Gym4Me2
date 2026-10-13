@@ -17,13 +17,21 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@repo/ui/kit/Carousel";
-import { getClubs } from "../../lib/clubs";
+import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
+import { clubHref } from "../../lib/club-href";
 import { GalleryIndicators } from "./gallery-indicators";
 
-export function ClubGalleryPreview({ clubId }: { clubId: string }) {
+export function ClubGalleryPreview({
+  clubId,
+  branchId,
+  photos,
+}: {
+  clubId: string;
+  branchId?: string;
+  photos: ClubDetailData["photos"];
+}) {
   const locale = useLocale();
   const t = useTranslations("Gallery");
-  const photos = getClubs(locale).find((club) => club.id === clubId)!.photos;
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [pages, setPages] = useState(1);
@@ -51,7 +59,14 @@ export function ClubGalleryPreview({ clubId }: { clubId: string }) {
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-2xl font-semibold">{t("sectionTitle")}</h2>
         <Button asChild variant="link">
-          <Link href={`/discovery/clubs/${clubId}/gallery`} scroll={false}>
+          <Link
+            href={clubHref(
+              clubId,
+              "gallery",
+              branchId ? { branch: branchId } : undefined,
+            )}
+            scroll={false}
+          >
             {t("seeAll")}
           </Link>
         </Button>
@@ -76,7 +91,10 @@ export function ClubGalleryPreview({ clubId }: { clubId: string }) {
               {photos.map((photo, index) => (
                 <CarouselItem key={photo.src} className="basis-auto ps-0">
                   <Link
-                    href={`/discovery/clubs/${clubId}/gallery?photo=${index}`}
+                    href={clubHref(clubId, "gallery", {
+                      photo: String(index),
+                      ...(branchId ? { branch: branchId } : {}),
+                    })}
                     scroll={false}
                     className="relative block size-28 overflow-hidden rounded-3xl bg-muted outline-none focus-visible:ring-2 focus-visible:ring-primary"
                     aria-label={t("photo", {
@@ -102,7 +120,7 @@ export function ClubGalleryPreview({ clubId }: { clubId: string }) {
             count={pages}
             current={current}
             onSelect={(index) => api?.scrollTo(index)}
-            label={(index) => t("photo", { number: number.format(index + 1) })}
+            label={(index) => t("page", { number: number.format(index + 1) })}
           />
           <p
             dir="ltr"

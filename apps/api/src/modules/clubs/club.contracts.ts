@@ -4,16 +4,65 @@ import { z } from 'zod';
 import { normalizeDigits } from '../auth/auth.contracts';
 
 export const id = z.uuid();
+export const catalogFiltersSchema = z
+  .object({
+    page: z.coerce.number().int().min(1).max(10000).default(1),
+    search: z.string().trim().max(100).default(''),
+    categoryId: id.optional(),
+    sportId: id.optional(),
+    cityId: id.optional(),
+    districtId: id.optional(),
+    serviceType: z
+      .enum(['visit', 'membership', 'court', 'class', 'coaching'])
+      .optional(),
+    unit: z
+      .enum(['visit', 'hour', 'session', 'month', 'package', 'course'])
+      .optional(),
+    minPrice: z.coerce.number().int().min(0).max(1_000_000_000).optional(),
+    maxPrice: z.coerce.number().int().min(0).max(1_000_000_000).optional(),
+    sort: z.enum(['recent', 'priceLow', 'priceHigh']).default('recent'),
+  })
+  .strict()
+  .refine(
+    (v) =>
+      v.minPrice === undefined ||
+      v.maxPrice === undefined ||
+      v.minPrice <= v.maxPrice,
+    'Backend.invalidPriceRange',
+  );
+export const guestSavedSchema = z
+  .object({
+    ids: z.array(id).max(500),
+    filters: catalogFiltersSchema,
+  })
+  .strict();
+export type CatalogFilters = z.infer<typeof catalogFiltersSchema>;
+
+export function normalizeCatalogSearch(value: string) {
+  return normalizeDigits(value)
+    .replace(/[يى]/g, 'ی')
+    .replace(/ك/g, 'ک')
+    .replace(/[\u200c\u200d]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
 const optionalText = (max: number) =>
   z.string().trim().min(1).max(max).nullable().optional();
 export const name = z.string().trim().min(2).max(120);
 const ids = z
   .array(id)
   .max(100)
-  .refine((a) => new Set(a).size === a.length, 'شناسه تکراری مجاز نیست.');
+  .refine(
+    (a) => new Set(a).size === a.length,
+    'Backend.duplicateIdentifiersAreNotAllowed',
+  );
 const httpsUrl = z
   .url()
-  .refine((v) => new URL(v).protocol === 'https:', 'لینک باید HTTPS باشد.');
+  .refine(
+    (v) => new URL(v).protocol === 'https:',
+    'Backend.theLinkMustUseHttps',
+  );
 export const operatingStatus = z.enum([
   'active',
   'temporarily_closed',
@@ -55,20 +104,20 @@ const phones = z
   .max(10)
   .refine(
     (list) => list.filter((p) => p.isPrimary).length <= 1,
-    'فقط یک شماره اصلی مجاز است.',
+    'Backend.onlyOnePrimaryPhoneNumberIsAllowed',
   )
   .refine(
     (list) =>
       new Set(list.map((p) => `${p.number}:${p.extension ?? ''}`)).size ===
       list.length,
-    'شماره تکراری مجاز نیست.',
+    'Backend.duplicatePhoneNumbersAreNotAllowed',
   );
 const gallery = z
   .array(z.object({ mediaId: id, caption: optionalText(300) }).strict())
   .max(50)
   .refine(
     (list) => new Set(list.map((m) => m.mediaId)).size === list.length,
-    'رسانه تکراری مجاز نیست.',
+    'Backend.duplicateMediaIsNotAllowed',
   );
 export const clubPatchSchema = z
   .object({
@@ -154,7 +203,7 @@ export const locationSchema = z
     )
       ctx.addIssue({
         code: 'custom',
-        message: 'سلسله‌مراتب کشور، استان، شهر و منطقه را کامل کنید.',
+        message: 'Backend.completeTheCountryProvinceCityAndDistrict',
       });
   });
 const interval = z
@@ -165,7 +214,7 @@ const interval = z
   .strict()
   .refine(
     (v) => v.endMinute > v.startMinute && v.endMinute - v.startMinute <= 1440,
-    'بازه باید مثبت و حداکثر ۲۴ ساعت باشد.',
+    'Backend.intervalsMustBePositiveAndNoLonger',
   );
 const weekly = interval.safeExtend({
   dayOfWeek: z.number().int().min(0).max(6),
@@ -182,7 +231,7 @@ const exception = z
   .strict()
   .refine(
     (v) => (v.isClosed ? v.intervals.length === 0 : v.intervals.length > 0),
-    'روز تعطیل بازه ندارد و روز باز حداقل یک بازه دارد.',
+    'Backend.closedDatesCannotHaveIntervalsOpenDates',
   );
 export const openingHoursSchema = z
   .object({
@@ -215,10 +264,16 @@ export const openingHoursSchema = z
       ];
     });
     if (overlaps(ranges))
-      ctx.addIssue({ code: 'custom', message: 'ساعات هفتگی هم‌پوشانی دارند.' });
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Backend.weeklyOpeningHoursOverlap',
+      });
     const keys = value.exceptions.map((e) => `${e.date}:${e.audience}`);
     if (new Set(keys).size !== keys.length)
-      ctx.addIssue({ code: 'custom', message: 'استثنای تکراری مجاز نیست.' });
+      ctx.addIssue({
+        code: 'custom',
+        message: 'Backend.duplicateExceptionsAreNotAllowed',
+      });
     for (const e of value.exceptions) {
       if (
         overlaps(
@@ -231,7 +286,7 @@ export const openingHoursSchema = z
       )
         ctx.addIssue({
           code: 'custom',
-          message: 'بازه‌های استثنا هم‌پوشانی دارند.',
+          message: 'Backend.exceptionIntervalsOverlap',
         });
       if (
         e.audience === 'all' &&
@@ -239,7 +294,7 @@ export const openingHoursSchema = z
       )
         ctx.addIssue({
           code: 'custom',
-          message: 'استثنای عمومی با استثنای گروهی همان روز ترکیب نمی‌شود.',
+          message: 'Backend.anAllAudienceExceptionCannotBeCombined',
         });
     }
   });
@@ -279,7 +334,7 @@ export const branchPatchSchema = z
         } catch {
           return false;
         }
-      }, 'منطقه زمانی معتبر نیست.')
+      }, 'Backend.invalidTimeZone')
       .optional(),
     location: locationSchema.nullable().optional(),
     sportIds: ids.optional(),
@@ -309,7 +364,7 @@ export const branchPatchSchema = z
           v.minimumAge === null ||
           v.maximumAge === null ||
           v.minimumAge <= v.maximumAge,
-        'بازه سن معتبر نیست.',
+        'Backend.invalidAgeRange',
       )
       .nullable()
       .optional(),
@@ -323,7 +378,10 @@ export const branchPatchSchema = z
       v.accessibilityFeatures?.map((e) => e.featureId),
     ])
       if (values && new Set(values).size !== values.length)
-        ctx.addIssue({ code: 'custom', message: 'شناسه تکراری مجاز نیست.' });
+        ctx.addIssue({
+          code: 'custom',
+          message: 'Backend.duplicateIdentifiersAreNotAllowed',
+        });
   });
 export const branchCreateSchema = branchPatchSchema.safeExtend({ name });
 export const mediaSchema = z
@@ -392,7 +450,7 @@ export function validate<T>(schema: z.ZodType<T>, value: unknown): T {
   const result = schema.safeParse(value);
   if (!result.success)
     throw new BadRequestException({
-      message: 'اطلاعات باشگاه معتبر نیست.',
+      message: 'Backend.invalidClubInformation',
       fields: result.error.issues.map((issue) => ({
         path: issue.path.join('.'),
         message: issue.message,
@@ -426,6 +484,7 @@ export const geographySchema = z
       .optional(),
   })
   .strict();
+export const geographyPatchSchema = z.object({ name }).strict();
 export const affiliationSchema = z
   .object({
     coachId: id,
@@ -436,5 +495,5 @@ export const affiliationSchema = z
   .strict()
   .refine(
     (v) => !v.startsOn || !v.endsOn || v.startsOn <= v.endsOn,
-    'بازه همکاری معتبر نیست.',
+    'Backend.invalidAffiliationDateRange',
   );

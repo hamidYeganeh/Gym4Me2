@@ -12,13 +12,16 @@ import {
 import { Button } from "@repo/ui/kit/Button";
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";
 import { ChoiceOptionCard } from "@repo/ui/kit/ChoiceOptionCard";
-import { Carousel, CarouselContent, CarouselItem } from "@repo/ui/kit/Carousel";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@repo/ui/kit/Tabs";
+import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { SlidingNumber } from "@repo/ui/kit/SlidingNumber";
 import { toast } from "@repo/ui/kit/Sonner";
 import { getClubs } from "../../lib/clubs";
 
 import { clubSlots as times, getSlotDates } from "../../lib/club-schedule";
 import { useTehranDay } from "./use-tehran-day";
+import { useSlotDateIndicator } from "./use-slot-date-indicator";
+import "./club-slot-panel.css";
 
 function subscribeSearch(listener: () => void) {
   window.addEventListener("popstate", listener);
@@ -53,11 +56,30 @@ export function ClubSlots({ clubId }: { clubId: string }) {
   const selectedDate = slotDates.includes(requestedDate)
     ? requestedDate
     : today;
+  const { bar, pill } = useSlotDateIndicator(selectedDate, locale);
+  const selectedDay = selectedDate
+    ? new Date(`${selectedDate}T12:00:00Z`)
+    : null;
+  const selectedMonth = selectedDay
+    ? new Intl.DateTimeFormat(locale, {
+        month: "long",
+        year: "numeric",
+        timeZone: "Asia/Tehran",
+      }).format(selectedDay)
+    : "";
+  const selectionLabel = selectedDay
+    ? new Intl.DateTimeFormat(locale, {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        timeZone: "Asia/Tehran",
+      }).format(selectedDay)
+    : "";
   const selectedExtras = selectedSlot.extras.filter(
     (extra) => extras[`${selectedDate}:${time}:${extra}`],
   );
   const totalPrice =
-    club.priceValue +
+    (club.priceValue ?? 0) +
     selectedExtras.reduce((sum, extra) => sum + extraOptions[extra].price, 0);
   const formatTime = (value: string) =>
     value.replace(/\d/g, (digit) =>
@@ -71,6 +93,14 @@ export function ClubSlots({ clubId }: { clubId: string }) {
       value,
       day: new Intl.DateTimeFormat(locale, {
         day: "numeric",
+        timeZone: "Asia/Tehran",
+      }).format(day),
+      month: new Intl.DateTimeFormat(locale, {
+        month: "short",
+        timeZone: "Asia/Tehran",
+      }).format(day),
+      label: new Intl.DateTimeFormat(locale, {
+        dateStyle: "full",
         timeZone: "Asia/Tehran",
       }).format(day),
       weekday: new Intl.DateTimeFormat(locale, {
@@ -135,76 +165,120 @@ export function ClubSlots({ clubId }: { clubId: string }) {
         onSubmit={submit}
         className="mx-3 mb-[calc(1rem+var(--app-safe-bottom))] flex flex-col gap-6 rounded-[32px] bg-background p-5 text-foreground sm:mx-5 sm:p-6"
       >
-        <fieldset className="min-w-0">
-          <legend className="mb-3 flex items-center gap-2 text-sm text-muted-foreground">
-            <Calendar1Icon />
-            {t("date")}
-          </legend>
-          <ToggleGroup
-            type="single"
-            value={selectedDate}
-            onValueChange={(value) => {
-              if (value) setDate(value);
-            }}
-            className="grid w-full grid-cols-4 gap-2"
-            aria-label={t("date")}
-            dir={locale === "fa" ? "rtl" : "ltr"}
-          >
-            {dates.map((day) => (
-              <ToggleGroupItem
-                value={day.value}
-                key={day.value}
-                className="h-auto min-h-22 flex-col gap-1 bg-muted px-1 py-3 data-[state=on]:ring-2 data-[state=on]:ring-primary"
-                aria-label={`${day.weekday} ${day.day}`}
-              >
-                <span className="text-3xl font-medium">{day.day}</span>
-                <span className="text-xs">{day.weekday}</span>
-              </ToggleGroupItem>
-            ))}
-          </ToggleGroup>
-        </fieldset>
-        <fieldset className="min-w-0">
-          <legend className="mb-3 flex items-center gap-2 text-sm text-muted-foreground">
-            <ClockIcon />
-            {t("time")}
-          </legend>
-          <ToggleGroup
-            type="single"
-            value={time}
-            onValueChange={(value) => {
-              if (value) setTime(value);
-            }}
-            className="block w-full"
-            aria-label={t("time")}
-            dir={locale === "fa" ? "rtl" : "ltr"}
-          >
-            <Carousel
-              opts={{
-                align: "start",
-                direction: locale === "fa" ? "rtl" : "ltr",
-              }}
-              aria-label={t("time")}
-              onKeyDownCapture={() => {}}
+        <Tabs
+          value={selectedDate}
+          onValueChange={setDate}
+          dir={locale === "fa" ? "rtl" : "ltr"}
+          className="gap-6"
+        >
+          <fieldset className="min-w-0">
+            <legend className="mb-4 w-full">
+              <span className="flex items-center justify-between gap-3">
+                <span className="flex items-center gap-2 text-sm font-medium">
+                  <Calendar1Icon />
+                  {t("date")}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {selectedMonth}
+                </span>
+              </span>
+            </legend>
+            <TabsList
+              ref={bar}
+              className="t-tabs club-slot-days"
+              aria-label={t("date")}
+              aria-busy={!today}
             >
-              <CarouselContent className="ms-0 gap-2">
-                {times.map((slot) => (
-                  <CarouselItem key={slot.value} className="basis-auto ps-0">
-                    <ToggleGroupItem
-                      value={slot.value}
-                      disabled={!slot.available}
-                      className="h-16 w-44 bg-muted data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
-                      aria-label={`${formatTime(slot.value)}–${formatTime(slot.end)}${slot.available ? "" : " · " + t("unavailable")}`}
+              <span ref={pill} className="t-tabs-pill" aria-hidden="true" />
+              {dates.length
+                ? dates.map((day, index) => (
+                    <TabsTrigger
+                      key={day.value}
+                      value={day.value}
+                      className="t-tab"
+                      aria-label={day.label}
                     >
-                      <span dir="ltr">
-                        {formatTime(slot.value)}–{formatTime(slot.end)}
+                      <span className="club-slot-weekday">{day.weekday}</span>
+                      <span className="club-slot-day-number">{day.day}</span>
+                      <span className="club-slot-day-caption">
+                        {index === 0
+                          ? t("today")
+                          : index === 1
+                            ? t("tomorrow")
+                            : day.month}
                       </span>
-                    </ToggleGroupItem>
-                  </CarouselItem>
+                    </TabsTrigger>
+                  ))
+                : Array.from({ length: 4 }, (_, index) => (
+                    <Skeleton
+                      key={index}
+                      className="h-25 rounded-3xl motion-reduce:animate-none"
+                    />
+                  ))}
+            </TabsList>
+          </fieldset>
+          <TabsContent value={selectedDate}>
+            <fieldset className="min-w-0">
+              <legend className="mb-4 w-full">
+                <span className="flex items-center justify-between gap-3">
+                  <span className="flex items-center gap-2 text-sm font-medium">
+                    <ClockIcon />
+                    {t("time")}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {t("availableTimes", {
+                      count: new Intl.NumberFormat(locale).format(
+                        times.filter((slot) => slot.available).length,
+                      ),
+                    })}
+                  </span>
+                </span>
+              </legend>
+              <ToggleGroup
+                type="single"
+                value={time}
+                onValueChange={(value) => {
+                  if (value) setTime(value);
+                }}
+                className="club-slot-times"
+                aria-label={t("time")}
+                dir={locale === "fa" ? "rtl" : "ltr"}
+              >
+                {times.map((slot) => (
+                  <ToggleGroupItem
+                    key={slot.value}
+                    value={slot.value}
+                    disabled={!slot.available}
+                    className="club-slot-time"
+                    aria-label={`${formatTime(slot.value)}–${formatTime(slot.end)} · ${t(slot.available ? "available" : "unavailable")}`}
+                  >
+                    <span dir="ltr" className="club-slot-time-start">
+                      {formatTime(slot.value)}
+                    </span>
+                    <span className="club-slot-time-end">
+                      {t("until", { time: formatTime(slot.end) })}
+                    </span>
+                    <span className="club-slot-time-status">
+                      {t(slot.available ? "available" : "unavailable")}
+                    </span>
+                  </ToggleGroupItem>
                 ))}
-              </CarouselContent>
-            </Carousel>
-          </ToggleGroup>
-        </fieldset>
+              </ToggleGroup>
+            </fieldset>
+          </TabsContent>
+        </Tabs>
+        {selectedDay && (
+          <p
+            className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground"
+            role="status"
+            aria-label={t("selection")}
+          >
+            <span>{selectionLabel}</span>
+            <span dir="ltr">
+              {formatTime(time)}–{formatTime(selectedSlot.end)}
+            </span>
+          </p>
+        )}
         {selectedSlot.extras.map((extra) => (
           <ChoiceOptionCard
             key={`${selectedDate}:${time}:${extra}`}

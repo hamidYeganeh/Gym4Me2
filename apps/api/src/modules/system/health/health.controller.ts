@@ -1,3 +1,4 @@
+import { StorageService } from '../../clubs/storage.service';
 import { Get, ServiceUnavailableException } from '@nestjs/common';
 import {
   ApiOkResponse,
@@ -9,7 +10,10 @@ import { DomainController } from '../../../platform/http/domain-controller.decor
 
 @DomainController('system', 'health')
 export class HealthController {
-  constructor(private readonly database: DatabaseService) {}
+  constructor(
+    private readonly database: DatabaseService,
+    private readonly storage: StorageService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'API liveness; does not depend on PostgreSQL' })
@@ -20,28 +24,29 @@ export class HealthController {
 
   @Get('ready')
   @ApiOperation({
-    summary: 'Readiness, including PostgreSQL and initial schema',
+    summary: 'Readiness, including PostgreSQL, migrated schema and S3',
   })
   @ApiOkResponse({
-    description: 'PostgreSQL and the migrated schema are available',
+    description: 'PostgreSQL, migrated schema and S3 are available',
   })
   @ApiServiceUnavailableResponse({
-    description: 'The database or schema is unavailable',
+    description: 'A required dependency is unavailable',
   })
   async ready() {
-    try {
-      await this.database.checkReadiness();
-      return {
-        status: 'ok',
-        service: 'gym4me-api',
-        checks: { database: 'up' },
-      };
-    } catch {
+    const [database, storage] = await Promise.allSettled([
+      this.database.checkReadiness(),
+      this.storage.health(),
+    ]);
+    const checks = {
+      database: database.status === 'fulfilled' ? 'up' : 'down',
+      storage: storage.status === 'fulfilled' ? 'up' : 'down',
+    };
+    if (database.status === 'rejected' || storage.status === 'rejected')
       throw new ServiceUnavailableException({
         status: 'error',
         service: 'gym4me-api',
-        checks: { database: 'down' },
+        checks,
       });
-    }
+    return { status: 'ok', service: 'gym4me-api', checks };
   }
 }

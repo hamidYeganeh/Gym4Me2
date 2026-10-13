@@ -19,7 +19,7 @@ export function ClubList({
         {clubs.slice(0, 5).map((club) => (
           <li key={club.id}>
             <Link
-              href={`/discovery/clubs/${club.id}`}
+              href={club.href ?? `/discovery/clubs/${club.id}`}
               scroll={false}
               aria-label={`${viewLabel} · ${club.name}`}
               className="flex items-center gap-4 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -39,7 +39,8 @@ export function ClubList({
                 <p className="text-xs text-muted-foreground">{club.address}</p>
                 <p className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                   <span>
-                    {club.price} / {club.pricePeriod}
+                    {club.price}
+                    {club.pricePeriod && ` / ${club.pricePeriod}`}
                   </span>
                   <span className="flex items-center gap-1">
                     <Star className="size-3 text-rating" fill="currentColor" />

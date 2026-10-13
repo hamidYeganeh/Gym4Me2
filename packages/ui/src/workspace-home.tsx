@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useReadiness } from "@repo/api/system";
 import Link from "next/link";
 import { AnimatedThemeToggler } from "./kit/AnimatedThemeToggler";
 import { BarbellHorizontalIcon, GlobeIcon } from "./icons";
@@ -48,37 +49,18 @@ type HomeLabels = Record<
 export function WorkspaceHome({
   labels,
   changeLocale,
-  apiBaseUrl = "/api/v1",
 }: {
   labels: HomeLabels;
   changeLocale: () => Promise<void>;
-  apiBaseUrl?: string;
 }) {
   const [changingLocale, startTransition] = useTransition();
-  const [checking, setChecking] = useState(false);
+  const health = useReadiness(false);
+  const checking = health.isFetching;
   const [status, setStatus] = useState<boolean | null>(null);
 
   async function checkApi() {
-    if (!apiBaseUrl) {
-      setStatus(false);
-      return;
-    }
-    setChecking(true);
-    try {
-      const response = await fetch(
-        `${apiBaseUrl.replace(/\/$/, "")}/system/health/ready`,
-        {
-          signal: AbortSignal.timeout(5000),
-          cache: "no-store",
-        },
-      );
-      const data = await response.json();
-      setStatus(response.ok && data.status === "ok");
-    } catch {
-      setStatus(false);
-    } finally {
-      setChecking(false);
-    }
+    const result = await health.refetch();
+    setStatus(result.data?.status === "ok" && !result.error);
   }
 
   return (

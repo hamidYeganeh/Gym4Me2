@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useLocale, useTranslations } from "@repo/i18n";
+import { useTranslations } from "@repo/i18n";
 import {
   Drawer,
   DrawerContent,
@@ -16,6 +16,7 @@ import { useClubUrl } from "./use-club-url";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 export function ClubShareSheet({
   club,
+  branchId,
   open,
   onOpenChange,
   onShare,
@@ -23,6 +24,7 @@ export function ClubShareSheet({
   onSavedChange,
 }: {
   club: ClubDetailData;
+  branchId?: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onShare: () => void;
@@ -30,8 +32,7 @@ export function ClubShareSheet({
   onSavedChange: (saved: boolean) => void;
 }) {
   const t = useTranslations("Clubs");
-  const locale = useLocale() === "fa" ? "fa" : "en";
-  const url = useClubUrl(club.id);
+  const url = useClubUrl(club.id, branchId);
   async function copy() {
     if (!url) {
       toast.info(t("shareUnavailable"));
@@ -61,7 +62,7 @@ export function ClubShareSheet({
         <div className="flex min-h-0 flex-col gap-4 overflow-y-auto px-4 pb-2">
           <div className="relative aspect-[1200/630] shrink-0 overflow-hidden rounded-3xl bg-muted">
             <Image
-              src={`/images/og/${club.id}-${locale}.png`}
+              src={club.photos[0].src}
               alt={`${club.name} · ${club.category}`}
               fill
               sizes="544px"

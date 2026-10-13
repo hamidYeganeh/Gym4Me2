@@ -2,15 +2,27 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  ConflictException,
   Injectable,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { Request } from 'express';
 import type { Environment } from '../../config/environment';
-import { clientSchema, parse, type Client } from './auth.contracts';
+import {
+  clientSchema,
+  parse,
+  type Client,
+  type SessionTransport,
+} from './auth.contracts';
 import { AuthService, type Principal } from './auth.service';
 export type AuthRequest = Request & { principal: Principal };
 export const cookieName = (client: Client) => `gym4me_${client}`;
+export function sessionTransport(request: Request): SessionTransport {
+  const value = request.header('x-gym-platform');
+  if (value && !['web', 'native'].includes(value))
+    throw new ForbiddenException('Backend.requestOriginIsNotAllowed');
+  return value === 'native' ? 'native' : 'web';
+}
 
 @Injectable()
 export class ClientGuard implements CanActivate {
@@ -29,8 +41,14 @@ export class ClientGuard implements CanActivate {
       (referer && URL.canParse(referer) ? new URL(referer).origin : undefined);
     // Bind cookies to a surface even when apps share a hostname on different ports.
     // Browsers may omit Origin for GET; a same-surface Referer is required then.
-    if (origin !== origins[client])
-      throw new ForbiddenException('مبدأ درخواست مجاز نیست.');
+    const native = sessionTransport(request) === 'native';
+    if (
+      native
+        ? client !== 'application' ||
+          !['capacitor://localhost', 'https://localhost'].includes(origin ?? '')
+        : origin !== origins[client]
+    )
+      throw new ForbiddenException('Backend.requestOriginIsNotAllowed');
     return true;
   }
 }
@@ -44,10 +62,25 @@ export class AuthGuard implements CanActivate {
       ?.split(';')
       .map((part) => part.trim())
       .find((part) => part.startsWith(`${cookieName(client)}=`));
+    const transport = sessionTransport(request);
     request.principal = await this.auth.authenticate(
-      cookie?.slice(cookieName(client).length + 1),
+      transport === 'native'
+        ? request
+            .header('authorization')
+            ?.match(/^Bearer ([A-Za-z0-9_-]{43})$/)?.[1]
+        : cookie?.slice(cookieName(client).length + 1),
       client,
+      transport,
     );
+    if (
+      request.principal.user.deletionPending &&
+      !['GET', 'HEAD', 'OPTIONS'].includes(request.method) &&
+      !/\/profile\/account\/privacy\/(preferences|deletion(?:\/cancel)?)\/?$/.test(
+        request.path,
+      ) &&
+      !/\/auth\/sessions\//.test(request.path)
+    )
+      throw new ConflictException('Backend.accountDeletionPending');
     return true;
   }
 }

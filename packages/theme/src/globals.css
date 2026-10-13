@@ -74,7 +74,8 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-:root {
+/* Keep vendor :root variables from overriding the application palette. */
+html:root {
   --image-surface: oklch(0.17 0.012 250);
   --image-foreground: oklch(0.99 0 0);
   --rating: oklch(0.8 0.17 70);
@@ -124,7 +125,7 @@
   --sidebar-ring: var(--spring-green-700);
 }
 
-.dark {
+html.dark {
   --primary: var(--spring-green-400);
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -212,8 +213,8 @@ html[data-theme-transition="active"]::view-transition-group(root) {
   opacity: 1;
   transition:
     transform var(--text-swap-dur) var(--text-swap-ease),
-    filter    var(--text-swap-dur) var(--text-swap-ease),
-    opacity   var(--text-swap-dur) var(--text-swap-ease);
+    filter var(--text-swap-dur) var(--text-swap-ease),
+    opacity var(--text-swap-dur) var(--text-swap-ease);
   will-change: transform, filter, opacity;
 }
 .t-text-swap.is-exit {
@@ -229,5 +230,100 @@ html[data-theme-transition="active"]::view-transition-group(root) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .t-text-swap { transition: none !important; }
+  .t-text-swap {
+    transition: none !important;
+  }
+}
+
+/* Profile: the reference's soft sky treatment, expressed in app theme tokens. */
+.profile-overview {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklch, var(--primary) 28%, var(--background)) 0%,
+    color-mix(in oklch, var(--primary) 12%, var(--background)) 34%,
+    var(--background) 68%
+  );
+  isolation: isolate;
+}
+.profile-overview::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 26rem;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse at 0% 44%,
+      color-mix(in oklch, var(--background) 75%, transparent),
+      transparent 42%
+    ),
+    radial-gradient(
+      ellipse at 100% 64%,
+      color-mix(in oklch, var(--background) 85%, transparent),
+      transparent 45%
+    );
+}
+.profile-stat-current {
+  background: color-mix(in oklch, var(--primary) 9%, var(--card));
+  box-shadow: inset 0 0 0 2px
+    color-mix(in oklch, var(--primary) 15%, transparent);
+}
+.profile-progress {
+  box-shadow: 0 18px 48px color-mix(in oklch, var(--foreground) 6%, transparent);
+}
+.profile-navigation {
+  z-index: 20;
+}
+
+/* Grouped account screens share the app palette and respect its active theme. */
+.account-design-header {
+  z-index: 10;
+  background: color-mix(in oklch, var(--muted) 50%, var(--background) 50%);
+}
+@supports (backdrop-filter: blur(16px)) {
+  .account-design-header {
+    background: color-mix(in oklch, var(--background) 70%, transparent);
+    backdrop-filter: blur(16px);
+  }
+}
+.account-edit-group [data-slot="field-label"] {
+  flex: 0 0 40%;
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+.account-edit-group [data-slot="input"] {
+  flex: 1;
+  background: transparent;
+  border-radius: var(--radius-sm);
+}
+.account-edit-group [data-slot="input"]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.account-design [data-slot="card"] {
+  box-shadow: none;
+}
+
+.mobile-auth [data-slot="input"] {
+  min-height: 3.5rem;
+  padding-inline: 1.25rem;
+  background: var(--muted);
+}
+.auth-emblem {
+  box-shadow: 0 8px 28px color-mix(in oklch, var(--foreground) 3%, transparent);
+}
+.auth-code [data-slot="input-otp-slot"] {
+  width: clamp(2.25rem, 9vw, 3rem);
+  height: 3rem;
+  border-color: transparent;
+  background: transparent;
+  font-size: 1.5rem;
+}
+
+:root {
+  --panel-open-dur: 400ms;
+  --panel-close-dur: 350ms;
+  --panel-translate-y: 100px;
+  --panel-blur: 2px;
+  --panel-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }

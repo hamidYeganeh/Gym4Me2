@@ -1,4 +1,21 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
+
+import {
+  useOrganizations,
+  useBranches,
+  useTeam,
+  useCreateOrganization,
+  useCreateBranch,
+  useInviteTeam,
+  useRemoveMember,
+  useRevokeInvitation,
+} from "@repo/api/business";
+import type {
+  OrganizationDto as Organization,
+  TeamRole,
+} from "@repo/api/business";
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
@@ -28,7 +45,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@repo/ui/kit/Dialog";
-import { api, type Organization } from "./api";
+
 import {
   Blank,
   ErrorNotice,
@@ -37,12 +54,17 @@ import {
   Status,
   Submit,
   TextField,
-  dateLabel,
-  roleNames,
-  useQuery,
+  useDateLabel,
+  useRoleNames,
 } from "./common";
 export function OrganizationsContent() {
-  const query = useQuery<Organization[]>("business", "business/organizations");
+  const roleNames = useRoleNames();
+
+  const t = useTranslations();
+
+  const createOrganization = useCreateOrganization();
+
+  const query = useOrganizations();
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,10 +73,10 @@ export function OrganizationsContent() {
     setBusy(true);
     setError(null);
     try {
-      await api("business", "business/organizations", "POST", { name });
+      await createOrganization.mutateAsync({ name });
       setName("");
-      query.reload();
-      toast.success("مجموعه ثبت شد و در انتظار بررسی است.");
+
+      toast.success(t("Copy.organizationRegisteredAndAwaitingReview"));
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -65,40 +87,40 @@ export function OrganizationsContent() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>ثبت مجموعه جدید</CardTitle>
+          <CardTitle>{t("Copy.registerOrganization")}</CardTitle>
           <CardDescription>
-            بعد از ثبت، می‌توانی شعبه‌ها را اضافه کنی و تیم خود را دعوت کنی.
+            {t("Copy.afterRegistrationYouCanAddBranchesAnd")}{" "}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={create} className="grid gap-4 sm:max-w-lg">
             <TextField
-              label="نام مجموعه"
+              label={t("Copy.organizationName")}
               name="organizationName"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
               minLength={2}
               maxLength={120}
-              placeholder="مثلاً باشگاه ورزشی آریا"
+              placeholder={t("Copy.forExampleAriaSportsClub")}
             />
             <ErrorNotice error={error} />
             <div>
               <Submit busy={busy}>
                 <Plus data-icon="inline-start" />
-                ثبت مجموعه
+                {t("Copy.organizationCreated")}{" "}
               </Submit>
             </div>
           </form>
         </CardContent>
       </Card>
-      <QueryError error={query.error} retry={query.reload} />
-      {query.loading ? (
+      <QueryError error={query.error} retry={query.refetch} />
+      {query.isLoading ? (
         <Loading />
       ) : !query.error && !query.data?.length ? (
         <Blank
-          title="مجموعه‌ای ثبت نشده"
-          description="اولین مجموعه را از فرم بالا ثبت کن."
+          title={t("Copy.noOrganizationsYet")}
+          description={t("Copy.registerYourFirstOrganizationUsingTheForm")}
         />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
@@ -110,13 +132,20 @@ export function OrganizationsContent() {
                   <Status value={org.status} />
                 </div>
                 <CardDescription>
-                  نقش شما: {roleNames[org.role]}
+                  {t("Copy.yourRole")} {roleNames[org.role]}
                 </CardDescription>
               </CardHeader>
+              <CardContent>
+                <Button asChild variant="outline">
+                  <Link href={`/organizations/${org.id}`}>
+                    {t("BusinessCatalog.editClub")}
+                  </Link>
+                </Button>
+              </CardContent>
               {org.reviewReason && (
                 <CardContent>
                   <p className="text-sm leading-7 text-muted-foreground">
-                    نتیجه بررسی: {org.reviewReason}
+                    {t("Copy.reviewResult")} {org.reviewReason}
                   </p>
                 </CardContent>
               )}
@@ -127,14 +156,19 @@ export function OrganizationsContent() {
     </>
   );
 }
-type Branch = { id: string; name: string; timezone: string; createdAt: string };
+
 export function BranchesContent({
   organization,
 }: {
   organization: Organization;
 }) {
-  const path = `business/organizations/${organization.id}/branches`;
-  const query = useQuery<Branch[]>("business", path);
+  const dateLabel = useDateLabel();
+
+  const t = useTranslations();
+
+  const createBranch = useCreateBranch();
+
+  const query = useBranches(organization.id);
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -143,10 +177,13 @@ export function BranchesContent({
     setBusy(true);
     setError(null);
     try {
-      await api("business", path, "POST", { name });
+      await createBranch.mutateAsync({
+        organizationId: organization.id,
+        input: { name },
+      });
       setName("");
-      query.reload();
-      toast.success("شعبه اضافه شد.");
+
+      toast.success(t("Copy.branchAdded"));
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -155,15 +192,15 @@ export function BranchesContent({
   }
   return (
     <>
-      {["owner", "manager"].includes(organization.role) && (
+      {(organization.role === "owner" || (organization.role === "manager" && organization.allBranches)) && (
         <Card>
           <CardHeader>
-            <CardTitle>افزودن شعبه</CardTitle>
+            <CardTitle>{t("Copy.addBranch")}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={create} className="grid max-w-lg gap-4">
               <TextField
-                label="نام شعبه"
+                label={t("Copy.branchName")}
                 name="branchName"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -173,19 +210,19 @@ export function BranchesContent({
               />
               <ErrorNotice error={error} />
               <div>
-                <Submit busy={busy}>افزودن شعبه</Submit>
+                <Submit busy={busy}>{t("Copy.addBranch")}</Submit>
               </div>
             </form>
           </CardContent>
         </Card>
       )}
-      <QueryError error={query.error} retry={query.reload} />
-      {query.loading ? (
+      <QueryError error={query.error} retry={query.refetch} />
+      {query.isLoading ? (
         <Loading />
       ) : !query.error && !query.data?.length ? (
         <Blank
-          title="هنوز شعبه‌ای ثبت نشده"
-          description="مالک یا مدیر مجموعه می‌تواند شعبه‌ها را اضافه کند."
+          title={t("Copy.noBranchesRegistered")}
+          description={t("Copy.theOrganizationOwnerOrManagerCanAdd")}
         />
       ) : (
         <Card>
@@ -193,15 +230,22 @@ export function BranchesContent({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>شعبه</TableHead>
-                  <TableHead>منطقه زمانی</TableHead>
-                  <TableHead>تاریخ ثبت</TableHead>
+                  <TableHead>{t("Copy.branch")}</TableHead>
+                  <TableHead>{t("Copy.timeZone")}</TableHead>
+                  <TableHead>{t("Copy.createdOn")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {query.data?.map((branch) => (
                   <TableRow key={branch.id}>
-                    <TableCell className="font-medium">{branch.name}</TableCell>
+                    <TableCell className="font-medium">
+                      <Link
+                        className="underline underline-offset-4"
+                        href={`/organizations/${organization.id}/branches/${branch.id}`}
+                      >
+                        {branch.name}
+                      </Link>
+                    </TableCell>
                     <TableCell>
                       <bdi>{branch.timezone}</bdi>
                     </TableCell>
@@ -216,24 +260,21 @@ export function BranchesContent({
     </>
   );
 }
-type Member = {
-  id: string;
-  phone: string;
-  displayName: string | null;
-  role: string;
-};
-type TeamInvitation = {
-  id: string;
-  phone: string;
-  role: string;
-  expiresAt: string;
-};
+
 export function TeamContent({ organization }: { organization: Organization }) {
-  const path = `business/organizations/${organization.id}`;
-  const query = useQuery<{ members: Member[]; invitations: TeamInvitation[] }>(
-    "business",
-    organization.role === "owner" ? `${path}/team` : null,
-  );
+  const roleNames = useRoleNames();
+  const dateLabel = useDateLabel();
+
+  const t = useTranslations();
+
+  const inviteTeam = useInviteTeam();
+  const removeMember = useRemoveMember();
+  const revokeInvitation = useRevokeInvitation();
+
+  const query = useTeam(organization.id, organization.role === "owner");
+  const branches = useBranches(organization.id);
+  const [allBranches, setAllBranches] = useState(true);
+  const [branchIds, setBranchIds] = useState<string[]>([]);
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("receptionist");
   const [busy, setBusy] = useState(false);
@@ -247,10 +288,17 @@ export function TeamContent({ organization }: { organization: Organization }) {
     setBusy(true);
     setError(null);
     try {
-      await api("business", `${path}/invitations`, "POST", { phone, role });
+      await inviteTeam.mutateAsync({
+        organizationId: organization.id,
+        input: {
+          phone,
+          role: role as TeamRole,
+          ...(allBranches ? {} : { branchIds }),
+        },
+      });
       setPhone("");
-      query.reload();
-      toast.success("دعوت در حساب این شماره نمایش داده می‌شود.");
+
+      toast.success(t("Copy.theInvitationWillAppearInTheAccount"));
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -262,14 +310,19 @@ export function TeamContent({ organization }: { organization: Organization }) {
     setBusy(true);
     setError(null);
     try {
-      await api(
-        "business",
-        `${path}/${removal.invitation ? "invitations" : "team"}/${removal.id}/${removal.invitation ? "revoke" : "remove"}`,
-        "POST",
-      );
+      if (removal.invitation)
+        await revokeInvitation.mutateAsync({
+          organizationId: organization.id,
+          invitationId: removal.id,
+        });
+      else
+        await removeMember.mutateAsync({
+          organizationId: organization.id,
+          memberId: removal.id,
+        });
       setRemoval(null);
-      query.reload();
-      toast.success("دسترسی لغو شد.");
+
+      toast.success(t("Copy.accessRevoked"));
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -279,25 +332,24 @@ export function TeamContent({ organization }: { organization: Organization }) {
   if (organization.role !== "owner")
     return (
       <Blank
-        title="مدیریت تیم در اختیار مالک است"
-        description="برای تغییر دسترسی همکاران، با مالک مجموعه هماهنگ کن."
+        title={t("Copy.onlyTheOwnerCanManageTheTeam")}
+        description={t("Copy.contactTheOrganizationOwnerToChangeTeam")}
       />
     );
   return (
     <>
       <Card>
         <CardHeader>
-          <CardTitle>دعوت همکار</CardTitle>
+          <CardTitle>{t("Copy.inviteColleague")}</CardTitle>
           <CardDescription>
-            همکار با این شماره وارد بیزینس می‌شود و دعوت را در بخش دعوت‌های
-            همکاری می‌پذیرد. پیامک دعوت ارسال نمی‌شود.
+            {t("Copy.yourColleagueCanSignInToBusiness")}{" "}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={invite} className="grid max-w-xl gap-5">
             <FieldGroup className="sm:grid sm:grid-cols-2">
               <TextField
-                label="شماره موبایل همکار"
+                label={t("Copy.colleagueMobileNumber")}
                 name="invitePhone"
                 type="tel"
                 dir="ltr"
@@ -307,7 +359,9 @@ export function TeamContent({ organization }: { organization: Organization }) {
                 maxLength={20}
               />
               <Field>
-                <FieldLabel htmlFor="role">نقش در مجموعه</FieldLabel>
+                <FieldLabel htmlFor="role">
+                  {t("Copy.organizationRole")}
+                </FieldLabel>
                 <NativeSelect
                   id="role"
                   value={role}
@@ -321,42 +375,97 @@ export function TeamContent({ organization }: { organization: Organization }) {
                 </NativeSelect>
               </Field>
             </FieldGroup>
+            <Field>
+              <FieldLabel>{t("StaffScope.title")}</FieldLabel>
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={allBranches}
+                  onChange={(event) => setAllBranches(event.target.checked)}
+                />
+                {t("StaffScope.all")}
+              </label>
+              {!allBranches && (
+                <>
+                  <QueryError error={branches.error} retry={branches.refetch} />
+                  {branches.isLoading && <Loading />}
+                  <div className="flex flex-wrap gap-3">
+                    {(branches.data ?? []).map((branch) => (
+                      <label
+                        key={branch.id}
+                        className="flex items-center gap-2 rounded-xl border px-3 py-2 text-sm"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={branchIds.includes(branch.id)}
+                          onChange={(event) =>
+                            setBranchIds(
+                              event.target.checked
+                                ? [...branchIds, branch.id]
+                                : branchIds.filter((id) => id !== branch.id),
+                            )
+                          }
+                        />
+                        {branch.name}
+                      </label>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {t("StaffScope.selectedHint")}
+                  </p>
+                </>
+              )}
+            </Field>
             <ErrorNotice error={error} />
             <div>
-              <Submit busy={busy}>ثبت دعوت همکاری</Submit>
+              <Submit busy={busy}>{t("Copy.sendTeamInvitation")}</Submit>
             </div>
           </form>
         </CardContent>
       </Card>
-      <QueryError error={query.error} retry={query.reload} />
-      {query.loading ? (
+      <QueryError error={query.error} retry={query.refetch} />
+      {query.isLoading ? (
         <Loading />
       ) : (
         query.data && (
           <>
             <Card>
               <CardHeader>
-                <CardTitle>اعضای تیم</CardTitle>
+                <CardTitle>{t("Copy.teamMembers")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>همکار</TableHead>
-                      <TableHead>نقش</TableHead>
-                      <TableHead>دسترسی</TableHead>
+                      <TableHead>{t("Copy.colleague")}</TableHead>
+                      <TableHead>{t("Copy.role")}</TableHead>
+                      <TableHead>{t("Copy.access")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {query.data.members.map((member) => (
                       <TableRow key={member.id}>
                         <TableCell>
-                          <p>{member.displayName ?? "بدون نام"}</p>
+                          <p>{member.displayName ?? t("Copy.unnamed")}</p>
                           <bdi className="text-xs text-muted-foreground">
                             {member.phone}
                           </bdi>
                         </TableCell>
-                        <TableCell>{roleNames[member.role]}</TableCell>
+                        <TableCell>
+                          {roleNames[member.role]}
+                          <p className="text-xs text-muted-foreground">
+                            {member.allBranches
+                              ? t("StaffScope.all")
+                              : member.branchIds
+                                  .map(
+                                    (id) =>
+                                      branches.data?.find(
+                                        (branch) => branch.id === id,
+                                      )?.name ?? id,
+                                  )
+                                  .join(" · ")}
+                          </p>
+                        </TableCell>
                         <TableCell>
                           {member.role !== "owner" ? (
                             <Button
@@ -366,10 +475,10 @@ export function TeamContent({ organization }: { organization: Organization }) {
                                 setRemoval({ id: member.id, invitation: false })
                               }
                             >
-                              لغو دسترسی
+                              {t("Copy.revokeAccess")}{" "}
                             </Button>
                           ) : (
-                            "مالک مجموعه"
+                            t("Copy.organizationOwner")
                           )}
                         </TableCell>
                       </TableRow>
@@ -380,13 +489,15 @@ export function TeamContent({ organization }: { organization: Organization }) {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>دعوت‌های در انتظار</CardTitle>
+                <CardTitle>{t("Copy.pendingInvitations")}</CardTitle>
               </CardHeader>
               <CardContent>
                 {!query.data.invitations.length ? (
                   <Blank
-                    title="دعوت بازی وجود ندارد"
-                    description="دعوت‌های پذیرفته‌نشده و معتبر اینجا نمایش داده می‌شوند."
+                    title={t("Copy.noPendingInvitations")}
+                    description={t(
+                      "Copy.validInvitationsThatHaveNotBeenAccepted",
+                    )}
                   />
                 ) : (
                   <div className="grid gap-4">
@@ -398,8 +509,20 @@ export function TeamContent({ organization }: { organization: Organization }) {
                         <div>
                           <bdi>{inv.phone}</bdi>
                           <p className="text-sm text-muted-foreground">
-                            {roleNames[inv.role]} · تا{" "}
+                            {roleNames[inv.role]} {t("Copy.until")}{" "}
                             {dateLabel(inv.expiresAt)}
+                            <span className="block">
+                              {inv.allBranches
+                                ? t("StaffScope.all")
+                                : inv.branchIds
+                                    .map(
+                                      (id) =>
+                                        branches.data?.find(
+                                          (branch) => branch.id === id,
+                                        )?.name ?? id,
+                                    )
+                                    .join(" · ")}
+                            </span>
                           </p>
                         </div>
                         <Button
@@ -409,7 +532,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
                             setRemoval({ id: inv.id, invitation: true })
                           }
                         >
-                          لغو دعوت
+                          {t("Copy.invitationRevoked")}{" "}
                         </Button>
                       </div>
                     ))}
@@ -429,11 +552,13 @@ export function TeamContent({ organization }: { organization: Organization }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              لغو {removal?.invitation ? "دعوت همکاری" : "دسترسی همکار"}
+              {t("Copy.revoke")}{" "}
+              {removal?.invitation
+                ? t("Copy.teamInvitation")
+                : t("Copy.teamAccess")}
             </DialogTitle>
             <DialogDescription>
-              پس از تأیید، این دسترسی به مجموعه قطع می‌شود. می‌توانی بعداً فرد
-              را دوباره دعوت کنی.
+              {t("Copy.thisPersonSOrganizationAccessWillEnd")}{" "}
             </DialogDescription>
           </DialogHeader>
           <ErrorNotice error={error} />
@@ -443,14 +568,14 @@ export function TeamContent({ organization }: { organization: Organization }) {
               disabled={busy}
               onClick={() => setRemoval(null)}
             >
-              انصراف
+              {t("Copy.cancel")}{" "}
             </Button>
             <Button
               variant="destructive"
               disabled={busy}
               onClick={() => void remove()}
             >
-              تأیید لغو
+              {t("Copy.confirmRevocation")}{" "}
             </Button>
           </DialogFooter>
         </DialogContent>

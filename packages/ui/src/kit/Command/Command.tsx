@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
 import { commandStyles } from "./Command.styles";
 import type {
   CommandDialogProps,
@@ -36,13 +37,16 @@ function Command({ className, ...props }: CommandProps) {
 }
 
 function CommandDialog({
-  title = "Command Palette",
-  description = "Search for a command to run...",
+  title,
+  description,
   children,
   className,
   showCloseButton = false,
   ...props
 }: CommandDialogProps) {
+  const t = useTranslations();
+  description ??= t("Kit.commandDescription");
+  title ??= t("Kit.commandPalette");
   return (
     <Dialog {...props}>
       <DialogHeader className={commandStyles.commandDialog()}>

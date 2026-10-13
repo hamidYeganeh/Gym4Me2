@@ -18,11 +18,15 @@
     "native:aab": "cd android && ./gradlew :app:bundleRelease"
   },
   "dependencies": {
+    "@aparajita/capacitor-secure-storage": "8.0.1",
     "@capacitor/android": "^8.5.3",
     "@capacitor/app": "^8.1.2",
     "@capacitor/core": "^8.5.3",
+    "@capacitor/filesystem": "^8.1.4",
     "@capacitor/ios": "^8.5.3",
+    "@capacitor/share": "^8.0.3",
     "@capacitor/status-bar": "^8.0.4",
+    "@repo/api": "workspace:*",
     "@repo/i18n": "workspace:*",
     "@repo/theme": "workspace:*",
     "@repo/ui": "workspace:*",

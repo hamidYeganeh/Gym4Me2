@@ -16,7 +16,8 @@
     "@repo/ui": "workspace:*",
     "@repo/theme": "workspace:*",
     "@repo/i18n": "workspace:*",
-    "next-intl": "^4.13.0"
+    "next-intl": "^4.13.0",
+    "@repo/api": "workspace:*"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",

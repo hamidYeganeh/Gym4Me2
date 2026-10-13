@@ -36,7 +36,10 @@ export function ClubFeaturedCard({ club, viewLabel }: ClubFeaturedCardProps) {
           </p>
         </div>
         <Button asChild variant="image" size="sm">
-          <Link href={`/discovery/clubs/${club.id}`} scroll={false}>
+          <Link
+            href={club.href ?? `/discovery/clubs/${club.id}`}
+            scroll={false}
+          >
             {viewLabel}
           </Link>
         </Button>

@@ -1,14 +1,16 @@
 import {
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { and, desc, eq } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { DatabaseService } from '../../database/database.service';
 import * as s from '../../database/schema';
 import { AdminService } from '../admin/admin.service';
 import type { Principal } from '../auth/auth.service';
+import { lockWritableAccount } from '../auth/account-lock';
 import { ClubService } from './club.service';
 import { affiliationSchema, reviewSchema } from './club.contracts';
 import { activeTerms, lockClub, requireBranch } from './club.repository';
@@ -22,16 +24,19 @@ export class ClubCommunityService {
   ) {}
   async coachProfile(p: Principal, biography: string | null) {
     if (p.session.client !== 'application')
-      throw new ForbiddenException('از اپ مربی وارد شوید.');
-    const [profile] = await this.database.db
-      .insert(s.coachProfiles)
-      .values({ userId: p.user.id, biography })
-      .onConflictDoUpdate({
-        target: s.coachProfiles.userId,
-        set: { biography, updatedAt: new Date() },
-      })
-      .returning();
-    return profile;
+      throw new ForbiddenException('Backend.signInFromTheCoachApplication');
+    return this.clubs.write(async (tx) => {
+      await lockWritableAccount(tx, p.user.id);
+      const [profile] = await tx
+        .insert(s.coachProfiles)
+        .values({ userId: p.user.id, biography })
+        .onConflictDoUpdate({
+          target: s.coachProfiles.userId,
+          set: { biography, updatedAt: new Date() },
+        })
+        .returning();
+      return profile;
+    });
   }
   async inviteCoach(
     userId: string,
@@ -40,7 +45,7 @@ export class ClubCommunityService {
     input: z.infer<typeof affiliationSchema>,
   ) {
     return this.clubs.write(async (tx) => {
-      await lockClub(tx, userId, clubId);
+      await lockClub(tx, userId, clubId, branchId);
       await requireBranch(tx, clubId, branchId);
       if (input.sportId) await activeTerms(tx, 'sports', [input.sportId]);
       const [row] = await tx
@@ -80,8 +85,9 @@ export class ClubCommunityService {
   }
   async respondAffiliation(p: Principal, id: string, action: 'accept' | 'end') {
     if (p.session.client !== 'application')
-      throw new ForbiddenException('از اپ مربی وارد شوید.');
+      throw new ForbiddenException('Backend.signInFromTheCoachApplication');
     return this.clubs.write(async (tx) => {
+      await lockWritableAccount(tx, p.user.id);
       const [row] = await tx
         .select()
         .from(s.branchCoaches)
@@ -93,7 +99,7 @@ export class ClubCommunityService {
         )
         .for('update');
       if (!row || (action === 'accept' && row.status !== 'pending'))
-        throw new NotFoundException('دعوت فعال پیدا نشد.');
+        throw new NotFoundException('Backend.noActiveInvitationFound');
       const [result] = await tx
         .update(s.branchCoaches)
         .set({ status: action === 'accept' ? 'active' : 'ended' })
@@ -114,7 +120,7 @@ export class ClubCommunityService {
   }
   async endCoach(userId: string, clubId: string, branchId: string, id: string) {
     return this.clubs.write(async (tx) => {
-      await lockClub(tx, userId, clubId);
+      await lockClub(tx, userId, clubId, branchId);
       await requireBranch(tx, clubId, branchId);
       const [row] = await tx
         .update(s.branchCoaches)
@@ -126,7 +132,7 @@ export class ClubCommunityService {
           ),
         )
         .returning();
-      if (!row) throw new NotFoundException('همکاری پیدا نشد.');
+      if (!row) throw new NotFoundException('Backend.affiliationNotFound');
       await tx.insert(s.auditEvents).values({
         actorId: userId,
         organizationId: clubId,
@@ -143,9 +149,10 @@ export class ClubCommunityService {
     input: z.infer<typeof reviewSchema>,
   ) {
     if (p.session.client !== 'application')
-      throw new ForbiddenException('از اپ ورزشکار وارد شوید.');
+      throw new ForbiddenException('Backend.signInFromTheAthleteApplication');
     await this.clubs.publicBranch(clubId, branchId);
     return this.clubs.write(async (tx) => {
+      await lockWritableAccount(tx, p.user.id);
       const [staff] = await tx
         .select()
         .from(s.organizationMembers)
@@ -167,7 +174,7 @@ export class ClubCommunityService {
         );
       if (staff || coach)
         throw new ForbiddenException(
-          'اعضای تیم و مربی فعال نمی‌توانند به مجموعه خود امتیاز بدهند.',
+          'Backend.teamMembersAndActiveCoachesCannotRate',
         );
       const [review] = await tx
         .insert(s.clubReviews)
@@ -194,7 +201,9 @@ export class ClubCommunityService {
     return this.database.db
       .select({
         id: s.clubReviews.id,
-        author: s.users.displayName,
+        author: sql<
+          string | null
+        >`CASE WHEN ${s.users.profilePublic} AND NOT ${s.users.deletionPending} THEN ${s.users.displayName} ELSE NULL END`,
         rating: s.clubReviews.rating,
         body: s.clubReviews.body,
         reply: s.clubReviews.reply,
@@ -213,12 +222,41 @@ export class ClubCommunityService {
       .limit(25)
       .offset((page - 1) * 25);
   }
-  async moderationQueue(p: Principal, page: number) {
+  async moderationQueue(
+    p: Principal,
+    page: number,
+    status: 'pending' | 'published' | 'rejected' = 'pending',
+  ) {
     await this.admin.requireAdmin(p);
     return this.database.db
-      .select()
+      .select({
+        id: s.clubReviews.id,
+        branchId: s.clubReviews.branchId,
+        authorId: s.clubReviews.authorId,
+        rating: s.clubReviews.rating,
+        body: s.clubReviews.body,
+        status: s.clubReviews.status,
+        moderationReason: s.clubReviews.moderationReason,
+        reply: s.clubReviews.reply,
+        createdAt: s.clubReviews.createdAt,
+        updatedAt: s.clubReviews.updatedAt,
+        authorName: s.users.displayName,
+        organizationId: s.organizations.id,
+        organizationName: s.organizations.name,
+        branchName: s.branches.name,
+      })
       .from(s.clubReviews)
-      .where(eq(s.clubReviews.status, 'pending'))
+      .innerJoin(s.users, eq(s.users.id, s.clubReviews.authorId))
+      .innerJoin(
+        s.branchProfiles,
+        eq(s.branchProfiles.branchId, s.clubReviews.branchId),
+      )
+      .innerJoin(s.branches, eq(s.branches.id, s.clubReviews.branchId))
+      .innerJoin(
+        s.organizations,
+        eq(s.organizations.id, s.branchProfiles.clubId),
+      )
+      .where(eq(s.clubReviews.status, status))
       .orderBy(s.clubReviews.createdAt, s.clubReviews.id)
       .limit(25)
       .offset((page - 1) * 25);
@@ -228,15 +266,26 @@ export class ClubCommunityService {
     id: string,
     status: 'published' | 'rejected',
     reason: string,
+    expectedStatus?: 'pending' | 'published' | 'rejected',
   ) {
     await this.admin.requireAdmin(p);
     return this.clubs.write(async (tx) => {
+      const [current] = await tx
+        .select()
+        .from(s.clubReviews)
+        .where(eq(s.clubReviews.id, id))
+        .for('update');
+      if (!current) throw new NotFoundException('Backend.reviewNotFound');
+      if (expectedStatus && current.status !== expectedStatus)
+        throw new ConflictException(
+          'Backend.theReviewStatusChangedRefreshTheList',
+        );
       const [review] = await tx
         .update(s.clubReviews)
         .set({ status, moderationReason: reason, updatedAt: new Date() })
         .where(eq(s.clubReviews.id, id))
         .returning();
-      if (!review) throw new NotFoundException('نظر پیدا نشد.');
+      if (!review) throw new NotFoundException('Backend.reviewNotFound');
       const [branch] = await tx
         .select()
         .from(s.branchProfiles)
@@ -259,7 +308,7 @@ export class ClubCommunityService {
     reply: string,
   ) {
     return this.clubs.write(async (tx) => {
-      await lockClub(tx, userId, clubId);
+      await lockClub(tx, userId, clubId, branchId);
       await requireBranch(tx, clubId, branchId);
       const [row] = await tx
         .update(s.clubReviews)
@@ -272,7 +321,7 @@ export class ClubCommunityService {
           ),
         )
         .returning();
-      if (!row) throw new NotFoundException('نظر منتشرشده پیدا نشد.');
+      if (!row) throw new NotFoundException('Backend.publishedReviewNotFound');
       await tx.insert(s.auditEvents).values({
         actorId: userId,
         organizationId: clubId,

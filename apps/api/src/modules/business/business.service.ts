@@ -1,10 +1,12 @@
+import { lockWritableAccount } from '../auth/account-lock';
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { and, desc, eq, gt, isNull, sql } from 'drizzle-orm';
+import { and, desc, eq, gt, inArray, isNull, sql } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 import { DatabaseService } from '../../database/database.service';
 import {
@@ -13,7 +15,9 @@ import {
   branchProfiles,
   branches,
   organizationInvitations,
+  organizationInvitationBranches,
   organizationMembers,
+  organizationMemberBranches,
   organizations,
   users,
 } from '../../database/schema';
@@ -34,7 +38,7 @@ export class BusinessService {
         ),
       );
     if (!member || (ownerOnly && member.role !== 'owner'))
-      throw new ForbiddenException('دسترسی لازم به این مجموعه را ندارید.');
+      throw new ForbiddenException('Backend.youDoNotHaveAccessToThis');
     return member;
   }
   list(userId: string) {
@@ -46,6 +50,7 @@ export class BusinessService {
         status: organizations.status,
         reviewReason: organizations.reviewReason,
         role: organizationMembers.role,
+        allBranches: organizationMembers.allBranches,
       })
       .from(organizationMembers)
       .innerJoin(
@@ -57,6 +62,7 @@ export class BusinessService {
   }
   async create(userId: string, name: string) {
     return this.database.db.transaction(async (tx) => {
+      await lockWritableAccount(tx, userId);
       const [org] = await tx
         .insert(organizations)
         .values({ name, slug: `club-${randomUUID()}` })
@@ -82,15 +88,23 @@ export class BusinessService {
     });
   }
   async listBranches(userId: string, orgId: string) {
-    await this.membership(userId, orgId);
+    const member = await this.membership(userId, orgId);
     return this.database.db
       .select()
       .from(branches)
-      .where(eq(branches.organizationId, orgId))
+      .where(
+        and(
+          eq(branches.organizationId, orgId),
+          member.role === 'owner' || member.allBranches
+            ? undefined
+            : sql`exists (select 1 from organization_member_branches a where a.member_id = ${member.id} and a.branch_id = ${branches.id})`,
+        ),
+      )
       .orderBy(branches.createdAt);
   }
   async createBranch(userId: string, orgId: string, name: string) {
     return this.database.db.transaction(async (tx) => {
+      await lockWritableAccount(tx, userId);
       await lockClub(tx, userId, orgId);
       const [branch] = await tx
         .insert(branches)
@@ -118,6 +132,10 @@ export class BusinessService {
         displayName: users.displayName,
         phone: users.phone,
         role: organizationMembers.role,
+        allBranches: organizationMembers.allBranches,
+        branchIds: sql<
+          string[]
+        >`coalesce((select json_agg(a.branch_id) from organization_member_branches a where a.member_id = ${organizationMembers.id}), '[]'::json)`,
       })
       .from(organizationMembers)
       .innerJoin(users, eq(users.id, organizationMembers.userId))
@@ -133,10 +151,29 @@ export class BusinessService {
           gt(organizationInvitations.expiresAt, new Date()),
         ),
       );
-    return { members, invitations };
+    const grants = await this.database.db
+      .select()
+      .from(organizationInvitationBranches)
+      .where(eq(organizationInvitationBranches.organizationId, orgId));
+    return {
+      members,
+      invitations: invitations.map((invitation) => ({
+        ...invitation,
+        branchIds: grants
+          .filter((grant) => grant.invitationId === invitation.id)
+          .map((grant) => grant.branchId),
+      })),
+    };
   }
-  async invite(userId: string, orgId: string, phone: string, role: StaffRole) {
+  async invite(
+    userId: string,
+    orgId: string,
+    phone: string,
+    role: StaffRole,
+    branchIds?: string[],
+  ) {
     return this.database.db.transaction(async (tx) => {
+      await lockWritableAccount(tx, userId);
       const [owner] = await tx
         .select()
         .from(organizationMembers)
@@ -148,7 +185,7 @@ export class BusinessService {
         )
         .for('update');
       if (owner?.role !== 'owner')
-        throw new ForbiddenException('فقط مالک می‌تواند همکار دعوت کند.');
+        throw new ForbiddenException('Backend.onlyTheOwnerCanInviteColleagues');
       const [existing] = await tx
         .select({ id: organizationMembers.id })
         .from(organizationMembers)
@@ -159,7 +196,22 @@ export class BusinessService {
             eq(users.phone, phone),
           ),
         );
-      if (existing) throw new ConflictException('این فرد عضو تیم است.');
+      if (existing)
+        throw new ConflictException('Backend.thisPersonIsAlreadyOnTheTeam');
+      if (branchIds) {
+        const found = await tx
+          .select({ id: branches.id })
+          .from(branches)
+          .where(
+            and(
+              eq(branches.organizationId, orgId),
+              inArray(branches.id, branchIds),
+            ),
+          )
+          .for('share');
+        if (found.length !== branchIds.length)
+          throw new BadRequestException('Backend.invalidBranchScope');
+      }
       await tx
         .update(organizationInvitations)
         .set({ revokedAt: new Date() })
@@ -177,22 +229,32 @@ export class BusinessService {
           organizationId: orgId,
           phone,
           role,
+          allBranches: branchIds === undefined,
           invitedBy: userId,
           expiresAt: new Date(Date.now() + 7 * 86400000),
         })
         .returning();
+      if (branchIds)
+        await tx.insert(organizationInvitationBranches).values(
+          branchIds.map((branchId) => ({
+            organizationId: orgId,
+            invitationId: invitation.id,
+            branchId,
+          })),
+        );
       await tx.insert(auditEvents).values({
         actorId: userId,
         organizationId: orgId,
         action: 'team.invited',
         targetId: invitation.id,
-        details: { role },
+        details: { role, scope: branchIds ? branchIds.join(',') : 'all' },
       });
       return invitation;
     });
   }
   async remove(userId: string, orgId: string, id: string, invitation: boolean) {
     return this.database.db.transaction(async (tx) => {
+      await lockWritableAccount(tx, userId);
       const [owner] = await tx
         .select()
         .from(organizationMembers)
@@ -204,7 +266,7 @@ export class BusinessService {
         )
         .for('update');
       if (owner?.role !== 'owner')
-        throw new ForbiddenException('فقط مالک می‌تواند دسترسی را لغو کند.');
+        throw new ForbiddenException('Backend.onlyTheOwnerCanRevokeAccess');
       if (invitation) {
         const rows = await tx
           .update(organizationInvitations)
@@ -218,7 +280,8 @@ export class BusinessService {
             ),
           )
           .returning();
-        if (!rows.length) throw new NotFoundException('دعوت فعال پیدا نشد.');
+        if (!rows.length)
+          throw new NotFoundException('Backend.noActiveInvitationFound');
       } else {
         const [target] = await tx
           .select()
@@ -230,9 +293,9 @@ export class BusinessService {
             ),
           )
           .for('update');
-        if (!target) throw new NotFoundException('همکار پیدا نشد.');
+        if (!target) throw new NotFoundException('Backend.colleagueNotFound');
         if (target.role === 'owner')
-          throw new ForbiddenException('حذف مالک مجاز نیست.');
+          throw new ForbiddenException('Backend.theOwnerCannotBeRemoved');
         await tx
           .delete(organizationMembers)
           .where(eq(organizationMembers.id, id));
@@ -270,13 +333,14 @@ export class BusinessService {
   }
   async accept(principal: Principal, id: string) {
     return this.database.db.transaction(async (tx) => {
+      await lockWritableAccount(tx, principal.user.id);
       // Use the same owner lock order as revoke/invite to keep invitation races safe.
       const [candidate] = await tx
         .select()
         .from(organizationInvitations)
         .where(eq(organizationInvitations.id, id));
       if (!candidate || candidate.phone !== principal.user.phone)
-        throw new NotFoundException('دعوت پیدا نشد.');
+        throw new NotFoundException('Backend.invitationNotFound');
       await tx.execute(
         sql`select id from organization_members where organization_id = ${candidate.organizationId} and role = 'owner' for update`,
       );
@@ -291,15 +355,33 @@ export class BusinessService {
         inv.revokedAt ||
         inv.expiresAt <= new Date()
       )
-        throw new ConflictException('دعوت معتبر نیست.');
-      await tx
+        throw new ConflictException('Backend.thisInvitationIsInvalid');
+      const grants = await tx
+        .select()
+        .from(organizationInvitationBranches)
+        .where(eq(organizationInvitationBranches.invitationId, inv.id));
+      if (!inv.allBranches && !grants.length)
+        throw new ConflictException('Backend.thisInvitationIsInvalid');
+      const [member] = await tx
         .insert(organizationMembers)
         .values({
           organizationId: inv.organizationId,
           userId: principal.user.id,
           role: inv.role,
+          allBranches: inv.allBranches,
         })
-        .onConflictDoNothing();
+        .onConflictDoNothing()
+        .returning();
+      if (!member)
+        throw new ConflictException('Backend.thisPersonIsAlreadyOnTheTeam');
+      if (!inv.allBranches)
+        await tx.insert(organizationMemberBranches).values(
+          grants.map((grant) => ({
+            organizationId: inv.organizationId,
+            memberId: member.id,
+            branchId: grant.branchId,
+          })),
+        );
       await tx
         .update(organizationInvitations)
         .set({ acceptedAt: new Date() })

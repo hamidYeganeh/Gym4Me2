@@ -1,47 +1,31 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Carousel, CarouselContent, CarouselItem } from "@repo/ui/kit/Carousel";
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";
-export const categoryForClub: Record<string, string> = {
-  atlas: "strength",
-  forma: "movement",
-  pulse: "functional",
-  zenith: "strength",
-  nova: "movement",
-};
+import { useTaxonomies } from "@repo/api/catalog";
 export function CategoryCarousel({
   locale,
   selected = "",
   onSelect,
-  clubId,
 }: {
   locale: string;
   selected?: string;
   onSelect?: (value: string) => void;
-  clubId?: string;
 }) {
+  const copy = useTranslations();
+
   const fa = locale === "fa";
-  const categories = [
-    { id: "strength", name: fa ? "قدرتی" : "Strength", image: "strength" },
-    { id: "movement", name: fa ? "هوازی" : "Cardio", image: "studio" },
-    {
-      id: "group",
-      name: fa ? "تمرین گروهی" : "Group training",
-      image: "studio",
-    },
-    {
-      id: "functional",
-      name: fa ? "فانکشنال" : "Functional",
-      image: "training",
-    },
-  ];
+  const query = useTaxonomies("club-categories");
+  const categories = query.data ?? [];
   const items = categories;
   const card = (category: (typeof categories)[number]) => (
     <>
       <span className="relative block aspect-square w-full overflow-hidden rounded-2xl bg-muted">
         <Image
-          src={`/images/clubs/${category.image}.png`}
+          src="/images/club-placeholder.svg"
           alt=""
           fill
           sizes="112px"
@@ -52,18 +36,17 @@ export function CategoryCarousel({
       <span className="text-sm font-medium">{category.name}</span>
     </>
   );
+  if (!items.length && !query.isPending) return null;
   return (
     <section className="flex min-w-0 flex-col gap-4">
-      <h2 className="text-xl font-semibold">
-        {fa ? "دسته‌بندی‌های باشگاه" : "Club categories"}
-      </h2>
+      <h2 className="text-xl font-semibold">{copy("Copy.clubCategories")}</h2>
       <Carousel
         opts={{ align: "start", direction: fa ? "rtl" : "ltr" }}
-        aria-label={fa ? "دسته‌بندی‌ها" : "Categories"}
+        aria-label={copy("Copy.categories")}
       >
         <ToggleGroup
           type="single"
-          value={selected || (clubId ? categoryForClub[clubId] : "")}
+          value={selected}
           onValueChange={onSelect}
           asChild
         >

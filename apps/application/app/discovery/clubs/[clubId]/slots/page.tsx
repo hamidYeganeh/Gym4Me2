@@ -1,16 +1,24 @@
-import { notFound } from "next/navigation";
-import { clubIds } from "../../../../../lib/clubs";
-import { ClubSlots } from "../../../../../components/discovery/club-slots";
-export const dynamicParams = false;
-export function generateStaticParams() {
-  return clubIds.map((clubId) => ({ clubId }));
-}
+import { MobilePage } from "@repo/ui/mobile-page";
+import { clubHref } from "../../../../../lib/club-href";
+import { getTranslations } from "@repo/i18n/server";
+import { getPublicClub } from "../../../../../lib/public-catalog";
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ clubId: string }>;
+  searchParams: Promise<{ branch?: string }>;
 }) {
   const { clubId } = await params;
-  if (!clubIds.some((id) => id === clubId)) notFound();
-  return <ClubSlots clubId={clubId} />;
+  const club = await getPublicClub(clubId);
+  const { branch } = await searchParams;
+  const t = await getTranslations("Catalog");
+  return (
+    <MobilePage
+      title={club.name}
+      backHref={clubHref(club.id, undefined, branch ? { branch } : undefined)}
+    >
+      <p className="text-muted-foreground">{t("noBooking")}</p>
+    </MobilePage>
+  );
 }

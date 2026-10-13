@@ -1,3 +1,4 @@
+import { ConsentGuard } from '../profile/consent.guard';
 import {
   Body,
   ForbiddenException,
@@ -16,7 +17,7 @@ import * as c from './club.contracts';
 import { ClubCommunityService } from './club.community.service';
 const business = (req: AuthRequest) => {
   if (req.principal.session.client !== 'business')
-    throw new ForbiddenException('از پنل بیزینس وارد شوید.');
+    throw new ForbiddenException('Backend.signInFromTheBusinessPanel');
   return req.principal.user.id;
 };
 const coachProfileSchema = z
@@ -29,11 +30,12 @@ const moderationSchema = z
   .object({
     status: z.enum(['published', 'rejected']),
     reason: z.string().trim().min(5).max(1000),
+    expectedStatus: z.enum(['pending', 'published', 'rejected']).optional(),
   })
   .strict();
 @DomainController('profile', 'coach')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class CoachProfileController {
   constructor(private readonly service: ClubCommunityService) {}
   @Post() @c.SchemaBody(coachProfileSchema) profile(
@@ -62,7 +64,7 @@ export class CoachProfileController {
 }
 @DomainController('business', 'clubs')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class ClubTeamContentController {
   constructor(private readonly service: ClubCommunityService) {}
   @Post(':id/branches/:branchId/coaches')
@@ -127,7 +129,7 @@ export class ClubReviewsController {
   }
   @Post(':id/branches/:branchId/reviews')
   @ClientHeader()
-  @UseGuards(ClientGuard, AuthGuard)
+  @UseGuards(ClientGuard, AuthGuard, ConsentGuard)
   @c.SchemaBody(c.reviewSchema)
   create(
     @Req() req: AuthRequest,
@@ -145,13 +147,21 @@ export class ClubReviewsController {
 }
 @DomainController('admin', 'reviews')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class AdminClubReviewsController {
   constructor(private readonly service: ClubCommunityService) {}
-  @Get() list(@Req() req: AuthRequest, @Query('page') page: unknown) {
+  @Get() list(
+    @Req() req: AuthRequest,
+    @Query('page') page: unknown,
+    @Query('status') status: unknown,
+  ) {
     return this.service.moderationQueue(
       req.principal,
       c.validate(c.pageSchema, page),
+      c.validate(
+        z.enum(['pending', 'published', 'rejected']).default('pending'),
+        status,
+      ),
     );
   }
   @Post(':id/moderate') @c.SchemaBody(moderationSchema) moderate(
@@ -165,6 +175,7 @@ export class AdminClubReviewsController {
       c.validate(c.id, id),
       input.status,
       input.reason,
+      input.expectedStatus,
     );
   }
 }

@@ -6,6 +6,16 @@ import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { randomBytes, randomUUID } from 'node:crypto';
 import { resolve } from 'node:path';
 import request, { type Response } from 'supertest';
+import sharp from 'sharp';
+import {
+  S3Client,
+  CreateBucketCommand,
+  HeadBucketCommand,
+} from '@aws-sdk/client-s3';
+import { MediaRetentionService } from '../src/modules/clubs/media-retention.service';
+import { StorageService } from '../src/modules/clubs/storage.service';
+import { ClubService } from '../src/modules/clubs/club.service';
+import { PrivacyService } from '../src/modules/profile/privacy.service';
 import type { App } from 'supertest/types';
 import { validateEnvironment } from '../src/config/environment';
 import { DatabaseService } from '../src/database/database.service';
@@ -22,6 +32,8 @@ if (!new URL(databaseUrl).pathname.endsWith('_test'))
   throw new Error('Requires dedicated _test database');
 let app: INestApplication<App>;
 let db: DatabaseService['db'];
+let storage: StorageService;
+const uploadedKeys: string[] = [];
 type Identity = { id: string; client: string; cookie: string };
 let owner: Identity;
 let stranger: Identity;
@@ -71,7 +83,18 @@ async function identity(client: string) {
     device: 'Catalog integration',
     expiresAt: new Date(Date.now() + 3600000),
   });
-  return { id: u.id, client, cookie: `gym4me_${client}=${token}` };
+  const person = { id: u.id, client, cookie: `gym4me_${client}=${token}` };
+  await call('post', 'profile/account/privacy/preferences', person)
+    .send({
+      acceptPolicy: true,
+      confirmMinimumAge: true,
+      policyVersion: app.get(PrivacyService).policy().version,
+    })
+    .expect(201);
+  await call('patch', 'profile/account', person)
+    .send({ profilePublic: true })
+    .expect(200);
+  return person;
 }
 let clubId: string;
 let branchId: string;
@@ -95,6 +118,13 @@ beforeAll(async () => {
               DATABASE_URL: databaseUrl,
               NODE_ENV: 'test',
               AUTH_SECRET: randomUUID() + randomUUID(),
+              S3_ENDPOINT:
+                process.env.TEST_S3_ENDPOINT ?? 'http://127.0.0.1:8333',
+              S3_ACCESS_KEY_ID:
+                process.env.TEST_S3_ACCESS_KEY_ID ?? 'gym4me_local',
+              S3_SECRET_ACCESS_KEY:
+                process.env.TEST_S3_SECRET_ACCESS_KEY ?? 'gym4me_local_storage',
+              S3_BUCKET: 'gym4me-test',
             }),
         ],
       }),
@@ -104,6 +134,24 @@ beforeAll(async () => {
   }).compile();
   app = module.createNestApplication();
   db = module.get(DatabaseService).db;
+  storage = module.get(StorageService);
+  const objects = new S3Client({
+    endpoint: process.env.TEST_S3_ENDPOINT ?? 'http://127.0.0.1:8333',
+    region: 'us-east-1',
+    forcePathStyle: true,
+    credentials: {
+      accessKeyId: process.env.TEST_S3_ACCESS_KEY_ID ?? 'gym4me_local',
+      secretAccessKey:
+        process.env.TEST_S3_SECRET_ACCESS_KEY ?? 'gym4me_local_storage',
+    },
+  });
+  try {
+    await objects.send(new HeadBucketCommand({ Bucket: 'gym4me-test' }));
+  } catch {
+    await objects.send(new CreateBucketCommand({ Bucket: 'gym4me-test' }));
+  } finally {
+    objects.destroy();
+  }
   await migrate(db, {
     migrationsFolder: resolve(__dirname, '../database/migrations'),
   });
@@ -124,8 +172,10 @@ beforeAll(async () => {
 }, 30000);
 afterAll(async () => {
   if (!db) return;
+  for (const key of uploadedKeys) await storage.delete(key);
   for (const id of clubIds) {
     await db.delete(s.auditEvents).where(eq(s.auditEvents.organizationId, id));
+    await db.delete(s.tariffGroups).where(eq(s.tariffGroups.clubId, id));
     await db.delete(s.branches).where(eq(s.branches.organizationId, id));
     await db.delete(s.clubs).where(eq(s.clubs.id, id));
     await db.delete(s.clubMedia).where(eq(s.clubMedia.organizationId, id));
@@ -467,6 +517,459 @@ test('publication requires complete content and admin approval; public owner dat
   ).expect(404);
   expect(club.rating).toEqual({ average: null, count: 0 });
 });
+test('public discovery returns real cover, geography and taxonomy with scoped filters', async () => {
+  await app
+    .get(ClubService)
+    .listPublic({ page: 1, search: '', sort: 'recent' });
+  const list = body<
+    {
+      id: string;
+      cover: { url: string };
+      categories: { id: string }[];
+      mainBranch: { address: string; latitude: number; longitude: number };
+    }[]
+  >(
+    await call(
+      'get',
+      `catalog/clubs?categoryId=${categoryId}&sportId=${sportId}&cityId=${cityId}`,
+    ).expect(200),
+  );
+  const result = list.find((item) => item.id === clubId);
+  expect(result).toMatchObject({
+    cover: { url: 'https://example.com/club.jpg' },
+    mainBranch: { address: 'نشانی شعبه اصلی', latitude: 35.7, longitude: 51.4 },
+  });
+  expect(result?.categories.some((item) => item.id === categoryId)).toBe(true);
+  expect(list.some((item) => item.id === otherClubId)).toBe(false);
+  const wrong = body<{ id: string }[]>(
+    await call('get', `catalog/clubs?cityId=${randomUUID()}`).expect(200),
+  );
+  expect(wrong.some((item) => item.id === clubId)).toBe(false);
+  const normalized = body<{ id: string }[]>(
+    await call(
+      'get',
+      `catalog/clubs?search=${encodeURIComponent('آزمايشي')}`,
+    ).expect(200),
+  );
+  expect(normalized.some((item) => item.id === clubId)).toBe(true);
+  const address = body<{ id: string }[]>(
+    await call(
+      'get',
+      `catalog/clubs?search=${encodeURIComponent('شعبه اصلی')}`,
+    ).expect(200),
+  );
+  expect(address.some((item) => item.id === clubId)).toBe(true);
+  for (const query of [
+    'categoryId=invalid',
+    'page=0',
+    'cityId=invalid',
+    'unknown=true',
+  ])
+    await call('get', `catalog/clubs?${query}`).expect(400);
+});
+test('secondary branch location and tariff match together, stay private until complete, and never duplicate clubs', async () => {
+  const [city] = await db
+    .insert(s.cities)
+    .values({ provinceId, name: `فرعی ${prefix}` })
+    .returning();
+  const [secondary] = await db
+    .insert(s.branches)
+    .values({
+      organizationId: clubId,
+      name: 'شعبه دوم',
+      slug: `secondary-${prefix}`,
+    })
+    .returning();
+  const [main] = await db
+    .select()
+    .from(s.branchProfiles)
+    .where(eq(s.branchProfiles.branchId, branchId));
+  await db.insert(s.branchProfiles).values({
+    ...main,
+    branchId: secondary.id,
+    isMain: false,
+    cityId: city.id,
+    address: 'نشانی فرعی یکتا',
+  });
+  const [group] = await db
+    .insert(s.tariffGroups)
+    .values({ clubId, branchId: secondary.id })
+    .returning();
+  await db.insert(s.tariffVersions).values({
+    groupId: group.id,
+    version: 1,
+    name: 'تک مراجعه',
+    serviceType: 'visit',
+    unit: 'visit',
+    priceToman: 123456,
+    conditions: 'فقط شعبه دوم',
+    createdBy: owner.id,
+  });
+  const rows = async (query: string) =>
+    body<
+      {
+        id: string;
+        mainBranch: { id: string };
+        startingTariff: { priceToman: number } | null;
+      }[]
+    >(await call('get', `catalog/clubs?${query}`).expect(200));
+  try {
+    expect(await rows(`cityId=${city.id}`)).toEqual([]);
+    await db.insert(s.branchSports).values({ branchId: secondary.id, sportId });
+    await db.insert(s.weeklyHours).values({
+      branchId: secondary.id,
+      dayOfWeek: 0,
+      audience: 'all',
+      startMinute: 480,
+      endMinute: 900,
+    });
+    const found = await rows(
+      `cityId=${city.id}&maxPrice=123456&serviceType=visit`,
+    );
+    expect(found).toHaveLength(1);
+    expect(found[0]).toMatchObject({
+      id: clubId,
+      mainBranch: { id: secondary.id },
+      startingTariff: { priceToman: 123456 },
+    });
+    expect(
+      await rows(`cityId=${cityId}&maxPrice=123456&serviceType=visit`),
+    ).toEqual([]);
+    expect(await rows(`cityId=${city.id}&maxPrice=123455`)).toEqual([]);
+    expect(
+      (await rows(`search=${encodeURIComponent('فرعی یکتا')}`))[0]?.mainBranch
+        .id,
+    ).toBe(secondary.id);
+    const unfiltered = (await rows(`categoryId=${categoryId}`)).filter(
+      (row) => row.id === clubId,
+    );
+    expect(unfiltered).toHaveLength(1);
+    expect(unfiltered[0].mainBranch.id).toBe(branchId);
+    expect(
+      (await rows(`categoryId=${categoryId}&sort=priceLow`))[0]?.mainBranch.id,
+    ).toBe(secondary.id);
+    await db
+      .update(s.branchProfiles)
+      .set({ archivedAt: new Date() })
+      .where(eq(s.branchProfiles.branchId, secondary.id));
+    expect(await rows(`cityId=${city.id}`)).toEqual([]);
+  } finally {
+    await db.delete(s.tariffGroups).where(eq(s.tariffGroups.id, group.id));
+    await db.delete(s.branches).where(eq(s.branches.id, secondary.id));
+    await db.delete(s.cities).where(eq(s.cities.id, city.id));
+  }
+});
+test('account favorites merge idempotently, ignore unpublished clubs and isolate users before pagination', async () => {
+  await call('get', 'profile/favorites')
+    .set('x-gym-client', 'application')
+    .set('Origin', 'http://localhost:7081')
+    .expect(401);
+  await call('get', 'catalog/clubs/saved')
+    .set('x-gym-client', 'application')
+    .set('Origin', 'http://localhost:7081')
+    .expect(401);
+  const merge = () =>
+    call('post', 'profile/favorites/merge', athlete)
+      .send({ ids: [clubId, clubId, otherClubId, randomUUID()] })
+      .expect(201);
+  const results = await Promise.all([merge(), merge()]);
+  results.forEach((result) => expect(body<string[]>(result)).toEqual([clubId]));
+  expect(
+    body<string[]>(await call('get', 'profile/favorites', coach).expect(200)),
+  ).toEqual([]);
+  const saved = body<{ id: string }[]>(
+    await call('get', 'catalog/clubs/saved?page=1', athlete).expect(200),
+  );
+  expect(saved.map((club) => club.id)).toEqual([clubId]);
+  expect(
+    body<unknown[]>(
+      await call('get', 'catalog/clubs/saved?page=2', athlete).expect(200),
+    ),
+  ).toEqual([]);
+  expect(
+    body<unknown[]>(
+      await call('get', 'catalog/clubs/saved', coach).expect(200),
+    ),
+  ).toEqual([]);
+  await call('get', `catalog/clubs/saved?userId=${athlete.id}`, coach).expect(
+    400,
+  );
+  await call('post', 'profile/favorites/merge', athlete)
+    .send({ ids: ['not-a-uuid'] })
+    .expect(400);
+  await call('post', `profile/favorites/${clubId}`, coach)
+    .send({ saved: true })
+    .expect(201);
+  await call('post', `profile/favorites/${clubId}`, athlete)
+    .send({ saved: false })
+    .expect(201);
+  expect(
+    body<string[]>(await call('get', 'profile/favorites', athlete).expect(200)),
+  ).toEqual([]);
+  expect(
+    body<string[]>(await call('get', 'profile/favorites', coach).expect(200)),
+  ).toEqual([clubId]);
+});
+
+test('tariffs keep immutable price and terms versions, publish effective prices and honor filters', async () => {
+  const input = {
+    name: 'ورودی تک جلسه',
+    serviceType: 'visit',
+    priceToman: 250000,
+    unit: 'visit',
+    includedServices: ['رختکن'],
+    conditions: 'برای یک مراجعه به شعبهٔ اصلی',
+    branchId,
+  };
+  await call('post', `business/clubs/${clubId}/tariffs`, stranger)
+    .send(input)
+    .expect(403);
+  await call('post', `business/clubs/${clubId}/tariffs`, owner)
+    .send({ ...input, branchId: otherBranchId })
+    .expect(404);
+  const tariff = body<{ id: string; version: number; priceToman: number }>(
+    await call('post', `business/clubs/${clubId}/tariffs`, owner)
+      .send(input)
+      .expect(201),
+  );
+  expect(tariff).toMatchObject({ version: 1, priceToman: 250000 });
+  await call('get', `catalog/clubs/${clubId}`).expect(404);
+  const { branchId: _scope, ...terms } = input;
+  void _scope;
+  const updates = await Promise.all(
+    [300000, 350000].map((priceToman) =>
+      call(
+        'post',
+        `business/clubs/${clubId}/tariffs/${tariff.id}/versions`,
+        owner,
+      )
+        .send({ ...terms, priceToman })
+        .expect(201),
+    ),
+  );
+  expect(
+    updates
+      .map((response) => body<{ version: number }>(response).version)
+      .sort(),
+  ).toEqual([2, 3]);
+  const history = body<
+    { version: number; priceToman: number; conditions: string }[]
+  >(
+    await call(
+      'get',
+      `business/clubs/${clubId}/tariffs/${tariff.id}/versions`,
+      owner,
+    ).expect(200),
+  );
+  expect(history.map((version) => version.version)).toEqual([3, 2, 1]);
+  expect(history[2]).toMatchObject({
+    priceToman: 250000,
+    conditions: input.conditions,
+  });
+  await call(
+    'post',
+    `business/clubs/${clubId}/tariffs/${tariff.id}/versions`,
+    owner,
+  )
+    .send({ ...terms, priceToman: -1 })
+    .expect(400);
+  await call(
+    'post',
+    `business/clubs/${otherClubId}/tariffs/${tariff.id}/versions`,
+    stranger,
+  )
+    .send(terms)
+    .expect(404);
+  const future = body<{ id: string }>(
+    await call('post', `business/clubs/${clubId}/tariffs`, owner)
+      .send({
+        ...input,
+        name: 'قیمت آینده',
+        priceToman: 1,
+        effectiveFrom: '2099-01-01T00:00:00Z',
+      })
+      .expect(201),
+  );
+  await call(
+    'post',
+    `business/clubs/${clubId}/publication/submit`,
+    owner,
+  ).expect(201);
+  await call('post', `admin/clubs/${clubId}/review`, admin)
+    .send({ status: 'approved', reason: 'بررسی تعرفهٔ آزمایشی' })
+    .expect(201);
+  await call(
+    'post',
+    `business/clubs/${clubId}/publication/publish`,
+    owner,
+  ).expect(201);
+  const actual = body<{ tariffs: { id: string; version: number }[] }>(
+    await call('get', `catalog/clubs/${clubId}`).expect(200),
+  );
+  expect(
+    actual.tariffs.some((row) => row.id === tariff.id && row.version === 3),
+  ).toBe(true);
+  expect(actual.tariffs.some((row) => row.id === future.id)).toBe(false);
+  const found = body<
+    { id: string; startingTariff: { priceToman: number; unit: string } }[]
+  >(
+    await call(
+      'get',
+      'catalog/clubs?serviceType=visit&unit=visit&minPrice=250000&maxPrice=400000',
+    ).expect(200),
+  );
+  expect(found.find((row) => row.id === clubId)?.startingTariff).toMatchObject({
+    unit: 'visit',
+  });
+  const excluded = body<{ id: string }[]>(
+    await call('get', 'catalog/clubs?serviceType=membership').expect(200),
+  );
+  expect(excluded.some((row) => row.id === clubId)).toBe(false);
+  await call('get', 'catalog/clubs?minPrice=5&maxPrice=1').expect(400);
+  await call(
+    'post',
+    `business/clubs/${clubId}/tariffs/${tariff.id}/status`,
+    owner,
+  )
+    .send({ isActive: false })
+    .expect(201);
+  const disabled = body<{ isActive: boolean }[]>(
+    await call('get', `business/clubs/${clubId}/tariffs`, owner).expect(200),
+  );
+  expect(disabled.some((row) => !row.isActive)).toBe(true);
+  await call(
+    'post',
+    `business/clubs/${clubId}/tariffs/${tariff.id}/status`,
+    owner,
+  )
+    .send({ isActive: true })
+    .expect(201);
+  await call(
+    'post',
+    `business/clubs/${clubId}/publication/submit`,
+    owner,
+  ).expect(201);
+  await call('post', `admin/clubs/${clubId}/review`, admin)
+    .send({ status: 'approved', reason: 'بررسی نهایی تعرفه' })
+    .expect(201);
+  await call(
+    'post',
+    `business/clubs/${clubId}/publication/publish`,
+    owner,
+  ).expect(201);
+});
+test('real S3 images remain private until publication, reject invalid files and delete only unused media', async () => {
+  const pixels = await sharp({
+    create: { width: 80, height: 60, channels: 3, background: '#22c55e' },
+  })
+    .png()
+    .toBuffer();
+  const path = `business/clubs/${clubId}/media/upload`;
+  await call('post', path, stranger)
+    .attach('file', pixels, { filename: 'image.png', contentType: 'image/png' })
+    .expect(403);
+  await call('post', path, owner)
+    .attach('file', Buffer.from('<svg>invalid</svg>'), {
+      filename: 'image.svg',
+      contentType: 'image/svg+xml',
+    })
+    .expect(400);
+  await call('post', path, owner)
+    .attach('file', Buffer.from('not an image'), {
+      filename: 'image.png',
+      contentType: 'image/png',
+    })
+    .expect(400);
+  const media = body<{
+    id: string;
+    objectKey: string;
+    width: number;
+    height: number;
+    contentType: string;
+  }>(
+    await call('post', path, owner)
+      .attach('file', pixels, {
+        filename: 'image.png',
+        contentType: 'image/png',
+      })
+      .field('alt', 'تصویر واقعی آزمایشی')
+      .expect(201),
+  );
+  uploadedKeys.push(media.objectKey);
+  expect(media).toMatchObject({
+    width: 80,
+    height: 60,
+    contentType: 'image/webp',
+  });
+  expect(
+    (await sharp(await storage.get(media.objectKey)).metadata()).format,
+  ).toBe('webp');
+  await call('get', `catalog/media/${media.id}`).expect(404);
+  await call(
+    'get',
+    `business/clubs/${clubId}/media/${media.id}/preview`,
+    stranger,
+  ).expect(403);
+  const preview = body<{ expiresIn: number }>(
+    await call(
+      'get',
+      `business/clubs/${clubId}/media/${media.id}/preview`,
+      owner,
+    ).expect(200),
+  );
+  expect(preview.expiresIn).toBe(60);
+  await call('patch', `business/clubs/${clubId}`, owner)
+    .send({ coverId: media.id })
+    .expect(200);
+  await call(
+    'post',
+    `business/clubs/${clubId}/publication/submit`,
+    owner,
+  ).expect(201);
+  await call('post', `admin/clubs/${clubId}/review`, admin)
+    .send({ status: 'approved', reason: 'بررسی تصویر' })
+    .expect(201);
+  await call(
+    'post',
+    `business/clubs/${clubId}/publication/publish`,
+    owner,
+  ).expect(201);
+  await call('get', `catalog/media/${media.id}`)
+    .expect('Content-Type', /image\/webp/)
+    .expect(200);
+  await call(
+    'post',
+    `business/clubs/${clubId}/media/${media.id}/delete`,
+    owner,
+  ).expect(409);
+  await call('patch', `business/clubs/${clubId}`, owner)
+    .send({ coverId: mediaId })
+    .expect(200);
+  await call('get', `catalog/media/${media.id}`).expect(404);
+  await call(
+    'post',
+    `business/clubs/${clubId}/media/${media.id}/delete`,
+    owner,
+  ).expect(201);
+  await call(
+    'get',
+    `business/clubs/${clubId}/media/${media.id}/preview`,
+    owner,
+  ).expect(404);
+  await call(
+    'post',
+    `business/clubs/${clubId}/publication/submit`,
+    owner,
+  ).expect(201);
+  await call('post', `admin/clubs/${clubId}/review`, admin)
+    .send({ status: 'approved', reason: 'بررسی نهایی' })
+    .expect(201);
+  await call(
+    'post',
+    `business/clubs/${clubId}/publication/publish`,
+    owner,
+  ).expect(201);
+});
 test('coach affiliation is visible only after the coach accepts it', async () => {
   await call('post', 'profile/coach', coach)
     .send({ biography: 'مربی شنا' })
@@ -524,8 +1027,32 @@ test('reviews are paginated and moderated before affecting ratings; owners can r
     ),
   ).toHaveLength(0);
   await call('post', `admin/reviews/${review.id}/moderate`, admin)
-    .send({ status: 'published', reason: 'نظر مطابق قواعد است' })
+    .send({
+      status: 'published',
+      reason: 'نظر مطابق قواعد است',
+      expectedStatus: 'pending',
+    })
     .expect(201);
+  const moderated = body<
+    {
+      id: string;
+      organizationName: string;
+      authorName: string;
+      status: string;
+    }[]
+  >(await call('get', 'admin/reviews?status=published', admin).expect(200));
+  expect(moderated.find((r) => r.id === review.id)).toMatchObject({
+    status: 'published',
+    authorName: 'آزمایشی',
+    organizationName: 'باشگاه آزمایشی',
+  });
+  await call('post', `admin/reviews/${review.id}/moderate`, admin)
+    .send({
+      status: 'rejected',
+      reason: 'تصمیم قدیمی نباید اعمال شود',
+      expectedStatus: 'pending',
+    })
+    .expect(409);
   expect(
     body<{ rating: { average: number; count: number } }>(
       await call('get', `catalog/clubs/${clubId}`),
@@ -546,6 +1073,60 @@ test('reviews are paginated and moderated before affecting ratings; owners can r
     .send({ reply: 'از بازخورد شما متشکریم' })
     .expect(201);
 });
+test('public names and coach biographies follow revocable privacy choices without changing private records', async () => {
+  await call('post', 'profile/account/privacy/preferences', owner)
+    .send({ hidePublicProfile: true })
+    .expect(201);
+  expect(
+    body<{ owner: { displayName: string | null } }>(
+      await call('get', `catalog/clubs/${clubId}`).expect(200),
+    ).owner.displayName,
+  ).toBeNull();
+  expect(
+    body<{ owner: { displayName: string | null } }>(
+      await call('get', `business/clubs/${clubId}`, owner).expect(200),
+    ).owner.displayName,
+  ).toBe('آزمایشی');
+  await call('post', 'profile/account/privacy/preferences', coach)
+    .send({ hidePublicProfile: true })
+    .expect(201);
+  const branch = body<{
+    coaches: { displayName: string | null; biography: string | null }[];
+  }>(
+    await call('get', `catalog/clubs/${clubId}/branches/${branchId}`).expect(
+      200,
+    ),
+  );
+  expect(branch.coaches[0]).toMatchObject({
+    displayName: null,
+    biography: null,
+  });
+  await call('post', 'profile/account/privacy/preferences', athlete)
+    .send({ hidePublicProfile: true })
+    .expect(201);
+  const reviews = body<{ author: string | null }[]>(
+    await call(
+      'get',
+      `catalog/clubs/${clubId}/branches/${branchId}/reviews`,
+    ).expect(200),
+  );
+  expect(reviews[0].author).toBeNull();
+  await call('patch', 'profile/account', coach)
+    .send({ profilePublic: true })
+    .expect(200);
+  const restored = body<{
+    coaches: { displayName: string | null; biography: string | null }[];
+  }>(
+    await call('get', `catalog/clubs/${clubId}/branches/${branchId}`).expect(
+      200,
+    ),
+  );
+  expect(restored.coaches[0]).toMatchObject({
+    displayName: 'آزمایشی',
+    biography: 'مربی شنا',
+  });
+});
+
 test('editing published content hides it until it is checked again; optional fields can be cleared', async () => {
   await call('patch', `business/clubs/${clubId}`, owner)
     .send({ shortDescription: null, tags: [] })
@@ -603,4 +1184,467 @@ test('OpenAPI describes the required name and excludes removed fields', async ()
   expect(schema.properties.shortDescription).toMatchObject({ nullable: true });
   expect(schema.properties).not.toHaveProperty('ownerId');
   expect(schema.properties).not.toHaveProperty('serviceModes');
+});
+
+test('admin read routes reject unauthenticated, business and unprivileged admin sessions', async () => {
+  const unprivileged = await identity('admin');
+  for (const path of [
+    'admin/overview',
+    `admin/users/${owner.id}`,
+    `admin/organizations/${clubId}`,
+    `admin/clubs/${clubId}/readiness`,
+    `admin/clubs/${clubId}/branches/${branchId}`,
+    'admin/locations/countries',
+    'admin/taxonomies/sports',
+    'admin/reviews',
+    'admin/audit',
+  ]) {
+    await call('get', path)
+      .set('x-gym-client', 'admin')
+      .set('Origin', 'http://localhost:7082')
+      .expect(401);
+    await call('get', path, owner).expect(403);
+    await call('get', path, unprivileged).expect(403);
+  }
+  await call('patch', `admin/locations/cities/${cityId}`, unprivileged)
+    .send({ name: 'غیرمجاز' })
+    .expect(403);
+});
+
+test('admin dossiers expose memberships and catalog content without session secrets', async () => {
+  const user = body<{
+    memberships: { organizationId: string }[];
+    sessions: Record<string, unknown>[];
+    isAdmin: boolean;
+  }>(await call('get', `admin/users/${owner.id}`, admin).expect(200));
+  expect(user.isAdmin).toBe(false);
+  expect(user.memberships.some((m) => m.organizationId === clubId)).toBe(true);
+  expect(user.sessions.length).toBeGreaterThan(0);
+  for (const session of user.sessions)
+    expect(session).not.toHaveProperty('tokenHash');
+  const organization = body<{
+    hasCatalog: boolean;
+    members: { userId: string }[];
+    branches: { id: string }[];
+  }>(await call('get', `admin/organizations/${clubId}`, admin).expect(200));
+  expect(organization.hasCatalog).toBe(true);
+  expect(organization.members.some((m) => m.userId === owner.id)).toBe(true);
+  expect(organization.branches.some((b) => b.id === branchId)).toBe(true);
+  const branch = body<{ location: { coordinates: number[] } }>(
+    await call(
+      'get',
+      `admin/clubs/${clubId}/branches/${branchId}`,
+      admin,
+    ).expect(200),
+  );
+  expect(branch.location.coordinates).toEqual([35.7, 51.4]);
+  await call(
+    'get',
+    `admin/clubs/${clubId}/branches/${otherBranchId}`,
+    admin,
+  ).expect(404);
+  expect(
+    body<{ ready: boolean }>(
+      await call('get', `admin/clubs/${clubId}/readiness`, admin).expect(200),
+    ).ready,
+  ).toBe(true);
+  await call('get', `admin/users/${randomUUID()}`, admin).expect(404);
+  await call('get', 'admin/organizations/not-a-uuid', admin).expect(400);
+});
+
+test('admin list filters escape wildcards and return actual publication and admin states', async () => {
+  const result = body<{ id: string; publicationStatus: string }[]>(
+    await call(
+      'get',
+      'admin/organizations?search=نام%20جدید&status=suspended&publicationStatus=draft',
+      admin,
+    ).expect(200),
+  );
+  expect(result.find((r) => r.id === clubId)?.publicationStatus).toBe('draft');
+  expect(
+    body<unknown[]>(
+      await call('get', 'admin/organizations?search=%25', admin).expect(200),
+    ),
+  ).toHaveLength(0);
+  expect(
+    body<unknown[]>(
+      await call('get', 'admin/users?search=%25', admin).expect(200),
+    ),
+  ).toHaveLength(0);
+  const people = body<{ id: string; isAdmin: boolean }[]>(
+    await call('get', 'admin/users?status=active', admin).expect(200),
+  );
+  expect(people.find((u) => u.id === admin.id)?.isAdmin).toBe(true);
+  await call('get', 'admin/users?status=invalid', admin).expect(400);
+  const overview = body<{
+    pendingPublication: number;
+    pendingReviews: number;
+    recent: unknown[];
+  }>(await call('get', 'admin/overview', admin).expect(200));
+  expect(overview.pendingPublication).toEqual(expect.any(Number));
+  expect(overview.pendingReviews).toEqual(expect.any(Number));
+  expect(overview.recent.length).toBeLessThanOrEqual(5);
+});
+
+test('geography renames preserve hierarchy and record an audit event; invalid reassignment is rejected', async () => {
+  const renamed = body<{ id: string; provinceId: string; name: string }>(
+    await call('patch', `admin/locations/cities/${cityId}`, admin)
+      .send({ name: 'شهر ویرایش‌شده' })
+      .expect(200),
+  );
+  expect(renamed).toMatchObject({
+    id: cityId,
+    provinceId,
+    name: 'شهر ویرایش‌شده',
+  });
+  const cities = body<{ id: string; name: string }[]>(
+    await call(
+      'get',
+      `admin/locations/cities?parentId=${provinceId}`,
+      admin,
+    ).expect(200),
+  );
+  expect(cities.find((c) => c.id === cityId)?.name).toBe('شهر ویرایش‌شده');
+  await call('patch', `admin/locations/cities/${cityId}`, admin)
+    .send({ name: 'شهر', provinceId: randomUUID() })
+    .expect(400);
+  await call('patch', `admin/locations/cities/${randomUUID()}`, admin)
+    .send({ name: 'شهر' })
+    .expect(404);
+  const events = body<{ targetId: string }[]>(
+    await call(
+      'get',
+      `admin/audit?action=location.updated&actorId=${admin.id}`,
+      admin,
+    ).expect(200),
+  );
+  expect(events.some((e) => e.targetId === cityId)).toBe(true);
+});
+
+test('inactive taxonomy terms stay in admin but disappear from public choices', async () => {
+  await call('patch', `admin/taxonomies/sports/${sportId}`, admin)
+    .send({ name: 'رشته ویرایش‌شده', isActive: false })
+    .expect(200);
+  const adminTerms = body<{ id: string; isActive: boolean }[]>(
+    await call(
+      'get',
+      'admin/taxonomies/sports?search=رشته%20ویرایش',
+      admin,
+    ).expect(200),
+  );
+  expect(adminTerms.find((t) => t.id === sportId)?.isActive).toBe(false);
+  expect(
+    body<{ id: string }[]>(
+      await call('get', 'catalog/taxonomies/sports').expect(200),
+    ).some((t) => t.id === sportId),
+  ).toBe(false);
+  await call('patch', `admin/taxonomies/sports/${sportId}`, admin)
+    .send({ isActive: true })
+    .expect(200);
+});
+
+test('audit date filters include Tehran end-of-day and reject invalid ranges', async () => {
+  const [included, excluded] = await db
+    .insert(s.auditEvents)
+    .values([
+      {
+        actorId: admin.id,
+        action: 'admin.test-window',
+        createdAt: new Date('2026-06-01T20:29:59.999Z'),
+      },
+      {
+        actorId: admin.id,
+        action: 'admin.test-window',
+        createdAt: new Date('2026-06-01T20:30:00Z'),
+      },
+    ])
+    .returning();
+  const events = body<{ id: string; actorName: string }[]>(
+    await call(
+      'get',
+      `admin/audit?action=admin.test-window&actorId=${admin.id}&from=2026-06-01&to=2026-06-01`,
+      admin,
+    ).expect(200),
+  );
+  expect(events.map((e) => e.id)).toContain(included.id);
+  expect(events.map((e) => e.id)).not.toContain(excluded.id);
+  expect(events[0].actorName).toBe('آزمایشی');
+  await call('get', 'admin/audit?from=2026-06-02&to=2026-06-01', admin).expect(
+    400,
+  );
+  await call('get', 'admin/audit?from=invalid', admin).expect(400);
+});
+
+test('HTTP errors retain stable codes while messages and validation fields follow the locale', async () => {
+  const en = body<{
+    code: string;
+    message: string;
+    fields: { code: string; message: string }[];
+  }>(
+    await call('post', 'business/clubs', owner)
+      .set('Accept-Language', 'en-US')
+      .send({})
+      .expect(400),
+  );
+  const fa = body<typeof en>(
+    await call('post', 'business/clubs', owner)
+      .set('Accept-Language', 'fa')
+      .send({})
+      .expect(400),
+  );
+  expect(en.code).toBe('Backend.invalidClubInformation');
+  expect(fa.code).toBe(en.code);
+  expect(en.message).not.toBe(fa.message);
+  expect(en.fields[0].code).toBe('Backend.invalidField');
+  expect(en.fields[0].message).not.toBe(fa.fields[0].message);
+  const denied = await call('get', `business/clubs/${clubId}`, stranger)
+    .set('Accept-Language', 'en')
+    .expect(403);
+  expect(body<{ code: string }>(denied).code).toMatch(/^Backend\./);
+});
+test('publication readiness exposes localized copy alongside its field codes', async () => {
+  const en = body<{
+    errors: { field: string; code: string; message: string }[];
+  }>(
+    await call('get', `business/clubs/${otherClubId}/readiness`, stranger)
+      .set('Accept-Language', 'en')
+      .expect(200),
+  );
+  const fa = body<typeof en>(
+    await call('get', `business/clubs/${otherClubId}/readiness`, stranger)
+      .set('Accept-Language', 'fa')
+      .expect(200),
+  );
+  expect(en.errors.length).toBeGreaterThan(0);
+  expect(en.errors.map((item) => item.code)).toEqual(
+    fa.errors.map((item) => item.code),
+  );
+  expect(en.errors[0].message).not.toBe(fa.errors[0].message);
+});
+
+test('scoped invitation restricts the same account to its assigned branch in one of two organizations', async () => {
+  const [person] = await db
+    .select()
+    .from(s.users)
+    .where(eq(s.users.id, stranger.id));
+  await call('post', `business/organizations/${clubId}/invitations`, owner)
+    .send({ phone: person.phone, role: 'manager', branchIds: [otherBranchId] })
+    .expect(400);
+  await call('post', `business/organizations/${clubId}/invitations`, owner)
+    .send({ phone: person.phone, role: 'manager', branchIds: [] })
+    .expect(400);
+  const invitation = body<{ id: string }>(
+    await call('post', `business/organizations/${clubId}/invitations`, owner)
+      .send({ phone: person.phone, role: 'manager', branchIds: [branchId] })
+      .expect(201),
+  );
+  await call(
+    'post',
+    `profile/invitations/${invitation.id}/accept`,
+    stranger,
+  ).expect(201);
+  const owned = body<{ branches: { id: string }[] }>(
+    await call('get', `business/clubs/${clubId}`, owner).expect(200),
+  );
+  const restricted = owned.branches.find((branch) => branch.id !== branchId)!;
+  const visible = body<{ branches: { id: string }[] }>(
+    await call('get', `business/clubs/${clubId}`, stranger).expect(200),
+  );
+  expect(visible.branches.map((branch) => branch.id)).toEqual([branchId]);
+  const list = body<{ id: string }[]>(
+    await call(
+      'get',
+      `business/organizations/${clubId}/branches`,
+      stranger,
+    ).expect(200),
+  );
+  expect(list.map((branch) => branch.id)).toEqual([branchId]);
+  await call(
+    'get',
+    `business/clubs/${clubId}/branches/${branchId}`,
+    stranger,
+  ).expect(200);
+  await call(
+    'get',
+    `business/clubs/${clubId}/branches/${restricted.id}`,
+    stranger,
+  ).expect(403);
+  await call(
+    'patch',
+    `business/clubs/${clubId}/branches/${restricted.id}`,
+    stranger,
+  )
+    .send({ rules: 'forbidden' })
+    .expect(403);
+  await call('patch', `business/clubs/${clubId}`, stranger)
+    .send({ name: 'forbidden' })
+    .expect(403);
+  await call('post', `business/organizations/${clubId}/branches`, stranger)
+    .send({ name: 'forbidden' })
+    .expect(403);
+  await call(
+    'get',
+    `business/clubs/${otherClubId}/branches/${otherBranchId}`,
+    stranger,
+  ).expect(200);
+  await call('patch', `business/clubs/${clubId}/branches/${branchId}`, stranger)
+    .send({ rules: 'قانون شعبهٔ مجاز' })
+    .expect(200);
+  const [member] = await db
+    .select()
+    .from(s.organizationMembers)
+    .where(eq(s.organizationMembers.userId, stranger.id));
+  await expect(
+    db.insert(s.organizationMemberBranches).values({
+      organizationId: clubId,
+      memberId: member.id,
+      branchId: otherBranchId,
+    }),
+  ).rejects.toThrow();
+  const team = body<{ members: { id: string; userId: string }[] }>(
+    await call('get', `business/organizations/${clubId}/team`, owner).expect(
+      200,
+    ),
+  );
+  const target = team.members.find((member) => member.userId === stranger.id)!;
+  await call(
+    'post',
+    `business/organizations/${clubId}/team/${target.id}/remove`,
+    owner,
+  ).expect(201);
+  await call(
+    'get',
+    `business/clubs/${clubId}/branches/${branchId}`,
+    stranger,
+  ).expect(403);
+});
+
+test('media retention preserves references and recent uploads, supports dry run, and removes abandoned S3 objects idempotently', async () => {
+  const club = body<{ id: string }>(
+    await call('post', 'business/clubs', owner)
+      .send({ name: 'پاکسازی آزمایشی' })
+      .expect(201),
+  );
+  clubIds.push(club.id);
+  const bytes = await sharp({
+    create: { width: 8, height: 8, channels: 3, background: '#123456' },
+  })
+    .png()
+    .toBuffer();
+  const mediaRows: { id: string; objectKey: string }[] = [];
+  for (let i = 0; i < 2; i++) {
+    const media = body<{ id: string; objectKey: string }>(
+      await call('post', `business/clubs/${club.id}/media/upload`, owner)
+        .attach('file', bytes, {
+          filename: 'test.png',
+          contentType: 'image/png',
+        })
+        .expect(201),
+    );
+    mediaRows.push(media);
+    uploadedKeys.push(media.objectKey);
+  }
+  await db
+    .update(s.clubs)
+    .set({ coverId: mediaRows[0].id })
+    .where(eq(s.clubs.id, club.id));
+  const orphan = `clubs/${club.id}/${randomUUID()}.webp`;
+  uploadedKeys.push(orphan);
+  await storage.put(orphan, bytes, 'image/webp');
+  const retention = app.get(MediaRetentionService);
+  const fresh = await retention.run(false);
+  expect(fresh.deletedMedia).toBe(0);
+  expect(fresh.eligibleObjects).toBe(0);
+  const later = new Date(Date.now() + 8 * 86400000);
+  const dry = await retention.run(false, later);
+  expect(dry.eligibleMedia).toBeGreaterThanOrEqual(1);
+  expect(dry.eligibleObjects).toBeGreaterThanOrEqual(1);
+  expect(await storage.get(orphan)).toEqual(bytes);
+  const applied = await retention.run(true, later);
+  expect(applied.deletedMedia).toBeGreaterThanOrEqual(1);
+  expect(applied.deletedObjects).toBeGreaterThanOrEqual(1);
+  expect(await storage.get(mediaRows[0].objectKey)).toBeInstanceOf(Buffer);
+  expect(
+    await db
+      .select()
+      .from(s.clubMedia)
+      .where(eq(s.clubMedia.id, mediaRows[1].id)),
+  ).toHaveLength(0);
+  await expect(storage.get(orphan)).rejects.toThrow();
+  const repeated = await retention.run(true, later);
+  expect(repeated.deletedMedia).toBe(0);
+  expect(repeated.deletedObjects).toBe(0);
+});
+
+test.each(['receptionist', 'accountant'] as const)(
+  '%s reads only assigned branches and cannot mutate catalog or access another tenant',
+  async (role) => {
+    const person = await identity('business');
+    const [member] = await db
+      .insert(s.organizationMembers)
+      .values({
+        organizationId: clubId,
+        userId: person.id,
+        role,
+        allBranches: false,
+      })
+      .returning();
+    await db
+      .insert(s.organizationMemberBranches)
+      .values({ organizationId: clubId, memberId: member.id, branchId });
+    const visible = body<{ branches: { id: string }[] }>(
+      await call('get', `business/clubs/${clubId}`, person).expect(200),
+    );
+    expect(visible.branches.map((b) => b.id)).toEqual([branchId]);
+    await call(
+      'get',
+      `business/clubs/${clubId}/branches/${branchId}`,
+      person,
+    ).expect(200);
+    await call('get', `business/clubs/${otherClubId}`, person).expect(403);
+    await call(
+      'get',
+      `business/clubs/${otherClubId}/branches/${otherBranchId}`,
+      person,
+    ).expect(403);
+    await call('patch', `business/clubs/${clubId}/branches/${branchId}`, person)
+      .send({ rules: 'forbidden' })
+      .expect(403);
+    await call('patch', `business/clubs/${clubId}`, person)
+      .send({ name: 'forbidden' })
+      .expect(403);
+    await call('post', `business/clubs/${clubId}/branches`, person)
+      .send({ name: 'forbidden' })
+      .expect(403);
+    await call('get', `business/organizations/${clubId}/team`, person).expect(
+      403,
+    );
+  },
+);
+
+test('guest saved lookup validates bounded input, honors publication, filters and pagination', async () => {
+  await call('post', 'catalog/clubs/guest-saved')
+    .send({ ids: ['invalid'], filters: {} })
+    .expect(400);
+  await call('post', 'catalog/clubs/guest-saved')
+    .send({ ids: Array(501).fill(clubId), filters: {} })
+    .expect(400);
+  const empty = await call('post', 'catalog/clubs/guest-saved')
+    .send({ ids: [], filters: {} })
+    .expect(201);
+  expect(empty.body).toEqual([]);
+  const publicList = body<{ id: string }[]>(
+    await call('get', 'catalog/clubs').expect(200),
+  );
+  const expected = publicList.filter((club) =>
+    [clubId, otherClubId].includes(club.id),
+  );
+  const saved = await call('post', 'catalog/clubs/guest-saved')
+    .send({ ids: [clubId, otherClubId], filters: {} })
+    .expect(201);
+  expect(saved.body).toEqual(expected);
+  const page = await call('post', 'catalog/clubs/guest-saved')
+    .send({ ids: [clubId, otherClubId], filters: { page: 2 } })
+    .expect(201);
+  expect(page.body).toEqual([]);
 });

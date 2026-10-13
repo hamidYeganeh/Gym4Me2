@@ -137,13 +137,19 @@ export function ClubDetail({
             <h1 className={s.title()}>{club.name}</h1>
           </div>
           <p className={s.price()}>
-            <SlidingNumber
-              value={club.priceValue}
-              locale={club.locale}
-              useGrouping
-            />{" "}
-            {club.priceCurrency}
-            <span className={s.period()}>{labels.perVisit}</span>
+            {club.priceValue === null ? (
+              club.price
+            ) : (
+              <SlidingNumber
+                value={club.priceValue}
+                locale={club.locale}
+                useGrouping
+              />
+            )}{" "}
+            {club.priceValue !== null && club.priceCurrency}
+            {club.priceValue !== null && (
+              <span className={s.period()}>{club.pricePeriod}</span>
+            )}
           </p>
         </div>
       </section>
@@ -230,7 +236,10 @@ export function ClubDetail({
             aria-label={labels.amenities}
           >
             {club.amenities.map((item) => {
-              const Icon = equipmentIcons[item.id];
+              const Icon =
+                equipmentIcons[
+                  item.icon ?? (item.id as keyof typeof equipmentIcons)
+                ] ?? BarbellHorizontalIcon;
               return (
                 <li key={item.id}>
                   <EquipmentCard
@@ -265,10 +274,12 @@ export function ClubDetail({
           >
             <Share1Icon />
           </Button>
-          <Button size="lg" className="h-14 flex-1" onClick={onPlanVisit}>
-            <CalendarPlusIcon data-icon="inline-start" />
-            {labels.visit}
-          </Button>
+          {onPlanVisit && (
+            <Button size="lg" className="h-14 flex-1" onClick={onPlanVisit}>
+              <CalendarPlusIcon data-icon="inline-start" />
+              {labels.visit}
+            </Button>
+          )}
         </footer>
       </div>
     </main>

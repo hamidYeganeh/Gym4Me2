@@ -10,11 +10,11 @@ export const coachDetailStyles = {
   nav: cva(
     "relative flex items-center justify-between px-6 pt-[calc(1.5rem+var(--app-safe-top))]",
   ),
-  gallery: cva("absolute right-5 bottom-6 flex flex-col gap-3"),
+  gallery: cva("absolute end-5 bottom-6 flex flex-col gap-3"),
   thumbnail: cva(
     "relative h-16 w-16 overflow-hidden rounded-2xl border-2 border-image-foreground/70 p-0 data-[state=on]:border-primary data-[state=on]:ring-2 data-[state=on]:ring-primary data-[state=on]:ring-offset-2 data-[state=on]:ring-offset-image-surface",
   ),
-  heading: cva("relative isolate mt-auto flex flex-col gap-2 py-8 pr-26 pl-6"),
+  heading: cva("relative isolate mt-auto flex flex-col gap-2 py-8 pe-26 ps-6"),
   gradient: cva(
     "pointer-events-none absolute inset-0 bg-linear-to-t from-image-surface via-image-surface/70 to-transparent",
   ),

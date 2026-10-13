@@ -14,7 +14,7 @@ export function GalleryIndicators({
   label: (index: number) => string;
 }) {
   return (
-    <div className="flex items-center gap-1" role="group">
+    <div className="flex flex-wrap items-center justify-center gap-1" role="group">
       {Array.from({ length: count }, (_, index) => (
         <Button
           key={index}

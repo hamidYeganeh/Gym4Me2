@@ -31,7 +31,7 @@ test('missing credentials never invoke the provider', async () => {
   );
   expect(fetchMock).not.toHaveBeenCalled();
 });
-test('sends five-digit OTP through the g4m-otp Verify Lookup template using POST', async () => {
+test('sends five-digit OTP through the gym4meotp Verify Lookup template using POST', async () => {
   const fetchMock = jest.spyOn(globalThis, 'fetch').mockResolvedValue(
     new Response(JSON.stringify({ return: { status: 200 } }), {
       status: 200,
@@ -46,7 +46,7 @@ test('sends five-digit OTP through the g4m-otp Verify Lookup template using POST
   expect(Object.fromEntries(body)).toEqual({
     receptor: '09123456789',
     token: '12345',
-    template: 'g4m-otp',
+    template: 'gym4meotp',
     type: 'sms',
   });
 });
@@ -69,6 +69,27 @@ test.each(['network', 'provider', 'malformed'])(
       );
     await expect(
       make('secretkey').sendOtp('+989123456789', '12345'),
-    ).rejects.toThrow('ارسال پیامک انجام نشد. کمی بعد دوباره تلاش کنید.');
+    ).rejects.toThrow('Backend.couldNotSendSmsTryAgainLater');
   },
 );
+
+test('adds the server-configured Android hash as token2 without accepting client input', async () => {
+  const fetchMock = jest
+    .spyOn(globalThis, 'fetch')
+    .mockResolvedValue(
+      new Response(JSON.stringify({ return: { status: 200 } })),
+    );
+  const service = new KavenegarService(
+    new ConfigService(
+      validateEnvironment({
+        DATABASE_URL: 'postgresql://localhost/test',
+        KAVENEGAR_API_KEY: 'testkey',
+        KAVENEGAR_ANDROID_APP_HASH: 'z5rk2X8HKrl',
+      }),
+    ),
+  );
+  await service.sendOtp('+989123456789', '12345');
+  expect(
+    (fetchMock.mock.calls[0][1]?.body as URLSearchParams).get('token2'),
+  ).toBe('z5rk2X8HKrl');
+});

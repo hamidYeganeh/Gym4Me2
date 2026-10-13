@@ -1,3 +1,4 @@
+import { ConsentGuard } from '../profile/consent.guard';
 import {
   Body,
   Get,
@@ -13,11 +14,16 @@ import { DomainController } from '../../platform/http/domain-controller.decorato
 import { ClientHeader, JsonBody, parse } from '../auth/auth.contracts';
 import { AuthGuard, ClientGuard, type AuthRequest } from '../auth/auth.guard';
 import { AdminService } from './admin.service';
+import {
+  adminListFilters,
+  auditFilters,
+  organizationFilters,
+} from './admin.contracts';
 const pageSchema = z.coerce.number().int().min(1).max(100000).default(1);
 const reasonSchema = z.string().trim().min(5).max(500);
 @DomainController('admin', 'overview')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class AdminOverviewController {
   constructor(private readonly service: AdminService) {}
   @Get() get(@Req() req: AuthRequest) {
@@ -26,19 +32,25 @@ export class AdminOverviewController {
 }
 @DomainController('admin', 'users')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class AdminUsersController {
   constructor(private readonly service: AdminService) {}
   @Get() list(
     @Req() req: AuthRequest,
     @Query('page') page: unknown,
     @Query('search') search: unknown,
+    @Query('status') status: unknown,
   ) {
+    const filters = parse(adminListFilters, { search, status });
     return this.service.listUsers(
       req.principal,
       parse(pageSchema, page),
-      parse(z.string().trim().max(100).default(''), search),
+      filters.search,
+      filters.status,
     );
+  }
+  @Get(':id') detail(@Req() req: AuthRequest, @Param('id') id: string) {
+    return this.service.userDetail(req.principal, parse(z.uuid(), id));
   }
   @Patch(':id/status')
   @JsonBody({
@@ -69,13 +81,15 @@ export class AdminUsersController {
 }
 @DomainController('admin', 'organizations')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class AdminOrganizationsController {
   constructor(private readonly service: AdminService) {}
   @Get() list(
     @Req() req: AuthRequest,
     @Query('page') page: unknown,
     @Query('status') status: unknown,
+    @Query('search') search: unknown,
+    @Query('publicationStatus') publicationStatus: unknown,
   ) {
     return this.service.listOrganizations(
       req.principal,
@@ -84,7 +98,11 @@ export class AdminOrganizationsController {
         z.enum(['pending', 'approved', 'rejected', 'suspended']).optional(),
         status,
       ),
+      parse(organizationFilters, { search, publicationStatus }),
     );
+  }
+  @Get(':id') detail(@Req() req: AuthRequest, @Param('id') id: string) {
+    return this.service.organizationDetail(req.principal, parse(z.uuid(), id));
   }
   @Post(':id/review')
   @JsonBody({
@@ -115,10 +133,18 @@ export class AdminOrganizationsController {
 }
 @DomainController('admin', 'audit')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class AdminAuditController {
   constructor(private readonly service: AdminService) {}
-  @Get() list(@Req() req: AuthRequest, @Query('page') page: unknown) {
-    return this.service.audit(req.principal, parse(pageSchema, page));
+  @Get() list(
+    @Req() req: AuthRequest,
+    @Query('page') page: unknown,
+    @Query() query: Record<string, unknown>,
+  ) {
+    return this.service.audit(
+      req.principal,
+      parse(pageSchema, page),
+      parse(auditFilters, query),
+    );
   }
 }

@@ -55,6 +55,13 @@ export class DatabaseService implements OnModuleInit, OnApplicationShutdown {
       `SELECT clubs.publication_status FROM clubs, branch_profiles, club_categories,
        branch_weekly_hours, club_reviews LIMIT 0`,
     );
+    await this.pool.query(
+      `SELECT users.deleted_at, auth_sessions.transport, otp_challenges.requested_session_id,
+       account_preferences.confirmed_minimum_age, club_media.object_key
+       FROM users, auth_sessions, otp_challenges, account_preferences,
+       account_deletion_requests, favorite_clubs, club_media, club_tariff_groups,
+       club_tariff_versions, organization_member_branches, organization_invitation_branches LIMIT 0`,
+    );
   }
 
   async onApplicationShutdown(): Promise<void> {

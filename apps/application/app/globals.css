@@ -39,3 +39,14 @@ textarea,
   top: calc((100dvh + var(--app-safe-top) - var(--app-safe-bottom)) / 2);
   overflow-y: auto;
 }
+
+/* The app uses touch-sized kit controls; desktop workspaces retain kit defaults. */
+.application-frame [data-slot="button"],
+.application-frame [data-slot="input"],
+.application-frame [data-slot="native-select"] {
+  min-height: 2.75rem;
+}
+.application-frame [data-slot="button"] { min-width: 2.75rem; }
+.mobile-page [data-slot="card"] { box-shadow: none; }
+.mobile-page [data-slot="card-description"] { line-height: 1.75rem; }
+.mobile-page [data-slot="checkbox"] { margin-block: .75rem; }

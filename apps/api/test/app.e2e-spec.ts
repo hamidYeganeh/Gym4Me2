@@ -2,6 +2,7 @@ import { Get, HttpCode, INestApplication, Param, Post } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import type { App } from 'supertest/types';
+import { StorageService } from '../src/modules/clubs/storage.service';
 import { DatabaseService } from '../src/database/database.service';
 import { HealthController } from '../src/modules/system/health/health.controller';
 import { configureApi } from '../src/platform/http/configure-api';
@@ -26,11 +27,17 @@ describe('Versioned API contract', () => {
   let app: INestApplication<App>;
   const database = { checkReadiness: jest.fn<Promise<void>, []>() };
 
+  const storage = { health: jest.fn<Promise<{ status: string }>, []>() };
+
   beforeEach(async () => {
+    storage.health.mockReset().mockResolvedValue({ status: 'ok' });
     database.checkReadiness.mockReset().mockResolvedValue(undefined);
     const module = await Test.createTestingModule({
       controllers: [HealthController, ReservationFixture],
-      providers: [{ provide: DatabaseService, useValue: database }],
+      providers: [
+        { provide: DatabaseService, useValue: database },
+        { provide: StorageService, useValue: storage },
+      ],
     }).compile();
     app = module.createNestApplication();
     configureApi(app, {
@@ -76,7 +83,7 @@ describe('Versioned API contract', () => {
       .expect(200, {
         status: 'ok',
         service: 'gym4me-api',
-        checks: { database: 'up' },
+        checks: { database: 'up', storage: 'up' },
       });
     expect(database.checkReadiness).toHaveBeenCalledTimes(1);
   });
@@ -90,8 +97,20 @@ describe('Versioned API contract', () => {
       .expect(503, {
         status: 'error',
         service: 'gym4me-api',
-        checks: { database: 'down' },
+        checks: { database: 'down', storage: 'up' },
       });
+  });
+
+  it('reports storage failure without leaking its endpoint or credentials', async () => {
+    storage.health.mockRejectedValue(new Error('S3 private endpoint secret'));
+    await request(app.getHttpServer())
+      .get('/api/v1/system/health/ready')
+      .expect(503, {
+        status: 'error',
+        service: 'gym4me-api',
+        checks: { database: 'up', storage: 'down' },
+      });
+    await request(app.getHttpServer()).get('/api/v1/system/health').expect(200);
   });
 
   it('publishes OpenAPI paths with exactly one prefix and version', async () => {

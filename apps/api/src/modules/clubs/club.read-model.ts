@@ -2,6 +2,7 @@ import { NotFoundException } from '@nestjs/common';
 import { and, desc, eq, isNull, or, sql } from 'drizzle-orm';
 import * as s from '../../database/schema';
 import type { Db, Tx } from './club.repository';
+import { currentTariffs } from './club.tariffs';
 type Reader = Db | Tx;
 export const publicClub = () =>
   and(
@@ -50,13 +51,17 @@ export async function readClub(db: Reader, clubId: string, publicOnly = false) {
       updatedAt: s.clubs.updatedAt,
       logoId: s.clubs.logoId,
       coverId: s.clubs.coverId,
-      ownerName: s.users.displayName,
+      ownerName: publicOnly
+        ? sql<
+            string | null
+          >`CASE WHEN ${s.users.profilePublic} AND NOT ${s.users.deletionPending} THEN ${s.users.displayName} ELSE NULL END`
+        : s.users.displayName,
     })
     .from(s.clubs)
     .innerJoin(s.organizations, eq(s.organizations.id, s.clubs.id))
     .innerJoin(s.users, eq(s.users.id, s.clubs.ownerId))
     .where(and(eq(s.clubs.id, clubId), publicOnly ? publicClub() : undefined));
-  if (!club) throw new NotFoundException('باشگاه پیدا نشد.');
+  if (!club) throw new NotFoundException('Backend.clubNotFound');
   const [categories, sports, tags, phones, socials, gallery, branches, rating] =
     await Promise.all([
       db
@@ -166,6 +171,14 @@ export async function readClub(db: Reader, clubId: string, publicOnly = false) {
     getMedia(club.coverId),
   ]);
   const { ownerName, ...identity } = club;
+  const tariffs = (
+    await currentTariffs(db, clubId, undefined, publicOnly)
+  ).filter(
+    (tariff) =>
+      !publicOnly ||
+      tariff.branchId === null ||
+      branches.some((branch) => branch.id === tariff.branchId),
+  );
   return {
     ...identity,
     owner: { id: club.ownerId, displayName: ownerName },
@@ -178,6 +191,7 @@ export async function readClub(db: Reader, clubId: string, publicOnly = false) {
     socials,
     gallery,
     branches,
+    tariffs,
     rating: rating[0],
   };
 }
@@ -227,7 +241,7 @@ export async function readBranch(
         publicOnly ? publicBranchProfile() : undefined,
       ),
     );
-  if (!branch) throw new NotFoundException('شعبه پیدا نشد.');
+  if (!branch) throw new NotFoundException('Backend.branchNotFound');
   const [
     sports,
     equipments,
@@ -319,8 +333,16 @@ export async function readBranch(
       .select({
         id: s.branchCoaches.id,
         coachId: s.branchCoaches.coachId,
-        displayName: s.users.displayName,
-        biography: s.coachProfiles.biography,
+        displayName: publicOnly
+          ? sql<
+              string | null
+            >`CASE WHEN ${s.users.profilePublic} THEN ${s.users.displayName} ELSE NULL END`
+          : s.users.displayName,
+        biography: publicOnly
+          ? sql<
+              string | null
+            >`CASE WHEN ${s.users.profilePublic} THEN ${s.coachProfiles.biography} ELSE NULL END`
+          : s.coachProfiles.biography,
         sportId: s.branchCoaches.sportId,
       })
       .from(s.branchCoaches)
@@ -334,6 +356,7 @@ export async function readBranch(
           eq(s.branchCoaches.branchId, branchId),
           eq(s.branchCoaches.status, 'active'),
           eq(s.users.status, 'active'),
+          eq(s.users.deletionPending, false),
           or(
             isNull(s.branchCoaches.startsOn),
             sql`${s.branchCoaches.startsOn} <= current_date`,
@@ -417,20 +440,24 @@ export async function publicationReadiness(db: Reader, clubId: string) {
   const need = (ok: unknown, field: string, message: string) => {
     if (!ok) errors.push({ field, message });
   };
-  need(club.description?.trim(), 'description', 'معرفی کامل لازم است.');
-  need(club.cover, 'coverId', 'کاور لازم است.');
+  need(
+    club.description?.trim(),
+    'description',
+    'Backend.aFullDescriptionIsRequired',
+  );
+  need(club.cover, 'coverId', 'Backend.aCoverImageIsRequired');
   need(
     club.categories.some((c) => c.isActive),
     'categoryIds',
-    'حداقل یک دسته‌بندی فعال لازم است.',
+    'Backend.atLeastOneActiveCategoryIsRequired',
   );
   need(
     club.sports.some((sport) => sport.isActive),
     'sportIds',
-    'حداقل یک رشته فعال لازم است.',
+    'Backend.atLeastOneActiveSportIsRequired',
   );
   const main = club.branches.find((b) => b.isMain);
-  need(main, 'branches', 'شعبه اصلی لازم است.');
+  need(main, 'branches', 'Backend.aMainBranchIsRequired');
   if (main) {
     const branch = await readBranch(db, clubId, main.id);
     need(
@@ -440,22 +467,22 @@ export async function publicationReadiness(db: Reader, clubId: string) {
         branch.location.cityId &&
         branch.location.coordinates,
       'mainBranch.location',
-      'نشانی، کشور، استان، شهر و مختصات شعبه اصلی لازم است.',
+      'Backend.theMainBranchNeedsAnAddressCountry',
     );
     need(
       club.phones.length || branch.phones.length,
       'phones',
-      'حداقل یک شماره عمومی تماس لازم است.',
+      'Backend.atLeastOnePublicPhoneNumberIs',
     );
     need(
       branch.openingHours.weekly.length,
       'mainBranch.openingHours',
-      'ساعت هفتگی فعالیت لازم است.',
+      'Backend.weeklyOpeningHoursAreRequired',
     );
     need(
       branch.sports.some((sport) => sport.isActive),
       'mainBranch.sportIds',
-      'حداقل یک رشته فعال در شعبه اصلی لازم است.',
+      'Backend.theMainBranchNeedsAtLeastOne',
     );
   }
   return { ready: errors.length === 0, errors };

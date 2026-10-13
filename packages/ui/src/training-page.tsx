@@ -1,3 +1,5 @@
+"use client";
+import { useTranslations } from "@repo/i18n";
 import Link from "next/link";
 import { BarbellHorizontalIcon } from "./icons";
 import { Button } from "./kit/Button";
@@ -18,6 +20,7 @@ export function TrainingPage({
   description: string;
   back: string;
 }) {
+  const t = useTranslations();
   return (
     <main className="mx-auto flex min-h-dvh max-w-3xl flex-col gap-6 px-6 pt-[calc(2rem+var(--app-safe-top,env(safe-area-inset-top,0px)))] pb-[calc(2rem+var(--app-safe-bottom,env(safe-area-inset-bottom,0px)))]">
       <div>
@@ -41,7 +44,7 @@ export function TrainingPage({
           <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">Gym4Me</p>
+          <p className="text-muted-foreground">{t("Kit.brand")}</p>
         </CardContent>
         <CardFooter>
           <Button asChild>

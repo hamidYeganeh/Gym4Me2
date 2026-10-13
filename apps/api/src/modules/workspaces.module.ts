@@ -27,6 +27,26 @@ import {
 } from './clubs/club.controller';
 
 import { ClubCommunityService } from './clubs/club.community.service';
+import { StorageModule } from './clubs/storage.module';
+import { MediaRetentionService } from './clubs/media-retention.service';
+import { ClubMediaService } from './clubs/club.media.service';
+import { ClubTariffService } from './clubs/club.tariffs';
+import { BusinessTariffsController } from './clubs/club.tariffs.controller';
+import { AccountPhoneController } from './profile/account-phone.controller';
+import { FavoritesController } from './profile/favorites.controller';
+import { FavoritesService } from './profile/favorites.service';
+import { PrivacyService } from './profile/privacy.service';
+import { RetentionService } from './profile/retention.service';
+import { ConsentGuard } from './profile/consent.guard';
+import {
+  AccountPrivacyController,
+  PrivacyPolicyController,
+} from './profile/privacy.controller';
+import {
+  BusinessMediaController,
+  PublicMediaController,
+  AdminMediaController,
+} from './clubs/club.media.controller';
 import {
   CoachProfileController,
   ClubTeamContentController,
@@ -35,8 +55,16 @@ import {
 } from './clubs/club.community.controller';
 
 @Module({
-  imports: [DatabaseModule, AuthModule],
+  imports: [DatabaseModule, AuthModule, StorageModule],
   controllers: [
+    AccountPrivacyController,
+    PrivacyPolicyController,
+    FavoritesController,
+    AccountPhoneController,
+    BusinessTariffsController,
+    BusinessMediaController,
+    PublicMediaController,
+    AdminMediaController,
     CoachProfileController,
     ClubTeamContentController,
     ClubReviewsController,
@@ -57,6 +85,18 @@ import {
     AdminOverviewController,
     AdminUsersController,
   ],
-  providers: [BusinessService, AdminService, ClubService, ClubCommunityService],
+  providers: [
+    PrivacyService,
+    RetentionService,
+    ConsentGuard,
+    BusinessService,
+    AdminService,
+    ClubService,
+    ClubCommunityService,
+    MediaRetentionService,
+    ClubMediaService,
+    ClubTariffService,
+    FavoritesService,
+  ],
 })
 export class WorkspacesModule {}

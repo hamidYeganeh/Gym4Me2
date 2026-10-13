@@ -1,5 +1,9 @@
 "use client";
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useFormatter } from "@repo/i18n";
+import { isTranslationKey, type TranslationKey } from "@repo/i18n/messages";
+import { useTranslations } from "@repo/i18n";
+
+import { type ReactNode } from "react";
 import { Alert, AlertDescription } from "@repo/ui/kit/Alert";
 import { Button } from "@repo/ui/kit/Button";
 import {
@@ -12,38 +16,81 @@ import { Field, FieldLabel } from "@repo/ui/kit/Field";
 import { Input } from "@repo/ui/kit/Input";
 import { Spinner } from "@repo/ui/kit/Spinner";
 import { Badge } from "@repo/ui/kit/Badge";
-import { api, type Client } from "./api";
 
-export const roleNames: Record<string, string> = {
-  owner: "مالک",
-  manager: "مدیر",
-  receptionist: "پذیرش",
-  accountant: "حسابدار",
-};
-export const statusNames: Record<string, string> = {
-  pending: "در انتظار بررسی",
-  approved: "تأییدشده",
-  rejected: "ردشده",
-  suspended: "تعلیق‌شده",
-  active: "فعال",
-};
-export const dateLabel = (value: string) =>
-  new Intl.DateTimeFormat("fa-IR", { dateStyle: "medium" }).format(
-    new Date(value),
-  );
+const roleKeys = {
+  owner: "Copy.owner",
+  manager: "Copy.manager",
+  receptionist: "Copy.receptionist",
+  accountant: "Copy.accountant",
+} satisfies Record<string, TranslationKey>;
+const statusKeys = {
+  pending: "Copy.pendingReview",
+  approved: "Copy.approved",
+  rejected: "Copy.rejected",
+  suspended: "Copy.suspended",
+  active: "Copy.active",
+  inactive: "Copy.inactive",
+  draft: "Copy.draft",
+  pending_review: "Copy.pendingPublication",
+  published: "Copy.published",
+  hidden: "Copy.hidden",
+  open: "Copy.open",
+  temporarily_closed: "Copy.temporarilyClosed",
+  permanently_closed: "Copy.closed",
+} satisfies Record<string, TranslationKey>;
+export function useDateLabel() {
+  const format = useFormatter();
+  return (value: string) =>
+    format.dateTime(new Date(value), { dateStyle: "medium" });
+}
 export function Status({ value }: { value: string }) {
+  const statusNames = useLabelMap(statusKeys);
+  const t = useTranslations();
   return (
     <Badge
-      variant={["active", "approved"].includes(value) ? "default" : "secondary"}
+      variant={
+        ["active", "approved", "published", "open"].includes(value)
+          ? "default"
+          : "secondary"
+      }
     >
-      {statusNames[value] ?? value}
+      {statusNames[value] ?? t("Copy.unknown")}
     </Badge>
   );
 }
-export function ErrorNotice({ error }: { error: string | null }) {
+export function ErrorNotice({ error }: { error: unknown }) {
+  const t = useTranslations();
+  const code =
+    typeof error === "string"
+      ? error
+      : error &&
+          typeof error === "object" &&
+          "message" in error &&
+          typeof error.message === "string"
+        ? error.message
+        : "Errors.requestFailed";
+  const details =
+    error && typeof error === "object" && "details" in error
+      ? error.details
+      : null;
+  const params =
+    details &&
+    typeof details === "object" &&
+    "parameters" in details &&
+    typeof details.parameters === "object" &&
+    details.parameters
+      ? (Object.fromEntries(
+          Object.entries(details.parameters).filter(
+            ([, value]) =>
+              typeof value === "string" || typeof value === "number",
+          ),
+        ) as Record<string, string | number>)
+      : {};
   return error ? (
     <Alert variant="destructive" role="alert">
-      <AlertDescription>{error}</AlertDescription>
+      <AlertDescription>
+        {t(isTranslationKey(code) ? code : "Errors.requestFailed", params)}
+      </AlertDescription>
     </Alert>
   ) : null;
 }
@@ -64,23 +111,30 @@ export function Blank({
   );
 }
 export function Loading() {
+  const t = useTranslations();
+
   return (
     <div
       className="flex items-center justify-center gap-3 py-16 text-muted-foreground"
       role="status"
     >
       <Spinner />
-      در حال دریافت اطلاعات…
+      {t("Copy.loadingInformation")}{" "}
     </div>
   );
 }
 export function TextField({
   label,
   name,
+  fieldClassName,
   ...props
-}: { label: string; name: string } & React.ComponentProps<typeof Input>) {
+}: {
+  label: string;
+  name: string;
+  fieldClassName?: string;
+} & React.ComponentProps<typeof Input>) {
   return (
-    <Field>
+    <Field className={fieldClassName}>
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
       <Input id={name} name={name} {...props} />
     </Field>
@@ -102,54 +156,31 @@ export function Submit({
     </Button>
   );
 }
-export function useQuery<T>(client: Client, path: string | null) {
-  const [state, setState] = useState<{
-    path: string | null;
-    data?: T;
-    error: string | null;
-    loading: boolean;
-  }>({ path, error: null, loading: true });
-  const [version, setVersion] = useState(0);
-  const reload = useCallback(() => setVersion((v) => v + 1), []);
-  useEffect(() => {
-    let cancelled = false;
-    if (!path) return;
-    api<T>(client, path)
-      .then((data) => {
-        if (!cancelled) setState({ path, data, error: null, loading: false });
-      })
-      .catch((err: unknown) => {
-        if (!cancelled)
-          setState({
-            path,
-            error: err instanceof Error ? err.message : "خطا در دریافت اطلاعات",
-            loading: false,
-          });
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [client, path, version]);
-  return {
-    data: state.path === path ? state.data : undefined,
-    error: state.path === path ? state.error : null,
-    loading: path !== null && (state.path !== path || state.loading),
-    reload,
-  };
-}
 export function QueryError({
   error,
   retry,
 }: {
-  error: string | null;
+  error: unknown;
   retry: () => void;
 }) {
+  const t = useTranslations();
+
   return error ? (
     <div className="grid gap-3">
       <ErrorNotice error={error} />
-      <Button variant="outline" onClick={retry}>
-        تلاش دوباره
+      <Button variant="outline" onClick={() => void retry()}>
+        {t("Copy.tryAgain")}{" "}
       </Button>
     </div>
   ) : null;
+}
+
+export function useLabelMap(keys: Record<string, TranslationKey>) {
+  const t = useTranslations();
+  return Object.fromEntries(
+    Object.entries(keys).map(([key, value]) => [key, t(value)]),
+  );
+}
+export function useRoleNames() {
+  return useLabelMap(roleKeys);
 }

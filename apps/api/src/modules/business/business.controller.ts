@@ -1,3 +1,4 @@
+import { ConsentGuard } from '../profile/consent.guard';
 import {
   Body,
   ForbiddenException,
@@ -22,12 +23,12 @@ const nameSchema = z
   .strict();
 function businessUser(req: AuthRequest) {
   if (req.principal.session.client !== 'business')
-    throw new ForbiddenException('از پنل بیزینس وارد شوید.');
+    throw new ForbiddenException('Backend.signInFromTheBusinessPanel');
   return req.principal.user.id;
 }
 @DomainController('business', 'organizations')
 @ClientHeader()
-@UseGuards(ClientGuard, AuthGuard)
+@UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class BusinessController {
   constructor(private readonly service: BusinessService) {}
   @Get() list(@Req() req: AuthRequest) {
@@ -78,6 +79,12 @@ export class BusinessController {
         .object({
           phone: phoneSchema,
           role: z.enum(['manager', 'receptionist', 'accountant']),
+          branchIds: z
+            .array(z.uuid())
+            .min(1)
+            .max(100)
+            .refine((ids) => new Set(ids).size === ids.length)
+            .optional(),
         })
         .strict(),
       body,
@@ -87,6 +94,7 @@ export class BusinessController {
       parse(z.uuid(), id),
       input.phone,
       input.role,
+      input.branchIds,
     );
   }
   @Post(':organizationId/team/:memberId/remove') remove(

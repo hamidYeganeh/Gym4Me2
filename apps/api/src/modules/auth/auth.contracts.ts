@@ -4,6 +4,7 @@ import { z } from 'zod';
 
 export const clientSchema = z.enum(['application', 'business', 'admin']);
 export type Client = z.infer<typeof clientSchema>;
+export type SessionTransport = 'web' | 'native';
 export function normalizeDigits(value: string) {
   return value
     .replace(/[۰-۹]/g, (n) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(n)))
@@ -17,7 +18,7 @@ export const phoneSchema = z
       .replace(/^0098/, '+98')
       .replace(/^09/, '+989'),
   )
-  .pipe(z.string().regex(/^\+989\d{9}$/, 'شماره موبایل معتبر وارد کنید.'));
+  .pipe(z.string().regex(/^\+989\d{9}$/, 'Backend.enterAValidMobileNumber'));
 export const requestOtpSchema = z.object({ phone: phoneSchema }).strict();
 export const verifyOtpSchema = z
   .object({
@@ -30,8 +31,7 @@ export const verifyOtpSchema = z
   .strict();
 export function parse<T>(schema: z.ZodType<T>, value: unknown): T {
   const parsed = schema.safeParse(value);
-  if (!parsed.success)
-    throw new BadRequestException('اطلاعات واردشده معتبر نیست.');
+  if (!parsed.success) throw new BadRequestException('Backend.invalidInput');
   return parsed.data;
 }
 export const ClientHeader = () =>

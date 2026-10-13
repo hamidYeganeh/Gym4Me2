@@ -1,6 +1,23 @@
 name: gym4me
 
 services:
+  storage:
+    image: chrislusf/seaweedfs@sha256:4e61d15fd35994cb1e43e1e553dff106794841fd9a99ade2fc8c8bfce4d7872d
+    restart: unless-stopped
+    command: ["mini", "-dir=/data"]
+    environment:
+      AWS_ACCESS_KEY_ID: gym4me_local
+      AWS_SECRET_ACCESS_KEY: gym4me_local_storage
+      S3_BUCKET: gym4me
+    ports:
+      - "127.0.0.1:8333:8333"
+    volumes:
+      - storage_data:/data
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:9333/cluster/status"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
   postgres:
     image: postgres:18-alpine
     restart: unless-stopped
@@ -38,3 +55,4 @@ services:
 
 volumes:
   postgres_data:
+  storage_data:

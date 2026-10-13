@@ -13,7 +13,8 @@
     "./card": "./src/card.tsx",
     "./page-transitions": "./src/page-transitions.tsx",
     "./training-page": "./src/training-page.tsx",
-    "./account": "./src/account/index.ts"
+    "./account": "./src/account/index.ts",
+    "./mobile-page": "./src/mobile-page.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -57,7 +58,9 @@
     "react-use-measure": "^2.1.7",
     "recharts": "3.8.0",
     "sonner": "^2.0.8",
-    "vaul": "^1.1.2"
+    "vaul": "^1.1.2",
+    "@repo/api": "workspace:*",
+    "@repo/i18n": "workspace:*"
   },
   "type": "module",
   "peerDependencies": {

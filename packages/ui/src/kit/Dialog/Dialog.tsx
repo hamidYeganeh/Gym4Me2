@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
 import { dialogStyles } from "./Dialog.styles";
 import type {
   DialogCloseProps,
@@ -51,6 +52,7 @@ function DialogContent({
   showCloseButton = true,
   ...props
 }: DialogContentProps) {
+  const t = useTranslations();
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -68,7 +70,9 @@ function DialogContent({
               size="icon-sm"
             >
               <XIcon />
-              <span className={dialogStyles.dialogContent3()}>Close</span>
+              <span className={dialogStyles.dialogContent3()}>
+                {t("Kit.close")}
+              </span>
             </Button>
           </DialogPrimitive.Close>
         )}
@@ -93,6 +97,7 @@ function DialogFooter({
   children,
   ...props
 }: DialogFooterProps) {
+  const t = useTranslations();
   return (
     <div
       data-slot="dialog-footer"
@@ -102,7 +107,7 @@ function DialogFooter({
       {children}
       {showCloseButton && (
         <DialogPrimitive.Close asChild>
-          <Button variant="outline">Close</Button>
+          <Button variant="outline">{t("Kit.close")}</Button>
         </DialogPrimitive.Close>
       )}
     </div>

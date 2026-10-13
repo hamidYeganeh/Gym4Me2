@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
 import { questionnaireStyles } from "./Questionnaire.styles";
 import type {
   QuestionnaireActionsProps,
@@ -205,6 +206,7 @@ function QuestionnairePrevious({
   variant = "outline",
   ...props
 }: QuestionnairePreviousProps) {
+  const t = useTranslations();
   return (
     <QuestionnairePrimitive.Previous
       data-slot="questionnaire-previous"
@@ -217,7 +219,7 @@ function QuestionnairePrevious({
       )}
       {...props}
     >
-      {children ?? "Previous"}
+      {children ?? t("Kit.previous")}
     </QuestionnairePrimitive.Previous>
   );
 }
@@ -229,6 +231,7 @@ function QuestionnaireSkip({
   variant = "outline",
   ...props
 }: QuestionnaireSkipProps) {
+  const t = useTranslations();
   return (
     <QuestionnairePrimitive.Skip
       data-slot="questionnaire-skip"
@@ -241,7 +244,7 @@ function QuestionnaireSkip({
       )}
       {...props}
     >
-      {children ?? "Skip"}
+      {children ?? t("Kit.skip")}
     </QuestionnairePrimitive.Skip>
   );
 }
@@ -253,6 +256,7 @@ function QuestionnaireNext({
   variant = "default",
   ...props
 }: QuestionnaireNextProps) {
+  const t = useTranslations();
   return (
     <QuestionnairePrimitive.Next
       data-slot="questionnaire-next"
@@ -265,7 +269,7 @@ function QuestionnaireNext({
       )}
       {...props}
     >
-      {children ?? "Next"}
+      {children ?? t("Kit.next")}
     </QuestionnairePrimitive.Next>
   );
 }
@@ -277,6 +281,7 @@ function QuestionnaireSubmit({
   variant = "default",
   ...props
 }: QuestionnaireSubmitProps) {
+  const t = useTranslations();
   return (
     <QuestionnairePrimitive.Submit
       data-slot="questionnaire-submit"
@@ -289,7 +294,7 @@ function QuestionnaireSubmit({
       )}
       {...props}
     >
-      {children ?? "Submit"}
+      {children ?? t("Kit.submit")}
     </QuestionnairePrimitive.Submit>
   );
 }

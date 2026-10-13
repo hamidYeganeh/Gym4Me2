@@ -3,6 +3,31 @@ import { validateEnvironment } from './environment';
 const DATABASE_URL = 'postgresql://test:example@localhost:55433/gym4me_test';
 
 describe('API environment', () => {
+  it('keeps the local pilot data policy bounded and never starts retention implicitly in tests', () => {
+    const env = validateEnvironment({ DATABASE_URL, NODE_ENV: 'test' });
+    expect(env.RETENTION_ENABLED).toBe(false);
+    expect(env.ACCOUNT_MINIMUM_AGE).toBe(18);
+    expect(env.ACCOUNT_DELETION_GRACE_DAYS).toBe(7);
+    expect(env.BACKUP_RETENTION_DAYS).toBe(30);
+    expect(
+      validateEnvironment({
+        DATABASE_URL,
+        NODE_ENV: 'test',
+        RETENTION_ENABLED: 'true',
+      }).RETENTION_ENABLED,
+    ).toBe(true);
+    for (const invalid of [
+      { ACCOUNT_MINIMUM_AGE: 17 },
+      { ACCOUNT_DELETION_GRACE_DAYS: 0 },
+      { OTP_RETENTION_DAYS: 0 },
+      { BACKUP_RETENTION_DAYS: 0 },
+      { RETENTION_INTERVAL_MINUTES: 0 },
+      { PRIVACY_POLICY_VERSION: 'invalid version' },
+    ])
+      expect(() => validateEnvironment({ DATABASE_URL, ...invalid })).toThrow(
+        'Invalid API configuration',
+      );
+  });
   it('requires an explicit PostgreSQL connection without leaking input', () => {
     expect(() => validateEnvironment({})).toThrow('DATABASE_URL');
     for (const invalid of [
@@ -53,7 +78,7 @@ describe('API environment', () => {
       validateEnvironment({ DATABASE_URL, AUTH_SECRET: 'short' }),
     ).toThrow('AUTH_SECRET');
     expect(validateEnvironment({ DATABASE_URL }).KAVENEGAR_OTP_TEMPLATE).toBe(
-      'g4m-otp',
+      'gym4meotp',
     );
   });
 

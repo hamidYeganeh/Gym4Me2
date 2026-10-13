@@ -21,7 +21,9 @@
     "db:studio": "pnpm --filter api db:studio",
     "db:test:up": "docker compose --profile test up -d --wait postgres-test",
     "db:test:down": "docker compose --profile test stop postgres-test",
-    "test:db": "pnpm --filter api test:db"
+    "test:db": "pnpm --filter api test:db",
+    "infra:up": "docker compose up -d --wait postgres storage",
+    "storage:up": "docker compose up -d --wait storage"
   },
   "devDependencies": {
     "prettier": "3.9.6",

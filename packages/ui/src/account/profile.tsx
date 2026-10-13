@@ -1,4 +1,14 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
+
+import { useSessions, useRevokeSession } from "@repo/api/auth";
+import {
+  useInvitations,
+  useUpdateAccount,
+  useAcceptInvitation,
+} from "@repo/api/profile";
+import type { Account } from "@repo/api/auth";
+import type { SessionDto as Session } from "@repo/api/auth";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -12,7 +22,11 @@ import {
 } from "@repo/ui/kit/Card";
 import { FieldGroup } from "@repo/ui/kit/Field";
 import { Badge } from "@repo/ui/kit/Badge";
-import { api, type Account, type Client, type Invitation } from "./api";
+import { PhoneChange } from "./phone-change";
+import { AccountPrivacy } from "./privacy";
+import { Checkbox } from "@repo/ui/kit/Checkbox";
+import { Field, FieldLabel, FieldDescription } from "@repo/ui/kit/Field";
+
 import {
   Blank,
   ErrorNotice,
@@ -20,20 +34,24 @@ import {
   QueryError,
   Submit,
   TextField,
-  dateLabel,
-  roleNames,
-  useQuery,
+  useDateLabel,
+  useRoleNames,
 } from "./common";
 export function ProfileContent({
-  client,
   account,
-  onSave,
+  mobile = false,
 }: {
-  client: Client;
   account: Account;
-  onSave: (account: Account) => void;
+  mobile?: boolean;
 }) {
+  const t = useTranslations();
+
+  const updateAccount = useUpdateAccount();
+
   const [name, setName] = useState(account.displayName ?? "");
+  const [profilePublic, setProfilePublic] = useState(
+    account.profilePublic ?? false,
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   async function submit(e: FormEvent) {
@@ -41,11 +59,12 @@ export function ProfileContent({
     setBusy(true);
     setError(null);
     try {
-      const user = await api<Account>(client, "profile/account", "PATCH", {
-        displayName: name,
+      await updateAccount.mutateAsync({
+        displayName: name.trim() || null,
+        profilePublic,
       });
-      onSave(user);
-      toast.success("پروفایل ذخیره شد.");
+
+      toast.success(t("Copy.profileSaved"));
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -53,53 +72,72 @@ export function ProfileContent({
     }
   }
   return (
-    <Card className="max-w-2xl">
-      <CardHeader>
-        <CardTitle>اطلاعات حساب</CardTitle>
-        <CardDescription>
-          این اطلاعات در اپ و پنل‌های شما مشترک است.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={submit} className="grid gap-6">
-          <FieldGroup>
-            <TextField
-              label="نام و نام خانوادگی"
-              name="displayName"
-              autoComplete="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              minLength={2}
-              maxLength={100}
-            />
-            <TextField
-              label="شماره موبایل تأییدشده"
-              name="phone"
-              dir="ltr"
-              value={account.phone}
-              readOnly
-            />
-            <ErrorNotice error={error} />
-          </FieldGroup>
-          <div>
-            <Submit busy={busy}>ذخیره تغییرات</Submit>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+    <div className="grid gap-6">
+      {!mobile && <AccountPrivacy />}
+      <Card className="max-w-2xl">
+        <CardHeader>
+          <CardTitle>{t("Copy.accountInformation")}</CardTitle>
+          {!mobile && (
+            <CardDescription>
+              {t("Copy.thisInformationIsSharedAcrossYourApp")}{" "}
+            </CardDescription>
+          )}
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={submit} className="grid gap-6">
+            <FieldGroup>
+              <TextField
+                label={t("Privacy.optionalName")}
+                name="displayName"
+                autoComplete="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                minLength={2}
+                maxLength={100}
+              />
+              <Field orientation="horizontal">
+                <Checkbox
+                  id="profile-public"
+                  checked={profilePublic}
+                  onCheckedChange={(value) => setProfilePublic(value === true)}
+                />
+                <div>
+                  <FieldLabel htmlFor="profile-public">
+                    {t("Privacy.publicName")}
+                  </FieldLabel>
+                  <FieldDescription>
+                    {t("Privacy.publicNameHint")}
+                  </FieldDescription>
+                </div>
+              </Field>
+              <TextField
+                label={t("Copy.verifiedMobileNumber")}
+                name="phone"
+                dir="ltr"
+                value={account.phone}
+                readOnly
+              />
+              <ErrorNotice error={error} />
+            </FieldGroup>
+            <div>
+              <Submit busy={busy}>{t("Copy.saveChanges")}</Submit>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+      <PhoneChange />
+    </div>
   );
 }
-type Session = {
-  id: string;
-  client: string;
-  device: string;
-  createdAt: string;
-  expiresAt: string;
-  current: boolean;
-};
-export function SessionsContent({ client }: { client: Client }) {
-  const query = useQuery<Session[]>(client, "auth/sessions");
+
+export function SessionsContent() {
+  const dateLabel = useDateLabel();
+
+  const t = useTranslations();
+
+  const revokeSession = useRevokeSession();
+
+  const query = useSessions();
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -107,11 +145,10 @@ export function SessionsContent({ client }: { client: Client }) {
     setBusy(session.id);
     setError(null);
     try {
-      await api(client, `auth/sessions/${session.id}/revoke`, "POST");
+      await revokeSession.mutateAsync({ id: session.id });
       if (session.current) router.replace("/login");
       else {
-        query.reload();
-        toast.success("نشست پایان یافت.");
+        toast.success(t("Copy.sessionEnded"));
       }
     } catch (err) {
       setError((err as Error).message);
@@ -122,11 +159,11 @@ export function SessionsContent({ client }: { client: Client }) {
   return (
     <>
       <p className="text-muted-foreground">
-        ورودهای فعال به حساب خود را ببین و دسترسی دستگاه‌های دیگر را قطع کن.
+        {t("Copy.seeYourActiveSessionsAndRevokeAccess")}{" "}
       </p>
       <ErrorNotice error={error} />
-      <QueryError error={query.error} retry={query.reload} />
-      {query.loading ? (
+      <QueryError error={query.error} retry={query.refetch} />
+      {query.isLoading ? (
         <Loading />
       ) : (
         <div className="grid gap-4">
@@ -137,13 +174,13 @@ export function SessionsContent({ client }: { client: Client }) {
                   <div className="flex items-center gap-2">
                     <p className="font-medium">
                       {{
-                        application: "اپلیکیشن",
-                        business: "بیزینس",
-                        admin: "ادمین",
+                        application: t("Copy.application"),
+                        business: t("Copy.business"),
+                        admin: t("Copy.admin"),
                       }[session.client] ?? session.client}
                     </p>
                     {session.current && (
-                      <Badge variant="secondary">این نشست</Badge>
+                      <Badge variant="secondary">{t("Copy.thisSession")}</Badge>
                     )}
                   </div>
                   <p
@@ -154,8 +191,8 @@ export function SessionsContent({ client }: { client: Client }) {
                     {session.device}
                   </p>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    ورود: {dateLabel(session.createdAt)} · انقضا:{" "}
-                    {dateLabel(session.expiresAt)}
+                    {t("Copy.signedIn")} {dateLabel(session.createdAt)}{" "}
+                    {t("Copy.expires2")} {dateLabel(session.expiresAt)}
                   </p>
                 </div>
                 <Button
@@ -163,7 +200,9 @@ export function SessionsContent({ client }: { client: Client }) {
                   disabled={busy !== null}
                   onClick={() => void revoke(session)}
                 >
-                  {session.current ? "خروج از این نشست" : "پایان نشست"}
+                  {session.current
+                    ? t("Copy.signOutOfThisSession")
+                    : t("Copy.endSession")}
                 </Button>
               </CardContent>
             </Card>
@@ -173,17 +212,24 @@ export function SessionsContent({ client }: { client: Client }) {
     </>
   );
 }
-export function InvitationsContent({ client }: { client: Client }) {
-  const query = useQuery<Invitation[]>(client, "profile/invitations");
+export function InvitationsContent() {
+  const roleNames = useRoleNames();
+  const dateLabel = useDateLabel();
+
+  const t = useTranslations();
+
+  const acceptInvitation = useAcceptInvitation();
+
+  const query = useInvitations();
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   async function accept(id: string) {
     setBusy(id);
     setError(null);
     try {
-      await api(client, `profile/invitations/${id}/accept`, "POST");
-      query.reload();
-      toast.success("دعوت پذیرفته شد. مجموعه در پنل بیزینس در دسترس است.");
+      await acceptInvitation.mutateAsync({ id });
+
+      toast.success(t("Copy.invitationAcceptedTheOrganizationIsNowAvailable"));
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -193,13 +239,13 @@ export function InvitationsContent({ client }: { client: Client }) {
   return (
     <>
       <ErrorNotice error={error} />
-      <QueryError error={query.error} retry={query.reload} />
-      {query.loading ? (
+      <QueryError error={query.error} retry={query.refetch} />
+      {query.isLoading ? (
         <Loading />
       ) : !query.error && !query.data?.length ? (
         <Blank
-          title="دعوت فعالی نداری"
-          description="دعوت‌های ارسال‌شده به شماره موبایل شما اینجا نمایش داده می‌شوند."
+          title={t("Copy.noActiveInvitations")}
+          description={t("Copy.invitationsSentToYourMobileNumberAppear")}
         />
       ) : (
         query.data?.map((inv) => (
@@ -208,14 +254,15 @@ export function InvitationsContent({ client }: { client: Client }) {
               <div>
                 <h2 className="font-semibold">{inv.organizationName}</h2>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {roleNames[inv.role]} · معتبر تا {dateLabel(inv.expiresAt)}
+                  {roleNames[inv.role]} {t("Copy.validUntil")}{" "}
+                  {dateLabel(inv.expiresAt)}
                 </p>
               </div>
               <Button
                 disabled={busy !== null}
                 onClick={() => void accept(inv.id)}
               >
-                پذیرش دعوت
+                {t("Copy.acceptInvitation")}{" "}
               </Button>
             </CardContent>
           </Card>
