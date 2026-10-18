@@ -13,6 +13,7 @@ import {
   InputGroupAddon,
   InputGroupButton,
 } from "@repo/ui/kit/InputGroup";
+import { ServicesLink } from "../luma/discovery-link";
 import { DiscoveryTabBar } from "./discovery-tab-bar";
 import { ClubList } from "./club-list";
 import Link from "next/link";
@@ -112,10 +113,10 @@ export function Discovery() {
           href="/"
           className="flex items-center gap-2.5 text-lg font-bold tracking-tight"
         >
-          <span className="flex size-10 items-center justify-center rounded-full bg-primary text-xl text-primary-foreground">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-xl text-primary-foreground">
             <BarbellHorizontalIcon />
           </span>
-          <span className="max-[360px]:sr-only">{home("brand")}</span>
+          <span className="sr-only sm:not-sr-only">{home("brand")}</span>
         </Link>
         <div className="flex shrink-0 items-center gap-1.5">
           <Button asChild variant="outline" size="icon-lg" className="size-11">
@@ -341,6 +342,7 @@ export function Discovery() {
           busy={query.isFetching}
         />
       )}
+      <ServicesLink />
       <DiscoveryTabBar />
     </main>
   );

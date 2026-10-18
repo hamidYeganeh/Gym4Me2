@@ -1,0 +1,1170 @@
+{
+  "scope": "Final synthetic card references after motion/focus changes; per-card pixel comparison required",
+  "build": "kU9Z5l1CGWD_MGfvI-I6r",
+  "cases": [
+    {
+      "cardBounds": [
+        {
+          "height": 464,
+          "id": "club-portrait",
+          "width": 320,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 432,
+          "id": "club-compact",
+          "width": 320,
+          "x": 20,
+          "y": 788
+        },
+        {
+          "height": 240,
+          "id": "club-landscape",
+          "width": 320,
+          "x": 20,
+          "y": 1288
+        },
+        {
+          "height": 200,
+          "id": "featured",
+          "width": 320,
+          "x": 20,
+          "y": 1584
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 20,
+          "y": 1840
+        },
+        {
+          "height": 426.65625,
+          "id": "coach-default",
+          "width": 320,
+          "x": 20,
+          "y": 2196
+        },
+        {
+          "height": 400,
+          "id": "coach-portrait",
+          "width": 320,
+          "x": 20,
+          "y": 2690.65625
+        }
+      ],
+      "dark": true,
+      "dir": "ltr",
+      "images": true,
+      "lang": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.72185 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(0.145 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(0.205 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.708 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(29, 238, 87)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.704 0.191 22.216)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        360,
+        844
+      ],
+      "file": "cards-after-en-dark-360.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 501.65625,
+          "id": "club-portrait",
+          "width": 350,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 466.65625,
+          "id": "club-compact",
+          "width": 350,
+          "x": 20,
+          "y": 825.65625
+        },
+        {
+          "height": 262.5,
+          "id": "club-landscape",
+          "width": 350,
+          "x": 20,
+          "y": 1360.3125
+        },
+        {
+          "height": 218.75,
+          "id": "featured",
+          "width": 350,
+          "x": 20,
+          "y": 1678.8125
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 20,
+          "y": 1953.5625
+        },
+        {
+          "height": 466.65625,
+          "id": "coach-default",
+          "width": 350,
+          "x": 20,
+          "y": 2309.5625
+        },
+        {
+          "height": 437.5,
+          "id": "coach-portrait",
+          "width": 350,
+          "x": 20,
+          "y": 2844.21875
+        }
+      ],
+      "dark": true,
+      "dir": "ltr",
+      "images": true,
+      "lang": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.72185 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(0.145 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(0.205 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.708 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(29, 238, 87)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.704 0.191 22.216)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "cards-after-en-dark-390.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 559,
+          "id": "club-portrait",
+          "width": 390,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 520,
+          "id": "club-compact",
+          "width": 390,
+          "x": 20,
+          "y": 883
+        },
+        {
+          "height": 292.5,
+          "id": "club-landscape",
+          "width": 390,
+          "x": 20,
+          "y": 1471
+        },
+        {
+          "height": 243.75,
+          "id": "featured",
+          "width": 390,
+          "x": 20,
+          "y": 1819.5
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 20,
+          "y": 2119.25
+        },
+        {
+          "height": 512,
+          "id": "coach-default",
+          "width": 384,
+          "x": 20,
+          "y": 2475.25
+        },
+        {
+          "height": 480,
+          "id": "coach-portrait",
+          "width": 384,
+          "x": 20,
+          "y": 3055.25
+        }
+      ],
+      "dark": true,
+      "dir": "ltr",
+      "images": true,
+      "lang": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.72185 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(0.145 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(0.205 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.708 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(29, 238, 87)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.704 0.191 22.216)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        430,
+        844
+      ],
+      "file": "cards-after-en-dark-430.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 464,
+          "id": "club-portrait",
+          "width": 320,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 432,
+          "id": "club-compact",
+          "width": 320,
+          "x": 20,
+          "y": 788
+        },
+        {
+          "height": 240,
+          "id": "club-landscape",
+          "width": 320,
+          "x": 20,
+          "y": 1288
+        },
+        {
+          "height": 200,
+          "id": "featured",
+          "width": 320,
+          "x": 20,
+          "y": 1584
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 20,
+          "y": 1840
+        },
+        {
+          "height": 426.65625,
+          "id": "coach-default",
+          "width": 320,
+          "x": 20,
+          "y": 2196
+        },
+        {
+          "height": 400,
+          "id": "coach-portrait",
+          "width": 320,
+          "x": 20,
+          "y": 2690.65625
+        }
+      ],
+      "dark": false,
+      "dir": "ltr",
+      "images": true,
+      "lang": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.53545 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.556 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(25, 208, 76)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.577 0.245 27.325)",
+          "fg": "oklch(1 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        360,
+        844
+      ],
+      "file": "cards-after-en-light-360.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 501.65625,
+          "id": "club-portrait",
+          "width": 350,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 466.65625,
+          "id": "club-compact",
+          "width": 350,
+          "x": 20,
+          "y": 825.65625
+        },
+        {
+          "height": 262.5,
+          "id": "club-landscape",
+          "width": 350,
+          "x": 20,
+          "y": 1360.3125
+        },
+        {
+          "height": 218.75,
+          "id": "featured",
+          "width": 350,
+          "x": 20,
+          "y": 1678.8125
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 20,
+          "y": 1953.5625
+        },
+        {
+          "height": 466.65625,
+          "id": "coach-default",
+          "width": 350,
+          "x": 20,
+          "y": 2309.5625
+        },
+        {
+          "height": 437.5,
+          "id": "coach-portrait",
+          "width": 350,
+          "x": 20,
+          "y": 2844.21875
+        }
+      ],
+      "dark": false,
+      "dir": "ltr",
+      "images": true,
+      "lang": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.53545 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.556 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(25, 208, 76)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.577 0.245 27.325)",
+          "fg": "oklch(1 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "cards-after-en-light-390.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 559,
+          "id": "club-portrait",
+          "width": 390,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 520,
+          "id": "club-compact",
+          "width": 390,
+          "x": 20,
+          "y": 883
+        },
+        {
+          "height": 292.5,
+          "id": "club-landscape",
+          "width": 390,
+          "x": 20,
+          "y": 1471
+        },
+        {
+          "height": 243.75,
+          "id": "featured",
+          "width": 390,
+          "x": 20,
+          "y": 1819.5
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 20,
+          "y": 2119.25
+        },
+        {
+          "height": 512,
+          "id": "coach-default",
+          "width": 384,
+          "x": 20,
+          "y": 2475.25
+        },
+        {
+          "height": 480,
+          "id": "coach-portrait",
+          "width": 384,
+          "x": 20,
+          "y": 3055.25
+        }
+      ],
+      "dark": false,
+      "dir": "ltr",
+      "images": true,
+      "lang": "en",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.53545 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.556 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(25, 208, 76)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.577 0.245 27.325)",
+          "fg": "oklch(1 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        430,
+        844
+      ],
+      "file": "cards-after-en-light-430.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 464,
+          "id": "club-portrait",
+          "width": 320,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 432,
+          "id": "club-compact",
+          "width": 320,
+          "x": 20,
+          "y": 788
+        },
+        {
+          "height": 240,
+          "id": "club-landscape",
+          "width": 320,
+          "x": 20,
+          "y": 1288
+        },
+        {
+          "height": 200,
+          "id": "featured",
+          "width": 320,
+          "x": 20,
+          "y": 1584
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 196,
+          "y": 1840
+        },
+        {
+          "height": 426.65625,
+          "id": "coach-default",
+          "width": 320,
+          "x": 20,
+          "y": 2196
+        },
+        {
+          "height": 400,
+          "id": "coach-portrait",
+          "width": 320,
+          "x": 20,
+          "y": 2690.65625
+        }
+      ],
+      "dark": true,
+      "dir": "rtl",
+      "images": true,
+      "lang": "fa",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.72185 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(0.145 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(0.205 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.708 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(29, 238, 87)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.704 0.191 22.216)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        360,
+        844
+      ],
+      "file": "cards-after-fa-dark-360.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 501.65625,
+          "id": "club-portrait",
+          "width": 350,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 466.65625,
+          "id": "club-compact",
+          "width": 350,
+          "x": 20,
+          "y": 825.65625
+        },
+        {
+          "height": 262.5,
+          "id": "club-landscape",
+          "width": 350,
+          "x": 20,
+          "y": 1360.3125
+        },
+        {
+          "height": 218.75,
+          "id": "featured",
+          "width": 350,
+          "x": 20,
+          "y": 1678.8125
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 226,
+          "y": 1953.5625
+        },
+        {
+          "height": 466.65625,
+          "id": "coach-default",
+          "width": 350,
+          "x": 20,
+          "y": 2309.5625
+        },
+        {
+          "height": 437.5,
+          "id": "coach-portrait",
+          "width": 350,
+          "x": 20,
+          "y": 2844.21875
+        }
+      ],
+      "dark": true,
+      "dir": "rtl",
+      "images": true,
+      "lang": "fa",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.72185 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(0.145 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(0.205 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.708 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(29, 238, 87)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.704 0.191 22.216)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "cards-after-fa-dark-390.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 559,
+          "id": "club-portrait",
+          "width": 390,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 520,
+          "id": "club-compact",
+          "width": 390,
+          "x": 20,
+          "y": 883
+        },
+        {
+          "height": 292.5,
+          "id": "club-landscape",
+          "width": 390,
+          "x": 20,
+          "y": 1471
+        },
+        {
+          "height": 243.75,
+          "id": "featured",
+          "width": 390,
+          "x": 20,
+          "y": 1819.5
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 266,
+          "y": 2119.25
+        },
+        {
+          "height": 512,
+          "id": "coach-default",
+          "width": 384,
+          "x": 26,
+          "y": 2475.25
+        },
+        {
+          "height": 480,
+          "id": "coach-portrait",
+          "width": 384,
+          "x": 26,
+          "y": 3055.25
+        }
+      ],
+      "dark": true,
+      "dir": "rtl",
+      "images": true,
+      "lang": "fa",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.72185 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(0.145 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(0.205 0 0)",
+          "fg": "oklch(0.985 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.269 0 0)",
+          "fg": "oklch(0.708 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(29, 238, 87)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.704 0.191 22.216)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        430,
+        844
+      ],
+      "file": "cards-after-fa-dark-430.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 464,
+          "id": "club-portrait",
+          "width": 320,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 432,
+          "id": "club-compact",
+          "width": 320,
+          "x": 20,
+          "y": 788
+        },
+        {
+          "height": 240,
+          "id": "club-landscape",
+          "width": 320,
+          "x": 20,
+          "y": 1288
+        },
+        {
+          "height": 200,
+          "id": "featured",
+          "width": 320,
+          "x": 20,
+          "y": 1584
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 196,
+          "y": 1840
+        },
+        {
+          "height": 426.65625,
+          "id": "coach-default",
+          "width": 320,
+          "x": 20,
+          "y": 2196
+        },
+        {
+          "height": 400,
+          "id": "coach-portrait",
+          "width": 320,
+          "x": 20,
+          "y": 2690.65625
+        }
+      ],
+      "dark": false,
+      "dir": "rtl",
+      "images": true,
+      "lang": "fa",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.53545 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.556 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(25, 208, 76)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.577 0.245 27.325)",
+          "fg": "oklch(1 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        360,
+        844
+      ],
+      "file": "cards-after-fa-light-360.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 501.65625,
+          "id": "club-portrait",
+          "width": 350,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 466.65625,
+          "id": "club-compact",
+          "width": 350,
+          "x": 20,
+          "y": 825.65625
+        },
+        {
+          "height": 262.5,
+          "id": "club-landscape",
+          "width": 350,
+          "x": 20,
+          "y": 1360.3125
+        },
+        {
+          "height": 218.75,
+          "id": "featured",
+          "width": 350,
+          "x": 20,
+          "y": 1678.8125
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 226,
+          "y": 1953.5625
+        },
+        {
+          "height": 466.65625,
+          "id": "coach-default",
+          "width": 350,
+          "x": 20,
+          "y": 2309.5625
+        },
+        {
+          "height": 437.5,
+          "id": "coach-portrait",
+          "width": 350,
+          "x": 20,
+          "y": 2844.21875
+        }
+      ],
+      "dark": false,
+      "dir": "rtl",
+      "images": true,
+      "lang": "fa",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.53545 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.556 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(25, 208, 76)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.577 0.245 27.325)",
+          "fg": "oklch(1 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        390,
+        844
+      ],
+      "file": "cards-after-fa-light-390.jpg"
+    },
+    {
+      "cardBounds": [
+        {
+          "height": 559,
+          "id": "club-portrait",
+          "width": 390,
+          "x": 20,
+          "y": 256
+        },
+        {
+          "height": 520,
+          "id": "club-compact",
+          "width": 390,
+          "x": 20,
+          "y": 883
+        },
+        {
+          "height": 292.5,
+          "id": "club-landscape",
+          "width": 390,
+          "x": 20,
+          "y": 1471
+        },
+        {
+          "height": 243.75,
+          "id": "featured",
+          "width": 390,
+          "x": 20,
+          "y": 1819.5
+        },
+        {
+          "height": 288,
+          "id": "branch",
+          "width": 144,
+          "x": 266,
+          "y": 2119.25
+        },
+        {
+          "height": 512,
+          "id": "coach-default",
+          "width": 384,
+          "x": 26,
+          "y": 2475.25
+        },
+        {
+          "height": 480,
+          "id": "coach-portrait",
+          "width": 384,
+          "x": 26,
+          "y": 3055.25
+        }
+      ],
+      "dark": false,
+      "dir": "rtl",
+      "images": true,
+      "lang": "fa",
+      "overflow": false,
+      "scrollY": 0,
+      "themeTransition": null,
+      "tokens": [
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.53545 0 0)",
+          "id": "luma-secondary"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "background"
+        },
+        {
+          "bg": "oklch(1 0 0)",
+          "fg": "oklch(0.145 0 0)",
+          "id": "card"
+        },
+        {
+          "bg": "oklch(0.97 0 0)",
+          "fg": "oklch(0.556 0 0)",
+          "id": "muted"
+        },
+        {
+          "bg": "rgb(25, 208, 76)",
+          "fg": "rgb(7, 57, 21)",
+          "id": "primary"
+        },
+        {
+          "bg": "oklch(0.577 0.245 27.325)",
+          "fg": "oklch(1 0 0)",
+          "id": "destructive"
+        }
+      ],
+      "viewport": [
+        430,
+        844
+      ],
+      "file": "cards-after-fa-light-430.jpg"
+    }
+  ]
+}

@@ -1,19 +1,20 @@
 "use client";
 import { useEffect, type ReactNode } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useLocale, getDirection, type Locale } from "@repo/i18n";
 import { ClientLocaleProvider } from "@repo/i18n/client-provider";
-import { ApiProvider } from "@repo/api/provider";
+import { ApiProvider, setNativeApiForeground } from "@repo/api/provider";
 import { ThemeProvider, useTheme } from "@repo/theme/provider";
 import { DirectionProvider } from "@repo/ui/kit/Direction";
 import { TooltipProvider } from "@repo/ui/kit/Tooltip";
 import { Toaster } from "@repo/ui/kit/Sonner";
-import { PageTransitions } from "@repo/ui/page-transitions";
+import { LumaShell } from "./luma/shell";
 import { createNativeFetch } from "../lib/native-fetch";
 import { nativeVault } from "../lib/native-vault";
 import { FavoritesSync } from "./discovery/use-saved-club";
 import { accountBackPath } from "../lib/account-back";
-import { nativeClubLink } from "../lib/native-deep-link";
+import { registerAppNavigation, performAppBack } from "../lib/app-navigation";
+import { nativeAppLink } from "../lib/native-deep-link";
 import { startNativeOtp } from "../lib/native-otp";
 import { AccountExportProvider, OtpAutofillProvider } from "@repo/ui/account";
 const nativeApiFetch =
@@ -24,9 +25,12 @@ const nativeApiFetch =
       )
     : undefined;
 
+function AppNavigationRuntime() {
+  useEffect(() => registerAppNavigation(), []);
+  return null;
+}
 function NativeRuntime() {
   const router = useRouter();
-  const pathname = usePathname();
   const { resolvedTheme } = useTheme();
   useEffect(() => {
     let disposed = false;
@@ -41,10 +45,13 @@ function NativeRuntime() {
         await clearExpiredNativeExports();
       };
       const navigate = (url: string) => {
-        const path = nativeClubLink(url, process.env.NEXT_PUBLIC_SITE_URL);
+        const path = nativeAppLink(url, process.env.NEXT_PUBLIC_SITE_URL);
         if (path && !disposed) router.push(path);
       };
       for (const handle of [
+        await App.addListener("appStateChange", ({ isActive }) =>
+          setNativeApiForeground(isActive),
+        ),
         await App.addListener("appUrlOpen", ({ url }) => navigate(url)),
         await App.addListener("resume", () => {
           void clean().catch(() => undefined);
@@ -53,6 +60,8 @@ function NativeRuntime() {
         if (disposed) await handle.remove();
         else removers.push(() => handle.remove());
       }
+      const state = await App.getState();
+      if (!disposed) setNativeApiForeground(state.isActive);
       const launch = await App.getLaunchUrl();
       if (launch) navigate(launch.url);
       await clean();
@@ -70,12 +79,15 @@ function NativeRuntime() {
       if (!Capacitor.isNativePlatform() || disposed) return;
       const { App } = await import("@capacitor/app");
       const listener = await App.addListener("backButton", ({ canGoBack }) => {
-        if (canGoBack && pathname !== "/") router.back();
-        else {
-          const parent = accountBackPath(pathname, window.location.search);
-          if (parent) router.replace(parent);
-          else void App.minimizeApp();
-        }
+        const { pathname, search } = window.location;
+        if (
+          !performAppBack(
+            router,
+            accountBackPath(pathname, search),
+            canGoBack && pathname !== "/",
+          )
+        )
+          void App.minimizeApp();
       });
       if (disposed) await listener.remove();
       else remove = () => listener.remove();
@@ -84,7 +96,7 @@ function NativeRuntime() {
       disposed = true;
       void remove?.();
     };
-  }, [pathname, router]);
+  }, [router]);
   useEffect(() => {
     let disposed = false;
     void (async () => {
@@ -137,7 +149,7 @@ function DirectionAndMotion({ children }: { children: ReactNode }) {
             <TooltipProvider>
               <NativeRuntime />
               <FavoritesSync />
-              <PageTransitions>{children}</PageTransitions>
+              <LumaShell>{children}</LumaShell>
               <Toaster
                 dir={direction}
                 offset={{
@@ -170,6 +182,7 @@ export function AppProviders({
   return (
     <ClientLocaleProvider initialLocale={locale}>
       <ThemeProvider>
+        <AppNavigationRuntime />
         <DirectionAndMotion>{children}</DirectionAndMotion>
       </ThemeProvider>
     </ClientLocaleProvider>

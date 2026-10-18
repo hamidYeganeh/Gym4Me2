@@ -1,0 +1,3276 @@
+{
+  "scope": "240 observed invalid/disabled login states only; localized links/focus/contrast/layout, not complete auth/WCAG/PH0 acceptance",
+  "expected": 240,
+  "observed": 240,
+  "missing": [],
+  "unique": true,
+  "invalidAuthPosts": 0,
+  "networkComplete": true,
+  "failing": [],
+  "checks": [
+    {
+      "case": "application/fa/dark/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/dark/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/fa/light/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/dark/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "application/en/light/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/dark/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/fa/light/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/dark/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "business/en/light/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/dark/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/fa/light/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219,
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/dark/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        6.193664112480219
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/360/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/360/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/360/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/360/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/360/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/390/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/390/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/390/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/390/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/390/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/430/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/430/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/430/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/430/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/430/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/1024/otp/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/1024/otp/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/1024/password/empty",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/1024/password/malformed",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908,
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    },
+    {
+      "case": "admin/en/light/1024/password/password-missing",
+      "noValidate": true,
+      "errors": true,
+      "linked": true,
+      "contrast": true,
+      "ratios": [
+        4.764721928255908
+      ],
+      "targets": true,
+      "labels": true,
+      "focus": true,
+      "layout": true
+    }
+  ]
+}

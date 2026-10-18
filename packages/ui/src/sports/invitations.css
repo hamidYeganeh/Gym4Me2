@@ -1,0 +1,11 @@
+/* Only the invitation confirmation: shared club dialogs keep their appearance. */
+@media (prefers-reduced-motion: reduce) {
+  [data-sports-invitation-dialog],
+  [data-slot="dialog-overlay"]:has(~ [data-sports-invitation-dialog]) {
+    animation: none !important;
+    transition: none !important;
+  }
+  [data-slot="dialog-overlay"]:has(~ [data-sports-invitation-dialog]) {
+    backdrop-filter: none !important;
+  }
+}

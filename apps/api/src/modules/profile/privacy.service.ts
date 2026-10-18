@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { and, eq, inArray, isNull } from 'drizzle-orm';
+import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import type { Environment } from '../../config/environment';
@@ -88,7 +88,12 @@ export class PrivacyService {
       .from(s.platformAdmins)
       .where(eq(s.platformAdmins.userId, userId))
       .limit(1);
-    return owners.length > 0 || admins.length > 0;
+    const obligations = await db.execute(
+      sql`SELECT 1 FROM sport_orders WHERE user_id=${userId} AND status IN ('partially_paid','review') UNION ALL SELECT 1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id WHERE r.user_id=${userId} AND r.status IN ('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM sport_refunds f JOIN sport_orders o ON o.id=f.order_id WHERE o.user_id=${userId} AND f.state IN ('requested','unknown') LIMIT 1`,
+    );
+    return (
+      owners.length > 0 || admins.length > 0 || obligations.rows.length > 0
+    );
   }
   async get(userId: string) {
     const [preferences, requests, blocked, visibility] = await Promise.all([
@@ -393,8 +398,55 @@ export class PrivacyService {
           targetId: userId,
         });
         return {
-          formatVersion: 1,
+          formatVersion: 2,
           exportedAt: new Date(),
+          sports: {
+            orders: (
+              await tx.execute(
+                sql`SELECT id,service_id,amount_minor::text,refunded_minor::text,status,snapshot,created_at FROM sport_orders WHERE user_id=${userId}`,
+              )
+            ).rows,
+            reservations: (
+              await tx.execute(
+                sql`SELECT * FROM sport_reservations WHERE user_id=${userId}`,
+              )
+            ).rows,
+            memberships: (
+              await tx.execute(
+                sql`SELECT * FROM sport_memberships WHERE user_id=${userId}`,
+              )
+            ).rows,
+            documents: (
+              await tx.execute(
+                sql`SELECT id,service_id,name,status,expires_at,reason,created_at FROM sport_documents WHERE user_id=${userId}`,
+              )
+            ).rows,
+            messages: (
+              await tx.execute(
+                sql`SELECT id,conversation_id,body,created_at FROM sport_messages WHERE sender_id=${userId} AND deleted_at IS NULL`,
+              )
+            ).rows,
+            follows: (
+              await tx.execute(
+                sql`SELECT * FROM sport_calendar_follows WHERE user_id=${userId}`,
+              )
+            ).rows,
+            invitations: (
+              await tx.execute(
+                sql`SELECT * FROM sport_invitations WHERE user_id=${userId} OR invited_by=${userId}`,
+              )
+            ).rows,
+            notifications: (
+              await tx.execute(
+                sql`SELECT * FROM sport_notifications WHERE user_id=${userId}`,
+              )
+            ).rows,
+            support: (
+              await tx.execute(
+                sql`SELECT m.id,m.ticket_id,m.body,m.created_at FROM sport_ticket_messages m JOIN sport_tickets t ON t.id=m.ticket_id WHERE t.user_id=${userId}`,
+              )
+            ).rows,
+          },
           account,
           preferences: preferences[0] ?? null,
           favorites,

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "coach-light-focus-unverified-scale.png",
+    "width": 360,
+    "height": 844,
+    "exact720Band": false,
+    "visualStatus": "Rejected: raster scale/crop does not match DOM geometry; no full-card/form proof"
+  },
+  {
+    "name": "file-light-focus.png",
+    "width": 360,
+    "height": 844,
+    "exact720Band": false,
+    "visualStatus": "Reviewed: full 360x844 viewport; visible file proxy indicator"
+  },
+  {
+    "name": "support-light-button-unverified-scale.png",
+    "width": 360,
+    "height": 844,
+    "exact720Band": false,
+    "visualStatus": "Rejected: raster scale/crop does not match DOM geometry; no full-card/form proof"
+  }
+]

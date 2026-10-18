@@ -10,7 +10,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "../kit/Accordion";
-import { safeReturnPath } from "./safe-return-path";
+import { applicationAuthHref } from "../lib/auth-routes";
 import { useTranslations } from "@repo/i18n";
 import {
   useAccount,
@@ -100,7 +100,10 @@ function MobilePrivacyPolicy() {
   const policy = useDataPolicy();
   const backHref =
     params.get("from") === "login"
-      ? `/login?returnTo=${encodeURIComponent(safeReturnPath(params.get("returnTo"), "/profile"))}`
+      ? applicationAuthHref(
+          params.get("method") === "password" ? "password" : "otp",
+          params.get("returnTo") ?? "/profile",
+        )
       : "/profile/settings";
   return (
     <PrivacyDesignPage

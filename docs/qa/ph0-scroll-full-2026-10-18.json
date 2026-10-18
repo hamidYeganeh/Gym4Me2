@@ -1,0 +1,31 @@
+{
+  "build": "y7zptyQc77gOz38TFYz4w",
+  "before": {
+    "max": 710,
+    "path": "/",
+    "scrollY": 710,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "other": {
+    "max": 4043,
+    "path": "/discovery",
+    "scrollY": 0,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "after": {
+    "max": 710,
+    "path": "/",
+    "scrollY": 710,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "pass": true
+}

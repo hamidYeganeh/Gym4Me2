@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
+const qaWeb = process.env.GYM_QA_WEB === "true";
+
 const nextConfig: NextConfig = {
   ...(process.env.GYM_STAGING_WEB === "true"
     ? {
@@ -8,11 +10,18 @@ const nextConfig: NextConfig = {
         typescript: { tsconfigPath: "tsconfig.staging.json" },
       }
     : {}),
+  ...(qaWeb
+    ? {
+        distDir: ".next-qa",
+        experimental: { cpus: 1, webpackMemoryOptimizations: true },
+      }
+    : {}),
   transpilePackages: ["@repo/ui", "@repo/theme", "@repo/i18n", "@repo/api"],
   turbopack: {
     rules: { "*.css": { loaders: ["@tailwindcss/turbopack"], as: "*.css" } },
   },
   webpack(config) {
+    if (qaWeb) config.cache = false;
     // Process the same Tailwind entry when using Next's Webpack fallback.
     function addTailwind(rule: unknown) {
       if (!rule || typeof rule !== "object") return;

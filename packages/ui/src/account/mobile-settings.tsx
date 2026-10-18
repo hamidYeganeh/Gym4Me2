@@ -3,7 +3,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Account } from "@repo/api/auth";
-import { useTranslations } from "@repo/i18n";
+import { useChangeLocale } from "@repo/i18n/client-provider";
+import { useLocale, useTranslations } from "@repo/i18n";
 import {
   ChevronLeft,
   KeyRound,
@@ -14,7 +15,11 @@ import {
   Pencil,
   LogOut,
   FileText,
+  Languages,
+  Bell,
+  LifeBuoy,
 } from "lucide-react";
+import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { Separator } from "../kit/Separator";
 import { Button } from "../kit/Button";
 import { AnimatedThemeToggler } from "../kit/AnimatedThemeToggler";
@@ -75,6 +80,8 @@ export function MobileSettings({
   login: ReactNode;
 }) {
   const t = useTranslations();
+  const locale = useLocale();
+  const changeLocale = useChangeLocale();
   return (
     <>
       {account ? (
@@ -142,9 +149,40 @@ export function MobileSettings({
           />
         </div>
       </SettingsGroup>
+      <SettingsGroup title={t("Luma.language")}>
+        <div className="flex min-h-16 items-center gap-4 px-5 py-4">
+          <Languages className="size-5" />
+          <NativeSelect
+            aria-label={t("Luma.language")}
+            value={locale}
+            onChange={(e) => {
+              void changeLocale(e.target.value === "en" ? "en" : "fa");
+            }}
+          >
+            <NativeSelectOption value="fa">
+              {t("Luma.languageNameFa")}
+            </NativeSelectOption>
+            <NativeSelectOption value="en">
+              {t("Luma.languageNameEn")}
+            </NativeSelectOption>
+          </NativeSelect>
+        </div>
+      </SettingsGroup>
+      <SettingsGroup title={t("Luma.notifications")}>
+        <SettingsRow
+          href="/notifications/preferences"
+          icon={<Bell className="size-5" />}
+        >
+          {t("Luma.notifications")}
+        </SettingsRow>
+      </SettingsGroup>
       <SettingsGroup title={t("AccountDesign.resources")}>
         <SettingsRow href="/privacy" icon={<FileText className="size-5" />}>
           {t("AccountDesign.dataPolicy")}
+        </SettingsRow>
+        <Separator />
+        <SettingsRow href="/support" icon={<LifeBuoy className="size-5" />}>
+          {t("Luma.support")}
         </SettingsRow>
       </SettingsGroup>
       {account && (

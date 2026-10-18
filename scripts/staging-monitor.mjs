@@ -1,5 +1,6 @@
 import { enqueueAlert, deliverAlerts } from "./monitor-alerts.mjs";
 import { privateConfig } from "./staging-backup.mjs";
+import { backupHealth } from "./operations-worker.mjs";
 import https from "node:https";
 import {
   readFileSync,
@@ -128,10 +129,7 @@ if (
       } catch {
         /* Missing state must alert, never imply a working backup. */
       }
-      const age = (job) => Date.now() - (operations[job]?.successAt ?? 0);
-      results.push(["deletion-ledger", age("ledger") < 10 * 60000]);
-      results.push(["backup", age("snapshot") < 26 * 3600000]);
-      results.push(["backup-integrity", age("check") < 8 * 24 * 3600000]);
+      results.push(...backupHealth(operations));
     }
     const now = new Date().toISOString();
     for (const [service, healthy] of results) {

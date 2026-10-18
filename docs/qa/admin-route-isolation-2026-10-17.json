@@ -1,0 +1,79 @@
+{
+  "scope": "Web admin, API unavailable; only cold rendering and route isolation",
+  "before": {
+    "activeMains": 2,
+    "routes": [
+      {
+        "hidden": null,
+        "inert": false
+      },
+      {
+        "hidden": null,
+        "inert": false
+      }
+    ]
+  },
+  "after": {
+    "cold": {
+      "activeMains": 1,
+      "reducedMotion": false,
+      "routes": [
+        {
+          "hidden": null,
+          "inert": false
+        }
+      ]
+    },
+    "home": {
+      "activeMains": 1,
+      "routes": [
+        {
+          "hidden": "true",
+          "inert": true
+        },
+        {
+          "hidden": null,
+          "inert": false
+        }
+      ]
+    },
+    "forward": {
+      "activeMains": 1,
+      "routes": [
+        {
+          "hidden": "true",
+          "inert": true
+        },
+        {
+          "hidden": null,
+          "inert": false
+        },
+        {
+          "hidden": "true",
+          "inert": true
+        }
+      ]
+    },
+    "back": {
+      "activeMains": 1,
+      "routes": [
+        {
+          "hidden": null,
+          "inert": false
+        },
+        {
+          "hidden": "true",
+          "inert": true
+        }
+      ]
+    }
+  },
+  "fullAccessibilityAcceptance": false,
+  "buildId": "A6wYwUY6HZAjG4NYIpVQr",
+  "sources": {
+    "apps/admin/app/layout.tsx": "b60889a87beb6e754866170aaf714640e955434545e224e54f4a24c769973dd1",
+    "apps/admin/app/page-transitions.tsx": "698e97aff8ca6e9cd5e4c6f3b8d16502e3baa310218c00ca5bc9890fb2aa2975",
+    "packages/ui/src/page-transitions.tsx": "4bc7986be6283702d0fefaa612d9207f2c9d1582ca99261e818899cfb24adee8",
+    "packages/ui/src/route-accessibility.ts": "fb743433fa086d753a0dc3f2931693cd4bcfc76b23f6972e4ce530d591068c36"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "scope": "Rendered host-conversation inbox API-unavailable error, 14px text; not a product-wide accessibility acceptance",
+  "method": "CSS Color 4 OKLab/OKLCH to sRGB, sRGB clipping and source-over alpha over opaque alert card, WCAG relative luminance contrast. Nominal colors, not anti-aliased pixels or a wide-gamut display measurement.",
+  "sources": [
+    "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+    "https://raw.githubusercontent.com/w3c/csswg-drafts/main/css-color-4/conversions.js"
+  ],
+  "before": {
+    "light": {
+      "color": "oklab(0.577 0.217662 0.112464 / 0.9)",
+      "background": "oklch(1 0 0)",
+      "nominalSrgbContrast": 4.515620413043586
+    },
+    "dark": {
+      "color": "oklab(0.704 0.176821 0.072217 / 0.9)",
+      "background": "oklch(0.205 0 0)",
+      "nominalSrgbContrast": 5.223512776346322
+    }
+  },
+  "after": {
+    "light": {
+      "color": "oklch(0.577 0.245 27.325)",
+      "background": "oklch(1 0 0)",
+      "nominalSrgbContrast": 4.764721928255905
+    },
+    "dark": {
+      "color": "oklch(0.704 0.191 22.216)",
+      "background": "oklch(0.205 0 0)",
+      "nominalSrgbContrast": 6.193664112480222
+    }
+  },
+  "verification": {
+    "businessBuild": "passed, 1 worker; heap 512 MiB; compile 9.3s; TypeScript 1.835s",
+    "previewHeapMiB": 256,
+    "browser": "390x844, fa, light and dark",
+    "screenReader": "not tested",
+    "hostSheetRendering": "not tested in this run; selector source coverage only",
+    "fullMatrix": "not tested"
+  },
+  "images": [
+    "screenshots/low-resource-2026-10-17/business-chat-error-contrast-light-390.jpg",
+    "screenshots/low-resource-2026-10-17/business-chat-error-contrast-dark-390.jpg"
+  ]
+}

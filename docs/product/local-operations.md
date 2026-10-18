@@ -1,6 +1,10 @@
 # عملیات محلی PH1
 
-آخرین بررسی: ۲۰۲۶/۱۰/۱۳. این محیط staging محلی است؛ HTTPS محلی API آماده است؛ انتشار وب، اتصال گوشی، هشدارها و عملیات production هنوز پذیرش نشده‌اند.
+برش تازهٔ کد و آزمون: [ماتریس دسترسی PH1](access-matrix.md)، مسیرهای وب association و اصلاح زمان‌بند/تازگی و نگهداری بکاپ.۲۳۵ آزمون PH1 و۲۱ آزمون بکاپ/پایش پاس شدند؛ دو handler وب نیز روی preview واقعی بررسی شدند. [شاهد و حدود](../qa/ph0-ph1-foundation-2026-10-18.md). این نوشته، ارتقای worker موجود یا پذیرش خارج از میزبان را تأیید نمی‌کند.
+
+کاربر در۱۸ اکتبر `gym4me.ir` را دامنه معرفی کرد و صریحاً اعلام کرد مقصد بکاپ خارجی فعلاً آماده نیست. پیکربندی یا بازیابی خارج از این مک انجام نشده و T029 باز است.
+
+آخرین بررسی عملیات بکاپ/دیتابیس: ۲۰۲۶/۱۰/۱۷. این محیط staging محلی است؛ HTTPS محلی و شواهد تاریخی وب/Android در ادامه آمده‌اند. این تاریخ به معنی بازپذیرش همهٔ سرویس‌ها یا دستگاه نیست؛ انتشار عمومی، اعلان بیرونی و عملیات production هنوز پذیرش نشده‌اند. [شاهد تازهٔ بازیابی](../qa/backup-media-recovery-2026-10-17.md).
 
 ## staging مستقل
 
@@ -45,9 +49,52 @@ pnpm --filter api backup:drill
 
 ## تمرین بازیابی
 
-`backup:drill` فقط دیتابیس محلی test روی 55433 و bucket آزمون را می‌پذیرد. محیط آزمون هنگام تمرین باید بدون نویسندهٔ هم‌زمان باشد؛ snapshot دیتابیس با dump سازگار است، اما snapshot اتمیک مشترک DB/S3 وجود ندارد. فایل‌های خروجی در `.artifacts/backup-drill/<id>` با مجوز خصوصی نگهداری می‌شوند. دیتابیس و bucket موقت restore پس از بررسی پاک می‌شوند.
+`backup:drill` فقط سرویس محلی test روی 55433 و S3 محلی را می‌پذیرد و اکنون **دیتابیس مشترک `gym4me_test` را تغییر نمی‌دهد**. دو دیتابیس و دو bucket اختصاصی تصادفی ساخته و در پایان پاک می‌شوند. dump و ارجاع فایل از یک snapshot دیتابیس خوانده می‌شوند؛ فایل‌های PH2 و باشگاه براساس ارجاع metadata انتخاب می‌شوند، نه listing کل bucket. snapshot اتمیک مشترک DB/S3 وجود ندارد؛ نبود فایل مرجع‌دار capture را ناموفق می‌کند. فایل‌های خروجی در `.artifacts/backup-drill/<id>` با مجوز خصوصی و خارج Git نگهداری می‌شوند.
 
-نتیجهٔ ثبت‌شدهٔ `33a88f61228146ff`: ۴۷ جدول، یک فایل، تطبیق تعداد ردیف‌ها و SHA-256 و حفظ tombstone حساب حذف‌شده؛ ۱۲۷۲ میلی‌ثانیه. این اندازهٔ کوچک معیار ظرفیت production نیست. حذف‌هایی که بعد از snapshot اتفاق افتاده‌اند هنوز به دفتر مستقل و بازاعمال هنگام restore نیاز دارند. زمان‌بندی، رمزگذاری و حذف خودکار بکاپ‌های قدیمی هنوز پیاده نشده‌اند.
+نتیجهٔ تازهٔ `e819d93b977546dd`: ۸۷ جدول، چهار فایل capture، رمزگذاری در دو مخزن Restic جدا و حذف دیتابیس/bucket مبدأ پیش از recovery؛ تطبیق شمار ردیف‌های همهٔ جدول‌ها، حفظ tombstone، بازاعمال حذفِ پس از snapshot و تکرار replay موفق. فقط دو تصویر هنوز مرجع‌دار بارگذاری شدند و دو فایل خصوصی حساب حذف‌شده در مقصد 404 بودند. زمان ۲۶٬۹۱۸ میلی‌ثانیه مربوط به دادهٔ کوچک مصنوعی است؛ معیار ظرفیت/RTO production نیست. نتایج قدیمی ۴۷ جدول در بخش‌های تاریخی پایین به معنی دامنهٔ فعلی schema نیستند.
+
+### بکاپ رمزگذاری‌شده و زمان‌بند موجود
+
+```sh
+node scripts/staging-backup.mjs snapshot
+node scripts/staging-backup.mjs ledger
+node scripts/staging-backup.mjs check
+node scripts/staging-recovery.mjs verify
+```
+
+تنظیمات خصوصی در `.ops-private/backup.env` و فایل کلید جدا با مجوز 0600 هستند؛ فایل موجود را با `init` بازنویسی نکنید و مقدارها را در گزارش/ترمینال منتشر نکنید. snapshot کامل و دفتر حذف در دو repository جدا ذخیره می‌شوند. در تنظیمات فعلی هر دو **روی همین دستگاه** هستند؛ این استقلال از خرابی میزبان را تأمین نمی‌کند. custody کلید، مقصد خارج از دستگاه و retention هنوز باید تعیین و آزموده شوند.
+
+`scripts/operations-worker.mjs --watch` دفتر را هر ۵ دقیقه، snapshot را روزانه و check را هفتگی اجرا می‌کند؛ failureها backoff و state خصوصی پایدار دارند. سرویس موجود launchd با نام `ir.gym4me.backup` در بررسی ۱۷ اکتبر running بود و بعد از بازیابی Docker موفقیت تازهٔ ledger/snapshot با صفر خطای متوالی ثبت کرد. فایل state صرفاً شاهد آخرین اجراست؛ روشن‌بودن worker سلامت Docker یا مخزن را تضمین نمی‌کند. دستور `operations-services.mjs` فقط plist می‌سازد و به‌تنهایی نصب/اجرای supervisor نیست. دفتر پنج‌دقیقه‌ای نیز تضمین حذف‌های هنوز تکثیرنشده در خرابی کامل منبع نیست.
+
+کد تازهٔ worker در watch یک کار دفتر و یک کار سنگین را مستقل پیش می‌برد؛ یک snapshot طولانی دیگر اجرای بعدی دفتر را در صف خودش نگه نمی‌دارد. در هر lane فقط یک کار اجرا می‌شود. `--once` همچنان ترتیبی است. رسید child، زمان واقعی capture را برمی‌گرداند؛ پایش دفتر/snapshot از `sourceAt` استفاده می‌کند، نه زمان پایان upload. state قدیمیِ فاقد watermark، زمان آینده، رسید ناقص یا capture قدیمی سالم گزارش نمی‌شود. پس از نصب کد جدید، worker باید توسط اپراتور مجاز دوباره اجرا شود تا رسید جدید بسازد؛ فرایند موجود خودکار ارتقا پیدا نمی‌کند. اختلال یا قفل مخزن، کندی شبکه و تازگی ده‌دقیقه‌ای همچنان باید پایش شوند؛ استقلال scheduler تضمین RPO نیست.
+
+### نگهداری snapshot
+
+دو مقدار `BACKUP_RETENTION_DAYS` و `BACKUP_RETENTION_LAST` باید صریحاً توسط اپراتور در تنظیمات خصوصی تعیین شوند؛ [نمونهٔ بدون رمز](backup.env.example). مقدار پیش‌فرض یا زمان‌بندی حذف خودکار نداریم. پیش‌نمایش:
+
+```sh
+node scripts/staging-backup.mjs retention
+```
+
+این فرمان فقط `forget --dry-run` را برای snapshotهای همان host/tag اجرا می‌کند. اعمال واقعی فقط با `retention --apply` است؛ ابتدا check کامل، سپس forget، prune و check دوباره اجرا می‌شوند. دفتر حذف شامل این سیاست نیست. گروه‌بندی `host,tags` مانع می‌شود پوشهٔ موقت جدید هر capture یک گروه نگهداری جدا بسازد. سیاست `keep-within` همراه شمار حداقل نسخه‌ها استفاده می‌شود. prune مخزن را قفل می‌کند؛ اپراتور باید پنجرهٔ مناسب و اعتبار دسترسی نگهداری جدا را انتخاب کند. این برش هیچ بکاپ واقعی را حذف نکرده است. مرجع رفتار و احتیاط append-only: [مستند Restic](https://restic.readthedocs.io/en/stable/060_forget.html).
+
+### ترتیب بازیابی آفلاین
+
+```sh
+node scripts/staging-recovery.mjs prepare
+```
+
+prepare آخرین snapshot و دفتر جدید را از دو مخزن برمی‌گرداند، checksumها و تازگی دفتر را کنترل می‌کند و مسیر پوشهٔ خصوصی را می‌دهد؛ به دیتابیس/فایل زنده دست نمی‌زند. API و worker مقصد باید آفلاین بمانند. ابتدا `database.dump` را در دیتابیس **جدید** ایزوله restore و bucket **خالی** جدا ایجاد کنید. فایل‌های snapshot را هنوز upload نکنید.
+
+فرمان زیر از workspace API اجرا می‌شود. تنظیمات مقصد با نام‌های `RESTORE_DATABASE_URL`، `RESTORE_S3_ENDPOINT`، `RESTORE_S3_BUCKET`، `RESTORE_S3_ACCESS_KEY_ID` و `RESTORE_S3_SECRET_ACCESS_KEY` از محیط خصوصی اپراتور داده شوند؛ مقدار رمز داخل فرمان یا سند قرار نگیرد:
+
+```sh
+node --import tsx scripts/restore-media.ts /absolute/private/recovery/snapshot /absolute/private/recovery/ledger/deletion-ledger.json --offline
+```
+
+این نسخه فقط loopback با پورت‌های دیتابیس 55433/55434 و S3 برابر 8333/8334 را می‌پذیرد. نام دیتابیس مقصد `gym4me_recovery_<16 lowercase hex>` و bucket آن `gym4me-recovery-<همان شناسه>` است؛ نام‌های اختصاصی تمرین نیز مجازند. هیچ اتصال دیگری نباید به دیتابیس مقصد باشد. فرمان دوباره checksum/دفتر را بررسی، حذف‌ها را replay و فقط فایل‌های باقی‌ماندهٔ مرجع‌دار را upload می‌کند. شکست replay یا ارجاع مفقود مانع upload است. پس از شکستِ وسط upload، مقصد آفلاین بماند و برای تکرار از bucket خالی جدا استفاده شود.
+
+فرمان نه دیتابیس را restore می‌کند و نه ترافیک را فعال می‌کند. origin/URL فایل، نقش‌ها، تنظیمات API، سلامت وابستگی‌ها و smoke فلوها باید پیش از cutover جداگانه تأیید شوند. خود CLI اپراتور و هستهٔ مشترک آن در تمرین واقعی PostgreSQL/S3 با مقصد موقت آزموده شده‌اند؛ این شاهد انتشار مقصد واقعی نیست. دروازهٔ انتشار، تمرین روی میزبان مستقل و سیاست نگهداری هنوز کار باز T029 هستند.
 
 ## موبایل
 
@@ -56,6 +103,12 @@ pnpm --filter api backup:drill
 فایل خروجی حساب با Filesystem در cache خصوصی ساخته و با Share به انتخاب کاربر ارائه می‌شود. پاک‌سازی فایل‌های بالای یک ساعت در شروع/بازگشت اپ یا export بعدی انجام می‌شود؛ هنگام بسته‌بودن اپ زمان‌بندی قطعی ندارد. مستندات: [Filesystem](https://capacitorjs.com/docs/apis/filesystem)، [Share](https://capacitorjs.com/docs/apis/share).
 
 لینک `gym4me://club/<uuid>` پیاده شده؛ لینک HTTPS فقط از origin تنظیم‌شده پذیرفته می‌شود. association دامنه برای universal/app links هنوز تنظیم نشده است.
+
+### انتشار association دامنهٔ gym4me.ir
+
+دامنهٔ اعلام‌شدهٔ کاربر `gym4me.ir` است. وب application اکنون دو GET عمومی `/.well-known/assetlinks.json` و `/.well-known/apple-app-site-association` دارد. مقدارهای **عمومی** `ANDROID_RELEASE_SHA256` و `APPLE_APP_ID` از محیط وب خوانده می‌شوند؛ API key، کلید خصوصی یا certificate تست جایگزین آن‌ها نمی‌شود. نبود/نامعتبر بودن تنظیم،503 با no-store می‌دهد؛ تنظیم درست JSON بدون cookie/redirect با cache پنج‌دقیقه‌ای می‌دهد. Android و Apple مستقل تنظیم می‌شوند. این routeهای وب از export بومی حذف می‌شوند.
+
+fingerprint باید مربوط به گواهی واقعی نسخهٔ نصب‌شده یا Play App Signing باشد؛ Apple ID از prefix واقعی application-identifier و `com.gym4me.app` تشکیل می‌شود. فقط فایل انتشار، association دستگاه را اثبات نمی‌کند: DNS/HTTPS، پاسخ مستقیم فایل روی دامنه و تأیید دستگاه باید پس از انتشار بررسی شوند. در این برش چیزی روی دامنه منتشر نشده است. مراجع: [Android](https://developer.android.com/training/app-links/configure-assetlinks)، [Apple](https://developer.apple.com/documentation/xcode/supporting-associated-domains).
 
 ## بازاعمال حذف‌های جدید روی بکاپ قدیمی
 
@@ -78,7 +131,7 @@ pnpm data:deletion-ledger replay /absolute/private/deletions.json 2026-10-13T00:
 
 آزمون جدید `f96a028029da42a6`: بازیابی واقعی ۴۷ جدول و یک فایل، حفظ tombstone موجود و بازاعمال حذفِ پس از snapshot، تکرار replay موفق؛ ۱۱۹۰۷ میلی‌ثانیه. دو تست یکپارچهٔ جدید و دو تست اعتبارسنجی اضافه شدند؛ مجموعهٔ هویت اکنون ۲۷ تست موفق دارد.
 
-محدودیت: این ابزار برای restore برنامه‌ریزی‌شده با دسترسی به منبع جدید مناسب است. دفتر هنوز به‌صورت پیوسته روی ذخیره‌ساز مستقل تکثیر نمی‌شود؛ پس در از‌دست‌رفتن کامل منبع، پوشش حذف‌های صادرنشده تضمین نمی‌شود. زمان‌بندی/تکثیر مستقل و اتصال اجباری replay به مسیر انتشار، کار باز PH1 است.
+محدودیت فعلی: دفتر هر پنج دقیقه در repository رمزگذاری‌شدهٔ جدا تکثیر می‌شود، اما تنظیمات فعلی همان میزبان را استفاده می‌کند؛ پس در از‌دست‌رفتن میزبان یا برای حذف‌های هنوز صادرنشده تضمینی وجود ندارد. مسیر بازیابی رسانه replay را پیش از upload الزامی کرده است؛ استقلال مقصد، custody، retention و اتصال کامل به پذیرش انتشار، کار باز PH1 هستند.
 
 ## HTTPS محلی staging
 
@@ -172,3 +225,12 @@ node scripts/verify-staging-android.mjs DEVICE_SERIAL --allow-app-restart
 این runner فقط APK با شناسه‌های staging را نصب می‌کند، تونل USB را برقرار می‌کند و گزارش آزمون را در `.artifacts/ph1/android-connectivity.txt` می‌گذارد. خطای تست را از محتوای گزارش تشخیص می‌دهد؛ صرف exit code صفر adb شاهد پذیرش نیست. این سه تست شبکهٔ native هستند و آزمون UI/WebView، OTP، Secure Storage و اشتراک فایل را جایگزین نمی‌کنند. اتصال USB برای ادامهٔ پذیرش دستی باز مانده است.
 
 تداخل پذیرش دستی و instrumentation: AndroidJUnitRunner هنگام شروع/پایان اپ هدف را force-stop می‌کند و نصب مجدد هم آن را متوقف می‌کند. گزارش exit-info گوشی خروج با دلیل start/finished instrumentation را نشان داد؛ پس از پایان، فرایند تازه زنده بود و هشدار تازه‌ای نداشت. تست خودکار را هم‌زمان با بررسی دستی اجرا نکنید. runner اکنون پیش از هر تماس با adb پرچم صریح `--allow-app-restart` را الزامی می‌کند. بازماندن رابط پس از این تداخل همچنان باید توسط کاربر تأیید شود.
+## اجرای QA روی دستگاه با منابع محدود
+
+برای بررسی وب، سه اپ را یکی‌یکی با `GYM_QA_WEB=true` و `next build --webpack` بسازید؛ این حالت یک worker، بهینه‌سازی حافظهٔ Webpack و cache خاموش دارد. سقف heap فرمان build برابر ۵۱۲ MiB و preview تکی برابر ۲۵۶ MiB در این دستگاه بررسی شده است؛ این اعداد سقف کل RAM نیستند. build، تست یکپارچه و preview هم‌زمان اجرا نشوند. خروجی‌ها در `.next-qa` از staging جدا می‌مانند و TypeScript بررسی می‌شود. [فرمان کامل، شواهد و حدود پذیرش](../qa/low-resource-execution-2026-10-17.md).
+
+نیاز ۵ GiB در guard فعلیِ اسکریپت native، پیش‌شرط همهٔ buildهای وب نیست. در ۱۷ اکتبر با حدود ۱٫۲ GiB آزاد، سه build وب موفق شدند. خطای I/O افزونهٔ PostgreSQL و ساعت عقب VM مسئلهٔ مستقل محیط‌اند؛ pass شدن build آن‌ها را حل‌شده محسوب نمی‌کند.
+
+### Local database port on this workstation (18 October 2026)
+
+Port 55432 is used by another project's PostgreSQL. Gym4Me's own existing volume is now exposed on `127.0.0.1:55434`; private root `.env` sets `POSTGRES_PORT=55434`, and private `apps/api/.env` uses the same port in `DATABASE_URL`. The isolated test database remains on 55433. Keep these local settings aligned when restarting Compose or the API. The application web authentication origin is `http://localhost:7081`.

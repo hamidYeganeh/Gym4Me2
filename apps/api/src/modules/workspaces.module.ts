@@ -1,3 +1,37 @@
+import { SportsDocumentsController } from './commerce/documents.controller';
+import { SportsResourceController } from './commerce/resources.controller';
+import { SportsResourceService } from './commerce/resources.service';
+import { SportsInvitationService } from './commerce/invitations.service';
+import { SportsDocumentService } from './commerce/documents.service';
+import { SportsMediaService } from './commerce/media.service';
+import {
+  BusinessSportsMediaController,
+  PublicSportsMediaController,
+} from './commerce/media.controller';
+import { SportsOperationsService } from './commerce/operations.service';
+import {
+  SportsOperationsController,
+  AdminSportsController,
+} from './commerce/operations.controller';
+import { CommerceWorker } from './commerce/commerce.worker';
+import { CommunityService } from './commerce/community.service';
+import { SportsCalendarService } from './commerce/calendars.service';
+import { SportsConversationService } from './commerce/conversations.service';
+import {
+  SportsCalendarsController,
+  SportsCommunityController,
+} from './commerce/community.controller';
+import { CommerceService } from './commerce/commerce.service';
+import {
+  PAYMENT_ADAPTER,
+  SamanMockPaymentAdapter,
+} from './commerce/sandbox-payment';
+import {
+  SportsCatalogController,
+  SportsAccountController,
+  BusinessSportsController,
+  SportsPaymentCallbacksController,
+} from './commerce/commerce.controller';
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../database/database.module';
 import { AuthModule } from './auth/auth.module';
@@ -57,6 +91,18 @@ import {
 @Module({
   imports: [DatabaseModule, AuthModule, StorageModule],
   controllers: [
+    SportsCatalogController,
+    SportsAccountController,
+    SportsPaymentCallbacksController,
+    BusinessSportsController,
+    SportsCalendarsController,
+    SportsCommunityController,
+    SportsOperationsController,
+    AdminSportsController,
+    SportsDocumentsController,
+    SportsResourceController,
+    BusinessSportsMediaController,
+    PublicSportsMediaController,
     AccountPrivacyController,
     PrivacyPolicyController,
     FavoritesController,
@@ -86,6 +132,17 @@ import {
     AdminUsersController,
   ],
   providers: [
+    CommerceService,
+    { provide: PAYMENT_ADAPTER, useClass: SamanMockPaymentAdapter },
+    CommunityService,
+    SportsCalendarService,
+    SportsConversationService,
+    CommerceWorker,
+    SportsOperationsService,
+    SportsDocumentService,
+    SportsResourceService,
+    SportsInvitationService,
+    SportsMediaService,
     PrivacyService,
     RetentionService,
     ConsentGuard,

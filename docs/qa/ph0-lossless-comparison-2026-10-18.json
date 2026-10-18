@@ -1,0 +1,1690 @@
+{
+  "scope": "84 synthetic card PNG pairs with 16px exterior padding, fa/en, light/dark, widths 360/390/430. Zero tolerance; checksums and decoded RGBA compared. Solid captures are rejected, but non-solid alone does not establish complete painted content. Does not cover map, details, all variants/states, or complete PH0.",
+  "beforeBuild": "VjdT8vdIBaHok8TUPI30t",
+  "afterBuild": "jaBPQRrRqVp5USuPe0DNX",
+  "exactPairs": 21,
+  "totalPairs": 84,
+  "accepted": false,
+  "cards": [
+    {
+      "case": "fa-dark-360",
+      "id": "club-portrait",
+      "before": "before-fa-dark-360-club-portrait.png",
+      "after": "after-fa-dark-360-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 950,
+      "maxChannelDelta": 1,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-360",
+      "id": "club-compact",
+      "before": "before-fa-dark-360-club-compact.png",
+      "after": "after-fa-dark-360-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 139167,
+      "maxChannelDelta": 242,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-360",
+      "id": "club-landscape",
+      "before": "before-fa-dark-360-club-landscape.png",
+      "after": "after-fa-dark-360-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 87651,
+      "maxChannelDelta": 247,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-360",
+      "id": "featured",
+      "before": "before-fa-dark-360-featured.png",
+      "after": "after-fa-dark-360-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 54482,
+      "maxChannelDelta": 242,
+      "solidCapture": {
+        "before": false,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-360",
+      "id": "branch",
+      "before": "before-fa-dark-360-branch.png",
+      "after": "after-fa-dark-360-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 50150,
+      "maxChannelDelta": 246,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-360",
+      "id": "coach-default",
+      "before": "before-fa-dark-360-coach-default.png",
+      "after": "after-fa-dark-360-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-360",
+      "id": "coach-portrait",
+      "before": "before-fa-dark-360-coach-portrait.png",
+      "after": "after-fa-dark-360-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 134685,
+      "maxChannelDelta": 246,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-390",
+      "id": "club-portrait",
+      "before": "before-fa-dark-390-club-portrait.png",
+      "after": "after-fa-dark-390-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 111019,
+      "maxChannelDelta": 242,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-390",
+      "id": "club-compact",
+      "before": "before-fa-dark-390-club-compact.png",
+      "after": "after-fa-dark-390-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 175573,
+      "maxChannelDelta": 248,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-390",
+      "id": "club-landscape",
+      "before": "before-fa-dark-390-club-landscape.png",
+      "after": "after-fa-dark-390-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 438,
+      "maxChannelDelta": 1,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-390",
+      "id": "featured",
+      "before": "before-fa-dark-390-featured.png",
+      "after": "after-fa-dark-390-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "fa-dark-390",
+      "id": "branch",
+      "before": "before-fa-dark-390-branch.png",
+      "after": "after-fa-dark-390-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 9,
+      "maxChannelDelta": 1,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-390",
+      "id": "coach-default",
+      "before": "before-fa-dark-390-coach-default.png",
+      "after": "after-fa-dark-390-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 71375,
+      "maxChannelDelta": 242,
+      "solidCapture": {
+        "before": false,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-390",
+      "id": "coach-portrait",
+      "before": "before-fa-dark-390-coach-portrait.png",
+      "after": "after-fa-dark-390-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 6250,
+      "maxChannelDelta": 1,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-430",
+      "id": "club-portrait",
+      "before": "before-fa-dark-430-club-portrait.png",
+      "after": "after-fa-dark-430-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "fa-dark-430",
+      "id": "club-compact",
+      "before": "before-fa-dark-430-club-compact.png",
+      "after": "after-fa-dark-430-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "fa-dark-430",
+      "id": "club-landscape",
+      "before": "before-fa-dark-430-club-landscape.png",
+      "after": "after-fa-dark-430-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-430",
+      "id": "featured",
+      "before": "before-fa-dark-430-featured.png",
+      "after": "after-fa-dark-430-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "fa-dark-430",
+      "id": "branch",
+      "before": "before-fa-dark-430-branch.png",
+      "after": "after-fa-dark-430-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-430",
+      "id": "coach-default",
+      "before": "before-fa-dark-430-coach-default.png",
+      "after": "after-fa-dark-430-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 211981,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-dark-430",
+      "id": "coach-portrait",
+      "before": "before-fa-dark-430-coach-portrait.png",
+      "after": "after-fa-dark-430-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 169196,
+      "maxChannelDelta": 242,
+      "solidCapture": {
+        "before": false,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-360",
+      "id": "club-portrait",
+      "before": "before-fa-light-360-club-portrait.png",
+      "after": "after-fa-light-360-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 97487,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": false,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-360",
+      "id": "club-compact",
+      "before": "before-fa-light-360-club-compact.png",
+      "after": "after-fa-light-360-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "fa-light-360",
+      "id": "club-landscape",
+      "before": "before-fa-light-360-club-landscape.png",
+      "after": "after-fa-light-360-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-360",
+      "id": "featured",
+      "before": "before-fa-light-360-featured.png",
+      "after": "after-fa-light-360-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "fa-light-360",
+      "id": "branch",
+      "before": "before-fa-light-360-branch.png",
+      "after": "after-fa-light-360-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-360",
+      "id": "coach-default",
+      "before": "before-fa-light-360-coach-default.png",
+      "after": "after-fa-light-360-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 139787,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-360",
+      "id": "coach-portrait",
+      "before": "before-fa-light-360-coach-portrait.png",
+      "after": "after-fa-light-360-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 114553,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-390",
+      "id": "club-portrait",
+      "before": "before-fa-light-390-club-portrait.png",
+      "after": "after-fa-light-390-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 119195,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-390",
+      "id": "club-compact",
+      "before": "before-fa-light-390-club-compact.png",
+      "after": "after-fa-light-390-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "fa-light-390",
+      "id": "club-landscape",
+      "before": "before-fa-light-390-club-landscape.png",
+      "after": "after-fa-light-390-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 112690,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-390",
+      "id": "featured",
+      "before": "before-fa-light-390-featured.png",
+      "after": "after-fa-light-390-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 93406,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-390",
+      "id": "branch",
+      "before": "before-fa-light-390-branch.png",
+      "after": "after-fa-light-390-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 49391,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-390",
+      "id": "coach-default",
+      "before": "before-fa-light-390-coach-default.png",
+      "after": "after-fa-light-390-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "fa-light-390",
+      "id": "coach-portrait",
+      "before": "before-fa-light-390-coach-portrait.png",
+      "after": "after-fa-light-390-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "fa-light-430",
+      "id": "club-portrait",
+      "before": "before-fa-light-430-club-portrait.png",
+      "after": "after-fa-light-430-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-430",
+      "id": "club-compact",
+      "before": "before-fa-light-430-club-compact.png",
+      "after": "after-fa-light-430-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "fa-light-430",
+      "id": "club-landscape",
+      "before": "before-fa-light-430-club-landscape.png",
+      "after": "after-fa-light-430-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 137150,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-430",
+      "id": "featured",
+      "before": "before-fa-light-430-featured.png",
+      "after": "after-fa-light-430-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 94744,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": false,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-430",
+      "id": "branch",
+      "before": "before-fa-light-430-branch.png",
+      "after": "after-fa-light-430-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 40991,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-430",
+      "id": "coach-default",
+      "before": "before-fa-light-430-coach-default.png",
+      "after": "after-fa-light-430-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 212018,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "fa-light-430",
+      "id": "coach-portrait",
+      "before": "before-fa-light-430-coach-portrait.png",
+      "after": "after-fa-light-430-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-dark-360",
+      "id": "club-portrait",
+      "before": "before-en-dark-360-club-portrait.png",
+      "after": "after-en-dark-360-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-360",
+      "id": "club-compact",
+      "before": "before-en-dark-360-club-compact.png",
+      "after": "after-en-dark-360-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-dark-360",
+      "id": "club-landscape",
+      "before": "before-en-dark-360-club-landscape.png",
+      "after": "after-en-dark-360-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 86922,
+      "maxChannelDelta": 242,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-360",
+      "id": "featured",
+      "before": "before-en-dark-360-featured.png",
+      "after": "after-en-dark-360-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 74455,
+      "maxChannelDelta": 242,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-360",
+      "id": "branch",
+      "before": "before-en-dark-360-branch.png",
+      "after": "after-en-dark-360-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 40985,
+      "maxChannelDelta": 238,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-360",
+      "id": "coach-default",
+      "before": "before-en-dark-360-coach-default.png",
+      "after": "after-en-dark-360-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 144875,
+      "maxChannelDelta": 243,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-360",
+      "id": "coach-portrait",
+      "before": "before-en-dark-360-coach-portrait.png",
+      "after": "after-en-dark-360-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 125881,
+      "maxChannelDelta": 240,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-390",
+      "id": "club-portrait",
+      "before": "before-en-dark-390-club-portrait.png",
+      "after": "after-en-dark-390-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-dark-390",
+      "id": "club-compact",
+      "before": "before-en-dark-390-club-compact.png",
+      "after": "after-en-dark-390-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 175535,
+      "maxChannelDelta": 248,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-390",
+      "id": "club-landscape",
+      "before": "before-en-dark-390-club-landscape.png",
+      "after": "after-en-dark-390-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 428,
+      "maxChannelDelta": 1,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-390",
+      "id": "featured",
+      "before": "before-en-dark-390-featured.png",
+      "after": "after-en-dark-390-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 66056,
+      "maxChannelDelta": 242,
+      "solidCapture": {
+        "before": false,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-390",
+      "id": "branch",
+      "before": "before-en-dark-390-branch.png",
+      "after": "after-en-dark-390-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 50159,
+      "maxChannelDelta": 250,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-390",
+      "id": "coach-default",
+      "before": "before-en-dark-390-coach-default.png",
+      "after": "after-en-dark-390-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-390",
+      "id": "coach-portrait",
+      "before": "before-en-dark-390-coach-portrait.png",
+      "after": "after-en-dark-390-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 164890,
+      "maxChannelDelta": 249,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-430",
+      "id": "club-portrait",
+      "before": "before-en-dark-430-club-portrait.png",
+      "after": "after-en-dark-430-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-430",
+      "id": "club-compact",
+      "before": "before-en-dark-430-club-compact.png",
+      "after": "after-en-dark-430-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 216143,
+      "maxChannelDelta": 247,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-430",
+      "id": "club-landscape",
+      "before": "before-en-dark-430-club-landscape.png",
+      "after": "after-en-dark-430-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-dark-430",
+      "id": "featured",
+      "before": "before-en-dark-430-featured.png",
+      "after": "after-en-dark-430-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 83403,
+      "maxChannelDelta": 242,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-430",
+      "id": "branch",
+      "before": "before-en-dark-430-branch.png",
+      "after": "after-en-dark-430-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-dark-430",
+      "id": "coach-default",
+      "before": "before-en-dark-430-coach-default.png",
+      "after": "after-en-dark-430-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 195605,
+      "maxChannelDelta": 242,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-dark-430",
+      "id": "coach-portrait",
+      "before": "before-en-dark-430-coach-portrait.png",
+      "after": "after-en-dark-430-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-light-360",
+      "id": "club-portrait",
+      "before": "before-en-light-360-club-portrait.png",
+      "after": "after-en-light-360-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 97814,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-360",
+      "id": "club-compact",
+      "before": "before-en-light-360-club-compact.png",
+      "after": "after-en-light-360-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 162552,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-360",
+      "id": "club-landscape",
+      "before": "before-en-light-360-club-landscape.png",
+      "after": "after-en-light-360-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-light-360",
+      "id": "featured",
+      "before": "before-en-light-360-featured.png",
+      "after": "after-en-light-360-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 69750,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-360",
+      "id": "branch",
+      "before": "before-en-light-360-branch.png",
+      "after": "after-en-light-360-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 52888,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-360",
+      "id": "coach-default",
+      "before": "before-en-light-360-coach-default.png",
+      "after": "after-en-light-360-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-360",
+      "id": "coach-portrait",
+      "before": "before-en-light-360-coach-portrait.png",
+      "after": "after-en-light-360-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-light-390",
+      "id": "club-portrait",
+      "before": "before-en-light-390-club-portrait.png",
+      "after": "after-en-light-390-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-390",
+      "id": "club-compact",
+      "before": "before-en-light-390-club-compact.png",
+      "after": "after-en-light-390-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-light-390",
+      "id": "club-landscape",
+      "before": "before-en-light-390-club-landscape.png",
+      "after": "after-en-light-390-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 111926,
+      "maxChannelDelta": 251,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-390",
+      "id": "featured",
+      "before": "before-en-light-390-featured.png",
+      "after": "after-en-light-390-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 83075,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": false,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-390",
+      "id": "branch",
+      "before": "before-en-light-390-branch.png",
+      "after": "after-en-light-390-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 41029,
+      "maxChannelDelta": 254,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-390",
+      "id": "coach-default",
+      "before": "before-en-light-390-coach-default.png",
+      "after": "after-en-light-390-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 71379,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": false,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-390",
+      "id": "coach-portrait",
+      "before": "before-en-light-390-coach-portrait.png",
+      "after": "after-en-light-390-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 152268,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-430",
+      "id": "club-portrait",
+      "before": "before-en-light-430-club-portrait.png",
+      "after": "after-en-light-430-club-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-430",
+      "id": "club-compact",
+      "before": "before-en-light-430-club-compact.png",
+      "after": "after-en-light-430-club-compact.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-light-430",
+      "id": "club-landscape",
+      "before": "before-en-light-430-club-landscape.png",
+      "after": "after-en-light-430-club-landscape.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-430",
+      "id": "featured",
+      "before": "before-en-light-430-featured.png",
+      "after": "after-en-light-430-featured.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 113464,
+      "maxChannelDelta": 254,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-430",
+      "id": "branch",
+      "before": "before-en-light-430-branch.png",
+      "after": "after-en-light-430-branch.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 49226,
+      "maxChannelDelta": 255,
+      "solidCapture": {
+        "before": true,
+        "after": false
+      },
+      "exact": false
+    },
+    {
+      "case": "en-light-430",
+      "id": "coach-default",
+      "before": "before-en-light-430-coach-default.png",
+      "after": "after-en-light-430-coach-default.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": false,
+        "after": false
+      },
+      "exact": true
+    },
+    {
+      "case": "en-light-430",
+      "id": "coach-portrait",
+      "before": "before-en-light-430-coach-portrait.png",
+      "after": "after-en-light-430-coach-portrait.png",
+      "sameDimensions": true,
+      "geometryDelta": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0
+      },
+      "differentPixels": 0,
+      "maxChannelDelta": 0,
+      "solidCapture": {
+        "before": true,
+        "after": true
+      },
+      "exact": false
+    }
+  ]
+}

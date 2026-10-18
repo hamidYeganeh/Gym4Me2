@@ -4,9 +4,10 @@ import {
   useContext,
   useMemo,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider, focusManager } from "@tanstack/react-query";
 import {
   createApiClient,
   type ApiClient,
@@ -16,6 +17,19 @@ import { createQueryClient } from "./query-client";
 
 type ApiContextValue = { api: ApiClient; resetSession: () => Promise<void> };
 const ApiContext = createContext<ApiContextValue | null>(null);
+/** Native background overrides focus; resume restores the browser visibility check. */
+export function setNativeApiForeground(active: boolean) {
+  focusManager.setFocused(active ? undefined : false);
+}
+const subscribeForeground = (listener: () => void) =>
+  focusManager.subscribe(listener);
+export function useApiForeground() {
+  return useSyncExternalStore(
+    subscribeForeground,
+    () => focusManager.isFocused(),
+    () => false,
+  );
+}
 
 export function ApiProvider({
   children,

@@ -1,0 +1,445 @@
+.luma-shell {
+  --luma-gap: 1.25rem;
+}
+.luma-shell[data-luma-navigation] .privacy-design {
+  padding-bottom: calc(7.5rem + var(--app-safe-bottom, 0px));
+}
+.luma-shell[data-luma-navigation]
+  main
+  :is(a, button, input, select, textarea, [tabindex]):focus-visible {
+  scroll-margin-block: 1rem calc(7.5rem + var(--app-safe-bottom, 0px));
+}
+.luma-shell[data-luma-navigation]
+  .privacy-design
+  [data-slot="accordion-content"] {
+  animation: none;
+}
+.luma-page {
+  --luma-secondary-foreground: color-mix(
+    in oklch,
+    var(--muted-foreground) 95%,
+    var(--foreground)
+  );
+  min-height: 100dvh;
+  padding: calc(1.5rem + var(--app-safe-top)) 1.25rem
+    calc(7.5rem + var(--app-safe-bottom));
+  color: var(--foreground);
+  background: var(--background);
+  overflow-wrap: anywhere;
+}
+.luma-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+.luma-guest-home { display: flex; flex-direction: column; }
+.luma-header h1 {
+  min-width: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.luma-header-actions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 0.5rem;
+}
+.luma-icon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  border-radius: 999px;
+  background: var(--muted);
+}
+.luma-section {
+  margin-block: 1.75rem;
+}
+.luma-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.0625rem;
+  font-weight: 650;
+}
+.luma-section-title h2 {
+  min-width: 0;
+}
+.luma-section-title a {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+.luma-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  width: 100%;
+}
+.luma-row:last-child {
+  border-bottom: 0;
+}
+.luma-row-icon {
+  display: grid;
+  place-items: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  flex: none;
+  border-radius: 1rem;
+  background: var(--muted);
+  color: var(--primary);
+}
+.luma-row-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+.luma-row-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.luma-meta {
+  color: var(--luma-secondary-foreground, var(--muted-foreground));
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+.luma-group {
+  background: var(--muted);
+  border-radius: 1.5rem;
+  padding: 0.3rem 1rem;
+}
+.luma-segments {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 999px;
+  background: var(--muted);
+  margin-bottom: 1.25rem;
+}
+.luma-segments button {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem;
+  min-height: 2.75rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+}
+.luma-segments button[aria-pressed="true"] {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 1px 8px color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+.luma-pill {
+  font-size: 0.75rem;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  background: var(--muted);
+  width: fit-content;
+}
+.luma-pill[data-state="confirmed"],
+.luma-pill[data-state="active"],
+.luma-pill[data-state="paid"],
+.luma-pill[data-state="completed"] {
+  background: color-mix(in srgb, var(--primary) 15%, var(--background));
+  color: var(--foreground);
+}
+.luma-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 3.5rem 1rem;
+  color: var(--muted-foreground);
+}
+.luma-empty svg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.luma-empty--compact {
+  padding-block: 1.5rem;
+}
+.luma-empty--compact svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+.luma-empty a:not(.luma-cta) {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+.luma-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.luma-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  border-radius: 1.25rem;
+  background: var(--muted);
+  padding: 1rem;
+  font-size: 0.85rem;
+  min-height: 4rem;
+}
+.luma-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-block: 1rem;
+  font-size: 0.875rem;
+}
+.luma-field input,
+.luma-field select,
+.luma-field textarea {
+  border: 1px solid var(--border);
+  background: var(--background);
+  border-radius: 1rem;
+  padding: 0.8rem;
+  color: var(--foreground);
+  width: 100%;
+  min-height: 2.75rem;
+  min-width: 0;
+  font-size: 1rem;
+}
+.luma-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 999px;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  min-height: 3rem;
+  font-weight: 600;
+  margin-top: 1rem;
+}
+.luma-cta:disabled {
+  opacity: 0.45;
+}
+.luma-error {
+  color: var(--destructive);
+  line-height: 1.7;
+  font-size: 0.875rem;
+  margin-block: 1rem;
+}
+.luma-error a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+.luma-consent {
+  min-height: 2.75rem;
+  align-items: center;
+}
+.luma-consent input {
+  flex: none;
+}
+.luma-navigation {
+  position: fixed;
+  inset-inline: 1.25rem;
+  bottom: calc(1rem + var(--app-safe-bottom));
+  z-index: 50;
+  max-width: 24rem;
+  margin-inline: auto;
+  display: flex;
+  border: 1px solid var(--border);
+  padding: 0.45rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--background) 92%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0.5rem 2rem
+    color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+.luma-navigation a {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-height: 3.5rem;
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .luma-navigation {
+    backdrop-filter: none;
+  }
+}
+.luma-navigation a[aria-current="page"] {
+  background: var(--muted);
+  color: var(--foreground);
+}
+.luma-shell .profile-navigation,
+.luma-shell .discovery-tab-bar {
+  display: none;
+}
+.luma-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.luma-bubble {
+  max-width: 85%;
+  align-self: flex-start;
+  border-radius: 1.25rem;
+  background: var(--muted);
+  padding: 0.85rem 1rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.luma-bubble[data-own="true"] {
+  align-self: flex-end;
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.luma-bubble[data-own="true"] .luma-meta {
+  color: inherit;
+}
+.luma-compose {
+  position: sticky;
+  bottom: calc(5.75rem + var(--app-safe-bottom));
+  padding: 0.75rem 0;
+  background: var(--background);
+}
+.luma-conversation-page {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  min-height: 0;
+  padding-bottom: calc(6rem + var(--app-safe-bottom));
+}
+.luma-conversation-page > .luma-header {
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+}
+.luma-conversation-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.luma-chat-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0.25rem;
+  scroll-padding-block: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted-foreground) transparent;
+}
+.luma-conversation-page .luma-compose {
+  position: static;
+  flex-shrink: 0;
+  padding-block: 0.75rem 0;
+}
+.luma-compose-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+.luma-compose-row .luma-field {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+}
+.luma-compose-row .luma-field > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.luma-compose-row textarea {
+  height: 2.75rem;
+  max-height: 7.5rem;
+  resize: vertical;
+}
+.luma-compose-send {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.luma-compose-send:disabled {
+  opacity: 0.45;
+}
+.luma-ticket {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  border-radius: 2rem;
+  background: var(--muted);
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+}
+.luma-ticket canvas {
+  width: min(100%, 280px);
+  height: auto;
+  border-radius: 1rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .luma-navigation a {
+    transition:
+      background-color 180ms ease,
+      color 180ms ease;
+  }
+}
+
+.luma-shortcuts {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-block: 0.5rem;
+  scrollbar-width: none;
+}
+.luma-shortcuts .luma-shortcut {
+  flex: 0 0 5rem;
+  min-height: 4.5rem;
+  padding: 0.5rem 0.2rem;
+  flex-direction: column;
+  text-align: center;
+  gap: 0.65rem;
+  background: none;
+  font-size: 0.75rem;
+}
+.luma-shortcuts .luma-shortcut svg {
+  color: var(--primary);
+}
+.luma-sheet[data-slot="sheet-content"] {
+  border-radius: 1.75rem 1.75rem 0 0;
+  max-height: 85dvh;
+  padding-bottom: var(--app-safe-bottom);
+  animation-duration: 320ms;
+  transition-duration: 320ms;
+}
+.luma-sheet-body {
+  padding: 0 1.25rem 1.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+@media (prefers-reduced-motion: reduce) {
+  .luma-sheet[data-slot="sheet-content"] {
+    animation: none;
+    transition: none;
+  }
+}

@@ -60,6 +60,7 @@ yarn-error.log*
 
 # Isolated local staging web builds
 .next-staging/
+.next-qa/
 
 # Generated Android staging trust and bundled assets
 .staging-android/

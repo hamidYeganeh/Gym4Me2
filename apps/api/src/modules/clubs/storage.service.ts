@@ -92,13 +92,13 @@ export class StorageService implements OnModuleDestroy {
   configured() {
     return Boolean(this.client);
   }
-  async *objects() {
+  async *objects(prefix = 'clubs/') {
     let continuation: string | undefined;
     do {
       const page = await this.ready().send(
         new ListObjectsV2Command({
           Bucket: this.bucket,
-          Prefix: 'clubs/',
+          Prefix: prefix,
           MaxKeys: 1000,
           ContinuationToken: continuation,
         }),

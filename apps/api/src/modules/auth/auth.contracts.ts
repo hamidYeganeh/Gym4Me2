@@ -1,5 +1,5 @@
 import { BadRequestException, applyDecorators } from '@nestjs/common';
-import { ApiBody, ApiHeader } from '@nestjs/swagger';
+import { ApiBody, ApiHeader, type SchemaObject } from '@nestjs/swagger';
 import { z } from 'zod';
 
 export const clientSchema = z.enum(['application', 'business', 'admin']);
@@ -41,10 +41,7 @@ export const ClientHeader = () =>
     enum: ['application', 'business', 'admin'],
   });
 export const JsonBody = (
-  properties: Record<
-    string,
-    { type: string; enum?: string[]; example?: string }
-  >,
+  properties: Record<string, SchemaObject>,
   required = Object.keys(properties),
 ) =>
   applyDecorators(

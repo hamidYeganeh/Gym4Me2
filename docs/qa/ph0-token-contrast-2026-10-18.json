@@ -1,0 +1,594 @@
+{
+  "source": "/Users/mahdi/Documents/projects/Gym4Me/docs/qa/ph0-cards-after-2026-10-18.json",
+  "method": "CSS Color 4 to linear sRGB, channel clipping for out-of-gamut values, WCAG luminance; opaque token pairs only, not photographic pixels or a full accessibility audit",
+  "cases": [
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 360,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.72185 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 6.134482837011381,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.145 0 0)",
+          "ratio": 18.95754366866247,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.205 0 0)",
+          "ratio": 17.15720345218064,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.708 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 5.828752273317529,
+          "textAA": true
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(29, 238, 87)",
+          "ratio": 8.360579022547139,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(0.704 0.191 22.216)",
+          "ratio": 6.843577871453635,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 390,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.72185 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 6.134482837011381,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.145 0 0)",
+          "ratio": 18.95754366866247,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.205 0 0)",
+          "ratio": 17.15720345218064,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.708 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 5.828752273317529,
+          "textAA": true
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(29, 238, 87)",
+          "ratio": 8.360579022547139,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(0.704 0.191 22.216)",
+          "ratio": 6.843577871453635,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 430,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.72185 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 6.134482837011381,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.145 0 0)",
+          "ratio": 18.95754366866247,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.205 0 0)",
+          "ratio": 17.15720345218064,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.708 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 5.828752273317529,
+          "textAA": true
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(29, 238, 87)",
+          "ratio": 8.360579022547139,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(0.704 0.191 22.216)",
+          "ratio": 6.843577871453635,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 360,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.53545 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.730182288228612,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.556 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.338717622442613,
+          "textAA": false
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(25, 208, 76)",
+          "ratio": 6.334781699392376,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(1 0 0)",
+          "bg": "oklch(0.577 0.245 27.325)",
+          "ratio": 4.764721928255908,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 390,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.53545 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.730182288228612,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.556 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.338717622442613,
+          "textAA": false
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(25, 208, 76)",
+          "ratio": 6.334781699392376,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(1 0 0)",
+          "bg": "oklch(0.577 0.245 27.325)",
+          "ratio": 4.764721928255908,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 430,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.53545 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.730182288228612,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.556 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.338717622442613,
+          "textAA": false
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(25, 208, 76)",
+          "ratio": 6.334781699392376,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(1 0 0)",
+          "bg": "oklch(0.577 0.245 27.325)",
+          "ratio": 4.764721928255908,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 360,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.72185 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 6.134482837011381,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.145 0 0)",
+          "ratio": 18.95754366866247,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.205 0 0)",
+          "ratio": 17.15720345218064,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.708 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 5.828752273317529,
+          "textAA": true
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(29, 238, 87)",
+          "ratio": 8.360579022547139,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(0.704 0.191 22.216)",
+          "ratio": 6.843577871453635,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 390,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.72185 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 6.134482837011381,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.145 0 0)",
+          "ratio": 18.95754366866247,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.205 0 0)",
+          "ratio": 17.15720345218064,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.708 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 5.828752273317529,
+          "textAA": true
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(29, 238, 87)",
+          "ratio": 8.360579022547139,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(0.704 0.191 22.216)",
+          "ratio": 6.843577871453635,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 430,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.72185 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 6.134482837011381,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.145 0 0)",
+          "ratio": 18.95754366866247,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.985 0 0)",
+          "bg": "oklch(0.205 0 0)",
+          "ratio": 17.15720345218064,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.708 0 0)",
+          "bg": "oklch(0.269 0 0)",
+          "ratio": 5.828752273317529,
+          "textAA": true
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(29, 238, 87)",
+          "ratio": 8.360579022547139,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(0.704 0.191 22.216)",
+          "ratio": 6.843577871453635,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 360,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.53545 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.730182288228612,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.556 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.338717622442613,
+          "textAA": false
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(25, 208, 76)",
+          "ratio": 6.334781699392376,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(1 0 0)",
+          "bg": "oklch(0.577 0.245 27.325)",
+          "ratio": 4.764721928255908,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 390,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.53545 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.730182288228612,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.556 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.338717622442613,
+          "textAA": false
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(25, 208, 76)",
+          "ratio": 6.334781699392376,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(1 0 0)",
+          "bg": "oklch(0.577 0.245 27.325)",
+          "ratio": 4.764721928255908,
+          "textAA": true
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 430,
+      "pairs": [
+        {
+          "id": "luma-secondary",
+          "fg": "oklch(0.53545 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.730182288228612,
+          "textAA": true
+        },
+        {
+          "id": "background",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "card",
+          "fg": "oklch(0.145 0 0)",
+          "bg": "oklch(1 0 0)",
+          "ratio": 19.793161462714625,
+          "textAA": true
+        },
+        {
+          "id": "muted",
+          "fg": "oklch(0.556 0 0)",
+          "bg": "oklch(0.97 0 0)",
+          "ratio": 4.338717622442613,
+          "textAA": false
+        },
+        {
+          "id": "primary",
+          "fg": "rgb(7, 57, 21)",
+          "bg": "rgb(25, 208, 76)",
+          "ratio": 6.334781699392376,
+          "textAA": true
+        },
+        {
+          "id": "destructive",
+          "fg": "oklch(1 0 0)",
+          "bg": "oklch(0.577 0.245 27.325)",
+          "ratio": 4.764721928255908,
+          "textAA": true
+        }
+      ]
+    }
+  ]
+}

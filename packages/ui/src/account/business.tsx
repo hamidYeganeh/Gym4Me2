@@ -16,7 +16,9 @@ import type {
   TeamRole,
 } from "@repo/api/business";
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useId, useRef, useState, type FormEvent } from "react";
+import { teamInvitationErrors } from "./team-invitation";
+import { isActiveSurfaceElement } from "../lib/active-surface";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
 import { Button } from "@repo/ui/kit/Button";
@@ -192,7 +194,8 @@ export function BranchesContent({
   }
   return (
     <>
-      {(organization.role === "owner" || (organization.role === "manager" && organization.allBranches)) && (
+      {(organization.role === "owner" ||
+        (organization.role === "manager" && organization.allBranches)) && (
         <Card>
           <CardHeader>
             <CardTitle>{t("Copy.addBranch")}</CardTitle>
@@ -277,14 +280,49 @@ export function TeamContent({ organization }: { organization: Organization }) {
   const [branchIds, setBranchIds] = useState<string[]>([]);
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("receptionist");
+  const pending = useRef(false);
+  const formId = useId();
+  const [attempted, setAttempted] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [removal, setRemoval] = useState<{
     id: string;
     invitation: boolean;
   } | null>(null);
-  async function invite(e: FormEvent) {
+  const validation = teamInvitationErrors({
+    phone,
+    allBranches,
+    branchIds,
+    availableBranchIds:
+      !branches.error && branches.data
+        ? branches.data.map((branch) => branch.id)
+        : undefined,
+  });
+  const fieldErrors = attempted ? validation : {};
+  async function invite(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (pending.current) return;
+    setAttempted(true);
+    setError(null);
+    const form = e.currentTarget;
+    const origin = document.activeElement;
+    const target = validation.phone
+      ? '[name="invitePhone"]'
+      : validation.scope
+        ? "[data-team-scope] input"
+        : null;
+    if (target) {
+      requestAnimationFrame(() => {
+        if (
+          isActiveSurfaceElement(form) &&
+          (document.activeElement === origin ||
+            document.activeElement === document.body)
+        )
+          form.querySelector<HTMLInputElement>(target)?.focus();
+      });
+      return;
+    }
+    pending.current = true;
     setBusy(true);
     setError(null);
     try {
@@ -297,16 +335,27 @@ export function TeamContent({ organization }: { organization: Organization }) {
         },
       });
       setPhone("");
+      setAttempted(false);
 
       toast.success(t("Copy.theInvitationWillAppearInTheAccount"));
     } catch (err) {
       setError((err as Error).message);
     } finally {
+      pending.current = false;
       setBusy(false);
+      requestAnimationFrame(() => {
+        if (
+          origin instanceof HTMLElement &&
+          isActiveSurfaceElement(origin) &&
+          document.activeElement === document.body
+        )
+          origin.focus();
+      });
     }
   }
   async function remove() {
-    if (!removal) return;
+    if (!removal || pending.current) return;
+    pending.current = true;
     setBusy(true);
     setError(null);
     try {
@@ -326,6 +375,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
     } catch (err) {
       setError((err as Error).message);
     } finally {
+      pending.current = false;
       setBusy(false);
     }
   }
@@ -346,80 +396,131 @@ export function TeamContent({ organization }: { organization: Organization }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={invite} className="grid max-w-xl gap-5">
-            <FieldGroup className="sm:grid sm:grid-cols-2">
-              <TextField
-                label={t("Copy.colleagueMobileNumber")}
-                name="invitePhone"
-                type="tel"
-                dir="ltr"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-                maxLength={20}
-              />
-              <Field>
-                <FieldLabel htmlFor="role">
-                  {t("Copy.organizationRole")}
-                </FieldLabel>
-                <NativeSelect
-                  id="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                >
-                  {["manager", "receptionist", "accountant"].map((r) => (
-                    <NativeSelectOption key={r} value={r}>
-                      {roleNames[r]}
-                    </NativeSelectOption>
-                  ))}
-                </NativeSelect>
-              </Field>
-            </FieldGroup>
-            <Field>
-              <FieldLabel>{t("StaffScope.title")}</FieldLabel>
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  checked={allBranches}
-                  onChange={(event) => setAllBranches(event.target.checked)}
-                />
-                {t("StaffScope.all")}
-              </label>
-              {!allBranches && (
-                <>
-                  <QueryError error={branches.error} retry={branches.refetch} />
-                  {branches.isLoading && <Loading />}
-                  <div className="flex flex-wrap gap-3">
-                    {(branches.data ?? []).map((branch) => (
-                      <label
-                        key={branch.id}
-                        className="flex items-center gap-2 rounded-xl border px-3 py-2 text-sm"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={branchIds.includes(branch.id)}
-                          onChange={(event) =>
-                            setBranchIds(
-                              event.target.checked
-                                ? [...branchIds, branch.id]
-                                : branchIds.filter((id) => id !== branch.id),
-                            )
-                          }
-                        />
-                        {branch.name}
-                      </label>
+          <form noValidate onSubmit={invite} className="max-w-xl">
+            <fieldset
+              disabled={busy}
+              aria-label={t("Copy.inviteColleague")}
+              aria-busy={busy}
+              className="grid min-w-0 gap-5"
+            >
+              <FieldGroup className="sm:grid sm:grid-cols-2">
+                <div className="grid gap-2">
+                  <TextField
+                    label={t("Copy.colleagueMobileNumber")}
+                    name="invitePhone"
+                    type="tel"
+                    dir="ltr"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                    maxLength={20}
+                    aria-invalid={Boolean(fieldErrors.phone) || undefined}
+                    aria-describedby={
+                      fieldErrors.phone ? `${formId}-phone-error` : undefined
+                    }
+                  />
+                  {fieldErrors.phone && (
+                    <p
+                      id={`${formId}-phone-error`}
+                      role="alert"
+                      className="text-sm text-destructive"
+                    >
+                      {t(fieldErrors.phone)}
+                    </p>
+                  )}
+                </div>
+                <Field>
+                  <FieldLabel htmlFor="role">
+                    {t("Copy.organizationRole")}
+                  </FieldLabel>
+                  <NativeSelect
+                    id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    {["manager", "receptionist", "accountant"].map((r) => (
+                      <NativeSelectOption key={r} value={r}>
+                        {roleNames[r]}
+                      </NativeSelectOption>
                     ))}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {t("StaffScope.selectedHint")}
+                  </NativeSelect>
+                </Field>
+              </FieldGroup>
+              <fieldset
+                data-team-scope
+                className="grid min-w-0 gap-2"
+                aria-invalid={Boolean(fieldErrors.scope) || undefined}
+                aria-describedby={
+                  [
+                    !allBranches && `${formId}-scope-hint`,
+                    fieldErrors.scope && `${formId}-scope-error`,
+                  ]
+                    .filter(Boolean)
+                    .join(" ") || undefined
+                }
+              >
+                <legend className="mb-2 text-sm font-medium">
+                  {t("StaffScope.title")}
+                </legend>
+                <label className="flex items-center gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={allBranches}
+                    onChange={(event) => setAllBranches(event.target.checked)}
+                  />
+                  {t("StaffScope.all")}
+                </label>
+                {!allBranches && (
+                  <>
+                    <QueryError
+                      error={branches.error}
+                      retry={branches.refetch}
+                    />
+                    {branches.isLoading && <Loading />}
+                    <div className="flex flex-wrap gap-3">
+                      {(branches.data ?? []).map((branch) => (
+                        <label
+                          key={branch.id}
+                          className="flex items-center gap-2 rounded-xl border px-3 py-2 text-sm"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={branchIds.includes(branch.id)}
+                            onChange={(event) =>
+                              setBranchIds(
+                                event.target.checked
+                                  ? [...branchIds, branch.id]
+                                  : branchIds.filter((id) => id !== branch.id),
+                              )
+                            }
+                          />
+                          {branch.name}
+                        </label>
+                      ))}
+                    </div>
+                    <p
+                      id={`${formId}-scope-hint`}
+                      className="text-xs text-muted-foreground"
+                    >
+                      {t("StaffScope.selectedHint")}
+                    </p>
+                  </>
+                )}
+                {fieldErrors.scope && (
+                  <p
+                    id={`${formId}-scope-error`}
+                    role="alert"
+                    className="text-sm text-destructive"
+                  >
+                    {t(fieldErrors.scope)}
                   </p>
-                </>
-              )}
-            </Field>
-            <ErrorNotice error={error} />
-            <div>
-              <Submit busy={busy}>{t("Copy.sendTeamInvitation")}</Submit>
-            </div>
+                )}
+              </fieldset>
+              <ErrorNotice error={error} />
+              <div>
+                <Submit busy={busy}>{t("Copy.sendTeamInvitation")}</Submit>
+              </div>
+            </fieldset>
           </form>
         </CardContent>
       </Card>
@@ -471,6 +572,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
                             <Button
                               variant="ghost"
                               size="sm"
+                              disabled={busy}
                               onClick={() =>
                                 setRemoval({ id: member.id, invitation: false })
                               }
@@ -528,6 +630,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
                         <Button
                           variant="outline"
                           size="sm"
+                          disabled={busy}
                           onClick={() =>
                             setRemoval({ id: inv.id, invitation: true })
                           }

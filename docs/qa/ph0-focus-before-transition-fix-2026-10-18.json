@@ -1,0 +1,107 @@
+{
+  "scope": "Three pre-fix receipts: animated initial weak ring and settled state. These are failures/diagnostic evidence, not final validation.",
+  "cases": [
+    {
+      "active": true,
+      "borderColor": "oklch(0.704 0.191 22.216)",
+      "boxShadow": "oklch(0.145 0 0) 0px 0px 0px 3px",
+      "dpr": 1,
+      "focusName": "title",
+      "focusTag": "INPUT",
+      "focusVisible": true,
+      "forcedColors": false,
+      "kind": "invalid-input",
+      "locale": "fa",
+      "outlineColor": "oklch(0.985 0 0)",
+      "outlineOffset": "3px",
+      "outlineStyle": "solid",
+      "outlineWidth": "2px",
+      "path": "/support",
+      "primary": "#1dee57",
+      "rect": {
+        "height": 44,
+        "width": 320,
+        "x": 20,
+        "y": 121.75
+      },
+      "reduced": false,
+      "renderOpacity": "1",
+      "requestMatched": true,
+      "selector": "input[name=\"title\"]",
+      "surface": "application",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ]
+    },
+    {
+      "active": true,
+      "borderColor": "rgba(0, 0, 0, 0)",
+      "boxShadow": "oklab(0 0 0 / 0) 0px 0px 0px 0px",
+      "dpr": 1,
+      "focusName": "ارسال",
+      "focusTag": "BUTTON",
+      "focusVisible": true,
+      "forcedColors": false,
+      "kind": "button",
+      "locale": "fa",
+      "outlineColor": "oklab(0.828155 -0.203821 0.135889 / 0.5)",
+      "outlineOffset": "0px",
+      "outlineStyle": "solid",
+      "outlineWidth": "3px",
+      "path": "/support",
+      "primary": "#1dee57",
+      "rect": {
+        "height": 44,
+        "width": 320,
+        "x": 20,
+        "y": 400
+      },
+      "reduced": false,
+      "renderOpacity": "1",
+      "requestMatched": true,
+      "selector": "form button[type=\"submit\"]",
+      "surface": "application",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ]
+    },
+    {
+      "active": true,
+      "borderColor": "rgba(0, 0, 0, 0)",
+      "boxShadow": "oklch(0.145 0 0) 0px 0px 0px 3px",
+      "dpr": 1,
+      "focusName": "ارسال",
+      "focusTag": "BUTTON",
+      "focusVisible": true,
+      "forcedColors": false,
+      "kind": "button-settled",
+      "locale": "fa",
+      "outlineColor": "oklch(0.985 0 0)",
+      "outlineOffset": "3px",
+      "outlineStyle": "solid",
+      "outlineWidth": "2px",
+      "path": "/support",
+      "primary": "#1dee57",
+      "rect": {
+        "height": 44,
+        "width": 320,
+        "x": 20,
+        "y": 400
+      },
+      "reduced": false,
+      "renderOpacity": "1",
+      "requestMatched": true,
+      "selector": "form button[type=\"submit\"]",
+      "surface": "application",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ]
+    }
+  ]
+}

@@ -1,0 +1,685 @@
+{
+  "scope": "Read-only web DTO fixture; no session, delivery or successful write acceptance",
+  "before": {
+    "initial": 20,
+    "after": {
+      "articles": 0,
+      "focus": {
+        "clear": false,
+        "focusVisible": false,
+        "href": null,
+        "id": "",
+        "label": "",
+        "margin": "0px",
+        "nav": false,
+        "navRect": {
+          "bottom": 828,
+          "left": 20,
+          "right": 370,
+          "top": 755.625
+        },
+        "rect": {
+          "bottom": 844,
+          "height": 844,
+          "left": 0,
+          "right": 390,
+          "top": 0
+        },
+        "scrollY": 0,
+        "tag": "BODY"
+      }
+    }
+  },
+  "cases": [
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["همه"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["خوانده‌نشده"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["همه"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["خوانده‌نشده"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["همه"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["خوانده‌نشده"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["همه"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["خوانده‌نشده"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["همه"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["خوانده‌نشده"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["همه"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "fa",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 70.5625,
+      "overflow": false,
+      "pressed": ["خوانده‌نشده"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["All"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["Unread"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["All"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["Unread"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["All"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["Unread"],
+      "theme": "light",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["All"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["Unread"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["All"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["Unread"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 16,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["All"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "all",
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "allNamed": true,
+      "articles": 20,
+      "lang": "en",
+      "markButtons": 20,
+      "minHeight": 64,
+      "minWidth": 112.09375,
+      "overflow": false,
+      "pressed": ["Unread"],
+      "theme": "dark",
+      "uniqueIds": 20,
+      "view": "unread",
+      "width": 430,
+      "passed": true
+    }
+  ],
+  "flows": {
+    "pageError": {
+      "articles": 20,
+      "focus": {
+        "clear": true,
+        "focusVisible": true,
+        "href": null,
+        "id": "",
+        "label": "تلاش دوباره",
+        "margin": "120px",
+        "nav": false,
+        "navRect": {
+          "bottom": 828,
+          "left": 20,
+          "right": 370,
+          "top": 755.625
+        },
+        "rect": {
+          "bottom": 724.40625,
+          "height": 51.1875,
+          "left": 20,
+          "right": 370,
+          "top": 673.21875
+        },
+        "scrollY": 3514,
+        "tag": "BUTTON"
+      },
+      "alerts": [
+        "اعلان‌های بیشتر دریافت نشد. فهرست فعلی حفظ شده؛ دوباره تلاش کن.",
+        ""
+      ]
+    },
+    "recovered": {
+      "articles": 29,
+      "focus": {
+        "clear": true,
+        "focusVisible": true,
+        "href": null,
+        "id": "notification-a1000000-0000-4000-8000-0000000005f1",
+        "label": "یادآوری تمرین گروهی · نمونهٔ وب 21",
+        "margin": "120px",
+        "nav": false,
+        "navRect": {
+          "bottom": 828,
+          "left": 20,
+          "right": 370,
+          "top": 755.625
+        },
+        "rect": {
+          "bottom": 724.40625,
+          "height": 141.78125,
+          "left": 20,
+          "right": 370,
+          "top": 582.625
+        },
+        "scrollY": 3525,
+        "tag": "ARTICLE"
+      },
+      "moreButtons": 0,
+      "note": "Five-second polling cleared transient error before retry action; resumed with More, not a direct Retry recovery."
+    },
+    "preserveNextFocus": {
+      "focus": {
+        "clear": true,
+        "focusVisible": true,
+        "href": "/discovery",
+        "id": "",
+        "label": "Discover",
+        "margin": "0px",
+        "nav": true,
+        "navRect": {
+          "bottom": 828,
+          "left": 23,
+          "right": 407,
+          "top": 755.625
+        },
+        "rect": {
+          "bottom": 819.8125,
+          "height": 56,
+          "left": 153.71875,
+          "right": 276.265625,
+          "top": 763.8125
+        },
+        "scrollY": 3733,
+        "tag": "A"
+      },
+      "layout": {
+        "activeMains": 1,
+        "allNamed": true,
+        "articles": 23,
+        "lang": "en",
+        "markButtons": 23,
+        "minHeight": 64,
+        "minWidth": 112.09375,
+        "overflow": false,
+        "pressed": ["Unread"],
+        "theme": "dark",
+        "uniqueIds": 23,
+        "view": "unread",
+        "width": 430
+      }
+    },
+    "rejectedRead": {
+      "articles": 23,
+      "markButtons": 23,
+      "alerts": ["The action failed. Please try again.", "Notifications"],
+      "successfulWrite": false
+    },
+    "exhausted": {
+      "articles": 20,
+      "focus": {
+        "tag": "P",
+        "id": "_R_2npfblb_",
+        "focusVisible": true,
+        "clear": true,
+        "margin": "120px",
+        "scrollY": 3405,
+        "rect": {
+          "top": 702.625,
+          "bottom": 724.375,
+          "left": 20,
+          "right": 410,
+          "height": 21.75
+        },
+        "navRect": {
+          "top": 755.625,
+          "bottom": 828,
+          "left": 23,
+          "right": 407
+        }
+      },
+      "status": ["20 notifications shown"],
+      "earlyObservation": {
+        "clear": false,
+        "focusVisible": false,
+        "href": null,
+        "id": "",
+        "label": "",
+        "margin": "0px",
+        "nav": false,
+        "navRect": {
+          "bottom": 828,
+          "left": 23,
+          "right": 407,
+          "top": 755.625
+        },
+        "rect": {
+          "bottom": 843.5625,
+          "height": 4316.5625,
+          "left": 0,
+          "right": 430,
+          "top": -3473
+        },
+        "scrollY": 3473,
+        "tag": "BODY"
+      },
+      "note": "Initial observation matched a temporary label change while loading. The following fresh DOM snapshot and focus read verified the settled focused status."
+    },
+    "forbidden": {
+      "articles": 0,
+      "alerts": ["Could not load this pageRetry", ""],
+      "cachedRowsBefore": 20
+    },
+    "empty": {
+      "articles": 0,
+      "snapshot": "- main:\n  - link \"Back\":\n    - /url: /\n  - heading \"Notifications\" [level=1]\n  - link \"Notifications\":\n    - /url: /notifications\n  - link \"Notify preferences\":\n    - /url: /notifications/preferences\n  - group \"All / Unread\":\n    - button \"All\" [pressed]\n    - button \"Unread\"\n  - region \"Notifications\":\n    - paragraph: Nothing here yet\n    - status: 0 notifications shown\n- navigation \"Navigation\":\n  - link \"Home\":\n    - /url: /\n    - generic: Home\n  - link \"Discover\":\n    - /url: /discovery\n    - generic: Discover\n  - link \"Messages\":\n    - /url: /messages\n    - generic: Messages\n- region \"Notifications alt+T\"\n- alert"
+    },
+    "destination": {
+      "url": "http://127.0.0.1:7381/services/detail?id=a1000000-0000-4000-8000-000000000001",
+      "snapshot": "- main:\n  - link:\n    - /url: /\n  - heading [level=1]: اعلان‌ها\n  - link:\n    - /url: /notifications\n  - link:\n    - /url: /notifications/preferences\n    - text: ترجیحات اعلان\n  - button [pressed]: همه\n  - button: خوانده‌نشده\n  - region:\n    - article:\n      - link:\n        - /url: /services/detail?id=a1000000-0000-4000-8000-000000000001\n        - generic: یادآوری تمرین گروهی · نمونهٔ وب 1\n        - generic: اطلاعات نمایشی برای بررسی فهرست اعلان‌ها و دسترسی با کیبورد. · ۲۶ مهر ۱۴۰۵، ۱۰:۵۲\n        - generic: خوانده‌شده\n    - article:\n      - link:\n        - /url: /services/detail?id=a1000000-0000-4000-8000-000000000001\n        - generic: یادآوری تمرین گروهی · نمونهٔ وب 2\n        - generic: اطلاعات نمایشی برای بررسی فهرست اعلان‌ها و دسترسی با کیبورد. · ۲۶ مهر ۱۴۰۵، ۹:۵۲\n        - generic: تازه\n      - button: خواندم\n    - article:\n      - link:\n        - /url: /services/detail?id=a1000000-0000-4000-8000-000000000001\n        - generic: یادآوری تمرین گروهی · نمونهٔ وب 3\n        - generic: ",
+      "backUrl": "http://127.0.0.1:7381/notifications"
+    },
+    "screenshot": {
+      "articles": 20,
+      "focus": {
+        "clear": true,
+        "focusVisible": true,
+        "href": null,
+        "id": "",
+        "label": "تلاش دوباره",
+        "margin": "120px",
+        "nav": false,
+        "navRect": {
+          "bottom": 828,
+          "left": 20,
+          "right": 370,
+          "top": 755.625
+        },
+        "rect": {
+          "bottom": 724.40625,
+          "height": 51.1875,
+          "left": 20,
+          "right": 370,
+          "top": 673.21875
+        },
+        "scrollY": 3514,
+        "tag": "BUTTON"
+      }
+    },
+    "retryFailure": {
+      "articles": 20,
+      "focus": {
+        "clear": true,
+        "focusVisible": true,
+        "href": null,
+        "id": "",
+        "label": "تلاش دوباره",
+        "margin": "120px",
+        "nav": false,
+        "navRect": {
+          "bottom": 828,
+          "left": 20,
+          "right": 370,
+          "top": 755.625
+        },
+        "rect": {
+          "bottom": 702.40625,
+          "height": 51.1875,
+          "left": 20,
+          "right": 370,
+          "top": 651.21875
+        },
+        "scrollY": 3536,
+        "tag": "BUTTON"
+      }
+    },
+    "sessionExpired": {
+      "articles": 0,
+      "loginHref": "/login?returnTo=%2Fnotifications",
+      "cachedRowsBefore": 20
+    }
+  },
+  "cleanup": {
+    "locale": "fa",
+    "theme": "dark",
+    "viewportReset": true,
+    "ownTabClosed": true,
+    "previewStopped": true,
+    "fixtureStopped": true
+  },
+  "verification": {
+    "date": "2026-10-18",
+    "fixtureTests": 21,
+    "layoutCases": 24,
+    "allLayoutsPassed": true,
+    "build": {
+      "id": "RI4u-wkN-F8a8FdhGUfHi",
+      "compileSeconds": 10.6,
+      "typecheckSeconds": 7,
+      "pages": 64,
+      "heapMiB": 512,
+      "workers": 1
+    },
+    "protectedFiles": 59,
+    "sources": {
+      "apps/application/components/luma/notifications.tsx": "dbfe550c6b2fa3ee0fedb3fee34157ba00d7925ec3c72d6aa6e4bda9069754ff",
+      "apps/application/components/luma/load-more.tsx": "727cbfe871c2809a3fe6d1d864a8f2a09cff3436b777fc2d6de0fb6e95a3601a",
+      "apps/application/test/fixtures/notifications.ts": "9c917c2405a4f1d6d172855fa8e135d064d41f28713b200345bb3f5da00d66be",
+      "apps/application/test/fixtures/web-read-api.ts": "4e4d097f70ed35f05c9a03d6104a084fc79846b6084b36e639da8495c50de22c",
+      "apps/application/test/web-read-fixture.test.ts": "d0f467ee25152a2b98fb719b0eec1b0bf3ab66db06d193f8257eab945bdcac35",
+      "apps/application/scripts/web-read-fixture.mts": "c81a9f2c840429c69def31ca8c2080b6590be7e66e9ec05fbfafc69408660b84",
+      "packages/i18n/src/messages/en.json": "8ab3551312b03a82b2419b11861992bd6f45720dff107955e3aa13516b95f37b",
+      "packages/i18n/src/messages/fa.json": "fce6da17e2806875201b8fc372f36cbd27c1083e2178f1dc1c252ac9b5ec8ace"
+    },
+    "acceptance": "read-only web list behavior; successful read writes, delivery and full phase gates remain open"
+  }
+}

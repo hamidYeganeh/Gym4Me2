@@ -1,0 +1,117 @@
+{
+  "scope": "Synthetic local405 cases only; no successful sign-in, SMS or session",
+  "cases": [
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "href": null,
+      "locale": "fa",
+      "rect": {
+        "height": 44,
+        "width": 320,
+        "x": 20,
+        "y": 733.75
+      },
+      "scrollY": 28.5,
+      "surface": "application",
+      "tag": "BUTTON",
+      "type": "submit",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "double-click",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": "password",
+      "href": null,
+      "locale": "fa",
+      "rect": {
+        "height": 44,
+        "width": 320,
+        "x": 20,
+        "y": 475.75
+      },
+      "scrollY": 28.5,
+      "surface": "application",
+      "tag": "INPUT",
+      "type": "password",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "keyboard",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "href": "/privacy?from=login&returnTo=%2Fprofile",
+      "locale": "fa",
+      "rect": {
+        "height": 44,
+        "width": 116.5078125,
+        "x": 98.40625,
+        "y": 849.75
+      },
+      "scrollY": 28.5,
+      "surface": "application",
+      "tag": "A",
+      "type": null,
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "leave-focus",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "href": null,
+      "locale": "fa",
+      "rect": {
+        "height": 44,
+        "width": 320,
+        "x": 20,
+        "y": 660
+      },
+      "scrollY": 0,
+      "surface": "application",
+      "tag": "BUTTON",
+      "type": "submit",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "otp-double-click",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    }
+  ]
+}

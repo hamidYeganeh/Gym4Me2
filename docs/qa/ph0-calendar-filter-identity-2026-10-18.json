@@ -1,0 +1,48 @@
+{
+  "build": "CuMYYCscHxNIXoZkhyu_4",
+  "scope": "view=following then search=Ph0Calendar; one calendar route family",
+  "nodeIds": {
+    "before": 37,
+    "following": 37,
+    "search": 37
+  },
+  "alerts": [],
+  "dpr": 1,
+  "focus": {
+    "id": "",
+    "inactive": false,
+    "tag": "INPUT",
+    "text": ""
+  },
+  "heading": {
+    "scrollWidth": 424,
+    "width": 424,
+    "wrap": "anywhere"
+  },
+  "inputFont": "16px",
+  "path": "/calendars",
+  "query": "?view=following",
+  "routeIds": [
+    "/calendars"
+  ],
+  "rows": [
+    "calendar-a1000000-0000-4000-8000-000000000961"
+  ],
+  "statuses": [
+    {
+      "id": "_R_av5tejb_",
+      "text": "۱ تقویم نمایش داده شده"
+    }
+  ],
+  "title": [
+    {
+      "scrollWidth": 429,
+      "width": 429,
+      "wrap": "anywhere"
+    }
+  ],
+  "viewport": [
+    1280,
+    720
+  ]
+}

@@ -1,6 +1,5 @@
-import { MobilePage } from "@repo/ui/mobile-page";
+import { ServicesPage } from "../../../../../components/luma/services";
 import { clubHref } from "../../../../../lib/club-href";
-import { getTranslations } from "@repo/i18n/server";
 import { getPublicClub } from "../../../../../lib/public-catalog";
 export default async function Page({
   params,
@@ -10,15 +9,13 @@ export default async function Page({
   searchParams: Promise<{ branch?: string }>;
 }) {
   const { clubId } = await params;
-  const club = await getPublicClub(clubId);
+  await getPublicClub(clubId);
   const { branch } = await searchParams;
-  const t = await getTranslations("Catalog");
   return (
-    <MobilePage
-      title={club.name}
-      backHref={clubHref(club.id, undefined, branch ? { branch } : undefined)}
-    >
-      <p className="text-muted-foreground">{t("noBooking")}</p>
-    </MobilePage>
+    <ServicesPage
+      organizationId={clubId}
+      branchId={branch}
+      back={clubHref(clubId, undefined, branch ? { branch } : undefined)}
+    />
   );
 }

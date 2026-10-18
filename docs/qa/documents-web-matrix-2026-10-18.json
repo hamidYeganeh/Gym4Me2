@@ -1,0 +1,960 @@
+{
+  "scope": "36 web documents DOM cases with synthetic metadata GET only; profile/auth remain401; no real account or upload acceptance.",
+  "expected": 36,
+  "cases": [
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmit a document\n\nOnly submit the document requested for this service. Authorized club staff will review it.\n\nRequired documents\nگواهی آمادگی ورزشی\nDocuments\nChoose file\nNo file chosen\n\nJPEG, PNG or WebP images and PDF files, up to 5 MB.\n\nSend\nSubmitted documents\n\nYou have not submitted any documents for this service.",
+      "emptyMessages": [
+        "You have not submitted any documents for this service."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 360,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\n\nThis service currently requires no documents.\n\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 360,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 360,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmit a document\n\nOnly submit the document requested for this service. Authorized club staff will review it.\n\nRequired documents\nگواهی آمادگی ورزشی\nDocuments\nChoose file\nNo file chosen\n\nJPEG, PNG or WebP images and PDF files, up to 5 MB.\n\nSend\nSubmitted documents\n\nYou have not submitted any documents for this service.",
+      "emptyMessages": [
+        "You have not submitted any documents for this service."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 390,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\n\nThis service currently requires no documents.\n\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 390,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 390,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmit a document\n\nOnly submit the document requested for this service. Authorized club staff will review it.\n\nRequired documents\nگواهی آمادگی ورزشی\nDocuments\nChoose file\nNo file chosen\n\nJPEG, PNG or WebP images and PDF files, up to 5 MB.\n\nSend\nSubmitted documents\n\nYou have not submitted any documents for this service.",
+      "emptyMessages": [
+        "You have not submitted any documents for this service."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 430,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\n\nThis service currently requires no documents.\n\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 430,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 430,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmit a document\n\nOnly submit the document requested for this service. Authorized club staff will review it.\n\nRequired documents\nگواهی آمادگی ورزشی\nDocuments\nChoose file\nNo file chosen\n\nJPEG, PNG or WebP images and PDF files, up to 5 MB.\n\nSend\nSubmitted documents\n\nYou have not submitted any documents for this service.",
+      "emptyMessages": [
+        "You have not submitted any documents for this service."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 360,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\n\nThis service currently requires no documents.\n\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 360,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 360,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmit a document\n\nOnly submit the document requested for this service. Authorized club staff will review it.\n\nRequired documents\nگواهی آمادگی ورزشی\nDocuments\nChoose file\nNo file chosen\n\nJPEG, PNG or WebP images and PDF files, up to 5 MB.\n\nSend\nSubmitted documents\n\nYou have not submitted any documents for this service.",
+      "emptyMessages": [
+        "You have not submitted any documents for this service."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 390,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\n\nThis service currently requires no documents.\n\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 390,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 390,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmit a document\n\nOnly submit the document requested for this service. Authorized club staff will review it.\n\nRequired documents\nگواهی آمادگی ورزشی\nDocuments\nChoose file\nNo file chosen\n\nJPEG, PNG or WebP images and PDF files, up to 5 MB.\n\nSend\nSubmitted documents\n\nYou have not submitted any documents for this service.",
+      "emptyMessages": [
+        "You have not submitted any documents for this service."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 430,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\n\nThis service currently requires no documents.\n\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 430,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "Documents\nSubmitted documents\nمدرک نمایشیِ خدمت دیگر\nExpires: Oct 17, 2026, 8:42 AM\nExpired\nLoad document preview",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "en",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "Get a preview of مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "Expired"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 430,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nارسال مدرک\n\nفقط مدرک خواسته‌شده برای همین خدمت را ارسال کنید. مسئولان مجاز مجموعه آن را بررسی می‌کنند.\n\nمدارک موردنیاز\nگواهی آمادگی ورزشی\nمدارک\nانتخاب فایل\nفایلی انتخاب نشده\n\nعکس JPEG، PNG یا WebP و فایل PDF، حداکثر ۵ مگابایت.\n\nارسال\nمدارک ارسال‌شده\n\nبرای این خدمت هنوز مدرکی ارسال نکرده‌اید.",
+      "emptyMessages": [
+        "برای این خدمت هنوز مدرکی ارسال نکرده‌اید."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 360,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\n\nاین خدمت در حال حاضر به ارسال مدرک نیاز ندارد.\n\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 360,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 360,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nارسال مدرک\n\nفقط مدرک خواسته‌شده برای همین خدمت را ارسال کنید. مسئولان مجاز مجموعه آن را بررسی می‌کنند.\n\nمدارک موردنیاز\nگواهی آمادگی ورزشی\nمدارک\nانتخاب فایل\nفایلی انتخاب نشده\n\nعکس JPEG، PNG یا WebP و فایل PDF، حداکثر ۵ مگابایت.\n\nارسال\nمدارک ارسال‌شده\n\nبرای این خدمت هنوز مدرکی ارسال نکرده‌اید.",
+      "emptyMessages": [
+        "برای این خدمت هنوز مدرکی ارسال نکرده‌اید."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 390,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\n\nاین خدمت در حال حاضر به ارسال مدرک نیاز ندارد.\n\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 390,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 390,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nارسال مدرک\n\nفقط مدرک خواسته‌شده برای همین خدمت را ارسال کنید. مسئولان مجاز مجموعه آن را بررسی می‌کنند.\n\nمدارک موردنیاز\nگواهی آمادگی ورزشی\nمدارک\nانتخاب فایل\nفایلی انتخاب نشده\n\nعکس JPEG، PNG یا WebP و فایل PDF، حداکثر ۵ مگابایت.\n\nارسال\nمدارک ارسال‌شده\n\nبرای این خدمت هنوز مدرکی ارسال نکرده‌اید.",
+      "emptyMessages": [
+        "برای این خدمت هنوز مدرکی ارسال نکرده‌اید."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 430,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\n\nاین خدمت در حال حاضر به ارسال مدرک نیاز ندارد.\n\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 430,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 430,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nارسال مدرک\n\nفقط مدرک خواسته‌شده برای همین خدمت را ارسال کنید. مسئولان مجاز مجموعه آن را بررسی می‌کنند.\n\nمدارک موردنیاز\nگواهی آمادگی ورزشی\nمدارک\nانتخاب فایل\nفایلی انتخاب نشده\n\nعکس JPEG، PNG یا WebP و فایل PDF، حداکثر ۵ مگابایت.\n\nارسال\nمدارک ارسال‌شده\n\nبرای این خدمت هنوز مدرکی ارسال نکرده‌اید.",
+      "emptyMessages": [
+        "برای این خدمت هنوز مدرکی ارسال نکرده‌اید."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 360,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\n\nاین خدمت در حال حاضر به ارسال مدرک نیاز ندارد.\n\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 360,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 360,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nارسال مدرک\n\nفقط مدرک خواسته‌شده برای همین خدمت را ارسال کنید. مسئولان مجاز مجموعه آن را بررسی می‌کنند.\n\nمدارک موردنیاز\nگواهی آمادگی ورزشی\nمدارک\nانتخاب فایل\nفایلی انتخاب نشده\n\nعکس JPEG، PNG یا WebP و فایل PDF، حداکثر ۵ مگابایت.\n\nارسال\nمدارک ارسال‌شده\n\nبرای این خدمت هنوز مدرکی ارسال نکرده‌اید.",
+      "emptyMessages": [
+        "برای این خدمت هنوز مدرکی ارسال نکرده‌اید."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 390,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\n\nاین خدمت در حال حاضر به ارسال مدرک نیاز ندارد.\n\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 390,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 390,
+      "kind": "all",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nارسال مدرک\n\nفقط مدرک خواسته‌شده برای همین خدمت را ارسال کنید. مسئولان مجاز مجموعه آن را بررسی می‌کنند.\n\nمدارک موردنیاز\nگواهی آمادگی ورزشی\nمدارک\nانتخاب فایل\nفایلی انتخاب نشده\n\nعکس JPEG، PNG یا WebP و فایل PDF، حداکثر ۵ مگابایت.\n\nارسال\nمدارک ارسال‌شده\n\nبرای این خدمت هنوز مدرکی ارسال نکرده‌اید.",
+      "emptyMessages": [
+        "برای این خدمت هنوز مدرکی ارسال نکرده‌اید."
+      ],
+      "fileHintLinked": true,
+      "fileInputs": 1,
+      "forms": 1,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [],
+      "states": [],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002",
+      "width": 430,
+      "kind": "required",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\n\nاین خدمت در حال حاضر به ارسال مدرک نیاز ندارد.\n\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000001",
+      "width": 430,
+      "kind": "no-requirements",
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "body": "مدارک\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+      "emptyMessages": [],
+      "fileHintLinked": true,
+      "fileInputs": 0,
+      "forms": 0,
+      "height": 844,
+      "lang": "fa",
+      "overflow": false,
+      "previewTargets": [
+        {
+          "height": 44,
+          "name": "دریافت پیش‌نمایش مدرک نمایشیِ خدمت دیگر"
+        }
+      ],
+      "states": [
+        "منقضی"
+      ],
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/documents",
+      "width": 430,
+      "kind": "all",
+      "passed": true
+    }
+  ],
+  "before": {
+    "body": "مدارک\nمدارک موردنیاز\nگواهی آمادگی ورزشی\nمدارک\nارسال",
+    "emptyMessages": [],
+    "fileInputs": 1,
+    "form": 1,
+    "url": "http://127.0.0.1:7381/documents?service=a1000000-0000-4000-8000-000000000002"
+  },
+  "fileChecksBeforeRequiredHandler": [
+    {
+      "errorLinked": true,
+      "invalid": "true",
+      "message": "فایل باید عکس JPEG، PNG، WebP یا PDF باشد.",
+      "submitDisabled": true
+    },
+    {
+      "case": "5MiB+1",
+      "invalid": "true",
+      "message": "حجم فایل باید حداکثر ۵ مگابایت باشد.",
+      "submitDisabled": true
+    },
+    {
+      "case": "empty.pdf",
+      "invalid": "true",
+      "message": "فایل خالی است؛ فایل دیگری انتخاب کنید.",
+      "submitDisabled": true
+    },
+    {
+      "case": "synthetic.pdf",
+      "invalid": "false",
+      "message": "",
+      "submitDisabled": false
+    }
+  ],
+  "finalPickerChecks": [
+    {
+      "case": "synthetic.txt",
+      "invalid": "true",
+      "message": "فایل باید عکس JPEG، PNG، WebP یا PDF باشد.",
+      "submitDisabled": true
+    },
+    {
+      "case": "synthetic.pdf",
+      "invalid": "false",
+      "message": "",
+      "submitDisabled": false
+    }
+  ],
+  "requiredBefore": {
+    "invalid": "false",
+    "message": "Please select a file."
+  },
+  "exclusions": [
+    "File contents and S3 upload",
+    "Actual consent/auth roles",
+    "Upload success and retry",
+    "Preview URL ownership",
+    "Expiry input",
+    "Screen reader and native"
+  ],
+  "requiredAfter": {
+    "errorLinked": true,
+    "focused": true,
+    "invalid": "true",
+    "message": "یک فایل انتخاب کنید.",
+    "submitDisabled": true
+  },
+  "requiredRecovery": {
+    "invalid": "false",
+    "message": "",
+    "submitDisabled": false
+  },
+  "homeLink": {
+    "body": "مدارک\nمدارک ارسال‌شده\nمدرک نمایشیِ خدمت دیگر\nاعتبار تا: ۲۵ مهر ۱۴۰۵، ۸:۴۲\nمنقضی\nدریافت پیش‌نمایش مدرک",
+    "forms": 0,
+    "url": "http://127.0.0.1:7381/documents"
+  },
+  "guest": {
+    "body": "مدارک\n\nورود به حساب",
+    "fileInputs": 0,
+    "forms": 0,
+    "loginHref": "/login?returnTo=%2Fdocuments%3Fservice%3Da1000000-0000-4000-8000-000000000002"
+  },
+  "failedRead": {
+    "alerts": [
+      "دریافت اطلاعات ممکن نشد\n\nتلاش دوباره"
+    ],
+    "empty": [
+      "دریافت اطلاعات ممکن نشد"
+    ],
+    "fileInputs": 0,
+    "forms": 0
+  },
+  "complete": true,
+  "sourceSha256": {
+    "apps/application/components/luma/documents.tsx": "42957d4f1d0403e7456e34d9961f5737b67738ef976613ed3b03c25ab39f8311",
+    "apps/application/components/luma/home.tsx": "96dc008d8974c23b6ffeb232e24c67a896de42088a5584060689a28e095050b0",
+    "apps/application/lib/document-upload.ts": "1fa6a541fe42818c9e7e5a9eaa52ab58a365cb3f1e5fd03d730beb485ffaf510",
+    "apps/application/test/document-upload.test.ts": "9839c582efd0f8f6f3bb155a7ebe7a22e68d2d32919853fee5a6b4ee41978708",
+    "apps/application/test/fixtures/documents.ts": "3a041f84f7df70ce09ad14c201c1b31ce6b17bba1926d282c2421094aa37432b",
+    "apps/application/test/fixtures/web-read-api.ts": "0f0c701ee2f3cf50f3182addc226b08847fe320f34aba3cda1ee7f96aa05998c",
+    "apps/application/test/web-read-fixture.test.ts": "470bb0a5f41eee0491cdafe56adef6d8ddf085ca5af15f2d945485b0977ffffb",
+    "apps/application/scripts/web-read-fixture.mts": "8a7a856159cf9764f3b0790e9c4c93f75b2ab33065ecf71b2eef63866a948c9b",
+    "packages/i18n/src/messages/fa.json": "72b292c1c2b79edf47c62515a3b215fef1a07038e0dc59e31bf2d308793692c6",
+    "packages/i18n/src/messages/en.json": "42a4a6b4f0bd498b2653d0bf93853d418ddc64717b68b275dd9c8384038e141b"
+  },
+  "build": {
+    "applicationBuildId": "vbgOGNYQHZVNHe8TNlQbE",
+    "workers": 1,
+    "heapMiB": 512,
+    "compileSeconds": 9.5,
+    "typescriptSeconds": 2.2,
+    "apiUrl": "http://127.0.0.1:7488"
+  },
+  "acceptance": "Scoped metadata UI, file preflight and guest/error web checks only; not T068 or phase acceptance."
+}

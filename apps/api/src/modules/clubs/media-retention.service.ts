@@ -104,6 +104,20 @@ export class MediaRetentionService {
         }
       });
     }
+    for await (const object of this.storage.objects('sports/')) {
+      if (object.modifiedAt >= cutoff) continue;
+      const references = await this.database.db.execute(
+        sql`SELECT 1 FROM sport_messages WHERE image_key=${object.key} AND deleted_at IS NULL
+          UNION ALL SELECT 1 FROM sport_documents WHERE object_key=${object.key}
+          UNION ALL SELECT 1 FROM sport_service_images WHERE object_key=${object.key} LIMIT 1`,
+      );
+      if (references.rows.length) continue;
+      result.eligibleObjects++;
+      if (apply) {
+        await this.storage.delete(object.key);
+        result.deletedObjects++;
+      }
+    }
     return result;
   }
 }

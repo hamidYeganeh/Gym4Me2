@@ -11,15 +11,20 @@
     "./business": "./src/business/index.ts",
     "./admin": "./src/admin/index.ts",
     "./catalog": "./src/catalog/index.ts",
-    "./system": "./src/system/index.ts"
+    "./system": "./src/system/index.ts",
+    "./sports": "./src/sports/index.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",
     "lint": "eslint . --max-warnings 0",
     "test": "tsx --test test/*.test.ts"
   },
-  "dependencies": { "@tanstack/react-query": "^5.0.0" },
-  "peerDependencies": { "react": "^19.3.0" },
+  "dependencies": {
+    "@tanstack/react-query": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "^19.3.0"
+  },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "@repo/eslint-config": "workspace:*",

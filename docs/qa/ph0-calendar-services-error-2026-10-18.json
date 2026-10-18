@@ -1,0 +1,63 @@
+{
+  "build": "CuMYYCscHxNIXoZkhyu_4",
+  "alerts": [
+    "دریافت اطلاعات ممکن نشد"
+  ],
+  "dpr": 1,
+  "focus": {
+    "id": "",
+    "inactive": false,
+    "tag": "BUTTON",
+    "text": "تلاش دوباره"
+  },
+  "heading": {
+    "scrollWidth": 208,
+    "width": 208,
+    "wrap": "anywhere"
+  },
+  "inputFont": null,
+  "path": "/calendars/detail",
+  "query": "?id=a1000000-0000-4000-8000-000000000961",
+  "routeIds": [
+    "/calendars/a1000000-0000-4000-8000-000000000961"
+  ],
+  "rows": [
+    "calendar-service-a1000000-0000-4000-8000-000000000bb9",
+    "calendar-service-a1000000-0000-4000-8000-000000000bba",
+    "calendar-service-a1000000-0000-4000-8000-000000000bbb",
+    "calendar-service-a1000000-0000-4000-8000-000000000bbc",
+    "calendar-service-a1000000-0000-4000-8000-000000000bbd",
+    "calendar-service-a1000000-0000-4000-8000-000000000bbe",
+    "calendar-service-a1000000-0000-4000-8000-000000000bbf",
+    "calendar-service-a1000000-0000-4000-8000-000000000bc0",
+    "calendar-service-a1000000-0000-4000-8000-000000000bc1",
+    "calendar-service-a1000000-0000-4000-8000-000000000bc2",
+    "calendar-service-a1000000-0000-4000-8000-000000000bc3",
+    "calendar-service-a1000000-0000-4000-8000-000000000bc4",
+    "calendar-service-a1000000-0000-4000-8000-000000000bc5",
+    "calendar-service-a1000000-0000-4000-8000-000000000bc6",
+    "calendar-service-a1000000-0000-4000-8000-000000000bc7",
+    "calendar-service-a1000000-0000-4000-8000-000000000bc8",
+    "calendar-service-a1000000-0000-4000-8000-000000000bc9",
+    "calendar-service-a1000000-0000-4000-8000-000000000bca",
+    "calendar-service-a1000000-0000-4000-8000-000000000bcb",
+    "calendar-service-a1000000-0000-4000-8000-000000000bcc"
+  ],
+  "statuses": [
+    {
+      "id": "_r_0_",
+      "text": "۲۰ خدمت نمایش داده شده"
+    }
+  ],
+  "title": [
+    {
+      "scrollWidth": 213,
+      "width": 213,
+      "wrap": "anywhere"
+    }
+  ],
+  "viewport": [
+    360,
+    844
+  ]
+}

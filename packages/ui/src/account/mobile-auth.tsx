@@ -1,26 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import type { FormEvent, ReactNode } from "react";
+import { useId, type FormEvent, type ReactNode } from "react";
 import {
   ChevronLeft,
   Smartphone,
   MessageSquareText,
   KeyRound,
   LoaderCircle,
+  X,
 } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
 import { Button } from "../kit/Button";
-import { Input } from "../kit/Input";
 import { Field, FieldGroup, FieldLabel } from "../kit/Field";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "../kit/InputOtp";
-import { ToggleGroup, ToggleGroupItem } from "../kit/ToggleGroup";
+import { OneTimeCode } from "../kit/OneTimeCode";
+import { applicationAuthHref } from "../lib/auth-routes";
+import { useOverlayHistory } from "../hooks/use-overlay-history";
 import { ErrorNotice } from "./common";
+import { LoginField, LoginFieldError } from "./login-field";
+import {
+  loginFieldErrors,
+  normalizeLoginDigits as digits,
+  type LoginErrors,
+} from "./login-validation";
+import "./auth-controls.css";
 
-const digits = (value: string) =>
-  value
-    .replace(/[۰-۹]/g, (n) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(n)))
-    .replace(/[٠-٩]/g, (n) => String("٠١٢٣٤٥٦٧٨٩".indexOf(n)));
 export function AuthScreen({
   title,
   description,
@@ -37,12 +41,15 @@ export function AuthScreen({
   children: ReactNode;
 }) {
   return (
-    <main className="mobile-auth mx-auto flex min-h-dvh max-w-xl flex-col bg-background px-5 pt-[calc(1.5rem+var(--app-safe-top,0px))] pb-[calc(1.5rem+var(--app-safe-bottom,0px))] sm:px-6">
+    <main
+      data-gym-auth
+      className="mobile-auth mx-auto flex min-h-dvh max-w-xl flex-col bg-background px-5 pt-[calc(1.5rem+var(--app-safe-top,0px))] pb-[calc(1.5rem+var(--app-safe-bottom,0px))] sm:px-6"
+    >
       <header className="flex min-h-12 items-center justify-between gap-3">
         {back}
         {actions}
       </header>
-      <div className="flex flex-col items-center gap-5 pb-8 pt-8 text-center sm:pt-10">
+      <div className="auth-heading flex flex-col items-center gap-5 text-center">
         <div className="auth-emblem flex size-16 items-center justify-center rounded-full bg-muted text-muted-foreground">
           {icon}
         </div>
@@ -65,16 +72,19 @@ export function MobileAuth({
   password,
   setPassword,
   method,
-  setMethod,
   challenge,
   remaining,
   busy,
+  verified,
+  codeRejected,
   error,
+  fieldErrors,
   recovery,
   submit,
   resend,
   editPhone,
   policy,
+  cancelHref,
 }: {
   phone: string;
   setPhone: (value: string) => void;
@@ -83,30 +93,34 @@ export function MobileAuth({
   password: string;
   setPassword: (value: string) => void;
   method: "otp" | "password";
-  setMethod: (value: "otp" | "password") => void;
   challenge: string | null;
   remaining: number;
   busy: boolean;
+  verified: boolean;
+  codeRejected: boolean;
   error: string | null;
+  fieldErrors: LoginErrors;
   recovery: boolean;
   submit: (event: FormEvent) => void;
   resend: () => void;
   editPhone: () => void;
   policy: ReactNode;
+  cancelHref: string;
 }) {
   const t = useTranslations();
-  const normalizedPhone = digits(phone)
-    .replace(/[\s()-]/g, "")
-    .replace(/^0098/, "+98")
-    .replace(/^09/, "+989");
-  const validPhone = /^\+989\d{9}$/.test(normalizedPhone);
+  const validationCopy = useTranslations("AuthValidation");
+  const codeId = useId();
+  useOverlayHistory(Boolean(challenge), (open) => {
+    if (!open) editPhone();
+  });
+  const invalid =
+    Object.keys(loginFieldErrors({ phone, password, code, challenge, method }))
+      .length > 0;
   const disabled =
     busy ||
-    (challenge
-      ? code.length !== 5
-      : !validPhone ||
-        (method === "otp" && remaining > 0) ||
-        (method === "password" && !password));
+    invalid ||
+    codeRejected ||
+    (!challenge && method === "otp" && remaining > 0);
   return (
     <AuthScreen
       title={
@@ -114,7 +128,9 @@ export function MobileAuth({
           ? t("Copy.enterVerificationCode")
           : recovery
             ? t("Password.resetTitle")
-            : t("AuthDesign.phoneTitle")
+            : method === "password"
+              ? t("AuthDesign.passwordTitle")
+              : t("AuthDesign.phoneTitle")
       }
       description={
         challenge ? (
@@ -127,6 +143,8 @@ export function MobileAuth({
           </>
         ) : recovery ? (
           t("Password.resetHint")
+        ) : method === "password" ? (
+          t("Password.loginHint")
         ) : (
           t("Copy.enterYourMobileNumberToReceiveA")
         )
@@ -143,22 +161,26 @@ export function MobileAuth({
       back={
         challenge ? (
           <Button
-            variant="outline"
+            variant="ghost"
             size="icon-lg"
             className="size-12"
             aria-label={t("Copy.editNumber")}
             disabled={busy}
             onClick={editPhone}
           >
-            <ChevronLeft className="rtl:rotate-180" />
+            <ChevronLeft strokeWidth={1.5} className="rtl:rotate-180" />
           </Button>
         ) : (
-          <Button variant="outline" size="icon-lg" asChild className="size-12">
+          <Button variant="ghost" size="icon-lg" asChild className="size-12">
             <Link
-              href={recovery ? "/login" : "/profile"}
-              aria-label={t("Privacy.back")}
+              href={
+                recovery
+                  ? applicationAuthHref("password", cancelHref)
+                  : cancelHref
+              }
+              aria-label={t("Kit.close")}
             >
-              <ChevronLeft className="rtl:rotate-180" />
+              <X strokeWidth={1.5} />
             </Link>
           </Button>
         )
@@ -171,95 +193,120 @@ export function MobileAuth({
         ) : undefined
       }
     >
-      <form onSubmit={submit} className="flex flex-1 flex-col gap-6">
+      <form
+        key={challenge ? "code" : method}
+        noValidate
+        onSubmit={submit}
+        className="auth-step flex flex-1 flex-col gap-6"
+      >
         <FieldGroup>
           {challenge ? (
-            <Field>
-              <FieldLabel className="sr-only" htmlFor="mobile-auth-code">
+            <Field
+              data-invalid={!!fieldErrors.code || codeRejected || undefined}
+              data-disabled={busy || undefined}
+            >
+              <FieldLabel className="sr-only" htmlFor={codeId}>
                 {t("Copy.verificationCode")}
               </FieldLabel>
-              <div
-                dir="ltr"
-                className="auth-code mx-auto rounded-4xl bg-muted px-5 py-3"
-              >
-                <InputOTP
-                  id="mobile-auth-code"
+              <div dir="ltr" className="auth-bencho-code mx-auto">
+                <OneTimeCode
+                  id={codeId}
+                  data-auth-field="code"
+                  aria-invalid={!!fieldErrors.code || codeRejected || undefined}
+                  aria-describedby={
+                    fieldErrors.code
+                      ? `${codeId}-error`
+                      : codeRejected
+                        ? `${codeId}-server-error`
+                        : undefined
+                  }
                   autoFocus
-                  maxLength={5}
+                  length={5}
                   value={code}
-                  onChange={(value) => setCode(digits(value))}
+                  onValueChange={setCode}
+                  status={
+                    verified
+                      ? "success"
+                      : busy
+                        ? "verifying"
+                        : codeRejected
+                          ? "error"
+                          : "idle"
+                  }
+                  verifiedLabel={t("Luma.status.verified")}
                   inputMode="numeric"
                   autoComplete="one-time-code"
                   pattern="[0-9۰-۹٠-٩]*"
-                  pasteTransformer={digits}
                   disabled={busy}
-                >
-                  <InputOTPGroup>
-                    {[0, 1, 2, 3, 4].map((index) => (
-                      <InputOTPSlot index={index} key={index} />
-                    ))}
-                  </InputOTPGroup>
-                </InputOTP>
+                />
               </div>
+              {fieldErrors.code && (
+                <LoginFieldError id={`${codeId}-error`}>
+                  {validationCopy(fieldErrors.code)}
+                </LoginFieldError>
+              )}
             </Field>
           ) : (
-            <Field>
-              <FieldLabel className="sr-only" htmlFor="mobile-auth-phone">
-                {t("Copy.mobileNumber")}
-              </FieldLabel>
-              <Input
-                id="mobile-auth-phone"
-                name="phone"
-                type="tel"
-                inputMode="tel"
-                autoComplete="tel"
-                placeholder={t("Copy.phonePlaceholder")}
-                dir="ltr"
-                value={phone}
-                onChange={(event) => setPhone(digits(event.target.value))}
-                disabled={busy}
-                maxLength={20}
-                required
-              />
-            </Field>
+            <LoginField
+              field="phone"
+              label={t("Copy.mobileNumber")}
+              hiddenLabel
+              error={fieldErrors.phone && validationCopy(fieldErrors.phone)}
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              placeholder={t("Copy.phonePlaceholder")}
+              dir="ltr"
+              value={phone}
+              onChange={(event) => setPhone(digits(event.target.value))}
+              disabled={busy}
+              maxLength={20}
+              required
+              autoFocus
+            />
           )}
           {!challenge && !recovery && (
-            <ToggleGroup
-              type="single"
-              value={method}
-              onValueChange={(value) => {
-                if (value === "otp" || value === "password") setMethod(value);
-              }}
-              disabled={busy}
-              aria-label={t("Password.method")}
-              className="w-full justify-center"
-            >
-              <ToggleGroupItem value="otp">
-                {t("Password.withOtp")}
-              </ToggleGroupItem>
-              <ToggleGroupItem value="password">
-                {t("Password.withPassword")}
-              </ToggleGroupItem>
-            </ToggleGroup>
+            <Button variant="ghost" asChild>
+              <Link
+                aria-disabled={busy || undefined}
+                tabIndex={busy ? -1 : undefined}
+                onClick={(event) => {
+                  if (busy) event.preventDefault();
+                }}
+                href={applicationAuthHref(
+                  method === "otp" ? "password" : "otp",
+                  cancelHref,
+                )}
+              >
+                {t(
+                  method === "otp"
+                    ? "Password.withPassword"
+                    : "Password.withOtp",
+                )}
+              </Link>
+            </Button>
           )}
           {method === "password" && !challenge && (
-            <Field>
-              <FieldLabel htmlFor="mobile-auth-password">
-                {t("Password.password")}
-              </FieldLabel>
-              <Input
-                id="mobile-auth-password"
-                type="password"
-                autoComplete="current-password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                disabled={busy}
-                maxLength={128}
-                required
-              />
-            </Field>
+            <LoginField
+              field="password"
+              label={t("Password.password")}
+              error={
+                fieldErrors.password && validationCopy(fieldErrors.password)
+              }
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              disabled={busy}
+              maxLength={128}
+              required
+            />
           )}
-          <ErrorNotice error={error} />
+          {error && (
+            <div id={`${codeId}-server-error`}>
+              <ErrorNotice error={error} />
+            </div>
+          )}
         </FieldGroup>
         {challenge && (
           <div className="flex flex-wrap justify-center gap-2">
@@ -285,11 +332,20 @@ export function MobileAuth({
         )}
         {method === "password" && !challenge && (
           <Button variant="link" asChild>
-            <Link href="/reset-password">{t("Password.forgot")}</Link>
+            <Link
+              href={`/reset-password?${new URLSearchParams({ returnTo: cancelHref })}`}
+            >
+              {t("Password.forgot")}
+            </Link>
           </Button>
         )}
         <div className="mt-auto flex flex-col gap-4 pt-12">
-          <Button type="submit" disabled={disabled} className="min-h-14 w-full">
+          <Button
+            type="submit"
+            data-auth-action
+            disabled={disabled}
+            className="min-h-14 w-full"
+          >
             {busy && (
               <LoaderCircle data-icon="inline-start" className="animate-spin" />
             )}

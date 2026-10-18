@@ -24,6 +24,34 @@ async function main() {
       rolcreaterole: false,
     });
     await pool.query('select id from users limit 0');
+    await pool.query(
+      'select revision,updated_at,answered_at,cancelled_at from sport_invitations limit 0',
+    );
+    const tables = await pool.query<{ name: string; allowed: boolean }>(
+      `SELECT c.relname AS name,
+        has_table_privilege(current_user,c.oid,'SELECT') AND
+        has_table_privilege(current_user,c.oid,'INSERT') AND
+        has_table_privilege(current_user,c.oid,'UPDATE') AND
+        has_table_privilege(current_user,c.oid,'DELETE') AS allowed
+       FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+       WHERE n.nspname='public' AND c.relkind='r' ORDER BY c.relname`,
+    );
+    for (const name of [
+      'users',
+      'sport_orders',
+      'sport_documents',
+      'sport_messages',
+      'sport_service_images',
+      'sport_resource_blocks',
+    ])
+      assert.ok(
+        tables.rows.some((table) => table.name === name),
+        `Missing ${name}`,
+      );
+    assert.ok(
+      tables.rows.every((table) => table.allowed),
+      'Runtime DML grants are incomplete.',
+    );
     await assert.rejects(
       pool.query('create table runtime_must_not_create(id integer)'),
       { code: '42501' },
@@ -53,7 +81,7 @@ async function main() {
       client.release();
     }
     console.log(
-      'Staging runtime: DML allowed; DDL, migration history and elevated roles denied.',
+      `Staging runtime: DML grants verified on ${tables.rows.length} public tables; DDL, migration history and elevated roles denied.`,
     );
   } finally {
     await pool.end();

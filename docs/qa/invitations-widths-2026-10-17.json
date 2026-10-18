@@ -1,0 +1,122 @@
+[
+  {
+    "dark": true,
+    "dir": "ltr",
+    "formReady": true,
+    "height": 844,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 360
+  },
+  {
+    "dark": true,
+    "dir": "ltr",
+    "formReady": true,
+    "height": 844,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 390
+  },
+  {
+    "dark": true,
+    "dir": "ltr",
+    "formReady": true,
+    "height": 844,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 430
+  },
+  {
+    "dark": false,
+    "dir": "ltr",
+    "formReady": true,
+    "height": 844,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 360
+  },
+  {
+    "dark": false,
+    "dir": "ltr",
+    "formReady": true,
+    "height": 844,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 390
+  },
+  {
+    "dark": false,
+    "dir": "ltr",
+    "formReady": true,
+    "height": 844,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 430
+  },
+  {
+    "dark": true,
+    "dir": "rtl",
+    "formReady": true,
+    "height": 844,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 360
+  },
+  {
+    "dark": true,
+    "dir": "rtl",
+    "formReady": true,
+    "height": 844,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 390
+  },
+  {
+    "dark": true,
+    "dir": "rtl",
+    "formReady": true,
+    "height": 844,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 430
+  },
+  {
+    "dark": false,
+    "dir": "rtl",
+    "formReady": true,
+    "height": 844,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 360
+  },
+  {
+    "dark": false,
+    "dir": "rtl",
+    "formReady": true,
+    "height": 844,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 390
+  },
+  {
+    "dark": false,
+    "dir": "rtl",
+    "formReady": true,
+    "height": 844,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 430
+  }
+]

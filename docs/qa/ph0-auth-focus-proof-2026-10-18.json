@@ -1,0 +1,65 @@
+{
+  "dpr": 2,
+  "focusWithin": true,
+  "focused": true,
+  "fontsLoaded": true,
+  "imagesReady": true,
+  "indicator": {
+    "offset": "3px",
+    "outline": "oklch(0.985 0 0) solid 2px",
+    "shadow": "oklch(0.145 0 0) 0px 0px 0px 3px"
+  },
+  "locale": "fa",
+  "path": "/login",
+  "rect": {
+    "height": 44,
+    "width": 320,
+    "x": 20,
+    "y": 660
+  },
+  "selector": "button[type=\"submit\"]",
+  "theme": "dark",
+  "viewport": [
+    360,
+    844
+  ],
+  "visual": {
+    "height": 844,
+    "pageLeft": 0,
+    "pageTop": 0,
+    "scale": 1,
+    "width": 360
+  },
+  "png": {
+    "width": 720,
+    "height": 1688
+  },
+  "file": "application-api-error-focus-final.png",
+  "sha256": "d77c1829901ee7412c8cadf233dc688478a8a66a22ee07213751d7fea1e401b5",
+  "cssViewport": {
+    "clientHeight": 844,
+    "clientWidth": 360,
+    "offsetX": 0,
+    "offsetY": 0,
+    "pageX": 0,
+    "pageY": 0,
+    "scale": 1,
+    "zoom": 1
+  },
+  "backingViewport": {
+    "clientHeight": 1688,
+    "clientWidth": 720,
+    "offsetX": 0,
+    "offsetY": 0,
+    "pageX": 0,
+    "pageY": 0,
+    "scale": 1,
+    "zoom": 1
+  },
+  "captureHashes": [
+    "c773b5de0be0eefe99e87b8254694358e5b0e68f9d73b89e5f8e3f5736d58da9",
+    "d77c1829901ee7412c8cadf233dc688478a8a66a22ee07213751d7fea1e401b5",
+    "d77c1829901ee7412c8cadf233dc688478a8a66a22ee07213751d7fea1e401b5"
+  ],
+  "scope": "Full viewport PNG and target containment; human visual review still required"
+}

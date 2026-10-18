@@ -1,0 +1,409 @@
+{
+  "scope": "Partial web motion observations and loading implementation, not complete PH0/native acceptance",
+  "before": {
+    "reducedMotionRows": [
+      {
+        "label": "detail",
+        "activeMains": 1,
+        "dir": "rtl",
+        "height": 844,
+        "lang": "fa",
+        "nav": [
+          {
+            "blur": "none",
+            "insideRoute": false,
+            "opacity": "1",
+            "transform": "none"
+          }
+        ],
+        "overflow": false,
+        "reduced": true,
+        "roots": [
+          {
+            "filter": "none",
+            "hidden": null,
+            "opacity": "1",
+            "route": "/services/a1000000-0000-4000-8000-000000000001",
+            "transform": "none"
+          }
+        ],
+        "url": "http://127.0.0.1:7381/services/detail?id=a1000000-0000-4000-8000-000000000001",
+        "width": 390
+      },
+      {
+        "label": "checkout",
+        "activeMains": 1,
+        "dir": "rtl",
+        "height": 844,
+        "lang": "fa",
+        "nav": [
+          {
+            "blur": "none",
+            "insideRoute": false,
+            "opacity": "1",
+            "transform": "none"
+          }
+        ],
+        "overflow": false,
+        "reduced": true,
+        "roots": [
+          {
+            "filter": "none",
+            "hidden": null,
+            "opacity": "1",
+            "route": "/checkout",
+            "transform": "none"
+          }
+        ],
+        "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+        "width": 390
+      },
+      {
+        "label": "checkout-back-detail",
+        "activeMains": 1,
+        "dir": "rtl",
+        "height": 844,
+        "lang": "fa",
+        "nav": [
+          {
+            "blur": "none",
+            "insideRoute": false,
+            "opacity": "1",
+            "transform": "none"
+          }
+        ],
+        "overflow": false,
+        "reduced": true,
+        "roots": [
+          {
+            "filter": "none",
+            "hidden": null,
+            "opacity": "1",
+            "route": "/services/a1000000-0000-4000-8000-000000000001",
+            "transform": "none"
+          }
+        ],
+        "url": "http://127.0.0.1:7381/services/detail?id=a1000000-0000-4000-8000-000000000001",
+        "width": 390
+      },
+      {
+        "label": "rapid-back-stays-on-detail",
+        "activeMains": 1,
+        "dir": "rtl",
+        "height": 844,
+        "lang": "fa",
+        "nav": [
+          {
+            "blur": "none",
+            "insideRoute": false,
+            "opacity": "1",
+            "transform": "none"
+          }
+        ],
+        "overflow": false,
+        "reduced": true,
+        "roots": [
+          {
+            "filter": "none",
+            "hidden": null,
+            "opacity": "1",
+            "route": "/services/a1000000-0000-4000-8000-000000000001",
+            "transform": "none"
+          }
+        ],
+        "url": "http://127.0.0.1:7381/services/detail?id=a1000000-0000-4000-8000-000000000001",
+        "width": 390
+      },
+      {
+        "label": "detail-back-list",
+        "activeMains": 1,
+        "dir": "rtl",
+        "height": 844,
+        "lang": "fa",
+        "nav": [
+          {
+            "blur": "none",
+            "insideRoute": false,
+            "opacity": "1",
+            "transform": "none"
+          }
+        ],
+        "overflow": false,
+        "reduced": true,
+        "roots": [
+          {
+            "filter": "none",
+            "hidden": null,
+            "opacity": "1",
+            "route": "/services",
+            "transform": "none"
+          }
+        ],
+        "url": "http://127.0.0.1:7381/services",
+        "width": 390
+      },
+      {
+        "label": "search",
+        "activeMains": 1,
+        "dir": "rtl",
+        "height": 844,
+        "lang": "fa",
+        "nav": [
+          {
+            "blur": "none",
+            "insideRoute": false,
+            "opacity": "1",
+            "transform": "none"
+          }
+        ],
+        "overflow": false,
+        "reduced": true,
+        "roots": [
+          {
+            "filter": "none",
+            "hidden": null,
+            "opacity": "1",
+            "route": "/services",
+            "transform": "none"
+          }
+        ],
+        "url": "http://127.0.0.1:7381/services",
+        "width": 390
+      },
+      {
+        "label": "messages-tab",
+        "activeMains": 1,
+        "dir": "rtl",
+        "height": 844,
+        "lang": "fa",
+        "nav": [
+          {
+            "blur": "none",
+            "insideRoute": false,
+            "opacity": "1",
+            "transform": "none"
+          }
+        ],
+        "overflow": false,
+        "reduced": true,
+        "roots": [
+          {
+            "filter": "none",
+            "hidden": null,
+            "opacity": "1",
+            "route": "/messages",
+            "transform": "none"
+          }
+        ],
+        "url": "http://127.0.0.1:7381/messages",
+        "width": 390
+      },
+      {
+        "label": "home-tab",
+        "activeMains": 1,
+        "dir": "rtl",
+        "height": 844,
+        "lang": "fa",
+        "nav": [
+          {
+            "blur": "none",
+            "insideRoute": false,
+            "opacity": "1",
+            "transform": "none"
+          }
+        ],
+        "overflow": false,
+        "reduced": true,
+        "roots": [
+          {
+            "filter": "none",
+            "hidden": null,
+            "opacity": "1",
+            "route": "/",
+            "transform": "none"
+          }
+        ],
+        "url": "http://127.0.0.1:7381/",
+        "width": 390
+      }
+    ],
+    "coldSupport": {
+      "label": "cold-support-immediate",
+      "activeMains": 0,
+      "dir": "rtl",
+      "height": 844,
+      "lang": "fa",
+      "nav": [
+        {
+          "blur": "none",
+          "insideRoute": false,
+          "opacity": "1",
+          "transform": "none"
+        }
+      ],
+      "overflow": false,
+      "reduced": true,
+      "roots": [
+        {
+          "filter": "none",
+          "hidden": null,
+          "opacity": "1",
+          "route": "/support",
+          "transform": "none"
+        }
+      ],
+      "url": "http://127.0.0.1:7381/support",
+      "width": 390
+    },
+    "coldSupportSnapshotBeforeFrame": "- main:\n  - link \"حساب\":\n    - /url: /profile\n  - heading \"خانه\" [level=1]\n  - link \"میزبانی\":\n    - /url: /host\n  - heading \"رزروهای شما\" [level=2]\n  - link \"مشاهده همه\":\n    - /url: /bookings\n  - link \"ورود به حساب\":\n    - /url: /login?returnTo=%2F\n  - link \"عضویت‌ها\":\n    - /url: /memberships\n    - text: عضویت‌ها\n  - link \"تمرین\":\n    - /url: /training\n    - text: تمرین\n  - link \"ذخیره‌ها\":\n    - /url: /saved\n    - text: ذخیره‌ها\n  - link \"خریدها\":\n    - /url: /orders\n    - text: خریدها\n  - link \"لیست انتظار\":\n    - /url: /waitlist\n    - text: لیست انتظار\n  - link \"بلیت و ورود\":\n    - /url: /membership-card\n    - text: بلیت و ورود\n  - link \"دعوت‌های ورزشی\":\n    - /url: /invitations/sports\n    - text: دعوت‌های ورزشی\n  - link \"پشتیبانی\" [active]:\n    - /url: /support\n    - text: پشتیبانی\n  - heading \"تقویم‌های شما\" [level=2]\n  - link \"مشاهده همه\":\n    - /url: /calendars?view=following\n  - alert:\n    - paragraph: دریافت اطلاعات ممکن نشد\n    - button \"تلاش دوباره\"\n  - heading \"برای شما\" [level=2]\n  - link \"مشاهده همه\":\n    - /url: /services\n  - link \"یوگا و انعطاف صبحگاهی باشگاه نمونه آفتاب · ۲۶ مهر ۱۴۰۵، ۹:۰۰ ۱۸۰٬۰۰۰ تومان\":\n    - /url: /services/detail?id=a1000000-0000-4000-8000-000000000001\n    - generic: یوگا و انعطاف صبحگاهی\n    - generic: باشگاه نمونه آفتاب · ۲۶ مهر ۱۴۰۵، ۹:۰۰\n    - generic: ۱۸۰٬۰۰۰ تومان\n  - link \"دوره هشت جلسه‌ای آمادگی جسمانی و تمرین قدرتی باشگاه نمونه آفتاب · ۶ آبان ۱۴۰۵، ۹:۰۰ ۹۶۰٬۰۰۰ تومان\":\n    - /url: /services/detail?id=a1000000-0000-4000-8000-000000000002\n    - generic: دوره هشت جلسه‌ای آمادگی جسمانی و تمرین قدرتی\n    - generic: باشگاه نمونه آفتاب · ۶ آبان ۱۴۰۵، ۹:۰۰\n    - generic: ۹۶۰٬۰۰۰ تومان\n  - link \"زمین بدمینتون · Badminton باشگاه نمونه آفتاب · ۱۶ آبان ۱۴۰۵، ۹:۰۰ ۳۵۰٬۰۰۰ تومان\":\n    - /url: /services/detail?id=a1000000-0000-4000-8000-000000000003\n    - generic: زمین بدمینتون · Badminton\n    - generic: باشگاه نمونه آفتاب · ۱۶ آبان ۱۴۰۵، ۹:۰۰\n    - generic: ۳۵۰٬۰۰۰ تومان\n  - link \"بسته هشت جلسه‌ای تمرین باشگاه نمونه آفتاب · ۱٬۲۰۰٬۰۰۰ تومان\":\n    - /url: /services/detail?id=a1000000-0000-4000-8000-000000000004\n    - generic: بسته هشت جلسه‌ای تمرین\n    - generic: باشگاه نمونه آفتاب ·\n    - generic: ۱٬۲۰۰٬۰۰۰ تومان\n  - link \"کلاس در حال برنامه‌ریزی باشگاه نمونه آفتاب · ۲۲۰٬۰۰۰ تومان\":\n    - /url: /services/detail?id=a1000000-0000-4000-8000-000000000005\n    - generic: کلاس در حال برنامه‌ریزی\n    - generic: باشگاه نمونه آفتاب ·\n    - generic: ۲۲۰٬۰۰۰ تومان\n- navigation \"ناوبری اصلی\":\n  - link \"خانه\":\n    - /url: /\n    - generic: خانه\n  - link \"کشف\":\n    - /url: /discovery\n    - generic: کشف\n  - link \"گفتگو\":\n    - /url: /messages\n    - generic: گفتگو\n- region \"Notifications alt+T\"\n- alert",
+    "notes": [
+      "CDP emulation succeeded but took188seconds despite timeout3000; no further CDP commands issued.",
+      "Snapshot and DOM frame are successive observations, not simultaneous. Support frame has route boundary but no main."
+    ]
+  },
+  "final": {
+    "label": "services-final-reduced",
+    "activeMains": 1,
+    "dir": "rtl",
+    "height": 844,
+    "lang": "fa",
+    "nav": [
+      {
+        "blur": "none",
+        "insideRoute": false,
+        "opacity": "1",
+        "transform": "none"
+      }
+    ],
+    "overflow": false,
+    "reduced": true,
+    "roots": [
+      {
+        "filter": "none",
+        "hidden": null,
+        "opacity": "1",
+        "route": "/services",
+        "transform": "none"
+      }
+    ],
+    "url": "http://127.0.0.1:7382/services",
+    "width": 390
+  },
+  "reducedRequest": {
+    "done": true,
+    "result": {},
+    "error": null
+  },
+  "loadingVisibilityAccepted": false,
+  "loadingAttempts": [
+    "1500ms delayed support chunk; inner Suspense fallback not observed by locator",
+    "1500ms delayed support after scoped loading files; locator did not observe fallback",
+    "5000ms delayed services with reduce enabled; locator did not observe fallback; tool call wall time51s"
+  ],
+  "notes": [
+    "Do not infer frame-by-frame absence of motion from settled computed styles.",
+    "CDP calls completed far beyond requested timeout; do not repeat for this task.",
+    "Temporary emulation is scoped to the test tab; tab is closed after capture."
+  ],
+  "changedPages": [
+    "apps/application/app/waitlist/page.tsx",
+    "apps/application/app/calendars/page.tsx",
+    "apps/application/app/messages/page.tsx",
+    "apps/application/app/host/page.tsx",
+    "apps/application/app/bookings/page.tsx",
+    "apps/application/app/checkout/page.tsx",
+    "apps/application/app/membership-card/page.tsx",
+    "apps/application/app/support/page.tsx",
+    "apps/application/app/memberships/page.tsx",
+    "apps/application/app/documents/page.tsx",
+    "apps/application/app/orders/page.tsx",
+    "apps/application/app/notifications/page.tsx",
+    "apps/application/app/services/page.tsx",
+    "apps/application/app/invitations/sports/page.tsx",
+    "apps/application/app/services/detail/page.tsx",
+    "apps/application/app/notifications/preferences/page.tsx",
+    "apps/application/app/orders/detail/page.tsx",
+    "apps/application/app/memberships/detail/page.tsx",
+    "apps/application/app/support/detail/page.tsx",
+    "apps/application/app/checkout/mock-gateway/page.tsx",
+    "apps/application/app/checkout/status/page.tsx",
+    "apps/application/app/bookings/detail/page.tsx",
+    "apps/application/app/messages/details/page.tsx",
+    "apps/application/app/messages/conversation/page.tsx",
+    "apps/application/app/calendars/detail/page.tsx",
+    "apps/application/app/tickets/view/page.tsx"
+  ],
+  "loadingFiles": [
+    "apps/application/app/bookings/loading.tsx",
+    "apps/application/app/calendars/loading.tsx",
+    "apps/application/app/checkout/loading.tsx",
+    "apps/application/app/documents/loading.tsx",
+    "apps/application/app/host/loading.tsx",
+    "apps/application/app/invitations/sports/loading.tsx",
+    "apps/application/app/membership-card/loading.tsx",
+    "apps/application/app/memberships/loading.tsx",
+    "apps/application/app/messages/loading.tsx",
+    "apps/application/app/notifications/loading.tsx",
+    "apps/application/app/orders/loading.tsx",
+    "apps/application/app/services/loading.tsx",
+    "apps/application/app/support/loading.tsx",
+    "apps/application/app/tickets/view/loading.tsx",
+    "apps/application/app/waitlist/loading.tsx"
+  ],
+  "sourceSha256": {
+    "apps/application/components/luma/page-loading.tsx": "a72c0f1d87f6e86482293ec481a37ce47a584f338948432b34c630e950a29283",
+    "packages/ui/src/page-transitions.tsx": "4bc7986be6283702d0fefaa612d9207f2c9d1582ca99261e818899cfb24adee8",
+    "packages/ui/src/luma-motion.ts": "6dbf4c2bbe7c5d4940f5d48ce6f8c3192884eb79e2429897d64e64ddaf78824e",
+    "apps/application/components/luma/luma.css": "93eb375e3785a0863cc16a0218198895decf83ff5734fbf302b02a9e320ad72b",
+    "apps/application/app/waitlist/page.tsx": "3e2bdb59f23c68d11a69ad4a4aa3a1513e5e69918116155e5bb49d5c76fa1aa9",
+    "apps/application/app/calendars/page.tsx": "61ac7a87a054f9a6d0f8d258f04ce915e9752ac7386a4636eb376070da9b30cd",
+    "apps/application/app/messages/page.tsx": "a4d2e01ab11fc115d5b94fb5457c45605846a0c39aab4a6add84bde35dce10db",
+    "apps/application/app/host/page.tsx": "cb71cf3ad0c88eb00172b3d28958928aa6ff100dcd8f18d9b85bf47ec930a7e7",
+    "apps/application/app/bookings/page.tsx": "b5a789af25c5c8e6969b9baf1fe1fa0e0cc003833c2180f466d609f6433d491b",
+    "apps/application/app/checkout/page.tsx": "ee86dda83389d8355066a343650ffecaff9713c732eb5502e6c12b06112d3fe3",
+    "apps/application/app/membership-card/page.tsx": "ac5855d4585961774ba18d2562f03a6f2dac219b61b3113c23ca456114d180a0",
+    "apps/application/app/support/page.tsx": "0b2c799d0b9036626593092a76c0aacf7f4830798b5f4a64bfd7fadc063d7168",
+    "apps/application/app/memberships/page.tsx": "710ed0cf8877deb383a62517e2ac1c42411c83ec1d62ae79cfbe0b1dbea08326",
+    "apps/application/app/documents/page.tsx": "9c2a8d460975251442a22ad79bf6f47fe277c9db743723e12ac29aab07d1fed3",
+    "apps/application/app/orders/page.tsx": "cbe39a1fcadee04a63b85c5244c9f0c5079c09d5a61a6245acd022dc8f1cbbcd",
+    "apps/application/app/notifications/page.tsx": "34f3b6b8099310350ea94546540c27dcb2b39ded8f2f0021d2c7d3cdcba2b8b7",
+    "apps/application/app/services/page.tsx": "c81ae815db09834962a51ee89dfc340aff6d4388258b30d5717f0b85dccf73d9",
+    "apps/application/app/invitations/sports/page.tsx": "059e276c906e6e9aa38e23a0802b358f226fa21a51b82d84a3fb6ce85429f3f8",
+    "apps/application/app/services/detail/page.tsx": "df4048582230bcfc5a1cc4f590b6236d4ba34b69aa742a2c7131eadc372a4027",
+    "apps/application/app/notifications/preferences/page.tsx": "2495e701d9570a893da66796c5fd306b3fd74ce05bf8ce1dce0d897cc86f7b07",
+    "apps/application/app/orders/detail/page.tsx": "8ba155b055f27c4b6aefd657d354904bd953cfb5310d0166cf54ab6e4dba5d01",
+    "apps/application/app/memberships/detail/page.tsx": "d6116fd4a8d053bef2ee7cefbe830be1ab83131c3e28e0f5288b63a51ab4d5ed",
+    "apps/application/app/support/detail/page.tsx": "b6b513f0a3e00209b190342bcdbe93b3c08a5ac41fc0ca38047d9c555f4cf171",
+    "apps/application/app/checkout/mock-gateway/page.tsx": "c692412da6ed1e033fe994ed68de50f100a0d0eab13a5f0b336c27ad613cdfbf",
+    "apps/application/app/checkout/status/page.tsx": "935ad74ba93efc0cbe22bca3d88022d9978e9d343ae0ddc658f478cea164327b",
+    "apps/application/app/bookings/detail/page.tsx": "6feb48041a62a3401624b924df474000e0e5d73e79ed92cca7974185fcf174ca",
+    "apps/application/app/messages/details/page.tsx": "0ab1aad6bae68e7293fb5408da963777062d7a12be7065ad70df62475a639c31",
+    "apps/application/app/messages/conversation/page.tsx": "d8767aa69bcac8b5e7c8a3718b033c9b6620f96b9e6c69891087cad2c00879d4",
+    "apps/application/app/calendars/detail/page.tsx": "5c6de976be586702cbd4f28861ff3d61bfca9e5de3d8b169b93de9ae0799dd5f",
+    "apps/application/app/tickets/view/page.tsx": "8ca00e6c0e7a5db5d4dd336647608761bdbad55c2191a9b5993c2e22fd54d403",
+    "apps/application/app/bookings/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/calendars/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/checkout/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/documents/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/host/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/invitations/sports/loading.tsx": "b45058422f48cf2d1f1b0475d48cafff62e97939a56ed5d71fdb881bb3c51634",
+    "apps/application/app/membership-card/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/memberships/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/messages/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/notifications/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/orders/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/services/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/support/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d",
+    "apps/application/app/tickets/view/loading.tsx": "b45058422f48cf2d1f1b0475d48cafff62e97939a56ed5d71fdb881bb3c51634",
+    "apps/application/app/waitlist/loading.tsx": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+  },
+  "build": {
+    "applicationBuildId": "ZB1NBd5PKsIJRyLG02yKR",
+    "heapMiB": 512,
+    "workers": 1,
+    "compileSeconds": 8.9,
+    "typescriptSeconds": 1.637,
+    "apiUrl": "http://127.0.0.1:7488"
+  },
+  "acceptance": "Partial observations only; loading visual, full transition timing and PH0 remain open."
+}

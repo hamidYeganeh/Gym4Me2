@@ -78,6 +78,146 @@
       "when": 1791890859090,
       "tag": "0010_password-auth",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1791914400000,
+      "tag": "0011_sports-commerce",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1791914401000,
+      "tag": "0012_sports-community",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1791914402000,
+      "tag": "0013_commerce-commands",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1791914403000,
+      "tag": "0014_sports-lifecycle",
+      "breakpoints": false
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1791914404000,
+      "tag": "0015_saman-mock-payment",
+      "breakpoints": false
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1791914405000,
+      "tag": "0016_visit-exit-and-no-show",
+      "breakpoints": false
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1791914406000,
+      "tag": "0017_message-report-decisions",
+      "breakpoints": false
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1791914407000,
+      "tag": "0018_document-review-revision",
+      "breakpoints": false
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1791914408000,
+      "tag": "0019_sports-coupon-management",
+      "breakpoints": false
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1791914409000,
+      "tag": "0020_published_sports_service_version",
+      "breakpoints": false
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1791914410000,
+      "tag": "0021_sports_occurrence_series",
+      "breakpoints": false
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1791914411000,
+      "tag": "0022_sports_occurrence_series_edit",
+      "breakpoints": false
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1791914412000,
+      "tag": "0023_sports_service_eligibility",
+      "breakpoints": false
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1791914413000,
+      "tag": "0024_sports_service_images",
+      "breakpoints": false
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1791914414000,
+      "tag": "0025_sports_resource_availability",
+      "breakpoints": false
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1791914415000,
+      "tag": "0026_sports_invitation_lifecycle",
+      "breakpoints": false
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1791914416000,
+      "tag": "0027_sports_message_read_cursor",
+      "breakpoints": false
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1791914417000,
+      "tag": "0028_sports_calendar_metadata",
+      "breakpoints": false
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1791914418000,
+      "tag": "0029_sports_communication_pages",
+      "breakpoints": false
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1791914419000,
+      "tag": "0030_sports_reminder_context",
+      "breakpoints": false
     }
   ]
 }

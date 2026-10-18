@@ -14,6 +14,7 @@ import { AuthScreen } from "./mobile-auth";
 import { ErrorNotice, Loading, QueryError } from "./common";
 import { AccountPrivacy } from "./privacy";
 import { safeReturnPath } from "./safe-return-path";
+import { accountEntryHref } from "../lib/account-recovery";
 
 export function CompleteProfilePage() {
   const t = useTranslations();
@@ -88,7 +89,12 @@ export function CompleteProfilePage() {
         <AccountPrivacy mobile />
       ) : account.error instanceof ApiError && account.error.status === 401 ? (
         <Button asChild>
-          <Link href="/login?returnTo=%2Fprofile%2Fcomplete">
+          <Link
+            href={accountEntryHref(
+              "/auth/otp",
+              accountEntryHref("/profile/complete", returnPath),
+            )}
+          >
             {t("MobileAccount.signIn")}
           </Link>
         </Button>
@@ -127,6 +133,7 @@ export function CompleteProfilePage() {
           </FieldGroup>
           <Button
             type="submit"
+            data-auth-action
             disabled={!valid || update.isPending}
             className="mt-auto min-h-14 w-full"
           >

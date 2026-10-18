@@ -65,10 +65,20 @@ export class BusinessController {
     return this.service.team(businessUser(req), parse(z.uuid(), id));
   }
   @Post(':organizationId/invitations')
-  @JsonBody({
-    phone: { type: 'string' },
-    role: { type: 'string', enum: ['manager', 'receptionist', 'accountant'] },
-  })
+  @JsonBody(
+    {
+      phone: { type: 'string' },
+      role: { type: 'string', enum: ['manager', 'receptionist', 'accountant'] },
+      branchIds: {
+        type: 'array',
+        items: { type: 'string', format: 'uuid' },
+        minItems: 1,
+        maxItems: 100,
+        uniqueItems: true,
+      },
+    },
+    ['phone', 'role'],
+  )
   invite(
     @Req() req: AuthRequest,
     @Param('organizationId') id: string,

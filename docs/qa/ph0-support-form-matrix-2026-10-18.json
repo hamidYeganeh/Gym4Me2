@@ -1,0 +1,270 @@
+{
+  "build": "CuMYYCscHxNIXoZkhyu_4",
+  "scope": "One support form, invalid submission only, four language/theme cases at360 CSS px. No successful POST, real session, screen-reader or actual browser-zoom acceptance.",
+  "cases": [
+    {
+      "alerts": [
+        "عنوان باید بین ۳ تا ۱۶۰ نویسه باشد.",
+        "توضیحات باید بین ۳ تا ۵٬۰۰۰ نویسه باشد."
+      ],
+      "dark": true,
+      "dir": "rtl",
+      "fields": [
+        {
+          "described": [
+            {
+              "exists": true,
+              "id": "_r_0_-title-hint",
+              "role": null
+            },
+            {
+              "exists": true,
+              "id": "_r_0_-title-error",
+              "role": "alert"
+            }
+          ],
+          "focusOutline": "2px",
+          "font": "16px",
+          "invalid": "true",
+          "label": [
+            "عنوان"
+          ],
+          "name": "title"
+        },
+        {
+          "described": [
+            {
+              "exists": true,
+              "id": "_r_0_-body-hint",
+              "role": null
+            },
+            {
+              "exists": true,
+              "id": "_r_0_-body-error",
+              "role": "alert"
+            }
+          ],
+          "focusOutline": "3px",
+          "font": "16px",
+          "invalid": "true",
+          "label": [
+            "توضیحات"
+          ],
+          "name": "body"
+        }
+      ],
+      "focus": "title",
+      "horizontalOverflow": false,
+      "lang": "fa",
+      "submit": [
+        {
+          "height": 44,
+          "text": "ارسال",
+          "width": 320
+        }
+      ],
+      "viewport": [
+        360,
+        844
+      ]
+    },
+    {
+      "alerts": [
+        "عنوان باید بین ۳ تا ۱۶۰ نویسه باشد.",
+        "توضیحات باید بین ۳ تا ۵٬۰۰۰ نویسه باشد."
+      ],
+      "dark": false,
+      "dir": "rtl",
+      "fields": [
+        {
+          "described": [
+            {
+              "exists": true,
+              "id": "_r_0_-title-hint",
+              "role": null
+            },
+            {
+              "exists": true,
+              "id": "_r_0_-title-error",
+              "role": "alert"
+            }
+          ],
+          "focusOutline": "2px",
+          "font": "16px",
+          "invalid": "true",
+          "label": [
+            "عنوان"
+          ],
+          "name": "title"
+        },
+        {
+          "described": [
+            {
+              "exists": true,
+              "id": "_r_0_-body-hint",
+              "role": null
+            },
+            {
+              "exists": true,
+              "id": "_r_0_-body-error",
+              "role": "alert"
+            }
+          ],
+          "focusOutline": "3px",
+          "font": "16px",
+          "invalid": "true",
+          "label": [
+            "توضیحات"
+          ],
+          "name": "body"
+        }
+      ],
+      "focus": "title",
+      "horizontalOverflow": false,
+      "lang": "fa",
+      "submit": [
+        {
+          "height": 44,
+          "text": "ارسال",
+          "width": 320
+        }
+      ],
+      "viewport": [
+        360,
+        844
+      ]
+    },
+    {
+      "alerts": [
+        "Enter a title between 3 and 160 characters.",
+        "Enter a description between 3 and 5,000 characters."
+      ],
+      "dark": false,
+      "dir": "ltr",
+      "fields": [
+        {
+          "described": [
+            {
+              "exists": true,
+              "id": "_r_0_-title-hint",
+              "role": null
+            },
+            {
+              "exists": true,
+              "id": "_r_0_-title-error",
+              "role": "alert"
+            }
+          ],
+          "focusOutline": "2px",
+          "font": "16px",
+          "invalid": "true",
+          "label": [
+            "Title"
+          ],
+          "name": "title"
+        },
+        {
+          "described": [
+            {
+              "exists": true,
+              "id": "_r_0_-body-hint",
+              "role": null
+            },
+            {
+              "exists": true,
+              "id": "_r_0_-body-error",
+              "role": "alert"
+            }
+          ],
+          "focusOutline": "3px",
+          "font": "16px",
+          "invalid": "true",
+          "label": [
+            "Description"
+          ],
+          "name": "body"
+        }
+      ],
+      "focus": "title",
+      "horizontalOverflow": false,
+      "lang": "en",
+      "submit": [
+        {
+          "height": 44,
+          "text": "Send",
+          "width": 320
+        }
+      ],
+      "viewport": [
+        360,
+        844
+      ]
+    },
+    {
+      "alerts": [
+        "Enter a title between 3 and 160 characters.",
+        "Enter a description between 3 and 5,000 characters."
+      ],
+      "dark": true,
+      "dir": "ltr",
+      "fields": [
+        {
+          "described": [
+            {
+              "exists": true,
+              "id": "_r_0_-title-hint",
+              "role": null
+            },
+            {
+              "exists": true,
+              "id": "_r_0_-title-error",
+              "role": "alert"
+            }
+          ],
+          "focusOutline": "2px",
+          "font": "16px",
+          "invalid": "true",
+          "label": [
+            "Title"
+          ],
+          "name": "title"
+        },
+        {
+          "described": [
+            {
+              "exists": true,
+              "id": "_r_0_-body-hint",
+              "role": null
+            },
+            {
+              "exists": true,
+              "id": "_r_0_-body-error",
+              "role": "alert"
+            }
+          ],
+          "focusOutline": "3px",
+          "font": "16px",
+          "invalid": "true",
+          "label": [
+            "Description"
+          ],
+          "name": "body"
+        }
+      ],
+      "focus": "title",
+      "horizontalOverflow": false,
+      "lang": "en",
+      "submit": [
+        {
+          "height": 44,
+          "text": "Send",
+          "width": 320
+        }
+      ],
+      "viewport": [
+        360,
+        844
+      ]
+    }
+  ]
+}

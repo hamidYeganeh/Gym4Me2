@@ -1,0 +1,1698 @@
+{
+  "scope": "Synthetic seven-card PNG references including 16px padding; not map/details or complete PH0",
+  "build": "jaBPQRrRqVp5USuPe0DNX",
+  "cases": [
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 360,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-fa-dark-360-club-portrait.png",
+          "rect": {
+            "height": 464,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 352,
+            "height": 496,
+            "scale": 1
+          },
+          "sha256": "0f26148ce857490610de5ff3fb02114eb68914c75de96e5bc6fd35e26c155390"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-fa-dark-360-club-compact.png",
+          "rect": {
+            "height": 432,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "clip": {
+            "x": 4,
+            "y": 772,
+            "width": 352,
+            "height": 464,
+            "scale": 1
+          },
+          "sha256": "a70cb9738a412fffe0ff9bc6949c730bff255f14c7dff39f12dcfd86ee26fc11"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-fa-dark-360-club-landscape.png",
+          "rect": {
+            "height": 240,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 1288
+          },
+          "clip": {
+            "x": 4,
+            "y": 1272,
+            "width": 352,
+            "height": 272,
+            "scale": 1
+          },
+          "sha256": "9e14b69eb1d3121888c0857a9b7d74a64fdab2a107b6556afed1a2de3f303c33"
+        },
+        {
+          "id": "featured",
+          "file": "after-fa-dark-360-featured.png",
+          "rect": {
+            "height": 200,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 1584
+          },
+          "clip": {
+            "x": 4,
+            "y": 1568,
+            "width": 352,
+            "height": 232,
+            "scale": 1
+          },
+          "sha256": "018a4c4283986aa87aa62bb162c78aefb9728f3a7a0e3b8d545e3a0980329c47"
+        },
+        {
+          "id": "branch",
+          "file": "after-fa-dark-360-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 196,
+            "y": 1840
+          },
+          "clip": {
+            "x": 180,
+            "y": 1824,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "b916a4eeaa2e6505d2996cb2062570e41d338eef7c614b10940a5bf16b757f38"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-fa-dark-360-coach-default.png",
+          "rect": {
+            "height": 426.65625,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 2196
+          },
+          "clip": {
+            "x": 4,
+            "y": 2180,
+            "width": 352,
+            "height": 459,
+            "scale": 1
+          },
+          "sha256": "aa6fe4f3de334d1e6b8ce2b677e72286789010055f3eb490bf1ca93448977419"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-fa-dark-360-coach-portrait.png",
+          "rect": {
+            "height": 400,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 2690.65625
+          },
+          "clip": {
+            "x": 4,
+            "y": 2674,
+            "width": 352,
+            "height": 432,
+            "scale": 1
+          },
+          "sha256": "d034fda63554ee2976cb9a9d7b84aa5faa7f1c2f0b110649074eeb3ed66a1cde"
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 390,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-fa-dark-390-club-portrait.png",
+          "rect": {
+            "height": 501.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 382,
+            "height": 534,
+            "scale": 1
+          },
+          "sha256": "54462729b52fe82002de991add43353d33ab1de23dd2ee9ae8b4930dc94a0e86"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-fa-dark-390-club-compact.png",
+          "rect": {
+            "height": 466.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 825.65625
+          },
+          "clip": {
+            "x": 4,
+            "y": 809,
+            "width": 382,
+            "height": 499,
+            "scale": 1
+          },
+          "sha256": "88b99660941c5caa34068a29fa4fde26c9e7b28f607ade71aa01dbf39ef1b5b9"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-fa-dark-390-club-landscape.png",
+          "rect": {
+            "height": 262.5,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 1360.3125
+          },
+          "clip": {
+            "x": 4,
+            "y": 1344,
+            "width": 382,
+            "height": 295,
+            "scale": 1
+          },
+          "sha256": "2812232638e2e27c06215d05638380a17e832e51f90394562fa6cbf1ff6b8bea"
+        },
+        {
+          "id": "featured",
+          "file": "after-fa-dark-390-featured.png",
+          "rect": {
+            "height": 218.75,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 1678.8125
+          },
+          "clip": {
+            "x": 4,
+            "y": 1662,
+            "width": 382,
+            "height": 251,
+            "scale": 1
+          },
+          "sha256": "38ed85bef3bfddf75d57ccd6fdcfcfc6b428bc4360ac352068bbb0d5aee5d3a3"
+        },
+        {
+          "id": "branch",
+          "file": "after-fa-dark-390-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 226,
+            "y": 1953.5625
+          },
+          "clip": {
+            "x": 210,
+            "y": 1937,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "082c284d6b65e6e2db6b1a792dd1f782dc3c843e143811b2a145e8dae3e00fac"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-fa-dark-390-coach-default.png",
+          "rect": {
+            "height": 466.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 2309.5625
+          },
+          "clip": {
+            "x": 4,
+            "y": 2293,
+            "width": 382,
+            "height": 499,
+            "scale": 1
+          },
+          "sha256": "bb9dca3e5e4a98cbecbb6561defe38800c236af1d35d60210f4a02134ef05b05"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-fa-dark-390-coach-portrait.png",
+          "rect": {
+            "height": 437.5,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 2844.21875
+          },
+          "clip": {
+            "x": 4,
+            "y": 2828,
+            "width": 382,
+            "height": 470,
+            "scale": 1
+          },
+          "sha256": "15c560325f6a7a69eec643a7a6942ec511237f26a02c5ea2b95564718683d8f5"
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 430,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-fa-dark-430-club-portrait.png",
+          "rect": {
+            "height": 559,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 422,
+            "height": 591,
+            "scale": 1
+          },
+          "sha256": "89d181bea659571231d0faa0c2e566e4ba0c1f89e758777bf9dceb3bdfa64a85"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-fa-dark-430-club-compact.png",
+          "rect": {
+            "height": 520,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 883
+          },
+          "clip": {
+            "x": 4,
+            "y": 867,
+            "width": 422,
+            "height": 552,
+            "scale": 1
+          },
+          "sha256": "bf88f863e1cff832323647d50bc541689d701c830bbce7457978d4d88670bdf9"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-fa-dark-430-club-landscape.png",
+          "rect": {
+            "height": 292.5,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 1471
+          },
+          "clip": {
+            "x": 4,
+            "y": 1455,
+            "width": 422,
+            "height": 325,
+            "scale": 1
+          },
+          "sha256": "fdb54f0fa57cf04401ad20a647d3e778fec924370327f09c365e88be5df83d4c"
+        },
+        {
+          "id": "featured",
+          "file": "after-fa-dark-430-featured.png",
+          "rect": {
+            "height": 243.75,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 1819.5
+          },
+          "clip": {
+            "x": 4,
+            "y": 1803,
+            "width": 422,
+            "height": 276,
+            "scale": 1
+          },
+          "sha256": "8a6ae88f58d802914abeef52809a6af2eed4522815aeac84873925404966232d"
+        },
+        {
+          "id": "branch",
+          "file": "after-fa-dark-430-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 266,
+            "y": 2119.25
+          },
+          "clip": {
+            "x": 250,
+            "y": 2103,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "61c13193d6c1f01adb056fe943d64c87744d77b84258895eb27827bcf326f3da"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-fa-dark-430-coach-default.png",
+          "rect": {
+            "height": 512,
+            "images": true,
+            "width": 384,
+            "x": 26,
+            "y": 2475.25
+          },
+          "clip": {
+            "x": 10,
+            "y": 2459,
+            "width": 416,
+            "height": 544,
+            "scale": 1
+          },
+          "sha256": "8ac1f7d4174a0dec4d3e0370ab144dc93461187a2a3e3b2d6e2a2c7fc1087dec"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-fa-dark-430-coach-portrait.png",
+          "rect": {
+            "height": 480,
+            "images": true,
+            "width": 384,
+            "x": 26,
+            "y": 3055.25
+          },
+          "clip": {
+            "x": 10,
+            "y": 3039,
+            "width": 416,
+            "height": 512,
+            "scale": 1
+          },
+          "sha256": "909803f2695c8a1a3c2c31ed969d5422bf8779581f29b596daf5e1fd67fc15e4"
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 360,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-fa-light-360-club-portrait.png",
+          "rect": {
+            "height": 464,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 352,
+            "height": 496,
+            "scale": 1
+          },
+          "sha256": "dba0e3c7450adc2b73221fec8fcd2678b16591f9aaecff3668367748f3e31542"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-fa-light-360-club-compact.png",
+          "rect": {
+            "height": 432,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "clip": {
+            "x": 4,
+            "y": 772,
+            "width": 352,
+            "height": 464,
+            "scale": 1
+          },
+          "sha256": "a0969d8a033c05b717a550fc72f0ac1852583be2140b4eb7dc5695b8e8f779e0"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-fa-light-360-club-landscape.png",
+          "rect": {
+            "height": 240,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 1288
+          },
+          "clip": {
+            "x": 4,
+            "y": 1272,
+            "width": 352,
+            "height": 272,
+            "scale": 1
+          },
+          "sha256": "23a2f9d5e58ab611b8931aa2d5958f1df0e061e419ba6569511193b1be62a44a"
+        },
+        {
+          "id": "featured",
+          "file": "after-fa-light-360-featured.png",
+          "rect": {
+            "height": 200,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 1584
+          },
+          "clip": {
+            "x": 4,
+            "y": 1568,
+            "width": 352,
+            "height": 232,
+            "scale": 1
+          },
+          "sha256": "0e68410fa910e1cd2497a7f2ef34ad11857bbb8ef0395295f142eace6021f26f"
+        },
+        {
+          "id": "branch",
+          "file": "after-fa-light-360-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 196,
+            "y": 1840
+          },
+          "clip": {
+            "x": 180,
+            "y": 1824,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "d32b107e303005d0f26670b7aeda1d2557e023aa8aa82fd3f8792d6e3bcdd78f"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-fa-light-360-coach-default.png",
+          "rect": {
+            "height": 426.65625,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 2196
+          },
+          "clip": {
+            "x": 4,
+            "y": 2180,
+            "width": 352,
+            "height": 459,
+            "scale": 1
+          },
+          "sha256": "8aafc55cb14bb9f236310364cd2ca85fef6884c3a9bd1f707c4ddae97fb231bf"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-fa-light-360-coach-portrait.png",
+          "rect": {
+            "height": 400,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 2690.65625
+          },
+          "clip": {
+            "x": 4,
+            "y": 2674,
+            "width": 352,
+            "height": 432,
+            "scale": 1
+          },
+          "sha256": "6d6b6720339a211c92d040735ffa6355c16136adf35223bb91fb2d103c50ce9a"
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 390,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-fa-light-390-club-portrait.png",
+          "rect": {
+            "height": 501.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 382,
+            "height": 534,
+            "scale": 1
+          },
+          "sha256": "d12ca62ac3300f378d9a29112266ff22b328cd09bd8b2e44ed9e3fc3ba5dc5e9"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-fa-light-390-club-compact.png",
+          "rect": {
+            "height": 466.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 825.65625
+          },
+          "clip": {
+            "x": 4,
+            "y": 809,
+            "width": 382,
+            "height": 499,
+            "scale": 1
+          },
+          "sha256": "6889cf42e5e7baf360c849bda4fb938dbfa7f7365bbed6e1b10f7f8bae3016cd"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-fa-light-390-club-landscape.png",
+          "rect": {
+            "height": 262.5,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 1360.3125
+          },
+          "clip": {
+            "x": 4,
+            "y": 1344,
+            "width": 382,
+            "height": 295,
+            "scale": 1
+          },
+          "sha256": "fdc6b9bfd98390bb66537575d73eea1d16c2cbde34e9defc899e3232fdd3bd72"
+        },
+        {
+          "id": "featured",
+          "file": "after-fa-light-390-featured.png",
+          "rect": {
+            "height": 218.75,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 1678.8125
+          },
+          "clip": {
+            "x": 4,
+            "y": 1662,
+            "width": 382,
+            "height": 251,
+            "scale": 1
+          },
+          "sha256": "23929425ff423893a98120526be735e060aee98671e05df1f50ad97de9e81a91"
+        },
+        {
+          "id": "branch",
+          "file": "after-fa-light-390-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 226,
+            "y": 1953.5625
+          },
+          "clip": {
+            "x": 210,
+            "y": 1937,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "930e41645b87ab89e56327376be24b3c222c0d143f793f4e479bec89a4e21afb"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-fa-light-390-coach-default.png",
+          "rect": {
+            "height": 466.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 2309.5625
+          },
+          "clip": {
+            "x": 4,
+            "y": 2293,
+            "width": 382,
+            "height": 499,
+            "scale": 1
+          },
+          "sha256": "5b3a1acc32d66028d7d779547e0a33402eb2428584db955edc81cf75fc4afa8b"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-fa-light-390-coach-portrait.png",
+          "rect": {
+            "height": 437.5,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 2844.21875
+          },
+          "clip": {
+            "x": 4,
+            "y": 2828,
+            "width": 382,
+            "height": 470,
+            "scale": 1
+          },
+          "sha256": "72baf472ea8062fc5a7032e6688a62de6fa760e0e9084171a2dae22e7ac880bd"
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 430,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-fa-light-430-club-portrait.png",
+          "rect": {
+            "height": 559,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 422,
+            "height": 591,
+            "scale": 1
+          },
+          "sha256": "20b6d959ac33ab1dc3fd3f2daec867052ca091df62dc75713a1aeefe07e7065f"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-fa-light-430-club-compact.png",
+          "rect": {
+            "height": 520,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 883
+          },
+          "clip": {
+            "x": 4,
+            "y": 867,
+            "width": 422,
+            "height": 552,
+            "scale": 1
+          },
+          "sha256": "e7b8bbb366875c1464808ac9c144ee272b4eee44a18939612764eb01ba889ad4"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-fa-light-430-club-landscape.png",
+          "rect": {
+            "height": 292.5,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 1471
+          },
+          "clip": {
+            "x": 4,
+            "y": 1455,
+            "width": 422,
+            "height": 325,
+            "scale": 1
+          },
+          "sha256": "6fa6094234e12ed8060b7817fe3e2c4f704dccf129db343eca0c3e3c07534e13"
+        },
+        {
+          "id": "featured",
+          "file": "after-fa-light-430-featured.png",
+          "rect": {
+            "height": 243.75,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 1819.5
+          },
+          "clip": {
+            "x": 4,
+            "y": 1803,
+            "width": 422,
+            "height": 276,
+            "scale": 1
+          },
+          "sha256": "5735addc048ea301c679b4f4565d647938b3f11e8a1ed7fc3ee4a70be8a2f002"
+        },
+        {
+          "id": "branch",
+          "file": "after-fa-light-430-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 266,
+            "y": 2119.25
+          },
+          "clip": {
+            "x": 250,
+            "y": 2103,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "09bdd7aec63eabb8dd5ec5b6962a718a6143ed5c0b1f0b311cdaa42db1f5e81a"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-fa-light-430-coach-default.png",
+          "rect": {
+            "height": 512,
+            "images": true,
+            "width": 384,
+            "x": 26,
+            "y": 2475.25
+          },
+          "clip": {
+            "x": 10,
+            "y": 2459,
+            "width": 416,
+            "height": 544,
+            "scale": 1
+          },
+          "sha256": "3f7605e5316b1b5c956a704c3d37a17eba8cb59b540b2793e0d41c098c297c3d"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-fa-light-430-coach-portrait.png",
+          "rect": {
+            "height": 480,
+            "images": true,
+            "width": 384,
+            "x": 26,
+            "y": 3055.25
+          },
+          "clip": {
+            "x": 10,
+            "y": 3039,
+            "width": 416,
+            "height": 512,
+            "scale": 1
+          },
+          "sha256": "c6a2ddc77778d04c635e3528dcc1a8e6c530a9a940e98b865c0954ea525c0cfe"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 360,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-en-dark-360-club-portrait.png",
+          "rect": {
+            "height": 464,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 352,
+            "height": 496,
+            "scale": 1
+          },
+          "sha256": "c51bb1bc3c0aaeda2b65d0a799fe7918d44e7e17d1c740ab861ed0e7103a373f"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-en-dark-360-club-compact.png",
+          "rect": {
+            "height": 432,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "clip": {
+            "x": 4,
+            "y": 772,
+            "width": 352,
+            "height": 464,
+            "scale": 1
+          },
+          "sha256": "70d04eefa407b33e6fbb9a77096bfda00c4d315e3d1fc080f9b2f151493ab400"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-en-dark-360-club-landscape.png",
+          "rect": {
+            "height": 240,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 1288
+          },
+          "clip": {
+            "x": 4,
+            "y": 1272,
+            "width": 352,
+            "height": 272,
+            "scale": 1
+          },
+          "sha256": "8a04cd691a3963d3945f95fec62880603e42a7ed4e3efce7f45d7ef11081fe36"
+        },
+        {
+          "id": "featured",
+          "file": "after-en-dark-360-featured.png",
+          "rect": {
+            "height": 200,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 1584
+          },
+          "clip": {
+            "x": 4,
+            "y": 1568,
+            "width": 352,
+            "height": 232,
+            "scale": 1
+          },
+          "sha256": "ae3dbe188444b69a752471cf993a50e216d56517da3ea5e1fc0d71d3f532d536"
+        },
+        {
+          "id": "branch",
+          "file": "after-en-dark-360-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 20,
+            "y": 1840
+          },
+          "clip": {
+            "x": 4,
+            "y": 1824,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "89319a08b9b26214d97b3bf9958bdbe81e8a87779c13687dfc0c45a9daeda96d"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-en-dark-360-coach-default.png",
+          "rect": {
+            "height": 426.65625,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 2196
+          },
+          "clip": {
+            "x": 4,
+            "y": 2180,
+            "width": 352,
+            "height": 459,
+            "scale": 1
+          },
+          "sha256": "ab9644226b11d95077b5cd7d7abdb0d9b200825fa5da051c5b6ae59833107112"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-en-dark-360-coach-portrait.png",
+          "rect": {
+            "height": 400,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 2690.65625
+          },
+          "clip": {
+            "x": 4,
+            "y": 2674,
+            "width": 352,
+            "height": 432,
+            "scale": 1
+          },
+          "sha256": "fd2fd33148e29cef8f07e2ac9748f04aa17422cd4b0c92aa805f2af0b83f6179"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 390,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-en-dark-390-club-portrait.png",
+          "rect": {
+            "height": 501.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 382,
+            "height": 534,
+            "scale": 1
+          },
+          "sha256": "b101bb013b31da5638f527b684829c17ba0f402d08bdbd1ed11335b012f39268"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-en-dark-390-club-compact.png",
+          "rect": {
+            "height": 466.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 825.65625
+          },
+          "clip": {
+            "x": 4,
+            "y": 809,
+            "width": 382,
+            "height": 499,
+            "scale": 1
+          },
+          "sha256": "5043e364d624a5fcdf774a55abc491e0e1d50b143595a9f6cc06b382eb928c41"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-en-dark-390-club-landscape.png",
+          "rect": {
+            "height": 262.5,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 1360.3125
+          },
+          "clip": {
+            "x": 4,
+            "y": 1344,
+            "width": 382,
+            "height": 295,
+            "scale": 1
+          },
+          "sha256": "c3944d3fecacff6840cbc0aa564a817509e4f4590750d5e6b8d4f06eb0eecae7"
+        },
+        {
+          "id": "featured",
+          "file": "after-en-dark-390-featured.png",
+          "rect": {
+            "height": 218.75,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 1678.8125
+          },
+          "clip": {
+            "x": 4,
+            "y": 1662,
+            "width": 382,
+            "height": 251,
+            "scale": 1
+          },
+          "sha256": "10926486551ff65fde084f7a82deb50c6950041e404fb7bb0dba041678e3ad8e"
+        },
+        {
+          "id": "branch",
+          "file": "after-en-dark-390-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 20,
+            "y": 1953.5625
+          },
+          "clip": {
+            "x": 4,
+            "y": 1937,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "920d62a8b964b23dbaa7d96212469d451a8c7836999fc6e5dd63408f99d0a812"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-en-dark-390-coach-default.png",
+          "rect": {
+            "height": 466.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 2309.5625
+          },
+          "clip": {
+            "x": 4,
+            "y": 2293,
+            "width": 382,
+            "height": 499,
+            "scale": 1
+          },
+          "sha256": "bb9dca3e5e4a98cbecbb6561defe38800c236af1d35d60210f4a02134ef05b05"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-en-dark-390-coach-portrait.png",
+          "rect": {
+            "height": 437.5,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 2844.21875
+          },
+          "clip": {
+            "x": 4,
+            "y": 2828,
+            "width": 382,
+            "height": 470,
+            "scale": 1
+          },
+          "sha256": "6fa72ff269492e3adf401a4ffcbc07a7c970bfc041552b7c9aeea7e2fda0b7dd"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 430,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-en-dark-430-club-portrait.png",
+          "rect": {
+            "height": 559,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 422,
+            "height": 591,
+            "scale": 1
+          },
+          "sha256": "ab19a9b17ebccf1377ae88f477fa2f81a84bcd21870b66d5c1ba819b2406ab19"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-en-dark-430-club-compact.png",
+          "rect": {
+            "height": 520,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 883
+          },
+          "clip": {
+            "x": 4,
+            "y": 867,
+            "width": 422,
+            "height": 552,
+            "scale": 1
+          },
+          "sha256": "6e436f9a0c16c58586d7e128f7ddd8c9f50a67a78b5e36574879c48dbf6becdc"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-en-dark-430-club-landscape.png",
+          "rect": {
+            "height": 292.5,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 1471
+          },
+          "clip": {
+            "x": 4,
+            "y": 1455,
+            "width": 422,
+            "height": 325,
+            "scale": 1
+          },
+          "sha256": "8dcec0ce0f65d067514a948bb807458554273ffea7f381eaf50dd2ec71c97ab0"
+        },
+        {
+          "id": "featured",
+          "file": "after-en-dark-430-featured.png",
+          "rect": {
+            "height": 243.75,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 1819.5
+          },
+          "clip": {
+            "x": 4,
+            "y": 1803,
+            "width": 422,
+            "height": 276,
+            "scale": 1
+          },
+          "sha256": "99ceda739c00b82331ce725b92afd574c4fe7d78641812458e0fbf3e5e485061"
+        },
+        {
+          "id": "branch",
+          "file": "after-en-dark-430-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 20,
+            "y": 2119.25
+          },
+          "clip": {
+            "x": 4,
+            "y": 2103,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "c0aa97c45b4bb843a19c95b5dd9e93f66bd2ec072f871682d0a2f909e12a8ffc"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-en-dark-430-coach-default.png",
+          "rect": {
+            "height": 512,
+            "images": true,
+            "width": 384,
+            "x": 20,
+            "y": 2475.25
+          },
+          "clip": {
+            "x": 4,
+            "y": 2459,
+            "width": 416,
+            "height": 544,
+            "scale": 1
+          },
+          "sha256": "5b21ccc2a8250e47b85e3d02f20d1c3ead4c0e019455ecf84fc70ed5b57c787f"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-en-dark-430-coach-portrait.png",
+          "rect": {
+            "height": 480,
+            "images": true,
+            "width": 384,
+            "x": 20,
+            "y": 3055.25
+          },
+          "clip": {
+            "x": 4,
+            "y": 3039,
+            "width": 416,
+            "height": 512,
+            "scale": 1
+          },
+          "sha256": "6593d940593e1e440aad0afe668b9e1f817960d7d39b75332931a465d4912153"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 360,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-en-light-360-club-portrait.png",
+          "rect": {
+            "height": 464,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 352,
+            "height": 496,
+            "scale": 1
+          },
+          "sha256": "2598eb1762d952e103d21bbaff009624c360eef3ada1c35e66fd635a221b2383"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-en-light-360-club-compact.png",
+          "rect": {
+            "height": 432,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "clip": {
+            "x": 4,
+            "y": 772,
+            "width": 352,
+            "height": 464,
+            "scale": 1
+          },
+          "sha256": "6a87db6faeacbf579b4c60a99fd89e051f063af8013ff42d1f6781e79d2b50dc"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-en-light-360-club-landscape.png",
+          "rect": {
+            "height": 240,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 1288
+          },
+          "clip": {
+            "x": 4,
+            "y": 1272,
+            "width": 352,
+            "height": 272,
+            "scale": 1
+          },
+          "sha256": "306511ba662d063cd7950ad0a2bb953c55f3e768d20c22c7318a9f67d7c256a5"
+        },
+        {
+          "id": "featured",
+          "file": "after-en-light-360-featured.png",
+          "rect": {
+            "height": 200,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 1584
+          },
+          "clip": {
+            "x": 4,
+            "y": 1568,
+            "width": 352,
+            "height": 232,
+            "scale": 1
+          },
+          "sha256": "7a671ae43b1a940b615877123db8779e730254d772155ed441bfe08af494d1fb"
+        },
+        {
+          "id": "branch",
+          "file": "after-en-light-360-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 20,
+            "y": 1840
+          },
+          "clip": {
+            "x": 4,
+            "y": 1824,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "55430fa5e9bc2b154ad0299fea52da9a50a11f993e60f1fb32680efd02e0afdd"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-en-light-360-coach-default.png",
+          "rect": {
+            "height": 426.65625,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 2196
+          },
+          "clip": {
+            "x": 4,
+            "y": 2180,
+            "width": 352,
+            "height": 459,
+            "scale": 1
+          },
+          "sha256": "01e2e84e266afcb07dfce0e370dc9f1faca6fa2a16eb1fb5296ec1066eeeb9b4"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-en-light-360-coach-portrait.png",
+          "rect": {
+            "height": 400,
+            "images": true,
+            "width": 320,
+            "x": 20,
+            "y": 2690.65625
+          },
+          "clip": {
+            "x": 4,
+            "y": 2674,
+            "width": 352,
+            "height": 432,
+            "scale": 1
+          },
+          "sha256": "5d728d0005a13e4eed84a4fa973db866b5e1bdcbe7ebc5b15bd924f9c25b8e85"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 390,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-en-light-390-club-portrait.png",
+          "rect": {
+            "height": 501.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 382,
+            "height": 534,
+            "scale": 1
+          },
+          "sha256": "425e4d88b8935ace1d402f16e54c73d3e718fbb3281ce39626eaa9afd6bed333"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-en-light-390-club-compact.png",
+          "rect": {
+            "height": 466.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 825.65625
+          },
+          "clip": {
+            "x": 4,
+            "y": 809,
+            "width": 382,
+            "height": 499,
+            "scale": 1
+          },
+          "sha256": "b1213e814aff5b7a66a852f140313064d9cf550938aec33a6ba182082df97b78"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-en-light-390-club-landscape.png",
+          "rect": {
+            "height": 262.5,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 1360.3125
+          },
+          "clip": {
+            "x": 4,
+            "y": 1344,
+            "width": 382,
+            "height": 295,
+            "scale": 1
+          },
+          "sha256": "c6d9f717b8c2cbabaa48b86f900f1b52a93a251d84d1ccfa9094b8f6d5bcbb38"
+        },
+        {
+          "id": "featured",
+          "file": "after-en-light-390-featured.png",
+          "rect": {
+            "height": 218.75,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 1678.8125
+          },
+          "clip": {
+            "x": 4,
+            "y": 1662,
+            "width": 382,
+            "height": 251,
+            "scale": 1
+          },
+          "sha256": "2d65e91c475eea9bd92321ae32059f943fc582b9baa6c88f80d648454d075a61"
+        },
+        {
+          "id": "branch",
+          "file": "after-en-light-390-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 20,
+            "y": 1953.5625
+          },
+          "clip": {
+            "x": 4,
+            "y": 1937,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "0c590e8db252a3a6bf2e5520e0cefc551bb5c23e5446e411a4349df6d4739d9a"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-en-light-390-coach-default.png",
+          "rect": {
+            "height": 466.65625,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 2309.5625
+          },
+          "clip": {
+            "x": 4,
+            "y": 2293,
+            "width": 382,
+            "height": 499,
+            "scale": 1
+          },
+          "sha256": "896118688b4347a05539df938c456f731fb018b7b257f11ac48c5fd920de66b0"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-en-light-390-coach-portrait.png",
+          "rect": {
+            "height": 437.5,
+            "images": true,
+            "width": 350,
+            "x": 20,
+            "y": 2844.21875
+          },
+          "clip": {
+            "x": 4,
+            "y": 2828,
+            "width": 382,
+            "height": 470,
+            "scale": 1
+          },
+          "sha256": "c25598949efcc5f94b09c9388ace6084ee0a51803babe6aa03a86f4c090ce056"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 430,
+      "viewportHeight": 844,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "after-en-light-430-club-portrait.png",
+          "rect": {
+            "height": 559,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "x": 4,
+            "y": 240,
+            "width": 422,
+            "height": 591,
+            "scale": 1
+          },
+          "sha256": "20b6d959ac33ab1dc3fd3f2daec867052ca091df62dc75713a1aeefe07e7065f"
+        },
+        {
+          "id": "club-compact",
+          "file": "after-en-light-430-club-compact.png",
+          "rect": {
+            "height": 520,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 883
+          },
+          "clip": {
+            "x": 4,
+            "y": 867,
+            "width": 422,
+            "height": 552,
+            "scale": 1
+          },
+          "sha256": "31647626ba3926842eee7abad4d189fe89eaaf92b4dca133d5efa090d026feaf"
+        },
+        {
+          "id": "club-landscape",
+          "file": "after-en-light-430-club-landscape.png",
+          "rect": {
+            "height": 292.5,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 1471
+          },
+          "clip": {
+            "x": 4,
+            "y": 1455,
+            "width": 422,
+            "height": 325,
+            "scale": 1
+          },
+          "sha256": "446bf621a9cd98e8cddf29abc44cc7029924a12a04974d15ee473edb54509fdf"
+        },
+        {
+          "id": "featured",
+          "file": "after-en-light-430-featured.png",
+          "rect": {
+            "height": 243.75,
+            "images": true,
+            "width": 390,
+            "x": 20,
+            "y": 1819.5
+          },
+          "clip": {
+            "x": 4,
+            "y": 1803,
+            "width": 422,
+            "height": 276,
+            "scale": 1
+          },
+          "sha256": "ef3670d80238fbc4c3c064bc1a6733d8c4db0efcc6854bf61fed70c078268f00"
+        },
+        {
+          "id": "branch",
+          "file": "after-en-light-430-branch.png",
+          "rect": {
+            "height": 288,
+            "images": true,
+            "width": 144,
+            "x": 20,
+            "y": 2119.25
+          },
+          "clip": {
+            "x": 4,
+            "y": 2103,
+            "width": 176,
+            "height": 320,
+            "scale": 1
+          },
+          "sha256": "fa6d7de13d4f3bc4f8da87fd4882d1c32c05b883fd2f7d12779312caa5d2c289"
+        },
+        {
+          "id": "coach-default",
+          "file": "after-en-light-430-coach-default.png",
+          "rect": {
+            "height": 512,
+            "images": true,
+            "width": 384,
+            "x": 20,
+            "y": 2475.25
+          },
+          "clip": {
+            "x": 4,
+            "y": 2459,
+            "width": 416,
+            "height": 544,
+            "scale": 1
+          },
+          "sha256": "490abdf5082fd1c6bcefb0e409766bbcfb192d5c2c75c5a00dd75f418c317606"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "after-en-light-430-coach-portrait.png",
+          "rect": {
+            "height": 480,
+            "images": true,
+            "width": 384,
+            "x": 20,
+            "y": 3055.25
+          },
+          "clip": {
+            "x": 4,
+            "y": 3039,
+            "width": 416,
+            "height": 512,
+            "scale": 1
+          },
+          "sha256": "37ede0b1a3d6684694caf427716dda5c8c4b8181a4b2c2385dd5f29d559245a3"
+        }
+      ]
+    }
+  ]
+}

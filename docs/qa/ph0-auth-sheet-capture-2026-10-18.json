@@ -1,0 +1,64 @@
+{
+  "dpr": 2,
+  "focusWithin": true,
+  "focused": true,
+  "fontsLoaded": true,
+  "imagesReady": true,
+  "indicator": {
+    "offset": "3px",
+    "outline": "oklch(0.985 0 0) solid 2px",
+    "shadow": "oklch(0.145 0 0) 0px 0px 0px 3px"
+  },
+  "locale": "fa",
+  "path": "/",
+  "rect": {
+    "height": 502.734375,
+    "width": 344,
+    "x": 8,
+    "y": 333.265625
+  },
+  "selector": ".auth-entry-sheet",
+  "theme": "dark",
+  "viewport": [
+    360,
+    844
+  ],
+  "visual": {
+    "height": 844,
+    "pageLeft": 0,
+    "pageTop": 13,
+    "scale": 1,
+    "width": 360
+  },
+  "png": {
+    "width": 720,
+    "height": 1688
+  },
+  "file": "auth-sheet-fa-dark-reduce.png",
+  "sha256": "2b9e44381ae6df2da9bf6e19125cb6f7d4e430827a89c489ebeae27984c6178e",
+  "cssViewport": {
+    "clientHeight": 844,
+    "clientWidth": 360,
+    "offsetX": 0,
+    "offsetY": 0,
+    "pageX": 0,
+    "pageY": 13,
+    "scale": 1,
+    "zoom": 1
+  },
+  "backingViewport": {
+    "clientHeight": 1688,
+    "clientWidth": 720,
+    "offsetX": 0,
+    "offsetY": 0,
+    "pageX": 0,
+    "pageY": 13,
+    "scale": 1,
+    "zoom": 1
+  },
+  "captureHashes": [
+    "2b9e44381ae6df2da9bf6e19125cb6f7d4e430827a89c489ebeae27984c6178e",
+    "2b9e44381ae6df2da9bf6e19125cb6f7d4e430827a89c489ebeae27984c6178e"
+  ],
+  "scope": "Full viewport PNG and target containment; human visual review still required"
+}

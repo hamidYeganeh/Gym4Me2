@@ -8,11 +8,18 @@ const nextConfig: NextConfig = {
         typescript: { tsconfigPath: "tsconfig.staging.json" },
       }
     : {}),
+  ...(process.env.GYM_QA_WEB === "true"
+    ? {
+        distDir: ".next-qa",
+        experimental: { cpus: 1, webpackMemoryOptimizations: true },
+      }
+    : {}),
   transpilePackages: ["@repo/ui", "@repo/theme", "@repo/i18n", "@repo/api"],
   turbopack: {
     rules: { "*.css": { loaders: ["@tailwindcss/turbopack"], as: "*.css" } },
   },
   webpack(config) {
+    if (process.env.GYM_QA_WEB === "true") config.cache = false;
     // Process the same Tailwind entry when using Next's Webpack fallback.
     function addTailwind(rule: unknown) {
       if (!rule || typeof rule !== "object") return;

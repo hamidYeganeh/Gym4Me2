@@ -1,0 +1,3150 @@
+{
+  "scope": "Read-only synthetic invitation DTOs; no real invitation response or reservation",
+  "cases": [
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "fa",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "دعوت‌های بیشتر"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 138
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 138
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 138
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 138
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 دعوت نمایش داده شده"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "fa",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "دعوت‌های بیشتر"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 دعوت نمایش داده شده"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "fa",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "دعوت‌های بیشتر"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 173
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 173
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 173
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 173
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 دعوت نمایش داده شده"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "fa",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "دعوت‌های بیشتر"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 138
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 138
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 138
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 138
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 دعوت نمایش داده شده"
+      ],
+      "theme": "light",
+      "uniqueIds": 25,
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "fa",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "دعوت‌های بیشتر"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 دعوت نمایش داده شده"
+      ],
+      "theme": "light",
+      "uniqueIds": 25,
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "fa",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "دعوت‌های بیشتر"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 173
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 173
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 173
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 173
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 دعوت نمایش داده شده"
+      ],
+      "theme": "light",
+      "uniqueIds": 25,
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "en",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "More invitations"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 138
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 138
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 138
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 138
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 invitations shown"
+      ],
+      "theme": "light",
+      "uniqueIds": 25,
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "en",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "More invitations"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 invitations shown"
+      ],
+      "theme": "light",
+      "uniqueIds": 25,
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "en",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "More invitations"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 173
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 173
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 173
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 173
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 invitations shown"
+      ],
+      "theme": "light",
+      "uniqueIds": 25,
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "en",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "More invitations"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 138
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 138
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 138
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 138
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 invitations shown"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "en",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "More invitations"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 invitations shown"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "en",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "More invitations"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 173
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 173
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 173
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 173
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 invitations shown"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 430,
+      "passed": true
+    }
+  ],
+  "flows": {
+    "initial": {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "fa",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "دعوت‌های بیشتر"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 دعوت نمایش داده شده"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 390
+    },
+    "loading": {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "fa",
+      "more": {
+        "busy": "true",
+        "disabled": true,
+        "text": "در حال دریافت…"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 دعوت نمایش داده شده"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 390
+    },
+    "keyboardAppend": {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 29,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "sports-invitation-a1000000-0000-4000-8000-00000000052e",
+        "tag": "ARTICLE"
+      },
+      "lang": "fa",
+      "more": null,
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "29 دعوت نمایش داده شده"
+      ],
+      "theme": "dark",
+      "uniqueIds": 29,
+      "width": 390
+    },
+    "focusChosenElsewhere": {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 29,
+      "focus": {
+        "active": true,
+        "href": "/discovery",
+        "id": "",
+        "tag": "A"
+      },
+      "lang": "fa",
+      "more": null,
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 246
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 246
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 246
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 246
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "29 دعوت نمایش داده شده"
+      ],
+      "theme": "dark",
+      "uniqueIds": 29,
+      "width": 1280
+    },
+    "doubleClick": {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 29,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "sports-invitation-a1000000-0000-4000-8000-00000000052e",
+        "tag": "ARTICLE"
+      },
+      "lang": "fa",
+      "more": null,
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 246
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 246
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 246
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 246
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "29 دعوت نمایش داده شده"
+      ],
+      "theme": "dark",
+      "uniqueIds": 29,
+      "width": 1280
+    },
+    "leftDuringLoad": {
+      "url": "http://127.0.0.1:7381/",
+      "dom": {
+        "activeInvitationRows": 0,
+        "activeMains": 1,
+        "focus": {
+          "href": "/",
+          "id": "",
+          "tag": "A"
+        }
+      }
+    },
+    "serviceEntry": {
+      "url": "http://127.0.0.1:7381/services/detail?id=a1000000-0000-4000-8000-000000000001"
+    },
+    "serviceBack": {
+      "url": "http://127.0.0.1:7381/invitations/sports",
+      "list": {
+        "activeMains": 1,
+        "alerts": [],
+        "count": 25,
+        "focus": {
+          "active": true,
+          "href": null,
+          "id": "",
+          "tag": "BODY"
+        },
+        "lang": "fa",
+        "more": {
+          "busy": "false",
+          "disabled": false,
+          "text": "دعوت‌های بیشتر"
+        },
+        "overflow": false,
+        "states": [
+          {
+            "buttons": [
+              {
+                "disabled": false,
+                "height": 44,
+                "text": "پذیرش دعوت",
+                "variant": "default",
+                "width": 246
+              },
+              {
+                "disabled": false,
+                "height": 44,
+                "text": "رد دعوت",
+                "variant": "outline",
+                "width": 246
+              }
+            ],
+            "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+            "links": [
+              {
+                "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+                "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+              }
+            ],
+            "state": "دعوت‌شده",
+            "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+          },
+          {
+            "buttons": [
+              {
+                "disabled": true,
+                "height": 44,
+                "text": "پذیرش دعوت",
+                "variant": "default",
+                "width": 246
+              },
+              {
+                "disabled": false,
+                "height": 44,
+                "text": "رد دعوت",
+                "variant": "outline",
+                "width": 246
+              }
+            ],
+            "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+            "links": [],
+            "state": "دعوت‌شده",
+            "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+          },
+          {
+            "buttons": [],
+            "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+            "links": [
+              {
+                "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+                "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+              },
+              {
+                "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+                "text": "مشاهدهٔ خدمت و ثبت‌نام"
+              }
+            ],
+            "state": "پذیرفته‌شده",
+            "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+          },
+          {
+            "buttons": [],
+            "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+            "links": [],
+            "state": "پذیرفته‌شده",
+            "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+          },
+          {
+            "buttons": [],
+            "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+            "links": [
+              {
+                "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+                "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+              }
+            ],
+            "state": "ردشده",
+            "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+          },
+          {
+            "buttons": [],
+            "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+            "links": [
+              {
+                "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+                "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+              }
+            ],
+            "state": "لغوشده",
+            "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+          }
+        ],
+        "status": [
+          "25 دعوت نمایش داده شده"
+        ],
+        "theme": "dark",
+        "uniqueIds": 25,
+        "width": 1280
+      }
+    },
+    "rejectedAnswer": {
+      "activeMains": 1,
+      "alerts": [
+        "اقدام انجام نشد؛ دوباره تلاش کنید."
+      ],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BUTTON"
+      },
+      "lang": "fa",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "دعوت‌های بیشتر"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 246
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 245.99996948242188
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+            }
+          ],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "پذیرش دعوت",
+              "variant": "default",
+              "width": 246
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "رد دعوت",
+              "variant": "outline",
+              "width": 245.99996948242188
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "دعوت‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "مشاهدهٔ خدمت و ثبت‌نام"
+            }
+          ],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "پذیرفته‌شده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+            }
+          ],
+          "state": "ردشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+            }
+          ],
+          "state": "لغوشده",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 دعوت نمایش داده شده"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 1280
+    },
+    "pageErrorBeforeFocusFix": {
+      "activeMains": 1,
+      "alerts": [
+        "Your loaded invitations are still here. Could not load more; please retry."
+      ],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "en",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "Retry"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 invitations shown"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 390
+    },
+    "pageErrorAfterFocusFix": {
+      "activeMains": 1,
+      "alerts": [
+        "Your loaded invitations are still here. Could not load more; please retry."
+      ],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BUTTON"
+      },
+      "lang": "en",
+      "more": {
+        "busy": "false",
+        "disabled": false,
+        "text": "Retry"
+      },
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 invitations shown"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 390
+    },
+    "pageRecovery": {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 29,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "sports-invitation-a1000000-0000-4000-8000-00000000052e",
+        "tag": "ARTICLE"
+      },
+      "lang": "en",
+      "more": null,
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 153
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 153
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "29 invitations shown"
+      ],
+      "theme": "dark",
+      "uniqueIds": 29,
+      "width": 390
+    },
+    "finalFocusChosenElsewhere": {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 29,
+      "focus": {
+        "active": true,
+        "href": "/discovery",
+        "id": "",
+        "tag": "A"
+      },
+      "lang": "en",
+      "more": null,
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 246
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 246
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 246
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 246
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "29 invitations shown"
+      ],
+      "theme": "dark",
+      "uniqueIds": 29,
+      "width": 1280
+    },
+    "lastPageEmpty": {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 25,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "_R_1bsnpfblb_",
+        "tag": "P"
+      },
+      "lang": "en",
+      "more": null,
+      "overflow": false,
+      "states": [
+        {
+          "buttons": [
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 246
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 246
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیInvited"
+            }
+          ],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+        },
+        {
+          "buttons": [
+            {
+              "disabled": true,
+              "height": 44,
+              "text": "Accept",
+              "variant": "default",
+              "width": 246
+            },
+            {
+              "disabled": false,
+              "height": 44,
+              "text": "Decline",
+              "variant": "outline",
+              "width": 246
+            }
+          ],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+          "links": [],
+          "state": "Invited",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیAccepted"
+            },
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "View service and register"
+            }
+          ],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+          "links": [],
+          "state": "Accepted",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیDeclined"
+            }
+          ],
+          "state": "Declined",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+        },
+        {
+          "buttons": [],
+          "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+          "links": [
+            {
+              "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+              "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیCancelled"
+            }
+          ],
+          "state": "Cancelled",
+          "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+        }
+      ],
+      "status": [
+        "25 invitations shown"
+      ],
+      "theme": "dark",
+      "uniqueIds": 25,
+      "width": 1280
+    },
+    "empty": {
+      "activeMains": 1,
+      "alerts": [],
+      "count": 0,
+      "focus": {
+        "active": true,
+        "href": null,
+        "id": "",
+        "tag": "BODY"
+      },
+      "lang": "en",
+      "more": null,
+      "overflow": false,
+      "states": [],
+      "status": [
+        "0 invitations shown"
+      ],
+      "theme": "dark",
+      "uniqueIds": 0,
+      "width": 1280
+    },
+    "expiredContinuation": {
+      "dom": "- main:\n  - link \"بازگشت\":\n    - /url: /\n  - heading \"دعوت‌های ورزشی\" [level=1]\n  - link \"اعلان‌ها\":\n    - /url: /notifications\n  - paragraph: پذیرش دعوت به‌تنهایی رزرو نیست؛ خدمت را انتخاب کنید.\n  - paragraph:\n    - link \"ورود به حساب\":\n      - /url: /login?returnTo=%2Finvitations%2Fsports\n- navigation \"ناوبری اصلی\":\n  - link \"خانه\":\n    - /url: /\n    - generic: خانه\n  - link \"کشف\":\n    - /url: /discovery\n    - generic: کشف\n  - link \"گفتگو\":\n    - /url: /messages\n    - generic: گفتگو\n- region \"Notifications alt+T\"\n- alert",
+      "rows": 0,
+      "href": "/login?returnTo=%2Finvitations%2Fsports"
+    }
+  },
+  "finalLayout": {
+    "activeMains": 1,
+    "alerts": [],
+    "count": 25,
+    "focus": {
+      "active": true,
+      "href": null,
+      "id": "",
+      "tag": "BODY"
+    },
+    "lang": "fa",
+    "more": {
+      "busy": "false",
+      "disabled": false,
+      "text": "دعوت‌های بیشتر"
+    },
+    "overflow": false,
+    "states": [
+      {
+        "buttons": [
+          {
+            "disabled": false,
+            "height": 44,
+            "text": "پذیرش دعوت",
+            "variant": "default",
+            "width": 153
+          },
+          {
+            "disabled": false,
+            "height": 44,
+            "text": "رد دعوت",
+            "variant": "outline",
+            "width": 153
+          }
+        ],
+        "id": "sports-invitation-a1000000-0000-4000-8000-000000000515",
+        "links": [
+          {
+            "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+            "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1باشگاه نمونه آفتاب · شعبه نمایشی مرکزیدعوت‌شده"
+          }
+        ],
+        "state": "دعوت‌شده",
+        "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 1"
+      },
+      {
+        "buttons": [
+          {
+            "disabled": true,
+            "height": 44,
+            "text": "پذیرش دعوت",
+            "variant": "default",
+            "width": 153
+          },
+          {
+            "disabled": false,
+            "height": 44,
+            "text": "رد دعوت",
+            "variant": "outline",
+            "width": 153
+          }
+        ],
+        "id": "sports-invitation-a1000000-0000-4000-8000-000000000516",
+        "links": [],
+        "state": "دعوت‌شده",
+        "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 2"
+      },
+      {
+        "buttons": [],
+        "id": "sports-invitation-a1000000-0000-4000-8000-000000000517",
+        "links": [
+          {
+            "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+            "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3باشگاه نمونه آفتاب · شعبه نمایشی مرکزیپذیرفته‌شده"
+          },
+          {
+            "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+            "text": "مشاهدهٔ خدمت و ثبت‌نام"
+          }
+        ],
+        "state": "پذیرفته‌شده",
+        "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 3"
+      },
+      {
+        "buttons": [],
+        "id": "sports-invitation-a1000000-0000-4000-8000-000000000518",
+        "links": [],
+        "state": "پذیرفته‌شده",
+        "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 4"
+      },
+      {
+        "buttons": [],
+        "id": "sports-invitation-a1000000-0000-4000-8000-000000000519",
+        "links": [
+          {
+            "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+            "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5باشگاه نمونه آفتاب · شعبه نمایشی مرکزیردشده"
+          }
+        ],
+        "state": "ردشده",
+        "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 5"
+      },
+      {
+        "buttons": [],
+        "id": "sports-invitation-a1000000-0000-4000-8000-00000000051a",
+        "links": [
+          {
+            "href": "/services/detail?id=a1000000-0000-4000-8000-000000000001",
+            "text": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6باشگاه نمونه آفتاب · شعبه نمایشی مرکزیلغوشده"
+          }
+        ],
+        "state": "لغوشده",
+        "title": "دعوت تمرین گروهی و یوگای صبحگاهی · نمونهٔ وب 6"
+      }
+    ],
+    "status": [
+      "25 دعوت نمایش داده شده"
+    ],
+    "theme": "dark",
+    "uniqueIds": 25,
+    "width": 390,
+    "passed": true
+  },
+  "expected": 12,
+  "complete": true,
+  "layoutTiming": "12 cases preceded the final retry-focus and empty-terminal focus correction; final fa/dark/390 layout plus final focus flows rechecked afterward.",
+  "flowAssertions": {
+    "keyboardAppend": true,
+    "finalKeyboardRecovery": true,
+    "userFocusRetained": true,
+    "doubleClickUnique": true,
+    "leftPageIsolated": true,
+    "pageFailureKeptRows": true,
+    "retryFocus": true,
+    "emptyTerminalFocus": true,
+    "emptyList": true,
+    "expiredCursorHidesCache": true,
+    "serviceBack": true,
+    "rejectedAnswerKeepsState": true
+  },
+  "sourceSha256": {
+    "apps/application/components/luma/community.tsx": "c078bef8a8b10660a4a3d5d939efdaa86dca68829f4e31d93f6979e5b1d16446",
+    "apps/application/components/luma/invitations.tsx": "235fbe90d4f4d239afcd310d104adb39a44a683c0206e69125b16317b20052a4",
+    "apps/application/components/luma/load-more.tsx": "727cbfe871c2809a3fe6d1d864a8f2a09cff3436b777fc2d6de0fb6e95a3601a",
+    "apps/application/test/fixtures/invitations.ts": "f8c6797b14158933400890970ad3265ea8ae45c6828f7a9d48284e68506f58d3",
+    "apps/application/test/fixtures/web-read-api.ts": "6fe75758056d6bf43b84a28afe3409eba49727437375f1dd26af3193cdfb6226",
+    "apps/application/test/web-read-fixture.test.ts": "b3136c5d79abe61507c139a13c45063b6b82a04cddffca23c556eb455ba608dc",
+    "apps/application/scripts/web-read-fixture.mts": "120a824d12df4681eecc846caaca20ec4c1da526239e33647f6af3f745a63261",
+    "packages/ui/src/lib/active-surface.ts": "d8245da0a71b9e8d02fcc6f27191b5513e85b5299955f1437689b75dc5e938bf",
+    "packages/i18n/src/messages/fa.json": "4f789bd87ea71bd39db1ab93a2383d771d031a6760ad216c54de83253d47c403",
+    "packages/i18n/src/messages/en.json": "bb1a0354b00a5eebc8a21691d4b52c06cbea4af0bcaa2a7087febed2c09067b3"
+  },
+  "build": {
+    "app": "application",
+    "id": "x1fHMB3VZUu7Zmt6yETAJ",
+    "compileSeconds": 10.3,
+    "typecheckSeconds": 5.1,
+    "pages": 64,
+    "workers": 1,
+    "heapMiB": 512,
+    "apiUrl": "http://127.0.0.1:7488"
+  },
+  "tests": {
+    "passed": 19,
+    "failed": 0,
+    "concurrency": 1,
+    "heapMiB": 128,
+    "file": "apps/application/test/web-read-fixture.test.ts"
+  },
+  "completionScope": "complete refers only to 12 layout/state DOM cases. Flow assertions have separate scope; no phase or actual invitation acceptance.",
+  "notAccepted": [
+    "real invitation answers, revision conflict, idempotent server replay or capacity behavior",
+    "answer-success focus in browser",
+    "403 and real cross-account access",
+    "populated chat/notifications regression for the shared load-more helper",
+    "screen reader, zoom, device and full visual/motion acceptance"
+  ]
+}

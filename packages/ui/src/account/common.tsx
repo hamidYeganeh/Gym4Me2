@@ -168,7 +168,7 @@ export function QueryError({
   return error ? (
     <div className="grid gap-3">
       <ErrorNotice error={error} />
-      <Button variant="outline" onClick={() => void retry()}>
+      <Button type="button" variant="outline" onClick={() => void retry()}>
         {t("Copy.tryAgain")}{" "}
       </Button>
     </div>

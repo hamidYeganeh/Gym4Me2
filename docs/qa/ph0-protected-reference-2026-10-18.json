@@ -1,0 +1,1077 @@
+{
+  "scope": "PH0 reference capture with deterministic public DTOs; not a live catalog or completed visual preservation audit",
+  "cases": [
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3461,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "width": 360,
+      "file": "club-detail-fa-dark-360.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3495,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "width": 390,
+      "file": "club-detail-fa-dark-390.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3540,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "width": 430,
+      "file": "club-detail-fa-dark-430.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3461,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "width": 360,
+      "file": "club-detail-fa-light-360.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3495,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "width": 390,
+      "file": "club-detail-fa-light-390.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3540,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "width": 430,
+      "file": "club-detail-fa-light-430.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3461,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "en",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "width": 360,
+      "file": "club-detail-en-light-360.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3495,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "en",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "width": 390,
+      "file": "club-detail-en-light-390.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3540,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "en",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "light",
+      "width": 430,
+      "file": "club-detail-en-light-430.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3461,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "en",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "width": 360,
+      "file": "club-detail-en-dark-360.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3495,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "en",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "width": 390,
+      "file": "club-detail-en-dark-390.jpg",
+      "validReference": true
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3540,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "en",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 0,
+      "theme": "dark",
+      "width": 430,
+      "file": "club-detail-en-dark-430.jpg",
+      "validReference": true
+    }
+  ],
+  "rejectedCaptures": [
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3461,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 1176,
+      "theme": "dark",
+      "width": 360,
+      "file": "club-detail-fa-dark-360.jpg",
+      "validReference": false
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3495,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 1554.5,
+      "theme": "dark",
+      "width": 390,
+      "file": "club-detail-fa-dark-390.jpg",
+      "validReference": false
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3540,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 1465,
+      "theme": "dark",
+      "width": 430,
+      "file": "club-detail-fa-dark-430.jpg",
+      "validReference": false
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3461,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 163,
+      "theme": "dark",
+      "width": 360,
+      "file": "club-detail-fa-dark-360.jpg",
+      "validReference": false
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3495,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 932.5,
+      "theme": "dark",
+      "width": 390,
+      "file": "club-detail-fa-dark-390.jpg",
+      "validReference": false
+    },
+    {
+      "surface": "club-detail",
+      "anchor": "club-a1000000-0000-4000-8000-0000000007d1",
+      "documentHeight": 3540,
+      "height": 844,
+      "images": [
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/studio.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/strength.png",
+          "width": 1086
+        },
+        {
+          "complete": true,
+          "src": "/images/club-placeholder.svg",
+          "width": 1200
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "/images/clubs/training.png",
+          "width": 1672
+        }
+      ],
+      "lang": "fa",
+      "lumaShell": 0,
+      "main": 1,
+      "overflow": false,
+      "scrollY": 1119,
+      "theme": "dark",
+      "width": 430,
+      "file": "club-detail-fa-dark-430.jpg",
+      "validReference": false
+    }
+  ],
+  "preview": {
+    "height": 844,
+    "lang": "fa",
+    "scrollY": 0,
+    "theme": "dark",
+    "width": 390
+  },
+  "cleanup": {
+    "locale": "fa",
+    "theme": "dark",
+    "viewportReset": true,
+    "ownTabClosed": true,
+    "previewStopped": true,
+    "fixtureStopped": true
+  },
+  "verification": {
+    "cases": 12,
+    "uniqueCases": 12,
+    "allValid": true,
+    "fixtureTests": 26,
+    "protectedFiles": 59,
+    "buildId": "hGEDvIN1Tt2ITD_KapQvn",
+    "sources": {
+      "apps/application/test/fixtures/protected-catalog.ts": "7826140d2dd7999f18e6b25cd64a80d3f05ed0f447f48d034ec85da5d09f9d35",
+      "apps/application/test/fixtures/web-read-api.ts": "6e5bd2522bcb8bd33e93a9fb7e01b44506c0863a3d12eaab34f709c71e73a79e",
+      "apps/application/scripts/web-read-fixture.mts": "d82cbc71c9bc6175f051522f600e776d54824d7b3fe7c3b3996e9938614a26d1",
+      "docs/qa/protected-design-baseline.json": "77b3e17ce6c17c551d9128b69f4760e14382359dfcc0d56bd391a5a1f7f3e9b0"
+    },
+    "images": {
+      "club-detail-fa-dark-360.jpg": "5688a795675aa7ed6fe5b835bb3914eacbd68f25771c29a38f416fc58c852d9b",
+      "club-detail-fa-dark-390.jpg": "69db659164606ba6b35eabe856b96df2ec6b7e42430c26ee861fffc6dbd8d1e7",
+      "club-detail-fa-dark-430.jpg": "1cb90f5974cd578e01b72e2fe07a977988ea8bfeb9e0c2bac62b869921466ff0",
+      "club-detail-fa-light-360.jpg": "c9755c2d3e8852505c983672ef2c8eb4afe4bbf094ae3b2db8b7c56d543a45da",
+      "club-detail-fa-light-390.jpg": "5fae17f909caa6acaaa2ffd296fddb4a6e9f5e181a6adff1b18723b342b810ae",
+      "club-detail-fa-light-430.jpg": "f8820a7f8d3db2ad5c066e000b903923379aa01dec70d1857f3b043300543b1b",
+      "club-detail-en-light-360.jpg": "a142d2ee729f813ab270e70489618d69b2632868f5aa7859b96d1c707f15fe8c",
+      "club-detail-en-light-390.jpg": "41d4d141a4a55955cba85b0267c8c69b7a730333d0308a118e6ba2c5a6573deb",
+      "club-detail-en-light-430.jpg": "4703b4bb513881acd44729f359cf78bc59982cafa8e8e23d5813a341dcf1ca4e",
+      "club-detail-en-dark-360.jpg": "85e017a2e5986cbeed4fafbdc7b26c4032f4a7ecea2de1684d789496314d45e3",
+      "club-detail-en-dark-390.jpg": "40286b80d280c3375a0a652f94819b6a8808b8e1f87aad6bbdd0246346322fa0",
+      "club-detail-en-dark-430.jpg": "896a91bb958f290368d5159e3e9f258ad381abcd7fe1527d641f769003d03f8a"
+    },
+    "acceptance": "reference capture only; PH0 remains open"
+  }
+}

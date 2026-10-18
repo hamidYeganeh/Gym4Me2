@@ -1,0 +1,127 @@
+{
+  "scope": "Local web core only; PH0 acceptance remains open",
+  "tests": {
+    "passed": 115,
+    "failed": 0,
+    "concurrency": 1,
+    "scope": "All apps/application/test/*.test.ts; pure adapters and local read-only fixture contracts only; not native/device or browser acceptance",
+    "log": ".artifacts/ph0-zoom-2026-10-18/all-tests.txt",
+    "freshness": "Fresh full application contract run after ph0-public fixture change; includes31 fixture tests and6 login validation tests. Earlier103 result retained in historical report.",
+    "heapMiB": 192
+  },
+  "builds": {
+    "application": {
+      "buildId": "iMjpby3x5nuJ76wBVFbOB",
+      "compiled": true,
+      "typecheck": true,
+      "rendered": true,
+      "nodeHeapMiB": 640,
+      "log": ".artifacts/ph0-zoom-2026-10-18/application-build.txt",
+      "currentSourceFreshness": "Not proven: concurrent source edits during build/test window; inspect builds.json snapshots"
+    },
+    "business": {
+      "buildId": "YdikmOzwJmEA7cwmCkMsM",
+      "compiled": true,
+      "typecheck": true,
+      "rendered": true,
+      "nodeHeapMiB": 640,
+      "log": ".artifacts/ph0-zoom-2026-10-18/business-build.txt",
+      "currentSourceFreshness": "Not proven: concurrent source edits during build/test window; inspect builds.json snapshots"
+    },
+    "admin": {
+      "buildId": "nIE7_8o9Qo1vLNOR1VuKe",
+      "compiled": true,
+      "typecheck": true,
+      "rendered": true,
+      "nodeHeapMiB": 640,
+      "log": ".artifacts/ph0-zoom-2026-10-18/admin-build.txt",
+      "currentSourceFreshness": "Not proven: concurrent source edits during build/test window; inspect builds.json snapshots"
+    }
+  },
+  "uiTypecheck": "tsc --noEmit passed",
+  "lint": "Changed application/UI sources passed",
+  "protectedFiles": 59,
+  "protectedBaselineChanged": false,
+  "runtime": {
+    "steadyGalleryBack": "Passed: gallery -> detail -> actual QA entry",
+    "rapidBack": "Scoped pass: reduced-motion receipt shows Back at 488.4ms, destination commit508.2ms, next Back568.5ms locked; history Back4088.8ms reaches QA. Full rapid input matrix pending.",
+    "reducedMotion": "380 sampled frames for QA/detail, transform/filter none; gallery snapshot separately observed",
+    "pixelComparison": "Painted PNG:78/84 exact,6 pairs differ in16 pixels total,max channel delta1,all geometry exact; accepted=false. Earlier JPEG/offscreen PNG sets remain rejected. Earlier captures omitted backing scale and frame stability receipts; mapped paint remains unproven. Current60 focused images are not a before/after acceptance.",
+    "qaRouteGate": {
+      "status": 200,
+      "reference": false,
+      "trace": false,
+      "notFound": true,
+      "robots": [
+        "<meta name=\"robots\" content=\"noindex\"/>"
+      ]
+    },
+    "backReceiptBuild": "jaBPQRrRqVp5USuPe0DNX; latest scroll-only UI change built afterward",
+    "scroll": "Settled home/discovery tabs preserve710 CSS px in full/reduce at1280x720 DPR1; immediate scroll input remains unaccepted",
+    "pixelComparisonReport": "docs/qa/ph0-painted-comparison-2026-10-18.json",
+    "calendar": "20 rows retained on503,Retry23 and focus21; last-empty focuses count20;403 hides stale rows; view/search keeps DOM boundary; pending service request cannot steal Home focus",
+    "supportForm": "Four invalid-submission language/theme cases at360 CSSpx, connected labels/errors, focused first invalid field; no successful POST, reader or actual zoom acceptance",
+    "captureNote": "3 phone screenshots tiled at720px when CDP-only override was used; originals renamed unverified. Final support PNG re-captured with browser viewport+CDP metrics, no exact720 repeat.168 earlier card viewport rasters have no exact720 repeat.",
+    "focusContrast": "25 observed controls across application/business/admin;23 opaque two-tone checks pass computed contrast and2 forced-colors checks show system outline/no shadow. Clipping on photos, reader, zoom and complete AA remain open.",
+    "focusReport": "docs/qa/ph0-focus-2026-10-18.md",
+    "focusRaster": "60 current focused card PNGs at DPR2 with matched backing/visual viewport and2 identical consecutive frames;12 language/theme/width combinations. All target crops visually reviewed. Initial60-frame set rejected for stale compositor frame.",
+    "focusRasterReport": "docs/qa/ph0-capture-2026-10-18.md",
+    "auth": "Historical240 invalid/disabled states and12 local405 probes on earlier builds. Shared auth CSS and login source subsequently changed; current-worktree acceptance requires re-observation.",
+    "authReport": "docs/qa/ph0-auth-errors-2026-10-18.md",
+    "publicFixture": "ph0-public coherently links public club/branch/services/calendars/policy; account/session/following401 and writes405 with no cookie. Contract evidence only.",
+    "actualBrowserZoom": "Not tested. Browser recovered for background sheet checks; no actual browser zoom override applied.",
+    "authSheet": {
+      "report": "docs/qa/ph0-auth-sheet-2026-10-18.json",
+      "buildId": "iMjpby3x5nuJ76wBVFbOB",
+      "cases": 4,
+      "scope": "fa360,light/dark,full/reduce:computed320ms/0s,none blur in reduce,keyboard cycle/Escape/Back/media switch; historical build sample, current source changed"
+    }
+  },
+  "sourceSha256": {
+    "packages/ui/src/page-transitions.tsx": "8c255ca4346bf041a6c20af41150967d5c30ecc783f6f7b2250db4dcff41f345",
+    "packages/ui/src/luma-motion.ts": "e98f7b2fe3bd8cb005a70a4e416876d5fd3fec94e43b26f983851fbdcd127135",
+    "packages/ui/src/lib/route-motion.ts": "1880d90c1ee6d78e2cedc2276122ad7d37dc28bcf2c7bfde0e80e65312406805",
+    "packages/ui/src/lib/overlay-history.ts": "bc776fe59633419a8946b57e170747cac2a4a479162f8d0fcc27e0163e15957d",
+    "packages/ui/src/lib/active-surface.ts": "2bb4e5ee5f5340b4f6852070261a8a8deec9c67988b2e68cb518e9da60da51bc",
+    "apps/application/components/luma/shell.tsx": "bbfcd2ec2b8d4fbf38b49a530b6ef265d195d16297a59602ce3c5beaf61f38b0",
+    "apps/application/components/luma/sheet.tsx": "7b836939bd200b64512e5ab0ba7cf6d111ba9389aeb8a900aa741c5b1ed7ddfb",
+    "packages/ui/src/sports/host-sheet.tsx": "6baa8d29b0349a7a3176bc54ff8bbbddd9a4ef3408c7e42ddfe15687e75838b0",
+    "apps/application/lib/navigation-route.ts": "00de9264d4c6b72a532c303f536751185dd8a4776c35f8f411d914a35bd1c7a0",
+    "apps/application/lib/app-navigation.ts": "d46e06dbada8db7d76dfddbe85ea88f55eb18d1923ceca08bc7b9081d54cb87f",
+    "apps/application/lib/back-link.ts": "bd5a16877f29e70d6cb7933d20ee080b7434582fd860b4b69cd999973e9a7849",
+    "apps/application/components/luma/calendars.tsx": "7d0a792eecfb502c07fa06a7130363c3bfbddd1ec8f287d8a6ab4bee7815b2f2",
+    "apps/application/components/luma/luma.css": "0fc7acca0b7cc32dcd652c6f6bc6466e9d6568b1e41529e54a2615deaa3663e4",
+    "apps/application/test/fixtures/calendars.ts": "80f8917b5d78862d1b87fe88e777fcaec015e79b2f27ba3d56a3aeb2464a7dde",
+    "packages/ui/src/focus.css": "87d15f91d3cb60cf0c86ff29ef17e62139deb66bc8efdf93d78ef83c80c1cf4b",
+    "apps/application/components/luma/documents.tsx": "e35a02f2d079d2aca610010fd07b93cfdbbe881a8bf8ce0b16fa1583841a07cd",
+    "apps/application/components/qa/ph0-reference.tsx": "44d9ce4408cba731de77cfb5091564bbf1a4ffd0fe2484417301970abf8634fa",
+    "packages/ui/src/account/auth-controls.css": "84d6bcdcf138a1b3deaf3fea697220c42ec3eeaaadb0517e646a48c2e07f4102",
+    "packages/ui/src/account/login.tsx": "3fc9c86034bd4584c2b5dd06084c0683b9f5c637390f5ce5e8366be74790e79b",
+    "packages/ui/src/account/mobile-auth.tsx": "42abbabe833c22d2a63802212c2f852899266ddc06fb22f7cd3d9306646661ee",
+    "scripts/ph0-auth-observe.cua.mjs": "fed24361e235bb78290369be1e663c3e876e2967ef59b6f884a90e3af3c33215",
+    "packages/ui/src/account/login-field.tsx": "b6f6c69c3161cf0ecfac34dd49551c4820b2664a345eaa2988204eaf32b9aea8",
+    "packages/ui/src/account/login-validation.ts": "4cca6909a1fa3e0fb231d909ecbaf81229ee0f40c024a8f37174d67e34c382fc",
+    "packages/i18n/src/messages/fa.json": "0b817ea29ee9e09dae84db8c253d790a50b2e22acd672b4a44a2074c26f06fbe",
+    "packages/i18n/src/messages/en.json": "5bc12f8627cf10b3aba6232feebcced1bf64f112fa5d000f64db1614bd37ea55",
+    "apps/application/test/fixtures/web-read-api.ts": "a633c94f880110cb581578f8d50faeefba20ea4c5225ee0c4d3f06a7ec362b73",
+    "apps/application/test/web-read-fixture.test.ts": "2ef79e82c306b2b0670c14ddf8906767a848791f6f8c9bc4c382b9b83c2a07e8",
+    "apps/application/scripts/web-read-fixture.mts": "81a7d369c53ce2582a4d9c51be383c332ceca657792a9f0ba31364f23c91baa2",
+    "scripts/ph0-route-contracts.mjs": "086fc85513a9fdaa0e9327c36bdd5dc361a3f740f03bc8a32704c7749c4bc9e7"
+  },
+  "buildFreshness": "Build command results only. Files changed concurrently: neither all-app nor shared-auth freshness against current worktree is proven. Browser samples refer to application build ID, not current auth source.",
+  "latestReport": "docs/qa/ph0-public-contracts-2026-10-18.md",
+  "applicationTypecheck": {
+    "passed": true,
+    "heapMiB": 640,
+    "log": ".artifacts/ph0-zoom-2026-10-18/typecheck-final.txt",
+    "freshness": "Passed before later concurrent edits; individual build logs retain subsequent checks, current whole-worktree freshness unproven."
+  },
+  "routeSourceGraph": {
+    "report": "docs/qa/ph0-route-contracts-2026-10-18.md",
+    "graph": "docs/qa/ph0-route-contracts-2026-10-18.json",
+    "routes": 96,
+    "uniqueApiCallSites": 236,
+    "scope": "Potential source associations only; not endpoint/state runtime coverage or acceptance."
+  },
+  "sourceSha256Scope": "Historical/current per-file source receipts, not all tied to latest build. See previous-source-mismatches.json and builds.json; do not infer current-worktree runtime acceptance."
+}

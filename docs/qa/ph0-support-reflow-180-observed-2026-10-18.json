@@ -1,0 +1,77 @@
+{
+  "build": "CuMYYCscHxNIXoZkhyu_4",
+  "scope": "CSS viewport180x422 DPR2, reflow simulation only; not an actual browser-zoom or screen-reader test",
+  "controls": [
+    {
+      "clientWidth": 138,
+      "height": 44,
+      "label": "title",
+      "right": 160,
+      "scrollWidth": 138,
+      "tag": "INPUT",
+      "width": 140,
+      "x": 20
+    },
+    {
+      "clientWidth": 138,
+      "height": 64,
+      "label": "body",
+      "right": 160,
+      "scrollWidth": 138,
+      "tag": "TEXTAREA",
+      "width": 140,
+      "x": 20
+    },
+    {
+      "clientWidth": 138,
+      "height": 44,
+      "label": "",
+      "right": 160,
+      "scrollWidth": 138,
+      "tag": "BUTTON",
+      "width": 140,
+      "x": 20
+    },
+    {
+      "clientWidth": 32,
+      "height": 56,
+      "label": "",
+      "right": 60.46875,
+      "scrollWidth": 32,
+      "tag": "A",
+      "width": 32.2734375,
+      "x": 28.1953125
+    },
+    {
+      "clientWidth": 46,
+      "height": 56,
+      "label": "",
+      "right": 106.6328125,
+      "scrollWidth": 46,
+      "tag": "A",
+      "width": 46.1640625,
+      "x": 60.46875
+    },
+    {
+      "clientWidth": 55,
+      "height": 56,
+      "label": "",
+      "right": 161.6640625,
+      "scrollWidth": 55,
+      "tag": "A",
+      "width": 55.03125,
+      "x": 106.6328125
+    }
+  ],
+  "dpr": 2,
+  "pageInk": [
+    {
+      "scrollWidth": 180,
+      "width": 180
+    }
+  ],
+  "viewport": [
+    180,
+    422
+  ]
+}

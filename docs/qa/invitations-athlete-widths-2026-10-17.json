@@ -1,0 +1,122 @@
+[
+  {
+    "dark": true,
+    "dir": "rtl",
+    "height": 844,
+    "invitations": 1,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 360
+  },
+  {
+    "dark": true,
+    "dir": "rtl",
+    "height": 844,
+    "invitations": 1,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 390
+  },
+  {
+    "dark": true,
+    "dir": "rtl",
+    "height": 844,
+    "invitations": 1,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 430
+  },
+  {
+    "dark": false,
+    "dir": "rtl",
+    "height": 844,
+    "invitations": 1,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 360
+  },
+  {
+    "dark": false,
+    "dir": "rtl",
+    "height": 844,
+    "invitations": 1,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 390
+  },
+  {
+    "dark": false,
+    "dir": "rtl",
+    "height": 844,
+    "invitations": 1,
+    "lang": "fa",
+    "overflow": false,
+    "small": [],
+    "width": 430
+  },
+  {
+    "dark": true,
+    "dir": "ltr",
+    "height": 844,
+    "invitations": 1,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 360
+  },
+  {
+    "dark": true,
+    "dir": "ltr",
+    "height": 844,
+    "invitations": 1,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 390
+  },
+  {
+    "dark": true,
+    "dir": "ltr",
+    "height": 844,
+    "invitations": 1,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 430
+  },
+  {
+    "dark": false,
+    "dir": "ltr",
+    "height": 844,
+    "invitations": 1,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 360
+  },
+  {
+    "dark": false,
+    "dir": "ltr",
+    "height": 844,
+    "invitations": 1,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 390
+  },
+  {
+    "dark": false,
+    "dir": "ltr",
+    "height": 844,
+    "invitations": 1,
+    "lang": "en",
+    "overflow": false,
+    "small": [],
+    "width": 430
+  }
+]

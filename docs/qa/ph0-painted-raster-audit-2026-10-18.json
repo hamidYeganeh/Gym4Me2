@@ -1,0 +1,1183 @@
+{
+  "scope": "Known failure mode audit: exact repeated raster band at720px. Does not prove all raster correctness or PH0 acceptance.",
+  "files": 168,
+  "repeated": 0,
+  "cases": [
+    {
+      "stage": "before",
+      "file": "before-fa-dark-360-club-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-360-club-compact-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-360-club-landscape-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-360-featured-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-360-branch-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-360-coach-default-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-360-coach-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-390-club-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-390-club-compact-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-390-club-landscape-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-390-featured-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-390-branch-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-390-coach-default-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-390-coach-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-430-club-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-430-club-compact-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-430-club-landscape-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-430-featured-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-430-branch-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-430-coach-default-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-dark-430-coach-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-360-club-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-360-club-compact-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-360-club-landscape-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-360-featured-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-360-branch-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-360-coach-default-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-360-coach-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-390-club-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-390-club-compact-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-390-club-landscape-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-390-featured-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-390-branch-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-390-coach-default-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-390-coach-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-430-club-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-430-club-compact-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-430-club-landscape-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-430-featured-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-430-branch-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-430-coach-default-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-fa-light-430-coach-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-360-club-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-360-club-compact-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-360-club-landscape-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-360-featured-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-360-branch-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-360-coach-default-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-360-coach-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-390-club-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-390-club-compact-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-390-club-landscape-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-390-featured-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-390-branch-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-390-coach-default-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-390-coach-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-430-club-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-430-club-compact-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-430-club-landscape-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-430-featured-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-430-branch-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-430-coach-default-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-dark-430-coach-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-360-club-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-360-club-compact-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-360-club-landscape-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-360-featured-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-360-branch-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-360-coach-default-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-360-coach-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-390-club-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-390-club-compact-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-390-club-landscape-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-390-featured-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-390-branch-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-390-coach-default-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-390-coach-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-430-club-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-430-club-compact-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-430-club-landscape-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-430-featured-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-430-branch-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-430-coach-default-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "before",
+      "file": "before-en-light-430-coach-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-360-club-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-360-club-compact-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-360-club-landscape-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-360-featured-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-360-branch-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-360-coach-default-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-360-coach-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-390-club-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-390-club-compact-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-390-club-landscape-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-390-featured-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-390-branch-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-390-coach-default-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-390-coach-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-430-club-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-430-club-compact-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-430-club-landscape-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-430-featured-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-430-branch-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-430-coach-default-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-dark-430-coach-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-360-club-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-360-club-compact-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-360-club-landscape-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-360-featured-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-360-branch-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-360-coach-default-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-360-coach-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-390-club-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-390-club-compact-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-390-club-landscape-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-390-featured-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-390-branch-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-390-coach-default-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-390-coach-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-430-club-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-430-club-compact-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-430-club-landscape-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-430-featured-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-430-branch-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-430-coach-default-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-fa-light-430-coach-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-360-club-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-360-club-compact-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-360-club-landscape-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-360-featured-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-360-branch-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-360-coach-default-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-360-coach-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-390-club-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-390-club-compact-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-390-club-landscape-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-390-featured-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-390-branch-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-390-coach-default-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-390-coach-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-430-club-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-430-club-compact-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-430-club-landscape-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-430-featured-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-430-branch-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-430-coach-default-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-dark-430-coach-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-360-club-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-360-club-compact-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-360-club-landscape-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-360-featured-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-360-branch-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-360-coach-default-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-360-coach-portrait-viewport.png",
+      "width": 360,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-390-club-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-390-club-compact-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-390-club-landscape-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-390-featured-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-390-branch-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-390-coach-default-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-390-coach-portrait-viewport.png",
+      "width": 390,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-430-club-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-430-club-compact-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-430-club-landscape-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-430-featured-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-430-branch-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-430-coach-default-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    },
+    {
+      "stage": "after",
+      "file": "after-en-light-430-coach-portrait-viewport.png",
+      "width": 430,
+      "height": 1600,
+      "repeatsAt720": false
+    }
+  ]
+}

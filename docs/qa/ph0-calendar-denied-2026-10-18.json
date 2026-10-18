@@ -1,0 +1,32 @@
+{
+  "build": "CuMYYCscHxNIXoZkhyu_4",
+  "scenario": "following first page20, next page403",
+  "alerts": [
+    "دریافت اطلاعات ممکن نشدتلاش دوباره"
+  ],
+  "dpr": 1,
+  "focus": {
+    "id": "",
+    "inactive": false,
+    "tag": "BODY",
+    "text": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c;(Array.isArray(a)?a:[a]).forE"
+  },
+  "heading": {
+    "scrollWidth": 424,
+    "width": 424,
+    "wrap": "anywhere"
+  },
+  "inputFont": "16px",
+  "path": "/calendars",
+  "query": "?view=following",
+  "routeIds": [
+    "/calendars"
+  ],
+  "rows": [],
+  "statuses": [],
+  "title": [],
+  "viewport": [
+    1280,
+    720
+  ]
+}

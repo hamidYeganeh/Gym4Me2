@@ -11,10 +11,16 @@
     "./workspace-home": "./src/workspace-home.tsx",
     "./button": "./src/button.tsx",
     "./card": "./src/card.tsx",
+    "./focus.css": "./src/focus.css",
     "./page-transitions": "./src/page-transitions.tsx",
     "./training-page": "./src/training-page.tsx",
     "./account": "./src/account/index.ts",
-    "./mobile-page": "./src/mobile-page.tsx"
+    "./mobile-page": "./src/mobile-page.tsx",
+    "./sports": "./src/sports/workspace.tsx",
+    "./sports-eligibility": "./src/sports/eligibility.tsx",
+    "./sports-cover": "./src/sports/cover.tsx",
+    "./sports-messages": "./src/sports/host-conversations.tsx",
+    "./sports-host-conversation": "./src/sports/host-conversation.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

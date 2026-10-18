@@ -24,6 +24,7 @@ import {
   MapPin,
   Tags,
   MessageSquare,
+  CalendarDays,
 } from "lucide-react";
 import { Button } from "@repo/ui/kit/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/kit/Card";
@@ -96,10 +97,40 @@ const businessNav = [
   },
   { key: "branches", href: "/branches", title: "Copy.branches", icon: MapPin },
   { key: "team", href: "/team", title: "Copy.teamMembers", icon: Users },
+  {
+    key: "sports-services",
+    href: "/services",
+    title: "Luma.services",
+    icon: CalendarDays,
+  },
+  {
+    key: "reception",
+    href: "/reception",
+    title: "Luma.reception",
+    icon: Users,
+  },
+  {
+    key: "sports-calendar",
+    href: "/calendar",
+    title: "Luma.calendar",
+    icon: CalendarDays,
+  },
+  {
+    key: "sports-messages",
+    href: "/messages",
+    title: "Luma.messages",
+    icon: MessageSquare,
+  },
 ] as const;
 const adminNav = [
   { key: "overview", href: "/", title: "Copy.overview", icon: LayoutDashboard },
   { key: "users", href: "/users", title: "Copy.users", icon: Users },
+  {
+    key: "sports-operations",
+    href: "/operations",
+    title: "Luma.operations",
+    icon: CalendarDays,
+  },
   {
     key: "organizations",
     href: "/organizations",
@@ -163,12 +194,12 @@ export function AccountWorkspace({
   const busy = logoutMutation.isPending;
   useEffect(() => {
     if (error instanceof ApiError && error.status === 401)
-      router.replace("/login");
-  }, [error, router]);
+      router.replace(client === "application" ? "/auth/otp" : "/login");
+  }, [error, router, client]);
   async function logout() {
     try {
       await logoutMutation.mutateAsync();
-      router.replace("/login");
+      router.replace(client === "application" ? "/auth/otp" : "/login");
     } catch {
       /* The mutation exposes its error through the shared notice. */
     }

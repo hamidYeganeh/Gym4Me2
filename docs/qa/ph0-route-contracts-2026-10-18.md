@@ -1,0 +1,106 @@
+# نگاشت منبع مسیرهای PH0
+
+این جدول محل شروع بررسی است. فراخوانی‌ها و شرط‌های کد، شاهد اجرای مرورگر یا پذیرش حالت‌ها نیستند. workspace مشترک با prop می‌تواند فقط بخشی از وابستگی‌های بالقوه را اجرا کند. layoutهای والد جدا در JSON آمده‌اند.
+
+[گراف کامل با خط منبع، عبارت فراخوانی، تعریف hook، شرط حالت و آزمون مرتبط](ph0-route-contracts-2026-10-18.json). ارتباط آزمون فقط از import مستقیم ثابت شده؛ پوشش assertion و تازه‌بودن اجرا جدا بررسی می‌شود.
+
+| اپ | مسیر | API hook یکتا | شرط منبع | آزمون با import مرتبط |
+| --- | --- | ---: | ---: | ---: |
+| application | [`/bookings/detail`](../../apps/application/app/bookings/detail/page.tsx) | 2 | 78 | 4 |
+| application | [`/bookings`](../../apps/application/app/bookings/page.tsx) | 1 | 75 | 4 |
+| application | [`/calendars/detail`](../../apps/application/app/calendars/detail/page.tsx) | 4 | 92 | 4 |
+| application | [`/calendars`](../../apps/application/app/calendars/page.tsx) | 1 | 77 | 4 |
+| application | [`/checkout/mock-gateway`](../../apps/application/app/checkout/mock-gateway/page.tsx) | 2 | 67 | 4 |
+| application | [`/checkout`](../../apps/application/app/checkout/page.tsx) | 3 | 98 | 6 |
+| application | [`/checkout/status`](../../apps/application/app/checkout/status/page.tsx) | 2 | 73 | 4 |
+| application | [`/discovery/club`](../../apps/application/app/discovery/club/page.tsx) | 9 | 122 | 4 |
+| application | [`/discovery/clubs/[clubId]/gallery`](../../apps/application/app/discovery/clubs/[clubId]/gallery/page.tsx) | 3 | 13 | 0 |
+| application | [`/discovery/clubs/[clubId]`](../../apps/application/app/discovery/clubs/[clubId]/page.tsx) | 9 | 57 | 0 |
+| application | [`/discovery/clubs/[clubId]/reviews`](../../apps/application/app/discovery/clubs/[clubId]/reviews/page.tsx) | 4 | 28 | 0 |
+| application | [`/discovery/clubs/[clubId]/slots`](../../apps/application/app/discovery/clubs/[clubId]/slots/page.tsx) | 2 | 65 | 4 |
+| application | [`/discovery/coaches/[coachId]`](../../apps/application/app/discovery/coaches/[coachId]/page.tsx) | 0 | 2 | 0 |
+| application | [`/discovery/compare`](../../apps/application/app/discovery/compare/page.tsx) | 2 | 16 | 0 |
+| application | [`/discovery/map`](../../apps/application/app/discovery/map/page.tsx) | 5 | 22 | 0 |
+| application | [`/discovery`](../../apps/application/app/discovery/page.tsx) | 7 | 29 | 0 |
+| application | [`/documents`](../../apps/application/app/documents/page.tsx) | 2 | 79 | 5 |
+| application | [`/host`](../../apps/application/app/host/page.tsx) | 0 | 45 | 2 |
+| application | [`/invitations`](../../apps/application/app/invitations/page.tsx) | 14 | 71 | 2 |
+| application | [`/invitations/sports`](../../apps/application/app/invitations/sports/page.tsx) | 2 | 91 | 4 |
+| application | [`/login`](../../apps/application/app/login/page.tsx) | 3 | 48 | 4 |
+| application | [`/membership-card`](../../apps/application/app/membership-card/page.tsx) | 1 | 63 | 4 |
+| application | [`/memberships/detail`](../../apps/application/app/memberships/detail/page.tsx) | 2 | 70 | 4 |
+| application | [`/memberships`](../../apps/application/app/memberships/page.tsx) | 1 | 63 | 4 |
+| application | [`/messages/conversation`](../../apps/application/app/messages/conversation/page.tsx) | 4 | 84 | 4 |
+| application | [`/messages/details`](../../apps/application/app/messages/details/page.tsx) | 2 | 81 | 4 |
+| application | [`/messages`](../../apps/application/app/messages/page.tsx) | 1 | 77 | 4 |
+| application | [`/notifications`](../../apps/application/app/notifications/page.tsx) | 2 | 83 | 4 |
+| application | [`/notifications/preferences`](../../apps/application/app/notifications/preferences/page.tsx) | 2 | 73 | 5 |
+| application | [`/orders/detail`](../../apps/application/app/orders/detail/page.tsx) | 1 | 66 | 4 |
+| application | [`/orders`](../../apps/application/app/orders/page.tsx) | 1 | 63 | 4 |
+| application | [`/`](../../apps/application/app/page.tsx) | 2 | 68 | 4 |
+| application | [`/privacy`](../../apps/application/app/privacy/page.tsx) | 1 | 15 | 0 |
+| application | [`/profile/complete`](../../apps/application/app/profile/complete/page.tsx) | 7 | 36 | 1 |
+| application | [`/profile/edit`](../../apps/application/app/profile/edit/page.tsx) | 14 | 71 | 2 |
+| application | [`/profile`](../../apps/application/app/profile/page.tsx) | 14 | 71 | 2 |
+| application | [`/profile/settings`](../../apps/application/app/profile/settings/page.tsx) | 14 | 71 | 2 |
+| application | [`/profile/settings/privacy`](../../apps/application/app/profile/settings/privacy/page.tsx) | 14 | 71 | 2 |
+| application | [`/qa/ph0`](../../apps/application/app/qa/ph0/page.tsx) | 0 | 0 | 0 |
+| application | [`/reset-password`](../../apps/application/app/reset-password/page.tsx) | 3 | 48 | 4 |
+| application | [`/saved/clubs`](../../apps/application/app/saved/clubs/page.tsx) | 4 | 20 | 0 |
+| application | [`/saved/coaches`](../../apps/application/app/saved/coaches/page.tsx) | 1 | 2 | 0 |
+| application | [`/saved`](../../apps/application/app/saved/page.tsx) | 4 | 20 | 0 |
+| application | [`/services/detail`](../../apps/application/app/services/detail/page.tsx) | 3 | 78 | 4 |
+| application | [`/services`](../../apps/application/app/services/page.tsx) | 1 | 63 | 4 |
+| application | [`/sessions`](../../apps/application/app/sessions/page.tsx) | 14 | 71 | 2 |
+| application | [`/set-password`](../../apps/application/app/set-password/page.tsx) | 2 | 18 | 0 |
+| application | [`/support/detail`](../../apps/application/app/support/detail/page.tsx) | 2 | 86 | 5 |
+| application | [`/support`](../../apps/application/app/support/page.tsx) | 2 | 86 | 5 |
+| application | [`/tickets/view`](../../apps/application/app/tickets/view/page.tsx) | 1 | 63 | 3 |
+| application | [`/training`](../../apps/application/app/training/page.tsx) | 0 | 0 | 0 |
+| application | [`/waitlist`](../../apps/application/app/waitlist/page.tsx) | 2 | 66 | 4 |
+| business | [`/branches`](../../apps/business/app/branches/page.tsx) | 57 | 222 | 0 |
+| business | [`/calendar`](../../apps/business/app/calendar/page.tsx) | 7 | 185 | 3 |
+| business | [`/imports`](../../apps/business/app/imports/page.tsx) | 7 | 185 | 3 |
+| business | [`/invitations`](../../apps/business/app/invitations/page.tsx) | 57 | 222 | 0 |
+| business | [`/login`](../../apps/business/app/login/page.tsx) | 3 | 48 | 4 |
+| business | [`/members`](../../apps/business/app/members/page.tsx) | 7 | 185 | 3 |
+| business | [`/messages/[conversationId]`](../../apps/business/app/messages/[conversationId]/page.tsx) | 5 | 68 | 3 |
+| business | [`/messages`](../../apps/business/app/messages/page.tsx) | 4 | 41 | 3 |
+| business | [`/organizations/[organizationId]/branches/[branchId]`](../../apps/business/app/organizations/[organizationId]/branches/[branchId]/page.tsx) | 57 | 222 | 0 |
+| business | [`/organizations/[organizationId]`](../../apps/business/app/organizations/[organizationId]/page.tsx) | 57 | 222 | 0 |
+| business | [`/organizations`](../../apps/business/app/organizations/page.tsx) | 57 | 222 | 0 |
+| business | [`/`](../../apps/business/app/page.tsx) | 57 | 222 | 0 |
+| business | [`/payments`](../../apps/business/app/payments/page.tsx) | 7 | 185 | 3 |
+| business | [`/privacy`](../../apps/business/app/privacy/page.tsx) | 1 | 15 | 0 |
+| business | [`/profile`](../../apps/business/app/profile/page.tsx) | 57 | 222 | 0 |
+| business | [`/reception`](../../apps/business/app/reception/page.tsx) | 7 | 185 | 3 |
+| business | [`/reports`](../../apps/business/app/reports/page.tsx) | 7 | 185 | 3 |
+| business | [`/reset-password`](../../apps/business/app/reset-password/page.tsx) | 3 | 48 | 4 |
+| business | [`/resources`](../../apps/business/app/resources/page.tsx) | 7 | 185 | 3 |
+| business | [`/services`](../../apps/business/app/services/page.tsx) | 7 | 185 | 3 |
+| business | [`/sessions`](../../apps/business/app/sessions/page.tsx) | 57 | 222 | 0 |
+| business | [`/set-password`](../../apps/business/app/set-password/page.tsx) | 2 | 18 | 0 |
+| business | [`/team`](../../apps/business/app/team/page.tsx) | 57 | 222 | 0 |
+| business | [`/training`](../../apps/business/app/training/page.tsx) | 0 | 0 | 0 |
+| admin | [`/audit`](../../apps/admin/app/audit/page.tsx) | 57 | 222 | 0 |
+| admin | [`/catalog-reviews`](../../apps/admin/app/catalog-reviews/page.tsx) | 57 | 222 | 0 |
+| admin | [`/invitations`](../../apps/admin/app/invitations/page.tsx) | 57 | 222 | 0 |
+| admin | [`/locations`](../../apps/admin/app/locations/page.tsx) | 57 | 222 | 0 |
+| admin | [`/login`](../../apps/admin/app/login/page.tsx) | 3 | 48 | 4 |
+| admin | [`/moderation`](../../apps/admin/app/moderation/page.tsx) | 57 | 222 | 0 |
+| admin | [`/operations`](../../apps/admin/app/operations/page.tsx) | 3 | 29 | 3 |
+| admin | [`/organizations/[organizationId]/branches/[branchId]`](../../apps/admin/app/organizations/[organizationId]/branches/[branchId]/page.tsx) | 57 | 222 | 0 |
+| admin | [`/organizations/[organizationId]`](../../apps/admin/app/organizations/[organizationId]/page.tsx) | 57 | 222 | 0 |
+| admin | [`/organizations`](../../apps/admin/app/organizations/page.tsx) | 57 | 222 | 0 |
+| admin | [`/`](../../apps/admin/app/page.tsx) | 57 | 222 | 0 |
+| admin | [`/privacy`](../../apps/admin/app/privacy/page.tsx) | 1 | 15 | 0 |
+| admin | [`/profile`](../../apps/admin/app/profile/page.tsx) | 57 | 222 | 0 |
+| admin | [`/reset-password`](../../apps/admin/app/reset-password/page.tsx) | 3 | 48 | 4 |
+| admin | [`/sessions`](../../apps/admin/app/sessions/page.tsx) | 57 | 222 | 0 |
+| admin | [`/set-password`](../../apps/admin/app/set-password/page.tsx) | 2 | 18 | 0 |
+| admin | [`/taxonomies`](../../apps/admin/app/taxonomies/page.tsx) | 57 | 222 | 0 |
+| admin | [`/training`](../../apps/admin/app/training/page.tsx) | 0 | 0 | 0 |
+| admin | [`/users/[userId]`](../../apps/admin/app/users/[userId]/page.tsx) | 57 | 222 | 0 |
+| admin | [`/users`](../../apps/admin/app/users/page.tsx) | 57 | 222 | 0 |
+
+صفر API به معنی نبود API در layout/provider یا پذیرش صفحه نیست. source hash هر فایل در JSON، مربوط به لحظهٔ تولید است؛ درخت کاری هم‌زمان در حال تغییر است و پیش از پذیرش باید دوباره تطبیق داده شود.

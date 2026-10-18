@@ -1,20 +1,12 @@
-import { PageTransitions } from "@repo/ui/page-transitions";
-import { ApiProvider } from "@repo/api/provider";
+import { BusinessProviders } from "./providers";
+import { ClientLocaleProvider } from "@repo/i18n/client-provider";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import {
-  NextIntlClientProvider,
-  getDirection,
-  isLocale,
-  defaultLocale,
-} from "@repo/i18n";
+import { getDirection, isLocale, defaultLocale } from "@repo/i18n";
 import { getLocale, getTranslations } from "@repo/i18n/server";
 import { iranSansX } from "@repo/theme/fonts";
-import { ThemeProvider } from "@repo/theme/provider";
-import { DirectionProvider } from "@repo/ui/kit/Direction";
-import { TooltipProvider } from "@repo/ui/kit/Tooltip";
-import { Toaster } from "@repo/ui/kit/Sonner";
 import "./globals.css";
+import "@repo/ui/focus.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Metadata");
@@ -36,19 +28,10 @@ export default async function RootLayout({
       className={iranSansX.variable}
       suppressHydrationWarning
     >
-      <body className="min-h-dvh antialiased">
-        <NextIntlClientProvider>
-          <ApiProvider application="business" locale={locale}>
-            <ThemeProvider>
-              <DirectionProvider dir={direction}>
-                <TooltipProvider>
-                  <PageTransitions>{children}</PageTransitions>
-                  <Toaster dir={direction} />
-                </TooltipProvider>
-              </DirectionProvider>
-            </ThemeProvider>
-          </ApiProvider>
-        </NextIntlClientProvider>
+      <body data-gym-focus="business" className="min-h-dvh antialiased">
+        <ClientLocaleProvider initialLocale={locale}>
+          <BusinessProviders>{children}</BusinessProviders>
+        </ClientLocaleProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { nativeClubLink } from "../lib/native-deep-link";
+import { nativeClubLink, nativeAppLink } from "../lib/native-deep-link";
 const id = "11111111-1111-4111-8111-111111111111";
 const branch = "22222222-2222-4222-8222-222222222222";
 test("public custom and trusted HTTPS club links map to bundled routes", () => {
@@ -41,4 +41,20 @@ test("untrusted query parameters never enter the app route", () => {
     ),
     `/discovery/club?id=${id}`,
   );
+});
+
+test("sports deep links resolve to static shells and strip untrusted parameters", () => {
+  assert.equal(
+    nativeAppLink(`gym4me://service/${id}?token=secret`),
+    `/services/detail?id=${id}`,
+  );
+  assert.equal(
+    nativeAppLink(`https://gym.example/messages/${id}`, "https://gym.example"),
+    `/messages/conversation?id=${id}`,
+  );
+  assert.equal(
+    nativeAppLink(`https://evil.example/services/${id}`, "https://gym.example"),
+    null,
+  );
+  assert.equal(nativeAppLink("gym4me://service/invalid"), null);
 });

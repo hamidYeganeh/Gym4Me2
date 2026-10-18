@@ -2,6 +2,7 @@
 import { useTranslations } from "@repo/i18n";
 
 import { useSessions, useRevokeSession } from "@repo/api/auth";
+import { useApiContext } from "@repo/api/provider";
 import {
   useInvitations,
   useUpdateAccount,
@@ -136,6 +137,7 @@ export function SessionsContent() {
   const t = useTranslations();
 
   const revokeSession = useRevokeSession();
+  const { api } = useApiContext();
 
   const query = useSessions();
   const router = useRouter();
@@ -146,7 +148,8 @@ export function SessionsContent() {
     setError(null);
     try {
       await revokeSession.mutateAsync({ id: session.id });
-      if (session.current) router.replace("/login");
+      if (session.current)
+        router.replace(api.scope[2] === "application" ? "/auth/otp" : "/login");
       else {
         toast.success(t("Copy.sessionEnded"));
       }

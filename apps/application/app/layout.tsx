@@ -1,10 +1,12 @@
 import { AppProviders } from "../components/app-providers";
+import { Ph0Trace } from "../components/qa/ph0-trace";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { getDirection, isLocale, defaultLocale } from "@repo/i18n";
 import { getLocale, getTranslations } from "@repo/i18n/server";
 import { iranSansX } from "@repo/theme/fonts";
 import "./globals.css";
+import "@repo/ui/focus.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Metadata");
@@ -26,9 +28,14 @@ export default async function RootLayout({
       className={iranSansX.variable}
       suppressHydrationWarning
     >
-      <body className="min-h-dvh select-none antialiased">
+      <body
+        data-gym-focus="application"
+        className="min-h-dvh select-none antialiased"
+      >
         <div className="application-frame mx-auto w-full max-w-xl">
           <AppProviders locale={locale}>{children}</AppProviders>
+          {process.env.GYM_QA_WEB === "true" &&
+            process.env.GYM_PH0_REFERENCE === "true" && <Ph0Trace />}
         </div>
       </body>
     </html>

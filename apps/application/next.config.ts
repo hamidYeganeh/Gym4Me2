@@ -2,12 +2,19 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nativeExport = process.env.NEXT_PUBLIC_NATIVE_EXPORT === "true";
+const qaWeb = process.env.GYM_QA_WEB === "true";
 
 const nextConfig: NextConfig = {
   ...(process.env.GYM_STAGING_WEB === "true"
     ? {
         distDir: ".next-staging",
         typescript: { tsconfigPath: "tsconfig.staging.json" },
+      }
+    : {}),
+  ...(qaWeb
+    ? {
+        distDir: ".next-qa",
+        experimental: { cpus: 1, webpackMemoryOptimizations: true },
       }
     : {}),
   ...(nativeExport
@@ -23,6 +30,8 @@ const nextConfig: NextConfig = {
     rules: { "*.css": { loaders: ["@tailwindcss/turbopack"], as: "*.css" } },
   },
   webpack(config) {
+    // Isolated QA builds share a small local disk; do not retain a second cache.
+    if (qaWeb) config.cache = false;
     // Process the same Tailwind entry when using Next's Webpack fallback.
     function addTailwind(rule: unknown) {
       if (!rule || typeof rule !== "object") return;

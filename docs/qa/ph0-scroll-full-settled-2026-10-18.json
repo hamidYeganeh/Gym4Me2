@@ -1,0 +1,32 @@
+{
+  "build": "y7zptyQc77gOz38TFYz4w",
+  "scope": "Settled home/discovery tabs, CSS 1280x720, DPR1",
+  "before": {
+    "max": 710,
+    "path": "/",
+    "scrollY": 710,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "other": {
+    "max": 4043,
+    "path": "/discovery",
+    "scrollY": 924,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "after": {
+    "max": 710,
+    "path": "/",
+    "scrollY": 710,
+    "viewport": [
+      1280,
+      720
+    ]
+  },
+  "pass": true
+}

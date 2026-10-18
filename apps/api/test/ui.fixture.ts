@@ -1,3 +1,11 @@
+import { seedUiSports } from './ui.sports-fixture';
+import { PrivacyService } from '../src/modules/profile/privacy.service';
+import { CommerceService } from '../src/modules/commerce/commerce.service';
+import { SportsResourceService } from '../src/modules/commerce/resources.service';
+import { SportsCalendarService } from '../src/modules/commerce/calendars.service';
+import { SportsConversationService } from '../src/modules/commerce/conversations.service';
+import { SportsInvitationService } from '../src/modules/commerce/invitations.service';
+import { StorageService } from '../src/modules/clubs/storage.service';
 import { seedUiCatalog } from './ui.catalog-fixture';
 import { mkdirSync, writeFileSync } from 'node:fs';
 // Isolated local UI verification. No production database or live SMS adapter.
@@ -17,6 +25,30 @@ import { WorkspacesModule } from '../src/modules/workspaces.module';
 import { SystemModule } from '../src/modules/system/system.module';
 import { configureApi } from '../src/platform/http/configure-api';
 async function main() {
+  const bookingCount = Number(process.env.UI_FIXTURE_BOOKINGS ?? 0);
+  if (!Number.isInteger(bookingCount) || bookingCount < 0 || bookingCount > 120)
+    throw new Error('UI fixture booking count must be between 0 and 120.');
+  const port = Number(process.env.UI_FIXTURE_PORT ?? 7088);
+  if (!Number.isInteger(port) || port < 1024 || port > 65535)
+    throw new Error('Invalid local UI fixture port.');
+  const localOrigin = (name: string, fallback: string) => {
+    const origin = new URL(process.env[name] ?? fallback);
+    if (
+      origin.protocol !== 'http:' ||
+      !['localhost', '127.0.0.1'].includes(origin.hostname)
+    )
+      throw new Error(`Local ${name} origin required.`);
+    return origin.origin;
+  };
+  const applicationOrigin = localOrigin(
+    'UI_APPLICATION_ORIGIN',
+    'http://127.0.0.1:7081',
+  );
+  const businessOrigin = localOrigin(
+    'UI_BUSINESS_ORIGIN',
+    'http://127.0.0.1:7083',
+  );
+  const adminOrigin = localOrigin('UI_ADMIN_ORIGIN', 'http://127.0.0.1:7082');
   const databaseUrl =
     process.env.TEST_DATABASE_URL ??
     'postgresql://gym4me:gym4me_local@127.0.0.1:55433/gym4me_test';
@@ -40,9 +72,9 @@ async function main() {
               DATABASE_URL: databaseUrl,
               AUTH_SECRET: randomBytes(48).toString('hex'),
               RETENTION_ENABLED: 'false',
-              AUTH_APPLICATION_ORIGIN: 'http://127.0.0.1:7081',
-              AUTH_BUSINESS_ORIGIN: 'http://127.0.0.1:7083',
-              AUTH_ADMIN_ORIGIN: 'http://127.0.0.1:7082',
+              AUTH_APPLICATION_ORIGIN: applicationOrigin,
+              AUTH_BUSINESS_ORIGIN: businessOrigin,
+              AUTH_ADMIN_ORIGIN: adminOrigin,
               S3_ENDPOINT: 'http://127.0.0.1:8333',
               S3_ACCESS_KEY_ID: 'gym4me_local',
               S3_SECRET_ACCESS_KEY: 'gym4me_local_storage',
@@ -71,8 +103,48 @@ async function main() {
     migrationsFolder: resolve(__dirname, '../database/migrations'),
   });
   const catalog = await seedUiCatalog(db);
+  const sports = await seedUiSports(
+    db,
+    module.get(CommerceService),
+    catalog.clubs,
+    catalog.people,
+    module.get(StorageService),
+    {
+      bookingCount,
+      communicationPages: process.env.UI_FIXTURE_COMMUNICATION_PAGES === 'true',
+      calendars:
+        process.env.UI_FIXTURE_CALENDARS === 'true'
+          ? module.get(SportsCalendarService)
+          : undefined,
+      resources:
+        process.env.UI_FIXTURE_RESOURCES === 'true'
+          ? module.get(SportsResourceService)
+          : undefined,
+      conversations:
+        process.env.UI_FIXTURE_CONVERSATIONS === 'true'
+          ? module.get(SportsConversationService)
+          : undefined,
+      invitations:
+        process.env.UI_FIXTURE_INVITATIONS === 'true'
+          ? module.get(SportsInvitationService)
+          : undefined,
+    },
+  );
   catalog.people.forEach((person) => allowedPhones.add(person.phone));
-  const artifactDir = resolve(__dirname, '../../../.artifacts');
+  // Fixture-only consent: no real user or legal acceptance is involved in browser QA.
+  const policy = module.get(PrivacyService).policy();
+  for (const person of catalog.people)
+    await db.insert(s.accountPreferences).values({
+      userId: person.id,
+      acceptedPolicyVersion: policy.version,
+      acceptedAt: new Date(),
+      adultConfirmedAt: new Date(),
+      confirmedMinimumAge: policy.minimumAge,
+    });
+  const artifactDir = resolve(
+    process.env.UI_FIXTURE_ARTIFACT_DIR ??
+      resolve(__dirname, '../../../.artifacts'),
+  );
   mkdirSync(artifactDir, { recursive: true, mode: 0o700 });
   writeFileSync(
     resolve(artifactDir, 'ui-fixture.json'),
@@ -80,6 +152,8 @@ async function main() {
       {
         phone,
         clubs: catalog.clubs,
+        calendars: sports.calendarIds,
+        conversations: sports.conversationIds,
         people: catalog.people.map(({ phone, displayName }) => ({
           phone,
           displayName,
@@ -91,22 +165,19 @@ async function main() {
     { mode: 0o600 },
   );
   configureApi(app, {
-    corsOrigins: [
-      'http://127.0.0.1:7081',
-      'http://127.0.0.1:7082',
-      'http://127.0.0.1:7083',
-    ],
+    corsOrigins: [applicationOrigin, adminOrigin, businessOrigin],
     docsEnabled: true,
   });
-  await app.listen(7088, '127.0.0.1');
+  await app.listen(port, '127.0.0.1');
   console.log(
-    `LOCAL UI FIXTURE READY: phone ${phone}. Open http://127.0.0.1:7081/login. SMS is mocked; all writes use gym4me_test.`,
+    `LOCAL UI FIXTURE READY: phone ${phone}. Open ${applicationOrigin}/login. SMS is mocked; all writes use ${destination.pathname.slice(1)}.`,
   );
   let stopped = false;
   const stop = async () => {
     if (stopped) return;
     stopped = true;
     try {
+      await sports.cleanup();
       await catalog.cleanup();
       const [user] = await db
         .select({ id: s.users.id })

@@ -1,0 +1,1095 @@
+{
+  "scope": "36 checkout form DOM cases using synthetic memberships GET only; profile/auth remain401; all writes405. No authenticated backend or financial acceptance.",
+  "expected": 36,
+  "cases": [
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · ۱ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 360,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 360,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 360,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · ۱ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 390,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 390,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 390,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · ۱ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 430,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 430,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 430,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · ۱ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 360,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 360,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 360,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · ۱ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 390,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 390,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 390,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · ۱ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 430,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [
+        {
+          "text": "پرداخت بدون بسته",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · جلسات نامحدود",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 430,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "fa",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 430,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · 1 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 360,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 360,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 360,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · 1 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 390,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 390,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 390,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · 1 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 430,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 430,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "light",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 430,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · 1 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 360,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 360,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 360,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · 1 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 390,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 390,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 390,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی یک جلسه · 1 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003ea"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c",
+      "width": 430,
+      "kind": "class",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [
+        {
+          "text": "Pay without a membership",
+          "value": ""
+        },
+        {
+          "text": "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · 8 sessions available",
+          "value": "a1000000-0000-4000-8000-0000000003e9"
+        },
+        {
+          "text": "بستهٔ نمایشی نامحدود · Unlimited sessions",
+          "value": "a1000000-0000-4000-8000-0000000003eb"
+        }
+      ],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136",
+      "width": 430,
+      "kind": "course",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    },
+    {
+      "activeMains": 1,
+      "continueDisabled": true,
+      "descriptionLinked": true,
+      "height": 844,
+      "lang": "en",
+      "options": [],
+      "overflow": false,
+      "quoteErrors": 0,
+      "reviewEnabled": true,
+      "termsDisabled": true,
+      "theme": "dark",
+      "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000004",
+      "width": 430,
+      "kind": "membership",
+      "passed": true,
+      "allowedMembershipIdsMatch": true
+    }
+  ],
+  "selectionBefore": {
+    "coupon": "DEMO",
+    "selected": "a1000000-0000-4000-8000-0000000003e9"
+  },
+  "selectionAfter": {
+    "activeMains": 1,
+    "coupon": "",
+    "options": [
+      "پرداخت بدون بسته",
+      "بستهٔ نمایشی هشت جلسهٔ باقی‌مانده · ۸ جلسهٔ قابل استفاده",
+      "بستهٔ نمایشی نامحدود · جلسات نامحدود"
+    ],
+    "selected": "",
+    "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=a1000000-0000-4000-8000-000000000136"
+  },
+  "aria": {
+    "description": "فقط بسته‌های معتبر همین شعبه با جلسهٔ کافی برای این ثبت‌نام نمایش داده می‌شوند. عضویت‌ها",
+    "id": "_r_0_",
+    "invalid": "false",
+    "matches": 1
+  },
+  "exclusions": [
+    "Quote/order/consent submission",
+    "Real account authorization",
+    "PostgreSQL balance race",
+    "Live expiry while page remains open",
+    "Selected membership becoming invalid during refresh",
+    "Busy inputs during real payment",
+    "Screen reader and native"
+  ],
+  "invalidCheckout": [
+    {
+      "kind": "full",
+      "disabled": true,
+      "alerts": [
+        "ظرفیت این جلسه تکمیل شده است. انتخاب جلسه"
+      ]
+    },
+    {
+      "kind": "resource",
+      "disabled": true,
+      "alerts": [
+        "این سانس به‌دلیل محدودیت منبع قابل رزرو نیست؛ زمان دیگری را انتخاب کنید. انتخاب جلسه"
+      ]
+    }
+  ],
+  "membershipReadFailure": {
+    "alerts": [
+      "دریافت اطلاعات ممکن نشد\n\nتلاش دوباره"
+    ],
+    "body": "ثبت‌نام\nیوگا و انعطاف صبحگاهی\n۲۶ مهر ۱۴۰۵، ۹:۰۰\nشرایط خدمت\n\nلغو تا ۱۲ ساعت پیش از شروع بدون هزینه است. لباس و کفش مناسب همراه داشته باشید. شرایط این نمونه برای آزمون رابط است.\n\nگروه سنی و پیش‌نیازها\n\nاز ۱۸ سال به بالا\n\nوسایل همراه\nلباس راحت و بطری آب همراه داشته باشید.\nمبلغ\n۱۸۰٬۰۰۰ تومان\n\nدریافت اطلاعات ممکن نشد\n\nتلاش دوباره",
+    "couponInputs": 0,
+    "priceVisible": true,
+    "selects": 0,
+    "url": "http://127.0.0.1:7381/checkout?service=a1000000-0000-4000-8000-000000000001&occurrence=a1000000-0000-4000-8000-00000000012c"
+  },
+  "retryAfterFailure": {
+    "busy": "false",
+    "retryFocused": true,
+    "tag": "BUTTON"
+  },
+  "complete": true,
+  "sourceSha256": {
+    "apps/application/components/luma/checkout.tsx": "e222cd39724e4a12cef3984701b140fb9a27099f240272a23ef51e112daf4e6a",
+    "apps/application/lib/checkout-memberships.ts": "3a2ca566089f3b23061a21fe3d14f57228805b3c2e62489171071d60d02666f8",
+    "apps/application/test/checkout-memberships.test.ts": "38d8a06d0ea3b6c48fd89e7920c623ebbb0a38e284c0a525ffcee7980cdd4220",
+    "apps/application/test/fixtures/checkout-memberships.ts": "6252efb612f710a12ffb30c6f5bd1d92df46f8c9220d0f02a9990c2929e4dd78",
+    "apps/application/test/fixtures/web-read-api.ts": "70101605351aa880d921436eeda8ce6253782dcada093b95bede63ea0455e836",
+    "apps/application/scripts/web-read-fixture.mts": "07a549b514f31830476e269caa58b7c8cf4371e553fc5bec3c86e3f07b8ad4fc",
+    "apps/application/test/web-read-fixture.test.ts": "20e13bede33016a37a815530af954c9b2b2b852247dcccb11c1324783e1a8d13",
+    "packages/i18n/src/messages/fa.json": "caf558b2eee2641465271c225494d35a014963b170651bd3a9928fb3924ce7b1",
+    "packages/i18n/src/messages/en.json": "4732904b43f2a78ddb7d4bebca8475d8b741f356370bdb7bd083f86b1425f16b"
+  },
+  "build": {
+    "applicationBuildId": "LZ1T9LJT7BB5C_ZM5C9-v",
+    "apiUrl": "http://127.0.0.1:7488",
+    "workers": 1,
+    "heapMiB": 512,
+    "compileSeconds": 9.9,
+    "typescriptSeconds": 8.5
+  }
+}

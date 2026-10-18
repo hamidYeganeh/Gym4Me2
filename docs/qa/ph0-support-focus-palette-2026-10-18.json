@@ -1,0 +1,14 @@
+{
+  "build": "CuMYYCscHxNIXoZkhyu_4",
+  "background": "oklab(0.922 0 0 / 0.5)",
+  "border": "oklch(0.577 0.245 27.325)",
+  "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.577 0.217662 0.112464 / 0.2) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+  "focusVisible": true,
+  "foreground": "oklch(0.145 0 0)",
+  "outline": "rgb(25, 208, 76)",
+  "outlineWidth": "2px",
+  "pageBackground": "oklch(1 0 0)",
+  "scope": "Focused invalid title input, English light theme",
+  "outlineOnWhiteRatio": 2.065293720714053,
+  "contrastAudit": "Nominal opaque sRGB outline against white only; focused invalid border/shadow and full criterion assessment remain separate."
+}

@@ -1,12 +1,9 @@
 import { createRequire } from "node:module";
-import { createHash } from "node:crypto";
-import { createWriteStream } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawn } from "node:child_process";
-import { pipeline } from "node:stream/promises";
-import { Transform } from "node:stream";
+import { captureMedia, saveBackupFile } from "./backup-media.mjs";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const require = createRequire(resolve(root, "apps/api/package.json"));
 const { Pool } = require("pg");
@@ -61,26 +58,6 @@ export async function capture(directory, env, ledgerOnly = false) {
       { mode: 0o600, flag: "wx" },
     );
     if (!ledgerOnly) {
-      const hashes = [];
-      const save = async (stream, name) => {
-        const hash = createHash("sha256");
-        let size = 0;
-        await pipeline(
-          stream,
-          new Transform({
-            transform(chunk, _encoding, done) {
-              hash.update(chunk);
-              size += chunk.length;
-              done(null, chunk);
-            },
-          }),
-          createWriteStream(resolve(directory, name), {
-            mode: 0o600,
-            flags: "wx",
-          }),
-        );
-        hashes.push({ file: name, size, sha256: hash.digest("hex") });
-      };
       const child = spawn(
         "docker",
         [
@@ -122,30 +99,18 @@ export async function capture(directory, env, ledgerOnly = false) {
           code === 0 ? res() : rej(new Error("Database capture failed.")),
         );
       });
-      await Promise.all([save(child.stdout, "database.dump"), completed]);
-      const { rows: media } = await client.query(
-        "SELECT object_key FROM club_media WHERE object_key IS NOT NULL ORDER BY object_key",
+      const [dump] = await Promise.all([
+        saveBackupFile(directory, "database.dump", child.stdout),
+        completed,
+      ]);
+      const media = await captureMedia(
+        client,
+        (key) =>
+          s3.send(new GetObjectCommand({ Bucket: env.S3_BUCKET, Key: key }), {
+            abortSignal: AbortSignal.timeout(60000),
+          }),
+        directory,
       );
-      await mkdir(resolve(directory, "objects"), { mode: 0o700 });
-      const objects = [];
-      for (const { object_key: key } of media) {
-        // Hash-derived filenames cannot escape the snapshot directory.
-        const file = `objects/${createHash("sha256").update(key).digest("hex")}`;
-        const object = await s3.send(
-          new GetObjectCommand({ Bucket: env.S3_BUCKET, Key: key }),
-          { abortSignal: AbortSignal.timeout(60000) },
-        );
-        if (!object.Body)
-          throw new Error(
-            "Missing referenced media; refusing incomplete backup.",
-          );
-        await save(object.Body, file);
-        objects.push({
-          key,
-          file,
-          contentType: object.ContentType ?? "application/octet-stream",
-        });
-      }
       await writeFile(
         resolve(directory, "manifest.json"),
         JSON.stringify({
@@ -153,8 +118,9 @@ export async function capture(directory, env, ledgerOnly = false) {
           snapshotAt: at,
           source: "gym4me_stage",
           bucket: env.S3_BUCKET,
-          objects,
-          files: hashes,
+          objects: media.objects,
+          mediaSources: media.mediaSources,
+          files: [dump, ...media.files],
         }),
         { mode: 0o600, flag: "wx" },
       );

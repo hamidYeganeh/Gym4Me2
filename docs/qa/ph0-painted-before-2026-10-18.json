@@ -1,0 +1,2202 @@
+{
+  "scope": "Seven synthetic cards, full card plus 16px padding inside a 1600px tall painted viewport. Crop after capture using recorded viewport coordinates. Not phone-height/layout, map/detail or all-state acceptance.",
+  "build": "jaBPQRrRqVp5USuPe0DNX",
+  "cases": [
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 360,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-fa-dark-360-club-portrait.png",
+          "viewportFile": "before-fa-dark-360-club-portrait-viewport.png",
+          "rect": {
+            "height": 464,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 464,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 352,
+            "height": 496
+          },
+          "viewportContained": true,
+          "viewportSha256": "b4092aefdfd8668d6366bc88a9c6046347fe52061f82c956fa47e62c7e79089d"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-fa-dark-360-club-compact.png",
+          "viewportFile": "before-fa-dark-360-club-compact-viewport.png",
+          "rect": {
+            "height": 432,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "viewportRect": {
+            "height": 432,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "clip": {
+            "left": 4,
+            "top": 772,
+            "width": 352,
+            "height": 464
+          },
+          "viewportContained": true,
+          "viewportSha256": "b4092aefdfd8668d6366bc88a9c6046347fe52061f82c956fa47e62c7e79089d"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-fa-dark-360-club-landscape.png",
+          "viewportFile": "before-fa-dark-360-club-landscape-viewport.png",
+          "rect": {
+            "height": 240,
+            "width": 320,
+            "x": 20,
+            "y": 1288
+          },
+          "viewportRect": {
+            "height": 240,
+            "width": 320,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 352,
+            "height": 272
+          },
+          "viewportContained": true,
+          "viewportSha256": "b42d2a2acd23a6f21057d9fc7e57ba33784eab6a7f5b25068fdb24dda8afe10c"
+        },
+        {
+          "id": "featured",
+          "file": "before-fa-dark-360-featured.png",
+          "viewportFile": "before-fa-dark-360-featured-viewport.png",
+          "rect": {
+            "height": 200,
+            "width": 320,
+            "x": 20,
+            "y": 1584
+          },
+          "viewportRect": {
+            "height": 200,
+            "width": 320,
+            "x": 20,
+            "y": 812
+          },
+          "clip": {
+            "left": 4,
+            "top": 796,
+            "width": 352,
+            "height": 232
+          },
+          "viewportContained": true,
+          "viewportSha256": "7b935557565b9fd2f0dde4af0fe7290a889ad6ba5c566f46bf5d4323d41c339b"
+        },
+        {
+          "id": "branch",
+          "file": "before-fa-dark-360-branch.png",
+          "viewportFile": "before-fa-dark-360-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 196,
+            "y": 1840
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 196,
+            "y": 812
+          },
+          "clip": {
+            "left": 180,
+            "top": 796,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "330117fa21e6453086952c4a53ec215f8a6fa50421aad3c9e13c4a1268581487"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-fa-dark-360-coach-default.png",
+          "viewportFile": "before-fa-dark-360-coach-default-viewport.png",
+          "rect": {
+            "height": 426.65625,
+            "width": 320,
+            "x": 20,
+            "y": 2196
+          },
+          "viewportRect": {
+            "height": 426.65625,
+            "width": 320,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 352,
+            "height": 459
+          },
+          "viewportContained": true,
+          "viewportSha256": "2883bd498c6563e5eb18147721d9951979301d8c77cdc825b43eb6e35d7bdc6c"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-fa-dark-360-coach-portrait.png",
+          "viewportFile": "before-fa-dark-360-coach-portrait-viewport.png",
+          "rect": {
+            "height": 400,
+            "width": 320,
+            "x": 20,
+            "y": 2690.65625
+          },
+          "viewportRect": {
+            "height": 400,
+            "width": 320,
+            "x": 20,
+            "y": 823.65625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 352,
+            "height": 432
+          },
+          "viewportContained": true,
+          "viewportSha256": "e606274235b8f331261722a3660ab65d0c30239660b6bf8eee927e27210c4739"
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 390,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-fa-dark-390-club-portrait.png",
+          "viewportFile": "before-fa-dark-390-club-portrait-viewport.png",
+          "rect": {
+            "height": 501.65625,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 501.65625,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 382,
+            "height": 534
+          },
+          "viewportContained": true,
+          "viewportSha256": "f8d64ffc61b470dd035f9ca9559f60072b6e6e61ab01638216e23ca3d29f9ac6"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-fa-dark-390-club-compact.png",
+          "viewportFile": "before-fa-dark-390-club-compact-viewport.png",
+          "rect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 825.65625
+          },
+          "viewportRect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 823.65625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 382,
+            "height": 499
+          },
+          "viewportContained": true,
+          "viewportSha256": "0c441eff9afccf25913f91d68c0b9479c828d68f429ea3071af8e84493748f55"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-fa-dark-390-club-landscape.png",
+          "viewportFile": "before-fa-dark-390-club-landscape-viewport.png",
+          "rect": {
+            "height": 262.5,
+            "width": 350,
+            "x": 20,
+            "y": 1360.3125
+          },
+          "viewportRect": {
+            "height": 262.5,
+            "width": 350,
+            "x": 20,
+            "y": 824.3125
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 382,
+            "height": 295
+          },
+          "viewportContained": true,
+          "viewportSha256": "e700c44d8ba3e399fcf7c490af85fb490038eb885b22f8af5656efa823b41c63"
+        },
+        {
+          "id": "featured",
+          "file": "before-fa-dark-390-featured.png",
+          "viewportFile": "before-fa-dark-390-featured-viewport.png",
+          "rect": {
+            "height": 218.75,
+            "width": 350,
+            "x": 20,
+            "y": 1678.8125
+          },
+          "viewportRect": {
+            "height": 218.75,
+            "width": 350,
+            "x": 20,
+            "y": 811.8125
+          },
+          "clip": {
+            "left": 4,
+            "top": 795,
+            "width": 382,
+            "height": 251
+          },
+          "viewportContained": true,
+          "viewportSha256": "a6639213f43ab52faab3332e53a6748352a2b84f0b4c2bbd3e5ae809d4f68940"
+        },
+        {
+          "id": "branch",
+          "file": "before-fa-dark-390-branch.png",
+          "viewportFile": "before-fa-dark-390-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 226,
+            "y": 1953.5625
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 226,
+            "y": 811.5625
+          },
+          "clip": {
+            "left": 210,
+            "top": 795,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "b3875704ebf962eaac029a4334d1fe4b82536a16b38af8c8a37a627d5bd38d44"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-fa-dark-390-coach-default.png",
+          "viewportFile": "before-fa-dark-390-coach-default-viewport.png",
+          "rect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 2309.5625
+          },
+          "viewportRect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 823.5625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 382,
+            "height": 499
+          },
+          "viewportContained": true,
+          "viewportSha256": "ebe9e7cbb6a403a7de8e2899475a75a470095f938137eed622fc538f0efa5fcd"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-fa-dark-390-coach-portrait.png",
+          "viewportFile": "before-fa-dark-390-coach-portrait-viewport.png",
+          "rect": {
+            "height": 437.5,
+            "width": 350,
+            "x": 20,
+            "y": 2844.21875
+          },
+          "viewportRect": {
+            "height": 437.5,
+            "width": 350,
+            "x": 20,
+            "y": 824.21875
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 382,
+            "height": 470
+          },
+          "viewportContained": true,
+          "viewportSha256": "bf4ba22c250c641288c3fb40270ecab093cdccdf51e1204042aaa0245ff0d780"
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 430,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-fa-dark-430-club-portrait.png",
+          "viewportFile": "before-fa-dark-430-club-portrait-viewport.png",
+          "rect": {
+            "height": 559,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 559,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 422,
+            "height": 591
+          },
+          "viewportContained": true,
+          "viewportSha256": "b4d7f54c04b7cb704f7ebbee5847a9eab523aaa844e1eb22500ad685cf736f9a"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-fa-dark-430-club-compact.png",
+          "viewportFile": "before-fa-dark-430-club-compact-viewport.png",
+          "rect": {
+            "height": 520,
+            "width": 390,
+            "x": 20,
+            "y": 883
+          },
+          "viewportRect": {
+            "height": 520,
+            "width": 390,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 422,
+            "height": 552
+          },
+          "viewportContained": true,
+          "viewportSha256": "83f85bf870e5d6cd5f1616763f20daa7f89d5fa77250ff36b61d32c580a4b8ea"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-fa-dark-430-club-landscape.png",
+          "viewportFile": "before-fa-dark-430-club-landscape-viewport.png",
+          "rect": {
+            "height": 292.5,
+            "width": 390,
+            "x": 20,
+            "y": 1471
+          },
+          "viewportRect": {
+            "height": 292.5,
+            "width": 390,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 422,
+            "height": 325
+          },
+          "viewportContained": true,
+          "viewportSha256": "1d3f71c77ea5bccc370ce3d9fc839453ad5eebbe53ee8fd122c4538caf45b8dc"
+        },
+        {
+          "id": "featured",
+          "file": "before-fa-dark-430-featured.png",
+          "viewportFile": "before-fa-dark-430-featured-viewport.png",
+          "rect": {
+            "height": 243.75,
+            "width": 390,
+            "x": 20,
+            "y": 1819.5
+          },
+          "viewportRect": {
+            "height": 243.75,
+            "width": 390,
+            "x": 20,
+            "y": 811.5
+          },
+          "clip": {
+            "left": 4,
+            "top": 795,
+            "width": 422,
+            "height": 276
+          },
+          "viewportContained": true,
+          "viewportSha256": "b66c20586c0628d1232c3e633688f1277a35087ca474e095627e74fa218673c4"
+        },
+        {
+          "id": "branch",
+          "file": "before-fa-dark-430-branch.png",
+          "viewportFile": "before-fa-dark-430-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 266,
+            "y": 2119.25
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 266,
+            "y": 812.25
+          },
+          "clip": {
+            "left": 250,
+            "top": 796,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "fc448da8548f1af7c40a31ccbc2ec0b924489921a8ce2eeb9d72860a74571be3"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-fa-dark-430-coach-default.png",
+          "viewportFile": "before-fa-dark-430-coach-default-viewport.png",
+          "rect": {
+            "height": 512,
+            "width": 384,
+            "x": 26,
+            "y": 2475.25
+          },
+          "viewportRect": {
+            "height": 512,
+            "width": 384,
+            "x": 26,
+            "y": 824.25
+          },
+          "clip": {
+            "left": 10,
+            "top": 808,
+            "width": 416,
+            "height": 544
+          },
+          "viewportContained": true,
+          "viewportSha256": "597ed080e980a4921e4f1bee920676773183d81092257b5528b95b4637b0e067"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-fa-dark-430-coach-portrait.png",
+          "viewportFile": "before-fa-dark-430-coach-portrait-viewport.png",
+          "rect": {
+            "height": 480,
+            "width": 384,
+            "x": 26,
+            "y": 3055.25
+          },
+          "viewportRect": {
+            "height": 480,
+            "width": 384,
+            "x": 26,
+            "y": 824.25
+          },
+          "clip": {
+            "left": 10,
+            "top": 808,
+            "width": 416,
+            "height": 512
+          },
+          "viewportContained": true,
+          "viewportSha256": "9b3402213ef4a0e9b596611984cb610a3da15200d3ef2664992b0320ab723310"
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 360,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-fa-light-360-club-portrait.png",
+          "viewportFile": "before-fa-light-360-club-portrait-viewport.png",
+          "rect": {
+            "height": 464,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 464,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 352,
+            "height": 496
+          },
+          "viewportContained": true,
+          "viewportSha256": "5079c369a4c96545d2a2ec70f848c8f4e254aa4888343f0ccad24ab567a3dc24"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-fa-light-360-club-compact.png",
+          "viewportFile": "before-fa-light-360-club-compact-viewport.png",
+          "rect": {
+            "height": 432,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "viewportRect": {
+            "height": 432,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "clip": {
+            "left": 4,
+            "top": 772,
+            "width": 352,
+            "height": 464
+          },
+          "viewportContained": true,
+          "viewportSha256": "5079c369a4c96545d2a2ec70f848c8f4e254aa4888343f0ccad24ab567a3dc24"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-fa-light-360-club-landscape.png",
+          "viewportFile": "before-fa-light-360-club-landscape-viewport.png",
+          "rect": {
+            "height": 240,
+            "width": 320,
+            "x": 20,
+            "y": 1288
+          },
+          "viewportRect": {
+            "height": 240,
+            "width": 320,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 352,
+            "height": 272
+          },
+          "viewportContained": true,
+          "viewportSha256": "00e449285f47f97d6fb2dcf4711022bf4470521f0e145c5c0dab3dfacd811599"
+        },
+        {
+          "id": "featured",
+          "file": "before-fa-light-360-featured.png",
+          "viewportFile": "before-fa-light-360-featured-viewport.png",
+          "rect": {
+            "height": 200,
+            "width": 320,
+            "x": 20,
+            "y": 1584
+          },
+          "viewportRect": {
+            "height": 200,
+            "width": 320,
+            "x": 20,
+            "y": 812
+          },
+          "clip": {
+            "left": 4,
+            "top": 796,
+            "width": 352,
+            "height": 232
+          },
+          "viewportContained": true,
+          "viewportSha256": "3871a01418e15e2a8251d848a602c896d2520c97c50302dda05375a066bccc52"
+        },
+        {
+          "id": "branch",
+          "file": "before-fa-light-360-branch.png",
+          "viewportFile": "before-fa-light-360-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 196,
+            "y": 1840
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 196,
+            "y": 812
+          },
+          "clip": {
+            "left": 180,
+            "top": 796,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "7a58a3dca0c4e292d676e56f6873bc790d84b41492ef10bb0a29e2482291c003"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-fa-light-360-coach-default.png",
+          "viewportFile": "before-fa-light-360-coach-default-viewport.png",
+          "rect": {
+            "height": 426.65625,
+            "width": 320,
+            "x": 20,
+            "y": 2196
+          },
+          "viewportRect": {
+            "height": 426.65625,
+            "width": 320,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 352,
+            "height": 459
+          },
+          "viewportContained": true,
+          "viewportSha256": "0b690bb8694ae6e49cca763083cf3d431b4035ee05db37cf736e1fd34aa26e10"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-fa-light-360-coach-portrait.png",
+          "viewportFile": "before-fa-light-360-coach-portrait-viewport.png",
+          "rect": {
+            "height": 400,
+            "width": 320,
+            "x": 20,
+            "y": 2690.65625
+          },
+          "viewportRect": {
+            "height": 400,
+            "width": 320,
+            "x": 20,
+            "y": 823.65625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 352,
+            "height": 432
+          },
+          "viewportContained": true,
+          "viewportSha256": "15cd0e23f4eef65deb899c7e7b97e42b948d19b4df8e19c26c31d3ed3bcaa864"
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 390,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-fa-light-390-club-portrait.png",
+          "viewportFile": "before-fa-light-390-club-portrait-viewport.png",
+          "rect": {
+            "height": 501.65625,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 501.65625,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 382,
+            "height": 534
+          },
+          "viewportContained": true,
+          "viewportSha256": "c9d7559b9be553eba991f1c66edbd4d5e56c05b6c1ae095039c66efed117244b"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-fa-light-390-club-compact.png",
+          "viewportFile": "before-fa-light-390-club-compact-viewport.png",
+          "rect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 825.65625
+          },
+          "viewportRect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 823.65625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 382,
+            "height": 499
+          },
+          "viewportContained": true,
+          "viewportSha256": "ffa23e0ad78cf7832bd7f7bc27095fdf5a4c877863071303d80944c813be065e"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-fa-light-390-club-landscape.png",
+          "viewportFile": "before-fa-light-390-club-landscape-viewport.png",
+          "rect": {
+            "height": 262.5,
+            "width": 350,
+            "x": 20,
+            "y": 1360.3125
+          },
+          "viewportRect": {
+            "height": 262.5,
+            "width": 350,
+            "x": 20,
+            "y": 824.3125
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 382,
+            "height": 295
+          },
+          "viewportContained": true,
+          "viewportSha256": "20ebf9da24c16dd54bb7e833bda2acaa21b6dcbde2f185337c667fe3618f885b"
+        },
+        {
+          "id": "featured",
+          "file": "before-fa-light-390-featured.png",
+          "viewportFile": "before-fa-light-390-featured-viewport.png",
+          "rect": {
+            "height": 218.75,
+            "width": 350,
+            "x": 20,
+            "y": 1678.8125
+          },
+          "viewportRect": {
+            "height": 218.75,
+            "width": 350,
+            "x": 20,
+            "y": 811.8125
+          },
+          "clip": {
+            "left": 4,
+            "top": 795,
+            "width": 382,
+            "height": 251
+          },
+          "viewportContained": true,
+          "viewportSha256": "24adaf4a0197a864249e9cd1cee06f677b66212b8eabcc33da1cacb483576523"
+        },
+        {
+          "id": "branch",
+          "file": "before-fa-light-390-branch.png",
+          "viewportFile": "before-fa-light-390-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 226,
+            "y": 1953.5625
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 226,
+            "y": 811.5625
+          },
+          "clip": {
+            "left": 210,
+            "top": 795,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "c237b4b6732ee832c0162478100948470bbb65e44acb606c64a9e8bbd46a7aaf"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-fa-light-390-coach-default.png",
+          "viewportFile": "before-fa-light-390-coach-default-viewport.png",
+          "rect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 2309.5625
+          },
+          "viewportRect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 823.5625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 382,
+            "height": 499
+          },
+          "viewportContained": true,
+          "viewportSha256": "2418004696580c6dbb3ae0790e7eedfdc427fce15909b9587e3d281a427c23f4"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-fa-light-390-coach-portrait.png",
+          "viewportFile": "before-fa-light-390-coach-portrait-viewport.png",
+          "rect": {
+            "height": 437.5,
+            "width": 350,
+            "x": 20,
+            "y": 2844.21875
+          },
+          "viewportRect": {
+            "height": 437.5,
+            "width": 350,
+            "x": 20,
+            "y": 824.21875
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 382,
+            "height": 470
+          },
+          "viewportContained": true,
+          "viewportSha256": "d855aa288426336a5c9b6dca54b719b2fe13d4afe3db6c6cc0b21bf52a015f39"
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 430,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-fa-light-430-club-portrait.png",
+          "viewportFile": "before-fa-light-430-club-portrait-viewport.png",
+          "rect": {
+            "height": 559,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 559,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 422,
+            "height": 591
+          },
+          "viewportContained": true,
+          "viewportSha256": "cee5d2a2180eca51297ba5b7f851af5bfd40f4351c28a70bf459a100f27ddf84"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-fa-light-430-club-compact.png",
+          "viewportFile": "before-fa-light-430-club-compact-viewport.png",
+          "rect": {
+            "height": 520,
+            "width": 390,
+            "x": 20,
+            "y": 883
+          },
+          "viewportRect": {
+            "height": 520,
+            "width": 390,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 422,
+            "height": 552
+          },
+          "viewportContained": true,
+          "viewportSha256": "801f4069fe72dfb26d005e72cee50e010a8859e0d77a5bde6c905534f147e8a6"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-fa-light-430-club-landscape.png",
+          "viewportFile": "before-fa-light-430-club-landscape-viewport.png",
+          "rect": {
+            "height": 292.5,
+            "width": 390,
+            "x": 20,
+            "y": 1471
+          },
+          "viewportRect": {
+            "height": 292.5,
+            "width": 390,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 422,
+            "height": 325
+          },
+          "viewportContained": true,
+          "viewportSha256": "fd6579afa5949df6e399dae4a1060c4d145eeed91ca2991672c697180bf403a9"
+        },
+        {
+          "id": "featured",
+          "file": "before-fa-light-430-featured.png",
+          "viewportFile": "before-fa-light-430-featured-viewport.png",
+          "rect": {
+            "height": 243.75,
+            "width": 390,
+            "x": 20,
+            "y": 1819.5
+          },
+          "viewportRect": {
+            "height": 243.75,
+            "width": 390,
+            "x": 20,
+            "y": 811.5
+          },
+          "clip": {
+            "left": 4,
+            "top": 795,
+            "width": 422,
+            "height": 276
+          },
+          "viewportContained": true,
+          "viewportSha256": "3c9762971f33630266debcca2d9d33961fd33b9bd0b36f4e8fe3076e974253c4"
+        },
+        {
+          "id": "branch",
+          "file": "before-fa-light-430-branch.png",
+          "viewportFile": "before-fa-light-430-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 266,
+            "y": 2119.25
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 266,
+            "y": 812.25
+          },
+          "clip": {
+            "left": 250,
+            "top": 796,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "1b3fc624cf62de7e770780611a1ecd527cd9a15f169927e0322ec5da9d642397"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-fa-light-430-coach-default.png",
+          "viewportFile": "before-fa-light-430-coach-default-viewport.png",
+          "rect": {
+            "height": 512,
+            "width": 384,
+            "x": 26,
+            "y": 2475.25
+          },
+          "viewportRect": {
+            "height": 512,
+            "width": 384,
+            "x": 26,
+            "y": 824.25
+          },
+          "clip": {
+            "left": 10,
+            "top": 808,
+            "width": 416,
+            "height": 544
+          },
+          "viewportContained": true,
+          "viewportSha256": "0e66d94b55ffdbda3dc55d768d10392ef65c8c4ae3d1ff3bc0e7a4b7957db960"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-fa-light-430-coach-portrait.png",
+          "viewportFile": "before-fa-light-430-coach-portrait-viewport.png",
+          "rect": {
+            "height": 480,
+            "width": 384,
+            "x": 26,
+            "y": 3055.25
+          },
+          "viewportRect": {
+            "height": 480,
+            "width": 384,
+            "x": 26,
+            "y": 824.25
+          },
+          "clip": {
+            "left": 10,
+            "top": 808,
+            "width": 416,
+            "height": 512
+          },
+          "viewportContained": true,
+          "viewportSha256": "80e4a84bfc89312b17ceee689fac44e936d6a5cd8aa58e44e9749ebcf37a2661"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 360,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-en-dark-360-club-portrait.png",
+          "viewportFile": "before-en-dark-360-club-portrait-viewport.png",
+          "rect": {
+            "height": 464,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 464,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 352,
+            "height": 496
+          },
+          "viewportContained": true,
+          "viewportSha256": "aec2c6084e299619cabf20065d6f1a234b57eb232174baecd99354d0a075a0ee"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-en-dark-360-club-compact.png",
+          "viewportFile": "before-en-dark-360-club-compact-viewport.png",
+          "rect": {
+            "height": 432,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "viewportRect": {
+            "height": 432,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "clip": {
+            "left": 4,
+            "top": 772,
+            "width": 352,
+            "height": 464
+          },
+          "viewportContained": true,
+          "viewportSha256": "aec2c6084e299619cabf20065d6f1a234b57eb232174baecd99354d0a075a0ee"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-en-dark-360-club-landscape.png",
+          "viewportFile": "before-en-dark-360-club-landscape-viewport.png",
+          "rect": {
+            "height": 240,
+            "width": 320,
+            "x": 20,
+            "y": 1288
+          },
+          "viewportRect": {
+            "height": 240,
+            "width": 320,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 352,
+            "height": 272
+          },
+          "viewportContained": true,
+          "viewportSha256": "c97f07e43439c2bbd68d43489650ed4bb931e5e184befeca7d01fe3b2a6e0f15"
+        },
+        {
+          "id": "featured",
+          "file": "before-en-dark-360-featured.png",
+          "viewportFile": "before-en-dark-360-featured-viewport.png",
+          "rect": {
+            "height": 200,
+            "width": 320,
+            "x": 20,
+            "y": 1584
+          },
+          "viewportRect": {
+            "height": 200,
+            "width": 320,
+            "x": 20,
+            "y": 812
+          },
+          "clip": {
+            "left": 4,
+            "top": 796,
+            "width": 352,
+            "height": 232
+          },
+          "viewportContained": true,
+          "viewportSha256": "9f0b17e067416d88a15b8f39bfc4fd22d5860efc922c74eafb82f1d40d1afd03"
+        },
+        {
+          "id": "branch",
+          "file": "before-en-dark-360-branch.png",
+          "viewportFile": "before-en-dark-360-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 1840
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 812
+          },
+          "clip": {
+            "left": 4,
+            "top": 796,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "c823202f36922b949937182c7e83513d38b32c89d3b032eff9dbea0a2719c765"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-en-dark-360-coach-default.png",
+          "viewportFile": "before-en-dark-360-coach-default-viewport.png",
+          "rect": {
+            "height": 426.65625,
+            "width": 320,
+            "x": 20,
+            "y": 2196
+          },
+          "viewportRect": {
+            "height": 426.65625,
+            "width": 320,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 352,
+            "height": 459
+          },
+          "viewportContained": true,
+          "viewportSha256": "5b326412ad36482773be86e880a27b1c78d2718dbe2dc7a2ed5ea299aaddd965"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-en-dark-360-coach-portrait.png",
+          "viewportFile": "before-en-dark-360-coach-portrait-viewport.png",
+          "rect": {
+            "height": 400,
+            "width": 320,
+            "x": 20,
+            "y": 2690.65625
+          },
+          "viewportRect": {
+            "height": 400,
+            "width": 320,
+            "x": 20,
+            "y": 823.65625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 352,
+            "height": 432
+          },
+          "viewportContained": true,
+          "viewportSha256": "15894fc5ef01299f79d6d280849bb26ae9a1a8fa7f788f799d058313096392e5"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 390,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-en-dark-390-club-portrait.png",
+          "viewportFile": "before-en-dark-390-club-portrait-viewport.png",
+          "rect": {
+            "height": 501.65625,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 501.65625,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 382,
+            "height": 534
+          },
+          "viewportContained": true,
+          "viewportSha256": "00e062744a2d0ad784a998ec3674f70f2eb7106a821234c13f5adae56c59f393"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-en-dark-390-club-compact.png",
+          "viewportFile": "before-en-dark-390-club-compact-viewport.png",
+          "rect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 825.65625
+          },
+          "viewportRect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 823.65625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 382,
+            "height": 499
+          },
+          "viewportContained": true,
+          "viewportSha256": "344e93a3071d45c5bdca96bcb31393422f32fc38053e894b111d55cd7afbe0bc"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-en-dark-390-club-landscape.png",
+          "viewportFile": "before-en-dark-390-club-landscape-viewport.png",
+          "rect": {
+            "height": 262.5,
+            "width": 350,
+            "x": 20,
+            "y": 1360.3125
+          },
+          "viewportRect": {
+            "height": 262.5,
+            "width": 350,
+            "x": 20,
+            "y": 824.3125
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 382,
+            "height": 295
+          },
+          "viewportContained": true,
+          "viewportSha256": "04815b1205ba59a759dc5125d11485d1367e8e1075b42343155774f3e5320ccb"
+        },
+        {
+          "id": "featured",
+          "file": "before-en-dark-390-featured.png",
+          "viewportFile": "before-en-dark-390-featured-viewport.png",
+          "rect": {
+            "height": 218.75,
+            "width": 350,
+            "x": 20,
+            "y": 1678.8125
+          },
+          "viewportRect": {
+            "height": 218.75,
+            "width": 350,
+            "x": 20,
+            "y": 811.8125
+          },
+          "clip": {
+            "left": 4,
+            "top": 795,
+            "width": 382,
+            "height": 251
+          },
+          "viewportContained": true,
+          "viewportSha256": "b54553f29499766cd57758e52584ee65de0608011be4070d2711ac6fdee519a3"
+        },
+        {
+          "id": "branch",
+          "file": "before-en-dark-390-branch.png",
+          "viewportFile": "before-en-dark-390-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 1953.5625
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 811.5625
+          },
+          "clip": {
+            "left": 4,
+            "top": 795,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "7ee950b60e9b1f124ae818a9bc699e90aff65b7e2066b8dca72066c001e01f23"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-en-dark-390-coach-default.png",
+          "viewportFile": "before-en-dark-390-coach-default-viewport.png",
+          "rect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 2309.5625
+          },
+          "viewportRect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 823.5625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 382,
+            "height": 499
+          },
+          "viewportContained": true,
+          "viewportSha256": "dc99a0d446feb6ff60d9e1357d38d614a2ca8d9eb52a28fc919c224330dea2fb"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-en-dark-390-coach-portrait.png",
+          "viewportFile": "before-en-dark-390-coach-portrait-viewport.png",
+          "rect": {
+            "height": 437.5,
+            "width": 350,
+            "x": 20,
+            "y": 2844.21875
+          },
+          "viewportRect": {
+            "height": 437.5,
+            "width": 350,
+            "x": 20,
+            "y": 824.21875
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 382,
+            "height": 470
+          },
+          "viewportContained": true,
+          "viewportSha256": "8d6c701ea584aa7a6f1376c4b73c653bccb9558b8e20b9dc3d195007d8d437fc"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 430,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-en-dark-430-club-portrait.png",
+          "viewportFile": "before-en-dark-430-club-portrait-viewport.png",
+          "rect": {
+            "height": 559,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 559,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 422,
+            "height": 591
+          },
+          "viewportContained": true,
+          "viewportSha256": "71e7354f62e2775a353a2507b0d874ae604659cf4873687bbcc3d6e850e97ded"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-en-dark-430-club-compact.png",
+          "viewportFile": "before-en-dark-430-club-compact-viewport.png",
+          "rect": {
+            "height": 520,
+            "width": 390,
+            "x": 20,
+            "y": 883
+          },
+          "viewportRect": {
+            "height": 520,
+            "width": 390,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 422,
+            "height": 552
+          },
+          "viewportContained": true,
+          "viewportSha256": "730696409781202489e5882f3f1050f345881d5863a45c00adcd619ab508d316"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-en-dark-430-club-landscape.png",
+          "viewportFile": "before-en-dark-430-club-landscape-viewport.png",
+          "rect": {
+            "height": 292.5,
+            "width": 390,
+            "x": 20,
+            "y": 1471
+          },
+          "viewportRect": {
+            "height": 292.5,
+            "width": 390,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 422,
+            "height": 325
+          },
+          "viewportContained": true,
+          "viewportSha256": "bf3d36904d10223dc3a1ca00083c0feb500c11a6513e6aa6a839d14531b9e13c"
+        },
+        {
+          "id": "featured",
+          "file": "before-en-dark-430-featured.png",
+          "viewportFile": "before-en-dark-430-featured-viewport.png",
+          "rect": {
+            "height": 243.75,
+            "width": 390,
+            "x": 20,
+            "y": 1819.5
+          },
+          "viewportRect": {
+            "height": 243.75,
+            "width": 390,
+            "x": 20,
+            "y": 811.5
+          },
+          "clip": {
+            "left": 4,
+            "top": 795,
+            "width": 422,
+            "height": 276
+          },
+          "viewportContained": true,
+          "viewportSha256": "a4df0e3a8443fd27f961fbc029ad06a2ec78b229b497dd66a6e5a2e1eacc545e"
+        },
+        {
+          "id": "branch",
+          "file": "before-en-dark-430-branch.png",
+          "viewportFile": "before-en-dark-430-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 2119.25
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 812.25
+          },
+          "clip": {
+            "left": 4,
+            "top": 796,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "7ca0243e40c8f13361658d6668341bec203b3723512a4b41aa5d01640dc743fe"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-en-dark-430-coach-default.png",
+          "viewportFile": "before-en-dark-430-coach-default-viewport.png",
+          "rect": {
+            "height": 512,
+            "width": 384,
+            "x": 20,
+            "y": 2475.25
+          },
+          "viewportRect": {
+            "height": 512,
+            "width": 384,
+            "x": 20,
+            "y": 824.25
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 416,
+            "height": 544
+          },
+          "viewportContained": true,
+          "viewportSha256": "a120ee0b42d050583ec15cea5e400aa97423608f2472e7bde3650878bda132da"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-en-dark-430-coach-portrait.png",
+          "viewportFile": "before-en-dark-430-coach-portrait-viewport.png",
+          "rect": {
+            "height": 480,
+            "width": 384,
+            "x": 20,
+            "y": 3055.25
+          },
+          "viewportRect": {
+            "height": 480,
+            "width": 384,
+            "x": 20,
+            "y": 824.25
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 416,
+            "height": 512
+          },
+          "viewportContained": true,
+          "viewportSha256": "f9ea543639ebc94e83eee31a0063889884f62c778f5e459e053c077a3c24c6a3"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 360,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-en-light-360-club-portrait.png",
+          "viewportFile": "before-en-light-360-club-portrait-viewport.png",
+          "rect": {
+            "height": 464,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 464,
+            "width": 320,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 352,
+            "height": 496
+          },
+          "viewportContained": true,
+          "viewportSha256": "9872774959d602e66e66848405ee1d47f13694dceb58230d90bd970bf5f677b0"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-en-light-360-club-compact.png",
+          "viewportFile": "before-en-light-360-club-compact-viewport.png",
+          "rect": {
+            "height": 432,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "viewportRect": {
+            "height": 432,
+            "width": 320,
+            "x": 20,
+            "y": 788
+          },
+          "clip": {
+            "left": 4,
+            "top": 772,
+            "width": 352,
+            "height": 464
+          },
+          "viewportContained": true,
+          "viewportSha256": "9872774959d602e66e66848405ee1d47f13694dceb58230d90bd970bf5f677b0"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-en-light-360-club-landscape.png",
+          "viewportFile": "before-en-light-360-club-landscape-viewport.png",
+          "rect": {
+            "height": 240,
+            "width": 320,
+            "x": 20,
+            "y": 1288
+          },
+          "viewportRect": {
+            "height": 240,
+            "width": 320,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 352,
+            "height": 272
+          },
+          "viewportContained": true,
+          "viewportSha256": "c04503bdcbaf0e8a65d5c08a6014e9c182062a2513bb3ce82d7983c2d09e0f59"
+        },
+        {
+          "id": "featured",
+          "file": "before-en-light-360-featured.png",
+          "viewportFile": "before-en-light-360-featured-viewport.png",
+          "rect": {
+            "height": 200,
+            "width": 320,
+            "x": 20,
+            "y": 1584
+          },
+          "viewportRect": {
+            "height": 200,
+            "width": 320,
+            "x": 20,
+            "y": 812
+          },
+          "clip": {
+            "left": 4,
+            "top": 796,
+            "width": 352,
+            "height": 232
+          },
+          "viewportContained": true,
+          "viewportSha256": "2ffe5e6fb76c8f5edf1b380cff067caa3e999c4d3878062a3125f654dc04c048"
+        },
+        {
+          "id": "branch",
+          "file": "before-en-light-360-branch.png",
+          "viewportFile": "before-en-light-360-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 1840
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 812
+          },
+          "clip": {
+            "left": 4,
+            "top": 796,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "c08eb45ec39e25d130735206f63f9bf87a0ab3fdfab02c34c6ab8d8cdf1fbbbf"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-en-light-360-coach-default.png",
+          "viewportFile": "before-en-light-360-coach-default-viewport.png",
+          "rect": {
+            "height": 426.65625,
+            "width": 320,
+            "x": 20,
+            "y": 2196
+          },
+          "viewportRect": {
+            "height": 426.65625,
+            "width": 320,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 352,
+            "height": 459
+          },
+          "viewportContained": true,
+          "viewportSha256": "533544aa3efcc85f60c29bf7e4850ea49a287455ea155fbcffe95f2efd2aaaca"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-en-light-360-coach-portrait.png",
+          "viewportFile": "before-en-light-360-coach-portrait-viewport.png",
+          "rect": {
+            "height": 400,
+            "width": 320,
+            "x": 20,
+            "y": 2690.65625
+          },
+          "viewportRect": {
+            "height": 400,
+            "width": 320,
+            "x": 20,
+            "y": 823.65625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 352,
+            "height": 432
+          },
+          "viewportContained": true,
+          "viewportSha256": "77ba271f61895d2b23cf06364194d192a564e6fea290e7cbb7c7dd4ba3e0a6fe"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 390,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-en-light-390-club-portrait.png",
+          "viewportFile": "before-en-light-390-club-portrait-viewport.png",
+          "rect": {
+            "height": 501.65625,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 501.65625,
+            "width": 350,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 382,
+            "height": 534
+          },
+          "viewportContained": true,
+          "viewportSha256": "2eb55a8b8e25f171c5932a40b236d7b0cf46d449cb02c3bac19e3f32ec25b011"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-en-light-390-club-compact.png",
+          "viewportFile": "before-en-light-390-club-compact-viewport.png",
+          "rect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 825.65625
+          },
+          "viewportRect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 823.65625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 382,
+            "height": 499
+          },
+          "viewportContained": true,
+          "viewportSha256": "c8cda72dcdf2cda4186e0158a3a3341917ba7a849aea0f11e9061de6e62e862d"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-en-light-390-club-landscape.png",
+          "viewportFile": "before-en-light-390-club-landscape-viewport.png",
+          "rect": {
+            "height": 262.5,
+            "width": 350,
+            "x": 20,
+            "y": 1360.3125
+          },
+          "viewportRect": {
+            "height": 262.5,
+            "width": 350,
+            "x": 20,
+            "y": 824.3125
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 382,
+            "height": 295
+          },
+          "viewportContained": true,
+          "viewportSha256": "4816363cae06a0485cd51391dfaaffa5035ac93393a4eeb1e8f84ab6d24f6442"
+        },
+        {
+          "id": "featured",
+          "file": "before-en-light-390-featured.png",
+          "viewportFile": "before-en-light-390-featured-viewport.png",
+          "rect": {
+            "height": 218.75,
+            "width": 350,
+            "x": 20,
+            "y": 1678.8125
+          },
+          "viewportRect": {
+            "height": 218.75,
+            "width": 350,
+            "x": 20,
+            "y": 811.8125
+          },
+          "clip": {
+            "left": 4,
+            "top": 795,
+            "width": 382,
+            "height": 251
+          },
+          "viewportContained": true,
+          "viewportSha256": "3556c2cab001b7134fc963e12eb9c87704e3e11848f4aece606a0a06bce24da1"
+        },
+        {
+          "id": "branch",
+          "file": "before-en-light-390-branch.png",
+          "viewportFile": "before-en-light-390-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 1953.5625
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 811.5625
+          },
+          "clip": {
+            "left": 4,
+            "top": 795,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "8b0dcad06a8796c841c1fe295841d52653911381518ac7b68b60d406411c19a8"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-en-light-390-coach-default.png",
+          "viewportFile": "before-en-light-390-coach-default-viewport.png",
+          "rect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 2309.5625
+          },
+          "viewportRect": {
+            "height": 466.65625,
+            "width": 350,
+            "x": 20,
+            "y": 823.5625
+          },
+          "clip": {
+            "left": 4,
+            "top": 807,
+            "width": 382,
+            "height": 499
+          },
+          "viewportContained": true,
+          "viewportSha256": "5f690b5860934ffc955e3d400aa83a4704669996ad72dbb8a598c9d88a509e75"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-en-light-390-coach-portrait.png",
+          "viewportFile": "before-en-light-390-coach-portrait-viewport.png",
+          "rect": {
+            "height": 437.5,
+            "width": 350,
+            "x": 20,
+            "y": 2844.21875
+          },
+          "viewportRect": {
+            "height": 437.5,
+            "width": 350,
+            "x": 20,
+            "y": 824.21875
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 382,
+            "height": 470
+          },
+          "viewportContained": true,
+          "viewportSha256": "09231a6b545413617f20a43fb9af2461b29a196d28b0003076e228cc90df00da"
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 430,
+      "viewportHeight": 1600,
+      "cards": [
+        {
+          "id": "club-portrait",
+          "file": "before-en-light-430-club-portrait.png",
+          "viewportFile": "before-en-light-430-club-portrait-viewport.png",
+          "rect": {
+            "height": 559,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "viewportRect": {
+            "height": 559,
+            "width": 390,
+            "x": 20,
+            "y": 256
+          },
+          "clip": {
+            "left": 4,
+            "top": 240,
+            "width": 422,
+            "height": 591
+          },
+          "viewportContained": true,
+          "viewportSha256": "8a8f5515b1c9fc9905d70d3d8c9d785d6ffbcd5ee12fc7ebb0fceeb4632b5672"
+        },
+        {
+          "id": "club-compact",
+          "file": "before-en-light-430-club-compact.png",
+          "viewportFile": "before-en-light-430-club-compact-viewport.png",
+          "rect": {
+            "height": 520,
+            "width": 390,
+            "x": 20,
+            "y": 883
+          },
+          "viewportRect": {
+            "height": 520,
+            "width": 390,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 422,
+            "height": 552
+          },
+          "viewportContained": true,
+          "viewportSha256": "16b53d0aa759bfacbc27120cd47e186cad3db6615eb2e7904542f80544bda94c"
+        },
+        {
+          "id": "club-landscape",
+          "file": "before-en-light-430-club-landscape.png",
+          "viewportFile": "before-en-light-430-club-landscape-viewport.png",
+          "rect": {
+            "height": 292.5,
+            "width": 390,
+            "x": 20,
+            "y": 1471
+          },
+          "viewportRect": {
+            "height": 292.5,
+            "width": 390,
+            "x": 20,
+            "y": 824
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 422,
+            "height": 325
+          },
+          "viewportContained": true,
+          "viewportSha256": "6a0e38e81a4f9333fcd47f881abd703c996bca02518d3cb3953ebbb75f6d0a79"
+        },
+        {
+          "id": "featured",
+          "file": "before-en-light-430-featured.png",
+          "viewportFile": "before-en-light-430-featured-viewport.png",
+          "rect": {
+            "height": 243.75,
+            "width": 390,
+            "x": 20,
+            "y": 1819.5
+          },
+          "viewportRect": {
+            "height": 243.75,
+            "width": 390,
+            "x": 20,
+            "y": 811.5
+          },
+          "clip": {
+            "left": 4,
+            "top": 795,
+            "width": 422,
+            "height": 276
+          },
+          "viewportContained": true,
+          "viewportSha256": "9ada494a6a7c3b5b9404c7c00aad980b639e94371ff5710174cb94d745e31fe9"
+        },
+        {
+          "id": "branch",
+          "file": "before-en-light-430-branch.png",
+          "viewportFile": "before-en-light-430-branch-viewport.png",
+          "rect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 2119.25
+          },
+          "viewportRect": {
+            "height": 288,
+            "width": 144,
+            "x": 20,
+            "y": 812.25
+          },
+          "clip": {
+            "left": 4,
+            "top": 796,
+            "width": 176,
+            "height": 320
+          },
+          "viewportContained": true,
+          "viewportSha256": "51268bec1edd43e0b5422fe6925461ba2db3cdd87f3de08d6f7ab6c38be060f1"
+        },
+        {
+          "id": "coach-default",
+          "file": "before-en-light-430-coach-default.png",
+          "viewportFile": "before-en-light-430-coach-default-viewport.png",
+          "rect": {
+            "height": 512,
+            "width": 384,
+            "x": 20,
+            "y": 2475.25
+          },
+          "viewportRect": {
+            "height": 512,
+            "width": 384,
+            "x": 20,
+            "y": 824.25
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 416,
+            "height": 544
+          },
+          "viewportContained": true,
+          "viewportSha256": "4898845fd580c4c68219fff4bb5d23f8d399f2fecf687c3bf6479048945dac18"
+        },
+        {
+          "id": "coach-portrait",
+          "file": "before-en-light-430-coach-portrait.png",
+          "viewportFile": "before-en-light-430-coach-portrait-viewport.png",
+          "rect": {
+            "height": 480,
+            "width": 384,
+            "x": 20,
+            "y": 3055.25
+          },
+          "viewportRect": {
+            "height": 480,
+            "width": 384,
+            "x": 20,
+            "y": 824.25
+          },
+          "clip": {
+            "left": 4,
+            "top": 808,
+            "width": 416,
+            "height": 512
+          },
+          "viewportContained": true,
+          "viewportSha256": "dfed5d1f5c4559712c12e7b5f56f68a2b2b9af4fcd9c643fed51078793317dbf"
+        }
+      ]
+    }
+  ]
+}

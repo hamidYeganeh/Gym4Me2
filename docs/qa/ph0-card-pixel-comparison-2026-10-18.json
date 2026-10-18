@@ -1,0 +1,1124 @@
+{
+  "scope": "84 synthetic article rectangles, translated by recorded DOM coordinates and rounded to CSS pixels; no tolerance, excludes exterior shadows and surrounding page chrome. Not map, complete detail, or full PH0 acceptance.",
+  "beforeBuild": "C5ZAsC0ANdJAc9ZSjShq1",
+  "afterBuild": "kU9Z5l1CGWD_MGfvI-I6r",
+  "acceptance": "Unverified. Original captures are lossy JPEG; raw differences cannot establish pixel preservation or a product regression. Keep references and repeat with lossless, stable framing.",
+  "cases": [
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 360,
+      "before": "cards-en-dark-360.jpg",
+      "after": "cards-after-en-dark-360.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "c0cd29c982f5375a516c8728b6ff83c392371e5c637afbac8839d2776c75b5c2",
+      "afterSha256": "4e5850697f200039e86551d6db511c8f999e7e532840c6de16ffac3b4f7fcf73",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 320,
+          "height": 464,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 145756,
+          "maxChannelDelta": 236
+        },
+        {
+          "id": "club-compact",
+          "width": 320,
+          "height": 432,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 135719,
+          "maxChannelDelta": 248
+        },
+        {
+          "id": "club-landscape",
+          "width": 320,
+          "height": 240,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 75006,
+          "maxChannelDelta": 175
+        },
+        {
+          "id": "featured",
+          "width": 320,
+          "height": 200,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 62284,
+          "maxChannelDelta": 231
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 39616,
+          "maxChannelDelta": 44
+        },
+        {
+          "id": "coach-default",
+          "width": 320,
+          "height": 427,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 125801,
+          "maxChannelDelta": 154
+        },
+        {
+          "id": "coach-portrait",
+          "width": 320,
+          "height": 400,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 120548,
+          "maxChannelDelta": 194
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 390,
+      "before": "cards-en-dark-390.jpg",
+      "after": "cards-after-en-dark-390.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "3b65847ffef4ea98693467eea34e45586af85aab9a0a6661c91c930ebf882e3a",
+      "afterSha256": "c9e7ddcc956614a00632a71585bb80dc772ab03117d0ad1750b15857d24b88d5",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 350,
+          "height": 502,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 173328,
+          "maxChannelDelta": 245
+        },
+        {
+          "id": "club-compact",
+          "width": 350,
+          "height": 467,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 160688,
+          "maxChannelDelta": 249
+        },
+        {
+          "id": "club-landscape",
+          "width": 350,
+          "height": 263,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 90310,
+          "maxChannelDelta": 185
+        },
+        {
+          "id": "featured",
+          "width": 350,
+          "height": 219,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 75326,
+          "maxChannelDelta": 128
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 40007,
+          "maxChannelDelta": 171
+        },
+        {
+          "id": "coach-default",
+          "width": 350,
+          "height": 467,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 148140,
+          "maxChannelDelta": 148
+        },
+        {
+          "id": "coach-portrait",
+          "width": 350,
+          "height": 438,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 143521,
+          "maxChannelDelta": 195
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 430,
+      "before": "cards-en-dark-430.jpg",
+      "after": "cards-after-en-dark-430.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "d0b457a7d75b21efe13df42079214975aada28efbf55f9999b70a26949ef53b6",
+      "afterSha256": "c02981392cdc4fbf081738a3d1ad9e208549540230193778356e877646998fc5",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 390,
+          "height": 559,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 213990,
+          "maxChannelDelta": 241
+        },
+        {
+          "id": "club-compact",
+          "width": 390,
+          "height": 520,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 199165,
+          "maxChannelDelta": 255
+        },
+        {
+          "id": "club-landscape",
+          "width": 390,
+          "height": 293,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 112498,
+          "maxChannelDelta": 119
+        },
+        {
+          "id": "featured",
+          "width": 390,
+          "height": 244,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 93169,
+          "maxChannelDelta": 245
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 39838,
+          "maxChannelDelta": 173
+        },
+        {
+          "id": "coach-default",
+          "width": 384,
+          "height": 512,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 180579,
+          "maxChannelDelta": 248
+        },
+        {
+          "id": "coach-portrait",
+          "width": 384,
+          "height": 480,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 175381,
+          "maxChannelDelta": 240
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 360,
+      "before": "cards-en-light-360.jpg",
+      "after": "cards-after-en-light-360.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "553ac98f14eaf4422be784d558acd7b04e91dfd4f451efdeabbea37c9227cac3",
+      "afterSha256": "6bb619e10f4afe807b6dee2f335b3b79a490778b7a82bef9e6d5ca7f6167afbf",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 320,
+          "height": 464,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 140719,
+          "maxChannelDelta": 229
+        },
+        {
+          "id": "club-compact",
+          "width": 320,
+          "height": 432,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 130726,
+          "maxChannelDelta": 238
+        },
+        {
+          "id": "club-landscape",
+          "width": 320,
+          "height": 240,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 69338,
+          "maxChannelDelta": 150
+        },
+        {
+          "id": "featured",
+          "width": 320,
+          "height": 200,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 61945,
+          "maxChannelDelta": 231
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 39360,
+          "maxChannelDelta": 44
+        },
+        {
+          "id": "coach-default",
+          "width": 320,
+          "height": 427,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 115357,
+          "maxChannelDelta": 154
+        },
+        {
+          "id": "coach-portrait",
+          "width": 320,
+          "height": 400,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 120079,
+          "maxChannelDelta": 194
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 390,
+      "before": "cards-en-light-390.jpg",
+      "after": "cards-after-en-light-390.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "2a68208c56e876cd1c7fa0effea6ba80cda123b624d37f51669872d0dc3c5b8a",
+      "afterSha256": "dcad4c4b03775178d89cc12bfe68872e0e0c9419b82924fc55c69d327f75f56c",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 350,
+          "height": 502,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 168882,
+          "maxChannelDelta": 227
+        },
+        {
+          "id": "club-compact",
+          "width": 350,
+          "height": 467,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 154722,
+          "maxChannelDelta": 206
+        },
+        {
+          "id": "club-landscape",
+          "width": 350,
+          "height": 263,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 82063,
+          "maxChannelDelta": 185
+        },
+        {
+          "id": "featured",
+          "width": 350,
+          "height": 219,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 75049,
+          "maxChannelDelta": 186
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 39741,
+          "maxChannelDelta": 180
+        },
+        {
+          "id": "coach-default",
+          "width": 350,
+          "height": 467,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 138058,
+          "maxChannelDelta": 148
+        },
+        {
+          "id": "coach-portrait",
+          "width": 350,
+          "height": 438,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 142769,
+          "maxChannelDelta": 206
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 430,
+      "before": "cards-en-light-430.jpg",
+      "after": "cards-after-en-light-430.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "3594f8412257c0800bc0fa16d4baf53f291303cf06d52cf09fe4fe0e44660bc6",
+      "afterSha256": "b8f44e8cbea1587c09191c9a4ca972b71ec33a01ee5f189499b6e4ec47beed51",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 390,
+          "height": 559,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 207304,
+          "maxChannelDelta": 226
+        },
+        {
+          "id": "club-compact",
+          "width": 390,
+          "height": 520,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 191462,
+          "maxChannelDelta": 241
+        },
+        {
+          "id": "club-landscape",
+          "width": 390,
+          "height": 293,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 105163,
+          "maxChannelDelta": 126
+        },
+        {
+          "id": "featured",
+          "width": 390,
+          "height": 244,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 92989,
+          "maxChannelDelta": 245
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 39667,
+          "maxChannelDelta": 180
+        },
+        {
+          "id": "coach-default",
+          "width": 384,
+          "height": 512,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 166240,
+          "maxChannelDelta": 253
+        },
+        {
+          "id": "coach-portrait",
+          "width": 384,
+          "height": 480,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 174709,
+          "maxChannelDelta": 240
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 360,
+      "before": "cards-fa-dark-360.jpg",
+      "after": "cards-after-fa-dark-360.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "3173849157460885370a04a731947f385fd2d2fd286d5540352178290a0f08e2",
+      "afterSha256": "8827d425c0015ec4b6aa539f8030a5020dd6e07facf5bcd4755d11684ae86730",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 320,
+          "height": 464,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 144461,
+          "maxChannelDelta": 245
+        },
+        {
+          "id": "club-compact",
+          "width": 320,
+          "height": 432,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 134730,
+          "maxChannelDelta": 239
+        },
+        {
+          "id": "club-landscape",
+          "width": 320,
+          "height": 240,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 74306,
+          "maxChannelDelta": 169
+        },
+        {
+          "id": "featured",
+          "width": 320,
+          "height": 200,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 61908,
+          "maxChannelDelta": 224
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 39359,
+          "maxChannelDelta": 210
+        },
+        {
+          "id": "coach-default",
+          "width": 320,
+          "height": 427,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 124452,
+          "maxChannelDelta": 153
+        },
+        {
+          "id": "coach-portrait",
+          "width": 320,
+          "height": 400,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 121259,
+          "maxChannelDelta": 200
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 390,
+      "before": "cards-fa-dark-390.jpg",
+      "after": "cards-after-fa-dark-390.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "95dcf586e9cb017245fd04b677affdec8a284b6798006ce09efce091c67cf4fd",
+      "afterSha256": "5eecb44a37f19bd991c5d6c0bc76ac37b629e9633116a04b18b703159d0f1a1b",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 350,
+          "height": 502,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 173006,
+          "maxChannelDelta": 251
+        },
+        {
+          "id": "club-compact",
+          "width": 350,
+          "height": 467,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 160712,
+          "maxChannelDelta": 247
+        },
+        {
+          "id": "club-landscape",
+          "width": 350,
+          "height": 263,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 90278,
+          "maxChannelDelta": 202
+        },
+        {
+          "id": "featured",
+          "width": 350,
+          "height": 219,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 75179,
+          "maxChannelDelta": 128
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 40155,
+          "maxChannelDelta": 194
+        },
+        {
+          "id": "coach-default",
+          "width": 350,
+          "height": 467,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 148331,
+          "maxChannelDelta": 164
+        },
+        {
+          "id": "coach-portrait",
+          "width": 350,
+          "height": 438,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 143552,
+          "maxChannelDelta": 195
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "dark",
+      "width": 430,
+      "before": "cards-fa-dark-430.jpg",
+      "after": "cards-after-fa-dark-430.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "b5506c9a83f2941338af718c2639b0abebf29ba22c1373f3ba857646d25dffe9",
+      "afterSha256": "39fb846b75d40babb7a0e4923ebea2caeb7b41fc915f699daa3ffa8c7d891449",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 390,
+          "height": 559,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 213874,
+          "maxChannelDelta": 243
+        },
+        {
+          "id": "club-compact",
+          "width": 390,
+          "height": 520,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 199189,
+          "maxChannelDelta": 249
+        },
+        {
+          "id": "club-landscape",
+          "width": 390,
+          "height": 293,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 112215,
+          "maxChannelDelta": 119
+        },
+        {
+          "id": "featured",
+          "width": 390,
+          "height": 244,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 93202,
+          "maxChannelDelta": 250
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 39886,
+          "maxChannelDelta": 160
+        },
+        {
+          "id": "coach-default",
+          "width": 384,
+          "height": 512,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 181413,
+          "maxChannelDelta": 248
+        },
+        {
+          "id": "coach-portrait",
+          "width": 384,
+          "height": 480,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 175013,
+          "maxChannelDelta": 240
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 360,
+      "before": "cards-fa-light-360.jpg",
+      "after": "cards-after-fa-light-360.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "64e18f38673fddc191d6a99b6e42014fc72b1f3813763596d133c47637e5d6ff",
+      "afterSha256": "bad0c39d9fef15788eea015f9710915930dd62761634ae0648cfeb5281a2aacd",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 320,
+          "height": 464,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 138665,
+          "maxChannelDelta": 211
+        },
+        {
+          "id": "club-compact",
+          "width": 320,
+          "height": 432,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 127526,
+          "maxChannelDelta": 207
+        },
+        {
+          "id": "club-landscape",
+          "width": 320,
+          "height": 240,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 68647,
+          "maxChannelDelta": 134
+        },
+        {
+          "id": "featured",
+          "width": 320,
+          "height": 200,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 61515,
+          "maxChannelDelta": 224
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 39027,
+          "maxChannelDelta": 210
+        },
+        {
+          "id": "coach-default",
+          "width": 320,
+          "height": 427,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 114408,
+          "maxChannelDelta": 153
+        },
+        {
+          "id": "coach-portrait",
+          "width": 320,
+          "height": 400,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 120701,
+          "maxChannelDelta": 200
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 390,
+      "before": "cards-fa-light-390.jpg",
+      "after": "cards-after-fa-light-390.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "44a3540fb814aabd51a8335905cdb5a21012d88866a4e641a8f69a3605e0d5c9",
+      "afterSha256": "67e00bb9bdb88b2570d8b4e585756b13450cc8a0575f29f33571e14dd02f2a26",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 350,
+          "height": 502,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 169401,
+          "maxChannelDelta": 197
+        },
+        {
+          "id": "club-compact",
+          "width": 350,
+          "height": 467,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 155024,
+          "maxChannelDelta": 202
+        },
+        {
+          "id": "club-landscape",
+          "width": 350,
+          "height": 263,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 82329,
+          "maxChannelDelta": 202
+        },
+        {
+          "id": "featured",
+          "width": 350,
+          "height": 219,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 74903,
+          "maxChannelDelta": 186
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 40015,
+          "maxChannelDelta": 191
+        },
+        {
+          "id": "coach-default",
+          "width": 350,
+          "height": 467,
+          "geometryDelta": {
+            "width": 0,
+            "height": -0.0078125
+          },
+          "differentPixels": 136505,
+          "maxChannelDelta": 148
+        },
+        {
+          "id": "coach-portrait",
+          "width": 350,
+          "height": 438,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 142864,
+          "maxChannelDelta": 206
+        }
+      ]
+    },
+    {
+      "locale": "fa",
+      "theme": "light",
+      "width": 430,
+      "before": "cards-fa-light-430.jpg",
+      "after": "cards-after-fa-light-430.jpg",
+      "formats": [
+        "jpeg",
+        "jpeg"
+      ],
+      "exactComparisonEligible": false,
+      "beforeSha256": "7d526d2a59a8948cd53f5d50351d3934a80dc0f52900eb0ac0e892c870e3b029",
+      "afterSha256": "8d4f9650f1e221afa567a90e062fea365fd29506f86d2677b9e39b3334952915",
+      "cards": [
+        {
+          "id": "club-portrait",
+          "width": 390,
+          "height": 559,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 207620,
+          "maxChannelDelta": 215
+        },
+        {
+          "id": "club-compact",
+          "width": 390,
+          "height": 520,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 191402,
+          "maxChannelDelta": 222
+        },
+        {
+          "id": "club-landscape",
+          "width": 390,
+          "height": 293,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 105308,
+          "maxChannelDelta": 126
+        },
+        {
+          "id": "featured",
+          "width": 390,
+          "height": 244,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 93023,
+          "maxChannelDelta": 250
+        },
+        {
+          "id": "branch",
+          "width": 144,
+          "height": 288,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 39675,
+          "maxChannelDelta": 177
+        },
+        {
+          "id": "coach-default",
+          "width": 384,
+          "height": 512,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 163070,
+          "maxChannelDelta": 255
+        },
+        {
+          "id": "coach-portrait",
+          "width": 384,
+          "height": 480,
+          "geometryDelta": {
+            "width": 0,
+            "height": 0
+          },
+          "differentPixels": 174495,
+          "maxChannelDelta": 240
+        }
+      ]
+    }
+  ]
+}

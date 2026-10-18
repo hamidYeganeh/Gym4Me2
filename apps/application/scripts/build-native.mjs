@@ -9,11 +9,22 @@ import {
   renameSync,
   rmSync,
   symlinkSync,
+  statfsSync,
   writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
 const require = createRequire(import.meta.url);
 const appDirectory = fileURLToPath(new URL("..", import.meta.url));
+// Webpack's transient cache can exhaust the host and stop the local database VM.
+// Refuse before staging files or replacing an existing native export.
+const disk = statfsSync(appDirectory);
+const freeBytes = disk.bavail * disk.bsize;
+if (freeBytes < 5 * 1024 ** 3) {
+  console.error(
+    `Native build requires 5 GiB of free workspace disk space; ${(freeBytes / 1024 ** 3).toFixed(1)} GiB available. Remove reproducible build caches before retrying.`,
+  );
+  process.exit(1);
+}
 const nextRequire = createRequire(require.resolve("next/package.json"));
 nextRequire("@next/env").loadEnvConfig(appDirectory, false);
 const endpoint = process.env.NEXT_PUBLIC_API_URL;
@@ -31,6 +42,8 @@ try {
   cpSync(join(appDirectory, "app"), join(stage, "app"), {
     recursive: true,
     filter: (source) =>
+      source !== join(appDirectory, "app/qa") &&
+      source !== join(appDirectory, "app/.well-known") &&
       !["clubs", "coaches"].some(
         (name) => source === join(appDirectory, "app/discovery", name),
       ),

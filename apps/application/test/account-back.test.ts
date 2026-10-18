@@ -10,6 +10,8 @@ test("direct account links have a finite path back to discovery", () => {
     "/invitations",
     "/privacy",
     "/login",
+    "/auth/otp",
+    "/auth/login",
   ]) {
     let route: string | null = initial;
     const visited = new Set<string>();
@@ -22,14 +24,28 @@ test("direct account links have a finite path back to discovery", () => {
   }
 });
 test("public policy returns to login only for its explicit entry point", () => {
-  assert.equal(accountBackPath("/privacy", "?from=login"), "/login");
+  assert.equal(
+    accountBackPath("/reset-password", "?returnTo=%2Fcheckout%3Fservice%3Done"),
+    "/auth/login?returnTo=%2Fcheckout%3Fservice%3Done",
+  );
+  assert.equal(
+    accountBackPath(
+      "/privacy",
+      "?from=login&method=password&returnTo=%2Fmessages",
+    ),
+    "/auth/login?returnTo=%2Fmessages",
+  );
+  assert.equal(
+    accountBackPath("/privacy", "?from=login"),
+    "/auth/otp?returnTo=%2Fprofile",
+  );
   assert.equal(
     accountBackPath("/privacy", "?from=https://example.org"),
     "/profile/settings",
   );
   assert.equal(
     accountBackPath("/privacy", "?from=login&returnTo=%2Fsessions"),
-    "/login?returnTo=%2Fsessions",
+    "/auth/otp?returnTo=%2Fsessions",
   );
   assert.equal(accountBackPath("/discovery"), null);
   assert.equal(accountBackPath("/"), null);

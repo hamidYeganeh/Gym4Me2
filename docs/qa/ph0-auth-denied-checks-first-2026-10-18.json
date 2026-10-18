@@ -1,0 +1,139 @@
+{
+  "scope": "12 synthetic local405 cases in fa/dark/360 only; no successful auth/OTP/session, full reader or complete rapid-input acceptance",
+  "complete": true,
+  "missing": [],
+  "failing": [
+    {
+      "case": "business/double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": false,
+      "correctFocus": true,
+      "extent": 3,
+      "ringInViewport": true
+    }
+  ],
+  "checks": [
+    {
+      "case": "application/double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    },
+    {
+      "case": "application/keyboard",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    },
+    {
+      "case": "application/leave-focus",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    },
+    {
+      "case": "application/otp-double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    },
+    {
+      "case": "business/double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": false,
+      "correctFocus": true,
+      "extent": 3,
+      "ringInViewport": true
+    },
+    {
+      "case": "business/keyboard",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    },
+    {
+      "case": "business/leave-focus",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    },
+    {
+      "case": "business/otp-double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    },
+    {
+      "case": "admin/double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    },
+    {
+      "case": "admin/keyboard",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    },
+    {
+      "case": "admin/leave-focus",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    },
+    {
+      "case": "admin/otp-double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "correctFocus": true,
+      "extent": 5,
+      "ringInViewport": true
+    }
+  ]
+}

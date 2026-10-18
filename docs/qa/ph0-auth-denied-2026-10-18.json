@@ -1,0 +1,424 @@
+{
+  "scope": "Synthetic local405 only; no actual sign-in/SMS/session",
+  "cases": [
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "focusVisible": true,
+      "href": null,
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 320,
+        "x": 20,
+        "y": 733.75
+      },
+      "scrollMargin": "8px",
+      "scrollY": 28.5,
+      "surface": "application",
+      "tag": "BUTTON",
+      "type": "submit",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "double-click",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": "password",
+      "focusVisible": true,
+      "href": null,
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 320,
+        "x": 20,
+        "y": 475.75
+      },
+      "scrollMargin": "8px",
+      "scrollY": 28.5,
+      "surface": "application",
+      "tag": "INPUT",
+      "type": "password",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "keyboard",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "focusVisible": true,
+      "href": "/privacy?from=login&returnTo=%2Fprofile",
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 116.5078125,
+        "x": 98.40625,
+        "y": 791.75
+      },
+      "scrollMargin": "8px",
+      "scrollY": 86.5,
+      "surface": "application",
+      "tag": "A",
+      "type": null,
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "leave-focus",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "focusVisible": true,
+      "href": null,
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 320,
+        "x": 20,
+        "y": 660
+      },
+      "scrollMargin": "8px",
+      "scrollY": 0,
+      "surface": "application",
+      "tag": "BUTTON",
+      "type": "submit",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "otp-double-click",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "focusVisible": false,
+      "href": null,
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "0px",
+      "outlineWidth": "3px",
+      "rect": {
+        "height": 44,
+        "width": 272,
+        "x": 44,
+        "y": 578
+      },
+      "scrollMargin": "0px",
+      "scrollY": 258.5,
+      "surface": "business",
+      "tag": "BUTTON",
+      "type": "submit",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "double-click",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": "password",
+      "focusVisible": true,
+      "href": null,
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 272,
+        "x": 44,
+        "y": 436
+      },
+      "scrollMargin": "8px",
+      "scrollY": 258.5,
+      "surface": "business",
+      "tag": "INPUT",
+      "type": "password",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "keyboard",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "focusVisible": true,
+      "href": "/privacy",
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 116.5078125,
+        "x": 66.53125,
+        "y": 400
+      },
+      "scrollMargin": "8px",
+      "scrollY": 92,
+      "surface": "business",
+      "tag": "A",
+      "type": null,
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "leave-focus",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "focusVisible": true,
+      "href": null,
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 272,
+        "x": 44,
+        "y": 645.75
+      },
+      "scrollMargin": "8px",
+      "scrollY": 115.5,
+      "surface": "business",
+      "tag": "BUTTON",
+      "type": "submit",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "otp-double-click",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "focusVisible": true,
+      "href": null,
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 272,
+        "x": 44,
+        "y": 578
+      },
+      "scrollMargin": "8px",
+      "scrollY": 226.5,
+      "surface": "admin",
+      "tag": "BUTTON",
+      "type": "submit",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "double-click",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": "password",
+      "focusVisible": true,
+      "href": null,
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 272,
+        "x": 44,
+        "y": 436
+      },
+      "scrollMargin": "8px",
+      "scrollY": 226.5,
+      "surface": "admin",
+      "tag": "INPUT",
+      "type": "password",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "keyboard",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "focusVisible": true,
+      "href": "/privacy",
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 116.5078125,
+        "x": 66.53125,
+        "y": 400
+      },
+      "scrollMargin": "8px",
+      "scrollY": 60,
+      "surface": "admin",
+      "tag": "A",
+      "type": null,
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "leave-focus",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    },
+    {
+      "active": true,
+      "alert": "درخواست انجام نشد. دوباره تلاش کنید.",
+      "field": null,
+      "focusVisible": true,
+      "href": null,
+      "inViewport": true,
+      "locale": "fa",
+      "outlineOffset": "3px",
+      "outlineWidth": "2px",
+      "rect": {
+        "height": 44,
+        "width": 272,
+        "x": 44,
+        "y": 645.75
+      },
+      "scrollMargin": "8px",
+      "scrollY": 83.5,
+      "surface": "admin",
+      "tag": "BUTTON",
+      "type": "submit",
+      "viewport": [
+        360,
+        844
+      ],
+      "activation": "otp-double-click",
+      "posts": 1,
+      "statuses": [
+        405
+      ],
+      "truncated": false,
+      "scope": "Local405 only; no request payloads or input contents retained"
+    }
+  ],
+  "builds": {
+    "application": "IJN-zDWQ0RoE3kssUZifg",
+    "business": "Wscwl8OBMy-r6xITe_sdB",
+    "admin": "WStoYtxAMZz58T7ZutzIT"
+  },
+  "sourceSha256": {
+    "packages/ui/src/account/login.tsx": "3fc9c86034bd4584c2b5dd06084c0683b9f5c637390f5ce5e8366be74790e79b",
+    "packages/ui/src/account/login-field.tsx": "b6f6c69c3161cf0ecfac34dd49551c4820b2664a345eaa2988204eaf32b9aea8",
+    "packages/ui/src/account/login-validation.ts": "4cca6909a1fa3e0fb231d909ecbaf81229ee0f40c024a8f37174d67e34c382fc",
+    "packages/ui/src/account/mobile-auth.tsx": "42abbabe833c22d2a63802212c2f852899266ddc06fb22f7cd3d9306646661ee",
+    "packages/ui/src/account/auth-controls.css": "84d6bcdcf138a1b3deaf3fea697220c42ec3eeaaadb0517e646a48c2e07f4102",
+    "packages/i18n/src/messages/fa.json": "0b817ea29ee9e09dae84db8c253d790a50b2e22acd672b4a44a2074c26f06fbe",
+    "packages/i18n/src/messages/en.json": "5bc12f8627cf10b3aba6232feebcced1bf64f112fa5d000f64db1614bd37ea55"
+  },
+  "setup": {
+    "origin": "http://127.0.0.1:7392",
+    "fixture": "read-only support-read on7488, all writes405",
+    "latency": "CDP requested500ms for each probe; reset0 in finally; no broad timing acceptance",
+    "viewport": "360x844 CSSpx, DPR2; no browser zoom acceptance",
+    "appearance": "Default system appearance; no cross-theme coverage claimed for these12 probes",
+    "noPayloads": "Synthetic phone/password only; request bodies and input values/lengths not retained",
+    "cleanup": "Owned tabs closed; media/metrics/viewport restored; locale preference absent as before; preview and fixture stopped"
+  }
+}

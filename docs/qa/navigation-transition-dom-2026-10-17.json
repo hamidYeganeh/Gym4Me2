@@ -1,0 +1,46 @@
+{
+  "forward": [
+    {
+      "hidden": "true",
+      "inert": true,
+      "route": "/invitations/sports"
+    },
+    {
+      "hidden": null,
+      "inert": false,
+      "route": "/services/109df1d8-2d08-4973-903d-3570d553f132"
+    }
+  ],
+  "backward": [
+    {
+      "hidden": "true",
+      "inert": true,
+      "route": "/invitations/sports"
+    },
+    {
+      "hidden": null,
+      "inert": false,
+      "route": "/invitations/sports"
+    },
+    {
+      "hidden": "true",
+      "inert": true,
+      "route": "/services/109df1d8-2d08-4973-903d-3570d553f132"
+    }
+  ],
+  "final": {
+    "focus": "رد دعوت",
+    "height": 844,
+    "lang": "fa",
+    "overflow": false,
+    "routes": [
+      {
+        "hidden": null,
+        "inert": false,
+        "route": "/invitations/sports"
+      }
+    ],
+    "theme": "__variable_c8f663 dark",
+    "width": 390
+  }
+}

@@ -1,0 +1,53 @@
+/* App focus is an opaque two-tone indicator. Keep the palette and unfocused
+   component styles intact; the backdrop band also works over photographs. */
+[data-gym-focus] :focus-visible,
+[data-gym-focus] [data-gym-focus-proxy]:focus-within {
+  /* Component utilities may otherwise suppress or tint the focus indicator. */
+  outline: 2px solid var(--foreground) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 3px var(--background) !important;
+  /* Paint the indicator immediately, even on controls using transition-all. */
+  transition-property:
+    color, background-color, border-color, text-decoration-color, fill, stroke,
+    opacity, transform, translate, scale, rotate !important;
+}
+
+/* Existing club/coach overlay links sit on overflow-hidden card edges. Keep
+   both opaque bands inside the link, above its photograph and below its text. */
+[data-gym-focus] article[data-variant] > a.absolute.inset-0:focus-visible {
+  outline-offset: -4px !important;
+  box-shadow: inset 0 0 0 6px var(--background) !important;
+}
+
+@supports not selector(:focus-visible) {
+  [data-gym-focus] :focus {
+    outline: 2px solid var(--foreground) !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 0 3px var(--background) !important;
+    transition-property:
+      color, background-color, border-color, text-decoration-color, fill,
+      stroke, opacity, transform, translate, scale, rotate !important;
+  }
+
+  [data-gym-focus] article[data-variant] > a.absolute.inset-0:focus {
+    outline-offset: -4px !important;
+    box-shadow: inset 0 0 0 6px var(--background) !important;
+  }
+}
+
+@media (forced-colors: active) {
+  [data-gym-focus] :focus-visible,
+  [data-gym-focus] [data-gym-focus-proxy]:focus-within,
+  [data-gym-focus] article[data-variant] > a.absolute.inset-0:focus-visible {
+    outline-color: Highlight !important;
+    box-shadow: none !important;
+  }
+
+  @supports not selector(:focus-visible) {
+    [data-gym-focus] :focus,
+    [data-gym-focus] article[data-variant] > a.absolute.inset-0:focus {
+      outline-color: Highlight !important;
+      box-shadow: none !important;
+    }
+  }
+}

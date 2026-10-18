@@ -1,0 +1,359 @@
+{
+  "scope": "Application auth entry sheet only;fa360x844,DPR2;computed duration and sampled media switch, not full timeline/native acceptance",
+  "buildId": "iMjpby3x5nuJ76wBVFbOB",
+  "cases": [
+    {
+      "animation": "none",
+      "backdrop": "none",
+      "controls": [
+        {
+          "height": 44,
+          "text": "بستن",
+          "transform": "none",
+          "width": 44
+        },
+        {
+          "height": 56,
+          "text": "ادامه با شماره موبایل",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 56,
+          "text": "ورود با رمز عبور",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 44,
+          "text": "سیاست حریم خصوصی را می‌پذیری.",
+          "transform": "none",
+          "width": 169.71875
+        }
+      ],
+      "duration": "0s",
+      "focusInside": true,
+      "focusName": "بستن",
+      "label": "radix-_r_1_",
+      "locale": "fa",
+      "modal": null,
+      "overflow": false,
+      "rect": {
+        "height": 502.734375,
+        "width": 344,
+        "x": 8,
+        "y": 333.265625
+      },
+      "reduced": true,
+      "role": "dialog",
+      "theme": "__variable_c8f663 dark",
+      "transform": "none",
+      "transition": "0s",
+      "viewport": [
+        360,
+        844
+      ]
+    },
+    {
+      "animation": "none",
+      "backdrop": "none",
+      "controls": [
+        {
+          "height": 44,
+          "text": "بستن",
+          "transform": "none",
+          "width": 44
+        },
+        {
+          "height": 56,
+          "text": "ادامه با شماره موبایل",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 56,
+          "text": "ورود با رمز عبور",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 44,
+          "text": "سیاست حریم خصوصی را می‌پذیری.",
+          "transform": "none",
+          "width": 169.71875
+        }
+      ],
+      "duration": "0s",
+      "focusInside": true,
+      "focusName": "بستن",
+      "label": "radix-_r_1_",
+      "locale": "fa",
+      "modal": null,
+      "overflow": false,
+      "rect": {
+        "height": 502.734375,
+        "width": 344,
+        "x": 8,
+        "y": 333.265625
+      },
+      "reduced": true,
+      "role": "dialog",
+      "theme": "__variable_c8f663 light",
+      "transform": "none",
+      "transition": "0s",
+      "viewport": [
+        360,
+        844
+      ]
+    },
+    {
+      "animation": "enter",
+      "backdrop": "blur(24px)",
+      "controls": [
+        {
+          "height": 44,
+          "text": "بستن",
+          "transform": "none",
+          "width": 44
+        },
+        {
+          "height": 56,
+          "text": "ادامه با شماره موبایل",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 56,
+          "text": "ورود با رمز عبور",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 44,
+          "text": "سیاست حریم خصوصی را می‌پذیری.",
+          "transform": "none",
+          "width": 169.71875
+        }
+      ],
+      "duration": "0.32s",
+      "focusInside": true,
+      "focusName": "بستن",
+      "label": "radix-_r_1_",
+      "locale": "fa",
+      "modal": null,
+      "overflow": false,
+      "rect": {
+        "height": 502.734375,
+        "width": 344,
+        "x": 8,
+        "y": 336.0205078125
+      },
+      "reduced": false,
+      "role": "dialog",
+      "theme": "__variable_c8f663 dark",
+      "transform": "matrix(1, 0, 0, 1, 0, 2.75487)",
+      "transition": "0.32s",
+      "viewport": [
+        360,
+        844
+      ]
+    },
+    {
+      "animation": "enter",
+      "backdrop": "blur(24px)",
+      "controls": [
+        {
+          "height": 44,
+          "text": "بستن",
+          "transform": "none",
+          "width": 44
+        },
+        {
+          "height": 56,
+          "text": "ادامه با شماره موبایل",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 56,
+          "text": "ورود با رمز عبور",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 44,
+          "text": "سیاست حریم خصوصی را می‌پذیری.",
+          "transform": "none",
+          "width": 169.71875
+        }
+      ],
+      "duration": "0.32s",
+      "focusInside": true,
+      "focusName": "بستن",
+      "label": "radix-_r_1_",
+      "locale": "fa",
+      "modal": null,
+      "overflow": false,
+      "rect": {
+        "height": 502.734375,
+        "width": 344,
+        "x": 8,
+        "y": 334.692138671875
+      },
+      "reduced": false,
+      "role": "dialog",
+      "theme": "__variable_c8f663 light",
+      "transform": "matrix(1, 0, 0, 1, 0, 1.4265)",
+      "transition": "0.32s",
+      "viewport": [
+        360,
+        844
+      ]
+    }
+  ],
+  "tabCycle": [
+    {
+      "inside": true,
+      "tag": "A",
+      "text": "ادامه با شماره موبایل"
+    },
+    {
+      "inside": true,
+      "tag": "A",
+      "text": "ورود با رمز عبور"
+    },
+    {
+      "inside": true,
+      "tag": "A",
+      "text": "سیاست حریم خصوصی را می‌پذیری."
+    },
+    {
+      "inside": true,
+      "tag": "BUTTON",
+      "text": "بستن"
+    }
+  ],
+  "escapeResult": {
+    "dialog": false,
+    "focus": "ورود یا ساخت حساب",
+    "path": "/"
+  },
+  "mediaSwitch": {
+    "before": {
+      "animation": "enter",
+      "backdrop": "blur(24px)",
+      "controls": [
+        {
+          "height": 44,
+          "text": "بستن",
+          "transform": "none",
+          "width": 44
+        },
+        {
+          "height": 56,
+          "text": "ادامه با شماره موبایل",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 56,
+          "text": "ورود با رمز عبور",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 44,
+          "text": "سیاست حریم خصوصی را می‌پذیری.",
+          "transform": "none",
+          "width": 169.71875
+        }
+      ],
+      "duration": "0.32s",
+      "focusInside": true,
+      "focusName": "بستن",
+      "label": "radix-_r_1_",
+      "locale": "fa",
+      "modal": null,
+      "overflow": false,
+      "rect": {
+        "height": 502.734375,
+        "width": 344,
+        "x": 8,
+        "y": 337.0350341796875
+      },
+      "reduced": false,
+      "role": "dialog",
+      "theme": "__variable_c8f663 light",
+      "transform": "matrix(1, 0, 0, 1, 0, 3.7694)",
+      "transition": "0.32s",
+      "viewport": [
+        360,
+        844
+      ]
+    },
+    "after": {
+      "animation": "none",
+      "backdrop": "none",
+      "controls": [
+        {
+          "height": 44,
+          "text": "بستن",
+          "transform": "none",
+          "width": 44
+        },
+        {
+          "height": 56,
+          "text": "ادامه با شماره موبایل",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 56,
+          "text": "ورود با رمز عبور",
+          "transform": "none",
+          "width": 302
+        },
+        {
+          "height": 44,
+          "text": "سیاست حریم خصوصی را می‌پذیری.",
+          "transform": "none",
+          "width": 169.71875
+        }
+      ],
+      "duration": "0s",
+      "focusInside": true,
+      "focusName": "بستن",
+      "label": "radix-_r_1_",
+      "locale": "fa",
+      "modal": null,
+      "overflow": false,
+      "rect": {
+        "height": 502.734375,
+        "width": 344,
+        "x": 8,
+        "y": 333.265625
+      },
+      "reduced": true,
+      "role": "dialog",
+      "theme": "__variable_c8f663 light",
+      "transform": "none",
+      "transition": "0s",
+      "viewport": [
+        360,
+        844
+      ]
+    }
+  },
+  "backResult": {
+    "dialog": false,
+    "focus": "ورود یا ساخت حساب",
+    "path": "/"
+  },
+  "authSourceAtBuildStart": {
+    "packages/ui/src/account/auth-controls.css": "07bfc61418d1acbc54915445e153999b4ce82a91227605f96e7004cc562eeb78",
+    "packages/ui/src/account/auth-entry.tsx": "47aa61f0de63b7c3ac7ffae6de577324fc569e2495d1c0c826d4277328f8f8dd",
+    "packages/ui/src/account/login.tsx": "6772b67a7b4bdf0172ae031570311bf57e4c353f4c46e1b73d4d38bed045d672",
+    "packages/ui/src/account/mobile-auth.tsx": "3b4f4c4b2b4289784d850f71de36e99496e0fa2599ff01b832ff37ebc6a9f619"
+  },
+  "currentSourceFreshness": "Unproven: auth CSS and login source changed during this build/test window; do not attribute this browser receipt to current source."
+}

@@ -52,7 +52,7 @@ try {
       ...(command === "prepare"
         ? {
             directory,
-            next: "Keep destination offline. Restore database/media into an isolated destination, then replay ledger/deletion-ledger.json with the existing deletion-ledger replay command and --apply before enabling traffic.",
+            next: "Keep destination offline. Restore database.dump into a NEW isolated recovery database and provision an EMPTY recovery bucket. Run the API workspace restore-media.ts command with snapshot directory, ledger/deletion-ledger.json and --offline; it verifies all files, applies the current ledger, then uploads ONLY remaining referenced media. Never upload snapshot media before deletion replay. Application configuration, roles and traffic cutover require separate acceptance.",
           }
         : {}),
     }),

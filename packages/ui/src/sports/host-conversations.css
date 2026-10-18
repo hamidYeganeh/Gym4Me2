@@ -1,0 +1,171 @@
+.sports-host-conversations {
+  max-width: 56rem;
+  margin-inline: auto;
+}
+.sports-host-conversations :is(button, select) {
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+}
+/* Keep the theme's full text color for small error copy in either appearance. */
+:is(.sports-host-conversations, .sports-host-sheet)
+  [data-slot="alert"]
+  [data-slot="alert-description"] {
+  color: inherit;
+}
+.sports-host-inbox {
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  background: var(--card);
+  overflow: hidden;
+}
+.sports-host-inbox article + article {
+  border-top: 1px solid var(--border);
+}
+.sports-host-inbox-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 5.5rem;
+  padding: 1rem;
+}
+.sports-host-inbox-row:hover {
+  background: var(--muted);
+}
+.sports-host-avatar {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+  background: var(--muted);
+  color: var(--foreground);
+  flex-shrink: 0;
+}
+.sports-host-unread {
+  display: grid;
+  place-items: center;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding-inline: 0.4rem;
+  border-radius: 99rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 0.75rem;
+}
+.sports-host-chat-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.sports-host-chat-card {
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: var(--card);
+}
+.sports-host-chat-scroll {
+  height: min(55dvh, 34rem);
+  min-height: 12rem;
+  overflow-y: auto;
+  padding: 1.25rem;
+  overscroll-behavior: contain;
+}
+.sports-host-chat-log {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+.sports-host-chat-bubble {
+  border-radius: 1.25rem;
+  max-width: min(90%, 34rem);
+  min-width: 6rem;
+  padding: 1rem;
+  background: var(--muted);
+  overflow-wrap: anywhere;
+}
+.sports-host-chat-bubble[data-own="true"] {
+  align-self: flex-end;
+  background: color-mix(in srgb, var(--primary) 12%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--border));
+}
+.sports-host-chat-compose {
+  padding: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+.sports-host-conversation-page {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+.sports-host-conversation-page > div {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  width: 100%;
+}
+.sports-host-conversation-page header {
+  margin-bottom: 1rem;
+}
+.sports-host-conversation-page header h1 {
+  font-size: 1.125rem;
+}
+.sports-host-conversation-page nav {
+  display: none;
+}
+.sports-host-conversation-page .sports-host-conversations {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  width: 100%;
+}
+.sports-host-conversation-page .sports-host-chat-toolbar > span {
+  display: none;
+}
+.sports-host-conversation-page .sports-host-chat-card {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+.sports-host-conversation-page .sports-host-chat-scroll {
+  height: auto;
+  flex: 1;
+  min-height: 0;
+}
+.sports-host-conversation-page .sports-host-chat-compose {
+  padding: 1rem;
+}
+.sports-host-sheet {
+  max-height: min(85dvh, 48rem);
+  max-width: 40rem;
+  margin-inline: auto;
+  border-radius: 1.5rem 1.5rem 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  animation-duration: 320ms;
+  transition-duration: 320ms;
+}
+.sports-host-sheet :is(button, input, textarea, select) {
+  min-height: 2.75rem;
+}
+.sports-host-sheet button {
+  min-width: 2.75rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sports-host-sheet {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+  [data-slot="sheet-overlay"]:has(+ .sports-host-sheet) {
+    animation: none;
+    transition: none;
+    backdrop-filter: none;
+  }
+}

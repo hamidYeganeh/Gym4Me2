@@ -18,21 +18,110 @@ export const schedules = {
   check: 7 * 24 * 3600000,
 };
 export function dueJobs(state, now) {
-  return Object.keys(schedules).filter(
-    (job) =>
-      now >= (state[job]?.retryAt ?? 0) &&
-      now - (state[job]?.successAt ?? 0) >= schedules[job],
-  );
+  return Object.keys(schedules).filter((job) => {
+    const previous = state[job];
+    const retryAt = previous?.retryAt;
+    const retryPending =
+      Number.isSafeInteger(retryAt) &&
+      retryAt > now &&
+      retryAt <= now + 30 * 60000;
+    const at = job === "check" ? previous?.successAt : previous?.sourceAt;
+    const current = Number.isSafeInteger(at) && at > 0 && at <= now;
+    return !retryPending && (!current || now - at >= schedules[job]);
+  });
 }
-export function resultState(previous, ok, now) {
+export function resultState(previous, ok, now, sourceAt = now) {
   const failures = ok ? 0 : (previous?.failures ?? 0) + 1;
   return {
     successAt: ok ? now : (previous?.successAt ?? 0),
+    sourceAt: ok ? sourceAt : (previous?.sourceAt ?? 0),
     checkedAt: now,
     failures,
     retryAt: ok
       ? 0
       : now + Math.min(30 * 60000, 30000 * 2 ** Math.min(failures - 1, 6)),
+  };
+}
+
+export function backupHealth(state, now = Date.now()) {
+  const fresh = (job, limit, key) => {
+    const at = state?.[job]?.[key];
+    return Number.isSafeInteger(at) && at > 0 && at <= now && now - at < limit;
+  };
+  return [
+    ["deletion-ledger", fresh("ledger", 10 * 60000, "sourceAt")],
+    ["backup", fresh("snapshot", 26 * 3600000, "sourceAt")],
+    ["backup-integrity", fresh("check", 8 * 24 * 3600000, "successAt")],
+  ];
+}
+
+/** One ledger job and one data job at most; a long snapshot cannot hold up the mirror. */
+export function createOperationsScheduler({
+  state,
+  run,
+  persist,
+  clock = Date.now,
+  onError = () => {},
+}) {
+  const running = new Map();
+  let stopped = false,
+    fatal;
+  async function execute(job) {
+    let result;
+    try {
+      result = await run(job);
+    } catch {
+      result = { ok: false };
+    }
+    const now = clock();
+    const sourceAt = job === "check" ? now : Date.parse(result?.capturedAt);
+    const ok =
+      result?.ok === true &&
+      Number.isSafeInteger(sourceAt) &&
+      sourceAt > 0 &&
+      sourceAt <= now;
+    state[job] = resultState(state[job], ok, now, sourceAt);
+    await persist(state, { job, ok, at: new Date(now).toISOString() });
+  }
+  function start(lane, job) {
+    const promise = execute(job)
+      .catch((error) => {
+        fatal = error;
+        stopped = true;
+        onError(error);
+      })
+      .finally(() => running.delete(lane));
+    running.set(lane, promise);
+    return promise;
+  }
+  return {
+    tick() {
+      if (fatal) throw fatal;
+      if (stopped) return [];
+      const started = [];
+      const due = dueJobs(state, clock());
+      if (!running.has("ledger") && due.includes("ledger"))
+        started.push(start("ledger", "ledger"));
+      if (!running.has("data")) {
+        const job = due.find((name) => name !== "ledger");
+        if (job) started.push(start("data", job));
+      }
+      return started;
+    },
+    async once() {
+      // Manual one-shot checks stay sequential and low-load.
+      for (const job of dueJobs(state, clock())) {
+        if (stopped) break;
+        await execute(job);
+      }
+    },
+    stop() {
+      stopped = true;
+    },
+    async drain() {
+      await Promise.all(running.values());
+      if (fatal) throw fatal;
+    },
   };
 }
 if (
@@ -66,48 +155,87 @@ if (
   });
   let stopped = false,
     timer,
-    child;
+    scheduler;
+  const children = new Set();
   const stop = () => {
     stopped = true;
     clearTimeout(timer);
-    child?.kill("SIGTERM");
+    scheduler?.stop();
+    for (const child of children) child.kill("SIGTERM");
   };
   process.on("SIGINT", stop);
   process.on("SIGTERM", stop);
   const file = resolve(directory, "state.json");
   let state = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : {};
-  const run = (script, args) =>
+  const run = (job) =>
     new Promise((done) => {
-      child = spawn(process.execPath, [script, ...args], {
-        cwd: root,
-        env: process.env,
-        stdio: "ignore",
-        timeout: 35 * 60000,
-      });
-      child.once("error", () => done(false));
-      child.once("close", (code) => done(code === 0));
-    });
-  const tick = async () => {
-    for (const job of dueJobs(state, Date.now())) {
-      if (stopped) break;
-      const ok = await run("scripts/staging-backup.mjs", [job]);
-      state[job] = resultState(state[job], ok, Date.now());
-      const temp = `${file}.${process.pid}.tmp`;
-      writeFileSync(temp, JSON.stringify(state, null, 2), { mode: 0o600 });
-      renameSync(temp, file);
-      console.log(JSON.stringify({ job, ok, at: new Date().toISOString() }));
-    }
-    if (!stopped && process.argv[2] === "--watch")
-      timer = setTimeout(
-        () =>
-          void tick().catch(() => {
-            process.exitCode = 1;
-            stop();
-          }),
-        30000,
+      const child = spawn(
+        process.execPath,
+        [
+          "scripts/staging-backup.mjs",
+          job,
+          ...(job === "snapshot" ? ["--separate-ledger-worker"] : []),
+        ],
+        {
+          cwd: root,
+          env: process.env,
+          stdio: ["ignore", "pipe", "ignore"],
+          timeout: 35 * 60000,
+        },
       );
-    else if (Object.values(state).some((job) => job.failures))
+      children.add(child);
+      let output = "",
+        invalid = false;
+      child.stdout.setEncoding("utf8");
+      child.stdout.on("data", (chunk) => {
+        if (output.length + chunk.length > 4096) {
+          invalid = true;
+          child.kill("SIGTERM");
+        } else output += chunk;
+      });
+      child.once("error", () => {
+        children.delete(child);
+        done({ ok: false });
+      });
+      child.once("close", (code) => {
+        children.delete(child);
+        try {
+          const receipt = JSON.parse(output);
+          done({
+            ok: code === 0 && !invalid && receipt.operation === job,
+            capturedAt: receipt.capturedAt,
+          });
+        } catch {
+          done({ ok: false });
+        }
+      });
+    });
+  scheduler = createOperationsScheduler({
+    state,
+    run,
+    persist(current, event) {
+      const temp = `${file}.${process.pid}.tmp`;
+      writeFileSync(temp, JSON.stringify(current, null, 2), { mode: 0o600 });
+      renameSync(temp, file);
+      console.log(JSON.stringify(event));
+    },
+    onError() {
       process.exitCode = 1;
+      stop();
+    },
+  });
+  const tick = () => {
+    try {
+      scheduler.tick();
+      if (!stopped) timer = setTimeout(tick, 30000);
+    } catch {
+      process.exitCode = 1;
+      stop();
+    }
   };
-  await tick();
+  if (process.argv[2] === "--watch") tick();
+  else {
+    await scheduler.once();
+    if (Object.values(state).some((job) => job.failures)) process.exitCode = 1;
+  }
 }

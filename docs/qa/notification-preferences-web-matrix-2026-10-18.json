@@ -1,0 +1,1734 @@
+{
+  "scope": "Read-only DTO simulation; no session or successful persistence",
+  "flows": {
+    "initial": {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390
+    },
+    "refreshBusy": {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "true",
+          "disabled": true,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": false,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        "تغییرات ذخیره‌نشده دارید."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390
+    },
+    "afterRefresh": {
+      "active": {
+        "id": "_r_0_-invitations",
+        "role": "checkbox",
+        "tag": "BUTTON"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": false,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        "تغییرات ذخیره‌نشده دارید."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390
+    },
+    "afterDiscard": {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390
+    },
+    "failedSave": {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [
+        "اقدام انجام نشد؛ دوباره تلاش کنید."
+      ],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": false,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        "تغییرات ذخیره‌نشده دارید."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390
+    },
+    "keyboardToggle": {
+      "active": {
+        "id": "_r_0_-messages",
+        "role": "checkbox",
+        "tag": "BUTTON"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": false,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        "تغییرات ذخیره‌نشده دارید."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390
+    },
+    "pristineRefresh": {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BUTTON"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Refresh preferences"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "Discard changes"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "Save"
+        }
+      ],
+      "lang": "en",
+      "overflow": false,
+      "status": [
+        "Preferences refreshed."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Reminders",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Messages",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Invitations",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 430,
+      "focusText": "Refresh preferences"
+    },
+    "sequentialFixtureInitialError": {
+      "dom": "- main:\n  - link \"Back\":\n    - /url: /notifications\n  - heading \"Notify preferences\" [level=1]\n  - link \"Notifications\":\n    - /url: /notifications\n  - alert:\n    - paragraph: Could not load this page\n    - button \"Retry\"\n- navigation \"Navigation\":\n  - link \"Home\":\n    - /url: /\n    - generic: Home\n  - link \"Discover\":\n    - /url: /discovery\n    - generic: Discover\n  - link \"Messages\":\n    - /url: /messages\n    - generic: Messages\n- region \"Notifications alt+T\"\n- alert",
+      "note": "Not accepted as a refresh-after-edit test; switched to stable read data first."
+    },
+    "beforeExplicitReadFailure": {
+      "active": {
+        "id": "_r_0_-messages",
+        "role": "checkbox",
+        "tag": "BUTTON"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Refresh preferences"
+        },
+        {
+          "busy": null,
+          "disabled": false,
+          "text": "Discard changes"
+        },
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Save"
+        }
+      ],
+      "lang": "en",
+      "overflow": false,
+      "status": [
+        "You have unsaved changes."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Reminders",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Messages",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Invitations",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390
+    },
+    "failedRead": {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BUTTON"
+      },
+      "activeMains": 1,
+      "alerts": [
+        "Could not refresh preferences. Your current choices have been kept."
+      ],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Refresh preferences"
+        },
+        {
+          "busy": null,
+          "disabled": false,
+          "text": "Discard changes"
+        },
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Save"
+        }
+      ],
+      "lang": "en",
+      "overflow": false,
+      "status": [
+        "You have unsaved changes."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Reminders",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Messages",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Invitations",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390,
+      "scenario": "Stable preferences-read loaded, then loopback fixture replaced with unavailable without closing the form."
+    },
+    "initialReadFailure": {
+      "dom": "- main:\n  - link \"Back\":\n    - /url: /notifications\n  - heading \"Notify preferences\" [level=1]\n  - link \"Notifications\":\n    - /url: /notifications\n  - alert:\n    - paragraph: Could not load this page\n    - button \"Retry\"\n- navigation \"Navigation\":\n  - link \"Home\":\n    - /url: /\n    - generic: Home\n  - link \"Discover\":\n    - /url: /discovery\n    - generic: Discover\n  - link \"Messages\":\n    - /url: /messages\n    - generic: Messages\n- region \"Notifications alt+T\"\n- alert",
+      "forms": 0,
+      "checkboxes": 0
+    },
+    "beforeExpiredRead": {
+      "active": {
+        "id": "_r_0_-messages",
+        "role": "checkbox",
+        "tag": "BUTTON"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": false,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        "تغییرات ذخیره‌نشده دارید."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390
+    },
+    "expiredRead": {
+      "dom": "- main:\n  - link \"بازگشت\":\n    - /url: /notifications\n  - heading \"ترجیحات اعلان\" [level=1]\n  - link \"اعلان‌ها\":\n    - /url: /notifications\n  - paragraph:\n    - link \"ورود به حساب\":\n      - /url: /login?returnTo=%2Fnotifications%2Fpreferences%3Fsource%3Dpreferences-qa\n- navigation \"ناوبری اصلی\":\n  - link \"خانه\":\n    - /url: /\n    - generic: خانه\n  - link \"کشف\":\n    - /url: /discovery\n    - generic: کشف\n  - link \"گفتگو\":\n    - /url: /messages\n    - generic: گفتگو\n- region \"Notifications alt+T\"\n- alert",
+      "forms": 0,
+      "checkboxes": 0,
+      "href": "/login?returnTo=%2Fnotifications%2Fpreferences%3Fsource%3Dpreferences-qa"
+    }
+  },
+  "cases": [
+    {
+      "active": {
+        "id": "_r_0_-messages",
+        "role": "checkbox",
+        "tag": "BUTTON"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": false,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        "تغییرات ذخیره‌نشده دارید."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 360,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "یادآوری‌ها"
+        },
+        {
+          "height": 48,
+          "text": "گفتگو"
+        },
+        {
+          "height": 48,
+          "text": "دعوت‌های ورزشی"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "دریافت تنظیمات تازه",
+          "width": 141.234375
+        },
+        {
+          "height": 44,
+          "text": "بازگردانی تغییرات",
+          "width": 120.40625
+        },
+        {
+          "height": 44,
+          "text": "ذخیره",
+          "width": 320
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "_r_0_-messages",
+        "role": "checkbox",
+        "tag": "BUTTON"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": false,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        "تغییرات ذخیره‌نشده دارید."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "یادآوری‌ها"
+        },
+        {
+          "height": 48,
+          "text": "گفتگو"
+        },
+        {
+          "height": 48,
+          "text": "دعوت‌های ورزشی"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "دریافت تنظیمات تازه",
+          "width": 141.234375
+        },
+        {
+          "height": 44,
+          "text": "بازگردانی تغییرات",
+          "width": 120.40625
+        },
+        {
+          "height": 44,
+          "text": "ذخیره",
+          "width": 350
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "_r_0_-messages",
+        "role": "checkbox",
+        "tag": "BUTTON"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": false,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        "تغییرات ذخیره‌نشده دارید."
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 430,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "یادآوری‌ها"
+        },
+        {
+          "height": 48,
+          "text": "گفتگو"
+        },
+        {
+          "height": 48,
+          "text": "دعوت‌های ورزشی"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "دریافت تنظیمات تازه",
+          "width": 141.234375
+        },
+        {
+          "height": 44,
+          "text": "بازگردانی تغییرات",
+          "width": 120.40625
+        },
+        {
+          "height": 44,
+          "text": "ذخیره",
+          "width": 390
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "light",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 360,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "یادآوری‌ها"
+        },
+        {
+          "height": 48,
+          "text": "گفتگو"
+        },
+        {
+          "height": 48,
+          "text": "دعوت‌های ورزشی"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "دریافت تنظیمات تازه",
+          "width": 141.234375
+        },
+        {
+          "height": 44,
+          "text": "بازگردانی تغییرات",
+          "width": 120.40625
+        },
+        {
+          "height": 44,
+          "text": "ذخیره",
+          "width": 320
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "light",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "یادآوری‌ها"
+        },
+        {
+          "height": 48,
+          "text": "گفتگو"
+        },
+        {
+          "height": 48,
+          "text": "دعوت‌های ورزشی"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "دریافت تنظیمات تازه",
+          "width": 141.234375
+        },
+        {
+          "height": 44,
+          "text": "بازگردانی تغییرات",
+          "width": 120.40625
+        },
+        {
+          "height": 44,
+          "text": "ذخیره",
+          "width": 350
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "دریافت تنظیمات تازه"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "بازگردانی تغییرات"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "ذخیره"
+        }
+      ],
+      "lang": "fa",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "light",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "یادآوری‌ها",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "گفتگو",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "دعوت‌های ورزشی",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 430,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "یادآوری‌ها"
+        },
+        {
+          "height": 48,
+          "text": "گفتگو"
+        },
+        {
+          "height": 48,
+          "text": "دعوت‌های ورزشی"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "دریافت تنظیمات تازه",
+          "width": 141.234375
+        },
+        {
+          "height": 44,
+          "text": "بازگردانی تغییرات",
+          "width": 120.40625
+        },
+        {
+          "height": 44,
+          "text": "ذخیره",
+          "width": 390
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Refresh preferences"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "Discard changes"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "Save"
+        }
+      ],
+      "lang": "en",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "light",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Reminders",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Messages",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Invitations",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 360,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "Reminders"
+        },
+        {
+          "height": 48,
+          "text": "Messages"
+        },
+        {
+          "height": 48,
+          "text": "Invitations"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "Refresh preferences",
+          "width": 152.125
+        },
+        {
+          "height": 44,
+          "text": "Discard changes",
+          "width": 130.0625
+        },
+        {
+          "height": 44,
+          "text": "Save",
+          "width": 320
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Refresh preferences"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "Discard changes"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "Save"
+        }
+      ],
+      "lang": "en",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "light",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Reminders",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Messages",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Invitations",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "Reminders"
+        },
+        {
+          "height": 48,
+          "text": "Messages"
+        },
+        {
+          "height": 48,
+          "text": "Invitations"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "Refresh preferences",
+          "width": 152.125
+        },
+        {
+          "height": 44,
+          "text": "Discard changes",
+          "width": 130.0625
+        },
+        {
+          "height": 44,
+          "text": "Save",
+          "width": 350
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Refresh preferences"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "Discard changes"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "Save"
+        }
+      ],
+      "lang": "en",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "light",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Reminders",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Messages",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Invitations",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 430,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "Reminders"
+        },
+        {
+          "height": 48,
+          "text": "Messages"
+        },
+        {
+          "height": 48,
+          "text": "Invitations"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "Refresh preferences",
+          "width": 152.125
+        },
+        {
+          "height": 44,
+          "text": "Discard changes",
+          "width": 130.0625
+        },
+        {
+          "height": 44,
+          "text": "Save",
+          "width": 390
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Refresh preferences"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "Discard changes"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "Save"
+        }
+      ],
+      "lang": "en",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Reminders",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Messages",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Invitations",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 360,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "Reminders"
+        },
+        {
+          "height": 48,
+          "text": "Messages"
+        },
+        {
+          "height": 48,
+          "text": "Invitations"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "Refresh preferences",
+          "width": 152.125
+        },
+        {
+          "height": 44,
+          "text": "Discard changes",
+          "width": 130.0625
+        },
+        {
+          "height": 44,
+          "text": "Save",
+          "width": 320
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Refresh preferences"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "Discard changes"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "Save"
+        }
+      ],
+      "lang": "en",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Reminders",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Messages",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Invitations",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 390,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "Reminders"
+        },
+        {
+          "height": 48,
+          "text": "Messages"
+        },
+        {
+          "height": 48,
+          "text": "Invitations"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "Refresh preferences",
+          "width": 152.125
+        },
+        {
+          "height": 44,
+          "text": "Discard changes",
+          "width": 130.0625
+        },
+        {
+          "height": 44,
+          "text": "Save",
+          "width": 350
+        }
+      ],
+      "passed": true
+    },
+    {
+      "active": {
+        "id": "",
+        "role": null,
+        "tag": "BODY"
+      },
+      "activeMains": 1,
+      "alerts": [],
+      "buttons": [
+        {
+          "busy": "false",
+          "disabled": false,
+          "text": "Refresh preferences"
+        },
+        {
+          "busy": null,
+          "disabled": true,
+          "text": "Discard changes"
+        },
+        {
+          "busy": "false",
+          "disabled": true,
+          "text": "Save"
+        }
+      ],
+      "lang": "en",
+      "overflow": false,
+      "status": [
+        ""
+      ],
+      "theme": "dark",
+      "values": [
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Reminders",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "true",
+          "disabled": false,
+          "label": "Messages",
+          "labelsLinked": true,
+          "name": null
+        },
+        {
+          "checked": "false",
+          "disabled": false,
+          "label": "Invitations",
+          "labelsLinked": true,
+          "name": null
+        }
+      ],
+      "width": 430,
+      "forms": 1,
+      "hiddenInputsCorrect": true,
+      "hintLinked": true,
+      "labels": [
+        {
+          "height": 48,
+          "text": "Reminders"
+        },
+        {
+          "height": 48,
+          "text": "Messages"
+        },
+        {
+          "height": 48,
+          "text": "Invitations"
+        }
+      ],
+      "targets": [
+        {
+          "height": 44,
+          "text": "Refresh preferences",
+          "width": 152.125
+        },
+        {
+          "height": 44,
+          "text": "Discard changes",
+          "width": 130.0625
+        },
+        {
+          "height": 44,
+          "text": "Save",
+          "width": 390
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "expected": 12,
+  "complete": true,
+  "flowAssertions": {
+    "initial": true,
+    "draftSurvivedRefresh": true,
+    "userFocusRetained": true,
+    "latestSnapshotOnDiscard": true,
+    "failedSaveKeptDraft": true,
+    "failedReadKeptDraft": true,
+    "initialFailureHasNoForm": true,
+    "expiredReadHidesCachedForm": true,
+    "expiredReadPreservesDestination": true
+  },
+  "sourceSha256": {
+    "apps/application/components/luma/notification-preferences.tsx": "ba12600cf98fbdcd263d7afd989093c3a02875c92d27327d7a3d2848fae13049",
+    "apps/application/components/luma/community.tsx": "9a00187f0351726ba5badf5bddc4a6b537896d4b964a04318fcc5fc91daa7c2e",
+    "apps/application/lib/notification-preferences.ts": "636089475594a74c6a0e7fb9284ea3e37b5da35265f615634da69243ae569acd",
+    "packages/api/src/sports/index.ts": "f3d249bff7f05abbd02569666f6c9427f9e33f48f66715665e446476f36bd1bc",
+    "packages/i18n/src/messages/fa.json": "da8e5ed67f40787a216c9674fc12d5808da1b21d13d3c4ce8d65e8e6a85dfb89",
+    "packages/i18n/src/messages/en.json": "c9b66bbb118029c357294f16af3a3ab8417cca5c30006d0a59f1953651024a14",
+    "apps/application/test/notification-preferences.test.ts": "5c2bd95864d18e892b3fc873412301afa8eb3f708ce87739ba10415e68e0a8f4",
+    "apps/application/test/fixtures/notification-preferences.ts": "92170e509e82a5a4670f0de334e4e8198481f58272b603e1bc162b91f8a65bf0",
+    "apps/application/test/fixtures/web-read-api.ts": "5f0b3f5d7b0d565daa63f9f65d1014006b67b8a8d1e23f54b105b756c01af6f5",
+    "apps/application/test/web-read-fixture.test.ts": "e7c1d167829b8054f000cf4fcd97685ce664521cf38fd5c777d5345f07797cb6",
+    "apps/application/scripts/web-read-fixture.mts": "a56ccc212e332862b558f57ff539194823e35de458c7fc14426e8f11376697bb"
+  },
+  "build": {
+    "app": "application",
+    "id": "EDlPasrHyoeGnSbXnOiH4",
+    "compileSeconds": 22.1,
+    "typecheckSeconds": 8.3,
+    "pages": 64,
+    "heapMiB": 512,
+    "workers": 1,
+    "apiUrl": "http://127.0.0.1:7488"
+  },
+  "tests": {
+    "passed": 20,
+    "failed": 0,
+    "heapMiB": 128,
+    "concurrency": 1,
+    "files": [
+      "notification-preferences.test.ts",
+      "web-read-fixture.test.ts"
+    ]
+  },
+  "completionScope": "complete asserts 12 layout/semantics DOM cases only; flow assertions are listed separately. No phase acceptance or actual saved preferences.",
+  "notAccepted": [
+    "successful API persistence and reload",
+    "save-pending and success state browser acceptance",
+    "actual auth and privacy consent",
+    "403 and negative cross-organization permissions",
+    "device, screen reader, zoom and full visual/motion acceptance"
+  ]
+}

@@ -8,3 +8,4 @@ export { AccountExportProvider } from "./account-export";
 
 export { OtpAutofillProvider } from "./otp-autofill";
 export { CompleteProfilePage } from "./complete-profile";
+export { AuthEntryButton, AuthRequired, AuthWelcome } from "./auth-entry";

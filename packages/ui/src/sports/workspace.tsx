@@ -1,0 +1,1998 @@
+"use client";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+  type ReactNode,
+} from "react";
+import { useChangeLocale } from "@repo/i18n/client-provider";
+import { useLocale, useTranslations } from "@repo/i18n";
+import { useOrganizations, useBranches } from "@repo/api/business";
+import {
+  useSportsQuery,
+  useSportsCommand,
+  type ServiceDto,
+  type BookingDto,
+  type OrderDto,
+  type TicketDto,
+  type VisitDto,
+  type DocumentReviewDto,
+  type CouponDto,
+  type OccurrenceSeriesDto,
+  type OccurrenceSeriesInput,
+  type HostCalendarDto,
+} from "@repo/api/sports";
+import { Button } from "../kit/Button";
+import { cn } from "../lib/utils";
+import { AnimatedThemeToggler } from "../kit/AnimatedThemeToggler";
+import { Input } from "../kit/Input";
+import { Textarea } from "../kit/Textarea";
+import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
+import { Card, CardContent, CardHeader, CardTitle } from "../kit/Card";
+import { Empty, EmptyHeader, EmptyDescription } from "../kit/Empty";
+import { Loading } from "../account/common";
+import { QueryError } from "./query-error";
+import { ResourceManager } from "./resources";
+import { OccurrenceSeriesManager } from "./occurrence-series";
+import { ServiceCoverEditor } from "./cover";
+import { ServiceInvitations } from "./invitations";
+import { CalendarManager } from "./calendars";
+import {
+  ServiceEligibilityFields,
+  readServiceEligibility,
+} from "./eligibility";
+function Status({ value }: { value: string }) {
+  const t = useTranslations("Luma");
+  const labels = {
+    held: "status.held",
+    pending_approval: "status.pending_approval",
+    confirmed: "status.confirmed",
+    cancelled: "status.cancelled",
+    expired: "status.expired",
+    completed: "status.completed",
+    no_show: "status.no_show",
+    active: "status.active",
+    frozen: "status.frozen",
+    pending: "status.pending",
+    paid: "status.paid",
+    awaiting_payment: "status.awaiting_payment",
+    review: "status.review",
+    refunded: "status.refunded",
+    partially_refunded: "status.partially_refunded",
+    waiting: "status.waiting",
+    offered: "status.offered",
+    invited: "status.invited",
+    accepted: "status.accepted",
+    declined: "status.declined",
+    open: "status.open",
+    assigned: "status.assigned",
+    resolved: "status.resolved",
+    draft: "status.draft",
+    published: "status.published",
+    partially_paid: "status.partially_paid",
+    approved: "status.approved",
+    rejected: "status.rejected",
+    verified: "status.verified",
+    failed: "status.failed",
+    unknown: "status.unknown",
+    succeeded: "status.succeeded",
+    requested: "status.requested",
+    withdrawn: "status.withdrawn",
+  } as const;
+  return (
+    <span className="rounded-full bg-muted px-3 py-1 text-xs">
+      {t(labels[value as keyof typeof labels] ?? "status.review")}
+    </span>
+  );
+}
+function Blank({ children }: { children: ReactNode }) {
+  return (
+    <Empty>
+      <EmptyHeader>
+        <EmptyDescription>{children}</EmptyDescription>
+      </EmptyHeader>
+    </Empty>
+  );
+}
+type Page =
+  | "services"
+  | "resources"
+  | "reception"
+  | "members"
+  | "payments"
+  | "reports"
+  | "imports"
+  | "calendar";
+function FormField({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <label className="flex flex-col gap-2 text-sm">
+      <span>{label}</span>
+      {children}
+    </label>
+  );
+}
+function rialToTomanInput(value: string) {
+  const rial = BigInt(value);
+  const whole = (rial / BigInt(10)).toString();
+  const tenth = rial % BigInt(10);
+  return tenth === BigInt(0) ? whole : `${whole}.${tenth}`;
+}
+function tomanInputToRial(value: string) {
+  if (!/^\d+(?:\.\d)?$/.test(value)) return null;
+  const [whole = "0", tenth = "0"] = value.split(".");
+  return (BigInt(whole) * BigInt(10) + BigInt(tenth)).toString();
+}
+export function SportsFrame({
+  children,
+  title,
+  className,
+}: {
+  children: ReactNode;
+  title: string;
+  className?: string;
+}) {
+  const t = useTranslations("Luma");
+  const account = useTranslations("AccountDesign");
+  const locale = useLocale();
+  const pathname = usePathname();
+  const navigation = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const nav = navigation.current;
+    const current = nav?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!nav || !current) return;
+    const row = nav.getBoundingClientRect(),
+      item = current.getBoundingClientRect();
+    if (item.left < row.left || item.right > row.right)
+      nav.scrollLeft += item.left + item.width / 2 - row.left - row.width / 2;
+  }, [pathname]);
+  const changeLocale = useChangeLocale();
+  const [changingLocale, startLocaleChange] = useTransition();
+  return (
+    <main
+      className={cn(
+        "min-h-dvh bg-muted/40 p-5 sm:p-10 [&_button]:min-h-11 [&_button]:min-w-11 [&_select]:min-h-11",
+        className,
+      )}
+    >
+      <div className="mx-auto max-w-6xl">
+        <header className="flex flex-wrap items-center justify-between gap-4 mb-8">
+          <h1 className="text-2xl font-bold break-words min-w-0">{title}</h1>
+          <div className="flex flex-wrap items-center gap-3">
+            <NativeSelect
+              className="min-h-11 [&_select]:min-h-11"
+              aria-label={t("language")}
+              value={locale}
+              disabled={changingLocale}
+              onChange={(e) => {
+                const value = e.target.value === "en" ? "en" : "fa";
+                startLocaleChange(async () => {
+                  await changeLocale(value);
+                });
+              }}
+            >
+              <NativeSelectOption value="fa">
+                {t("languageNameFa")}
+              </NativeSelectOption>
+              <NativeSelectOption value="en">
+                {t("languageNameEn")}
+              </NativeSelectOption>
+            </NativeSelect>
+            <AnimatedThemeToggler
+              className="min-h-11 min-w-11"
+              label={account("toggleTheme")}
+              size="icon-lg"
+            />
+            <Link
+              className="inline-flex min-h-11 min-w-11 items-center justify-center"
+              href="/"
+            >
+              {t("home")}
+            </Link>
+          </div>
+        </header>
+        <nav
+          ref={navigation}
+          className="flex gap-2 overflow-x-auto pb-2 mb-6"
+          aria-label={t("navigation")}
+        >
+          {(
+            [
+              "services",
+              "resources",
+              "reception",
+              "members",
+              "payments",
+              "reports",
+              "imports",
+              "calendar",
+              "messages",
+            ] as const
+          ).map((key) => (
+            <Button
+              asChild
+              variant={
+                pathname === `/${key}` ||
+                (key === "messages" && pathname?.startsWith("/messages/"))
+                  ? "default"
+                  : "outline"
+              }
+              className="min-h-11 shrink-0"
+              key={key}
+            >
+              <Link
+                href={`/${key}`}
+                aria-current={
+                  pathname === `/${key}` ||
+                  (key === "messages" && pathname?.startsWith("/messages/"))
+                    ? "page"
+                    : undefined
+                }
+              >
+                {t(key)}
+              </Link>
+            </Button>
+          ))}
+        </nav>
+        {children}
+      </div>
+    </main>
+  );
+}
+export function SportsWorkspace({ page }: { page: Page }) {
+  const t = useTranslations("Luma");
+  const organizations = useOrganizations();
+  const [organization, setOrganization] = useState("");
+  const org = organization || organizations.data?.[0]?.id;
+  const branches = useBranches(org);
+  const [branchSelection, setBranch] = useState("");
+  const branch = branchSelection || branches.data?.[0]?.id;
+  const enabled = Boolean(org && branch);
+  const needsServices = ["services", "imports", "calendar"].includes(page);
+  const scope = { organizationId: org, branchId: branch };
+  const services = useSportsQuery<ServiceDto[]>(
+    "business/sports/services",
+    scope,
+    enabled && needsServices,
+  );
+  const title = t(page);
+  const error =
+    organizations.error ??
+    branches.error ??
+    (needsServices ? services.error : null);
+  const loading =
+    organizations.isPending ||
+    Boolean(org && branches.isPending) ||
+    (enabled && needsServices && services.isPending);
+  if (error?.status === 401)
+    return (
+      <SportsFrame title={title}>
+        <QueryError error={error} />
+      </SportsFrame>
+    );
+  return (
+    <SportsFrame title={title}>
+      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+        <FormField label={t("organization")}>
+          <NativeSelect
+            className="min-h-11 w-full [&_select]:min-h-11"
+            value={org ?? ""}
+            disabled={organizations.isPending || !organizations.data?.length}
+            onChange={(e) => {
+              setOrganization(e.target.value);
+              setBranch("");
+            }}
+          >
+            {organizations.data?.map((o) => (
+              <NativeSelectOption value={o.id} key={o.id}>
+                {o.name}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </FormField>
+        <FormField label={t("branch")}>
+          <NativeSelect
+            className="min-h-11 w-full [&_select]:min-h-11"
+            value={branch ?? ""}
+            disabled={branches.isPending || !branches.data?.length}
+            onChange={(e) => setBranch(e.target.value)}
+          >
+            {branches.data?.map((b) => (
+              <NativeSelectOption value={b.id} key={b.id}>
+                {b.name}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </FormField>
+      </div>
+      <QueryError
+        error={error}
+        retry={() => {
+          const requests: Promise<unknown>[] = [organizations.refetch()];
+          if (org) requests.push(branches.refetch());
+          if (enabled && needsServices) requests.push(services.refetch());
+          return Promise.allSettled(requests);
+        }}
+      />
+      {error ? null : loading ? (
+        <Loading />
+      ) : !enabled ? (
+        <Blank>{t("empty")}</Blank>
+      ) : (
+        <>
+          {page === "services" && (
+            <Services
+              org={org!}
+              branch={branch!}
+              services={services.data ?? []}
+              loading={services.isPending}
+            />
+          )}{" "}
+          {page === "resources" && (
+            <ResourceManager
+              key={`${org}:${branch}`}
+              org={org!}
+              branch={branch!}
+            />
+          )}{" "}
+          {page === "reception" && <Reception org={org!} branch={branch!} />}{" "}
+          {page === "members" && <Members org={org!} branch={branch!} />}{" "}
+          {page === "payments" && <Payments org={org!} branch={branch!} />}{" "}
+          {page === "reports" && <Reports org={org!} branch={branch!} />}{" "}
+          {page === "imports" && <Imports services={services.data ?? []} />}{" "}
+          {page === "calendar" && (
+            <div className="grid gap-6">
+              <CalendarManager
+                key={`${org}:${branch}`}
+                org={org!}
+                branch={branch!}
+              />
+              <Calendar
+                services={services.data ?? []}
+                org={org!}
+                branch={branch!}
+              />
+            </div>
+          )}
+        </>
+      )}
+    </SportsFrame>
+  );
+}
+function Services({
+  org,
+  branch,
+  services,
+  loading,
+}: {
+  org: string;
+  branch: string;
+  services: ServiceDto[];
+  loading: boolean;
+}) {
+  const t = useTranslations("Luma");
+  const create = useSportsCommand("business/sports/services");
+  const resources = useSportsQuery<{ id: string; name: string }[]>(
+    "business/sports/resources",
+    { organizationId: org, branchId: branch },
+  );
+  const [formOpen, setFormOpen] = useState(false);
+  return (
+    <div className="grid gap-6">
+      <Button onClick={() => setFormOpen((v) => !v)}>{t("newService")}</Button>
+      {formOpen && (
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("newService")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form
+              className="grid gap-4 sm:grid-cols-2"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const form = e.currentTarget;
+                const f = new FormData(form);
+                const price = String(f.get("price") ?? "0");
+                if (!/^\d+$/.test(price)) return;
+                create.mutate(
+                  {
+                    organizationId: org,
+                    branchId: branch,
+                    title: f.get("title"),
+                    description: f.get("description"),
+                    kind: f.get("kind"),
+                    amountMinor: (BigInt(price) * BigInt(10)).toString(),
+                    currency: "IRR",
+                    durationDays: f.get("duration")
+                      ? Number(f.get("duration"))
+                      : null,
+                    sessionCount: f.get("sessions")
+                      ? Number(f.get("sessions"))
+                      : null,
+                    resourceIds: f.getAll("resources"),
+                    requirements: String(f.get("requirements") ?? "")
+                      .split("\n")
+                      .map((v) => v.trim())
+                      .filter(Boolean),
+                    eligibility: readServiceEligibility(f),
+                    level: f.get("level"),
+                    coachName: f.get("coach"),
+                    visibility: f.get("visibility"),
+                    approvalRequired: f.has("approval"),
+                    showParticipants: f.has("participants"),
+                    policy: {
+                      cancellationHours: Number(f.get("cutoff")),
+                      lateRefundBasisPoints: Number(f.get("refund")) * 100,
+                      noShowConsumesSession: f.has("noShow"),
+                      consumeOn: f.get("consumeOn"),
+                      freezeDays: Number(f.get("freeze")),
+                      depositBasisPoints: Number(f.get("deposit")) * 100,
+                      guestAllowance: Number(f.get("guests")),
+                      transferable: f.has("transfer"),
+                      terms: f.get("terms"),
+                    },
+                  },
+                  {
+                    onSuccess: () => {
+                      form.reset();
+                      setFormOpen(false);
+                    },
+                  },
+                );
+              }}
+            >
+              <FormField label={t("title")}>
+                <Input name="title" minLength={2} maxLength={160} required />
+              </FormField>
+              <FormField label={t("kind")}>
+                <NativeSelect name="kind">
+                  {(
+                    [
+                      "class",
+                      "course",
+                      "court",
+                      "access",
+                      "membership",
+                    ] as const
+                  ).map((kind) => (
+                    <NativeSelectOption key={kind} value={kind}>
+                      {t(`kinds.${kind}`)}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              </FormField>
+              <FormField label={t("description")}>
+                <Textarea name="description" maxLength={10000} />
+              </FormField>
+              <p className="sm:col-span-2 text-sm text-muted-foreground">
+                {t("serviceCoverAfterCreate")}
+              </p>
+              <FormField label={`${t("price")} (${t("toman")})`}>
+                <Input
+                  name="price"
+                  type="number"
+                  step="1"
+                  min="0"
+                  max="1000000000000"
+                  required
+                  defaultValue="0"
+                />
+              </FormField>
+              <FormField label={t("days")}>
+                <Input name="duration" type="number" min="1" max="3660" />
+              </FormField>
+              <FormField label={t("sessions")}>
+                <Input name="sessions" type="number" min="1" max="10000" />
+              </FormField>
+              <FormField label={t("level")}>
+                <Input name="level" maxLength={80} defaultValue="" />
+              </FormField>
+              <FormField label={t("coach")}>
+                <Input name="coach" maxLength={120} defaultValue="" />
+              </FormField>
+              <FormField label={t("requiredDocuments")}>
+                <Textarea name="requirements" placeholder={t("onePerLine")} />
+              </FormField>
+              <ServiceEligibilityFields />
+              <FormField label={t("conditions")}>
+                <Textarea
+                  name="terms"
+                  minLength={10}
+                  maxLength={10000}
+                  required
+                />
+              </FormField>
+              <FormField label={t("cancelHours")}>
+                <Input
+                  name="cutoff"
+                  type="number"
+                  min="0"
+                  max="8760"
+                  required
+                />
+              </FormField>
+              <FormField label={t("refundPercent")}>
+                <Input name="refund" type="number" min="0" max="100" required />
+              </FormField>
+              <FormField label={t("freezeDays")}>
+                <Input
+                  name="freeze"
+                  type="number"
+                  min="0"
+                  max="365"
+                  defaultValue="0"
+                  required
+                />
+              </FormField>
+              <FormField label={t("depositPercent")}>
+                <Input
+                  name="deposit"
+                  type="number"
+                  min="0"
+                  max="100"
+                  defaultValue="0"
+                  required
+                />
+              </FormField>
+              <FormField label={t("guestAllowance")}>
+                <Input
+                  name="guests"
+                  type="number"
+                  min="0"
+                  max="100"
+                  defaultValue="0"
+                  required
+                />
+              </FormField>
+              <FormField label={t("consumeOn")}>
+                <NativeSelect name="consumeOn">
+                  <NativeSelectOption value="attendance">
+                    {t("attendance")}
+                  </NativeSelectOption>
+                  <NativeSelectOption value="confirmation">
+                    {t("registration")}
+                  </NativeSelectOption>
+                </NativeSelect>
+              </FormField>
+              <FormField label={t("visibility")}>
+                <NativeSelect name="visibility">
+                  <NativeSelectOption value="public">
+                    {t("public")}
+                  </NativeSelectOption>
+                  <NativeSelectOption value="unlisted">
+                    {t("unlisted")}
+                  </NativeSelectOption>
+                </NativeSelect>
+              </FormField>
+              <fieldset className="flex flex-col gap-3">
+                <legend className="mb-3">{t("resources")}</legend>
+                {resources.data?.map((r) => (
+                  <label className="flex items-center gap-2" key={r.id}>
+                    <input name="resources" value={r.id} type="checkbox" />
+                    {r.name}
+                  </label>
+                ))}
+              </fieldset>
+              <div className="flex flex-col gap-3">
+                {(
+                  ["approval", "participants", "noShow", "transfer"] as const
+                ).map((key) => (
+                  <label key={key} className="flex items-center gap-2">
+                    <input name={key} type="checkbox" />
+                    {t(key)}
+                  </label>
+                ))}
+              </div>
+              <div className="sm:col-span-2">
+                <QueryError error={create.error} />
+                <Button type="submit" disabled={create.isPending}>
+                  {t("save")}
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      )}
+      {loading ? (
+        <Loading />
+      ) : (
+        services.length === 0 && <Blank>{t("noBranchServices")}</Blank>
+      )}
+      {services.map((s) => (
+        <ServiceActions key={s.id} service={s} />
+      ))}
+    </div>
+  );
+}
+function ServiceActions({ service: s }: { service: ServiceDto }) {
+  const t = useTranslations("Luma");
+  const publish = useSportsCommand(`business/sports/services/${s.id}/publish`);
+  const update = useSportsCommand(
+    `business/sports-operations/services/${s.id}/version`,
+  );
+  const schedule = useSportsCommand<OccurrenceSeriesDto>(
+    `business/sports/services/${s.id}/occurrence-series`,
+  );
+  const scheduleKey = useRef<{
+    fingerprint: string;
+    value: string;
+  } | null>(null);
+  const [scheduleResult, setScheduleResult] = useState<number | null>(null);
+  const [scheduleError, setScheduleError] = useState("");
+  const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [documentsOpen, setDocumentsOpen] = useState(false);
+  const [couponsOpen, setCouponsOpen] = useState(false);
+  const [coverOpen, setCoverOpen] = useState(false);
+  const [invitationsOpen, setInvitationsOpen] = useState(false);
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{s.title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex gap-3 items-center flex-wrap">
+          <Status value={s.status} />
+          {s.status === "published" && s.hasUnpublishedChanges && (
+            <span className="text-sm text-muted-foreground">
+              {t("pendingPublication")}
+            </span>
+          )}
+          <Button
+            variant="outline"
+            aria-expanded={editOpen}
+            onClick={() => setEditOpen((v) => !v)}
+          >
+            {t("editService")}
+          </Button>
+          <Button
+            variant="outline"
+            className="min-h-11"
+            aria-expanded={coverOpen}
+            onClick={() => setCoverOpen((value) => !value)}
+          >
+            {t("serviceCover")}
+          </Button>
+          {s.kind !== "membership" && (
+            <Button
+              variant="outline"
+              aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}
+            >
+              {t("chooseSession")}
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            aria-expanded={documentsOpen}
+            onClick={() => setDocumentsOpen((v) => !v)}
+          >
+            {t("requiredDocuments")}
+          </Button>
+          <Button
+            variant="outline"
+            aria-expanded={couponsOpen}
+            onClick={() => setCouponsOpen((v) => !v)}
+          >
+            {t("coupons")}
+          </Button>
+          {(s.status === "draft" || s.hasUnpublishedChanges) && (
+            <Button
+              disabled={publish.isPending}
+              onClick={() => publish.mutate({ revision: s.revision })}
+            >
+              {t(s.status === "draft" ? "publish" : "publishChanges")}
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            className="min-h-11"
+            aria-expanded={invitationsOpen}
+            onClick={() => setInvitationsOpen((value) => !value)}
+          >
+            {t("manageInvitations")}
+          </Button>
+        </div>
+        {coverOpen && <ServiceCoverEditor service={s} />}
+        {invitationsOpen && <ServiceInvitations service={s} />}
+        {editOpen && (
+          <form
+            className="mt-6 grid gap-4 sm:grid-cols-2"
+            onSubmit={(event) => {
+              event.preventDefault();
+              const form = event.currentTarget;
+              const fields = new FormData(form);
+              const price = tomanInputToRial(
+                String(fields.get("price") ?? "0"),
+              );
+              if (price === null) return;
+              update.mutate(
+                {
+                  revision: s.revision,
+                  service: {
+                    organizationId: s.organizationId,
+                    branchId: s.branchId,
+                    title: fields.get("title"),
+                    description: fields.get("description"),
+                    kind: s.kind,
+                    amountMinor: price,
+                    currency: "IRR",
+                    durationDays: s.durationDays,
+                    sessionCount: s.sessionCount,
+                    resourceIds: s.resourceIds ?? [],
+                    requirements: s.requirements ?? [],
+                    eligibility: readServiceEligibility(fields),
+                    level: fields.get("level"),
+                    coachName: fields.get("coach"),
+                    coachUserId: s.coachUserId ?? null,
+                    visibility: fields.get("visibility"),
+                    approvalRequired: fields.has("approval"),
+                    showParticipants: fields.has("participants"),
+                    policy: {
+                      ...s.policy,
+                      cancellationHours: Number(fields.get("cutoff")),
+                      lateRefundBasisPoints: Number(fields.get("refund")) * 100,
+                      terms: fields.get("terms"),
+                    },
+                  },
+                },
+                { onSuccess: () => setEditOpen(false) },
+              );
+            }}
+          >
+            <p className="sm:col-span-2 text-sm text-muted-foreground">
+              {t("serviceEditHint")}
+            </p>
+            <FormField label={t("title")}>
+              <Input
+                name="title"
+                defaultValue={s.title}
+                minLength={2}
+                maxLength={160}
+                required
+              />
+            </FormField>
+            <FormField label={`${t("price")} (${t("toman")})`}>
+              <Input
+                name="price"
+                type="number"
+                step="0.1"
+                min="0"
+                max="1000000000000"
+                defaultValue={rialToTomanInput(s.amountMinor)}
+                required
+              />
+            </FormField>
+            <FormField label={t("description")}>
+              <Textarea
+                name="description"
+                defaultValue={s.description}
+                maxLength={10000}
+              />
+            </FormField>
+            <FormField label={t("conditions")}>
+              <Textarea
+                name="terms"
+                defaultValue={s.policy.terms}
+                minLength={10}
+                maxLength={10000}
+                required
+              />
+            </FormField>
+            <FormField label={t("cancelHours")}>
+              <Input
+                name="cutoff"
+                type="number"
+                min="0"
+                max="8760"
+                defaultValue={s.policy.cancellationHours}
+                required
+              />
+            </FormField>
+            <FormField label={t("refundPercent")}>
+              <Input
+                name="refund"
+                type="number"
+                min="0"
+                max="100"
+                defaultValue={s.policy.lateRefundBasisPoints / 100}
+                required
+              />
+            </FormField>
+            <FormField label={t("level")}>
+              <Input name="level" maxLength={80} defaultValue={s.level} />
+            </FormField>
+            <ServiceEligibilityFields value={s.eligibility} />
+            <FormField label={t("coach")}>
+              <Input name="coach" maxLength={120} defaultValue={s.coachName} />
+            </FormField>
+            <FormField label={t("visibility")}>
+              <NativeSelect
+                name="visibility"
+                defaultValue={s.visibility ?? "public"}
+              >
+                <NativeSelectOption value="public">
+                  {t("public")}
+                </NativeSelectOption>
+                <NativeSelectOption value="unlisted">
+                  {t("unlisted")}
+                </NativeSelectOption>
+              </NativeSelect>
+            </FormField>
+            <div className="flex flex-col gap-3">
+              <label className="flex items-center gap-2">
+                <input
+                  name="approval"
+                  type="checkbox"
+                  defaultChecked={s.approvalRequired}
+                />
+                {t("approval")}
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  name="participants"
+                  type="checkbox"
+                  defaultChecked={s.showParticipants}
+                />
+                {t("participants")}
+              </label>
+            </div>
+            <div className="sm:col-span-2">
+              <QueryError error={update.error} />
+              <Button type="submit" disabled={update.isPending}>
+                {t("save")}
+              </Button>
+            </div>
+          </form>
+        )}
+        {open && (
+          <form
+            className="grid sm:grid-cols-3 gap-4 mt-6"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setScheduleResult(null);
+              setScheduleError("");
+              schedule.reset();
+              const form = e.currentTarget;
+              const f = new FormData(form);
+              const start = new Date(String(f.get("start")));
+              const end = new Date(String(f.get("end")));
+              if (end <= start) {
+                setScheduleError(t("endAfterStart"));
+                return;
+              }
+              const draft = {
+                startAt: start.toISOString(),
+                endAt: end.toISOString(),
+                capacity: Number(f.get("capacity")),
+                count: Number(f.get("count")),
+                intervalDays: Number(f.get("interval")) as 1 | 7 | 14,
+                revision: s.revision,
+              };
+              const fingerprint = JSON.stringify(draft);
+              if (scheduleKey.current?.fingerprint !== fingerprint)
+                scheduleKey.current = {
+                  fingerprint,
+                  value: crypto.randomUUID(),
+                };
+              const input: OccurrenceSeriesInput = {
+                ...draft,
+                idempotencyKey: scheduleKey.current.value,
+              };
+              schedule.mutate(input, {
+                onSuccess: (result) => {
+                  scheduleKey.current = null;
+                  setScheduleResult(result.occurrences.length);
+                  form.reset();
+                },
+              });
+            }}
+          >
+            <p className="sm:col-span-3 text-sm text-muted-foreground">
+              {t("scheduleSeriesHint")}
+            </p>
+            <FormField label={t("startAt")}>
+              <Input type="datetime-local" name="start" required />
+            </FormField>
+            <FormField label={t("endAt")}>
+              <Input type="datetime-local" name="end" required />
+            </FormField>
+            <FormField label={t("capacityTotal")}>
+              <Input
+                type="number"
+                min="1"
+                max="10000"
+                name="capacity"
+                required
+              />
+            </FormField>
+            <FormField label={t("repeatCount")}>
+              <Input
+                type="number"
+                min="1"
+                max="52"
+                name="count"
+                defaultValue="1"
+                required
+              />
+            </FormField>
+            <FormField label={t("repeatInterval")}>
+              <NativeSelect name="interval" defaultValue="7">
+                <NativeSelectOption value="1">{t("daily")}</NativeSelectOption>
+                <NativeSelectOption value="7">{t("weekly")}</NativeSelectOption>
+                <NativeSelectOption value="14">
+                  {t("fortnightly")}
+                </NativeSelectOption>
+              </NativeSelect>
+            </FormField>
+            {scheduleError && (
+              <p role="alert" className="sm:col-span-3 text-destructive">
+                {scheduleError}
+              </p>
+            )}
+            <Button type="submit" disabled={schedule.isPending}>
+              {t("save")}
+            </Button>
+          </form>
+        )}
+        {scheduleResult !== null && (
+          <p role="status" className="mt-4 text-sm text-muted-foreground">
+            {t("seriesScheduled", { count: scheduleResult })}
+          </p>
+        )}
+        {open && <OccurrenceSeriesManager serviceId={s.id} />}
+        <QueryError error={publish.error ?? schedule.error} />
+        {documentsOpen && <DocumentReviewQueue serviceId={s.id} />}
+        {couponsOpen && <CouponManager serviceId={s.id} />}
+      </CardContent>
+    </Card>
+  );
+}
+function CouponManager({ serviceId }: { serviceId: string }) {
+  const t = useTranslations("Luma");
+  const locale = useLocale();
+  const query = useSportsQuery<CouponDto[]>(
+    `business/sports/services/${serviceId}/coupons`,
+  );
+  const create = useSportsCommand(
+    `business/sports/services/${serviceId}/coupons`,
+  );
+  return (
+    <section className="mt-6 border-t border-border pt-5">
+      <h3 className="font-semibold mb-4">{t("coupons")}</h3>
+      <form
+        className="grid gap-3 sm:grid-cols-4 items-end"
+        onSubmit={(event) => {
+          event.preventDefault();
+          const form = event.currentTarget;
+          const fields = new FormData(form);
+          create.mutate(
+            {
+              code: String(fields.get("code") ?? "")
+                .trim()
+                .toUpperCase(),
+              basisPoints: Number(fields.get("percent")) * 100,
+              maxUses: Number(fields.get("maxUses")),
+              expiresAt: new Date(
+                String(fields.get("expiresAt")),
+              ).toISOString(),
+            },
+            { onSuccess: () => form.reset() },
+          );
+        }}
+      >
+        <FormField label={t("coupon")}>
+          <Input
+            name="code"
+            minLength={3}
+            maxLength={60}
+            pattern="[A-Za-z0-9_-]{3,60}"
+            autoCapitalize="characters"
+            required
+          />
+        </FormField>
+        <FormField label={t("couponPercent")}>
+          <Input name="percent" type="number" min="1" max="100" required />
+        </FormField>
+        <FormField label={t("couponMaxUses")}>
+          <Input name="maxUses" type="number" min="1" max="100000" required />
+        </FormField>
+        <FormField label={t("expires")}>
+          <Input name="expiresAt" type="datetime-local" required />
+        </FormField>
+        <Button type="submit" disabled={create.isPending}>
+          {t("createCoupon")}
+        </Button>
+      </form>
+      <QueryError
+        error={create.error ?? query.error}
+        retry={() => query.refetch()}
+      />
+      {query.isPending && <Loading />}
+      {query.isSuccess && !query.data?.length && <Blank>{t("empty")}</Blank>}
+      <div className="mt-4 grid gap-2">
+        {query.data?.map((coupon) => (
+          <CouponRow
+            key={coupon.id}
+            serviceId={serviceId}
+            coupon={coupon}
+            locale={locale}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+function CouponRow({
+  serviceId,
+  coupon,
+  locale,
+}: {
+  serviceId: string;
+  coupon: CouponDto;
+  locale: string;
+}) {
+  const t = useTranslations("Luma");
+  const disable = useSportsCommand(
+    `business/sports/services/${serviceId}/coupons/${coupon.id}/disable`,
+  );
+  const inactive = Boolean(
+    coupon.disabledAt || new Date(coupon.expiresAt).getTime() <= Date.now(),
+  );
+  return (
+    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border p-3">
+      <strong dir="ltr">{coupon.code}</strong>
+      <span>
+        {t("couponPercentValue", { percent: coupon.basisPoints / 100 })}
+      </span>
+      <span className="text-sm text-muted-foreground">
+        {t("couponUsage", { used: coupon.used, max: coupon.maxUses })}
+      </span>
+      <span className="text-sm text-muted-foreground">
+        {new Intl.DateTimeFormat(locale, {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }).format(new Date(coupon.expiresAt))}
+      </span>
+      {inactive ? (
+        <span className="text-sm text-muted-foreground">
+          {t("couponInactive")}
+        </span>
+      ) : (
+        <Button
+          variant="outline"
+          disabled={disable.isPending}
+          onClick={() => disable.mutate({ revision: coupon.revision })}
+        >
+          {t("disableCoupon")}
+        </Button>
+      )}
+      <QueryError error={disable.error} />
+    </div>
+  );
+}
+function DocumentReviewQueue({ serviceId }: { serviceId: string }) {
+  const t = useTranslations("Luma");
+  const query = useSportsQuery<DocumentReviewDto[]>(
+    `business/sports/services/${serviceId}/documents`,
+  );
+  return (
+    <section className="mt-6 border-t border-border pt-5">
+      <h3 className="font-semibold mb-3">{t("requiredDocuments")}</h3>
+      {query.isPending && <Loading />}
+      {query.isSuccess && !query.data?.length && <Blank>{t("empty")}</Blank>}
+      {query.data?.map((document) => (
+        <DocumentReview key={document.id} document={document} />
+      ))}
+      <QueryError error={query.error} retry={() => query.refetch()} />
+    </section>
+  );
+}
+function DocumentReview({ document }: { document: DocumentReviewDto }) {
+  const t = useTranslations("Luma");
+  const locale = useLocale();
+  const expired = Boolean(
+    document.expiresAt && new Date(document.expiresAt).getTime() <= Date.now(),
+  );
+  const [inspect, setInspect] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const [reason, setReason] = useState("");
+  const preview = useSportsQuery<{ url: string }>(
+    `sports/documents/${document.id}/preview`,
+    undefined,
+    inspect,
+  );
+  const decision = useSportsCommand(
+    `business/sports/documents/${document.id}/review`,
+  );
+  const submit = (approve: boolean) =>
+    decision.mutate(
+      { revision: document.revision, approve, reason: reason.trim() },
+      {
+        onSuccess: () => {
+          setReason("");
+          setOpened(false);
+        },
+      },
+    );
+  return (
+    <div className="border-b border-border py-4 grid gap-3">
+      <div className="flex flex-wrap items-center gap-3">
+        <strong>{document.name}</strong>
+        <span className="text-sm text-muted-foreground">
+          {document.displayName ?? "—"}
+        </span>
+        <Status value={expired ? "expired" : document.status} />
+        {document.expiresAt && (
+          <span className="text-sm text-muted-foreground">
+            {new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(
+              new Date(document.expiresAt),
+            )}
+          </span>
+        )}
+      </div>
+      <div className="flex flex-wrap gap-2 items-center">
+        <Button
+          variant="outline"
+          disabled={inspect && preview.isFetching}
+          onClick={() => {
+            setOpened(false);
+            if (inspect) void preview.refetch();
+            else setInspect(true);
+          }}
+        >
+          {t("viewDocument")}
+        </Button>
+        {preview.data?.url && !preview.isFetching && (
+          <a
+            href={preview.data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-4"
+            onClick={() => setOpened(true)}
+          >
+            {t("openDocument")}
+          </a>
+        )}
+      </div>
+      <QueryError error={preview.error} retry={() => preview.refetch()} />
+      {document.status === "pending" && (
+        <>
+          <FormField label={t("reason")}>
+            <Textarea
+              value={reason}
+              onChange={(event) => setReason(event.target.value)}
+              minLength={3}
+              maxLength={1000}
+            />
+          </FormField>
+          <p className="text-sm text-muted-foreground">
+            {t("documentReviewHint")}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              disabled={
+                expired ||
+                !opened ||
+                reason.trim().length < 3 ||
+                decision.isPending
+              }
+              onClick={() => submit(true)}
+            >
+              {t("approveDocument")}
+            </Button>
+            <Button
+              variant="outline"
+              disabled={
+                !opened || reason.trim().length < 3 || decision.isPending
+              }
+              onClick={() => submit(false)}
+            >
+              {t("rejectDocument")}
+            </Button>
+          </div>
+        </>
+      )}
+      <QueryError error={decision.error} />
+    </div>
+  );
+}
+function Reception({ org, branch }: { org: string; branch: string }) {
+  const t = useTranslations("Luma");
+  const locale = useLocale();
+  const query = useSportsQuery<
+    (BookingDto & { displayName: string; paymentStatus: string })[]
+  >(
+    "business/sports/reception",
+    { organizationId: org, branchId: branch },
+    true,
+    true,
+  );
+  const check = useSportsCommand("business/sports/check-in");
+  const visits = useSportsQuery<VisitDto[]>(
+    "business/sports/visits",
+    { organizationId: org, branchId: branch },
+    true,
+    true,
+  );
+  return (
+    <div className="grid gap-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("checkIn")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form
+            className="grid sm:grid-cols-3 gap-3"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const f = new FormData(e.currentTarget);
+              check.mutate({ token: f.get("token"), reason: f.get("reason") });
+            }}
+          >
+            <FormField label={t("manualCode")}>
+              <Input name="token" required dir="ltr" />
+            </FormField>
+            <FormField label={t("reason")}>
+              <Input name="reason" minLength={3} maxLength={1000} required />
+            </FormField>
+            <Button className="self-end" disabled={check.isPending}>
+              {t("checkIn")}
+            </Button>
+          </form>
+          <QueryError error={check.error} />
+          {check.isSuccess && <p className="mt-3">{t("created")}</p>}
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("recentVisits")}</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-3">
+          <QueryError error={visits.error} />
+          {visits.data?.length === 0 && <p>{t("empty")}</p>}
+          {visits.data?.map((visit) => (
+            <VisitActions key={visit.id} visit={visit} locale={locale} />
+          ))}
+        </CardContent>
+      </Card>
+      {query.isPending && <Loading />}
+      <QueryError error={query.error} />
+      {query.data?.map((r) => (
+        <ReservationActions key={r.id} item={r} />
+      ))}
+    </div>
+  );
+}
+function VisitActions({ visit, locale }: { visit: VisitDto; locale: string }) {
+  const t = useTranslations("Luma");
+  const exit = useSportsCommand(`business/sports/visits/${visit.id}/exit`);
+  const [reason, setReason] = useState("");
+  return (
+    <div className="rounded-xl border border-border p-4 grid gap-2">
+      <p className="font-medium">{visit.displayName}</p>
+      <p className="text-sm text-muted-foreground">
+        {new Intl.DateTimeFormat(locale, {
+          dateStyle: "medium",
+          timeStyle: "short",
+          timeZone: "Asia/Tehran",
+        }).format(new Date(visit.createdAt))}
+      </p>
+      {visit.exitedAt ? (
+        <p>{t("exited")}</p>
+      ) : (
+        <div className="flex flex-wrap gap-2 items-end">
+          <FormField label={t("reason")}>
+            <Input
+              value={reason}
+              onChange={(event) => setReason(event.target.value)}
+              minLength={2}
+              maxLength={500}
+            />
+          </FormField>
+          <Button
+            variant="outline"
+            disabled={reason.trim().length < 2 || exit.isPending}
+            onClick={() => exit.mutate({ reason: reason.trim() })}
+          >
+            {t("recordExit")}
+          </Button>
+        </div>
+      )}
+      <QueryError error={exit.error} />
+    </div>
+  );
+}
+function ReservationActions({
+  item: r,
+}: {
+  item: BookingDto & { displayName: string; paymentStatus: string };
+}) {
+  const t = useTranslations("Luma");
+  const attendance = useSportsCommand(
+    `business/sports-operations/reservations/${r.id}/attendance`,
+  );
+  const approval = useSportsCommand(
+    `business/sports-operations/reservations/${r.id}/approval`,
+  );
+  const [reason, setReason] = useState("");
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          {r.displayName} · {r.title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex gap-3 mb-4">
+          <Status value={r.status} />
+          <Status value={r.paymentStatus} />
+        </div>
+        <FormField label={t("reason")}>
+          <Input
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            minLength={3}
+            maxLength={1000}
+          />
+        </FormField>
+        <div className="flex flex-wrap gap-3 mt-4">
+          {r.status === "pending_approval" ? (
+            <>
+              <Button
+                disabled={reason.length < 3 || approval.isPending}
+                onClick={() =>
+                  approval.mutate({
+                    revision: r.revision,
+                    approve: true,
+                    reason,
+                  })
+                }
+              >
+                {t("accept")}
+              </Button>
+              <Button
+                variant="outline"
+                disabled={reason.length < 3 || approval.isPending}
+                onClick={() =>
+                  approval.mutate({
+                    revision: r.revision,
+                    approve: false,
+                    reason,
+                  })
+                }
+              >
+                {t("decline")}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                disabled={reason.length < 3 || attendance.isPending}
+                onClick={() => attendance.mutate({ present: true, reason })}
+              >
+                {t("present")}
+              </Button>
+              <Button
+                variant="outline"
+                disabled={reason.length < 3 || attendance.isPending}
+                onClick={() => attendance.mutate({ present: false, reason })}
+              >
+                {t("absent")}
+              </Button>
+            </>
+          )}
+        </div>
+        <QueryError error={attendance.error ?? approval.error} />
+      </CardContent>
+    </Card>
+  );
+}
+function Members({ org, branch }: { org: string; branch: string }) {
+  const t = useTranslations("Luma");
+  const query = useSportsQuery<
+    {
+      id: string;
+      displayName: string;
+      phone: string;
+      title: string;
+      granted: number | null;
+      consumed: number;
+      status: string;
+    }[]
+  >("business/sports-operations/members", {
+    organizationId: org,
+    branchId: branch,
+  });
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("members")}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {query.data?.map((m) => (
+          <div
+            key={m.id}
+            className="flex flex-wrap justify-between gap-3 py-4 border-b border-border"
+          >
+            <span>
+              {m.displayName} · {m.title}
+            </span>
+            <span dir="ltr">{m.phone}</span>
+            <span>
+              {t("remaining")}:{" "}
+              {m.granted === null ? "∞" : m.granted - m.consumed}
+            </span>
+            <Status value={m.status} />
+          </div>
+        ))}
+        <QueryError error={query.error} />
+        {query.isSuccess && !query.data?.length && <Blank>{t("empty")}</Blank>}
+      </CardContent>
+    </Card>
+  );
+}
+function Payments({ org, branch }: { org: string; branch: string }) {
+  const query = useSportsQuery<OrderDto[]>(
+    "business/sports-operations/orders",
+    { organizationId: org, branchId: branch },
+  );
+  return (
+    <div className="grid gap-4">
+      <QueryError error={query.error} />
+      {query.data?.map((o) => (
+        <CashOrder key={o.id} order={o} />
+      ))}
+    </div>
+  );
+}
+function CashOrder({ order: o }: { order: OrderDto }) {
+  const t = useTranslations("Luma");
+  const locale = useLocale();
+  const command = useSportsCommand(
+    `business/sports-operations/orders/${o.id}/cash`,
+  );
+  const [reason, setReason] = useState("");
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{o.snapshot.title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex gap-4 items-center">
+          <Status value={o.status} />
+          <span>
+            {new Intl.NumberFormat(locale).format(
+              BigInt(o.amountMinor) / BigInt(10),
+            )}{" "}
+            {t("toman")}
+          </span>
+        </div>
+        {o.status === "awaiting_payment" && (
+          <>
+            <FormField label={t("reason")}>
+              <Input
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+              />
+            </FormField>
+            <Button
+              className="mt-4"
+              disabled={reason.length < 3 || command.isPending}
+              onClick={() => command.mutate({ reason })}
+            >
+              {t("cashReceived")}
+            </Button>
+            <QueryError error={command.error} />
+          </>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+function Reports({ org, branch }: { org: string; branch: string }) {
+  const t = useTranslations("Luma");
+  const locale = useLocale();
+  const query = useSportsQuery<{
+    salesMinor: string;
+    collectedMinor: string;
+    attendanceCount: number;
+  }>("business/sports/report", { organizationId: org, branchId: branch });
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("report")}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <QueryError error={query.error} />
+        {query.data && (
+          <div className="grid sm:grid-cols-3 gap-6">
+            {[
+              ["salesMinor", t("sales")],
+              ["collectedMinor", t("collected")],
+            ].map(([key, label]) => (
+              <div key={key}>
+                <p>{label}</p>
+                <strong className="text-2xl">
+                  {new Intl.NumberFormat(locale).format(
+                    BigInt(
+                      query.data![key as "salesMinor" | "collectedMinor"],
+                    ) / BigInt(10),
+                  )}{" "}
+                  {t("toman")}
+                </strong>
+              </div>
+            ))}
+            <div>
+              <p>{t("attendance")}</p>
+              <strong className="text-2xl">{query.data.attendanceCount}</strong>
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+function Imports({ services }: { services: ServiceDto[] }) {
+  const t = useTranslations("Luma");
+  const [service, setService] = useState("");
+  const [csv, setCsv] = useState("");
+  const key = useRef<string | null>(null);
+  const preview = useSportsCommand<
+    {
+      line: number;
+      name: string;
+      phone: string;
+      remaining: number;
+      errors: string[];
+    }[]
+  >("business/sports-operations/imports/preview");
+  const apply = useSportsCommand("business/sports-operations/imports/apply");
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("imports")}</CardTitle>
+      </CardHeader>
+      <CardContent className="grid gap-4">
+        <FormField label={t("memberships")}>
+          <NativeSelect
+            value={service}
+            onChange={(e) => {
+              setService(e.target.value);
+              key.current = null;
+              preview.reset();
+            }}
+          >
+            <NativeSelectOption value="">
+              {t("chooseSession")}
+            </NativeSelectOption>
+            {services
+              .filter((s) => s.kind === "membership")
+              .map((s) => (
+                <NativeSelectOption value={s.id} key={s.id}>
+                  {s.title}
+                </NativeSelectOption>
+              ))}
+          </NativeSelect>
+        </FormField>
+        <p className="text-sm text-muted-foreground">{t("importFormat")}</p>
+        <Input
+          type="file"
+          accept=".csv,text/csv"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file && file.size <= 100000)
+              void file.text().then((value) => {
+                setCsv(value);
+                key.current = null;
+                preview.reset();
+              });
+          }}
+        />
+        <Textarea
+          value={csv}
+          onChange={(e) => {
+            setCsv(e.target.value);
+            key.current = null;
+            preview.reset();
+          }}
+          rows={6}
+        />
+        <Button
+          disabled={!service || !csv || preview.isPending}
+          onClick={() => preview.mutate({ serviceId: service, csv })}
+        >
+          {t("preview")}
+        </Button>
+        {preview.data?.map((r) => (
+          <p key={r.line} className={r.errors.length ? "text-destructive" : ""}>
+            {r.line}: {r.name} · {r.remaining} {r.errors.join(" · ")}
+          </p>
+        ))}
+        {Boolean(preview.data?.length) &&
+          !preview.data?.some((r) => r.errors.length) && (
+            <Button
+              disabled={apply.isPending}
+              onClick={() => {
+                key.current ??= crypto.randomUUID();
+                apply.mutate({
+                  serviceId: service,
+                  csv,
+                  idempotencyKey: key.current,
+                });
+              }}
+            >
+              {t("importApply")}
+            </Button>
+          )}
+        <QueryError error={preview.error ?? apply.error} />
+        {apply.isSuccess && <p>{t("created")}</p>}
+      </CardContent>
+    </Card>
+  );
+}
+function Calendar({
+  services,
+  org,
+  branch,
+}: {
+  services: ServiceDto[];
+  org: string;
+  branch: string;
+}) {
+  const calendar = useSportsQuery<HostCalendarDto>(
+    "sports/community/host/calendar",
+    { organizationId: org, branchId: branch },
+  );
+  return (
+    <div className="grid gap-4">
+      {services
+        .filter((s) => s.kind !== "membership")
+        .map((s) => (
+          <OccurrenceList
+            key={s.id}
+            service={s}
+            canManage={calendar.data?.canManage === true}
+          />
+        ))}
+    </div>
+  );
+}
+function OccurrenceList({
+  service: s,
+  canManage,
+}: {
+  service: ServiceDto;
+  canManage: boolean;
+}) {
+  const t = useTranslations("Luma");
+  const locale = useLocale();
+  const query = useSportsQuery<
+    {
+      id: string;
+      revision: number;
+      startAt: string;
+      capacity: number;
+      status: string;
+    }[]
+  >(`business/sports-operations/services/${s.id}/occurrences`);
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          <h3>{s.title}</h3>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {query.data?.map((o) => (
+          <OccurrenceActions
+            key={o.id}
+            item={o}
+            title={s.title}
+            locale={locale}
+            canManage={canManage}
+          />
+        ))}
+        <QueryError error={query.error} />
+        {query.isSuccess && !query.data?.length && <Blank>{t("empty")}</Blank>}
+      </CardContent>
+    </Card>
+  );
+}
+function OccurrenceActions({
+  item: o,
+  title,
+  locale,
+  canManage,
+}: {
+  item: {
+    id: string;
+    revision: number;
+    startAt: string;
+    capacity: number;
+    status: string;
+  };
+  title: string;
+  locale: string;
+  canManage: boolean;
+}) {
+  const t = useTranslations("Luma");
+  const router = useRouter();
+  const command = useSportsCommand(
+    `business/sports-operations/occurrences/${o.id}/cancel`,
+  );
+  const chat = useSportsCommand<{ id: string }>(
+    "sports/community/host/conversations",
+  );
+  const [reason, setReason] = useState("");
+  return (
+    <div className="py-4 border-b border-border">
+      <p>
+        {new Intl.DateTimeFormat(locale, {
+          dateStyle: "medium",
+          timeStyle: "short",
+          timeZone: "Asia/Tehran",
+        }).format(new Date(o.startAt))}{" "}
+        · {t("capacityTotal")}: {o.capacity}
+      </p>
+      {canManage && o.status === "scheduled" && (
+        <div className="flex flex-wrap gap-3 mt-3">
+          <Input
+            className="min-h-11"
+            aria-label={t("reason")}
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+          />
+          <Button
+            variant="outline"
+            disabled={reason.length < 3 || command.isPending}
+            onClick={() => command.mutate({ revision: o.revision, reason })}
+          >
+            {t("cancel")}
+          </Button>
+          <Button
+            disabled={chat.isPending}
+            onClick={() =>
+              chat.mutate(
+                { occurrenceId: o.id },
+                {
+                  onSuccess: (conversation) =>
+                    router.push(`/messages/${conversation.id}`),
+                },
+              )
+            }
+          >
+            {t("messages")} · {title}
+          </Button>
+        </div>
+      )}
+      <QueryError error={command.error ?? chat.error} />
+      {chat.isSuccess && (
+        <p role="status" className="mt-3 text-sm">
+          {t("conversationAvailable")}
+        </p>
+      )}
+    </div>
+  );
+}
+export function SportsAdmin() {
+  const t = useTranslations("Luma");
+  const query = useSportsQuery<{
+    orders: { id: string; status: string; amountMinor: string }[];
+    payments: { id: string; orderId: string; state: string }[];
+    jobs: { id: string; kind: string; attempts: number }[];
+    tickets: TicketDto[];
+    reports: {
+      id: string;
+      messageId: string;
+      reason: string;
+      body: string;
+      revision: number;
+    }[];
+  }>("admin/sports", undefined, true, true);
+  return (
+    <main className="min-h-dvh bg-muted/40 p-5 sm:p-10">
+      <div className="mx-auto max-w-6xl">
+        <header className="flex justify-between mb-8">
+          <h1 className="text-2xl font-bold">{t("operations")}</h1>
+          <Link href="/">{t("home")}</Link>
+        </header>
+        <QueryError error={query.error} />
+        {query.isPending && <Loading />}
+        {query.data && (
+          <div className="grid gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("reconciliation")}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {query.data.payments.map((p) => (
+                  <ReconcileRow key={p.id} id={p.orderId} />
+                ))}
+                {query.data.orders.map((o) => (
+                  <ReconcileRow key={o.id} id={o.id} />
+                ))}
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("jobs")}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {query.data.jobs.map((j) => (
+                  <JobRow
+                    key={j.id}
+                    id={j.id}
+                    title={j.kind}
+                    attempts={j.attempts}
+                  />
+                ))}
+              </CardContent>
+            </Card>
+            {query.data.tickets.map((ticket) => (
+              <AdminTicket key={ticket.id} ticket={ticket} />
+            ))}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("reportMessage")}</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {query.data.reports.map((r) => (
+                  <MessageReportActions key={r.id} report={r} />
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}
+function MessageReportActions({
+  report,
+}: {
+  report: {
+    id: string;
+    messageId: string;
+    reason: string;
+    body: string;
+    revision: number;
+  };
+}) {
+  const t = useTranslations("Luma");
+  const [reason, setReason] = useState("");
+  const command = useSportsCommand(
+    `admin/sports/message-reports/${report.id}/decision`,
+  );
+  return (
+    <div className="rounded-xl border border-border p-4 grid gap-3">
+      <p className="font-semibold">{report.reason}</p>
+      <p className="text-sm text-muted-foreground whitespace-pre-wrap break-words">
+        {report.body}
+      </p>
+      <FormField label={t("reason")}>
+        <Input
+          value={reason}
+          onChange={(event) => setReason(event.target.value)}
+          minLength={3}
+          maxLength={1000}
+        />
+      </FormField>
+      <div className="flex flex-wrap gap-3">
+        <Button
+          variant="outline"
+          disabled={reason.trim().length < 3 || command.isPending}
+          onClick={() =>
+            command.mutate({
+              revision: report.revision,
+              remove: false,
+              reason: reason.trim(),
+            })
+          }
+        >
+          {t("dismissReport")}
+        </Button>
+        <Button
+          variant="destructive"
+          disabled={reason.trim().length < 3 || command.isPending}
+          onClick={() =>
+            command.mutate({
+              revision: report.revision,
+              remove: true,
+              reason: reason.trim(),
+            })
+          }
+        >
+          {t("removeMessage")}
+        </Button>
+      </div>
+      <QueryError error={command.error} />
+    </div>
+  );
+}
+function ReconcileRow({ id }: { id: string }) {
+  const t = useTranslations("Luma");
+  const command = useSportsCommand(`admin/sports/orders/${id}/reconcile`);
+  return (
+    <div className="flex flex-wrap gap-4 py-3">
+      <span dir="ltr" className="text-xs">
+        {id}
+      </span>
+      <Button disabled={command.isPending} onClick={() => command.mutate({})}>
+        {t("verify")}
+      </Button>
+      <QueryError error={command.error} />
+    </div>
+  );
+}
+function JobRow({
+  id,
+  title,
+  attempts,
+}: {
+  id: string;
+  title: string;
+  attempts: number;
+}) {
+  const t = useTranslations("Luma");
+  const command = useSportsCommand(`admin/sports/jobs/${id}/retry`);
+  return (
+    <div className="flex gap-4 py-3">
+      <span>
+        {title} · {attempts}
+      </span>
+      <Button disabled={command.isPending} onClick={() => command.mutate({})}>
+        {t("retry")}
+      </Button>
+      <QueryError error={command.error} />
+    </div>
+  );
+}
+function AdminTicket({ ticket }: { ticket: TicketDto }) {
+  const t = useTranslations("Luma");
+  const query = useSportsQuery<TicketDto>(`admin/sports/support/${ticket.id}`);
+  const command = useSportsCommand(`admin/sports/support/${ticket.id}/reply`);
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{ticket.title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {query.data?.messages.map((m) => (
+          <p className="py-2" key={m.id}>
+            {m.body}
+          </p>
+        ))}
+        <form
+          className="grid gap-4 mt-4"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const f = new FormData(e.currentTarget);
+            command.mutate({ body: f.get("body"), resolve: f.has("resolve") });
+          }}
+        >
+          <Textarea
+            name="body"
+            required
+            maxLength={5000}
+            aria-label={t("message")}
+          />
+          <label className="flex gap-2">
+            <input type="checkbox" name="resolve" />
+            {t("resolve")}
+          </label>
+          <Button disabled={command.isPending}>{t("send")}</Button>
+          <QueryError error={query.error ?? command.error} />
+        </form>
+      </CardContent>
+    </Card>
+  );
+}

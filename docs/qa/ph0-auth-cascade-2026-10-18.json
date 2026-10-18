@@ -1,0 +1,49 @@
+{
+  "scope": "Current style attribution; existing application-frame rule already overrides source min-h-14/mobile-auth defaults",
+  "rules": [
+    {
+      "selector": ":where([data-gym-auth]) :where([data-slot=\"input\"])",
+      "layers": [
+        "base"
+      ],
+      "properties": [
+        {
+          "name": "min-height",
+          "value": "44px"
+        },
+        {
+          "name": "min-height",
+          "value": "44px"
+        }
+      ]
+    },
+    {
+      "selector": ".mobile-auth [data-slot=\"input\"]",
+      "layers": [],
+      "properties": [
+        {
+          "name": "min-height",
+          "value": "3.5rem"
+        },
+        {
+          "name": "min-height",
+          "value": "3.5rem"
+        }
+      ]
+    },
+    {
+      "selector": ".application-frame [data-slot=\"button\"], .application-frame [data-slot=\"input\"], .application-frame [data-slot=\"native-select\"]",
+      "layers": [],
+      "properties": [
+        {
+          "name": "min-height",
+          "value": "2.75rem"
+        },
+        {
+          "name": "min-height",
+          "value": "2.75rem"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "build": "CuMYYCscHxNIXoZkhyu_4",
+  "scope": "Invalid local submission only",
+  "alerts": [
+    "عنوان باید بین ۳ تا ۱۶۰ نویسه باشد.",
+    "توضیحات باید بین ۳ تا ۵٬۰۰۰ نویسه باشد."
+  ],
+  "dark": false,
+  "dir": "rtl",
+  "fields": [
+    {
+      "described": [
+        {
+          "exists": true,
+          "id": "_r_0_-title-hint",
+          "role": null
+        },
+        {
+          "exists": true,
+          "id": "_r_0_-title-error",
+          "role": "alert"
+        }
+      ],
+      "focusOutline": "2px",
+      "font": "16px",
+      "invalid": "true",
+      "label": [
+        "عنوان"
+      ],
+      "name": "title"
+    },
+    {
+      "described": [
+        {
+          "exists": true,
+          "id": "_r_0_-body-hint",
+          "role": null
+        },
+        {
+          "exists": true,
+          "id": "_r_0_-body-error",
+          "role": "alert"
+        }
+      ],
+      "focusOutline": "3px",
+      "font": "16px",
+      "invalid": "true",
+      "label": [
+        "توضیحات"
+      ],
+      "name": "body"
+    }
+  ],
+  "focus": "title",
+  "horizontalOverflow": false,
+  "lang": "fa",
+  "submit": [
+    {
+      "height": 44,
+      "text": "ارسال",
+      "width": 320
+    }
+  ],
+  "viewport": [
+    360,
+    844
+  ]
+}

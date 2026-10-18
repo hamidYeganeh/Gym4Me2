@@ -1,4 +1,4 @@
-import { PageTransitions } from "@repo/ui/page-transitions";
+import { AdminPageTransitions } from "./page-transitions";
 import { ApiProvider } from "@repo/api/provider";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -15,6 +15,7 @@ import { DirectionProvider } from "@repo/ui/kit/Direction";
 import { TooltipProvider } from "@repo/ui/kit/Tooltip";
 import { Toaster } from "@repo/ui/kit/Sonner";
 import "./globals.css";
+import "@repo/ui/focus.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Metadata");
@@ -39,13 +40,13 @@ export default async function RootLayout({
       className={iranSansX.variable}
       suppressHydrationWarning
     >
-      <body className="min-h-dvh antialiased">
+      <body data-gym-focus="admin" className="min-h-dvh antialiased">
         <NextIntlClientProvider>
           <ApiProvider application="admin" locale={locale}>
             <ThemeProvider>
               <DirectionProvider dir={direction}>
                 <TooltipProvider>
-                  <PageTransitions>{children}</PageTransitions>
+                  <AdminPageTransitions>{children}</AdminPageTransitions>
                   <Toaster dir={direction} />
                 </TooltipProvider>
               </DirectionProvider>

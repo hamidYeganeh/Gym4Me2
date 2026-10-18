@@ -10,7 +10,7 @@ import sharp from 'sharp';
 import {
   S3Client,
   CreateBucketCommand,
-  HeadBucketCommand,
+  DeleteBucketCommand,
 } from '@aws-sdk/client-s3';
 import { MediaRetentionService } from '../src/modules/clubs/media-retention.service';
 import { StorageService } from '../src/modules/clubs/storage.service';
@@ -33,6 +33,9 @@ if (!new URL(databaseUrl).pathname.endsWith('_test'))
 let app: INestApplication<App>;
 let db: DatabaseService['db'];
 let storage: StorageService;
+let objects: S3Client;
+let mediaBucketCreated = false;
+const mediaBucket = `gym4me-catalog-${randomUUID()}`;
 const uploadedKeys: string[] = [];
 type Identity = { id: string; client: string; cookie: string };
 let owner: Identity;
@@ -124,7 +127,7 @@ beforeAll(async () => {
                 process.env.TEST_S3_ACCESS_KEY_ID ?? 'gym4me_local',
               S3_SECRET_ACCESS_KEY:
                 process.env.TEST_S3_SECRET_ACCESS_KEY ?? 'gym4me_local_storage',
-              S3_BUCKET: 'gym4me-test',
+              S3_BUCKET: mediaBucket,
             }),
         ],
       }),
@@ -135,7 +138,7 @@ beforeAll(async () => {
   app = module.createNestApplication();
   db = module.get(DatabaseService).db;
   storage = module.get(StorageService);
-  const objects = new S3Client({
+  objects = new S3Client({
     endpoint: process.env.TEST_S3_ENDPOINT ?? 'http://127.0.0.1:8333',
     region: 'us-east-1',
     forcePathStyle: true,
@@ -145,13 +148,8 @@ beforeAll(async () => {
         process.env.TEST_S3_SECRET_ACCESS_KEY ?? 'gym4me_local_storage',
     },
   });
-  try {
-    await objects.send(new HeadBucketCommand({ Bucket: 'gym4me-test' }));
-  } catch {
-    await objects.send(new CreateBucketCommand({ Bucket: 'gym4me-test' }));
-  } finally {
-    objects.destroy();
-  }
+  await objects.send(new CreateBucketCommand({ Bucket: mediaBucket }));
+  mediaBucketCreated = true;
   await migrate(db, {
     migrationsFolder: resolve(__dirname, '../database/migrations'),
   });
@@ -172,7 +170,13 @@ beforeAll(async () => {
 }, 30000);
 afterAll(async () => {
   if (!db) return;
-  for (const key of uploadedKeys) await storage.delete(key);
+  if (mediaBucketCreated) {
+    for (const key of uploadedKeys) await storage.delete(key);
+    for await (const object of storage.objects(''))
+      await storage.delete(object.key);
+    await objects.send(new DeleteBucketCommand({ Bucket: mediaBucket }));
+  }
+  objects?.destroy();
   for (const id of clubIds) {
     await db.delete(s.auditEvents).where(eq(s.auditEvents.organizationId, id));
     await db.delete(s.tariffGroups).where(eq(s.tariffGroups.clubId, id));
@@ -1184,6 +1188,18 @@ test('OpenAPI describes the required name and excludes removed fields', async ()
   expect(schema.properties.shortDescription).toMatchObject({ nullable: true });
   expect(schema.properties).not.toHaveProperty('ownerId');
   expect(schema.properties).not.toHaveProperty('serviceModes');
+  const invitation =
+    document.paths[
+      '/api/v1/business/organizations/{organizationId}/invitations'
+    ].post!.requestBody!.content['application/json'].schema;
+  expect(invitation.required).toEqual(['phone', 'role']);
+  expect(invitation.properties.branchIds).toMatchObject({
+    type: 'array',
+    items: { type: 'string', format: 'uuid' },
+    minItems: 1,
+    maxItems: 100,
+    uniqueItems: true,
+  });
 });
 
 test('admin read routes reject unauthenticated, business and unprivileged admin sessions', async () => {
@@ -1516,6 +1532,182 @@ test('scoped invitation restricts the same account to its assigned branch in one
     'get',
     `business/clubs/${clubId}/branches/${branchId}`,
     stranger,
+  ).expect(403);
+});
+
+test('PH1 staff role matrix enforces branch grants, tenant boundaries and immediate revocation', async () => {
+  const club = body<{ id: string }>(
+    await call('post', 'business/clubs', owner)
+      .send({ name: 'مجموعهٔ آزمون دسترسی' })
+      .expect(201),
+  );
+  clubIds.push(club.id);
+  const foreign = body<{ id: string }>(
+    await call('post', 'business/clubs', stranger)
+      .send({ name: 'مجموعهٔ مستقل آزمون' })
+      .expect(201),
+  );
+  clubIds.push(foreign.id);
+  const first = body<{ branches: { id: string }[] }>(
+    await call('get', `business/clubs/${club.id}`, owner).expect(200),
+  ).branches[0].id;
+  const second = body<{ id: string }>(
+    await call('post', `business/organizations/${club.id}/branches`, owner)
+      .send({ name: 'شعبهٔ دوم آزمون' })
+      .expect(201),
+  ).id;
+  for (const person of [athlete, coach, admin, stranger])
+    await call('get', `business/clubs/${club.id}`, person).expect(403);
+  for (const role of ['manager', 'receptionist', 'accountant'] as const) {
+    for (const allBranches of [true, false]) {
+      const person = await identity('business');
+      const [user] = await db
+        .select()
+        .from(s.users)
+        .where(eq(s.users.id, person.id));
+      const invitation = body<{ id: string }>(
+        await call(
+          'post',
+          `business/organizations/${club.id}/invitations`,
+          owner,
+        )
+          .send({
+            phone: user.phone,
+            role,
+            ...(allBranches ? {} : { branchIds: [first] }),
+          })
+          .expect(201),
+      );
+      const accepted = await Promise.all([
+        call('post', `profile/invitations/${invitation.id}/accept`, person),
+        call('post', `profile/invitations/${invitation.id}/accept`, person),
+      ]);
+      expect(accepted.map((response) => response.status).sort()).toEqual([
+        201, 409,
+      ]);
+      const branches = body<{ id: string }[]>(
+        await call(
+          'get',
+          `business/organizations/${club.id}/branches`,
+          person,
+        ).expect(200),
+      );
+      if (allBranches)
+        expect(branches.map((branch) => branch.id)).toEqual(
+          expect.arrayContaining([first, second]),
+        );
+      else expect(branches.map((branch) => branch.id)).toEqual([first]);
+      await call(
+        'get',
+        `business/clubs/${club.id}/branches/${first}`,
+        person,
+      ).expect(200);
+      await call(
+        'get',
+        `business/clubs/${club.id}/branches/${second}`,
+        person,
+      ).expect(allBranches ? 200 : 403);
+      await call('get', `business/clubs/${foreign.id}`, person).expect(403);
+      await call(
+        'get',
+        `business/organizations/${club.id}/team`,
+        person,
+      ).expect(403);
+      await call(
+        'post',
+        `business/organizations/${club.id}/invitations`,
+        person,
+      )
+        .send({ phone: user.phone, role: 'manager' })
+        .expect(403);
+      await call('patch', `business/clubs/${club.id}`, person)
+        .send({ shortDescription: 'تغییر مجاز فقط برای مدیریت کل مجموعه' })
+        .expect(role === 'manager' && allBranches ? 200 : 403);
+      await call('patch', `business/clubs/${club.id}/branches/${first}`, person)
+        .send({ rules: 'قانون شعبهٔ مجاز' })
+        .expect(role === 'manager' ? 200 : 403);
+      await call(
+        'patch',
+        `business/clubs/${club.id}/branches/${second}`,
+        person,
+      )
+        .send({ rules: 'قانون شعبهٔ دیگر' })
+        .expect(role === 'manager' && allBranches ? 200 : 403);
+      await call('post', `business/clubs/${club.id}/tariffs`, person)
+        .send({
+          branchId: first,
+          name: 'تعرفهٔ آزمون نقش',
+          serviceType: 'visit',
+          unit: 'visit',
+          priceToman: 1000,
+          conditions: 'فقط آزمون دسترسی',
+        })
+        .expect(role === 'manager' ? 201 : 403);
+      const members = body<{ members: { id: string; userId: string }[] }>(
+        await call(
+          'get',
+          `business/organizations/${club.id}/team`,
+          owner,
+        ).expect(200),
+      );
+      const member = members.members.find(
+        (member) => member.userId === person.id,
+      )!;
+      await call(
+        'post',
+        `business/organizations/${club.id}/team/${member.id}/remove`,
+        owner,
+      ).expect(201);
+      await call(
+        'get',
+        `business/clubs/${club.id}/branches/${first}`,
+        person,
+      ).expect(403);
+    }
+  }
+}, 30000);
+
+test('expired and revoked scoped staff invitations cannot create membership or expose branch data', async () => {
+  const person = await identity('business');
+  const [user] = await db
+    .select()
+    .from(s.users)
+    .where(eq(s.users.id, person.id));
+  const invitation = async () =>
+    body<{ id: string }>(
+      await call('post', `business/organizations/${clubId}/invitations`, owner)
+        .send({
+          phone: user.phone,
+          role: 'receptionist',
+          branchIds: [branchId],
+        })
+        .expect(201),
+    );
+  const expired = await invitation();
+  await db
+    .update(s.organizationInvitations)
+    .set({ expiresAt: new Date(Date.now() - 1000) })
+    .where(eq(s.organizationInvitations.id, expired.id));
+  await call('post', `profile/invitations/${expired.id}/accept`, person).expect(
+    409,
+  );
+  const pending = body<{ id: string }[]>(
+    await call('get', 'profile/invitations', person).expect(200),
+  );
+  expect(pending.some((item) => item.id === expired.id)).toBe(false);
+  const revoked = await invitation();
+  await call(
+    'post',
+    `business/organizations/${clubId}/invitations/${revoked.id}/revoke`,
+    owner,
+  ).expect(201);
+  await call('post', `profile/invitations/${revoked.id}/accept`, person).expect(
+    409,
+  );
+  await call(
+    'get',
+    `business/clubs/${clubId}/branches/${branchId}`,
+    person,
   ).expect(403);
 });
 

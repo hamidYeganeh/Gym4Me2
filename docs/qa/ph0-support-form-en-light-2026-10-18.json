@@ -1,0 +1,68 @@
+{
+  "build": "CuMYYCscHxNIXoZkhyu_4",
+  "scope": "Invalid local submission only",
+  "alerts": [
+    "Enter a title between 3 and 160 characters.",
+    "Enter a description between 3 and 5,000 characters."
+  ],
+  "dark": false,
+  "dir": "ltr",
+  "fields": [
+    {
+      "described": [
+        {
+          "exists": true,
+          "id": "_r_0_-title-hint",
+          "role": null
+        },
+        {
+          "exists": true,
+          "id": "_r_0_-title-error",
+          "role": "alert"
+        }
+      ],
+      "focusOutline": "2px",
+      "font": "16px",
+      "invalid": "true",
+      "label": [
+        "Title"
+      ],
+      "name": "title"
+    },
+    {
+      "described": [
+        {
+          "exists": true,
+          "id": "_r_0_-body-hint",
+          "role": null
+        },
+        {
+          "exists": true,
+          "id": "_r_0_-body-error",
+          "role": "alert"
+        }
+      ],
+      "focusOutline": "3px",
+      "font": "16px",
+      "invalid": "true",
+      "label": [
+        "Description"
+      ],
+      "name": "body"
+    }
+  ],
+  "focus": "title",
+  "horizontalOverflow": false,
+  "lang": "en",
+  "submit": [
+    {
+      "height": 44,
+      "text": "Send",
+      "width": 320
+    }
+  ],
+  "viewport": [
+    360,
+    844
+  ]
+}

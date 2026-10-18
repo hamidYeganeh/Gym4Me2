@@ -1,0 +1,36 @@
+{
+  "build": "CuMYYCscHxNIXoZkhyu_4",
+  "scenario": "pending service-page request, then Home navigation",
+  "alerts": [],
+  "dpr": 1,
+  "focus": {
+    "id": "",
+    "inactive": false,
+    "tag": "A",
+    "text": "خانه"
+  },
+  "heading": {
+    "scrollWidth": 208,
+    "width": 208,
+    "wrap": "anywhere"
+  },
+  "inputFont": null,
+  "path": "/",
+  "query": "",
+  "routeIds": [
+    "/"
+  ],
+  "rows": [],
+  "statuses": [],
+  "title": [
+    {
+      "scrollWidth": 213,
+      "width": 213,
+      "wrap": "anywhere"
+    }
+  ],
+  "viewport": [
+    360,
+    844
+  ]
+}

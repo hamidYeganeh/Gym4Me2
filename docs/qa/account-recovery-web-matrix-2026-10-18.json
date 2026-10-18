@@ -1,0 +1,356 @@
+{
+  "scope": "read-only web; no actual authentication or consent acceptance",
+  "cases": [
+    {
+      "activeMains": 1,
+      "lang": "fa",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "خواندن سیاست داده",
+        "width": 116.515625
+      },
+      "theme": "dark",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "fa",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "خواندن سیاست داده",
+        "width": 116.515625
+      },
+      "theme": "dark",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "fa",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "خواندن سیاست داده",
+        "width": 116.515625
+      },
+      "theme": "dark",
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "fa",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "خواندن سیاست داده",
+        "width": 116.515625
+      },
+      "theme": "light",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "fa",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "خواندن سیاست داده",
+        "width": 116.515625
+      },
+      "theme": "light",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "fa",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "خواندن سیاست داده",
+        "width": 116.515625
+      },
+      "theme": "light",
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "en",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "Read data policy",
+        "width": 104.25
+      },
+      "theme": "light",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "en",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "Read data policy",
+        "width": 104.25
+      },
+      "theme": "light",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "en",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "Read data policy",
+        "width": 104.25
+      },
+      "theme": "light",
+      "width": 430,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "en",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "Read data policy",
+        "width": 104.25
+      },
+      "theme": "dark",
+      "width": 360,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "en",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "Read data policy",
+        "width": 104.25
+      },
+      "theme": "dark",
+      "width": 390,
+      "passed": true
+    },
+    {
+      "activeMains": 1,
+      "lang": "en",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "Read data policy",
+        "width": 104.25
+      },
+      "theme": "dark",
+      "width": 430,
+      "passed": true
+    }
+  ],
+  "flows": [
+    {
+      "lang": "fa",
+      "step": "pointer-policy",
+      "url": "http://127.0.0.1:7381/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot"
+    },
+    {
+      "lang": "fa",
+      "step": "policy-back",
+      "url": "http://127.0.0.1:7381/login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+      "dom": "- main:\n  - link \"بازگشت\":\n    - /url: /profile\n  - link \"کشف باشگاه‌ها\":\n    - /url: /discovery\n  - heading \"شماره همراهت را وارد کن\" [level=1]\n  - paragraph: شماره موبایلت را وارد کن تا کد ورود را برایت بفرستیم.\n  - generic: شماره موبایل\n  - textbox \"شماره موبایل\":\n    - /placeholder: 0912 345 6789\n  - radiogroup \"روش ورود\":\n    - radio \"کد پیامکی\" [checked]\n    - radio \"رمز عبور\"\n  - button \"ادامه\" [disabled]\n  - paragraph:\n    - text: شماره برای ارسال کد ورود و ساخت یا بازیابی حساب استفاده می‌شود. پیش از ادامه می‌توانی سیاست داده را بخوانی.\n    - link \"خواندن سیاست داده\":\n      - /url: /privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n- main:\n  - link:\n    - /url: /login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n    - text: بازگشت\n  - region:\n    - heading [level=1]: حریم خصوصی و داده‌ها\n    - paragraph: اطلاعاتی که نگهداری می‌کنیم و انتخاب‌های تو.\n  - list:\n    - heading [level=2]: اطلاعات مورد نیاز حساب تو\n    - paragraph: شماره تأییدشده برای ورود استفاده می‌شود. نام اختیاری، علاقه‌مندی‌ها و محتوای ثبت‌شده به حساب تو متصل‌اند.\n    - heading [level=2]: انتخاب کن دیگران چه ببینند\n    - paragraph: شماره‌ات در فهرست عمومی نمایش داده نمی‌شود. نام اختیاری فقط با فعال کردن نمایش عمومی منتشر می‌شود.\n    - heading [level=2]: داده‌های تو، انتخاب‌های تو\n    - paragraph: رضایت پیام‌های تبلیغاتی و نمایش نام را مدیریت کن، از اطلاعاتت خروجی بگیر یا درخواست حذف حساب بده.\n  - alert:\n    - generic: درخواست انجام نشد. دوباره تلاش کنید.\n  - button: تلاش دوباره\n  - link:\n    - /url: /login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n    - text: بازگشت\n- region \"Notifications alt+T\"\n- alert"
+    },
+    {
+      "lang": "en",
+      "step": "keyboard-policy",
+      "url": "http://127.0.0.1:7381/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+      "dom": "- main:\n  - link \"Back\":\n    - /url: /login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n  - region \"Privacy and data\":\n    - heading \"Privacy and data\" [level=1]\n    - paragraph: What we keep and the choices you control.\n  - list:\n    - heading \"Only the information your account needs\" [level=2]\n    - paragraph: Your verified phone supports sign-in. Your optional name, favorites and submitted content belong to your account.\n    - heading \"Choose what others can see\" [level=2]\n    - paragraph: Your phone is hidden from the public catalog. Your optional name appears publicly only when you enable visibility.\n    - heading \"Your data, your choices\" [level=2]\n    - paragraph: Manage marketing consent and profile visibility, export your information, or request account deletion in privacy settings.\n  - alert:\n    - generic: Request failed. Please try again.\n  - button \"Try again\"\n  - link \"Back\":\n    - /url: /login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n- main:\n  - link:\n    - /url: /profile\n  - link:\n    - /url: /discovery\n    - text: Browse\n  - heading [level=1]: Add your phone\n  - paragraph: Enter your mobile number to receive a sign-in code.\n  - generic: Mobile number\n  - textbox:\n    - /placeholder: 0912 345 6789\n  - radiogroup:\n    - radio [checked]: SMS code\n    - radio: Password\n  - button [disabled]: Next\n  - paragraph:\n    - text: Your phone sends a sign-in code and creates or recovers your account. Read the data policy before continuing.\n    - link:\n      - /url: /privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n      - text: Read data policy\n- navigation \"Navigation\":\n  - link \"Home\":\n    - /url: /\n    - generic: Home\n  - link \"Discover\":\n    - /url: /discovery\n    - generic: Discover\n  - link \"Messages\":\n    - /url: /messages\n    - generic: Messages\n- region \"Notifications alt+T\"\n- alert"
+    },
+    {
+      "lang": "en",
+      "step": "policy-back",
+      "url": "http://127.0.0.1:7381/login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+      "dom": "- main:\n  - link:\n    - /url: /login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n    - text: Back\n  - region:\n    - heading [level=1]: Privacy and data\n    - paragraph: What we keep and the choices you control.\n  - list:\n    - heading [level=2]: Only the information your account needs\n    - paragraph: Your verified phone supports sign-in. Your optional name, favorites and submitted content belong to your account.\n    - heading [level=2]: Choose what others can see\n    - paragraph: Your phone is hidden from the public catalog. Your optional name appears publicly only when you enable visibility.\n    - heading [level=2]: Your data, your choices\n    - paragraph: Manage marketing consent and profile visibility, export your information, or request account deletion in privacy settings.\n  - alert:\n    - generic: Request failed. Please try again.\n  - button: Try again\n  - link:\n    - /url: /login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n    - text: Back\n- main:\n  - link:\n    - /url: /profile\n  - link:\n    - /url: /discovery\n    - text: Browse\n  - heading [level=1]: Add your phone\n  - paragraph: Enter your mobile number to receive a sign-in code.\n  - generic: Mobile number\n  - textbox:\n    - /placeholder: 0912 345 6789\n  - radiogroup:\n    - radio [checked]: SMS code\n    - radio: Password\n  - button [disabled]: Next\n  - paragraph:\n    - text: Your phone sends a sign-in code and creates or recovers your account. Read the data policy before continuing.\n    - link:\n      - /url: /privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n      - text: Read data policy\n- main:\n  - link \"Back\":\n    - /url: /profile\n  - link \"Browse\":\n    - /url: /discovery\n  - heading \"Add your phone\" [level=1]\n  - paragraph: Enter your mobile number to receive a sign-in code.\n  - generic: Mobile number\n  - textbox \"0912 345 6789\"\n  - radiogroup \"Sign-in method\":\n    - radio \"SMS code\" [checked]\n    - radio \"Password\"\n  - button \"Next\" [disabled]\n  - paragraph:\n    - text: Your phone sends a sign-in code and creates or recovers your account. Read the data policy before continuing.\n    - link \"Read data policy\":\n      - /url: /privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n- region \"Notifications alt+T\"\n- alert"
+    }
+  ],
+  "home": "/login?returnTo=%2F%3Fsource%3Dweb-return-test",
+  "profileFinal": {
+    "href": "/login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+    "dom": "- main:\n  - link \"Later\":\n    - /url: /checkout?service=a1000000-0000-4000-8000-000000000002&occurrence=slot\n  - button \"Save changes\" [disabled]:\n  - heading \"Complete your profile\" [level=1]\n  - paragraph: Introduce yourself to your training community.\n  - link \"Sign in or join\":\n    - /url: /login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot\n- region \"Notifications alt+T\"\n- alert"
+  },
+  "expected": 12,
+  "complete": true,
+  "businessDuplicateBefore": {
+    "dom": "- main:\n  - heading \"کلاس‌ها و سانس‌ها\" [level=1]\n  - combobox \"زبان\":\n    - option \"فارسی\" [selected]\n    - option \"English\"\n  - button \"تغییر ظاهر روشن یا تیره\":\n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n  - link \"خانه\":\n    - /url: /\n  - navigation \"ناوبری اصلی\":\n    - link \"کلاس‌ها و سانس‌ها\":\n      - /url: /services\n    - link \"منابع\":\n      - /url: /resources\n    - link \"پذیرش\":\n      - /url: /reception\n    - link \"اعضا\":\n      - /url: /members\n    - link \"پرداخت‌ها\":\n      - /url: /payments\n    - link \"گزارش‌ها\":\n      - /url: /reports\n    - link \"ورود اطلاعات\":\n      - /url: /imports\n    - link \"تقویم\":\n      - /url: /calendar\n    - link \"گفتگو\":\n      - /url: /messages\n  - alert:\n    - generic: نشست پایان یافته است. دوباره وارد شوید.\n  - link \"ورود به حساب\":\n    - /url: /login?returnTo=%2Fservices%3Fview%3Dcalendar\n  - link \"ورود به حساب\":\n    - /url: /login?returnTo=%2Fservices\n- region \"Notifications alt+T\"\n- alert",
+    "hrefs": [
+      "/login?returnTo=%2Fservices%3Fview%3Dcalendar",
+      "/login?returnTo=%2Fservices"
+    ]
+  },
+  "businessFinal": [
+    {
+      "route": "/services?view=calendar",
+      "hrefs": [
+        "/login?returnTo=%2Fservices%3Fview%3Dcalendar"
+      ],
+      "retryButtons": 0,
+      "dom": "- main:\n  - heading \"کلاس‌ها و سانس‌ها\" [level=1]\n  - combobox \"زبان\":\n    - option \"فارسی\" [selected]\n    - option \"English\"\n  - button \"تغییر ظاهر روشن یا تیره\":\n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n  - link \"خانه\":\n    - /url: /\n  - navigation \"ناوبری اصلی\":\n    - link \"کلاس‌ها و سانس‌ها\":\n      - /url: /services\n    - link \"منابع\":\n      - /url: /resources\n    - link \"پذیرش\":\n      - /url: /reception\n    - link \"اعضا\":\n      - /url: /members\n    - link \"پرداخت‌ها\":\n      - /url: /payments\n    - link \"گزارش‌ها\":\n      - /url: /reports\n    - link \"ورود اطلاعات\":\n      - /url: /imports\n    - link \"تقویم\":\n      - /url: /calendar\n    - link \"گفتگو\":\n      - /url: /messages\n  - alert:\n    - generic: نشست پایان یافته است. دوباره وارد شوید.\n  - link \"ورود به حساب\":\n    - /url: /login?returnTo=%2Fservices%3Fview%3Dcalendar\n- region \"Notifications alt+T\"\n- alert",
+      "loginUrl": "http://127.0.0.1:7381/login?returnTo=%2Fservices%3Fview%3Dcalendar",
+      "passed": true
+    },
+    {
+      "route": "/messages?archived=true",
+      "hrefs": [
+        "/login?returnTo=%2Fmessages%3Farchived%3Dtrue"
+      ],
+      "dom": "- main:\n  - heading \"گفتگو\" [level=1]\n  - combobox \"زبان\":\n    - option \"فارسی\" [selected]\n    - option \"English\"\n  - button \"تغییر ظاهر روشن یا تیره\":\n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n  - link \"خانه\":\n    - /url: /\n  - navigation \"ناوبری اصلی\":\n    - link \"کلاس‌ها و سانس‌ها\":\n      - /url: /services\n    - link \"منابع\":\n      - /url: /resources\n    - link \"پذیرش\":\n      - /url: /reception\n    - link \"اعضا\":\n      - /url: /members\n    - link \"پرداخت‌ها\":\n      - /url: /payments\n    - link \"گزارش‌ها\":\n      - /url: /reports\n    - link \"ورود اطلاعات\":\n      - /url: /imports\n    - link \"تقویم\":\n      - /url: /calendar\n    - link \"گفتگو\":\n      - /url: /messages\n  - paragraph: گفتگوهای کلاس‌های شعبه را دنبال کنید و با ورزشکاران در ارتباط باشید.\n  - generic: مجموعه\n  - combobox \"مجموعه\" [disabled]\n  - generic: شعبه\n  - combobox \"شعبه\" [disabled]\n  - radiogroup \"گفتگو\":\n    - radio \"صندوق گفتگو\" [checked]\n    - radio \"آرشیو\"\n  - alert:\n    - generic: نشست پایان یافته است. دوباره وارد شوید.\n  - link \"ورود به حساب\":\n    - /url: /login?returnTo=%2Fmessages%3Farchived%3Dtrue\n- region \"Notifications alt+T\"\n- alert",
+      "passed": true
+    },
+    {
+      "route": "/messages/a1000000-0000-4000-8000-000000000001?view=members",
+      "hrefs": [
+        "/login?returnTo=%2Fmessages%2Fa1000000-0000-4000-8000-000000000001%3Fview%3Dmembers"
+      ],
+      "dom": "- main:\n  - heading \"گفتگو\" [level=1]\n  - combobox \"زبان\":\n    - option \"فارسی\" [selected]\n    - option \"English\"\n  - button \"تغییر ظاهر روشن یا تیره\":\n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n  - link \"خانه\":\n    - /url: /\n  - link \"بازگشت به گفتگوها\":\n    - /url: /messages\n    - text: بازگشت به گفتگوها\n  - alert:\n    - generic: نشست پایان یافته است. دوباره وارد شوید.\n  - link \"ورود به حساب\":\n    - /url: /login?returnTo=%2Fmessages%2Fa1000000-0000-4000-8000-000000000001%3Fview%3Dmembers\n- region \"Notifications alt+T\"\n- alert",
+      "passed": true
+    }
+  ],
+  "businessOutage": {
+    "dom": "- main:\n  - heading \"کلاس‌ها و سانس‌ها\" [level=1]\n  - combobox \"زبان\":\n    - option \"فارسی\" [selected]\n    - option \"English\"\n  - button \"تغییر ظاهر روشن یا تیره\":\n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n    - generic: \n  - link \"خانه\":\n    - /url: /\n  - navigation \"ناوبری اصلی\":\n    - link \"کلاس‌ها و سانس‌ها\":\n      - /url: /services\n    - link \"منابع\":\n      - /url: /resources\n    - link \"پذیرش\":\n      - /url: /reception\n    - link \"اعضا\":\n      - /url: /members\n    - link \"پرداخت‌ها\":\n      - /url: /payments\n    - link \"گزارش‌ها\":\n      - /url: /reports\n    - link \"ورود اطلاعات\":\n      - /url: /imports\n    - link \"تقویم\":\n      - /url: /calendar\n    - link \"گفتگو\":\n      - /url: /messages\n  - generic: مجموعه\n  - combobox \"مجموعه\" [disabled]\n  - generic: شعبه\n  - combobox \"شعبه\" [disabled]\n  - alert:\n    - generic: درخواست انجام نشد. دوباره تلاش کنید.\n  - button \"تلاش دوباره\"\n- region \"Notifications alt+T\"\n- alert",
+    "loginLinks": 0,
+    "retryButtons": 1
+  },
+  "admin": {
+    "route": "/operations?queue=payments",
+    "hrefs": [
+      "/login?returnTo=%2Foperations%3Fqueue%3Dpayments"
+    ],
+    "dom": "- main:\n  - heading \"عملیات\" [level=1]\n  - link \"خانه\":\n    - /url: /\n  - alert:\n    - generic: نشست پایان یافته است. دوباره وارد شوید.\n  - link \"ورود به حساب\":\n    - /url: /login?returnTo=%2Foperations%3Fqueue%3Dpayments\n- region \"Notifications alt+T\"\n- alert",
+    "loginUrl": "http://127.0.0.1:7381/login?returnTo=%2Foperations%3Fqueue%3Dpayments",
+    "passed": true
+  },
+  "finalApplication": {
+    "completionHref": "/login?returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+    "layout": {
+      "activeMains": 1,
+      "lang": "fa",
+      "overflow": false,
+      "policy": {
+        "height": 44,
+        "href": "/privacy?from=login&returnTo=%2Fprofile%2Fcomplete%3FreturnTo%3D%252Fcheckout%253Fservice%253Da1000000-0000-4000-8000-000000000002%2526occurrence%253Dslot",
+        "rects": 1,
+        "text": "خواندن سیاست داده",
+        "width": 116.515625
+      },
+      "theme": "dark",
+      "width": 390
+    }
+  },
+  "sourceSha256": {
+    "packages/ui/src/lib/account-recovery.ts": "3eca34bddc4714fa023aa921ae90b94660017acd48d9ed627e85c1fa6bcb377d",
+    "packages/ui/src/account/safe-return-path.ts": "9565eb56f428cff1ef757698175e4a55e1a303c109209fa6e01481b4f05101f0",
+    "packages/ui/src/account/complete-profile.tsx": "7575d278cffead9f437c807a3f4687cb5da9eefc29a00154d7abb458ab649c6c",
+    "packages/ui/src/account/login.tsx": "5d1e8fb462b4cb51bc8e24d17c84cd884b4e34d6050eaae5bb442e90e89b7e9a",
+    "packages/ui/src/sports/query-error.tsx": "bf07ffd78651ff3a5eb5ffa0539b1b18d02cca18d17f9f47e74429f42368c6d4",
+    "packages/ui/src/sports/workspace.tsx": "107f2ef2c43fce0dfb0211f764a741f5e04b799e31e644820377765ea66d41f6",
+    "packages/ui/src/sports/host-conversations.tsx": "760dda33077133596f5e35d9dc84f6b9f1241822486a19e394c6439616fb3ce3",
+    "packages/ui/src/sports/host-conversation.tsx": "26bc8d91e5be1dd4cc5249aa2176f88b7753b7999bc2a9e03e8a38d74deb872b",
+    "apps/application/components/luma/common.tsx": "ad2d6063c1d091e28014585486e7d4b1884c0dd84b3b4de7ebea3be932bd4169",
+    "apps/application/test/account-recovery.test.ts": "7b6f24f71d2268a51ac2ceae979c9803119a56498da0184c47643f6c6b615e5a",
+    "apps/application/test/fixtures/web-read-api.ts": "b8f482f29ca745c1a5d1d63f58173fe01a5ea71cdc17b7a6987db715e10a600e",
+    "apps/application/test/web-read-fixture.test.ts": "cc68fb33494c08e94986d31000d91fc26a1d171f37854bb27716d3bbce3a77fd",
+    "apps/application/scripts/web-read-fixture.mts": "854ee06669b52a5534e6eff5866fccee7210647992bad73ced85d9a9f2b90a58"
+  },
+  "layoutMatrixTiming": "12 login DOM cases preceded final removal of redundant host login controls. Auth source was unchanged by that integration correction. Final application build was rechecked at fa/dark/390, business in 3 routes, admin operations, and ordinary business outage.",
+  "finalBuilds": [
+    {
+      "app": "application",
+      "id": "jHM3AlqB3zmKYAak7Fm9l",
+      "compileSeconds": 8.7,
+      "typecheckSeconds": 1.612,
+      "pages": 64,
+      "heapMiB": 512,
+      "workers": 1,
+      "apiUrl": "http://127.0.0.1:7488"
+    },
+    {
+      "app": "business",
+      "id": "spT1QUZGZnHUZyuJLgS9B",
+      "compileSeconds": 5.4,
+      "typecheckSeconds": 2.2,
+      "pages": 24,
+      "heapMiB": 512,
+      "workers": 1,
+      "apiUrl": "http://127.0.0.1:7488"
+    },
+    {
+      "app": "admin",
+      "id": "52rnUnhBCCq5zRc21BMid",
+      "compileSeconds": 5.3,
+      "typecheckSeconds": 2.1,
+      "pages": 20,
+      "heapMiB": 512,
+      "workers": 1,
+      "apiUrl": "http://127.0.0.1:7488"
+    }
+  ],
+  "tests": {
+    "passed": 20,
+    "failed": 0,
+    "concurrency": 1,
+    "heapMiB": 128,
+    "files": [
+      "account-recovery.test.ts",
+      "web-read-fixture.test.ts",
+      "account-back.test.ts"
+    ]
+  },
+  "screenshots": {
+    "finalFarsi": {
+      "path": "screenshots/account-recovery-web-2026-10-18/login-fa-dark-390.jpg",
+      "pixelWidth": 390,
+      "pixelHeight": 844
+    },
+    "note": "Rapid resize produced a stale 360px screenshot initially. It was replaced with a fixed-viewport 390px capture after the final build; dimensions verified with sips."
+  },
+  "notAccepted": [
+    "real authentication or consent update",
+    "return after successful OTP or password login",
+    "permissions and database integration",
+    "full accessibility, motion or native acceptance"
+  ]
+}

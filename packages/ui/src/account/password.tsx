@@ -1,5 +1,5 @@
 "use client";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "@repo/i18n";
@@ -11,6 +11,9 @@ import { FieldGroup } from "../kit/Field";
 import { Button } from "../kit/Button";
 import { TextField, ErrorNotice, QueryError, Loading, Submit } from "./common";
 import { toast } from "../kit/Sonner";
+import { safeReturnPath } from "./safe-return-path";
+import { applicationAuthHref } from "../lib/auth-routes";
+import { useApiContext } from "@repo/api/provider";
 export function SetPasswordPage({
   backHref = "/profile/settings",
 }: {
@@ -21,9 +24,19 @@ export function SetPasswordPage({
   const status = usePasswordStatus();
   const mutation = useSetPassword();
   const router = useRouter();
+  const { api } = useApiContext();
   const [password, setPassword] = useState("");
   const [confirmation, setConfirmation] = useState("");
   const [error, setError] = useState<unknown>(null);
+  const [returnTo, setReturnTo] = useState(backHref);
+  useEffect(() => {
+    setReturnTo(
+      safeReturnPath(
+        new URLSearchParams(window.location.search).get("returnTo"),
+        backHref,
+      ),
+    );
+  }, [backHref]);
   const unauthorized =
     status.error instanceof ApiError && status.error.status === 401;
   async function submit(event: FormEvent) {
@@ -38,7 +51,11 @@ export function SetPasswordPage({
       setPassword("");
       setConfirmation("");
       toast.success(t("saved"));
-      router.replace("/login");
+      router.replace(
+        api.scope[2] === "application"
+          ? applicationAuthHref("password", returnTo)
+          : `/login?${new URLSearchParams({ returnTo, method: "password" })}`,
+      );
     } catch (err) {
       setError(err);
     }
@@ -104,7 +121,9 @@ export function SetPasswordPage({
         <div className="grid gap-5 rounded-4xl bg-muted/50 p-6">
           <p className="text-sm leading-7">{t("verifyFirst")}</p>
           <Button asChild>
-            <Link href="/reset-password">{t("verifyPhone")}</Link>
+            <Link href={`/reset-password?${new URLSearchParams({ returnTo })}`}>
+              {t("verifyPhone")}
+            </Link>
           </Button>
         </div>
       )}

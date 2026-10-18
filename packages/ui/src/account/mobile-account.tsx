@@ -3,28 +3,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { useTranslations } from "@repo/i18n";
-import { ApiError } from "@repo/api";
 import { useAccount } from "@repo/api/profile";
 import { useLogout } from "@repo/api/auth";
-import {
-  Bookmark,
-  UserRound,
-  Settings,
-  Mail,
-  ChevronLeft,
-  Pencil,
-} from "lucide-react";
+import { Bookmark, Settings, Mail, ChevronLeft, Pencil } from "lucide-react";
 import { MobilePage } from "../mobile-page";
 import { PrivacyDesignPage } from "./privacy-design";
 import { ProfileOverview } from "./profile-overview";
 import { AccountDesignPage } from "./account-design";
 import { MobileProfileEdit } from "./mobile-profile-edit";
 import { MobileSettings } from "./mobile-settings";
-import { Button } from "../kit/Button";
-import { Card, CardContent } from "../kit/Card";
 import { SessionsContent, InvitationsContent } from "./profile";
 import { AccountPrivacy, PrivacyNotice } from "./privacy";
 import { QueryError, Loading } from "./common";
+import { AuthRequired } from "./auth-entry";
+import { useAuthRecovery } from "../hooks/use-auth-recovery";
 
 type Section =
   "account" | "edit" | "settings" | "sessions" | "invitations" | "privacy";
@@ -76,7 +68,8 @@ export function MobileAccount({ section = "account" }: { section?: Section }) {
   const logout = useLogout();
   const router = useRouter();
   const [error, setError] = useState<unknown>(null);
-  const guest = query.error instanceof ApiError && query.error.status === 401;
+  const recovery = useAuthRecovery(query, paths[section]);
+  const guest = recovery?.kind === "signIn";
   const account = query.data;
   const title = {
     account: t("title"),
@@ -101,24 +94,7 @@ export function MobileAccount({ section = "account" }: { section?: Section }) {
       setError(err);
     }
   }
-  const login = (
-    <Card className="shadow-none">
-      <CardContent className="grid gap-4">
-        <div className="flex size-14 items-center justify-center rounded-full bg-primary/15 text-primary">
-          <UserRound className="size-6" />
-        </div>
-        <h2 className="text-xl font-semibold">{t("guestTitle")}</h2>
-        <p className="text-sm leading-7 text-muted-foreground">
-          {t("guestHint")}
-        </p>
-        <Button asChild className="min-h-12">
-          <Link href={`/login?returnTo=${encodeURIComponent(paths[section])}`}>
-            {t("signIn")}
-          </Link>
-        </Button>
-      </CardContent>
-    </Card>
-  );
+  const login = <AuthRequired returnTo={paths[section]} />;
   if (section === "edit" && account)
     return <MobileProfileEdit key={account.id} account={account} />;
   const Shell =
@@ -137,7 +113,7 @@ export function MobileAccount({ section = "account" }: { section?: Section }) {
       refreshing={query.isFetching}
       refresh={() => void query.refetch()}
     >
-      {query.isLoading ? (
+      {query.isLoading && !guest ? (
         <Loading />
       ) : !guest && query.error ? (
         <QueryError error={query.error} retry={query.refetch} />

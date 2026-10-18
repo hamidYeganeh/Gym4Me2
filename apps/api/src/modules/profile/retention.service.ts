@@ -260,6 +260,36 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
   }
   private async erase(tx: Tx, user: typeof s.users.$inferSelect, now: Date) {
     const userId = user.id;
+    // Financial identifiers remain opaque; remove communication content and private attachments.
+    await tx.execute(
+      sql`UPDATE sport_messages SET body='[deleted]',image_key=null,deleted_at=${now} WHERE sender_id=${userId}`,
+    );
+    await tx.execute(sql`DELETE FROM sport_documents WHERE user_id=${userId}`);
+    await tx.execute(
+      sql`DELETE FROM sport_access_tokens WHERE user_id=${userId} AND NOT EXISTS(SELECT 1 FROM sport_visits WHERE token_id=sport_access_tokens.id)`,
+    );
+    await tx.execute(
+      sql`DELETE FROM sport_calendar_follows WHERE user_id=${userId}`,
+    );
+    await tx.execute(
+      sql`DELETE FROM sport_conversation_preferences WHERE user_id=${userId}`,
+    );
+    await tx.execute(
+      sql`DELETE FROM sport_notification_preferences WHERE user_id=${userId}`,
+    );
+    await tx.execute(
+      sql`DELETE FROM sport_notifications WHERE user_id=${userId}`,
+    );
+    await tx.execute(sql`DELETE FROM sport_quotes WHERE user_id=${userId}`);
+    await tx.execute(
+      sql`DELETE FROM sport_command_receipts WHERE user_id=${userId}`,
+    );
+    await tx.execute(
+      sql`UPDATE sport_ticket_messages SET body='[deleted]' WHERE sender_id=${userId} OR ticket_id IN(SELECT id FROM sport_tickets WHERE user_id=${userId})`,
+    );
+    await tx.execute(
+      sql`UPDATE sport_tickets SET title='[deleted]' WHERE user_id=${userId}`,
+    );
     await tx
       .delete(s.passwordCredentials)
       .where(eq(s.passwordCredentials.userId, userId));

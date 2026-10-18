@@ -1,0 +1,9553 @@
+{
+  "scope": "Current synthetic focused cards; not a before/after preservation acceptance",
+  "cases": [
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 464,
+        "width": 320,
+        "x": 20,
+        "y": 190
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 66,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "fa-dark-360-club-portrait.png",
+      "sha256": "2640acc3ad1be6a3eef42638a87e9881a9af9fcccea205359f3a3f205ace208e",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 66,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 66,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            31,
+            30,
+            28
+          ],
+          [
+            28,
+            28,
+            26
+          ],
+          [
+            25,
+            24,
+            22
+          ],
+          [
+            25,
+            23,
+            21
+          ],
+          [
+            40,
+            38,
+            36
+          ],
+          [
+            54,
+            52,
+            50
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 432,
+        "width": 320,
+        "x": 20,
+        "y": 206
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 582,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "fa-dark-360-club-compact.png",
+      "sha256": "d7944bf680c54159aa948f14516d47f339a4a83c3fbe3eeb8f0bc5a1a9678d41",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 582,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 582,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            34,
+            32,
+            29
+          ],
+          [
+            38,
+            34,
+            32
+          ],
+          [
+            26,
+            24,
+            21
+          ],
+          [
+            17,
+            15,
+            13
+          ],
+          [
+            16,
+            15,
+            12
+          ],
+          [
+            20,
+            19,
+            17
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 240,
+        "width": 320,
+        "x": 20,
+        "y": 302
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 986,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "fa-dark-360-club-landscape.png",
+      "sha256": "9cba4ab71d7424540c783e6e28dbc9881c3d845156b440b0985f3295a9c0e822",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 986,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 986,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            21,
+            19,
+            16
+          ],
+          [
+            65,
+            63,
+            56
+          ],
+          [
+            15,
+            13,
+            11
+          ],
+          [
+            46,
+            41,
+            38
+          ],
+          [
+            59,
+            48,
+            39
+          ],
+          [
+            48,
+            35,
+            23
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 426.6640625,
+        "width": 320,
+        "x": 20,
+        "y": 208.5
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1987.5,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "fa-dark-360-coach-default.png",
+      "sha256": "41c0128e927f3b12ad903ac7290b3ee405afa3649535ee287924b976f909bdd4",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1987.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1987.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            22,
+            21,
+            22
+          ],
+          [
+            22,
+            22,
+            22
+          ],
+          [
+            24,
+            23,
+            23
+          ],
+          [
+            26,
+            25,
+            23
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 400,
+        "width": 320,
+        "x": 20,
+        "y": 222.1640625
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2468.5,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "fa-dark-360-coach-portrait.png",
+      "sha256": "b5d9323a98ead067ac717e790169db8571bbf54bad6dfcabd73be244a8d31035",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2468.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2468.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            15,
+            15,
+            16
+          ],
+          [
+            23,
+            23,
+            24
+          ],
+          [
+            23,
+            23,
+            24
+          ],
+          [
+            20,
+            21,
+            21
+          ],
+          [
+            20,
+            21,
+            21
+          ],
+          [
+            21,
+            22,
+            22
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 464,
+        "width": 320,
+        "x": 20,
+        "y": 190
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 66,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "fa-light-360-club-portrait.png",
+      "sha256": "e41ff4833a100800cd7aca3d80951b7e546bc2e6809851b1a9797978026820ac",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 66,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 66,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            109,
+            108,
+            106
+          ],
+          [
+            106,
+            106,
+            104
+          ],
+          [
+            103,
+            102,
+            100
+          ],
+          [
+            104,
+            102,
+            100
+          ],
+          [
+            118,
+            116,
+            114
+          ],
+          [
+            132,
+            130,
+            128
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 432,
+        "width": 320,
+        "x": 20,
+        "y": 206
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "light",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 582,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "fa-light-360-club-compact.png",
+      "sha256": "376efb9198fb9aaae4d7b002d85d503c29aba72a8b3c28da6695c63a96b3bf1c",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 582,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 582,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            112,
+            110,
+            107
+          ],
+          [
+            116,
+            112,
+            110
+          ],
+          [
+            104,
+            102,
+            99
+          ],
+          [
+            95,
+            93,
+            91
+          ],
+          [
+            94,
+            93,
+            90
+          ],
+          [
+            98,
+            97,
+            95
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 240,
+        "width": 320,
+        "x": 20,
+        "y": 302
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "light",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 986,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "fa-light-360-club-landscape.png",
+      "sha256": "00d50136206613eb8bb3abcf9b55b2b4c587f89e857515b1ef8d981411c9bf1f",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 986,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 986,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            99,
+            97,
+            94
+          ],
+          [
+            144,
+            142,
+            135
+          ],
+          [
+            93,
+            91,
+            89
+          ],
+          [
+            125,
+            120,
+            117
+          ],
+          [
+            137,
+            126,
+            117
+          ],
+          [
+            127,
+            115,
+            103
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 426.6640625,
+        "width": 320,
+        "x": 20,
+        "y": 208.5
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "light",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1987.5,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "fa-light-360-coach-default.png",
+      "sha256": "138e263ba09e9fb892eb824353e98f13aeae1fcec2025d990a0ee46571866446",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1987.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1987.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            112,
+            111,
+            112
+          ],
+          [
+            112,
+            112,
+            112
+          ],
+          [
+            114,
+            113,
+            113
+          ],
+          [
+            116,
+            114,
+            113
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 400,
+        "width": 320,
+        "x": 20,
+        "y": 222.1640625
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2468.5,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "fa-light-360-coach-portrait.png",
+      "sha256": "aac65e2bc4d7e218d854df4f27558256bf6a8fa204316ab9a06ace3d918b3f3e",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2468.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2468.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            15,
+            15,
+            16
+          ],
+          [
+            23,
+            23,
+            24
+          ],
+          [
+            23,
+            23,
+            24
+          ],
+          [
+            20,
+            21,
+            21
+          ],
+          [
+            20,
+            21,
+            21
+          ],
+          [
+            21,
+            22,
+            22
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 464,
+        "width": 320,
+        "x": 20,
+        "y": 190
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 66,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "en-dark-360-club-portrait.png",
+      "sha256": "0326440bf12b8266eca0bb54615248beebc09ee4e21a4943069c8a5d39ca338b",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 66,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 66,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            31,
+            30,
+            28
+          ],
+          [
+            28,
+            28,
+            26
+          ],
+          [
+            25,
+            24,
+            22
+          ],
+          [
+            25,
+            23,
+            21
+          ],
+          [
+            40,
+            38,
+            36
+          ],
+          [
+            54,
+            52,
+            50
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 432,
+        "width": 320,
+        "x": 20,
+        "y": 206
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 582,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "en-dark-360-club-compact.png",
+      "sha256": "f581093a5a0f37ad7e176f28630200317dffec18ddbae0b5d12667b7c07960ac",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 582,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 582,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            36,
+            34,
+            31
+          ],
+          [
+            36,
+            34,
+            31
+          ],
+          [
+            26,
+            24,
+            21
+          ],
+          [
+            18,
+            17,
+            14
+          ],
+          [
+            17,
+            15,
+            13
+          ],
+          [
+            20,
+            19,
+            17
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 240,
+        "width": 320,
+        "x": 20,
+        "y": 302
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 986,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "en-dark-360-club-landscape.png",
+      "sha256": "192fd6f7c64ccf9635dd4ae8ebacbb58c92fb868db4bad4f2c0de71620b16902",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 986,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 986,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            21,
+            19,
+            16
+          ],
+          [
+            65,
+            63,
+            56
+          ],
+          [
+            15,
+            13,
+            11
+          ],
+          [
+            46,
+            41,
+            38
+          ],
+          [
+            59,
+            48,
+            39
+          ],
+          [
+            48,
+            35,
+            23
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 426.6640625,
+        "width": 320,
+        "x": 20,
+        "y": 208.5
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1987.5,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "en-dark-360-coach-default.png",
+      "sha256": "f9dfcba23da4090392da4dc62e89152c2ee629614b8573f76ee8f2258260376f",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1987.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1987.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            22,
+            21,
+            22
+          ],
+          [
+            22,
+            22,
+            22
+          ],
+          [
+            24,
+            23,
+            23
+          ],
+          [
+            26,
+            25,
+            23
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 400,
+        "width": 320,
+        "x": 20,
+        "y": 222.1640625
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2468.5,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "en-dark-360-coach-portrait.png",
+      "sha256": "f9dfcba23da4090392da4dc62e89152c2ee629614b8573f76ee8f2258260376f",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2468.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2468.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            22,
+            21,
+            22
+          ],
+          [
+            22,
+            22,
+            22
+          ],
+          [
+            24,
+            23,
+            23
+          ],
+          [
+            26,
+            25,
+            23
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 464,
+        "width": 320,
+        "x": 20,
+        "y": 190
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 66,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "en-light-360-club-portrait.png",
+      "sha256": "21e40efc84ea8989edec23217e51f09ff0f8fdcf36227a975faae103e4af8be5",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 66,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 66,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            109,
+            108,
+            106
+          ],
+          [
+            106,
+            106,
+            104
+          ],
+          [
+            103,
+            102,
+            100
+          ],
+          [
+            104,
+            102,
+            100
+          ],
+          [
+            118,
+            116,
+            114
+          ],
+          [
+            132,
+            130,
+            128
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 432,
+        "width": 320,
+        "x": 20,
+        "y": 206
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "light",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 582,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "en-light-360-club-compact.png",
+      "sha256": "0812f5225c43dd31014afccc84e8df27d9c8749ee71127323fafbb080c1bf05e",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 582,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 582,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            112,
+            110,
+            107
+          ],
+          [
+            116,
+            112,
+            110
+          ],
+          [
+            104,
+            102,
+            99
+          ],
+          [
+            95,
+            93,
+            91
+          ],
+          [
+            94,
+            93,
+            90
+          ],
+          [
+            98,
+            97,
+            95
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 240,
+        "width": 320,
+        "x": 20,
+        "y": 302
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "light",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 986,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "en-light-360-club-landscape.png",
+      "sha256": "bccdc97d611ced358cd7500e19b0f262d77a4044826dce0c0021c114b6bda3bb",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 986,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 986,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            99,
+            97,
+            94
+          ],
+          [
+            144,
+            142,
+            135
+          ],
+          [
+            93,
+            91,
+            89
+          ],
+          [
+            125,
+            120,
+            117
+          ],
+          [
+            137,
+            126,
+            117
+          ],
+          [
+            127,
+            115,
+            103
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 426.6640625,
+        "width": 320,
+        "x": 20,
+        "y": 208.5
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "light",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1987.5,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "en-light-360-coach-default.png",
+      "sha256": "5d6cc4c9e82d9efe71c3118509760b85c7f551de29dbcc75d1fd841e21f6f5ed",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1987.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1987.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            112,
+            111,
+            112
+          ],
+          [
+            112,
+            112,
+            112
+          ],
+          [
+            114,
+            113,
+            113
+          ],
+          [
+            116,
+            114,
+            113
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 400,
+        "width": 320,
+        "x": 20,
+        "y": 222.1640625
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        360,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2468.5,
+        "scale": 1,
+        "width": 360
+      },
+      "png": {
+        "width": 720,
+        "height": 1688
+      },
+      "file": "en-light-360-coach-portrait.png",
+      "sha256": "6355efe9db1afeeeedbbd71210d897967765595960697b537d42fd600e18bfb3",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 360,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2468.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 720,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2468.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            15,
+            15,
+            16
+          ],
+          [
+            23,
+            23,
+            24
+          ],
+          [
+            23,
+            23,
+            24
+          ],
+          [
+            20,
+            21,
+            21
+          ],
+          [
+            20,
+            21,
+            21
+          ],
+          [
+            21,
+            22,
+            22
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 501.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 171
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 85,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "fa-dark-390-club-portrait.png",
+      "sha256": "d60a7fc904d2eceaba40611d17a8b8d94e5c47480d8ef88c50126e3e8d9efe00",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 85,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 85,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            33,
+            32,
+            30
+          ],
+          [
+            33,
+            33,
+            31
+          ],
+          [
+            34,
+            33,
+            31
+          ],
+          [
+            34,
+            33,
+            31
+          ],
+          [
+            33,
+            32,
+            30
+          ],
+          [
+            33,
+            32,
+            30
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 466.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 188.6640625
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 637,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "fa-dark-390-club-compact.png",
+      "sha256": "efba445893926d3344a8a470133c053353ac6d879fc5454e07a6cc4550fa79ad",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 637,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 637,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            31,
+            31,
+            29
+          ],
+          [
+            31,
+            30,
+            27
+          ],
+          [
+            27,
+            26,
+            23
+          ],
+          [
+            27,
+            26,
+            23
+          ],
+          [
+            28,
+            25,
+            23
+          ],
+          [
+            30,
+            29,
+            26
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 262.5,
+        "width": 350,
+        "x": 20,
+        "y": 290.828125
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1069.5,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "fa-dark-390-club-landscape.png",
+      "sha256": "4d44e2c2fd6cb8b640428ff9f3109909546f5f42b9a039bd5fe8899bc257f016",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1069.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1069.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            21,
+            18,
+            15
+          ],
+          [
+            21,
+            19,
+            17
+          ],
+          [
+            51,
+            49,
+            45
+          ],
+          [
+            23,
+            21,
+            19
+          ],
+          [
+            48,
+            43,
+            41
+          ],
+          [
+            30,
+            23,
+            19
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 466.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 188.578125
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2121,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "fa-dark-390-coach-default.png",
+      "sha256": "36f7859ad361fc8ae70276d232d873d702355d05db1bb9dbcd23c11d55fbe942",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2121,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2121,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            21,
+            21,
+            21
+          ],
+          [
+            22,
+            22,
+            22
+          ],
+          [
+            21,
+            21,
+            21
+          ],
+          [
+            23,
+            23,
+            22
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 437.5,
+        "width": 350,
+        "x": 20,
+        "y": 203.2421875
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2641,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "fa-dark-390-coach-portrait.png",
+      "sha256": "b477b1dbec7ed62340d8f8dc64c3016c09b7e3e5a11494a4b713a2af91ece502",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2641,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2641,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            11
+          ],
+          [
+            14,
+            14,
+            14
+          ],
+          [
+            20,
+            20,
+            20
+          ],
+          [
+            22,
+            22,
+            23
+          ],
+          [
+            19,
+            19,
+            20
+          ],
+          [
+            19,
+            19,
+            20
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 501.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 171
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 85,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "fa-light-390-club-portrait.png",
+      "sha256": "6e90bdc76664734e9ce433b18320d13d8209694a294db6b1ba854c75eb2c0d05",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 85,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 85,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            111,
+            110,
+            108
+          ],
+          [
+            112,
+            112,
+            110
+          ],
+          [
+            112,
+            111,
+            109
+          ],
+          [
+            113,
+            112,
+            110
+          ],
+          [
+            111,
+            110,
+            108
+          ],
+          [
+            112,
+            111,
+            109
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 466.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 188.6640625
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 637,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "fa-light-390-club-compact.png",
+      "sha256": "18127f4942f8dd0b19b9e539057ecf293c2528b2d8efd7853b17847eac58ef87",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 637,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 637,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            110,
+            110,
+            108
+          ],
+          [
+            109,
+            108,
+            105
+          ],
+          [
+            106,
+            105,
+            102
+          ],
+          [
+            105,
+            104,
+            101
+          ],
+          [
+            106,
+            104,
+            102
+          ],
+          [
+            108,
+            107,
+            104
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 262.5,
+        "width": 350,
+        "x": 20,
+        "y": 290.828125
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1069.5,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "fa-light-390-club-landscape.png",
+      "sha256": "0305ad90c216028ab890c09a44589e1582bcc6439c10f841722c56e4c4f6c105",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1069.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1069.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            98,
+            96,
+            93
+          ],
+          [
+            99,
+            97,
+            95
+          ],
+          [
+            129,
+            127,
+            123
+          ],
+          [
+            101,
+            99,
+            97
+          ],
+          [
+            126,
+            121,
+            119
+          ],
+          [
+            108,
+            101,
+            97
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 466.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 188.578125
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2121,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "fa-light-390-coach-default.png",
+      "sha256": "97546d73a225db811343a3249e91c13b3a9d5b6818a086cceb8e10e809dace76",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2121,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2121,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            112,
+            112,
+            112
+          ],
+          [
+            112,
+            112,
+            112
+          ],
+          [
+            111,
+            111,
+            111
+          ],
+          [
+            114,
+            113,
+            112
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 437.5,
+        "width": 350,
+        "x": 20,
+        "y": 203.2421875
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2641,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "fa-light-390-coach-portrait.png",
+      "sha256": "3e4810a5c52a5b34583ea89ad87dbad38797893cc75e272b9cad0b40a67e7f7f",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2641,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2641,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            11
+          ],
+          [
+            14,
+            14,
+            14
+          ],
+          [
+            20,
+            20,
+            20
+          ],
+          [
+            22,
+            22,
+            23
+          ],
+          [
+            19,
+            19,
+            20
+          ],
+          [
+            19,
+            19,
+            20
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 501.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 171
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 85,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "en-dark-390-club-portrait.png",
+      "sha256": "ee8a8ec386e94ea9abafd4d241a63dc03022e6b8ca241115ffff77fa34806975",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 85,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 85,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            33,
+            32,
+            30
+          ],
+          [
+            33,
+            33,
+            31
+          ],
+          [
+            34,
+            33,
+            31
+          ],
+          [
+            34,
+            33,
+            31
+          ],
+          [
+            33,
+            32,
+            30
+          ],
+          [
+            33,
+            32,
+            30
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 466.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 188.6640625
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 637,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "en-dark-390-club-compact.png",
+      "sha256": "585b9b9ef6c3bd1b201349aa1a7c54c67ed92027d7a4c96bd00556ba80cbbc9c",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 637,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 637,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            31,
+            31,
+            29
+          ],
+          [
+            31,
+            30,
+            27
+          ],
+          [
+            27,
+            26,
+            23
+          ],
+          [
+            27,
+            26,
+            23
+          ],
+          [
+            28,
+            25,
+            23
+          ],
+          [
+            30,
+            29,
+            26
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 262.5,
+        "width": 350,
+        "x": 20,
+        "y": 290.828125
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1069.5,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "en-dark-390-club-landscape.png",
+      "sha256": "080a40be6350844a248c72fdcd1669902ca77933db82c474b1c0f040911411a0",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1069.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1069.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            21,
+            18,
+            15
+          ],
+          [
+            21,
+            19,
+            17
+          ],
+          [
+            51,
+            49,
+            45
+          ],
+          [
+            23,
+            21,
+            19
+          ],
+          [
+            48,
+            43,
+            41
+          ],
+          [
+            30,
+            23,
+            19
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 466.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 188.578125
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2121,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "en-dark-390-coach-default.png",
+      "sha256": "283270d9e7ed0faf819355cbe04a87cfea8b56b9b687b4bba9d04d3e523b5ed7",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2121,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2121,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            21,
+            21,
+            21
+          ],
+          [
+            22,
+            22,
+            22
+          ],
+          [
+            21,
+            21,
+            21
+          ],
+          [
+            23,
+            23,
+            22
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 437.5,
+        "width": 350,
+        "x": 20,
+        "y": 203.2421875
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2641,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "en-dark-390-coach-portrait.png",
+      "sha256": "745e02bee04ef17623aeae38712dabdb146b76fde5afc6a07dbd88418a5e8b18",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2641,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2641,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            11
+          ],
+          [
+            14,
+            14,
+            14
+          ],
+          [
+            20,
+            20,
+            20
+          ],
+          [
+            22,
+            22,
+            23
+          ],
+          [
+            19,
+            19,
+            20
+          ],
+          [
+            19,
+            19,
+            20
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 501.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 171
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 85,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "en-light-390-club-portrait.png",
+      "sha256": "d90d507d46da3876afda30866e230c6e810aed7b8522e892c21dcdea30bb8c83",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 85,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 85,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            111,
+            110,
+            108
+          ],
+          [
+            112,
+            112,
+            110
+          ],
+          [
+            112,
+            111,
+            109
+          ],
+          [
+            113,
+            112,
+            110
+          ],
+          [
+            111,
+            110,
+            108
+          ],
+          [
+            112,
+            111,
+            109
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 466.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 188.6640625
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 637,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "en-light-390-club-compact.png",
+      "sha256": "73cbec424263663936d6e311c4243d2d1a462a805f0177fcc30e746c5bfeead6",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 637,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 637,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            110,
+            109,
+            107
+          ],
+          [
+            108,
+            107,
+            104
+          ],
+          [
+            106,
+            105,
+            102
+          ],
+          [
+            106,
+            105,
+            102
+          ],
+          [
+            106,
+            105,
+            102
+          ],
+          [
+            110,
+            109,
+            106
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 262.5,
+        "width": 350,
+        "x": 20,
+        "y": 290.828125
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1069.5,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "en-light-390-club-landscape.png",
+      "sha256": "e194833f068802955c07030c218918ecfe456b85708ef007ee2579a8a701689d",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1069.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1069.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            98,
+            96,
+            93
+          ],
+          [
+            99,
+            97,
+            95
+          ],
+          [
+            129,
+            127,
+            123
+          ],
+          [
+            101,
+            99,
+            97
+          ],
+          [
+            126,
+            121,
+            119
+          ],
+          [
+            108,
+            101,
+            97
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 466.6640625,
+        "width": 350,
+        "x": 20,
+        "y": 188.578125
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2121,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "en-light-390-coach-default.png",
+      "sha256": "9a3384edb9928f018aed378543a105bc1320be31abd3287ce5cea1cb7b5e4cb7",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2121,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2121,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            112,
+            112,
+            112
+          ],
+          [
+            112,
+            112,
+            112
+          ],
+          [
+            111,
+            111,
+            111
+          ],
+          [
+            114,
+            113,
+            112
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 437.5,
+        "width": 350,
+        "x": 20,
+        "y": 203.2421875
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2641,
+        "scale": 1,
+        "width": 390
+      },
+      "png": {
+        "width": 780,
+        "height": 1688
+      },
+      "file": "en-light-390-coach-portrait.png",
+      "sha256": "130ecfc8fc493091ca58361b6d29adc793a160f2beefd368917431c2f08e2101",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 390,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2641,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 780,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2641,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            11
+          ],
+          [
+            14,
+            14,
+            14
+          ],
+          [
+            20,
+            20,
+            20
+          ],
+          [
+            22,
+            22,
+            23
+          ],
+          [
+            19,
+            19,
+            20
+          ],
+          [
+            19,
+            19,
+            20
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 559,
+        "width": 390,
+        "x": 20,
+        "y": 142.5
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 113.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "fa-dark-430-club-portrait.png",
+      "sha256": "e320aca5d6881f33ada468a41dd02ccd4b46d9daa37e3bdf6c2777184604e56a",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 113.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 113.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            28,
+            27,
+            26
+          ],
+          [
+            29,
+            29,
+            27
+          ],
+          [
+            30,
+            29,
+            28
+          ],
+          [
+            32,
+            31,
+            30
+          ],
+          [
+            31,
+            31,
+            29
+          ],
+          [
+            31,
+            30,
+            28
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 520,
+        "width": 390,
+        "x": 20,
+        "y": 162
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "dark",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 721,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "fa-dark-430-club-compact.png",
+      "sha256": "04d6c109776002f4e7764010d4d19ee6dff4264513c7949f28215c7a8f6a8279",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 721,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 721,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            32,
+            33,
+            29
+          ],
+          [
+            32,
+            32,
+            29
+          ],
+          [
+            31,
+            30,
+            27
+          ],
+          [
+            29,
+            27,
+            25
+          ],
+          [
+            27,
+            27,
+            23
+          ],
+          [
+            27,
+            26,
+            23
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 292.5,
+        "width": 390,
+        "x": 20,
+        "y": 275.5
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "dark",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1195.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "fa-dark-430-club-landscape.png",
+      "sha256": "2a6263a5aaf92699059dcb2c1a146f4df6553787c015785445bd39b94d79304e",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1195.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1195.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            42,
+            40,
+            38
+          ],
+          [
+            24,
+            22,
+            19
+          ],
+          [
+            24,
+            20,
+            17
+          ],
+          [
+            48,
+            44,
+            40
+          ],
+          [
+            30,
+            26,
+            23
+          ],
+          [
+            38,
+            34,
+            32
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 512,
+        "width": 384,
+        "x": 26,
+        "y": 165.75
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "dark",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2309.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "fa-dark-430-coach-default.png",
+      "sha256": "88017e8b6d204dbd4ca7ed5a639ebff8dc23a4f590e189452a2a3dc373d59784",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2309.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2309.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            23,
+            23,
+            23
+          ],
+          [
+            24,
+            24,
+            24
+          ],
+          [
+            24,
+            24,
+            24
+          ],
+          [
+            25,
+            25,
+            25
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 480,
+        "width": 384,
+        "x": 26,
+        "y": 181.75
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2873.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "fa-dark-430-coach-portrait.png",
+      "sha256": "60784d34fab531e3e547af84fb5fe74b3625031687b2d4dc89b836d9168dfd8b",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2873.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2873.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            12,
+            13,
+            13
+          ],
+          [
+            10,
+            10,
+            11
+          ],
+          [
+            12,
+            13,
+            13
+          ],
+          [
+            18,
+            18,
+            19
+          ],
+          [
+            23,
+            23,
+            24
+          ],
+          [
+            21,
+            22,
+            22
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 559,
+        "width": 390,
+        "x": 20,
+        "y": 142.5
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 113.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "fa-light-430-club-portrait.png",
+      "sha256": "c7b48c36ba438651e542d8bc3574239c17edea7c5bd6ef7eb54eea6bbe95abd9",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 113.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 113.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            107,
+            106,
+            105
+          ],
+          [
+            108,
+            108,
+            106
+          ],
+          [
+            109,
+            108,
+            107
+          ],
+          [
+            110,
+            109,
+            108
+          ],
+          [
+            110,
+            110,
+            108
+          ],
+          [
+            110,
+            109,
+            107
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 520,
+        "width": 390,
+        "x": 20,
+        "y": 162
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "light",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 721,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "fa-light-430-club-compact.png",
+      "sha256": "90efac13d2c574c6ae7181a9cbb44203cc198d15b23188d4aea10932f43a8477",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 721,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 721,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            110,
+            111,
+            107
+          ],
+          [
+            110,
+            110,
+            107
+          ],
+          [
+            109,
+            108,
+            105
+          ],
+          [
+            108,
+            106,
+            104
+          ],
+          [
+            105,
+            105,
+            101
+          ],
+          [
+            105,
+            104,
+            101
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 292.5,
+        "width": 390,
+        "x": 20,
+        "y": 275.5
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "light",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1195.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "fa-light-430-club-landscape.png",
+      "sha256": "2a2ae6fe15cb63baca818262d5e1c02ac1964dc0376b926aba76533b59f4198b",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1195.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1195.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            121,
+            119,
+            117
+          ],
+          [
+            102,
+            100,
+            97
+          ],
+          [
+            103,
+            99,
+            96
+          ],
+          [
+            126,
+            122,
+            118
+          ],
+          [
+            109,
+            105,
+            102
+          ],
+          [
+            116,
+            112,
+            110
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 512,
+        "width": 384,
+        "x": 26,
+        "y": 165.75
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "light",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2309.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "fa-light-430-coach-default.png",
+      "sha256": "ba1634ee27d13141ed3312960571f79f282b8b2d85b8b0617df1c2de753d9594",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2309.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2309.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            113,
+            112,
+            113
+          ],
+          [
+            113,
+            113,
+            113
+          ],
+          [
+            113,
+            113,
+            113
+          ],
+          [
+            115,
+            115,
+            114
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "fa",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 480,
+        "width": 384,
+        "x": 26,
+        "y": 181.75
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2873.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "fa-light-430-coach-portrait.png",
+      "sha256": "2bae788322723fb25cf01d8bd7e780788e4613aeea517fb6f5a4fa6188bcc977",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2873.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2873.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            12,
+            13,
+            13
+          ],
+          [
+            10,
+            10,
+            11
+          ],
+          [
+            12,
+            13,
+            13
+          ],
+          [
+            18,
+            18,
+            19
+          ],
+          [
+            23,
+            23,
+            24
+          ],
+          [
+            21,
+            22,
+            22
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 559,
+        "width": 390,
+        "x": 20,
+        "y": 142.5
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 113.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "en-dark-430-club-portrait.png",
+      "sha256": "da94b524e018d0706c9a183002890ef3263c011a1c7c29793c712b47767b8ef0",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 113.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 113.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            28,
+            27,
+            26
+          ],
+          [
+            29,
+            29,
+            27
+          ],
+          [
+            30,
+            29,
+            28
+          ],
+          [
+            32,
+            31,
+            30
+          ],
+          [
+            31,
+            31,
+            29
+          ],
+          [
+            31,
+            30,
+            28
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 520,
+        "width": 390,
+        "x": 20,
+        "y": 162
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "dark",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 721,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "en-dark-430-club-compact.png",
+      "sha256": "d7e4c891f03a5cf21201dfb9b10cdce46a5112c8a8834903ff7d905cbcc54d2a",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 721,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 721,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            32,
+            33,
+            29
+          ],
+          [
+            32,
+            32,
+            29
+          ],
+          [
+            31,
+            30,
+            27
+          ],
+          [
+            29,
+            27,
+            25
+          ],
+          [
+            27,
+            27,
+            23
+          ],
+          [
+            27,
+            26,
+            23
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 292.5,
+        "width": 390,
+        "x": 20,
+        "y": 275.5
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "dark",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1195.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "en-dark-430-club-landscape.png",
+      "sha256": "32b7774aa09a795a0118eee70ac1344a5780e0157b85b9f3ca9ce8406b62de95",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1195.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1195.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            42,
+            40,
+            38
+          ],
+          [
+            24,
+            22,
+            19
+          ],
+          [
+            24,
+            20,
+            17
+          ],
+          [
+            48,
+            44,
+            40
+          ],
+          [
+            30,
+            26,
+            23
+          ],
+          [
+            38,
+            34,
+            32
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 512,
+        "width": 384,
+        "x": 20,
+        "y": 165.75
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "dark",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2309.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "en-dark-430-coach-default.png",
+      "sha256": "e9c7c06021221e9e1bc7e1e8de323f9d89fbfa6be9c91763cc0be87853663d2f",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2309.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2309.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            46,
+            46,
+            46
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            23,
+            23,
+            23
+          ],
+          [
+            24,
+            24,
+            24
+          ],
+          [
+            24,
+            24,
+            24
+          ],
+          [
+            25,
+            25,
+            25
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.985 0 0) solid 2px",
+        "shadow": "oklch(0.145 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 480,
+        "width": 384,
+        "x": 20,
+        "y": 181.75
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "dark",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2873.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "en-dark-430-coach-portrait.png",
+      "sha256": "c91d914c7668195b6ce0e3cf7679716f318e4155cb51907199f673dac0a5314f",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2873.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2873.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            12,
+            13,
+            13
+          ],
+          [
+            10,
+            10,
+            11
+          ],
+          [
+            12,
+            13,
+            13
+          ],
+          [
+            18,
+            18,
+            19
+          ],
+          [
+            23,
+            23,
+            24
+          ],
+          [
+            21,
+            22,
+            22
+          ]
+        ],
+        "min": 10,
+        "max": 250
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 559,
+        "width": 390,
+        "x": 20,
+        "y": 142.5
+      },
+      "selector": "[data-ph0-variant=\"club-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 113.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "en-light-430-club-portrait.png",
+      "sha256": "a1e23cbdfce000267517af896ace5ed34597ff389027785ca2ba47a60b6b7745",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 113.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 113.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            107,
+            106,
+            105
+          ],
+          [
+            108,
+            108,
+            106
+          ],
+          [
+            109,
+            108,
+            107
+          ],
+          [
+            110,
+            109,
+            108
+          ],
+          [
+            110,
+            110,
+            108
+          ],
+          [
+            110,
+            109,
+            107
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 520,
+        "width": 390,
+        "x": 20,
+        "y": 162
+      },
+      "selector": "[data-ph0-variant=\"club-compact\"] article",
+      "theme": "light",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 721,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "en-light-430-club-compact.png",
+      "sha256": "2cad66a6bdba389a8b0cb820fa583846d4d7da5bf7cb88ae45f880991aafc353",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 721,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 721,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-compact",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            110,
+            111,
+            107
+          ],
+          [
+            110,
+            110,
+            107
+          ],
+          [
+            109,
+            108,
+            105
+          ],
+          [
+            108,
+            106,
+            104
+          ],
+          [
+            105,
+            105,
+            101
+          ],
+          [
+            105,
+            104,
+            101
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 292.5,
+        "width": 390,
+        "x": 20,
+        "y": 275.5
+      },
+      "selector": "[data-ph0-variant=\"club-landscape\"] article",
+      "theme": "light",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 1195.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "en-light-430-club-landscape.png",
+      "sha256": "adb125f2ca7da39e0aea225ea10c54b6b53f4cdb4dc8185505b43240adc7b0f5",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1195.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 1195.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "club-landscape",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            121,
+            119,
+            117
+          ],
+          [
+            102,
+            100,
+            97
+          ],
+          [
+            103,
+            99,
+            96
+          ],
+          [
+            126,
+            122,
+            118
+          ],
+          [
+            109,
+            105,
+            102
+          ],
+          [
+            116,
+            112,
+            110
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 512,
+        "width": 384,
+        "x": 20,
+        "y": 165.75
+      },
+      "selector": "[data-ph0-variant=\"coach-default\"] article",
+      "theme": "light",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2309.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "en-light-430-coach-default.png",
+      "sha256": "5bc21b2e48f537f1aa77da572bb46012d57b9fff4ec3a7054e3e4365dc817062",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2309.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2309.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-default",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            229,
+            229,
+            229
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            113,
+            112,
+            113
+          ],
+          [
+            113,
+            113,
+            113
+          ],
+          [
+            113,
+            113,
+            113
+          ],
+          [
+            115,
+            115,
+            114
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    },
+    {
+      "dpr": 2,
+      "focusWithin": true,
+      "focused": true,
+      "fontsLoaded": true,
+      "imagesReady": true,
+      "indicator": {
+        "offset": "-4px",
+        "outline": "oklch(0.145 0 0) solid 2px",
+        "shadow": "oklch(1 0 0) 0px 0px 0px 6px inset"
+      },
+      "locale": "en",
+      "path": "/qa/ph0",
+      "rect": {
+        "height": 480,
+        "width": 384,
+        "x": 20,
+        "y": 181.75
+      },
+      "selector": "[data-ph0-variant=\"coach-portrait\"] article",
+      "theme": "light",
+      "viewport": [
+        430,
+        844
+      ],
+      "visual": {
+        "height": 844,
+        "pageLeft": 0,
+        "pageTop": 2873.5,
+        "scale": 1,
+        "width": 430
+      },
+      "png": {
+        "width": 860,
+        "height": 1688
+      },
+      "file": "en-light-430-coach-portrait.png",
+      "sha256": "c40c9dba9817a3d38508c79838e26b64a23ab581ab6eecd514a38f713f8f86e6",
+      "cssViewport": {
+        "clientHeight": 844,
+        "clientWidth": 430,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2873.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "backingViewport": {
+        "clientHeight": 1688,
+        "clientWidth": 860,
+        "offsetX": 0,
+        "offsetY": 0,
+        "pageX": 0,
+        "pageY": 2873.5,
+        "scale": 1,
+        "zoom": 1
+      },
+      "scope": "Full viewport PNG and target containment; human visual review still required",
+      "id": "coach-portrait",
+      "visualProbe": {
+        "cssPoint": "left edge at half height;18 physical pixels",
+        "column": [
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            255,
+            255,
+            255
+          ],
+          [
+            12,
+            13,
+            13
+          ],
+          [
+            10,
+            10,
+            11
+          ],
+          [
+            12,
+            13,
+            13
+          ],
+          [
+            18,
+            18,
+            19
+          ],
+          [
+            23,
+            23,
+            24
+          ],
+          [
+            21,
+            22,
+            22
+          ]
+        ],
+        "min": 10,
+        "max": 255
+      },
+      "pngVerified": true
+    }
+  ],
+  "captureSummary": {
+    "cases": 60,
+    "dimensionsVerified": true,
+    "scope": "60 focused synthetic card cases; contact sheets are visual aids and not exact comparison baselines"
+  },
+  "directory": "baselines/ph0-backed-focus-initial-2026-10-18",
+  "accepted": false,
+  "rejection": "At least en/dark/360 coach-portrait raster depicts previous default card despite correct DOM receipt; no compositor stability check in initial batch."
+}

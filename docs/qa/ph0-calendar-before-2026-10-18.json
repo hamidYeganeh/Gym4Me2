@@ -1,0 +1,26 @@
+{
+  "build": "y7zptyQc77gOz38TFYz4w",
+  "scenario": "calendars-page-error",
+  "layout": {
+    "firstTitle": [
+      {
+        "overflowWrap": "normal",
+        "scrollWidth": 1275,
+        "width": 213
+      }
+    ],
+    "inputFont": "14px",
+    "rows": 20,
+    "viewport": [
+      360,
+      844
+    ]
+  },
+  "afterFailure": {
+    "alerts": [
+      "دریافت اطلاعات ممکن نشدتلاش دوباره"
+    ],
+    "focus": "BODY",
+    "rows": 0
+  }
+}

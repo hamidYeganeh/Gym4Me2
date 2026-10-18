@@ -1,0 +1,39 @@
+{
+  "scope": "Before focus restoration; current DOM shows BODY after405, value contents/lengths deliberately omitted",
+  "cases": [
+    {
+      "surface": "application",
+      "errorTexts": [
+        "Request failed. Please try again."
+      ],
+      "fields": [
+        {
+          "describedBy": [],
+          "errors": [],
+          "field": "phone",
+          "id": "_R_4vav5tejb_",
+          "invalid": false,
+          "uniqueId": true
+        },
+        {
+          "describedBy": [],
+          "errors": [],
+          "field": "password",
+          "id": "_r_7_",
+          "invalid": false,
+          "uniqueId": true
+        }
+      ],
+      "focusedField": null,
+      "noValidate": true,
+      "focus": {
+        "tag": "BODY",
+        "type": null
+      },
+      "posts": 1,
+      "statuses": [
+        405
+      ]
+    }
+  ]
+}

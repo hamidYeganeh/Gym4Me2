@@ -1,0 +1,141 @@
+{
+  "scope": "12 synthetic local405 cases in fa/360 with default system appearance only. Keyboard cases require focus-visible and the full indicator in the viewport; pointer cases require retained active focus/control visibility, and an indicated ring is also checked when the UA chooses to show it. No cross-theme, successful auth/OTP/session, full reader or complete rapid-input acceptance.",
+  "source": "https://www.w3.org/TR/selectors-4/#the-focus-visible-pseudo",
+  "complete": true,
+  "missing": [],
+  "failing": [],
+  "checks": [
+    {
+      "case": "application/double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    },
+    {
+      "case": "application/keyboard",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    },
+    {
+      "case": "application/leave-focus",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    },
+    {
+      "case": "application/otp-double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    },
+    {
+      "case": "business/double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 0,
+      "focusInViewport": true
+    },
+    {
+      "case": "business/keyboard",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    },
+    {
+      "case": "business/leave-focus",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    },
+    {
+      "case": "business/otp-double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    },
+    {
+      "case": "admin/double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    },
+    {
+      "case": "admin/keyboard",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    },
+    {
+      "case": "admin/leave-focus",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    },
+    {
+      "case": "admin/otp-double-click",
+      "singleRequest": true,
+      "denied": true,
+      "observed": true,
+      "active": true,
+      "keyboardIndicator": true,
+      "correctFocus": true,
+      "extent": 5,
+      "focusInViewport": true
+    }
+  ]
+}

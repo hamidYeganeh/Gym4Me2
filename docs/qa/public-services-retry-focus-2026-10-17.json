@@ -1,0 +1,24 @@
+{
+  "before": {
+    "activeTag": "BODY",
+    "alertCount": 1,
+    "retryFocused": false
+  },
+  "after": {
+    "activeMains": 1,
+    "activeTag": "BUTTON",
+    "disabled": false,
+    "retryFocused": true
+  },
+  "movedFocusBefore": {
+    "href": "/notifications",
+    "label": "اعلان‌ها",
+    "tag": "A"
+  },
+  "movedFocusAfter": {
+    "href": "/notifications",
+    "label": "اعلان‌ها",
+    "tag": "A"
+  },
+  "scope": "actual web, FA dark390, synthetic503 GET only; no native acceptance"
+}

@@ -1,4 +1,5 @@
 "use client";
+import { useApiContext } from "@repo/api/provider";
 import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -19,6 +20,11 @@ const digits = (value: string) =>
     .replace(/[۰-۹]/g, (digit) => String("۰۱۲۳۴۵۶۷۸۹".indexOf(digit)))
     .replace(/[٠-٩]/g, (digit) => String("٠١٢٣٤٥٦٧٨٩".indexOf(digit)));
 export function PhoneChange() {
+  const { api } = useApiContext();
+  const loginHref =
+    api.scope[2] === "application"
+      ? "/auth/otp?returnTo=%2Fprofile"
+      : "/login?returnTo=%2Fprofile";
   const t = useTranslations("PhoneChange");
   const router = useRouter();
   const request = useRequestPhoneChange();
@@ -54,7 +60,7 @@ export function PhoneChange() {
     try {
       await verify.mutateAsync({ challengeId, code });
       autofill.stop();
-      router.replace("/login?returnTo=%2Fprofile");
+      router.replace(loginHref);
     } catch {
       /* Keep entered fields on failure. */
     }
@@ -127,7 +133,7 @@ export function PhoneChange() {
           </div>
         )}
         <Button asChild variant="link" className="w-fit">
-          <Link href="/login?returnTo=%2Fprofile">{t("signInAgain")}</Link>
+          <Link href={loginHref}>{t("signInAgain")}</Link>
         </Button>
       </CardContent>
     </Card>
