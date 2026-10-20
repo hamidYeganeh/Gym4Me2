@@ -309,6 +309,8 @@ test(
               [fixture],
               {
                 ...options,
+                // Prove the fixture cannot depend on an ignored developer env file.
+                cwd: directory,
                 stdio: ["ignore", "pipe", "pipe"],
                 env: { ...options.env, FIXTURE_READY: ready },
               },
