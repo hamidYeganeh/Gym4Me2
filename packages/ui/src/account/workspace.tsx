@@ -91,6 +91,12 @@ const commonNav = [
   },
 ] as const;
 const businessNav = [
+  {
+    key: "coaching",
+    href: "/coaching",
+    title: "Practice.coachingManagement",
+    icon: Users,
+  },
   { key: "overview", href: "/", title: "Copy.overview", icon: LayoutDashboard },
   {
     key: "organizations",
@@ -126,6 +132,12 @@ const businessNav = [
   },
 ] as const;
 const adminNav = [
+  {
+    key: "coaching",
+    href: "/coaching",
+    title: "Practice.coachReview",
+    icon: Users,
+  },
   { key: "overview", href: "/", title: "Copy.overview", icon: LayoutDashboard },
   { key: "users", href: "/users", title: "Copy.users", icon: Users },
   {

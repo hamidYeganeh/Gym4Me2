@@ -1,3 +1,4 @@
+import { provisionDemoPh23 } from './provision-demo-ph23';
 import 'reflect-metadata';
 import { config } from 'dotenv';
 import { resolve } from 'node:path';
@@ -15,6 +16,44 @@ import { StorageService } from '../src/modules/clubs/storage.service';
 import { validateEnvironment } from '../src/config/environment';
 
 config({ path: resolve(__dirname, '../.env'), quiet: true });
+async function provisionDemoCoach(pool: Pool) {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query('SELECT pg_advisory_xact_lock(7088, 8)');
+    const existing = await client.query<{ id: string; user_id: string | null }>(
+      `SELECT u.id,a.user_id FROM users u LEFT JOIN gym4me_demo_accounts a ON a.user_id=u.id
+       WHERE u.phone='+989000000008'`,
+    );
+    if (existing.rows[0] && !existing.rows[0].user_id)
+      throw new Error('Refusing to replace an existing non-demo account');
+    const user =
+      existing.rows[0] ??
+      (
+        await client.query<{ id: string }>(
+          `INSERT INTO users(phone,display_name,phone_verified_at)
+       VALUES('+989000000008','مربی آزمایشی',now()) RETURNING id`,
+        )
+      ).rows[0];
+    await client.query(
+      `INSERT INTO gym4me_demo_accounts(user_id,phone,label)
+       VALUES($1,'+989000000008','مربی') ON CONFLICT(user_id) DO NOTHING`,
+      [user.id],
+    );
+    await client.query(
+      `INSERT INTO coach_profiles(user_id,biography)
+       VALUES($1,'مربی آزمایشی برای بررسی دعوت و همکاری با شاگرد')
+       ON CONFLICT(user_id) DO NOTHING`,
+      [user.id],
+    );
+    await client.query('COMMIT');
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
+}
 async function main() {
   const env = validateEnvironment(process.env);
   if (
@@ -35,6 +74,8 @@ async function main() {
         "select ready from gym4me_demo_installation where id = 'isolated-demo-v1'",
       );
       if (status.rows[0]?.ready === true) {
+        await provisionDemoCoach(pool);
+        await provisionDemoPh23();
         const existing = await pool.query(
           'select phone, label from gym4me_demo_accounts order by label',
         );
@@ -129,6 +170,13 @@ async function main() {
     await db.execute(
       sql`update gym4me_demo_installation set ready = true where id = 'isolated-demo-v1'`,
     );
+    const coachPool = new Pool({ connectionString: env.DATABASE_URL, max: 1 });
+    try {
+      await provisionDemoCoach(coachPool);
+    } finally {
+      await coachPool.end();
+    }
+    await provisionDemoPh23();
     const accounts = await db.execute(
       sql`select phone, label from gym4me_demo_accounts order by phone`,
     );

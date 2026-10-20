@@ -6,3 +6,5 @@ export * from "./phone.hooks";
 export * from "./favorites.hooks";
 export * from "./privacy.hooks";
 export * from "./profile.keys";
+export * from "./coaching";
+export * from "./practice";

@@ -54,4 +54,21 @@ describe('demo serverless jobs', () => {
     );
     expect(production.runJobs).not.toHaveBeenCalled();
   });
+  it('refreshes expired holds before public catalog reads in the serverless demo', async () => {
+    const { interceptor, runJobs } = setup(true);
+    let jobsFinished = false;
+    runJobs.mockImplementation(() => {
+      jobsFinished = true;return Promise.resolve({processed:1});
+    });
+    const result:unknown = await firstValueFrom(
+      interceptor.intercept(context('GET', '/api/v1/sports/services'), {
+        handle: () => {
+          expect(jobsFinished).toBe(true);
+          return of('catalog');
+        },
+      }),
+    );
+    expect(result).toBe('catalog');
+    expect(runJobs).toHaveBeenCalledTimes(1);
+  });
 });

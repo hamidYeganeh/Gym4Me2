@@ -4,7 +4,7 @@ import { ServiceCover } from "@repo/ui/sports-cover";
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale } from "@repo/i18n";
+import { useLocale, useTranslations } from "@repo/i18n";
 import { checkoutIssue } from "../../lib/checkout-availability";
 import {
   remainingMembershipSessions,
@@ -51,6 +51,7 @@ function CheckoutForm({
   occurrence: string | null;
 }) {
   const t = useLuma();
+  const practiceCopy = useTranslations("Practice");
   const locale = useLocale();
   const router = useRouter();
   const query = useSportsQuery<ServiceDto>(
@@ -123,6 +124,16 @@ function CheckoutForm({
                 />
               </Row>
             </div>
+            {quote.data?.coaching && (
+              <div className="luma-group">
+                <Row title={practiceCopy("entryIncluded")}>
+                  <Price value={quote.data.coaching.entryAmountMinor} />
+                </Row>
+                <Row title={practiceCopy("coachFee")}>
+                  <Price value={quote.data.coaching.coachingAmountMinor} />
+                </Row>
+              </div>
+            )}
             {query.data.kind === "course" && (
               <p className="luma-meta my-4">{t("courseRegistrationHint")}</p>
             )}

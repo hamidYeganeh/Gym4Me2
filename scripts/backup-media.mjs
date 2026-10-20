@@ -8,6 +8,10 @@ import { pipeline } from "node:stream/promises";
 // Fixed queries only: snapshots from before a feature's migration remain readable.
 const sources = new Map([
   [
+    "coaching_credentials",
+    "SELECT object_key AS key FROM public.coaching_credentials WHERE object_key IS NOT NULL",
+  ],
+  [
     "club_media",
     "SELECT object_key AS key FROM public.club_media WHERE object_key IS NOT NULL",
   ],

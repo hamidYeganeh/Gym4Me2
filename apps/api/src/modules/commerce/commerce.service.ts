@@ -179,6 +179,17 @@ export function jsonDto(value: unknown): unknown {
     );
   return value;
 }
+const coachingVisible = sql`(NOT EXISTS(SELECT 1 FROM coaching_services cs WHERE cs.service_id=s.id) OR EXISTS(SELECT 1 FROM coaching_services cs JOIN coaching_practices cp ON cp.user_id=cs.coach_id JOIN users cu ON cu.id=cp.user_id JOIN branch_coaches bc ON bc.coach_id=cp.user_id AND bc.branch_id=s.branch_id WHERE cs.service_id=s.id AND cp.review_status='approved' AND cp.review_expires_at>now() AND cp.published AND cu.profile_public AND cu.status='active' AND cu.deleted_at IS NULL AND NOT cu.deletion_pending AND bc.status='active' AND (bc.ends_on IS NULL OR bc.ends_on>=current_date)))`;
+function scheduleFailure(error: unknown): never {
+  const failure = error as { code?: string; cause?: { code?: string } };
+  if (
+    ['23P01', '23514', '40001', '40P01'].includes(
+      failure.code ?? failure.cause?.code ?? '',
+    )
+  )
+    throw new ConflictException('Practice.conflict');
+  throw error;
+}
 @Injectable()
 export class CommerceService {
   constructor(
@@ -196,9 +207,49 @@ export class CommerceService {
     roles = ['owner', 'manager'],
   ) {
     const member = await memberAccess(db, userId, org, branch);
+    await requireBranch(db, org, branch);
     if (!roles.includes(member.role))
       throw new ForbiddenException('Backend.branchAccessDenied');
     return member;
+  }
+  async serviceActor(
+    db: Db | Tx,
+    userId: string,
+    serviceId: string,
+    roles = ['owner', 'manager'],
+  ) {
+    const [assigned] = await rows(
+      db,
+      sql`SELECT cs.coach_id FROM coaching_services cs JOIN coaching_practices p ON p.user_id=cs.coach_id JOIN sport_services s ON s.id=cs.service_id JOIN branch_coaches bc ON bc.branch_id=s.branch_id AND bc.coach_id=cs.coach_id JOIN users u ON u.id=cs.coach_id WHERE cs.service_id=${serviceId} AND cs.coach_id=${userId} AND bc.status='active' AND (bc.ends_on IS NULL OR bc.ends_on>=current_date) AND p.review_status='approved' AND p.review_expires_at>now() AND u.status='active' AND u.deleted_at IS NULL AND NOT u.deletion_pending`,
+    );
+    if (assigned) return { role: 'coach' };
+    const [service] = await rows<{
+      organization_id: string;
+      branch_id: string;
+    }>(
+      db,
+      sql`SELECT organization_id,branch_id FROM sport_services WHERE id=${serviceId}`,
+    );
+    if (!service) throw new NotFoundException();
+    return this.staff(
+      db,
+      userId,
+      service.organization_id,
+      service.branch_id,
+      roles,
+    );
+  }
+  private async coachingSale(db: Db | Tx, userId: string, serviceId: string) {
+    const [special] = await rows<{ coach_id: string }>(
+      db,
+      sql`SELECT coach_id FROM coaching_services WHERE service_id=${serviceId}`,
+    );
+    if (!special) return;
+    const [allowed] = await rows(
+      db,
+      sql`SELECT p.user_id FROM coaching_practices p JOIN users u ON u.id=p.user_id JOIN coaching_relationships r ON r.coach_id=p.user_id AND r.student_id=${userId} AND r.status='active' WHERE p.user_id=${special.coach_id} AND p.review_status='approved' AND p.review_expires_at>now() AND u.status='active' AND u.deleted_at IS NULL AND NOT u.deletion_pending AND EXISTS(SELECT 1 FROM branch_coaches bc JOIN sport_services ss ON ss.branch_id=bc.branch_id WHERE ss.id=${serviceId} AND bc.coach_id=p.user_id AND bc.status='active' AND (bc.ends_on IS NULL OR bc.ends_on>=current_date))`,
+    );
+    if (!allowed) throw new ForbiddenException('Practice.relationshipRequired');
   }
   private async service(db: Db | Tx, id: string, published = false) {
     return one<Service>(
@@ -207,7 +258,7 @@ export class CommerceService {
       b.name branch_name,o.name club_name FROM sport_services s
       JOIN LATERAL(SELECT * FROM sport_service_versions WHERE service_id=s.id ${published ? sql`AND id=s.published_version_id` : sql``} ORDER BY version DESC LIMIT 1) v ON true
       JOIN branches b ON b.id=s.branch_id JOIN clubs c ON c.id=s.organization_id JOIN organizations o ON o.id=s.organization_id
-      WHERE s.id=${id} ${published ? sql`AND s.status='published' AND c.publication_status='published' AND o.status='approved' AND c.archived_at IS NULL` : sql``}`,
+      WHERE s.id=${id} ${published ? sql`AND s.status='published' AND c.publication_status='published' AND o.status='approved' AND c.archived_at IS NULL AND ${coachingVisible}` : sql``}`,
     );
   }
   async catalog(search = '', branchId?: string, organizationId?: string) {
@@ -224,7 +275,7 @@ export class CommerceService {
   ) {
     if (!Number.isInteger(limit) || limit < 1 || limit > 100)
       throw new BadRequestException('Backend.invalidInput');
-    const filter = sql`s.status='published' AND c.publication_status='published' AND o.status='approved' AND c.archived_at IS NULL AND v.visibility='public' AND bp.archived_at IS NULL
+    const filter = sql`${coachingVisible} AND s.status='published' AND c.publication_status='published' AND o.status='approved' AND c.archived_at IS NULL AND v.visibility='public' AND bp.archived_at IS NULL
       ${organizationId ? sql`AND s.organization_id=${organizationId}` : sql``} ${branchId ? sql`AND s.branch_id=${branchId}` : sql``} AND (v.title ILIKE ${`%${search}%`} OR v.description ILIKE ${`%${search}%`})`;
     let before = sql``;
     if (cursor) {
@@ -339,8 +390,8 @@ export class CommerceService {
       return changed[0];
     });
   }
-  async createService(userId: string, input: ServiceInput) {
-    return this.db.transaction(async (tx) => {
+  async createService(userId: string, input: ServiceInput, transaction?: Tx) {
+    const execute = async (tx: Tx) => {
       await lockWritableAccount(tx, userId);
       await this.staff(tx, userId, input.organizationId, input.branchId);
       await requireBranch(tx, input.organizationId, input.branchId);
@@ -364,7 +415,8 @@ export class CommerceService {
         sql`INSERT INTO sport_calendars(organization_id,branch_id,title) SELECT o.id,b.id,left(o.name||' · '||b.name,160) FROM organizations o JOIN branches b ON b.organization_id=o.id WHERE o.id=${input.organizationId} AND b.id=${input.branchId} ON CONFLICT(branch_id) DO NOTHING`,
       );
       return this.service(tx, service.id);
-    });
+    };
+    return transaction ? execute(transaction) : this.db.transaction(execute);
   }
   private insertVersion(
     tx: Tx,
@@ -378,8 +430,13 @@ export class CommerceService {
       VALUES(${id},${version},${input.title},${input.amountMinor},${input.description},${JSON.stringify(input.policy)}::jsonb,${JSON.stringify(input.eligibility)}::jsonb,${JSON.stringify(input.requirements)}::jsonb,${`{${input.resourceIds.join(',')}}`}::uuid[],${input.durationDays},${input.sessionCount},${input.level},${input.coachName},${input.visibility},${input.approvalRequired},${input.showParticipants},${input.coachUserId})`,
     );
   }
-  async publish(userId: string, id: string, revision: number) {
-    return this.db.transaction(async (tx) => {
+  async publish(
+    userId: string,
+    id: string,
+    revision: number,
+    transaction?: Tx,
+  ) {
+    const execute = async (tx: Tx) => {
       await lockWritableAccount(tx, userId);
       await rows(
         tx,
@@ -393,45 +450,50 @@ export class CommerceService {
       );
       if (!result.length) throw new ConflictException('Backend.serviceChanged');
       return result[0];
-    });
+    };
+    return transaction ? execute(transaction) : this.db.transaction(execute);
   }
   async schedule(
     userId: string,
     id: string,
     input: { startAt: string; endAt: string; capacity: number },
   ) {
-    return this.db.transaction(async (tx) => {
-      await rows(
-        tx,
-        sql`SELECT id FROM sport_services WHERE id=${id} FOR UPDATE`,
-      );
-      const draft = await this.service(tx, id);
-      const service =
-        draft.status === 'published' &&
-        draft.published_version_id !== draft.version_id
-          ? await this.service(tx, id, true)
-          : draft;
-      await this.staff(tx, userId, service.organization_id, service.branch_id);
-      await this.assertCourseScheduleOpen(tx, service);
-      if (new Date(input.startAt) <= new Date())
-        throw new BadRequestException('Start must be in the future');
-      const occurrence = await one<Occurrence>(
-        tx,
-        sql`INSERT INTO sport_occurrences(service_id,version_id,start_at,end_at,capacity) VALUES(${id},${service.version_id},${input.startAt},${input.endAt},${input.capacity}) RETURNING *`,
-      );
-      if (service.kind === 'class' || service.kind === 'course')
-        await this.occupy(tx, service, occurrence);
-      else if (service.kind === 'court') {
-        await resourceClaims(tx, service);
-        await assertResourcesAvailable(tx, occurrence.id);
-      }
-      if (service.coach_user_id)
+    return this.db
+      .transaction(async (tx) => {
         await rows(
           tx,
-          sql`INSERT INTO sport_coach_claims(coach_user_id,occurrence_id,period) VALUES(${service.coach_user_id},${occurrence.id},tstzrange(${occurrence.start_at},${occurrence.end_at},'[)'))`,
+          sql`SELECT id FROM sport_services WHERE id=${id} FOR UPDATE`,
         );
-      return occurrence;
-    });
+        const draft = await this.service(tx, id);
+        const service =
+          draft.status === 'published' &&
+          draft.published_version_id !== draft.version_id
+            ? await this.service(tx, id, true)
+            : draft;
+        await this.serviceActor(tx, userId, service.id);
+        if (service.kind === 'membership')
+          throw new BadRequestException('Practice.invalidService');
+        await this.assertCourseScheduleOpen(tx, service);
+        if (new Date(input.startAt) <= new Date())
+          throw new BadRequestException('Start must be in the future');
+        const occurrence = await one<Occurrence>(
+          tx,
+          sql`INSERT INTO sport_occurrences(service_id,version_id,start_at,end_at,capacity) VALUES(${id},${service.version_id},${input.startAt},${input.endAt},${input.capacity}) RETURNING *`,
+        );
+        if (service.kind === 'class' || service.kind === 'course')
+          await this.occupy(tx, service, occurrence);
+        else if (service.kind === 'court') {
+          await resourceClaims(tx, service);
+          await assertResourcesAvailable(tx, occurrence.id);
+        }
+        if (service.coach_user_id)
+          await rows(
+            tx,
+            sql`INSERT INTO sport_coach_claims(coach_user_id,occurrence_id,period) VALUES(${service.coach_user_id},${occurrence.id},tstzrange(${occurrence.start_at},${occurrence.end_at},'[)'))`,
+          );
+        return occurrence;
+      })
+      .catch(scheduleFailure);
   }
   async scheduleSeries(
     userId: string,
@@ -450,76 +512,78 @@ export class CommerceService {
       }),
     );
     try {
-      return await this.db.transaction(async (tx) => {
-        await lockWritableAccount(tx, userId);
-        await rows(
-          tx,
-          sql`SELECT id FROM sport_services WHERE id=${id} FOR UPDATE`,
-        );
-        const draft = await this.service(tx, id);
-        await this.staff(tx, userId, draft.organization_id, draft.branch_id);
-        const [previous] = await rows<{ id: string; request_hash: string }>(
-          tx,
-          sql`SELECT id,request_hash FROM sport_occurrence_series WHERE actor_id=${userId} AND idempotency_key=${input.idempotencyKey}`,
-        );
-        if (previous) {
-          if (previous.request_hash !== requestHash)
-            throw new ConflictException('Backend.scheduleKeyReused');
-          return {
-            id: previous.id,
-            occurrences: await rows<Occurrence>(
-              tx,
-              sql`SELECT * FROM sport_occurrences WHERE series_id=${previous.id} ORDER BY start_at`,
-            ),
-          };
-        }
-        if (Number(draft.revision) !== input.revision)
-          throw new ConflictException('Backend.serviceChanged');
-        if (draft.kind === 'membership')
-          throw new BadRequestException('Backend.invalidField');
-        const service =
-          draft.status === 'published' &&
-          draft.published_version_id !== draft.version_id
-            ? await this.service(tx, id, true)
-            : draft;
-        await this.assertCourseScheduleOpen(tx, service);
-        const start = Date.parse(input.startAt);
-        const end = Date.parse(input.endAt);
-        if (start <= Date.now())
-          throw new BadRequestException('Backend.scheduleStartInPast');
-        const series = await one<{ id: string }>(
-          tx,
-          sql`INSERT INTO sport_occurrence_series(service_id,version_id,actor_id,idempotency_key,request_hash,interval_days,occurrence_count)
-          VALUES(${id},${service.version_id},${userId},${input.idempotencyKey},${requestHash},${input.intervalDays},${input.count}) RETURNING id`,
-        );
-        const intervalMs = input.intervalDays * 24 * 60 * 60 * 1000;
-        const occurrences: Occurrence[] = [];
-        for (let index = 0; index < input.count; index++) {
-          const occurrence = await one<Occurrence>(
+      return await this.db
+        .transaction(async (tx) => {
+          await lockWritableAccount(tx, userId);
+          await rows(
             tx,
-            sql`INSERT INTO sport_occurrences(service_id,version_id,series_id,start_at,end_at,capacity)
-            VALUES(${id},${service.version_id},${series.id},${new Date(start + index * intervalMs)},${new Date(end + index * intervalMs)},${input.capacity}) RETURNING *`,
+            sql`SELECT id FROM sport_services WHERE id=${id} FOR UPDATE`,
           );
-          if (service.kind === 'class' || service.kind === 'course')
-            await this.occupy(tx, service, occurrence);
-          else if (service.kind === 'court') {
-            await resourceClaims(tx, service);
-            await assertResourcesAvailable(tx, occurrence.id);
+          const draft = await this.service(tx, id);
+          await this.staff(tx, userId, draft.organization_id, draft.branch_id);
+          const [previous] = await rows<{ id: string; request_hash: string }>(
+            tx,
+            sql`SELECT id,request_hash FROM sport_occurrence_series WHERE actor_id=${userId} AND idempotency_key=${input.idempotencyKey}`,
+          );
+          if (previous) {
+            if (previous.request_hash !== requestHash)
+              throw new ConflictException('Backend.scheduleKeyReused');
+            return {
+              id: previous.id,
+              occurrences: await rows<Occurrence>(
+                tx,
+                sql`SELECT * FROM sport_occurrences WHERE series_id=${previous.id} ORDER BY start_at`,
+              ),
+            };
           }
-          if (service.coach_user_id)
-            await rows(
+          if (Number(draft.revision) !== input.revision)
+            throw new ConflictException('Backend.serviceChanged');
+          if (draft.kind === 'membership')
+            throw new BadRequestException('Backend.invalidField');
+          const service =
+            draft.status === 'published' &&
+            draft.published_version_id !== draft.version_id
+              ? await this.service(tx, id, true)
+              : draft;
+          await this.assertCourseScheduleOpen(tx, service);
+          const start = Date.parse(input.startAt);
+          const end = Date.parse(input.endAt);
+          if (start <= Date.now())
+            throw new BadRequestException('Backend.scheduleStartInPast');
+          const series = await one<{ id: string }>(
+            tx,
+            sql`INSERT INTO sport_occurrence_series(service_id,version_id,actor_id,idempotency_key,request_hash,interval_days,occurrence_count)
+          VALUES(${id},${service.version_id},${userId},${input.idempotencyKey},${requestHash},${input.intervalDays},${input.count}) RETURNING id`,
+          );
+          const intervalMs = input.intervalDays * 24 * 60 * 60 * 1000;
+          const occurrences: Occurrence[] = [];
+          for (let index = 0; index < input.count; index++) {
+            const occurrence = await one<Occurrence>(
               tx,
-              sql`INSERT INTO sport_coach_claims(coach_user_id,occurrence_id,period) VALUES(${service.coach_user_id},${occurrence.id},tstzrange(${occurrence.start_at},${occurrence.end_at},'[)'))`,
+              sql`INSERT INTO sport_occurrences(service_id,version_id,series_id,start_at,end_at,capacity)
+            VALUES(${id},${service.version_id},${series.id},${new Date(start + index * intervalMs)},${new Date(end + index * intervalMs)},${input.capacity}) RETURNING *`,
             );
-          occurrences.push(occurrence);
-        }
-        await rows(
-          tx,
-          sql`INSERT INTO audit_events(actor_id,organization_id,action,target_id,details)
+            if (service.kind === 'class' || service.kind === 'course')
+              await this.occupy(tx, service, occurrence);
+            else if (service.kind === 'court') {
+              await resourceClaims(tx, service);
+              await assertResourcesAvailable(tx, occurrence.id);
+            }
+            if (service.coach_user_id)
+              await rows(
+                tx,
+                sql`INSERT INTO sport_coach_claims(coach_user_id,occurrence_id,period) VALUES(${service.coach_user_id},${occurrence.id},tstzrange(${occurrence.start_at},${occurrence.end_at},'[)'))`,
+              );
+            occurrences.push(occurrence);
+          }
+          await rows(
+            tx,
+            sql`INSERT INTO audit_events(actor_id,organization_id,action,target_id,details)
           VALUES(${userId},${service.organization_id},'sports.occurrence-series.create',${series.id},${JSON.stringify({ serviceId: id, count: input.count, intervalDays: input.intervalDays })}::jsonb)`,
-        );
-        return { id: series.id, occurrences };
-      });
+          );
+          return { id: series.id, occurrences };
+        })
+        .catch(scheduleFailure);
     } catch (error) {
       const pgCode =
         (error as { code?: string; cause?: { code?: string } }).code ??
@@ -883,8 +947,24 @@ export class CommerceService {
       service.kind !== 'membership' && service.policy.depositBasisPoints > 0
         ? basisPoints(amount, service.policy.depositBasisPoints)
         : amount;
+    const [coaching] = await rows<{
+      coach_id: string;
+      mode: string;
+      entry_amount_minor: string;
+    }>(
+      this.db,
+      sql`SELECT coach_id,mode,entry_amount_minor::text FROM coaching_services WHERE service_id=${service.id}`,
+    );
     return {
       ...quote,
+      coaching: coaching
+        ? {
+            ...coaching,
+            coachingAmountMinor: (
+              BigInt(service.amount_minor) - BigInt(coaching.entry_amount_minor)
+            ).toString(),
+          }
+        : null,
       amountMinor: amount,
       payNowMinor: due,
       balanceDueMinor: (BigInt(amount) - BigInt(due)).toString(),
@@ -924,6 +1004,7 @@ export class CommerceService {
       }
       await this.expire(tx);
       const service = await this.service(tx, input.serviceId, true);
+      await this.coachingSale(tx, userId, service.id);
       if (service.kind === 'course')
         await rows(
           tx,
@@ -981,7 +1062,7 @@ export class CommerceService {
           consumed: number;
         }>(
           tx,
-          sql`SELECT * FROM sport_memberships WHERE id=${input.membershipId} AND user_id=${userId} AND organization_id=${service.organization_id} AND branch_id=${service.branch_id} AND status='active' AND (ends_at IS NULL OR ends_at>now()) FOR UPDATE`,
+          sql`SELECT * FROM sport_memberships WHERE id=${input.membershipId} AND user_id=${userId} AND organization_id=${service.organization_id} AND branch_id=${service.branch_id} AND status='active' AND (ends_at IS NULL OR ends_at>now()) AND version_id IN(SELECT id FROM sport_service_versions WHERE coach_user_id IS NULL OR coach_user_id=${service.coach_user_id}) FOR UPDATE`,
         );
         const [held] = await rows<{ count: number }>(
           tx,
@@ -1040,7 +1121,12 @@ export class CommerceService {
         )
           throw new ConflictException('Quote changed; review the price again');
       }
+      const [coaching] = await rows(
+        tx,
+        sql`SELECT coach_id,mode,entry_amount_minor::text FROM coaching_services WHERE service_id=${service.id}`,
+      );
       const snapshot = {
+        coaching: coaching ?? null,
         title: service.title,
         policy: service.policy,
         eligibility: service.eligibility,

@@ -13,6 +13,7 @@ import {
 } from "./backup-media.mjs";
 
 const names = [
+  "coaching_credentials",
   "club_media",
   "sport_documents",
   "sport_messages",
@@ -33,6 +34,7 @@ test("capture includes all feature media, deduplicates references and streams ch
   const directory = await mkdtemp(join(tmpdir(), "gym4me-media-capture-"));
   const keys = [
     "clubs/test/cover.webp",
+    "coaching/test/credential.pdf",
     "sports/service-images/test/cover.webp",
     "sports/documents/test/proof.pdf",
     "sports/messages/test/photo.webp",
@@ -53,7 +55,7 @@ test("capture includes all feature media, deduplicates references and streams ch
     );
     assert.deepEqual(captured.mediaSources, names);
     assert.deepEqual(loaded, [...keys].sort());
-    assert.equal(captured.objects.length, 4);
+    assert.equal(captured.objects.length, 5);
     for (const object of captured.objects) {
       assert.equal(
         object.file,
@@ -72,6 +74,7 @@ test("capture includes all feature media, deduplicates references and streams ch
         0o600,
       );
     }
+    assert.match(client.queries[1], /public\.coaching_credentials/);
     assert.match(client.queries[1], /public\.sport_service_images/);
     assert.match(client.queries[1], /public\.sport_documents/);
     assert.match(client.queries[1], /deleted_at IS NULL/);

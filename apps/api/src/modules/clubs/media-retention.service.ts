@@ -15,6 +15,12 @@ export class MediaRetentionService {
     private readonly config: ConfigService<Environment, true>,
   ) {}
 
+  async eraseCoaching(tx: Tx, userId: string) {
+    const media = await tx.execute<{ object_key: string }>(
+      sql`SELECT object_key FROM coaching_credentials WHERE coach_id=${userId} AND object_key IS NOT NULL`,
+    );
+    for (const item of media.rows) await this.storage.delete(item.object_key);
+  }
   private async lockClub(tx: Tx, clubId: string) {
     // Same ordering as catalog writes. Recheck references while holding the lock.
     await tx
@@ -112,6 +118,18 @@ export class MediaRetentionService {
           UNION ALL SELECT 1 FROM sport_service_images WHERE object_key=${object.key} LIMIT 1`,
       );
       if (references.rows.length) continue;
+      result.eligibleObjects++;
+      if (apply) {
+        await this.storage.delete(object.key);
+        result.deletedObjects++;
+      }
+    }
+    for await (const object of this.storage.objects('coaching/')) {
+      if (object.modifiedAt >= cutoff) continue;
+      const referenced = await this.database.db.execute(
+        sql`SELECT id FROM coaching_credentials WHERE object_key=${object.key} LIMIT 1`,
+      );
+      if (referenced.rows.length) continue;
       result.eligibleObjects++;
       if (apply) {
         await this.storage.delete(object.key);

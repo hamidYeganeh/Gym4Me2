@@ -53,6 +53,12 @@ export class SportsOperationsService {
   ) {
     return this.db.transaction(async (tx) => {
       await lockWritableAccount(tx, userId);
+      const assigned = await rows<{ coach_id: string }>(
+        tx,
+        sql`SELECT coach_id FROM coaching_services WHERE service_id=${id}`,
+      );
+      if (assigned[0] && assigned[0].coach_id !== input.coachUserId)
+        throw new ConflictException('Practice.conflict');
       const [current] = await rows<{
         organization_id: string;
         branch_id: string;
@@ -176,18 +182,14 @@ export class SportsOperationsService {
       }>(tx, sql`SELECT * FROM sport_reservations WHERE id=${id}`);
       if (!r) throw new NotFoundException();
       const [service] = await rows<{
+        id: string;
         organization_id: string;
         branch_id: string;
       }>(
         tx,
         sql`SELECT s.* FROM sport_services s JOIN sport_occurrences o ON o.service_id=s.id WHERE o.id=${r.occurrence_id}`,
       );
-      await this.commerce.staff(
-        tx,
-        userId,
-        service.organization_id,
-        service.branch_id,
-      );
+      await this.commerce.serviceActor(tx, userId, service.id);
       const current = await rows(
         tx,
         sql`SELECT id FROM sport_orders WHERE id=${r.order_id} FOR UPDATE`,
@@ -226,13 +228,11 @@ export class SportsOperationsService {
         status: string;
       }>(tx, sql`SELECT * FROM sport_occurrences WHERE id=${id} FOR UPDATE`);
       if (!o) throw new NotFoundException();
-      const service = await this.serviceAccess(userId, o.service_id);
-      await this.commerce.staff(
-        tx,
-        userId,
-        service.organization_id,
-        service.branch_id,
-      );
+      const [service] = await rows<{
+        organization_id: string;
+        branch_id: string;
+      }>(tx, sql`SELECT * FROM sport_services WHERE id=${o.service_id}`);
+      await this.commerce.serviceActor(tx, userId, o.service_id);
       if (o.status === 'cancelled') return { ok: true };
       if (o.revision !== revision)
         throw new ConflictException('Occurrence changed');
@@ -368,19 +368,18 @@ export class SportsOperationsService {
       }>(tx, sql`SELECT * FROM sport_reservations WHERE id=${id} FOR UPDATE`);
       if (!r) throw new NotFoundException();
       const [service] = await rows<{
+        id: string;
         organization_id: string;
         branch_id: string;
       }>(
         tx,
         sql`SELECT s.* FROM sport_services s JOIN sport_occurrences o ON o.service_id=s.id WHERE o.id=${r.occurrence_id}`,
       );
-      await this.commerce.staff(
-        tx,
-        userId,
-        service.organization_id,
-        service.branch_id,
-        ['owner', 'manager', 'receptionist'],
-      );
+      await this.commerce.serviceActor(tx, userId, service.id, [
+        'owner',
+        'manager',
+        'receptionist',
+      ]);
       if (!['confirmed', 'completed', 'no_show'].includes(r.status))
         throw new ConflictException('Reservation unavailable');
       const [v] = await rows<{ policy: ServicePolicy }>(

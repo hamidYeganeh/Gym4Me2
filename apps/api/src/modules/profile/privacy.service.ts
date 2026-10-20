@@ -89,7 +89,7 @@ export class PrivacyService {
       .where(eq(s.platformAdmins.userId, userId))
       .limit(1);
     const obligations = await db.execute(
-      sql`SELECT 1 FROM sport_orders WHERE user_id=${userId} AND status IN ('partially_paid','review') UNION ALL SELECT 1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id WHERE r.user_id=${userId} AND r.status IN ('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM sport_refunds f JOIN sport_orders o ON o.id=f.order_id WHERE o.user_id=${userId} AND f.state IN ('requested','unknown') LIMIT 1`,
+      sql`SELECT 1 FROM sport_orders WHERE user_id=${userId} AND status IN ('partially_paid','review') UNION ALL SELECT 1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id WHERE r.user_id=${userId} AND r.status IN ('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM sport_occurrences o JOIN sport_service_versions v ON v.id=o.version_id JOIN sport_reservations r ON r.occurrence_id=o.id WHERE v.coach_user_id=${userId} AND r.status IN('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM sport_refunds f JOIN sport_orders o ON o.id=f.order_id WHERE o.user_id=${userId} AND f.state IN ('requested','unknown') LIMIT 1`,
     );
     return (
       owners.length > 0 || admins.length > 0 || obligations.rows.length > 0
@@ -400,6 +400,47 @@ export class PrivacyService {
         return {
           formatVersion: 2,
           exportedAt: new Date(),
+          coachingPractice: (
+            await tx.execute(
+              sql`SELECT * FROM coaching_practices WHERE user_id=${userId}`,
+            )
+          ).rows,
+          coachingCredentials: (
+            await tx.execute(
+              sql`SELECT id,title,issuer,expires_at,created_at FROM coaching_credentials WHERE coach_id=${userId}`,
+            )
+          ).rows,
+          coachingAssessments: (
+            await tx.execute(
+              sql`SELECT a.* FROM coaching_assessments a JOIN coaching_relationships r ON r.id=a.relationship_id WHERE r.student_id=${userId}`,
+            )
+          ).rows,
+          coachingNotes: (
+            await tx.execute(
+              sql`SELECT n.* FROM coaching_session_notes n WHERE (n.coach_id=${userId} AND EXISTS(SELECT 1 FROM coaching_relationships r WHERE r.coach_id=n.coach_id AND r.student_id=n.student_id AND r.status='active')) OR (n.student_id=${userId} AND n.shared)`,
+            )
+          ).rows,
+          coachingContracts: (
+            await tx.execute(
+              sql`SELECT * FROM coaching_contracts WHERE coach_id=${userId} OR created_by=${userId}`,
+            )
+          ).rows,
+          coachingLedger: (
+            await tx.execute(
+              sql`SELECT l.* FROM coaching_ledger l JOIN coaching_contracts c ON c.id=l.contract_id WHERE c.coach_id=${userId} OR l.actor_id=${userId}`,
+            )
+          ).rows,
+          coachingReviews: (
+            await tx.execute(
+              sql`SELECT * FROM coaching_reviews WHERE student_id=${userId}`,
+            )
+          ).rows,
+          coaching: (
+            await tx.execute(sql`
+            SELECT id,coach_id,student_id,status,expires_at,created_at,updated_at
+            FROM coaching_relationships WHERE coach_id=${userId} OR student_id=${userId}
+          `)
+          ).rows,
           sports: {
             orders: (
               await tx.execute(

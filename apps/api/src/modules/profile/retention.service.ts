@@ -319,6 +319,25 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
       .update(s.clubReviews)
       .set({ reply: null, repliedBy: null, repliedAt: null, updatedAt: now })
       .where(eq(s.clubReviews.repliedBy, userId));
+    await this.media.eraseCoaching(tx, userId);
+    await tx.execute(
+      sql`UPDATE sport_services SET status='archived',published_version_id=NULL WHERE id IN(SELECT service_id FROM coaching_services WHERE coach_id=${userId})`,
+    );
+    await tx.execute(
+      sql`DELETE FROM coaching_services WHERE coach_id=${userId}`,
+    );
+    await tx.execute(
+      sql`UPDATE coaching_session_notes SET note='[deleted]',follow_up='',shared=false WHERE coach_id=${userId} OR student_id=${userId}`,
+    );
+    await tx.execute(
+      sql`UPDATE coaching_reviews SET body='[deleted]',example='',published=false,example_consent=false WHERE coach_id=${userId} OR student_id=${userId}`,
+    );
+    await tx.execute(
+      sql`DELETE FROM coaching_invite_attempts WHERE coach_id=${userId}`,
+    );
+    await tx.execute(
+      sql`DELETE FROM coaching_relationships WHERE coach_id=${userId} OR student_id=${userId}`,
+    );
     await tx.delete(s.branchCoaches).where(eq(s.branchCoaches.coachId, userId));
     await tx.delete(s.coachProfiles).where(eq(s.coachProfiles.userId, userId));
     await tx

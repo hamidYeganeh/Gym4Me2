@@ -1,4 +1,14 @@
+import { CoachingPracticeService } from './coaching/practice.service';
+import { CoachingRecordsService } from './coaching/records.service';
+import {
+  CoachingPracticeController,
+  CoachingDirectoryController,
+  BusinessCoachingController,
+  AdminCoachingController,
+} from './coaching/practice.controller';
 import { SportsDocumentsController } from './commerce/documents.controller';
+import { CoachingController } from './coaching/coaching.controller';
+import { CoachingService } from './coaching/coaching.service';
 import { SportsResourceController } from './commerce/resources.controller';
 import { SportsResourceService } from './commerce/resources.service';
 import { SportsInvitationService } from './commerce/invitations.service';
@@ -93,6 +103,11 @@ import {
 @Module({
   imports: [DatabaseModule, AuthModule, StorageModule],
   controllers: [
+    CoachingController,
+    CoachingPracticeController,
+    CoachingDirectoryController,
+    BusinessCoachingController,
+    AdminCoachingController,
     SportsCatalogController,
     SportsAccountController,
     SportsPaymentCallbacksController,
@@ -134,6 +149,9 @@ import {
     AdminUsersController,
   ],
   providers: [
+    CoachingService,
+    CoachingPracticeService,
+    CoachingRecordsService,
     { provide: APP_INTERCEPTOR, useClass: DemoJobsInterceptor },
     CommerceService,
     { provide: PAYMENT_ADAPTER, useClass: SamanMockPaymentAdapter },

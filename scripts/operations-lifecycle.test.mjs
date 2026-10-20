@@ -245,7 +245,7 @@ test("stopping the scheduler aborts both job lanes and discards late receipts", 
 
 test(
   "capture cancellation closes its transaction and terminates only its tagged dump",
-  { timeout: 5000 },
+  { timeout: 15000 },
   async () => {
     const directory = await mkdtemp(join(tmpdir(), "gym4me-capture-cancel-"));
     const require = createRequire(
@@ -311,10 +311,17 @@ test(
         { signal: controller.signal },
       );
       void operation.catch(() => {});
-      await waitForReady(async () => existsSync(ready), {
-        timeoutMs: 2000,
-        intervalMs: 10,
-      });
+      // Cold SDK imports and process startup can exceed two seconds on CI.
+      // This is readiness only; cancellation still has its own bounded cleanup.
+      await Promise.race([
+        waitForReady(async () => existsSync(ready), {
+          timeoutMs: 10000,
+          intervalMs: 10,
+        }),
+        operation.then(() => {
+          throw new Error("Capture unexpectedly completed before cancellation");
+        }),
+      ]);
       const name = await readFile(ready, "utf8");
       controller.abort();
       await assert.rejects(operation);

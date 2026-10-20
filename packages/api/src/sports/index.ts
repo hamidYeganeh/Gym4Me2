@@ -717,6 +717,12 @@ export function useSaveSportsCalendar(scope: {
 }
 
 export type QuoteDto = {
+  coaching?: {
+    coachId: string;
+    mode: string;
+    entryAmountMinor: string;
+    coachingAmountMinor: string;
+  } | null;
   id: string;
   amountMinor: string;
   payNowMinor: string;
