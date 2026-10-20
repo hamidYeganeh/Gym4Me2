@@ -8,7 +8,7 @@ if (process.env.GYM4ME_DEMO_ACCEPTANCE !== "gym4me-demo")
   );
 const base = "https://gym4me-demo-api.vercel.app";
 const web = (surface) => `https://gym4me-demo-${surface}.vercel.app`;
-async function request(session, path, body, expected) {
+async function request(session, path, body, expected, attempt = 0) {
   const response = await fetch(`${base}/api/v1/${path}`, {
     method: body === undefined ? "GET" : "POST",
     headers: {
@@ -21,6 +21,18 @@ async function request(session, path, body, expected) {
     signal: AbortSignal.timeout(45000),
   });
   const data = await response.json();
+  if (
+    response.status === 429 &&
+    path === "auth/otp/request" &&
+    data.code === "Backend.waitOneMinuteBeforeResending" &&
+    attempt === 0
+  ) {
+    console.log(
+      "Waiting for the normal synthetic-account OTP resend cooldown.",
+    );
+    await new Promise((resolve) => setTimeout(resolve, 61000));
+    return request(session, path, body, expected, attempt + 1);
+  }
   if (expected)
     assert.equal(response.status, expected, `${path}: unexpected status`);
   else
@@ -73,7 +85,7 @@ async function answer(session, row, action, expected) {
 }
 const coach = await login("09000000008");
 const athlete = await login("09000000003");
-const stranger = await login("09000000002");
+const stranger = await login("09000000005");
 const owner = await login("09000000001", "business");
 const reception = await login("09000000006", "business");
 const accountant = await login("09000000007", "business");

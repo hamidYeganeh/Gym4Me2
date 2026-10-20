@@ -259,14 +259,9 @@ test(
     const controller = new AbortController();
     let operation;
     try {
-      const executable = join(directory, "docker"),
-        fixture = join(directory, "docker-fixture.mjs");
-      const ready = join(directory, "ready");
-      await writeFile(
-        executable,
-        '#!/bin/sh\nexec "$FIXTURE_NODE" "$FIXTURE_SCRIPT" "$@"\n',
-        { mode: 0o700 },
-      );
+      const fixture = join(directory, "docker-fixture.mjs"),
+        ready = join(directory, "ready");
+      let fixtureError = "";
       await writeFile(
         fixture,
         `import {writeFile} from 'node:fs/promises';
@@ -300,23 +295,25 @@ test(
         false,
         {
           signal: controller.signal,
-          // Resolve the test executable explicitly; never depend on a runner's
-          // docker shim or mutate the process-wide PATH/environment.
-          spawnDump: (_command, args, options, lifecycle) =>
-            spawnManaged(
-              executable,
-              args,
+          // A real child still exercises pipe/group cleanup; its executable and
+          // environment are explicit and independent of the runner's shell.
+          spawnDump: (command, args, options, lifecycle) => {
+            assert.equal(command, "docker");
+            const task = spawnManaged(
+              process.execPath,
+              [fixture, ...args],
               {
                 ...options,
-                env: {
-                  ...options.env,
-                  FIXTURE_NODE: process.execPath,
-                  FIXTURE_SCRIPT: fixture,
-                  FIXTURE_READY: ready,
-                },
+                stdio: ["ignore", "pipe", "pipe"],
+                env: { ...options.env, FIXTURE_READY: ready },
               },
               lifecycle,
-            ),
+            );
+            task.child.stderr.on("data", (chunk) => {
+              fixtureError += chunk.toString().slice(0, 1000);
+            });
+            return task;
+          },
         },
       );
       void operation.catch(() => {});
@@ -327,9 +324,18 @@ test(
           timeoutMs: 10000,
           intervalMs: 10,
         }),
-        operation.then(() => {
-          throw new Error("Capture unexpectedly completed before cancellation");
-        }),
+        operation.then(
+          () => {
+            throw new Error(
+              "Capture unexpectedly completed before cancellation",
+            );
+          },
+          (error) => {
+            throw new Error(`Capture fixture failed: ${fixtureError}`, {
+              cause: error,
+            });
+          },
+        ),
       ]);
       const name = await readFile(ready, "utf8");
       controller.abort();
