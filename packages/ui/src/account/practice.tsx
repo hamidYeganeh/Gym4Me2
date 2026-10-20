@@ -26,6 +26,7 @@ import {
   iso,
   list,
   PracticeMoney,
+  PracticeDate,
 } from "./practice-forms";
 export function CredentialPreview({
   id,
@@ -283,7 +284,7 @@ export function CoachingPracticePanel() {
                   .filter((s) => s.kind !== "membership")
                   .map((s) => (
                     <NativeSelectOption key={s.id} value={s.id}>
-                      {s.title}
+                      {s.title} · {s.clubName} · {s.branchName}
                     </NativeSelectOption>
                   ))}
               </NativeSelect>
@@ -315,6 +316,9 @@ export function CoachingPracticePanel() {
               className="space-y-3 rounded-3xl border p-5"
             >
               <h3>{s.title}</h3>
+              <p>
+                {s.clubName} · {s.branchName}
+              </p>
               <p>
                 {date(s.startAt)} · {s.displayName ?? t("noStudent")}
               </p>
@@ -464,7 +468,8 @@ function CoachFinance() {
             {c.branchName} · {t("version")} {c.version}
           </h3>
           <p>
-            {c.startsOn} — {c.endsOn ?? "…"}
+            <PracticeDate value={c.startsOn} /> —{" "}
+            {c.endsOn ? <PracticeDate value={c.endsOn} /> : "…"}
           </p>
           <p>
             {c.shareBasisPoints / 100}% · {c.basis}
@@ -503,7 +508,7 @@ export function StudentAssessment() {
   );
   const a = usePracticeAction();
   return (
-    <AccountDesignPage title={t("assessment")}>
+    <AccountDesignPage title={t("assessment")} backHref="/coaching">
       <PracticeFeedback action={a} />
       {q.isLoading ? (
         <Loading />
@@ -561,7 +566,7 @@ export function CoachingSessionNote() {
   );
   const a = usePracticeAction();
   return (
-    <AccountDesignPage title={t("sessionNote")}>
+    <AccountDesignPage title={t("sessionNote")} backHref="/coaching">
       <PracticeFeedback action={a} />
       {q.isLoading ? (
         <Loading />

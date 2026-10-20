@@ -162,3 +162,19 @@ export function PracticeMoney({ value }: { value: string }) {
     </span>
   );
 }
+
+export function usePracticeDate() {
+  const locale = useLocale();
+  return (value: string) =>
+    new Intl.DateTimeFormat(locale === "fa" ? "fa-IR" : "en", {
+      dateStyle: "medium",
+      ...(value.length === 10 ? {} : { timeStyle: "short" }),
+      timeZone: "Asia/Tehran",
+    }).format(
+      new Date(value.length === 10 ? value + "T12:00:00+03:30" : value),
+    );
+}
+export function PracticeDate({ value }: { value: string }) {
+  const date = usePracticeDate();
+  return <time dateTime={value}>{date(value)}</time>;
+}

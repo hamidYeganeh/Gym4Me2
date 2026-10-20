@@ -95,11 +95,11 @@ export class CoachingPracticeService {
     );
     const services = await rows(
       this.db,
-      sql`SELECT s.id,s.kind,s.title,s.branch_id,s.organization_id,s.status,cs.mode,cs.entry_amount_minor::text,v.amount_minor::text,v.policy FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id WHERE cs.coach_id=${actor} ORDER BY s.created_at DESC LIMIT 100`,
+      sql`SELECT s.id,s.kind,s.title,s.branch_id,s.organization_id,b.name AS branch_name,org.name AS club_name,s.status,cs.mode,cs.entry_amount_minor::text,v.amount_minor::text,v.policy FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id JOIN branches b ON b.id=s.branch_id JOIN organizations org ON org.id=s.organization_id WHERE cs.coach_id=${actor} ORDER BY s.created_at DESC LIMIT 100`,
     );
     const sessions = await rows(
       this.db,
-      sql`SELECT o.id AS occurrence_id,o.revision AS occurrence_revision,o.start_at,o.end_at,o.status AS occurrence_status,s.title,s.branch_id,r.id,r.user_id,r.status,r.revision,u.display_name FROM sport_occurrences o JOIN sport_service_versions v ON v.id=o.version_id JOIN sport_services s ON s.id=o.service_id LEFT JOIN sport_reservations r ON r.occurrence_id=o.id AND r.status IN('pending_approval','confirmed','completed','no_show') LEFT JOIN users u ON u.id=r.user_id WHERE v.coach_user_id=${actor} AND o.end_at>now()-interval '30 days' ORDER BY o.start_at LIMIT 200`,
+      sql`SELECT o.id AS occurrence_id,o.revision AS occurrence_revision,o.start_at,o.end_at,o.status AS occurrence_status,s.title,s.branch_id,b.name AS branch_name,org.name AS club_name,r.id,r.user_id,r.status,r.revision,u.display_name FROM sport_occurrences o JOIN sport_service_versions v ON v.id=o.version_id JOIN sport_services s ON s.id=o.service_id JOIN branches b ON b.id=s.branch_id JOIN organizations org ON org.id=s.organization_id LEFT JOIN sport_reservations r ON r.occurrence_id=o.id AND r.status IN('pending_approval','confirmed','completed','no_show') LEFT JOIN users u ON u.id=r.user_id WHERE v.coach_user_id=${actor} AND o.end_at>now()-interval '30 days' ORDER BY o.start_at LIMIT 200`,
     );
     const notes = await rows(
       this.db,

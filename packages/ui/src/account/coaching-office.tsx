@@ -24,6 +24,8 @@ import {
   checked,
   iso,
   PracticeMoney,
+  PracticeDate,
+  usePracticeDate,
 } from "./practice-forms";
 export function CoachingOffice({ surface }: { surface: "business" | "admin" }) {
   const t = useTranslations("Practice");
@@ -77,7 +79,7 @@ function AdminCoaching() {
             {p.credentials.map((c) => (
               <div key={c.id} className="space-y-2">
                 <p>
-                  {c.title} · {c.issuer} · {c.expiresAt}
+                  {c.title} · {c.issuer} · <PracticeDate value={c.expiresAt} />
                 </p>
                 {c.hasFile && <CredentialPreview id={c.id} admin />}
               </div>
@@ -115,6 +117,7 @@ function AdminCoaching() {
   );
 }
 function BusinessCoaching() {
+  const date = usePracticeDate();
   const t = useTranslations("Practice"),
     orgs = useOrganizations();
   const [selectedOrg, setOrg] = useState(""),
@@ -400,7 +403,7 @@ function BusinessCoaching() {
                       ?.filter((b) => b.coachId === c.coachId)
                       .map((b) => (
                         <NativeSelectOption key={b.id} value={b.id}>
-                          {b.title} · {new Date(b.startAt).toLocaleDateString()}
+                          {b.title} · {date(b.startAt)}
                         </NativeSelectOption>
                       ))}
                   </NativeSelect>
@@ -467,8 +470,8 @@ function ReviewReports() {
             <p>{t(r.status === "pending" ? "pending" : "resolved")}</p>
             {r.decisions.map((d, i) => (
               <p key={i}>
-                {d.createdAt} · {t(d.hidden ? "hiddenReview" : "keptReview")} ·{" "}
-                {d.reason}
+                <PracticeDate value={d.createdAt} /> ·{" "}
+                {t(d.hidden ? "hiddenReview" : "keptReview")} · {d.reason}
               </p>
             ))}
             <Form

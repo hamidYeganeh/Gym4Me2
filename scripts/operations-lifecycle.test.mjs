@@ -299,9 +299,14 @@ test(
           // environment are explicit and independent of the runner's shell.
           spawnDump: (command, args, options, lifecycle) => {
             assert.equal(command, "docker");
+            // Docker's --env-file is not a Node argument. Node 26 scans it
+            // even after the script path; forwarding it made clean CI require
+            // the developer's private .env.staging before the fixture ran.
+            assert.equal(args[0], "compose");
+            assert(args.includes("--env-file"));
             const task = spawnManaged(
               process.execPath,
-              [fixture, ...args],
+              [fixture],
               {
                 ...options,
                 stdio: ["ignore", "pipe", "pipe"],

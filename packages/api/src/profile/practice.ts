@@ -17,6 +17,8 @@ export type PracticeDto = {
 };
 export type PracticeSessionDto = {
   id: string | null;
+  branchName?: string;
+  clubName?: string;
   occurrenceId: string;
   occurrenceRevision: number;
   startAt: string;
@@ -46,6 +48,8 @@ export type PracticeWorkspaceDto = {
   services: {
     id: string;
     title: string;
+    branchName: string;
+    clubName: string;
     kind: string;
     mode: string;
     entryAmountMinor: string;
