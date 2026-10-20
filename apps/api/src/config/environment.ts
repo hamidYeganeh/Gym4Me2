@@ -16,6 +16,10 @@ const environmentSchema = z.object({
   API_HOST: z.string().min(1).default('0.0.0.0'),
   PORT: z.coerce.number().int().min(1).max(65535).default(7088),
   DATABASE_URL: databaseUrl,
+  DEMO_MODE: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
   DB_POOL_MAX: z.coerce.number().int().min(1).max(100).default(10),
   DB_CONNECTION_TIMEOUT_MS: z.coerce.number().int().positive().default(5000),
   DB_STATEMENT_TIMEOUT_MS: z.coerce.number().int().positive().default(10000),
@@ -103,6 +107,8 @@ export function validateEnvironment(input: Record<string, unknown>) {
   if (result.data.NODE_ENV === 'production' && !result.data.AUTH_SECRET) {
     throw new Error('Invalid API configuration: AUTH_SECRET');
   }
+  if (result.data.DEMO_MODE && result.data.KAVENEGAR_API_KEY)
+    throw new Error('Demo configuration must not include live SMS credentials');
 
   return {
     ...result.data,

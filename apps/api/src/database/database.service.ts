@@ -12,11 +12,13 @@ import * as schema from './schema';
 
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnApplicationShutdown {
+  private readonly demo: boolean;
   private readonly logger = new Logger(DatabaseService.name);
   private readonly pool: Pool;
   readonly db: NodePgDatabase<typeof schema>;
 
   constructor(config: ConfigService<Environment, true>) {
+    this.demo = config.get('DEMO_MODE', { infer: true }) === true;
     this.pool = new Pool({
       connectionString: config.get('DATABASE_URL', { infer: true }),
       max: config.get('DB_POOL_MAX', { infer: true }),
@@ -36,6 +38,13 @@ export class DatabaseService implements OnModuleInit, OnApplicationShutdown {
   async onModuleInit(): Promise<void> {
     try {
       await this.pool.query('SELECT 1');
+      if (this.demo) {
+        const marker = await this.pool.query(
+          "SELECT id FROM gym4me_demo_installation WHERE id = 'isolated-demo-v1'",
+        );
+        if (marker.rowCount !== 1)
+          throw new Error('Isolated demo database required');
+      }
     } catch {
       await this.pool.end();
       throw new Error(

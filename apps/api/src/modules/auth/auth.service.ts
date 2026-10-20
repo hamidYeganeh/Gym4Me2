@@ -59,8 +59,18 @@ export class AuthService {
     requestedBy?: string,
     requestedSessionId?: string,
   ) {
+    const demo = this.config.get('DEMO_MODE', { infer: true }) === true;
+    if (demo) {
+      const allowed = await this.database.db.execute(
+        sql`select user_id from gym4me_demo_accounts where phone = ${phone}`,
+      );
+      if (!allowed.rows.length || requestedBy)
+        throw new ForbiddenException(
+          'Demo sign-in is limited to the supplied demo accounts',
+        );
+    }
     const id = randomUUID();
-    const code = String(randomInt(10000, 100000));
+    const code = demo ? '11111' : String(randomInt(10000, 100000));
     const codeHash = this.hash(`${id}:${code}`);
     const now = new Date();
     await this.database.db.transaction(async (tx) => {
@@ -121,7 +131,7 @@ export class AuthService {
       });
     });
     try {
-      await this.sms.sendOtp(phone, code);
+      if (!demo) await this.sms.sendOtp(phone, code);
       await this.database.db
         .update(otpChallenges)
         .set({ sentAt: new Date() })

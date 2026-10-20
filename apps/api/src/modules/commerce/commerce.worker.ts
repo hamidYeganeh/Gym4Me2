@@ -17,7 +17,11 @@ export class CommerceWorker implements OnModuleInit, OnModuleDestroy {
     private readonly config: ConfigService<Environment, true>,
   ) {}
   onModuleInit() {
-    if (this.config.get('NODE_ENV', { infer: true }) === 'test') return;
+    if (
+      this.config.get('NODE_ENV', { infer: true }) === 'test' ||
+      this.config.get('DEMO_MODE', { infer: true }) === true
+    )
+      return;
     this.timer = setInterval(() => {
       void this.tick();
     }, 5000);

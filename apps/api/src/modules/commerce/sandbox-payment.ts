@@ -35,7 +35,10 @@ export class SamanMockPaymentAdapter implements PaymentAdapter {
   readonly provider = 'saman_mock';
   constructor(private readonly config: ConfigService<Environment, true>) {}
   private assertEnabled() {
-    if (this.config.get('NODE_ENV', { infer: true }) === 'production')
+    if (
+      this.config.get('NODE_ENV', { infer: true }) === 'production' &&
+      this.config.get('DEMO_MODE', { infer: true }) !== true
+    )
       throw new ConflictException(
         'Saman mock payments are disabled in production',
       );
