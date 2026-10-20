@@ -124,3 +124,20 @@ export const offeringSchema = z
     idempotencyKey: commandKey,
   })
   .strict();
+
+export const reviewReplySchema = z
+  .object({
+    body: z.string().trim().min(3).max(3000),
+    revision: z.number().int().min(0),
+  })
+  .strict();
+export const reviewReportSchema = z
+  .object({ reason: z.string().trim().min(3).max(1000) })
+  .strict();
+export const reviewResolutionSchema = z
+  .object({
+    hidden: z.boolean(),
+    reason: z.string().trim().min(3).max(1000),
+    revision: z.number().int().positive(),
+  })
+  .strict();

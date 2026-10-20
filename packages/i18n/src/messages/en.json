@@ -1828,7 +1828,8 @@
     "activateFirst": "Activate coach mode first.",
     "studentUnavailable": "No eligible account is available for this number.",
     "selfInvite": "You cannot invite yourself.",
-    "assessment": "Student assessment"
+    "assessment": "Student assessment",
+    "endBookingPolicy": "Ending collaboration stops private-record access and new purchases. Existing paid bookings keep their purchase terms; cancel and request refunds from booking details."
   },
   "Practice": {
     "workspace": "Coach workspace",
@@ -1985,6 +1986,14 @@
     "relationshipRequired": "Request collaboration first and follow the coach’s response in the coaching workspace.",
     "inviteLimit": "Too many invitations this hour. Try again later.",
     "coachFee": "Coaching fee in tariff",
-    "withdrawPublication": "Withdraw review and example publication"
+    "withdrawPublication": "Withdraw review and example publication",
+    "noFinance": "No contracts or financial records yet.",
+    "coachReply": "Coach response",
+    "reportReview": "Report review",
+    "reportedReviews": "Coach review reports",
+    "emptyReviewQueue": "Nothing to review.",
+    "resolved": "Resolved",
+    "hiddenReview": "Hide review",
+    "keptReview": "Keep review"
   }
 }

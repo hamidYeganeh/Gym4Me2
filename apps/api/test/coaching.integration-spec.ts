@@ -230,6 +230,36 @@ it('public discovery exposes approved published metadata, never credentials or r
   const detail = await practice.detail(coach);
   expect(detail.services.length).toBe(2);
 });
+it('affiliation expiry hides offerings from coach detail, prices, filters and the commerce catalog', async () => {
+  await rows(
+    db,
+    sql`UPDATE branch_coaches SET ends_on=current_date-1 WHERE coach_id=${coach}`,
+  );
+  try {
+    expect((await practice.detail(coach)).services).toHaveLength(0);
+    const input = {
+      search: 'Coach',
+      city: 'Tehran',
+      specialty: 'strength',
+      goal: 'mobility',
+      page: 1,
+    };
+    expect((await practice.search(input)).items[0].from_price_minor).toBeNull();
+    expect(
+      (await practice.search({ ...input, maxPrice: '999999999' })).items,
+    ).toHaveLength(0);
+    expect(
+      (await commerce.catalog()).some(
+        (x) => x.id === service || x.id === otherService,
+      ),
+    ).toBe(false);
+  } finally {
+    await rows(
+      db,
+      sql`UPDATE branch_coaches SET ends_on=NULL WHERE coach_id=${coach}`,
+    );
+  }
+});
 it('unknown and known invitation targets return identical shapes without unaccepted identity', async () => {
   const known = (
     await rows<{ phone: string }>(
@@ -430,6 +460,79 @@ it('session notes and revocable progress examples stay attached to a verified se
   expect(
     (await practice.detail(coach)).reviews.every((x) => x.example === ''),
   ).toBe(true);
+});
+it('coach responses, duplicate reports and reasoned moderation keep their history and cannot be republished around a hide', async () => {
+  const review = (await records.myReviews(student))[0],
+    id = String(review.id);
+  await expect(
+    records.reply(stranger, id, { body: 'Unrelated response', revision: 0 }),
+  ).rejects.toThrow();
+  await records.reply(coach, id, {
+    body: 'Synthetic coach response',
+    revision: 0,
+  });
+  await expect(
+    records.reply(coach, id, { body: 'Stale response', revision: 0 }),
+  ).rejects.toThrow();
+  expect((await practice.detail(coach)).reviews[0].reply).toBe(
+    'Synthetic coach response',
+  );
+  await expect(
+    records.report(student, id, { reason: 'Own review report' }),
+  ).rejects.toThrow();
+  const report = await records.report(stranger, id, {
+    reason: 'Synthetic moderation request',
+  });
+  expect(
+    (
+      await records.report(stranger, id, {
+        reason: 'Synthetic moderation request',
+      })
+    ).id,
+  ).toBe(report.id);
+  const otherReport = await records.report(coach, id, {
+    reason: 'Second independent report',
+  });
+  await records.resolveReview(owner, String(report.id), {
+    hidden: true,
+    reason: 'Synthetic reasoned decision',
+    revision: 1,
+  });
+  await expect(
+    records.resolveReview(owner, String(otherReport.id), {
+      hidden: false,
+      reason: 'Stale decision from another report',
+      revision: 1,
+    }),
+  ).rejects.toThrow();
+  expect((await practice.detail(coach)).reviews).toHaveLength(0);
+  await records.review(
+    student,
+    reservation,
+    coachReviewSchema.parse({
+      rating: 5,
+      body: 'Edited student review',
+      published: true,
+      revision: 2,
+    }),
+  );
+  expect((await practice.detail(coach)).reviews).toHaveLength(0);
+  await expect(
+    records.resolveReview(owner, String(report.id), {
+      hidden: false,
+      reason: 'Stale resolution',
+      revision: 1,
+    }),
+  ).rejects.toThrow();
+  await records.resolveReview(owner, String(report.id), {
+    hidden: false,
+    reason: 'Restored after review',
+    revision: 2,
+  });
+  expect((await practice.detail(coach)).reviews).toHaveLength(1);
+  expect(
+    (await records.reviewReports()).find((x) => x.id === report.id)?.decisions,
+  ).toHaveLength(2);
 });
 it('contracts retain versions and manual income/payment repeats do not double count', async () => {
   const input = contractSchema.parse({

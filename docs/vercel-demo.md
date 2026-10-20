@@ -61,7 +61,8 @@ before a new route is considered available online.
   relationship requests. A relationship is required before buying coaching.
 - Business `/coaching`: affiliated approved coaches, services, fee breakdown,
   versioned contracts and referenced manual financial entries.
-- Admin `/coaching`: private credentials, approval/rejection with reason and expiry.
+- Admin `/coaching`: private credentials, approval/rejection with reason and expiry, and reported coach reviews with reasoned hide/keep decisions and history.
+- Coach detail supports verified-session reviews, coach replies and authenticated reports. Ending collaboration preserves existing booking purchase/cancellation terms while revoking private access and new sales.
 
 Coach `09000000008` and athlete `09000000003` use the same application. For
 sequential role testing, sign out before changing accounts. Existing sport

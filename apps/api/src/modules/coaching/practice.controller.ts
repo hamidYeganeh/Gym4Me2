@@ -231,6 +231,32 @@ export class CoachingPracticeController {
       ),
     );
   }
+  @Post('reviews/:id/reply') @SchemaBody(c.reviewReplySchema) reply(
+    @Req() req: AuthRequest,
+    @Param('id') value: string,
+    @Body() body: unknown,
+  ) {
+    return dto(
+      this.records.reply(
+        coachingActor(req),
+        id(value),
+        parse(c.reviewReplySchema, body),
+      ),
+    );
+  }
+  @Post('reviews/:id/report') @SchemaBody(c.reviewReportSchema) report(
+    @Req() req: AuthRequest,
+    @Param('id') value: string,
+    @Body() body: unknown,
+  ) {
+    return dto(
+      this.records.report(
+        coachingActor(req),
+        id(value),
+        parse(c.reviewReportSchema, body),
+      ),
+    );
+  }
   @Get('finance') finance(@Req() req: AuthRequest) {
     return dto(this.records.finance(coachingActor(req)));
   }
@@ -321,7 +347,28 @@ export class AdminCoachingController {
   constructor(
     private readonly practice: CoachingPracticeService,
     private readonly admin: AdminService,
+    private readonly records: CoachingRecordsService,
   ) {}
+  @Get('reports') async reports(@Req() req: AuthRequest) {
+    await this.admin.requireAdmin(req.principal);
+    return dto(this.records.reviewReports());
+  }
+  @Post('reports/:id/resolve')
+  @SchemaBody(c.reviewResolutionSchema)
+  async resolve(
+    @Req() req: AuthRequest,
+    @Param('id') value: string,
+    @Body() body: unknown,
+  ) {
+    await this.admin.requireAdmin(req.principal);
+    return dto(
+      this.records.resolveReview(
+        req.principal.user.id,
+        id(value),
+        parse(c.reviewResolutionSchema, body),
+      ),
+    );
+  }
   @Get() async queue(@Req() req: AuthRequest) {
     await this.admin.requireAdmin(req.principal);
     return dto(this.practice.reviewQueue());

@@ -7,6 +7,7 @@ import {
   usePracticeQuery,
   type FinanceDto,
   type PracticeReviewDto,
+  type CoachReviewReportDto,
 } from "@repo/api/profile";
 import { Button } from "../kit/Button";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
@@ -37,7 +38,14 @@ export function CoachingOffice({ surface }: { surface: "business" | "admin" }) {
         </Button>
       </header>
       <PrivacyNotice />
-      {surface === "admin" ? <AdminCoaching /> : <BusinessCoaching />}
+      {surface === "admin" ? (
+        <>
+          <AdminCoaching />
+          <ReviewReports />
+        </>
+      ) : (
+        <BusinessCoaching />
+      )}
     </main>
   );
 }
@@ -52,6 +60,8 @@ function AdminCoaching() {
         <Loading />
       ) : q.error ? (
         <QueryError error={q.error} retry={q.refetch} />
+      ) : !q.data?.length ? (
+        <p>{t("emptyReviewQueue")}</p>
       ) : (
         q.data?.map((p) => (
           <article
@@ -421,5 +431,64 @@ function BusinessCoaching() {
         </>
       )}
     </>
+  );
+}
+
+function ReviewReports() {
+  const t = useTranslations("Practice"),
+    q = usePracticeQuery<CoachReviewReportDto[]>("admin/coaching/reports"),
+    a = usePracticeAction();
+  return (
+    <section className="space-y-4">
+      <h2 className="text-xl font-semibold">{t("reportedReviews")}</h2>
+      <PracticeFeedback action={a} />
+      {q.isLoading ? (
+        <Loading />
+      ) : q.error ? (
+        <QueryError error={q.error} retry={q.refetch} />
+      ) : !q.data?.length ? (
+        <p>{t("emptyReviewQueue")}</p>
+      ) : (
+        q.data.map((r) => (
+          <article key={r.id} className="space-y-3 rounded-3xl border p-5">
+            <p>{r.body}</p>
+            <p>
+              {t("reportReview")}: {r.reason}
+            </p>
+            {r.reply && (
+              <p>
+                {t("coachReply")}: {r.reply}
+              </p>
+            )}
+            <p>{t(r.status === "pending" ? "pending" : "resolved")}</p>
+            {r.decisions.map((d, i) => (
+              <p key={i}>
+                {d.createdAt} · {t(d.hidden ? "hiddenReview" : "keptReview")} ·{" "}
+                {d.reason}
+              </p>
+            ))}
+            <Form
+              key={r.revision}
+              title={t("decision")}
+              pending={a.pending}
+              onSubmit={(f) =>
+                void a.run(`admin/coaching/reports/${r.id}/resolve`, {
+                  hidden: checked(f, "hidden"),
+                  reason: text(f, "reason"),
+                  revision: r.revision,
+                })
+              }
+            >
+              <Check
+                name="hidden"
+                label={t("hiddenReview")}
+                checked={r.hidden}
+              />
+              <Field name="reason" label={t("reason")} required />
+            </Form>
+          </article>
+        ))
+      )}
+    </section>
   );
 }

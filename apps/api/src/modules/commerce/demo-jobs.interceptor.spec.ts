@@ -58,9 +58,10 @@ describe('demo serverless jobs', () => {
     const { interceptor, runJobs } = setup(true);
     let jobsFinished = false;
     runJobs.mockImplementation(() => {
-      jobsFinished = true;return Promise.resolve({processed:1});
+      jobsFinished = true;
+      return Promise.resolve({ processed: 1 });
     });
-    const result:unknown = await firstValueFrom(
+    const result: unknown = await firstValueFrom(
       interceptor.intercept(context('GET', '/api/v1/sports/services'), {
         handle: () => {
           expect(jobsFinished).toBe(true);

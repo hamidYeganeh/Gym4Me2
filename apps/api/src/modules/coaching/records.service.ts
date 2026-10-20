@@ -234,4 +234,84 @@ export class CoachingRecordsService {
       sql`SELECT * FROM coaching_reviews WHERE student_id=${actor} ORDER BY created_at DESC LIMIT 100`,
     );
   }
+  async reply(
+    actor: string,
+    id: string,
+    input: z.infer<typeof c.reviewReplySchema>,
+  ) {
+    return coachingWrite(this.db, actor, async (tx) => {
+      const result = await rows(
+        tx,
+        sql`UPDATE coaching_reviews SET reply=${input.body},reply_revision=reply_revision+1 WHERE id=${id} AND coach_id=${actor} AND reply_revision=${input.revision} RETURNING id`,
+      );
+      if (!result.length) throw new ConflictException('Practice.conflict');
+      await rows(
+        tx,
+        sql`INSERT INTO audit_events(actor_id,action,target_id) VALUES(${actor},'coaching.review.replied',${id})`,
+      );
+      return { ok: true };
+    });
+  }
+  async report(
+    actor: string,
+    id: string,
+    input: z.infer<typeof c.reviewReportSchema>,
+  ) {
+    return coachingWrite(this.db, actor, async (tx) => {
+      const [review] = await rows(
+        tx,
+        sql`SELECT cr.id FROM coaching_reviews cr JOIN sport_reservations r ON r.id=cr.reservation_id WHERE cr.id=${id} AND cr.student_id<>${actor} AND cr.published AND NOT cr.hidden AND r.status='completed' FOR SHARE OF cr`,
+      );
+      if (!review) throw new NotFoundException('Practice.unavailable');
+      return (
+        await rows(
+          tx,
+          sql`INSERT INTO coaching_review_reports(review_id,reporter_id,reason) VALUES(${id},${actor},${input.reason}) ON CONFLICT(review_id,reporter_id) DO UPDATE SET review_id=EXCLUDED.review_id RETURNING id,status`,
+        )
+      )[0];
+    });
+  }
+  async reviewReports() {
+    return rows(
+      this.db,
+      sql`SELECT rp.*,cr.body,cr.reply,cr.hidden,cr.rating,(SELECT coalesce(jsonb_agg(jsonb_build_object('reason',ae.details->>'reason','hidden',ae.details->'hidden','createdAt',ae.created_at) ORDER BY ae.created_at),'[]'::jsonb) FROM audit_events ae WHERE ae.target_id=rp.id AND ae.action='coaching.review.resolved') AS decisions FROM coaching_review_reports rp JOIN coaching_reviews cr ON cr.id=rp.review_id ORDER BY (rp.status='pending') DESC,rp.created_at DESC LIMIT 100`,
+    );
+  }
+  async resolveReview(
+    actor: string,
+    id: string,
+    input: z.infer<typeof c.reviewResolutionSchema>,
+  ) {
+    // Caller must pass AdminService.requireAdmin; keep the decision and history atomic.
+    return coachingWrite(this.db, actor, async (tx) => {
+      const [target] = await rows<{ review_id: string }>(
+        tx,
+        sql`SELECT review_id FROM coaching_review_reports WHERE id=${id}`,
+      );
+      if (!target) throw new NotFoundException('Practice.unavailable');
+      await rows(
+        tx,
+        sql`SELECT id FROM coaching_reviews WHERE id=${target.review_id} FOR UPDATE`,
+      );
+
+      const [report] = await rows<{ review_id: string }>(
+        tx,
+        sql`UPDATE coaching_review_reports SET status='resolved',revision=revision+1 WHERE id=${id} AND revision=${input.revision} RETURNING review_id`,
+      );
+      if (!report) throw new ConflictException('Practice.conflict');
+      await rows(
+        tx,
+        sql`UPDATE coaching_review_reports SET revision=revision+1 WHERE review_id=${report.review_id} AND id<>${id}`,
+      );
+      await rows(
+        tx,
+        sql`UPDATE coaching_reviews SET hidden=${input.hidden} WHERE id=${report.review_id}`,
+      );
+      await rows(
+        tx,
+        sql`INSERT INTO audit_events(actor_id,action,target_id,details) VALUES(${actor},'coaching.review.resolved',${id},${JSON.stringify({ reason: input.reason, hidden: input.hidden })}::jsonb)`,
+      );
+      return { ok: true };
+    });
+  }
 }

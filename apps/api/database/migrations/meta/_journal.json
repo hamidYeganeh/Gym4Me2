@@ -232,6 +232,13 @@
       "when": 1792454401000,
       "tag": "0032_coaching_practice",
       "breakpoints": false
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1792454402000,
+      "tag": "0033_coaching_review_moderation",
+      "breakpoints": false
     }
   ]
 }

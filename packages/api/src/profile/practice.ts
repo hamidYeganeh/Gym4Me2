@@ -94,7 +94,15 @@ export type CoachDetailDto = CoachDirectoryDto & {
     clubName: string;
     approvalRequired: boolean;
   }[];
-  reviews: { id: string; rating: number; body: string; example: string }[];
+  reviews: {
+    id: string;
+    rating: number;
+    body: string;
+    example: string;
+    reply: string;
+    replyRevision: number;
+    coachId: string;
+  }[];
 };
 export type FinanceDto = {
   bookings?: { id: string; coachId: string; title: string; startAt: string }[];
@@ -148,3 +156,15 @@ export function usePracticeCommand() {
     [["coaching"], ["profile"], ["sports"]],
   );
 }
+
+export type CoachReviewReportDto = {
+  id: string;
+  reviewId: string;
+  reason: string;
+  body: string;
+  reply: string;
+  hidden: boolean;
+  status: string;
+  revision: number;
+  decisions: { reason: string; hidden: boolean; createdAt: string }[];
+};

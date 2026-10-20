@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useTranslations } from "@repo/i18n";
 import {
   usePracticeQuery,
+  useAccount,
   type CoachDirectoryDto,
   type CoachDetailDto,
 } from "@repo/api/profile";
@@ -15,6 +16,7 @@ import { AccountDesignPage } from "./account-design";
 import { Loading, QueryError } from "./common";
 import {
   PracticeField as Field,
+  PracticeForm as Form,
   PracticeMoney,
   usePracticeAction,
   PracticeFeedback,
@@ -43,6 +45,7 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
     detail && Boolean(id),
   );
   const a = usePracticeAction();
+  const account = useAccount();
   const p = profile.data;
   return (
     <AccountDesignPage
@@ -213,6 +216,46 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
               </p>
               <p>{r.body}</p>
               {r.example && <p>{r.example}</p>}
+              {r.reply && (
+                <p>
+                  {t("coachReply")}: {r.reply}
+                </p>
+              )}
+              {account.data?.id === r.coachId && (
+                <Form
+                  key={r.replyRevision}
+                  title={t("coachReply")}
+                  pending={a.pending}
+                  onSubmit={(f) =>
+                    void a.run(
+                      `profile/coaching-practice/reviews/${r.id}/reply`,
+                      { body: text(f, "body"), revision: r.replyRevision },
+                    )
+                  }
+                >
+                  <Field
+                    name="body"
+                    label={t("coachReply")}
+                    value={r.reply}
+                    required
+                  />
+                </Form>
+              )}
+              <details>
+                <summary>{t("reportReview")}</summary>
+                <Form
+                  title={t("reportReview")}
+                  pending={a.pending}
+                  onSubmit={(f) =>
+                    void a.run(
+                      `profile/coaching-practice/reviews/${r.id}/report`,
+                      { reason: text(f, "reason") },
+                    )
+                  }
+                >
+                  <Field name="reason" label={t("reason")} required />
+                </Form>
+              </details>
             </article>
           ))}
         </>

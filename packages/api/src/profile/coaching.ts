@@ -8,6 +8,7 @@ export type CoachingRelationshipDto = {
   studentId: string | null;
   initiatedBy: string;
   revision: number;
+  futureBookingPolicy: "preserve_purchase_terms";
   counterpartName: string | null;
   status: "pending" | "active" | "declined" | "ended";
   expired: boolean;

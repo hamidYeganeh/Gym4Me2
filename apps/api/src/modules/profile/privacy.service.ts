@@ -430,6 +430,11 @@ export class PrivacyService {
               sql`SELECT l.* FROM coaching_ledger l JOIN coaching_contracts c ON c.id=l.contract_id WHERE c.coach_id=${userId} OR l.actor_id=${userId}`,
             )
           ).rows,
+          coachingReviewReports: (
+            await tx.execute(
+              sql`SELECT * FROM coaching_review_reports WHERE reporter_id=${userId}`,
+            )
+          ).rows,
           coachingReviews: (
             await tx.execute(
               sql`SELECT * FROM coaching_reviews WHERE student_id=${userId}`,

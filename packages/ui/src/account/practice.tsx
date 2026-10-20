@@ -455,6 +455,9 @@ function CoachFinance() {
   return (
     <div className="space-y-4">
       <p>{t("financeHint")}</p>
+      {!q.data?.contracts.length && !q.data?.ledger.length && (
+        <p>{t("noFinance")}</p>
+      )}
       {q.data?.contracts.map((c) => (
         <article key={c.id} className="rounded-3xl border p-5">
           <h3>

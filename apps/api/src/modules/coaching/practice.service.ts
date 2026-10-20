@@ -10,6 +10,7 @@ import { randomUUID, createHash } from 'node:crypto';
 import type { z } from 'zod';
 import { DatabaseService } from '../../database/database.service';
 import { lockWritableAccount } from '../auth/account-lock';
+import { publicServiceVisible } from '../commerce/public-service';
 import { serviceSchema } from '../commerce/commerce.contracts';
 import { CommerceService, rows } from '../commerce/commerce.service';
 import { StorageService } from '../clubs/storage.service';
@@ -281,7 +282,7 @@ export class CoachingPracticeService {
     const term = `%${input.search.replace(/[\\%_]/g, '\\$&')}%`;
     const result = await rows(
       this.db,
-      sql`SELECT p.user_id,p.specialties,p.goals,p.city,p.experience_years,p.review_expires_at,u.display_name,c.biography,(SELECT min(v.amount_minor)::text FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id JOIN clubs cl ON cl.id=s.organization_id JOIN organizations org ON org.id=s.organization_id WHERE cs.coach_id=p.user_id AND s.status='published' AND cl.publication_status='published' AND cl.archived_at IS NULL AND org.status='approved') AS from_price_minor FROM coaching_practices p JOIN users u ON u.id=p.user_id JOIN coach_profiles c ON c.user_id=p.user_id WHERE p.review_status='approved' AND p.review_expires_at>now() AND p.published AND u.profile_public AND u.status='active' AND NOT u.deletion_pending AND u.deleted_at IS NULL AND (${id ?? null}::uuid IS NULL OR p.user_id=${id ?? null}::uuid) AND (u.display_name ILIKE ${term} OR c.biography ILIKE ${term}) AND (${input.city}='' OR p.city=${input.city}) AND (${input.specialty}='' OR ${input.specialty}=ANY(p.specialties)) AND (${input.goal}='' OR ${input.goal}=ANY(p.goals)) AND (${input.maxPrice ?? null}::bigint IS NULL OR EXISTS(SELECT 1 FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id WHERE cs.coach_id=p.user_id AND s.status='published' AND v.amount_minor<=${input.maxPrice ?? null}::bigint)) ORDER BY u.display_name,p.user_id LIMIT 21 OFFSET ${(input.page - 1) * 20}`,
+      sql`SELECT p.user_id,p.specialties,p.goals,p.city,p.experience_years,p.review_expires_at,u.display_name,c.biography,(SELECT min(v.amount_minor)::text FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id JOIN clubs cl ON cl.id=s.organization_id JOIN organizations org ON org.id=s.organization_id WHERE cs.coach_id=p.user_id AND ${publicServiceVisible}) AS from_price_minor FROM coaching_practices p JOIN users u ON u.id=p.user_id JOIN coach_profiles c ON c.user_id=p.user_id WHERE p.review_status='approved' AND p.review_expires_at>now() AND p.published AND u.profile_public AND u.status='active' AND NOT u.deletion_pending AND u.deleted_at IS NULL AND (${id ?? null}::uuid IS NULL OR p.user_id=${id ?? null}::uuid) AND (u.display_name ILIKE ${term} OR c.biography ILIKE ${term}) AND (${input.city}='' OR p.city=${input.city}) AND (${input.specialty}='' OR ${input.specialty}=ANY(p.specialties)) AND (${input.goal}='' OR ${input.goal}=ANY(p.goals)) AND (${input.maxPrice ?? null}::bigint IS NULL OR EXISTS(SELECT 1 FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id WHERE cs.coach_id=p.user_id AND ${publicServiceVisible} AND v.amount_minor<=${input.maxPrice ?? null}::bigint)) ORDER BY u.display_name,p.user_id LIMIT 21 OFFSET ${(input.page - 1) * 20}`,
     );
     return { items: result.slice(0, 20), hasMore: result.length > 20 };
   }
@@ -290,11 +291,11 @@ export class CoachingPracticeService {
     if (!result.items[0]) throw new NotFoundException('Practice.unavailable');
     const services = await rows(
       this.db,
-      sql`SELECT cs.service_id,s.kind,cs.mode,cs.entry_amount_minor::text,s.title,b.name AS branch_name,o.name AS club_name,v.amount_minor::text,v.approval_required,v.session_count,v.duration_days,v.policy FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id JOIN branches b ON b.id=s.branch_id JOIN organizations o ON o.id=s.organization_id JOIN clubs cl ON cl.id=o.id WHERE cs.coach_id=${id} AND s.status='published' AND cl.publication_status='published' AND cl.archived_at IS NULL AND o.status='approved' LIMIT 100`,
+      sql`SELECT cs.service_id,s.kind,cs.mode,cs.entry_amount_minor::text,s.title,b.name AS branch_name,o.name AS club_name,v.amount_minor::text,v.approval_required,v.session_count,v.duration_days,v.policy FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id JOIN branches b ON b.id=s.branch_id JOIN organizations o ON o.id=s.organization_id JOIN clubs cl ON cl.id=o.id WHERE cs.coach_id=${id} AND ${publicServiceVisible} LIMIT 100`,
     );
     const reviews = await rows(
       this.db,
-      sql`SELECT cr.id,cr.rating,cr.body,CASE WHEN cr.example_consent THEN cr.example ELSE '' END AS example,cr.created_at FROM coaching_reviews cr JOIN sport_reservations r ON r.id=cr.reservation_id WHERE cr.coach_id=${id} AND cr.published AND r.status='completed' ORDER BY cr.created_at DESC LIMIT 50`,
+      sql`SELECT cr.id,cr.rating,cr.body,cr.reply,cr.reply_revision,cr.coach_id,CASE WHEN cr.example_consent THEN cr.example ELSE '' END AS example,cr.created_at FROM coaching_reviews cr JOIN sport_reservations r ON r.id=cr.reservation_id WHERE cr.coach_id=${id} AND cr.published AND NOT cr.hidden AND r.status='completed' ORDER BY cr.created_at DESC LIMIT 50`,
     );
     return { ...result.items[0], services, reviews };
   }

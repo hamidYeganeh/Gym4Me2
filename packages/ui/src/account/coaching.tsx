@@ -166,6 +166,11 @@ export function CoachingWorkspace() {
                               {t("consent")}
                             </p>
                           )}
+                        {["active", "ended"].includes(row.status) && (
+                          <p className="text-sm text-muted-foreground">
+                            {t("endBookingPolicy")}
+                          </p>
+                        )}
                         <div className="flex flex-wrap gap-2">
                           {row.status === "active" && (
                             <Button asChild variant="outline">

@@ -330,7 +330,10 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
       sql`UPDATE coaching_session_notes SET note='[deleted]',follow_up='',shared=false WHERE coach_id=${userId} OR student_id=${userId}`,
     );
     await tx.execute(
-      sql`UPDATE coaching_reviews SET body='[deleted]',example='',published=false,example_consent=false WHERE coach_id=${userId} OR student_id=${userId}`,
+      sql`UPDATE coaching_review_reports SET reason='[deleted]' WHERE reporter_id=${userId}`,
+    );
+    await tx.execute(
+      sql`UPDATE coaching_reviews SET body='[deleted]',reply='',example='',published=false,example_consent=false WHERE coach_id=${userId} OR student_id=${userId}`,
     );
     await tx.execute(
       sql`DELETE FROM coaching_invite_attempts WHERE coach_id=${userId}`,

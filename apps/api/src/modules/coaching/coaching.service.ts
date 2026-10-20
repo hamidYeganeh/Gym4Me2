@@ -94,7 +94,7 @@ export class CoachingService {
       updatedAt: string;
     }>(sql`
       SELECT r.id, r.coach_id AS "coachId", CASE WHEN r.student_id=${userId} OR r.status='active' OR r.initiated_by=r.student_id THEN r.student_id ELSE NULL END AS "studentId",
-        coalesce(r.initiated_by,r.coach_id) AS "initiatedBy",r.revision,r.status, r.expires_at AS "expiresAt", r.created_at AS "createdAt",
+        r.future_booking_policy AS "futureBookingPolicy",coalesce(r.initiated_by,r.coach_id) AS "initiatedBy",r.revision,r.status, r.expires_at AS "expiresAt", r.created_at AS "createdAt",
         r.updated_at AS "updatedAt",
         CASE WHEN r.coach_id=${userId} THEN CASE WHEN (r.status='active' OR r.initiated_by=r.student_id) THEN student.display_name ELSE NULL END ELSE coach.display_name END AS "counterpartName",
         (r.status='pending' AND r.expires_at<=now()) AS expired
@@ -268,6 +268,10 @@ export class CoachingService {
           actorId: userId,
           action: `coaching.${status}`,
           targetId: id,
+          details:
+            status === 'ended'
+              ? { futureBookingPolicy: 'preserve_purchase_terms' }
+              : {},
         });
       }
       return { id, status };

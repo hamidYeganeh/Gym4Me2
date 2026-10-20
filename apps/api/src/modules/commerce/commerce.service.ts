@@ -1,3 +1,4 @@
+import { coachingVisible, publicServiceVisible } from './public-service';
 import { serviceCoverProjection, type ServiceCover } from './service-cover';
 import {
   resourceClaims,
@@ -179,7 +180,7 @@ export function jsonDto(value: unknown): unknown {
     );
   return value;
 }
-const coachingVisible = sql`(NOT EXISTS(SELECT 1 FROM coaching_services cs WHERE cs.service_id=s.id) OR EXISTS(SELECT 1 FROM coaching_services cs JOIN coaching_practices cp ON cp.user_id=cs.coach_id JOIN users cu ON cu.id=cp.user_id JOIN branch_coaches bc ON bc.coach_id=cp.user_id AND bc.branch_id=s.branch_id WHERE cs.service_id=s.id AND cp.review_status='approved' AND cp.review_expires_at>now() AND cp.published AND cu.profile_public AND cu.status='active' AND cu.deleted_at IS NULL AND NOT cu.deletion_pending AND bc.status='active' AND (bc.ends_on IS NULL OR bc.ends_on>=current_date)))`;
+
 function scheduleFailure(error: unknown): never {
   const failure = error as { code?: string; cause?: { code?: string } };
   if (
@@ -275,7 +276,7 @@ export class CommerceService {
   ) {
     if (!Number.isInteger(limit) || limit < 1 || limit > 100)
       throw new BadRequestException('Backend.invalidInput');
-    const filter = sql`${coachingVisible} AND s.status='published' AND c.publication_status='published' AND o.status='approved' AND c.archived_at IS NULL AND v.visibility='public' AND bp.archived_at IS NULL
+    const filter = sql`${publicServiceVisible}
       ${organizationId ? sql`AND s.organization_id=${organizationId}` : sql``} ${branchId ? sql`AND s.branch_id=${branchId}` : sql``} AND (v.title ILIKE ${`%${search}%`} OR v.description ILIKE ${`%${search}%`})`;
     let before = sql``;
     if (cursor) {
@@ -289,7 +290,7 @@ export class CommerceService {
     }
     const items = await rows<Row & { id: string }>(
       this.db,
-      sql`SELECT s.id,s.organization_id,v.title,s.kind,s.branch_id,b.name branch_name,o.name club_name,v.amount_minor::text,v.description,v.level,v.coach_name,v.eligibility,${serviceCoverProjection},
+      sql`SELECT s.id,s.organization_id,v.title,s.kind,s.branch_id,b.name branch_name,o.name club_name,v.amount_minor::text,v.description,v.level,v.coach_name,v.coach_user_id,v.eligibility,${serviceCoverProjection},
       (SELECT min(o.start_at) FROM sport_occurrences o JOIN sport_service_versions ov ON ov.id=o.version_id WHERE o.service_id=s.id AND o.status='scheduled' AND o.start_at>now() AND (${resourceAvailable})) next_start_at
       FROM sport_services s JOIN branches b ON b.id=s.branch_id JOIN branch_profiles bp ON bp.branch_id=s.branch_id AND bp.club_id=s.organization_id JOIN clubs c ON c.id=s.organization_id JOIN organizations o ON o.id=s.organization_id
       JOIN sport_service_versions v ON v.id=s.published_version_id
