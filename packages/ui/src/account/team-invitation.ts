@@ -1,6 +1,8 @@
+import { changeReasonError, type ChangeReasonError } from "./change-reason";
 import { normalizeLoginPhone } from "./login-validation";
 
 export type TeamInvitationErrors = {
+  reason?: ChangeReasonError;
   phone?: "AuthValidation.phoneRequired" | "AuthValidation.phoneInvalid";
   scope?: "StaffScope.chooseBranches" | "StaffScope.refreshBranches";
 };
@@ -8,11 +10,13 @@ export type TeamInvitationErrors = {
 /** A selected scope must still belong to the loaded organization, never silently broaden. */
 export function teamInvitationErrors({
   phone,
+  reason,
   allBranches,
   branchIds,
   availableBranchIds,
 }: {
   phone: string;
+  reason: string;
   allBranches: boolean;
   branchIds: readonly string[];
   availableBranchIds: readonly string[] | undefined;
@@ -31,5 +35,7 @@ export function teamInvitationErrors({
     )
       errors.scope = "StaffScope.chooseBranches";
   }
+  const issue = changeReasonError(reason);
+  if (issue) errors.reason = issue;
   return errors;
 }

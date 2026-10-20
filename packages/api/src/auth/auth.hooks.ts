@@ -49,7 +49,6 @@ export function useLogout() {
 export function useRevokeSession() {
   return useApiMutation(
     (api, input: { id: string }) => authClients.revokeSession(api, input.id),
-    [],
-    true,
+    [["auth", "sessions"]],
   );
 }

@@ -1,0 +1,15 @@
+{
+  "nativeControl": [
+    "container Zoom: 110%",
+    "container Zoom: 200%"
+  ],
+  "observedAt": "2026-10-19T08:08:30.874Z",
+  "metrics": {
+    "dpr": 4,
+    "innerHeight": 306,
+    "innerWidth": 720,
+    "outerHeight": 790,
+    "outerWidth": 1440,
+    "visualScale": 1
+  }
+}

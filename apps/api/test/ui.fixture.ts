@@ -7,12 +7,15 @@ import { SportsConversationService } from '../src/modules/commerce/conversations
 import { SportsInvitationService } from '../src/modules/commerce/invitations.service';
 import { StorageService } from '../src/modules/clubs/storage.service';
 import { seedUiCatalog } from './ui.catalog-fixture';
+import { seedComparisonTariffs } from './ui.comparison-fixture';
+import { seedEmptyGeography } from './ui.geography-fixture';
+import { seedCatalogHours } from './ui.catalog-hours-fixture';
 import { mkdirSync, writeFileSync } from 'node:fs';
 // Isolated local UI verification. No production database or live SMS adapter.
 import { BadRequestException } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { eq, or } from 'drizzle-orm';
+import { eq, inArray, or } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { randomBytes, randomInt } from 'node:crypto';
 import { resolve } from 'node:path';
@@ -71,6 +74,7 @@ async function main() {
               NODE_ENV: 'test',
               DATABASE_URL: databaseUrl,
               AUTH_SECRET: randomBytes(48).toString('hex'),
+              PUBLIC_API_ORIGIN: `http://127.0.0.1:${port}`,
               RETENTION_ENABLED: 'false',
               AUTH_APPLICATION_ORIGIN: applicationOrigin,
               AUTH_BUSINESS_ORIGIN: businessOrigin,
@@ -102,7 +106,21 @@ async function main() {
   await migrate(db, {
     migrationsFolder: resolve(__dirname, '../database/migrations'),
   });
-  const catalog = await seedUiCatalog(db);
+  const catalog = await seedUiCatalog(
+    db,
+    applicationOrigin,
+    process.env.UI_FIXTURE_PUBLICATION === 'true',
+  );
+  if (process.env.UI_FIXTURE_CATALOG_HOURS === 'true')
+    await seedCatalogHours(db, catalog.clubs[0].branches[0]);
+  const geography =
+    process.env.UI_FIXTURE_GEOGRAPHY === 'true'
+      ? await seedEmptyGeography(db, catalog.countryId)
+      : undefined;
+  const comparison =
+    process.env.UI_FIXTURE_COMPARISON === 'true'
+      ? await seedComparisonTariffs(db, catalog)
+      : undefined;
   const sports = await seedUiSports(
     db,
     module.get(CommerceService),
@@ -152,6 +170,18 @@ async function main() {
       {
         phone,
         clubs: catalog.clubs,
+        ...(comparison ? { comparison } : {}),
+        ...(geography
+          ? {
+              geography: {
+                countryId: catalog.countryId,
+                provinceId: catalog.provinceId,
+                cityId: catalog.cityId,
+                emptyCountryId: geography.emptyCountryId,
+                emptyProvinceId: geography.emptyProvinceId,
+              },
+            }
+          : {}),
         calendars: sports.calendarIds,
         conversations: sports.conversationIds,
         people: catalog.people.map(({ phone, displayName }) => ({
@@ -178,6 +208,19 @@ async function main() {
     stopped = true;
     try {
       await sports.cleanup();
+      await geography?.cleanup();
+      // UI uploads belong to these disposable organizations, including real S3 objects.
+      const uploaded = await db
+        .select({ key: s.clubMedia.objectKey })
+        .from(s.clubMedia)
+        .where(
+          inArray(
+            s.clubMedia.organizationId,
+            catalog.clubs.map((club) => club.id),
+          ),
+        );
+      for (const media of uploaded)
+        if (media.key) await module.get(StorageService).delete(media.key);
       await catalog.cleanup();
       const [user] = await db
         .select({ id: s.users.id })

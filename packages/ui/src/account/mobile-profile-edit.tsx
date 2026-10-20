@@ -1,11 +1,8 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
 import { Check, LoaderCircle } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
 import type { Account } from "@repo/api/auth";
-import { useUpdateAccount } from "@repo/api/profile";
-import { toast } from "sonner";
 import { Button } from "../kit/Button";
 import { Input } from "../kit/Input";
 import { Switch } from "../kit/Switch";
@@ -15,37 +12,19 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
+  FieldError,
 } from "../kit/Field";
 import { Separator } from "../kit/Separator";
 import { AccountAvatar, AccountDesignPage } from "./account-design";
 import { ErrorNotice } from "./common";
 import { PhoneChange } from "./phone-change";
+import { useProfileEditor } from "./use-profile-editor";
 
 export function MobileProfileEdit({ account }: { account: Account }) {
   const t = useTranslations();
-  const update = useUpdateAccount();
-  const [name, setName] = useState(account.displayName ?? "");
-  const [isPublic, setPublic] = useState(account.profilePublic ?? false);
-  const [saved, setSaved] = useState({
-    name: account.displayName ?? "",
-    isPublic: account.profilePublic ?? false,
-  });
-  const dirty = name.trim() !== saved.name || isPublic !== saved.isPublic;
-  const invalid = name.trim().length > 0 && name.trim().length < 2;
-  async function submit(event: FormEvent) {
-    event.preventDefault();
-    if (!dirty || invalid || update.isPending) return;
-    try {
-      await update.mutateAsync({
-        displayName: name.trim() || null,
-        profilePublic: isPublic,
-      });
-      setSaved({ name: name.trim(), isPublic });
-      toast.success(t("Copy.profileSaved"));
-    } catch {
-      /* The localized API error is rendered below. */
-    }
-  }
+  const editor = useProfileEditor(account);
+  const { name, isPublic, invalid, dirty, busy, setName, setPublic, submit } =
+    editor;
   return (
     <AccountDesignPage
       title={t("MobileAccount.edit")}
@@ -53,17 +32,13 @@ export function MobileProfileEdit({ account }: { account: Account }) {
       actions={
         <Button
           type="submit"
-          form="mobile-profile-edit"
+          form={`${editor.id}-form`}
           size="icon-lg"
           className="size-12"
-          disabled={!dirty || invalid || update.isPending}
+          disabled={!dirty || invalid || busy}
           aria-label={t("Copy.saveChanges")}
         >
-          {update.isPending ? (
-            <LoaderCircle className="animate-spin" />
-          ) : (
-            <Check />
-          )}
+          {busy ? <LoaderCircle className="animate-spin" /> : <Check />}
         </Button>
       }
     >
@@ -71,7 +46,7 @@ export function MobileProfileEdit({ account }: { account: Account }) {
         <AccountAvatar name={name} large />
       </div>
       <form
-        id="mobile-profile-edit"
+        id={`${editor.id}-form`}
         onSubmit={submit}
         className="flex flex-col gap-7"
       >
@@ -81,28 +56,39 @@ export function MobileProfileEdit({ account }: { account: Account }) {
             className="px-5 py-4"
             data-invalid={invalid}
           >
-            <FieldLabel htmlFor="mobile-display-name">
+            <FieldLabel htmlFor={`${editor.id}-name`}>
               {t("Privacy.optionalName")}
             </FieldLabel>
-            <Input
-              id="mobile-display-name"
-              name="displayName"
-              autoComplete="name"
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              maxLength={100}
-              minLength={2}
-              aria-invalid={invalid}
-              disabled={update.isPending}
-            />
+            <FieldContent>
+              <Input
+                ref={editor.nameInput}
+                id={`${editor.id}-name`}
+                name="displayName"
+                autoComplete="name"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                maxLength={100}
+                minLength={2}
+                aria-invalid={invalid}
+                aria-describedby={
+                  invalid ? `${editor.id}-name-error` : undefined
+                }
+                disabled={busy}
+              />
+              {invalid && (
+                <FieldError id={`${editor.id}-name-error`}>
+                  {t("Privacy.nameLength")}
+                </FieldError>
+              )}
+            </FieldContent>
           </Field>
           <Separator />
           <Field orientation="horizontal" className="px-5 py-4">
-            <FieldLabel htmlFor="mobile-profile-phone">
+            <FieldLabel htmlFor={`${editor.id}-phone`}>
               {t("Copy.verifiedMobileNumber")}
             </FieldLabel>
             <Input
-              id="mobile-profile-phone"
+              id={`${editor.id}-phone`}
               value={account.phone}
               dir="ltr"
               readOnly
@@ -111,10 +97,10 @@ export function MobileProfileEdit({ account }: { account: Account }) {
         </FieldGroup>
         <section
           className="flex flex-col gap-3"
-          aria-labelledby="profile-visibility-heading"
+          aria-labelledby={`${editor.id}-visibility-heading`}
         >
           <h2
-            id="profile-visibility-heading"
+            id={`${editor.id}-visibility-heading`}
             className="px-4 text-sm font-semibold text-muted-foreground"
           >
             {t("AccountDesign.visibility")}
@@ -122,27 +108,31 @@ export function MobileProfileEdit({ account }: { account: Account }) {
           <FieldGroup className="rounded-4xl bg-card p-5">
             <Field orientation="horizontal">
               <FieldContent>
-                <FieldLabel htmlFor="mobile-profile-public">
+                <FieldLabel
+                  htmlFor={`${editor.id}-public`}
+                  className="min-h-11"
+                >
                   {t("Privacy.publicName")}
                 </FieldLabel>
-                <FieldDescription>
+                <FieldDescription id={`${editor.id}-public-description`}>
                   {t("Privacy.publicNameHint")}
                 </FieldDescription>
               </FieldContent>
               <Switch
-                id="mobile-profile-public"
+                id={`${editor.id}-public`}
+                aria-describedby={`${editor.id}-public-description`}
                 checked={isPublic}
                 onCheckedChange={setPublic}
-                disabled={update.isPending}
+                disabled={busy}
               />
             </Field>
           </FieldGroup>
         </section>
-        <ErrorNotice error={update.error} />
+        <ErrorNotice error={editor.error} />
         <Button
           type="submit"
           className="min-h-12 w-full"
-          disabled={!dirty || invalid || update.isPending}
+          disabled={!dirty || invalid || busy}
         >
           <Check data-icon="inline-start" />
           {t("Copy.saveChanges")}
@@ -150,10 +140,10 @@ export function MobileProfileEdit({ account }: { account: Account }) {
       </form>
       <section
         className="flex flex-col gap-3"
-        aria-labelledby="profile-phone-heading"
+        aria-labelledby={`${editor.id}-phone-heading`}
       >
         <h2
-          id="profile-phone-heading"
+          id={`${editor.id}-phone-heading`}
           className="px-4 text-sm font-semibold text-muted-foreground"
         >
           {t("AccountDesign.contact")}

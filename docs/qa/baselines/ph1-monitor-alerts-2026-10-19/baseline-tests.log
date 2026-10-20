@@ -1,0 +1,102 @@
+✔ alerts persist offline and retry with a stable idempotency key (11.518375ms)
+✖ twenty deferred records cannot hide a new due incident (3.8735ms)
+✖ a pass attempts at most twenty due alerts after skipping backoff (6.841875ms)
+✖ damaged records remain inspectable while valid alerts can be delivered (0.922417ms)
+✖ retry publishes a complete private record with the same event identity (0.826417ms)
+✖ rejected responses release their body before scheduling a retry (0.614791ms)
+✔ real fetch rejects untrusted TLS and retries HTTPS rejection without changing identity (296.922917ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 2
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 373.339
+
+✖ failing tests:
+
+test at monitor-alerts.test.mjs:65:1
+✖ twenty deferred records cannot hide a new due incident (3.8735ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + []
+  - [
+  -   'd212c34b-20db-41bf-bdd6-ecb938f67bd3'
+  - ]
+  
+      at TestContext.<anonymous> (file:///private/var/folders/hs/p9n84bgx2656zl_bypcg319c0000gn/T/gym-monitor-before-Hce0RX/monitor-alerts.test.mjs:81:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [],
+    expected: [ 'd212c34b-20db-41bf-bdd6-ecb938f67bd3' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at monitor-alerts.test.mjs:94:1
+✖ a pass attempts at most twenty due alerts after skipping backoff (6.841875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  undefined !== 20
+  
+      at TestContext.<anonymous> (file:///private/var/folders/hs/p9n84bgx2656zl_bypcg319c0000gn/T/gym-monitor-before-Hce0RX/monitor-alerts.test.mjs:111:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 20,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at monitor-alerts.test.mjs:130:1
+✖ damaged records remain inspectable while valid alerts can be delivered (0.922417ms)
+  SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+      at JSON.parse (<anonymous>)
+      at deliverAlerts (file:///private/var/folders/hs/p9n84bgx2656zl_bypcg319c0000gn/T/gym-monitor-before-Hce0RX/monitor-alerts.mjs:44:24)
+      at TestContext.<anonymous> (file:///private/var/folders/hs/p9n84bgx2656zl_bypcg319c0000gn/T/gym-monitor-before-Hce0RX/monitor-alerts.test.mjs:139:26)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at monitor-alerts.test.mjs:161:1
+✖ retry publishes a complete private record with the same event identity (0.826417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  420 !== 384
+  
+      at TestContext.<anonymous> (file:///private/var/folders/hs/p9n84bgx2656zl_bypcg319c0000gn/T/gym-monitor-before-Hce0RX/monitor-alerts.test.mjs:180:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 420,
+    expected: 384,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at monitor-alerts.test.mjs:187:1
+✖ rejected responses release their body before scheduling a retry (0.614791ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///private/var/folders/hs/p9n84bgx2656zl_bypcg319c0000gn/T/gym-monitor-before-Hce0RX/monitor-alerts.test.mjs:206:12)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

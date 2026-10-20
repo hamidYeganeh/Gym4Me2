@@ -1,0 +1,17 @@
+{
+  "dialog": {
+    "clientHeight": 288,
+    "overflow": "auto",
+    "scrollHeight": 340,
+    "scrollTop": 0
+  },
+  "focus": "ثبت درخواست حذف",
+  "height": 320,
+  "rect": {
+    "bottom": 280,
+    "height": 44,
+    "top": 236
+  },
+  "scrollWidth": 360,
+  "width": 360
+}

@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -140,10 +141,40 @@ export class ClubMediaService {
     };
   }
   async preview(userId: string, clubId: string, id: string) {
-    await memberAccess(this.database.db, userId, clubId);
-    return this.previewForAdmin(clubId, id);
+    const member = await memberAccess(this.database.db, userId, clubId);
+    const media = await this.findMedia(clubId, id);
+    if (member.role !== 'owner' && !member.allBranches) {
+      const [accessible] = await this.database.db
+        .select({ id: s.clubs.id })
+        .from(s.clubs)
+        .where(
+          and(
+            eq(s.clubs.id, clubId),
+            sql`(${s.clubs.coverId} = ${id} or ${s.clubs.logoId} = ${id} or exists (
+              select 1 from club_gallery g where g.club_id = ${clubId} and g.media_id = ${id}
+              and (g.branch_id is null or exists (
+                select 1 from organization_member_branches mb
+                inner join branch_profiles bp on bp.branch_id = mb.branch_id and bp.club_id = mb.organization_id
+                where mb.organization_id = ${clubId} and mb.member_id = ${member.id} and mb.branch_id = g.branch_id
+                and bp.archived_at is null
+              ))
+            ))`,
+          ),
+        );
+      if (!accessible)
+        throw new ForbiddenException('Backend.branchAccessDenied');
+    }
+    return media.objectKey
+      ? this.storage.preview(media.objectKey)
+      : { url: media.url, expiresIn: null };
   }
   async previewForAdmin(clubId: string, id: string) {
+    const media = await this.findMedia(clubId, id);
+    return media.objectKey
+      ? this.storage.preview(media.objectKey)
+      : { url: media.url, expiresIn: null };
+  }
+  private async findMedia(clubId: string, id: string) {
     const [media] = await this.database.db
       .select()
       .from(s.clubMedia)
@@ -151,9 +182,7 @@ export class ClubMediaService {
         and(eq(s.clubMedia.id, id), eq(s.clubMedia.organizationId, clubId)),
       );
     if (!media) throw new NotFoundException('Backend.mediaNotFound');
-    return media.objectKey
-      ? this.storage.preview(media.objectKey)
-      : { url: media.url, expiresIn: null };
+    return media;
   }
   async remove(userId: string, clubId: string, id: string) {
     const media = await this.database.db.transaction(async (tx) => {

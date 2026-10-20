@@ -1,0 +1,17 @@
+{
+  "ownedPortsListening": [],
+  "postgresTest": "exited",
+  "storage": "running",
+  "dedicatedDatabaseDropped": true,
+  "fixtureCounts": {
+    "users": 0,
+    "organizations": 0,
+    "sessions": 0
+  },
+  "inputs": 880,
+  "changed": [],
+  "viewportReset": true,
+  "reducedMotionEmulationReset": true,
+  "localeRestored": "fa",
+  "temporaryTab10": "error page rejected by URL policy; left for automatic turn cleanup"
+}

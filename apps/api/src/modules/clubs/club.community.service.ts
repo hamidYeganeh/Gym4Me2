@@ -61,7 +61,7 @@ export class ClubCommunityService {
       return row;
     });
   }
-  async affiliations(p: Principal) {
+  async affiliations(p: Principal, page = 1) {
     return this.database.db
       .select({
         id: s.branchCoaches.id,
@@ -80,8 +80,9 @@ export class ClubCommunityService {
         eq(s.branchProfiles.branchId, s.branchCoaches.branchId),
       )
       .where(eq(s.branchCoaches.coachId, p.user.id))
-      .orderBy(desc(s.branchCoaches.createdAt))
-      .limit(100);
+      .orderBy(desc(s.branchCoaches.createdAt), s.branchCoaches.id)
+      .limit(100)
+      .offset((page - 1) * 100);
   }
   async respondAffiliation(p: Principal, id: string, action: 'accept' | 'end') {
     if (p.session.client !== 'application')

@@ -1,0 +1,125 @@
+{
+  "at": "2026-10-20T08:04:07.310Z",
+  "inputCount": 899,
+  "changed": [],
+  "generatedRestored": {
+    "application": true,
+    "business": true,
+    "admin": true
+  },
+  "temporaryListeners": "",
+  "traces": {
+    "compact-back-verified.json": {
+      "status": "complete",
+      "frames": 479,
+      "maxInteractive": 1,
+      "zoomFrames": 14,
+      "effectiveDurations": [
+        220
+      ],
+      "dialogCounts": [
+        0
+      ],
+      "dialogDurations": []
+    },
+    "compact-verified.json": {
+      "status": "complete",
+      "frames": 475,
+      "maxInteractive": 1,
+      "zoomFrames": 13,
+      "effectiveDurations": [
+        220
+      ],
+      "dialogCounts": [
+        0
+      ],
+      "dialogDurations": []
+    },
+    "featured-english-light-verified.json": {
+      "status": "complete",
+      "frames": 477,
+      "maxInteractive": 1,
+      "zoomFrames": 0,
+      "effectiveDurations": [
+        220
+      ],
+      "dialogCounts": [
+        0
+      ],
+      "dialogDurations": []
+    },
+    "landscape-verified.json": {
+      "status": "complete",
+      "frames": 476,
+      "maxInteractive": 1,
+      "zoomFrames": 12,
+      "effectiveDurations": [
+        220
+      ],
+      "dialogCounts": [
+        0
+      ],
+      "dialogDurations": []
+    },
+    "nested-sheets-verified.json": {
+      "status": "complete",
+      "frames": 481,
+      "maxInteractive": 1,
+      "zoomFrames": 0,
+      "effectiveDurations": [],
+      "dialogCounts": [
+        0,
+        1,
+        2
+      ],
+      "dialogDurations": [
+        "0.2s"
+      ]
+    },
+    "portrait-verified.json": {
+      "status": "complete",
+      "frames": 473,
+      "maxInteractive": 1,
+      "zoomFrames": 12,
+      "effectiveDurations": [
+        220
+      ],
+      "dialogCounts": [
+        0
+      ],
+      "dialogDurations": []
+    },
+    "reduce-switch-verified.json": {
+      "status": "complete",
+      "frames": 476,
+      "maxInteractive": 1,
+      "zoomFrames": 2,
+      "effectiveDurations": [
+        220
+      ],
+      "dialogCounts": [
+        0
+      ],
+      "dialogDurations": [],
+      "firstReducedMs": 393.8,
+      "firstReducedAtRestMs": 472.9
+    },
+    "tab-fade-verified.json": {
+      "status": "complete",
+      "frames": 481,
+      "maxInteractive": 1,
+      "zoomFrames": 0,
+      "effectiveDurations": [
+        120
+      ],
+      "dialogCounts": [
+        0
+      ],
+      "dialogDurations": []
+    }
+  },
+  "rejectedCapture": {
+    "file": "reduced-sheet-capture-stale.json",
+    "reason": "Stale earlier trace; no reduced frames or dialog frames. UI sequence observed separately; not accepted as frame evidence."
+  }
+}

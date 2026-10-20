@@ -8,3 +8,4 @@ export type {
   RequestOptions,
 } from "./transport";
 export { createQueryClient } from "./query-client";
+export { isSessionEndedError, isCredentialRejection } from "./session-errors";

@@ -1,0 +1,221 @@
+{
+  "buildId": "IcecGd2mEkbqUD0PwSuGA",
+  "states": [
+    {
+      "name": "fa-dark-mobile",
+      "cards": [
+        {
+          "links": [
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/compare?club=2c93e368-765b-4a01-8584-243ce4e6cca1"
+          ],
+          "text": "از ۱٬۵۰۰٬۰۰۰ تومان / ماهباشگاه آفتاب۵(۱)تهران، خیابان نیاورانبدنسازیتهرانکشف باشگاهمقایسهٔ باشگاه"
+        },
+        {
+          "links": [
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/compare?club=35a45732-fb53-4ee1-97e6-3727d99b061f"
+          ],
+          "text": "از ۱٬۵۰۰٬۰۰۰ تومان / ماهباشگاه سپیدار۵(۱)تهران، خیابان نیاورانبدنسازیتهرانکشف باشگاهمقایسهٔ باشگاه"
+        }
+      ],
+      "dir": "rtl",
+      "footer": "۲ فضا برای کشف کردن",
+      "lang": "fa",
+      "scrollWidth": 360,
+      "theme": "dark",
+      "width": 360
+    },
+    {
+      "name": "fa-dark-desktop",
+      "cards": [
+        {
+          "links": [
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/compare?club=2c93e368-765b-4a01-8584-243ce4e6cca1"
+          ],
+          "text": "از ۱٬۵۰۰٬۰۰۰ تومان / ماهباشگاه آفتاب۵(۱)تهران، خیابان نیاورانبدنسازیتهرانکشف باشگاهمقایسهٔ باشگاه"
+        },
+        {
+          "links": [
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/compare?club=35a45732-fb53-4ee1-97e6-3727d99b061f"
+          ],
+          "text": "از ۱٬۵۰۰٬۰۰۰ تومان / ماهباشگاه سپیدار۵(۱)تهران، خیابان نیاورانبدنسازیتهرانکشف باشگاهمقایسهٔ باشگاه"
+        }
+      ],
+      "dir": "rtl",
+      "footer": "۲ فضا برای کشف کردن",
+      "lang": "fa",
+      "scrollWidth": 1280,
+      "theme": "dark",
+      "width": 1280
+    },
+    {
+      "name": "fa-light-desktop",
+      "cards": [
+        {
+          "links": [
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/compare?club=2c93e368-765b-4a01-8584-243ce4e6cca1"
+          ],
+          "text": "از ۱٬۵۰۰٬۰۰۰ تومان / ماهباشگاه آفتاب۵(۱)تهران، خیابان نیاورانبدنسازیتهرانکشف باشگاهمقایسهٔ باشگاه"
+        },
+        {
+          "links": [
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/compare?club=35a45732-fb53-4ee1-97e6-3727d99b061f"
+          ],
+          "text": "از ۱٬۵۰۰٬۰۰۰ تومان / ماهباشگاه سپیدار۵(۱)تهران، خیابان نیاورانبدنسازیتهرانکشف باشگاهمقایسهٔ باشگاه"
+        }
+      ],
+      "dir": "rtl",
+      "footer": "۲ فضا برای کشف کردن",
+      "lang": "fa",
+      "scrollWidth": 1280,
+      "theme": "light",
+      "width": 1280
+    },
+    {
+      "name": "fa-light-mobile",
+      "cards": [
+        {
+          "links": [
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/compare?club=2c93e368-765b-4a01-8584-243ce4e6cca1"
+          ],
+          "text": "از ۱٬۵۰۰٬۰۰۰ تومان / ماهباشگاه آفتاب۵(۱)تهران، خیابان نیاورانبدنسازیتهرانکشف باشگاهمقایسهٔ باشگاه"
+        },
+        {
+          "links": [
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/compare?club=35a45732-fb53-4ee1-97e6-3727d99b061f"
+          ],
+          "text": "از ۱٬۵۰۰٬۰۰۰ تومان / ماهباشگاه سپیدار۵(۱)تهران، خیابان نیاورانبدنسازیتهرانکشف باشگاهمقایسهٔ باشگاه"
+        }
+      ],
+      "dir": "rtl",
+      "footer": "۲ فضا برای کشف کردن",
+      "lang": "fa",
+      "scrollWidth": 360,
+      "theme": "light",
+      "width": 360
+    },
+    {
+      "name": "en-light-mobile",
+      "cards": [
+        {
+          "links": [
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/compare?club=2c93e368-765b-4a01-8584-243ce4e6cca1"
+          ],
+          "text": "From 1,500,000 toman / monthباشگاه آفتاب5(1)تهران، خیابان نیاورانبدنسازیتهرانExplore clubCompare club"
+        },
+        {
+          "links": [
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/compare?club=35a45732-fb53-4ee1-97e6-3727d99b061f"
+          ],
+          "text": "From 1,500,000 toman / monthباشگاه سپیدار5(1)تهران، خیابان نیاورانبدنسازیتهرانExplore clubCompare club"
+        }
+      ],
+      "dir": "ltr",
+      "footer": "2 spaces to explore",
+      "lang": "en",
+      "scrollWidth": 360,
+      "theme": "light",
+      "width": 360
+    },
+    {
+      "name": "en-light-desktop",
+      "cards": [
+        {
+          "links": [
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/compare?club=2c93e368-765b-4a01-8584-243ce4e6cca1"
+          ],
+          "text": "From 1,500,000 toman / monthباشگاه آفتاب5(1)تهران، خیابان نیاورانبدنسازیتهرانExplore clubCompare club"
+        },
+        {
+          "links": [
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/compare?club=35a45732-fb53-4ee1-97e6-3727d99b061f"
+          ],
+          "text": "From 1,500,000 toman / monthباشگاه سپیدار5(1)تهران، خیابان نیاورانبدنسازیتهرانExplore clubCompare club"
+        }
+      ],
+      "dir": "ltr",
+      "footer": "2 spaces to explore",
+      "lang": "en",
+      "scrollWidth": 1280,
+      "theme": "light",
+      "width": 1280
+    },
+    {
+      "name": "en-dark-desktop",
+      "cards": [
+        {
+          "links": [
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/compare?club=2c93e368-765b-4a01-8584-243ce4e6cca1"
+          ],
+          "text": "From 1,500,000 toman / monthباشگاه آفتاب5(1)تهران، خیابان نیاورانبدنسازیتهرانExplore clubCompare club"
+        },
+        {
+          "links": [
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/compare?club=35a45732-fb53-4ee1-97e6-3727d99b061f"
+          ],
+          "text": "From 1,500,000 toman / monthباشگاه سپیدار5(1)تهران، خیابان نیاورانبدنسازیتهرانExplore clubCompare club"
+        }
+      ],
+      "dir": "ltr",
+      "footer": "2 spaces to explore",
+      "lang": "en",
+      "scrollWidth": 1280,
+      "theme": "dark",
+      "width": 1280
+    },
+    {
+      "name": "en-dark-mobile",
+      "cards": [
+        {
+          "links": [
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/clubs/2c93e368-765b-4a01-8584-243ce4e6cca1?branch=ca4b140c-5f36-4732-b3bd-6da8824611b0",
+            "/discovery/compare?club=2c93e368-765b-4a01-8584-243ce4e6cca1"
+          ],
+          "text": "From 1,500,000 toman / monthباشگاه آفتاب5(1)تهران، خیابان نیاورانبدنسازیتهرانExplore clubCompare club"
+        },
+        {
+          "links": [
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/clubs/35a45732-fb53-4ee1-97e6-3727d99b061f?branch=8ab2c9c9-d9c0-40cc-a1f9-4c3aa161cf25",
+            "/discovery/compare?club=35a45732-fb53-4ee1-97e6-3727d99b061f"
+          ],
+          "text": "From 1,500,000 toman / monthباشگاه سپیدار5(1)تهران، خیابان نیاورانبدنسازیتهرانExplore clubCompare club"
+        }
+      ],
+      "dir": "ltr",
+      "footer": "2 spaces to explore",
+      "lang": "en",
+      "scrollWidth": 360,
+      "theme": "dark",
+      "width": 360
+    }
+  ]
+}

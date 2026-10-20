@@ -151,8 +151,11 @@ export async function readClub(db: Reader, clubId: string, publicOnly = false) {
               publicOnly ? publicBranchProfile() : undefined,
             ),
           )
-          .orderBy(desc(s.branchProfiles.isMain), s.branches.createdAt)
-          .limit(100),
+          .orderBy(
+            desc(s.branchProfiles.isMain),
+            s.branches.createdAt,
+            s.branches.id,
+          ),
       () =>
         db
           .select({

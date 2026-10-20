@@ -1,44 +1,17 @@
 "use client";
 import { useApiMutation, useApiQuery } from "../query";
-export type DataPolicyDto = {
-  version: string;
-  minimumAge: number;
-  backupRetentionDays: number;
-  deletionGraceDays: number;
-  otpRetentionDays: number;
-  sessionRetentionDays: number;
-  invitationRetentionDays: number;
-  auditRetentionDays: number;
-};
-export type PrivacyDto = {
-  policy: DataPolicyDto;
-  marketingConsent: boolean;
-  profilePublic: boolean;
-  acceptedAt: string | null;
-  acceptanceRequired: boolean;
-  canRequestDeletion: boolean;
-  deletion: {
-    status: "pending" | "cancelled" | "processed";
-    requestedAt: string;
-    eligibleAfter: string;
-    processedAt: string | null;
-  } | null;
-};
-export type UpdatePrivacyDto = {
-  policyVersion?: string;
-  acceptPolicy?: true;
-  confirmMinimumAge?: true;
-  marketingConsent?: boolean;
-  hidePublicProfile?: true;
-};
+import type { UpdatePrivacyDto } from "./profile.dto";
+export type {
+  DataPolicyDto,
+  PrivacyDto,
+  UpdatePrivacyDto,
+} from "./profile.dto";
+import { profileClients } from "./profile.clients";
+import { systemClients } from "../system/system.clients";
 export function useDataPolicy() {
   return useApiQuery(
     (scope) => [...scope, "system", "policy"],
-    (api, signal) =>
-      api.request<DataPolicyDto>(
-        { method: "GET", path: "system/policy" },
-        { signal },
-      ),
+    (api, signal) => systemClients.policy(api, { signal }),
     true,
     0,
   );
@@ -46,54 +19,29 @@ export function useDataPolicy() {
 export function usePrivacy(enabled = true) {
   return useApiQuery(
     (scope) => [...scope, "profile", "privacy"],
-    (api, signal) =>
-      api.request<PrivacyDto>(
-        { method: "GET", path: "profile/account/privacy" },
-        { signal },
-      ),
+    (api, signal) => profileClients.privacy(api, { signal }),
     enabled,
     0,
   );
 }
 export function useUpdatePrivacy() {
   return useApiMutation(
-    (api, input: UpdatePrivacyDto) =>
-      api.request<PrivacyDto>({
-        method: "POST",
-        path: "profile/account/privacy/preferences",
-        body: input,
-      }),
+    (api, input: UpdatePrivacyDto) => profileClients.updatePrivacy(api, input),
     [["profile"]],
   );
 }
 export function useExportAccount() {
-  return useApiMutation(
-    (api) =>
-      api.request<Record<string, unknown>>({
-        method: "GET",
-        path: "profile/account/privacy/export",
-      }),
-    [],
-  );
+  return useApiMutation((api) => profileClients.exportAccount(api), []);
 }
 export function useRequestDeletion() {
   return useApiMutation(
-    (api) =>
-      api.request<PrivacyDto>({
-        method: "POST",
-        path: "profile/account/privacy/deletion",
-        body: { confirm: true },
-      }),
+    (api) => profileClients.requestDeletion(api),
     [["profile"], ["catalog"]],
   );
 }
 export function useCancelDeletion() {
   return useApiMutation(
-    (api) =>
-      api.request<PrivacyDto>({
-        method: "POST",
-        path: "profile/account/privacy/deletion/cancel",
-      }),
+    (api) => profileClients.cancelDeletion(api),
     [["profile"], ["catalog"]],
   );
 }

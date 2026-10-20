@@ -1,0 +1,10 @@
+{
+  "builds": {
+    "application": "fCy-U4zSBp1M9U3daT4Ub",
+    "business": "pThp5A7HjVanBbnbpvvXN",
+    "admin": "KHWKmE2WBnRTDSQVDom7Q"
+  },
+  "inputs": 880,
+  "changed": [],
+  "mode": "Next full production builds, isolated QA, sequential, webpack, one worker, heap640MiB, nice10"
+}

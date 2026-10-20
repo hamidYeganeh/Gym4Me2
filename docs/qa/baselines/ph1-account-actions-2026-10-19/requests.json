@@ -1,0 +1,435 @@
+[
+  {
+    "at": "2026-10-19T11:20:24.764Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 401,
+    "injected": false,
+    "code": "Backend.theSessionHasEndedSignInAgain"
+  },
+  {
+    "at": "2026-10-19T11:22:15.914Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:23:04.768Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:23:04.828Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 2
+  },
+  {
+    "at": "2026-10-19T11:24:20.829Z",
+    "method": "POST",
+    "path": "/api/v1/profile/invitations/{id}/accept",
+    "action": "accept",
+    "client": "application",
+    "status": 201,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:24:21.088Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:24:21.110Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 1
+  },
+  {
+    "at": "2026-10-19T11:28:09.544Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 1
+  },
+  {
+    "at": "2026-10-19T11:28:48.434Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 2
+  },
+  {
+    "at": "2026-10-19T11:28:59.179Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:28:59.673Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 2
+  },
+  {
+    "at": "2026-10-19T11:29:23.990Z",
+    "method": "POST",
+    "path": "/api/v1/profile/invitations/{id}/accept",
+    "action": "accept",
+    "client": "application",
+    "status": 201,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:29:24.282Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:29:24.342Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 1
+  },
+  {
+    "at": "2026-10-19T11:29:38.938Z",
+    "method": "POST",
+    "path": "/api/v1/profile/invitations/{id}/accept",
+    "action": "accept",
+    "client": "application",
+    "status": 201,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:29:39.334Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 503,
+    "injected": true
+  },
+  {
+    "at": "2026-10-19T11:29:39.405Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:29:40.543Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 503,
+    "injected": true
+  },
+  {
+    "at": "2026-10-19T11:30:32.639Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 0
+  },
+  {
+    "at": "2026-10-19T11:31:00.923Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:31:01.139Z",
+    "method": "GET",
+    "path": "/api/v1/auth/sessions",
+    "action": "sessions",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 3
+  },
+  {
+    "at": "2026-10-19T11:31:22.043Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:31:22.045Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:31:22.080Z",
+    "method": "GET",
+    "path": "/api/v1/auth/sessions",
+    "action": "sessions",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 3
+  },
+  {
+    "at": "2026-10-19T11:31:30.980Z",
+    "method": "POST",
+    "path": "/api/v1/auth/sessions/{id}/revoke",
+    "action": "revoke",
+    "client": "application",
+    "status": 201,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:31:30.994Z",
+    "method": "GET",
+    "path": "/api/v1/auth/sessions",
+    "action": "sessions",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 2
+  },
+  {
+    "at": "2026-10-19T11:31:54.890Z",
+    "method": "POST",
+    "path": "/api/v1/auth/sessions/{id}/revoke",
+    "action": "revoke",
+    "client": "application",
+    "status": 201,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:31:54.958Z",
+    "method": "GET",
+    "path": "/api/v1/auth/sessions",
+    "action": "sessions",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 1
+  },
+  {
+    "at": "2026-10-19T11:32:14.027Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:32:14.139Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 503,
+    "injected": true
+  },
+  {
+    "at": "2026-10-19T11:32:15.240Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 503,
+    "injected": true
+  },
+  {
+    "at": "2026-10-19T11:32:50.729Z",
+    "method": "GET",
+    "path": "/api/v1/profile/invitations",
+    "action": "invitations",
+    "client": "application",
+    "status": 200,
+    "injected": false,
+    "count": 0
+  },
+  {
+    "at": "2026-10-19T11:33:40.711Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:33:57.329Z",
+    "method": "POST",
+    "path": "/api/v1/profile/account/phone/request",
+    "action": "send",
+    "client": "application",
+    "status": 403,
+    "injected": false,
+    "code": "Backend.freshSignInRequired"
+  },
+  {
+    "at": "2026-10-19T11:34:08.010Z",
+    "method": "POST",
+    "path": "/api/v1/profile/account/phone/request",
+    "action": "send",
+    "client": "application",
+    "status": 201,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:34:17.662Z",
+    "method": "POST",
+    "path": "/api/v1/profile/account/phone/verify",
+    "action": "verify",
+    "client": "application",
+    "status": 401,
+    "injected": false,
+    "code": "Backend.theCodeIsIncorrectOrExpired"
+  },
+  {
+    "at": "2026-10-19T11:35:40.842Z",
+    "method": "POST",
+    "path": "/api/v1/profile/account/phone/request",
+    "action": "send",
+    "client": "application",
+    "status": 201,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:35:51.593Z",
+    "method": "POST",
+    "path": "/api/v1/profile/account/phone/verify",
+    "action": "verify",
+    "client": "application",
+    "status": 201,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:35:51.781Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "application",
+    "status": 401,
+    "injected": false,
+    "code": "Backend.signInFirst"
+  },
+  {
+    "at": "2026-10-19T11:39:10.643Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "business",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:39:11.782Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "business",
+    "status": 200,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:39:12.140Z",
+    "method": "GET",
+    "path": "/api/v1/auth/sessions",
+    "action": "sessions",
+    "client": "business",
+    "status": 200,
+    "injected": false,
+    "count": 1
+  },
+  {
+    "at": "2026-10-19T11:39:44.648Z",
+    "method": "POST",
+    "path": "/api/v1/auth/sessions/{id}/revoke",
+    "action": "revoke",
+    "client": "business",
+    "status": 503,
+    "injected": true
+  },
+  {
+    "at": "2026-10-19T11:40:03.732Z",
+    "method": "POST",
+    "path": "/api/v1/auth/sessions/{id}/revoke",
+    "action": "revoke",
+    "client": "business",
+    "status": 201,
+    "injected": false
+  },
+  {
+    "at": "2026-10-19T11:40:04.215Z",
+    "method": "GET",
+    "path": "/api/v1/auth/sessions",
+    "action": "sessions",
+    "client": "business",
+    "status": 401,
+    "injected": false,
+    "code": "Backend.theSessionHasEndedSignInAgain"
+  },
+  {
+    "at": "2026-10-19T11:40:04.549Z",
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "action": "account",
+    "client": "business",
+    "status": 401,
+    "injected": false,
+    "code": "Backend.theSessionHasEndedSignInAgain"
+  }
+]

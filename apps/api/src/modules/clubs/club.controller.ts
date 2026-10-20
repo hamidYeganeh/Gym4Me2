@@ -246,13 +246,15 @@ export class AdminTaxonomiesController {
 @DomainController('catalog', 'locations')
 export class PublicLocationsController {
   constructor(private readonly service: ClubService) {}
-  @Get(':kind') list(
+  @Get(':kind') @c.LocationQuery() list(
     @Param('kind') kind: string,
     @Query('parentId') parentId: unknown,
+    @Query('page') page: unknown,
   ) {
     return this.service.geography(
       c.validate(c.geographyKindSchema, kind),
       c.validate(c.id.optional(), parentId),
+      c.validate(c.pageSchema, page),
     );
   }
 }
@@ -264,15 +266,17 @@ export class AdminLocationsController {
     private readonly service: ClubService,
     private readonly admin: AdminService,
   ) {}
-  @Get(':kind') async list(
+  @Get(':kind') @c.LocationQuery() async list(
     @Req() req: AuthRequest,
     @Param('kind') kind: string,
     @Query('parentId') parentId: unknown,
+    @Query('page') page: unknown,
   ) {
     await this.admin.requireAdmin(req.principal);
     return this.service.geography(
       c.validate(c.geographyKindSchema, kind),
       c.validate(c.id.optional(), parentId),
+      c.validate(c.pageSchema, page),
     );
   }
   @Patch(':kind/:id') @c.SchemaBody(c.geographyPatchSchema) update(

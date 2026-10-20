@@ -3,11 +3,85 @@ import type * as catalog from "../catalog/catalog.dto";
 import type { ApiClient, RequestOptions } from "../transport";
 import { businessEndpoints } from "./business.endpoints";
 export const businessClients = {
-  uploadMedia: (api: ApiClient, id: string, input: { file: File; alt?: string }, options: RequestOptions = {}) => {
-    const body = new FormData(); body.set("file", input.file); if (input.alt) body.set("alt", input.alt);
-    return api.request<catalog.MediaDto>({ method: "POST", path: `business/clubs/${encodeURIComponent(id)}/media/upload`, body }, options);
+  uploadMedia: (
+    api: ApiClient,
+    id: string,
+    input: catalog.UploadMediaDto,
+    options: RequestOptions = {},
+  ) => {
+    const body = new FormData();
+    body.set("file", input.file);
+    if (input.alt) body.set("alt", input.alt);
+    return api.request<catalog.MediaDto>(
+      businessEndpoints.uploadMedia(id, body),
+      options,
+    );
   },
-  deleteMedia: (api: ApiClient, id: string, mediaId: string, options: RequestOptions = {}) => api.request<{ success: true }>({ method: "POST", path: `business/clubs/${encodeURIComponent(id)}/media/${encodeURIComponent(mediaId)}/delete` }, options),
+  deleteMedia: (
+    api: ApiClient,
+    id: string,
+    mediaId: string,
+    options: RequestOptions = {},
+  ) =>
+    api.request<{ success: true }>(
+      businessEndpoints.deleteMedia(id, mediaId),
+      options,
+    ),
+  mediaPreview: (
+    api: ApiClient,
+    id: string,
+    mediaId: string,
+    options: RequestOptions = {},
+  ) =>
+    api.request<catalog.MediaPreviewDto>(
+      businessEndpoints.mediaPreview(id, mediaId),
+      options,
+    ),
+  tariffs: (api: ApiClient, id: string, options: RequestOptions = {}) =>
+    api.request<catalog.TariffDto[]>(businessEndpoints.tariffs(id), options),
+  tariffHistory: (
+    api: ApiClient,
+    id: string,
+    tariffId: string,
+    page = 1,
+    options: RequestOptions = {},
+  ) =>
+    api.request<catalog.TariffDto[]>(
+      businessEndpoints.tariffHistory(id, tariffId, page),
+      options,
+    ),
+  createTariff: (
+    api: ApiClient,
+    id: string,
+    input: dto.CreateTariffDto,
+    options: RequestOptions = {},
+  ) =>
+    api.request<catalog.TariffDto>(
+      businessEndpoints.createTariff(id, input),
+      options,
+    ),
+  reviseTariff: (
+    api: ApiClient,
+    id: string,
+    tariffId: string,
+    input: dto.ReviseTariffDto,
+    options: RequestOptions = {},
+  ) =>
+    api.request<catalog.TariffDto>(
+      businessEndpoints.reviseTariff(id, tariffId, input),
+      options,
+    ),
+  setTariffStatus: (
+    api: ApiClient,
+    id: string,
+    tariffId: string,
+    input: dto.TariffStatusDto,
+    options: RequestOptions = {},
+  ) =>
+    api.request<{ id: string; isActive: boolean }>(
+      businessEndpoints.setTariffStatus(id, tariffId, input),
+      options,
+    ),
   organizations: (api: ApiClient, options: RequestOptions = {}) =>
     api.request<dto.OrganizationDto[]>(
       businessEndpoints.organizations(),
@@ -61,20 +135,22 @@ export const businessClients = {
     api: ApiClient,
     organizationId: string,
     memberId: string,
+    input: dto.ChangeReasonDto,
     options: RequestOptions = {},
   ) =>
     api.request<{ success: true }>(
-      businessEndpoints.removeMember(organizationId, memberId),
+      businessEndpoints.removeMember(organizationId, memberId, input),
       options,
     ),
   revokeInvitation: (
     api: ApiClient,
     organizationId: string,
     invitationId: string,
+    input: dto.ChangeReasonDto,
     options: RequestOptions = {},
   ) =>
     api.request<{ success: true }>(
-      businessEndpoints.revokeInvitation(organizationId, invitationId),
+      businessEndpoints.revokeInvitation(organizationId, invitationId, input),
       options,
     ),
   createClub: (

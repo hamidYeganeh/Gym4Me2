@@ -37,48 +37,76 @@ export async function prepareNativeStorage(
   return { store };
 }
 
-export function nativeVault(baseUrl: string | undefined): SessionVault {
+export function nativeVault(
+  baseUrl: string | undefined,
+  loadStorage: () => Promise<{ store: Storage }> = secureStorage,
+): SessionVault {
   const key = encodeURIComponent(baseUrl ?? "unconfigured");
+  // Compare/remove and writes share one queue, so a late failure cannot erase a newer login.
+  let tail: Promise<unknown> = Promise.resolve();
+  const serialized = <T>(operation: () => Promise<T>): Promise<T> => {
+    const result = tail.then(operation);
+    tail = result.catch(() => undefined);
+    return result;
+  };
   return {
-    async get() {
-      try {
-        const { store } = await secureStorage();
-        const value = await store.get(key, false, false);
-        if (!value) return null;
-        if (
-          typeof value !== "object" ||
-          !("token" in value) ||
-          !("expiresAt" in value) ||
-          !("sessionId" in value) ||
-          typeof value.token !== "string" ||
-          !/^[A-Za-z0-9_-]{43}$/.test(value.token) ||
-          typeof value.expiresAt !== "string" ||
-          !Number.isFinite(Date.parse(value.expiresAt)) ||
-          typeof value.sessionId !== "string"
-        ) {
-          await store.remove(key, false);
-          return null;
+    get() {
+      return serialized(async () => {
+        try {
+          const { store } = await loadStorage();
+          const value = await store.get(key, false, false);
+          if (!value) return null;
+          if (
+            typeof value !== "object" ||
+            !("token" in value) ||
+            !("expiresAt" in value) ||
+            !("sessionId" in value) ||
+            typeof value.token !== "string" ||
+            !/^[A-Za-z0-9_-]{43}$/.test(value.token) ||
+            typeof value.expiresAt !== "string" ||
+            !Number.isFinite(Date.parse(value.expiresAt)) ||
+            typeof value.sessionId !== "string"
+          ) {
+            await store.remove(key, false);
+            return null;
+          }
+          return value as NativeSession;
+        } catch {
+          throw new ApiError(0, "Errors.secureStorageUnavailable");
         }
-        return value as NativeSession;
-      } catch {
-        throw new ApiError(0, "Errors.secureStorageUnavailable");
-      }
+      });
     },
-    async set(session) {
-      try {
-        const { store } = await secureStorage();
-        await store.set(key, session, false, false);
-      } catch {
-        throw new ApiError(0, "Errors.secureStorageUnavailable");
-      }
+    set(session) {
+      return serialized(async () => {
+        try {
+          const { store } = await loadStorage();
+          await store.set(key, session, false, false);
+        } catch {
+          throw new ApiError(0, "Errors.secureStorageUnavailable");
+        }
+      });
     },
-    async clear() {
-      try {
-        const { store } = await secureStorage();
-        await store.remove(key, false);
-      } catch {
-        throw new ApiError(0, "Errors.secureStorageUnavailable");
-      }
+    clear(expected) {
+      return serialized(async () => {
+        try {
+          const { store } = await loadStorage();
+          if (expected) {
+            const current = await store.get(key, false, false);
+            if (
+              !current ||
+              typeof current !== "object" ||
+              !("token" in current) ||
+              !("sessionId" in current) ||
+              current.token !== expected.token ||
+              current.sessionId !== expected.sessionId
+            )
+              return;
+          }
+          await store.remove(key, false);
+        } catch {
+          throw new ApiError(0, "Errors.secureStorageUnavailable");
+        }
+      });
     },
   };
 }

@@ -1,0 +1,16 @@
+✔ fade has the approved duration through the installed SSGOI playback engine (1.785541ms)
+✔ fade reaches its endpoint within one display frame of its duration (0.111792ms)
+✔ push has the approved duration through the installed SSGOI playback engine (0.1755ms)
+✔ push reaches its endpoint within one display frame of its duration (0.068209ms)
+✔ sheet has the approved duration through the installed SSGOI playback engine (0.135334ms)
+✔ sheet reaches its endpoint within one display frame of its duration (0.048208ms)
+✔ reversal keeps speed and settles at the opposite endpoint without overshoot (0.427459ms)
+✔ reduced motion finishes in the first frame without simulation travel (0.056875ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 202.00375

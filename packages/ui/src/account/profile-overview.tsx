@@ -29,6 +29,7 @@ import {
 import { AccountNavigation } from "./account-design";
 import { cn } from "../lib/utils";
 import { Separator } from "../kit/Separator";
+import { useDateLabel } from "./common";
 
 export function ProfileOverview({
   account,
@@ -42,6 +43,7 @@ export function ProfileOverview({
   children: ReactNode;
 }) {
   const t = useTranslations("ProfileOverview");
+  const dateLabel = useDateLabel();
   const name = account?.displayName || t("you");
   return (
     <main className="profile-overview relative flex min-h-dvh flex-col gap-6 px-5 pb-[calc(8rem+var(--app-safe-bottom,0px))] pt-[calc(2rem+var(--app-safe-top,0px))] sm:px-6">
@@ -123,7 +125,7 @@ export function ProfileOverview({
               <p className="text-lg font-semibold">
                 {account?.createdAt ? (
                   <time dateTime={account.createdAt}>
-                    {account.createdAt.slice(0, 10)}
+                    {dateLabel(account.createdAt)}
                   </time>
                 ) : (
                   "—"

@@ -1,0 +1,42 @@
+{
+  "repository": "hamidYeganeh/Gym4Me2",
+  "base": "60f4421be2393d47971c1154632c3037f07c2144",
+  "runId": 39133551839,
+  "url": "https://github.com/hamidYeganeh/Gym4Me2/actions/runs/39133551839",
+  "jobs": [
+    {
+      "id": 117693408871,
+      "name": "ios-build",
+      "status": "completed",
+      "conclusion": "failure",
+      "failedSteps": [
+        "Export and synchronize iOS shell"
+      ],
+      "errors": [
+        "2026-10-18T13:55:28.6188530Z Module not found: Can't resolve 'lucide-react'",
+        "2026-10-18T13:55:28.6223280Z Module not found: Can't resolve 'lucide-react'",
+        "2026-10-18T13:55:28.6229010Z Module not found: Can't resolve 'lucide-react'"
+      ]
+    },
+    {
+      "id": 117693409066,
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "failure",
+      "failedSteps": [
+        "Lint and types"
+      ],
+      "errors": [
+        "2026-10-18T13:55:12.5305948Z ##[error]components/discovery/club-gallery.tsx(11,8): error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.",
+        "2026-10-18T13:55:12.5320250Z ##[error]components/discovery/club-list.tsx(4,36): error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations.",
+        "2026-10-18T13:55:12.5323325Z ##[error]components/discovery/club-share-sheet.tsx(13,64): error TS2307: Cannot find module 'lucide-react' or its corresponding type declarations."
+      ]
+    }
+  ],
+  "branchCreation": {
+    "status": 403,
+    "error": "Resource not accessible by integration",
+    "branch": "codex/ph1-ci-direct-dependencies",
+    "created": false
+  }
+}

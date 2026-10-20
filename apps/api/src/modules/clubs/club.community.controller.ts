@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { z } from 'zod';
+import { ApiQuery } from '@nestjs/swagger';
 import { DomainController } from '../../platform/http/domain-controller.decorator';
 import { ClientHeader } from '../auth/auth.contracts';
 import { AuthGuard, ClientGuard, type AuthRequest } from '../auth/auth.guard';
@@ -47,8 +48,19 @@ export class CoachProfileController {
       c.validate(coachProfileSchema, body).biography,
     );
   }
-  @Get('affiliations') affiliations(@Req() req: AuthRequest) {
-    return this.service.affiliations(req.principal);
+  @Get('affiliations')
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    schema: { type: 'integer', minimum: 1, maximum: 100000, default: 1 },
+    description:
+      '100 affiliations per page, ordered by createdAt descending then id; a shorter page ends the list.',
+  })
+  affiliations(@Req() req: AuthRequest, @Query('page') page: unknown) {
+    return this.service.affiliations(
+      req.principal,
+      c.validate(c.pageSchema, page),
+    );
   }
   @Post('affiliations/:id/:action') respond(
     @Req() req: AuthRequest,

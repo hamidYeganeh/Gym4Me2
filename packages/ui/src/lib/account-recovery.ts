@@ -1,3 +1,4 @@
+import { isCredentialRejection } from "@repo/api";
 import { safeReturnPath } from "../account/safe-return-path";
 
 export function accountEntryHref(
@@ -14,7 +15,11 @@ export function accountRecovery(
   consentPath: "/profile" | "/profile/complete" = "/profile",
 ) {
   if (!error || typeof error !== "object") return null;
-  if ("status" in error && error.status === 401)
+  if (
+    "status" in error &&
+    error.status === 401 &&
+    !isCredentialRejection(error)
+  )
     return {
       kind: "signIn",
       href: accountEntryHref("/login", returnTo),
@@ -28,4 +33,15 @@ export function accountRecovery(
           : consentPath,
     } as const;
   return null;
+}
+
+/** Keep drafts during an outage; authorization failure retires the cached identity. */
+export function accountReadDenied(error: unknown) {
+  return Boolean(
+    error &&
+    typeof error === "object" &&
+    (("status" in error &&
+      (error.status === 401 || error.status === 403 || error.status === 428)) ||
+      ("code" in error && error.code === "Backend.privacyConsentRequired")),
+  );
 }

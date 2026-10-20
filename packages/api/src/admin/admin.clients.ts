@@ -1,9 +1,20 @@
 import type * as business from "../business/business.dto";
 import type * as dto from "./admin.dto";
 import type * as catalog from "../catalog/catalog.dto";
+import { readLocationPages } from "../catalog/location-pages";
 import type { ApiClient, RequestOptions } from "../transport";
 import { adminEndpoints } from "./admin.endpoints";
 export const adminClients = {
+  mediaPreview: (
+    api: ApiClient,
+    id: string,
+    mediaId: string,
+    options: RequestOptions = {},
+  ) =>
+    api.request<catalog.MediaPreviewDto>(
+      adminEndpoints.mediaPreview(id, mediaId),
+      options,
+    ),
   overview: (api: ApiClient, options: RequestOptions = {}) =>
     api.request<dto.AdminOverviewDto>(adminEndpoints.overview(), options),
   users: (
@@ -113,8 +124,23 @@ export const adminClients = {
     parentId?: string,
     options: RequestOptions = {},
   ) =>
+    readLocationPages(
+      kind,
+      (page) =>
+        api.request<catalog.PlaceDto[]>(
+          adminEndpoints.locations(kind, parentId, page),
+          options,
+        ),
+      options.signal,
+    ),
+  locationPage: (
+    api: ApiClient,
+    kind: catalog.GeographyKind,
+    filters: catalog.LocationFiltersDto = {},
+    options: RequestOptions = {},
+  ) =>
     api.request<catalog.PlaceDto[]>(
-      adminEndpoints.locations(kind, parentId),
+      adminEndpoints.locations(kind, filters.parentId, filters.page),
       options,
     ),
   createLocation: (

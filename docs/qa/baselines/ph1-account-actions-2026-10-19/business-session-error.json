@@ -1,0 +1,13 @@
+{
+  "alerts": [
+    "درخواست انجام نشد. دوباره تلاش کنید."
+  ],
+  "buttons": [
+    {
+      "disabled": "false",
+      "height": 44
+    }
+  ],
+  "focus": "خروج از این نشست",
+  "path": "/sessions"
+}

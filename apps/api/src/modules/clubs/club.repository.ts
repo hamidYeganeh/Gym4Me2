@@ -332,11 +332,11 @@ export async function patchBranch(
       cityZone: location?.cityZone ?? null,
     });
   }
-  if (Object.keys(profile).length)
-    await tx
-      .update(s.branchProfiles)
-      .set({ ...profile, updatedAt: new Date() })
-      .where(eq(s.branchProfiles.branchId, branchId));
+  // Child collections, name and timezone also change this public branch value.
+  await tx
+    .update(s.branchProfiles)
+    .set({ ...profile, updatedAt: new Date() })
+    .where(eq(s.branchProfiles.branchId, branchId));
   if (sportIds !== undefined) {
     await activeTerms(tx, 'sports', sportIds);
     await tx

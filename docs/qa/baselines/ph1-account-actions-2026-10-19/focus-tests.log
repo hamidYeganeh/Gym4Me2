@@ -1,0 +1,16 @@
+✔ a completed action focuses a committed fallback when the original row was removed (0.677333ms)
+✔ a later user focus, query navigation or fragment navigation prevents restoration (0.183625ms)
+✔ disabled, hidden or detached destinations cannot receive async focus (0.146875ms)
+✔ closing a modal restores its trigger after the background is exposed (0.671083ms)
+✔ session recovery retains each client, sign-in method and complete scoped destination (0.7505ms)
+✔ policy round trips retain password mode and return hops for all three clients (0.268458ms)
+✔ expired session recovery cannot redirect to an external destination (0.211125ms)
+✔ forgotten-password and policy return keep the recovery flow before setting a new password (0.19875ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 388.422083

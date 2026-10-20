@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ArrowDownWideNarrow, Bookmark, Plus, UserRound } from "lucide-react";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { useAccount } from "@repo/api/profile";
@@ -29,20 +29,26 @@ import {
 import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@repo/ui/kit/Tabs";
 import { useCatalogClubs } from "./use-catalog";
-import { useSavedClub, useSavedClubIds } from "./use-saved-club";
+import { useSetSavedClub, useSavedClubIds } from "./use-saved-club";
 import { useSavedCoach, useSavedCoachIds } from "./use-saved-coach";
 import { CatalogState } from "./catalog-state";
 import { CatalogPagination } from "./catalog-pagination";
 import { clubIds } from "../../lib/clubs";
 import { getCoaches } from "../../lib/coaches";
+import {
+  restoreSavedRemovalFocus,
+  type SavedRemovalFocus,
+} from "../../lib/saved-removal-focus";
 
 function SavedTile({
+  id,
   href,
   name,
   photo,
   description,
   unsave,
 }: {
+  id: string;
   href: string;
   name: string;
   photo: string;
@@ -76,6 +82,7 @@ function SavedTile({
         </div>
       </Link>
       <Button
+        data-saved-id={id}
         variant="image"
         size="icon"
         className="absolute end-2 top-2"
@@ -87,15 +94,21 @@ function SavedTile({
     </li>
   );
 }
-function SavedClubTile({ club }: { club: ClubDetailData }) {
-  const [, setSaved] = useSavedClub(club.id);
+function SavedClubTile({
+  club,
+  unsave,
+}: {
+  club: ClubDetailData;
+  unsave: () => void;
+}) {
   return (
     <SavedTile
+      id={club.id}
       href={club.href ?? `/discovery/clubs/${club.id}`}
       name={club.name}
       photo={club.photos[0].src}
       description={club.address || club.category}
-      unsave={() => setSaved(false)}
+      unsave={unsave}
     />
   );
 }
@@ -103,6 +116,7 @@ function SavedCoachTile({ coach }: { coach: CoachSummary }) {
   const [, setSaved] = useSavedCoach(coach.id);
   return (
     <SavedTile
+      id={coach.id}
       href={`/discovery/coaches/${coach.id}`}
       name={coach.name}
       photo={coach.photo?.src ?? "/images/clubs/strength.png"}
@@ -124,7 +138,9 @@ function SavedEmpty() {
       </EmptyHeader>
       <EmptyContent>
         <Button asChild>
-          <Link href="/discovery">{t("discover")}</Link>
+          <Link href="/discovery" data-saved-empty>
+            {t("discover")}
+          </Link>
         </Button>
       </EmptyContent>
     </Empty>
@@ -145,8 +161,42 @@ function SavedShell({
 }) {
   const t = useTranslations("SavedPages");
   const account = useAccount();
+  const surface = useRef<HTMLElement>(null);
+  const removal = useRef<SavedRemovalFocus | null>(null);
+  useEffect(() => {
+    const attempt = removal.current;
+    if (attempt && restoreSavedRemovalFocus(surface.current, attempt))
+      removal.current = null;
+  });
   return (
-    <main className="relative mx-auto flex min-h-dvh w-full max-w-xl flex-col gap-6 bg-background px-5 pt-[calc(2rem+var(--app-safe-top,0px))] pb-[calc(7rem+var(--app-safe-bottom,0px))] sm:px-6">
+    <main
+      ref={surface}
+      onFocusCapture={(event) => {
+        if (removal.current && event.target !== removal.current.button)
+          removal.current = null;
+      }}
+      onClickCapture={(event) => {
+        const button = (event.target as HTMLElement).closest<HTMLButtonElement>(
+          "button[data-saved-id]",
+        );
+        if (!button || document.activeElement !== button) return;
+        const buttons = [
+          ...event.currentTarget.querySelectorAll<HTMLButtonElement>(
+            "button[data-saved-id]",
+          ),
+        ];
+        const index = buttons.indexOf(button);
+        removal.current = {
+          button,
+          ids: [
+            ...buttons.slice(index + 1),
+            ...buttons.slice(0, index).reverse(),
+          ].map((item) => item.dataset.savedId!),
+          path: `${window.location.pathname}${window.location.search}`,
+        };
+      }}
+      className="relative mx-auto flex min-h-dvh w-full max-w-xl flex-col gap-6 bg-background px-5 pt-[calc(2rem+var(--app-safe-top,0px))] pb-[calc(7rem+var(--app-safe-bottom,0px))] sm:px-6"
+    >
       <header className="flex items-center gap-2">
         <h1 className="min-w-0 flex-1 text-3xl font-bold tracking-tight">
           {t("title")}
@@ -185,10 +235,20 @@ function SavedShell({
       <Tabs value={kind}>
         <TabsList className="w-full">
           <TabsTrigger value="clubs" asChild>
-            <Link href="/saved">{t("clubs")}</Link>
+            <Link
+              href="/saved"
+              data-saved-fallback={kind === "clubs" || undefined}
+            >
+              {t("clubs")}
+            </Link>
           </TabsTrigger>
           <TabsTrigger value="coaches" asChild>
-            <Link href="/saved/coaches">{t("coaches")}</Link>
+            <Link
+              href="/saved/coaches"
+              data-saved-fallback={kind === "coaches" || undefined}
+            >
+              {t("coaches")}
+            </Link>
           </TabsTrigger>
         </TabsList>
       </Tabs>
@@ -210,6 +270,7 @@ function SavedShell({
 export function SavedClubsPage() {
   const t = useTranslations("SavedPages");
   const account = useAccount();
+  const setSaved = useSetSavedClub();
   const ids = useSavedClubIds();
   const [sort, setSort] = useState<"recent" | "priceLow" | "priceHigh">(
     "recent",
@@ -266,7 +327,11 @@ export function SavedClubsPage() {
       ) : query.clubs.length ? (
         <ul className="grid grid-cols-2 gap-x-4 gap-y-6">
           {query.clubs.map((club) => (
-            <SavedClubTile key={club.id} club={club} />
+            <SavedClubTile
+              key={club.id}
+              club={club}
+              unsave={() => setSaved(club.id, false)}
+            />
           ))}
         </ul>
       ) : (

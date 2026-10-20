@@ -1,0 +1,7 @@
+{
+  "url": "http://127.0.0.1:7391/profile/complete?returnTo=%2Fprofile",
+  "nameValue": "",
+  "optionalNamePresent": true,
+  "privacyFormGone": true,
+  "skipHref": "/profile"
+}

@@ -32,3 +32,27 @@ export type AffiliationDto = {
   endsOn: string | null;
   sportId: string | null;
 };
+
+import type { DataPolicyDto } from "../system/system.dto";
+export type { DataPolicyDto } from "../system/system.dto";
+export type PrivacyDto = {
+  policy: DataPolicyDto;
+  marketingConsent: boolean;
+  profilePublic: boolean;
+  acceptedAt: string | null;
+  acceptanceRequired: boolean;
+  canRequestDeletion: boolean;
+  deletion: {
+    status: "pending" | "cancelled" | "processed";
+    requestedAt: string;
+    eligibleAfter: string;
+    processedAt: string | null;
+  } | null;
+};
+export type UpdatePrivacyDto = {
+  policyVersion?: string;
+  acceptPolicy?: true;
+  confirmMinimumAge?: true;
+  marketingConsent?: boolean;
+  hidePublicProfile?: true;
+};

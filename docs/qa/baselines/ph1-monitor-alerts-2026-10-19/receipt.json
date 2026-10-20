@@ -1,0 +1,18 @@
+{
+  "sourceFiles": 2,
+  "changedDuringTests": [],
+  "isolatedCopiesMatched": true,
+  "isolatedDirectoryRemoved": true,
+  "targetTests": {
+    "passed": 7,
+    "failed": 0
+  },
+  "baseCommit": "60f4421be2393d47971c1154632c3037f07c2144",
+  "sameTestsOnBase": {
+    "passed": 2,
+    "failed": 5
+  },
+  "tls": "temporary self-signed 127.0.0.1 certificate, trusted only by selected child processes",
+  "projectServersStarted": false,
+  "externalWebhookUsed": false
+}

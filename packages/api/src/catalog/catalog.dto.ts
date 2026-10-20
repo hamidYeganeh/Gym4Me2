@@ -13,10 +13,13 @@ export type TaxonomyKind =
 export type GeographyKind = "countries" | "provinces" | "cities" | "districts";
 export type ReviewStatus = "pending" | "published" | "rejected";
 export type PageDto = { page?: number };
+export type LocationFiltersDto = PageDto & { parentId?: string };
 export type ClubFiltersDto = PageDto & {
   search?: string;
   categoryId?: string;
   sportId?: string;
+  countryId?: string;
+  provinceId?: string;
   cityId?: string;
   districtId?: string;
   serviceType?: TariffService;
@@ -139,6 +142,8 @@ export type MediaDto = {
   caption?: string | null;
   sortOrder?: number;
 };
+export type MediaPreviewDto = { url: string; expiresIn: number | null };
+export type UploadMediaDto = { file: File; alt?: string };
 export type LocationDto = {
   address: string | null;
   coordinates: [number, number] | null;

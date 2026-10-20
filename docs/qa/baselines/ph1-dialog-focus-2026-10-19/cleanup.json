@@ -1,0 +1,19 @@
+{
+  "dedicatedDatabase": "gym4me_ph1dialogs_1a14e17_test",
+  "beforeDrop": {
+    "users": 0,
+    "organizations": 0,
+    "sessions": 0
+  },
+  "databaseDropped": true,
+  "ownedServersStopped": true,
+  "ownedListeningPorts": [],
+  "testPostgresRestored": "stopped",
+  "storage": "untouched, initially running",
+  "ownedTabsClosed": [
+    14,
+    15
+  ],
+  "userTabUntouched": 1,
+  "viewportReset": true
+}

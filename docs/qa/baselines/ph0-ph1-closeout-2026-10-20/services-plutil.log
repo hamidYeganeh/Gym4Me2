@@ -1,0 +1,8 @@
+.artifacts/operations/services/ir.gym4me.admin.plist: OK
+.artifacts/operations/services/ir.gym4me.api.plist: OK
+.artifacts/operations/services/ir.gym4me.application.plist: OK
+.artifacts/operations/services/ir.gym4me.backup.plist: OK
+.artifacts/operations/services/ir.gym4me.business.plist: OK
+.artifacts/operations/services/ir.gym4me.infrastructure.plist: OK
+.artifacts/operations/services/ir.gym4me.monitor.plist: OK
+.artifacts/operations/services/ir.gym4me.proxy.plist: OK

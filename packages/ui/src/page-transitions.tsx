@@ -12,8 +12,15 @@ import {
 } from "react";
 import { Ssgoi, type SsgoiConfig } from "@ssgoi/react";
 import { SsgoiRouteBoundary } from "@ssgoi/react/nextjs";
-import { lumaPush, lumaFade, lumaInstant, lumaSheet } from "./luma-motion";
+import {
+  lumaPush,
+  lumaFade,
+  lumaInstant,
+  lumaSheet,
+  lumaClub,
+} from "./luma-motion";
 import { isolateInactiveRoutes } from "./route-accessibility";
+import { rememberClubMotionOrigin } from "./lib/club-motion-origin";
 import {
   detailRoutes,
   sheetRoutes,
@@ -54,11 +61,14 @@ const configFor = (surface: AppSurface): SsgoiConfig => ({
       priority: 20,
       transition: lumaPush(),
     },
-    ...["/", "/discovery", "/saved", "/discovery/map"].map((from) => ({
-      from,
-      to: "/discovery/clubs/*",
-      transition: lumaPush(),
-    })),
+    ...["/", "/discovery", "/saved", "/discovery/map", "/qa/ph0"].map(
+      (from) => ({
+        from,
+        to: "/discovery/clubs/*",
+        priority: 15,
+        transition: lumaClub(),
+      }),
+    ),
     {
       from: "/",
       to: "/training",
@@ -148,6 +158,16 @@ export function PageTransitions({
   return (
     <div
       ref={root}
+      onClickCapture={(event) => {
+        if (
+          event.button === 0 &&
+          !event.metaKey &&
+          !event.ctrlKey &&
+          !event.shiftKey &&
+          !event.altKey
+        )
+          rememberClubMotionOrigin(event.target);
+      }}
       data-gym-route-motion={reduce ? "reduced" : "full"}
       style={{ overflowAnchor: "none" }}
       className="relative isolate min-h-dvh overflow-x-clip"

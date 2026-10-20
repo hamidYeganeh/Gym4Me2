@@ -3,14 +3,10 @@ import { useTranslations } from "@repo/i18n";
 
 import { useSessions, useRevokeSession } from "@repo/api/auth";
 import { useApiContext } from "@repo/api/provider";
-import {
-  useInvitations,
-  useUpdateAccount,
-  useAcceptInvitation,
-} from "@repo/api/profile";
+import { useInvitations, useAcceptInvitation } from "@repo/api/profile";
 import type { Account } from "@repo/api/auth";
 import type { SessionDto as Session } from "@repo/api/auth";
-import { useState, type FormEvent } from "react";
+import { useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@repo/ui/kit/Button";
@@ -24,9 +20,18 @@ import {
 import { FieldGroup } from "@repo/ui/kit/Field";
 import { Badge } from "@repo/ui/kit/Badge";
 import { PhoneChange } from "./phone-change";
+import { sessionSignInHref } from "../lib/session-navigation";
+import { isActiveSurfaceElement } from "../lib/active-surface";
 import { AccountPrivacy } from "./privacy";
 import { Checkbox } from "@repo/ui/kit/Checkbox";
-import { Field, FieldLabel, FieldDescription } from "@repo/ui/kit/Field";
+import {
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+} from "@repo/ui/kit/Field";
+import { useProfileEditor } from "./use-profile-editor";
+import { useActionFocus } from "../hooks/use-action-focus";
 
 import {
   Blank,
@@ -47,31 +52,9 @@ export function ProfileContent({
 }) {
   const t = useTranslations();
 
-  const updateAccount = useUpdateAccount();
-
-  const [name, setName] = useState(account.displayName ?? "");
-  const [profilePublic, setProfilePublic] = useState(
-    account.profilePublic ?? false,
-  );
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  async function submit(e: FormEvent) {
-    e.preventDefault();
-    setBusy(true);
-    setError(null);
-    try {
-      await updateAccount.mutateAsync({
-        displayName: name.trim() || null,
-        profilePublic,
-      });
-
-      toast.success(t("Copy.profileSaved"));
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  }
+  const editor = useProfileEditor(account);
+  const { name, isPublic, invalid, dirty, busy, setName, setPublic, submit } =
+    editor;
   return (
     <div className="grid gap-6">
       {!mobile && <AccountPrivacy />}
@@ -88,6 +71,8 @@ export function ProfileContent({
           <form onSubmit={submit} className="grid gap-6">
             <FieldGroup>
               <TextField
+                ref={editor.nameInput}
+                id={`${editor.id}-name`}
                 label={t("Privacy.optionalName")}
                 name="displayName"
                 autoComplete="name"
@@ -95,33 +80,55 @@ export function ProfileContent({
                 onChange={(e) => setName(e.target.value)}
                 minLength={2}
                 maxLength={100}
+                disabled={busy}
+                aria-invalid={invalid}
+                aria-describedby={
+                  invalid ? `${editor.id}-name-error` : undefined
+                }
               />
+              {invalid && (
+                <FieldError id={`${editor.id}-name-error`}>
+                  {t("Privacy.nameLength")}
+                </FieldError>
+              )}
               <Field orientation="horizontal">
                 <Checkbox
-                  id="profile-public"
-                  checked={profilePublic}
-                  onCheckedChange={(value) => setProfilePublic(value === true)}
+                  id={`${editor.id}-public`}
+                  checked={isPublic}
+                  onCheckedChange={(value) => setPublic(value === true)}
+                  disabled={busy}
+                  aria-describedby={`${editor.id}-public-description`}
                 />
                 <div>
-                  <FieldLabel htmlFor="profile-public">
+                  <FieldLabel
+                    htmlFor={`${editor.id}-public`}
+                    className="min-h-11"
+                  >
                     {t("Privacy.publicName")}
                   </FieldLabel>
-                  <FieldDescription>
+                  <FieldDescription id={`${editor.id}-public-description`}>
                     {t("Privacy.publicNameHint")}
                   </FieldDescription>
                 </div>
               </Field>
               <TextField
+                id={`${editor.id}-phone`}
                 label={t("Copy.verifiedMobileNumber")}
                 name="phone"
                 dir="ltr"
                 value={account.phone}
                 readOnly
               />
-              <ErrorNotice error={error} />
+              <ErrorNotice error={editor.error} />
             </FieldGroup>
             <div>
-              <Submit busy={busy}>{t("Copy.saveChanges")}</Submit>
+              <Submit
+                busy={busy}
+                disabled={!dirty || invalid}
+                className="min-h-11"
+              >
+                {t("Copy.saveChanges")}
+              </Submit>
             </div>
           </form>
         </CardContent>
@@ -131,88 +138,146 @@ export function ProfileContent({
   );
 }
 
+/** Keep the next/previous action in order; a removed final row falls back to its named region. */
+function listActionTarget(
+  origin: HTMLButtonElement,
+  list: HTMLDivElement | null,
+  selector: string,
+) {
+  const actions = [
+    ...(list?.querySelectorAll<HTMLButtonElement>(selector) ?? []),
+  ];
+  const index = actions.indexOf(origin);
+  const neighbors = [actions[index + 1], actions[index - 1]];
+  return () =>
+    [origin, ...neighbors, list].find(
+      (target) =>
+        target &&
+        isActiveSurfaceElement(target) &&
+        !target.matches(':disabled, [aria-disabled="true"]'),
+    ) ?? null;
+}
+
 export function SessionsContent() {
   const dateLabel = useDateLabel();
 
   const t = useTranslations();
 
   const revokeSession = useRevokeSession();
-  const { api } = useApiContext();
+  const { api, resetSession } = useApiContext();
 
   const query = useSessions();
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  async function revoke(session: Session) {
+  const [error, setError] = useState<unknown>(null);
+  const pending = useRef(false);
+  const sessionList = useRef<HTMLDivElement>(null);
+  const id = useId();
+  const beginFocus = useActionFocus(busy !== null);
+  async function revoke(session: Session, origin: HTMLButtonElement) {
+    if (pending.current) return;
+    pending.current = true;
+    const finishFocus = beginFocus(
+      listActionTarget(origin, sessionList.current, "[data-session-revoke]"),
+      origin,
+    );
     setBusy(session.id);
     setError(null);
     try {
       await revokeSession.mutateAsync({ id: session.id });
-      if (session.current)
-        router.replace(api.scope[2] === "application" ? "/auth/otp" : "/login");
-      else {
+      if (session.current) {
+        await resetSession();
+        router.replace(sessionSignInHref(api.scope[2], "/sessions"));
+      } else {
         toast.success(t("Copy.sessionEnded"));
       }
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
+      pending.current = false;
       setBusy(null);
+      finishFocus();
     }
   }
   return (
-    <>
+    <div
+      ref={sessionList}
+      role="region"
+      aria-label={t("Copy.activeSessions")}
+      tabIndex={-1}
+      className="grid gap-4 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+    >
       <p className="text-muted-foreground">
         {t("Copy.seeYourActiveSessionsAndRevokeAccess")}{" "}
       </p>
-      <ErrorNotice error={error} />
-      <QueryError error={query.error} retry={query.refetch} />
+      <QueryError error={error} />
+      <QueryError
+        error={query.error}
+        retry={query.refetch}
+        fallback={sessionList}
+      />
       {query.isLoading ? (
         <Loading />
+      ) : !query.error && !query.data?.length ? (
+        <Blank
+          title={t("Copy.noActiveSessions")}
+          description={t("Copy.signedInDevicesAppearHere")}
+        />
       ) : (
         <div className="grid gap-4">
-          {query.data?.map((session) => (
-            <Card key={session.id}>
-              <CardContent className="flex flex-wrap items-center justify-between gap-4 pt-6">
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2">
-                    <p className="font-medium">
-                      {{
-                        application: t("Copy.application"),
-                        business: t("Copy.business"),
-                        admin: t("Copy.admin"),
-                      }[session.client] ?? session.client}
+          {!query.error &&
+            query.data?.map((session) => (
+              <Card key={session.id}>
+                <CardContent className="flex flex-wrap items-center justify-between gap-4 pt-6">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium">
+                        {{
+                          application: t("Copy.application"),
+                          business: t("Copy.business"),
+                          admin: t("Copy.admin"),
+                        }[session.client] ?? session.client}
+                      </p>
+                      {session.current && (
+                        <Badge variant="secondary">
+                          {t("Copy.thisSession")}
+                        </Badge>
+                      )}
+                    </div>
+                    <p
+                      id={`${id}-${session.id}-device`}
+                      dir="ltr"
+                      className="mt-2 max-w-lg truncate text-start text-xs text-muted-foreground"
+                      title={session.device}
+                    >
+                      {session.device}
                     </p>
-                    {session.current && (
-                      <Badge variant="secondary">{t("Copy.thisSession")}</Badge>
-                    )}
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {t("Copy.signedIn")} {dateLabel(session.createdAt)}{" "}
+                      {t("Copy.expires2")} {dateLabel(session.expiresAt)}
+                    </p>
                   </div>
-                  <p
-                    dir="ltr"
-                    className="mt-2 max-w-lg truncate text-start text-xs text-muted-foreground"
-                    title={session.device}
+                  <Button
+                    variant="outline"
+                    className="min-h-11 min-w-11 aria-disabled:opacity-50"
+                    data-session-revoke
+                    aria-describedby={`${id}-${session.id}-device`}
+                    aria-disabled={busy !== null}
+                    aria-busy={busy === session.id}
+                    onClick={(event) =>
+                      void revoke(session, event.currentTarget)
+                    }
                   >
-                    {session.device}
-                  </p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {t("Copy.signedIn")} {dateLabel(session.createdAt)}{" "}
-                    {t("Copy.expires2")} {dateLabel(session.expiresAt)}
-                  </p>
-                </div>
-                <Button
-                  variant="outline"
-                  disabled={busy !== null}
-                  onClick={() => void revoke(session)}
-                >
-                  {session.current
-                    ? t("Copy.signOutOfThisSession")
-                    : t("Copy.endSession")}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                    {session.current
+                      ? t("Copy.signOutOfThisSession")
+                      : t("Copy.endSession")}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
         </div>
       )}
-    </>
+    </div>
   );
 }
 export function InvitationsContent() {
@@ -225,8 +290,21 @@ export function InvitationsContent() {
 
   const query = useInvitations();
   const [busy, setBusy] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  async function accept(id: string) {
+  const [error, setError] = useState<unknown>(null);
+  const pending = useRef(false);
+  const invitationList = useRef<HTMLDivElement>(null);
+  const beginFocus = useActionFocus(busy !== null);
+  async function accept(id: string, origin: HTMLButtonElement) {
+    if (pending.current) return;
+    pending.current = true;
+    const finishFocus = beginFocus(
+      listActionTarget(
+        origin,
+        invitationList.current,
+        "[data-invitation-accept]",
+      ),
+      origin,
+    );
     setBusy(id);
     setError(null);
     try {
@@ -234,18 +312,30 @@ export function InvitationsContent() {
 
       toast.success(t("Copy.invitationAcceptedTheOrganizationIsNowAvailable"));
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       setBusy(null);
+      pending.current = false;
+      finishFocus();
     }
   }
   return (
-    <>
-      <ErrorNotice error={error} />
-      <QueryError error={query.error} retry={query.refetch} />
+    <div
+      ref={invitationList}
+      role="region"
+      aria-label={t("Copy.teamInvitations")}
+      tabIndex={-1}
+      className="grid gap-4 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
+    >
+      <QueryError error={error} />
+      <QueryError
+        error={query.error}
+        retry={query.refetch}
+        fallback={invitationList}
+      />
       {query.isLoading ? (
         <Loading />
-      ) : !query.error && !query.data?.length ? (
+      ) : query.error ? null : !query.data?.length ? (
         <Blank
           title={t("Copy.noActiveInvitations")}
           description={t("Copy.invitationsSentToYourMobileNumberAppear")}
@@ -262,8 +352,14 @@ export function InvitationsContent() {
                 </p>
               </div>
               <Button
-                disabled={busy !== null}
-                onClick={() => void accept(inv.id)}
+                className="min-h-11 min-w-11 aria-disabled:opacity-50"
+                data-invitation-accept
+                aria-label={t("Copy.acceptInvitationFrom", {
+                  name: inv.organizationName,
+                })}
+                aria-disabled={busy !== null}
+                aria-busy={busy === inv.id}
+                onClick={(event) => void accept(inv.id, event.currentTarget)}
               >
                 {t("Copy.acceptInvitation")}{" "}
               </Button>
@@ -271,6 +367,6 @@ export function InvitationsContent() {
           </Card>
         ))
       )}
-    </>
+    </div>
   );
 }

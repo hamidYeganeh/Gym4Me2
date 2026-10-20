@@ -1,0 +1,342 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/taxonomies/club-categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835/reviews",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/taxonomies/club-categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835/reviews",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/taxonomies/club-categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835/reviews",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/taxonomies/club-categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835/reviews",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/taxonomies/club-categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835/reviews",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/taxonomies/club-categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835/reviews",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/taxonomies/club-categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1/branches/a1000000-0000-4000-8000-000000000835/reviews",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/taxonomies/club-categories",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/locations/countries",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/catalog/clubs/a1000000-0000-4000-8000-0000000007d2",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/profile/account",
+    "status": 401
+  }
+]

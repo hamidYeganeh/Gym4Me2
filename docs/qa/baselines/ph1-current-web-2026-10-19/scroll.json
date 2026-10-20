@@ -1,0 +1,96 @@
+{
+  "settled": {
+    "before": {
+      "max": 769,
+      "path": "/",
+      "scrollY": 769,
+      "viewport": [
+        1280,
+        720
+      ]
+    },
+    "other": {
+      "max": 4407,
+      "path": "/discovery",
+      "scrollY": 0,
+      "viewport": [
+        1280,
+        720
+      ]
+    },
+    "after": {
+      "max": 769,
+      "path": "/",
+      "scrollY": 769,
+      "viewport": [
+        1280,
+        720
+      ]
+    },
+    "pass": true
+  },
+  "immediate": {
+    "before": {
+      "max": 769,
+      "path": "/",
+      "scrollY": 769,
+      "viewport": [
+        1280,
+        720
+      ]
+    },
+    "other": {
+      "max": 4407,
+      "path": "/discovery",
+      "scrollY": 0,
+      "viewport": [
+        1280,
+        720
+      ]
+    },
+    "after": {
+      "max": 769,
+      "path": "/",
+      "scrollY": 769,
+      "viewport": [
+        1280,
+        720
+      ]
+    },
+    "pass": true
+  },
+  "reduced": {
+    "media": true,
+    "mode": "reduced"
+  },
+  "reducedImmediate": {
+    "before": {
+      "max": 769,
+      "path": "/",
+      "scrollY": 769,
+      "viewport": [
+        1280,
+        720
+      ]
+    },
+    "other": {
+      "max": 4407,
+      "path": "/discovery",
+      "scrollY": 0,
+      "viewport": [
+        1280,
+        720
+      ]
+    },
+    "after": {
+      "max": 769,
+      "path": "/",
+      "scrollY": 769,
+      "viewport": [
+        1280,
+        720
+      ]
+    },
+    "pass": true
+  }
+}

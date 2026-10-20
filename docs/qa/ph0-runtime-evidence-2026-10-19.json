@@ -1,0 +1,125 @@
+{
+  "scope": "Curated dated observations only; no whole-route or whole-phase acceptance.",
+  "sessions": [
+    {
+      "id": "privacy-web-2026-10-19",
+      "surface": "application",
+      "route": "/profile/settings/privacy",
+      "buildId": "WefDdxE0lp8sGQWe7o4Uz",
+      "report": "docs/qa/ph1-privacy-2026-10-19.md",
+      "http": "docs/qa/baselines/ph1-privacy-2026-10-19/http.json",
+      "buildInputs": "docs/qa/baselines/ph1-privacy-2026-10-19/build-inputs.json",
+      "referencedSourceSha256": {
+        "packages/ui/src/account/privacy.tsx": "1b1c3ca30bc144037423835ed1c5b508ec18abe43260bd794f095ddd6cff418d",
+        "apps/application/app/profile/settings/privacy/page.tsx": "8777916e5591d3d01c1ebad99de9549bf06f42a9f9cfbf572e4d9d4189a85b4c",
+        "packages/ui/src/account/mobile-account.tsx": "9eca6198b9c79128f8e114e13bf0e58450ec0945d2de17eea4515a213e2f743c",
+        "packages/api/src/profile/profile.hooks.ts": "b69b4fc87f942df5dc96b19ddd23fe91238cf9b9d1d49980e015ccb07510801d",
+        "packages/api/src/profile/profile.clients.ts": "92b969c52c11f87f4339bfa2404e83caaf59b104a123253bc11be7845bd599af",
+        "packages/api/src/profile/profile.endpoints.ts": "61622004999a5dfd634fe6c21f84901db0e5e34e8a8627aa999e99d26975611f",
+        "packages/api/src/provider.tsx": "9a5c6f6622352fda2d5a7cdf948b8a414ca4bf728fe95e07fe57e0412e386ba7",
+        "packages/api/src/query.ts": "79ac7c1c57440c6f4b8396f14d661bc87bb62c606fb5ac6cd68963c32bd60e37",
+        "packages/api/src/transport.ts": "608aab86dcca94e80fb4f0bcb1daa8678f8c76b0c3f18e6fdb033048562e9a96"
+      },
+      "states": [
+        {
+          "id": "marketing-saved",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useUpdatePrivacy",
+          "method": "POST",
+          "path": "profile/account/privacy/preferences",
+          "status": 201,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/final-save-focus.json",
+          "equals": {
+            "focus": "ذخیرهٔ انتخاب‌ها",
+            "focusTag": "BUTTON",
+            "marketing": "true"
+          }
+        },
+        {
+          "id": "external-revocation-reflected",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useUpdatePrivacy",
+          "method": "POST",
+          "path": "profile/account/privacy/preferences",
+          "status": 201,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/final-revocation-focus.json",
+          "equals": {
+            "focus": "ذخیرهٔ انتخاب‌ها",
+            "focusTag": "BUTTON",
+            "marketing": "false"
+          }
+        },
+        {
+          "id": "stale-session-error-inside-dialog",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useRequestDeletion",
+          "method": "POST",
+          "path": "profile/account/privacy/deletion",
+          "status": 409,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-failure.json",
+          "equals": {
+            "alertInside": true,
+            "alertVisible": true,
+            "dialog": true,
+            "focus": "ثبت درخواست حذف",
+            "focusTag": "BUTTON"
+          }
+        },
+        {
+          "id": "deletion-pending",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useRequestDeletion",
+          "method": "POST",
+          "path": "profile/account/privacy/deletion",
+          "status": 201,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-pending.json",
+          "equals": {
+            "dialog": false,
+            "focus": "لغو درخواست حذف"
+          }
+        },
+        {
+          "id": "deletion-cancelled",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useCancelDeletion",
+          "method": "POST",
+          "path": "profile/account/privacy/deletion/cancel",
+          "status": 201,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-cancelled.json",
+          "equals": {
+            "dialog": false,
+            "focus": "درخواست حذف حساب"
+          }
+        },
+        {
+          "id": "scoped-export-downloaded",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useExportAccount",
+          "method": "GET",
+          "path": "profile/account/privacy/export",
+          "status": 200,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/export.json",
+          "equals": {
+            "ownAccount": true,
+            "ownPhone": true,
+            "otherFixturePhonesAbsent": true,
+            "forbiddenCredentialKeys": [],
+            "formatVersion": 2,
+            "focus": "دریافت خروجی داده‌ها"
+          }
+        }
+      ],
+      "artifactSha256": {
+        "docs/qa/baselines/ph1-privacy-2026-10-19/http.json": "2111c47b1c3e53d85382e2bcf18508803b47715f6055a14734c9b65319310211",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/build-inputs.json": "6b9d48f04f16f8625f41277203fdb7812c47870b36b37820a4c423e46f605c00",
+        "docs/qa/ph1-privacy-2026-10-19.md": "9b269fcd3163cbe96baa0f37aad9ccb588ff82959c348467d207757d245a8c07",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/final-save-focus.json": "59af926dce0b0d5aa9da41aa65b4d1d63acc6ca2ed8dee80fc8cc0020e7138c9",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/final-revocation-focus.json": "fb0021da6d94f094f435f010e580000f6c61a4c290740c49f388af40b9ec8943",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-failure.json": "9a636b15652e6333d39ac800e69b90ebb1194047e88e50b43ddd1689005af485",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-pending.json": "e37ff3e482601f2f8ef4bae6ba76f73b224ba8e1751b05e09e4a4375942c3a61",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-cancelled.json": "83ff1fd6eb90aa3778ba40966ba3cee4bcc82ec629eea53b0c22f3f2c7fd2e63",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/export.json": "dd3189f60c8cc9cff22bd248e630c2bde4d2ae72589cee17550f6ea42d4f4ec9"
+      }
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { changeReasonSchema } from '../../platform/audit/change-reason';
 import { ConsentGuard } from '../profile/consent.guard';
 import {
   Body,
@@ -16,10 +17,12 @@ import { id, pageSchema, SchemaBody, validate } from './club.contracts';
 import {
   ClubTariffService,
   tariffCreateSchema,
-  tariffSchema,
+  tariffRevisionSchema,
 } from './club.tariffs';
 import { z } from 'zod';
-const tariffStatusSchema = z.object({ isActive: z.boolean() }).strict();
+const tariffStatusSchema = z
+  .object({ isActive: z.boolean(), reason: changeReasonSchema })
+  .strict();
 @DomainController('business', 'clubs')
 @ClientHeader()
 @UseGuards(ClientGuard, AuthGuard, ConsentGuard)
@@ -47,7 +50,9 @@ export class BusinessTariffsController {
       validate(tariffCreateSchema, body),
     );
   }
-  @Post(':id/tariffs/:tariffId/versions') @SchemaBody(tariffSchema) revise(
+  @Post(':id/tariffs/:tariffId/versions')
+  @SchemaBody(tariffRevisionSchema)
+  revise(
     @Req() req: AuthRequest,
     @Param('id') clubId: string,
     @Param('tariffId') tariffId: string,
@@ -57,7 +62,7 @@ export class BusinessTariffsController {
       this.user(req),
       validate(id, clubId),
       validate(id, tariffId),
-      validate(tariffSchema, body),
+      validate(tariffRevisionSchema, body),
     );
   }
   @Get(':id/tariffs/:tariffId/versions') history(
@@ -79,11 +84,13 @@ export class BusinessTariffsController {
     @Param('tariffId') tariffId: string,
     @Body() body: unknown,
   ) {
+    const input = validate(tariffStatusSchema, body);
     return this.tariffs.status(
       this.user(req),
       validate(id, clubId),
       validate(id, tariffId),
-      validate(tariffStatusSchema, body).isActive,
+      input.isActive,
+      input.reason,
     );
   }
 }

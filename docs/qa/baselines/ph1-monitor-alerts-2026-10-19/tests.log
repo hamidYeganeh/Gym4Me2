@@ -1,0 +1,15 @@
+✔ alerts persist offline and retry with a stable idempotency key (21.30675ms)
+✔ twenty deferred records cannot hide a new due incident (4.769917ms)
+✔ a pass attempts at most twenty due alerts after skipping backoff (10.785083ms)
+✔ damaged records remain inspectable while valid alerts can be delivered (1.385458ms)
+✔ retry publishes a complete private record with the same event identity (0.913333ms)
+✔ rejected responses release their body before scheduling a retry (0.843292ms)
+✔ real fetch rejects untrusted TLS and retries HTTPS rejection without changing identity (322.25825ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 425.095875

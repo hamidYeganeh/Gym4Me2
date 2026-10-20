@@ -3,7 +3,11 @@ import { useFormatter } from "@repo/i18n";
 import { isTranslationKey, type TranslationKey } from "@repo/i18n/messages";
 import { useTranslations } from "@repo/i18n";
 
-import { type ReactNode } from "react";
+import { useId, type ReactNode, type RefObject } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { accountRecovery } from "../lib/account-recovery";
+import { useQueryRetry } from "../hooks/use-query-retry";
 import { Alert, AlertDescription } from "@repo/ui/kit/Alert";
 import { Button } from "@repo/ui/kit/Button";
 import {
@@ -16,6 +20,7 @@ import { Field, FieldLabel } from "@repo/ui/kit/Field";
 import { Input } from "@repo/ui/kit/Input";
 import { Spinner } from "@repo/ui/kit/Spinner";
 import { Badge } from "@repo/ui/kit/Badge";
+import { cn } from "../lib/utils";
 
 const roleKeys = {
   owner: "Copy.owner",
@@ -127,16 +132,25 @@ export function TextField({
   label,
   name,
   fieldClassName,
+  className,
+  id,
   ...props
 }: {
   label: string;
   name: string;
   fieldClassName?: string;
 } & React.ComponentProps<typeof Input>) {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
   return (
     <Field className={fieldClassName}>
-      <FieldLabel htmlFor={name}>{label}</FieldLabel>
-      <Input id={name} name={name} {...props} />
+      <FieldLabel htmlFor={inputId}>{label}</FieldLabel>
+      <Input
+        {...props}
+        id={inputId}
+        name={name}
+        className={cn("min-h-11", className)}
+      />
     </Field>
   );
 }
@@ -144,13 +158,20 @@ export function Submit({
   busy,
   disabled,
   children,
+  className,
 }: {
   busy: boolean;
   disabled?: boolean;
   children: ReactNode;
+  className?: string;
 }) {
   return (
-    <Button type="submit" disabled={busy || disabled}>
+    <Button
+      type="submit"
+      disabled={busy || disabled}
+      aria-busy={busy}
+      className={cn("min-h-11 min-w-11", className)}
+    >
       {busy && <Spinner data-icon="inline-start" />}
       {children}
     </Button>
@@ -159,20 +180,52 @@ export function Submit({
 export function QueryError({
   error,
   retry,
+  fallback,
 }: {
   error: unknown;
-  retry: () => void;
+  retry?: () => unknown;
+  fallback?: RefObject<HTMLElement | null>;
 }) {
   const t = useTranslations();
-
-  return error ? (
+  const path = usePathname();
+  const recovery = accountRecovery(
+    error,
+    typeof window === "undefined"
+      ? path
+      : window.location.pathname + window.location.search,
+  );
+  const { button, retrying, run } = useQueryRetry(() => retry?.(), fallback);
+  if (!error) return null;
+  return (
     <div className="grid gap-3">
       <ErrorNotice error={error} />
-      <Button type="button" variant="outline" onClick={() => void retry()}>
-        {t("Copy.tryAgain")}{" "}
-      </Button>
+      {recovery ? (
+        <Button asChild variant="outline" className="min-h-11 w-fit">
+          <Link href={recovery.href}>
+            {t(
+              recovery.kind === "signIn"
+                ? "Luma.signIn"
+                : "Luma.completeProfile",
+            )}
+          </Link>
+        </Button>
+      ) : (
+        retry && (
+          <Button
+            ref={button}
+            type="button"
+            variant="outline"
+            className="min-h-11"
+            disabled={retrying}
+            aria-busy={retrying}
+            onClick={run}
+          >
+            {t("Copy.tryAgain")}
+          </Button>
+        )
+      )}
     </div>
-  ) : null;
+  );
 }
 
 export function useLabelMap(keys: Record<string, TranslationKey>) {

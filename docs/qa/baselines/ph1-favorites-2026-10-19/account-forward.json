@@ -1,0 +1,28 @@
+[
+  {
+    "busy": false,
+    "focus": {
+      "empty": false,
+      "href": null,
+      "id": "be4503e4-9ca0-4bd8-923f-2e27bf58b1f4",
+      "tag": "BUTTON"
+    },
+    "path": "/saved",
+    "remaining": [
+      "be4503e4-9ca0-4bd8-923f-2e27bf58b1f4"
+    ],
+    "inputObservationTimedOut": false
+  },
+  {
+    "busy": false,
+    "focus": {
+      "empty": true,
+      "href": "/discovery",
+      "id": null,
+      "tag": "A"
+    },
+    "path": "/saved",
+    "remaining": [],
+    "inputObservationTimedOut": false
+  }
+]

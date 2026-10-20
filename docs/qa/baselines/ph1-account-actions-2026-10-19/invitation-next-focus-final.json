@@ -1,0 +1,10 @@
+{
+  "actions": [
+    {
+      "disabled": "false",
+      "name": "پذیرش دعوت باشگاه سپیدار"
+    }
+  ],
+  "focus": "پذیرش دعوت باشگاه سپیدار",
+  "focusTag": "BUTTON"
+}

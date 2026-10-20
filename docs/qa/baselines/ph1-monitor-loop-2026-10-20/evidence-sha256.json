@@ -1,0 +1,15 @@
+{
+  "docs/qa/ph1-monitor-loop-2026-10-20.md": "816a5950144dd23fc4268f10d805eb6b32d68ab33308231d519a0fd756cdceeb",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/cli-monitor.log": "5bbe95a7d6aa05fb0973fc50d5ef5b3fceba46d7cc572c119afc24f4f29fb089",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/cli-receipt.json": "2bff1c19c2fb8686f93f430f7338fc391f9480ab0e361c2452161961e8ebad84",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/cli-test-initial.log": "233de60bfd881f74568a46f67aee301ace15e2389d795ccfe21cb67091f343f3",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/cli-test.log": "6c939a3771a50929e681d1b51868b635b9c4b611ecba0896fa039e87a92af77b",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/final-audit.json": "4b9fd5ff3e33b52e87ff12d82cac2a8f23fb995688fe9be054eebecadb37af90",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/monitor-loop.patch": "077bb1082126931f2c0af10e9ac6780f3e02b72663e17f3843219fc7067557b9",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/source-before.json": "222a3f758fe9deda37a6650d691a5e329f34bc275ef87645cd73438def3f19b2",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/source-final.json": "de1bf6de58c12597d9509f30e7de2859f77d82a10c79345d0267ce1094edc615",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/tests-before-stop-guard.log": "566ad7ded0c5907ec36d1fbd0d5f29ee11ebee073a7efa581f2b8a4d7dc11283",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/tests-final.log": "499698e55d00b324279530f63383d318d3fa92636b5e76a7bf0025fad85c9ad9",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/tests-initial.log": "a67f05e12f2f2e123a7b08f269b55546146a37eb2d7f64ec8bd13507a25ebb23",
+  "docs/qa/baselines/ph1-monitor-loop-2026-10-20/verify-cli.mjs": "80209900f93885b9c7bc074744ac36e277a6ec860f9428a87f967faa8908da7e"
+}

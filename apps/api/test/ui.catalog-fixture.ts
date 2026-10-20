@@ -4,13 +4,22 @@ import type { DatabaseService } from '../src/database/database.service';
 import * as s from '../src/database/schema';
 
 /** Disposable, uniquely owned catalog. Never deletes records by a shared name. */
-export async function seedUiCatalog(db: DatabaseService['db']) {
+export async function seedUiCatalog(
+  db: DatabaseService['db'],
+  applicationOrigin = 'http://127.0.0.1:7081',
+  publication = false,
+) {
   const suffix = randomUUID().slice(0, 8);
   const seeded = await db.transaction(async (tx) => {
     const people = await tx
       .insert(s.users)
       .values(
-        ['مالک یک', 'مالک دو', 'ورزشکار آزمایشی'].map((name) => ({
+        [
+          'مالک یک',
+          'مالک دو',
+          'ورزشکار آزمایشی',
+          ...(publication ? ['ادمین بررسی آزمایشی'] : []),
+        ].map((name) => ({
           phone: `+9890${randomInt(100000000).toString().padStart(8, '0')}`,
           displayName: name,
           phoneVerifiedAt: new Date(),
@@ -18,6 +27,33 @@ export async function seedUiCatalog(db: DatabaseService['db']) {
         })),
       )
       .returning();
+    if (publication)
+      await tx.insert(s.platformAdmins).values({ userId: people[3].id });
+    const [equipment] = publication
+      ? await tx
+          .insert(s.equipments)
+          .values({ name: 'تردمیل آزمایشی', slug: `ui-equipment-${suffix}` })
+          .returning()
+      : [];
+    const facilities = publication
+      ? await tx
+          .insert(s.amenities)
+          .values([
+            { name: 'رختکن آزمایشی', slug: `ui-included-${suffix}` },
+            { name: 'سونای آزمایشی', slug: `ui-paid-${suffix}` },
+            { name: 'استخر آزمایشی', slug: `ui-unavailable-${suffix}` },
+          ])
+          .returning()
+      : [];
+    const [accessibility] = publication
+      ? await tx
+          .insert(s.accessibilityFeatures)
+          .values({
+            name: 'ورودی بدون پلهٔ آزمایشی',
+            slug: `ui-accessibility-${suffix}`,
+          })
+          .returning()
+      : [];
     // Pick an unused two-letter fixture code without taking ownership of an existing country.
     const used = new Set(
       (await tx.select({ code: s.countries.code }).from(s.countries)).map(
@@ -106,6 +142,46 @@ export async function seedUiCatalog(db: DatabaseService['db']) {
         await tx
           .insert(s.branchSports)
           .values({ branchId: branch.id, sportId: sport.id });
+        if (publication && index === 0 && b === 0) {
+          await tx
+            .update(s.branchProfiles)
+            .set({
+              audiencePolicies: {
+                audiences: ['women', 'men'],
+                minimumAge: 18,
+                maximumAge: 65,
+                notes: 'هماهنگی با پذیرش پیش از اولین مراجعه',
+              },
+            })
+            .where(eq(s.branchProfiles.branchId, branch.id));
+          await tx.insert(s.branchEquipments).values({
+            branchId: branch.id,
+            equipmentId: equipment.id,
+            quantity: 3,
+            description: 'تجهیزات صرفاً برای بررسی رابط',
+          });
+          await tx.insert(s.branchAmenities).values(
+            facilities.map((item, index) => ({
+              branchId: branch.id,
+              amenityId: item.id,
+              availability: (['included', 'paid', 'unavailable'] as const)[
+                index
+              ],
+            })),
+          );
+          await tx.insert(s.branchAccessibility).values({
+            branchId: branch.id,
+            featureId: accessibility.id,
+            description: 'ورودی هم‌سطح خیابان',
+          });
+          await tx.insert(s.clubPhones).values({
+            clubId: org.id,
+            branchId: branch.id,
+            number: '02100000001',
+            label: 'پذیرش',
+            extension: '21',
+          });
+        }
         await tx.insert(s.weeklyHours).values(
           Array.from({ length: 7 }, (_, dayOfWeek) => ({
             branchId: branch.id,
@@ -120,7 +196,7 @@ export async function seedUiCatalog(db: DatabaseService['db']) {
             organizationId: org.id,
             uploadedBy: owner.id,
             type: 'image',
-            url: `http://127.0.0.1:7081/images/club-placeholder.svg?fixture=${index}-${b}`,
+            url: `${applicationOrigin}/images/club-placeholder.svg?fixture=${index}-${b}`,
             alt: `${org.name} ${branch.name}`,
           })
           .returning();
@@ -171,6 +247,9 @@ export async function seedUiCatalog(db: DatabaseService['db']) {
       cityId: city.id,
       categoryId: category.id,
       sportId: sport.id,
+      equipmentId: equipment?.id,
+      facilityIds: facilities.map((item) => item.id),
+      accessibilityId: accessibility?.id,
     };
   });
   return {
@@ -220,6 +299,18 @@ export async function seedUiCatalog(db: DatabaseService['db']) {
           .delete(s.clubCategories)
           .where(eq(s.clubCategories.id, seeded.categoryId));
         await tx.delete(s.sports).where(eq(s.sports.id, seeded.sportId));
+        if (seeded.equipmentId)
+          await tx
+            .delete(s.equipments)
+            .where(eq(s.equipments.id, seeded.equipmentId));
+        if (seeded.facilityIds.length)
+          await tx
+            .delete(s.amenities)
+            .where(inArray(s.amenities.id, seeded.facilityIds));
+        if (seeded.accessibilityId)
+          await tx
+            .delete(s.accessibilityFeatures)
+            .where(eq(s.accessibilityFeatures.id, seeded.accessibilityId));
         await tx.delete(s.cities).where(eq(s.cities.id, seeded.cityId));
         await tx
           .delete(s.provinces)

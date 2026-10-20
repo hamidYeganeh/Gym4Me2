@@ -1,0 +1,33 @@
+{
+  "truncated": false,
+  "requests": [
+    {
+      "at": "2026-10-19T12:46:47.284Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 401,
+      "injected": false,
+      "code": "Backend.theSessionHasEndedSignInAgain"
+    },
+    {
+      "at": "2026-10-19T12:47:11.747Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:47:11.870Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    }
+  ]
+}

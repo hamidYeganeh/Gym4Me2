@@ -3,6 +3,7 @@ import test from "node:test";
 import { teamInvitationErrors } from "../../../packages/ui/src/account/team-invitation";
 
 const valid = {
+  reason: "همکاری در شعبه",
   phone: "۰۹۱۲۳۴۵۶۷۸۹",
   allBranches: false,
   branchIds: ["a"],

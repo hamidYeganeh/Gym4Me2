@@ -1,0 +1,6 @@
+{
+  "url": "http://127.0.0.1:7391/auth/otp?returnTo=%2Fprofile",
+  "focusName": "phone",
+  "passwordLink": "/auth/login?returnTo=%2Fprofile",
+  "profileEditorAbsent": true
+}

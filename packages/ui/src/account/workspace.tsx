@@ -8,8 +8,8 @@ import { useAdminOverview } from "@repo/api/admin";
 import { ApiError, type ApiApplication as Client } from "@repo/api";
 import type { Account } from "@repo/api/auth";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense, type ReactNode } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useEffect, useRef, useState, Suspense, type ReactNode } from "react";
 import {
   Building2,
   Dumbbell,
@@ -53,6 +53,9 @@ import {
 } from "./admin-details";
 import { BusinessClubContent, BusinessBranchContent } from "./business-catalog";
 import { useDateLabel } from "./common";
+import { sessionSignInHref } from "../lib/session-navigation";
+import { accountReadDenied } from "../lib/account-recovery";
+import { isActiveSurfaceElement } from "../lib/active-surface";
 export type Section =
   | "overview"
   | "organizations"
@@ -183,23 +186,40 @@ export function AccountWorkspace({
 
   const router = useRouter();
   const accountQuery = useAccount();
-  const account = accountQuery.data;
+  // Denied access hides the previous identity; temporary outages preserve drafts.
+  const account = accountReadDenied(accountQuery.error)
+    ? undefined
+    : accountQuery.data;
+  const workspace = useRef<HTMLDivElement>(null);
+  const path = usePathname();
+  const loginHref = sessionSignInHref(
+    client,
+    typeof window === "undefined"
+      ? path
+      : window.location.pathname + window.location.search,
+  );
   const accessQuery = useAccess(client === "admin" && Boolean(account));
   const logoutMutation = useLogout();
-  const allowed = client !== "admin" || Boolean(accessQuery.data?.isAdmin);
+  const allowed =
+    client !== "admin" ||
+    Boolean(!accessQuery.error && accessQuery.data?.isAdmin);
   const ready =
     !accountQuery.isLoading &&
     !(client === "admin" && account && accessQuery.isLoading);
   const error = accountQuery.error ?? accessQuery.error ?? logoutMutation.error;
   const busy = logoutMutation.isPending;
   useEffect(() => {
-    if (error instanceof ApiError && error.status === 401)
-      router.replace(client === "application" ? "/auth/otp" : "/login");
-  }, [error, router, client]);
+    if (
+      error instanceof ApiError &&
+      error.status === 401 &&
+      isActiveSurfaceElement(workspace.current)
+    )
+      router.replace(loginHref);
+  }, [error, router, loginHref]);
   async function logout() {
     try {
       await logoutMutation.mutateAsync();
-      router.replace(client === "application" ? "/auth/otp" : "/login");
+      router.replace(loginHref);
     } catch {
       /* The mutation exposes its error through the shared notice. */
     }
@@ -223,7 +243,11 @@ export function AccountWorkspace({
       : (nav.find((item) => item.key === section)?.title ??
         t("Copy.myAccount"));
   return (
-    <div dir={getDirection(locale)} className="min-h-dvh bg-muted/25 lg:flex">
+    <div
+      ref={workspace}
+      dir={getDirection(locale)}
+      className="min-h-dvh bg-muted/25 lg:flex"
+    >
       {client !== "application" && (
         <aside className="flex flex-col border-b bg-background p-5 lg:sticky lg:top-0 lg:h-dvh lg:w-64 lg:shrink-0 lg:overflow-y-auto lg:border-b-0 lg:border-e">
           <Link
@@ -319,7 +343,9 @@ export function AccountWorkspace({
           </nav>
         )}
         <main className="mx-auto grid max-w-6xl gap-7 p-5 lg:p-10">
-          {account && section !== "profile" && <PrivacyNotice />}
+          {account && !accessQuery.error && section !== "profile" && (
+            <PrivacyNotice />
+          )}
           <QueryError
             error={error}
             retry={() => {
@@ -329,7 +355,7 @@ export function AccountWorkspace({
           />
           {!ready ? (
             <Loading />
-          ) : account ? (
+          ) : account && !accessQuery.error ? (
             !allowed ? (
               <Blank
                 title={t("Copy.administratorAccessIsNotEnabledForThis")}
@@ -364,12 +390,7 @@ function WorkspaceContent({
   branchId?: string;
 }) {
   if (section === "profile")
-    return (
-      <ProfileContent
-        key={`${account.id}:${account.profilePublic}`}
-        account={account}
-      />
-    );
+    return <ProfileContent key={account.id} account={account} />;
   if (section === "sessions") return <SessionsContent />;
   if (section === "invitations") return <InvitationsContent />;
   if (client === "admin") {

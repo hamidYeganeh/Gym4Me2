@@ -1,5 +1,8 @@
 "use client";
+import { createContext, useContext, useRef } from "react";
 import { useTranslations } from "@repo/i18n";
+import { restoreDialogFocus } from "../../lib/dialog-focus";
+import type { ActionFocus } from "../../lib/action-focus";
 import { dialogStyles } from "./Dialog.styles";
 import type {
   DialogCloseProps,
@@ -20,8 +23,14 @@ import { Dialog as DialogPrimitive } from "radix-ui";
 import { Button } from "@repo/ui/kit/Button";
 import { XIcon } from "lucide-react";
 
-function Dialog({ ...props }: DialogProps) {
-  return <DialogPrimitive.Root data-slot="dialog" {...props} />;
+const ModalDialog = createContext(true);
+
+function Dialog({ modal = true, ...props }: DialogProps) {
+  return (
+    <ModalDialog.Provider value={modal}>
+      <DialogPrimitive.Root data-slot="dialog" modal={modal} {...props} />
+    </ModalDialog.Provider>
+  );
 }
 
 function DialogTrigger({ ...props }: DialogTriggerProps) {
@@ -50,9 +59,13 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  onOpenAutoFocus,
+  onCloseAutoFocus,
   ...props
 }: DialogContentProps) {
   const t = useTranslations();
+  const modal = useContext(ModalDialog);
+  const opener = useRef<ActionFocus | null>(null);
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -60,6 +73,27 @@ function DialogContent({
         data-slot="dialog-content"
         className={cn(dialogStyles.dialogContent(), className)}
         {...props}
+        onOpenAutoFocus={(event) => {
+          const origin = document.activeElement;
+          opener.current =
+            origin instanceof HTMLElement && origin !== document.body
+              ? {
+                  origin,
+                  target: () => origin,
+                  location:
+                    window.location.pathname +
+                    window.location.search +
+                    window.location.hash,
+                }
+              : null;
+          onOpenAutoFocus?.(event);
+        }}
+        onCloseAutoFocus={(event) => {
+          onCloseAutoFocus?.(event);
+          if (event.defaultPrevented || !modal) return;
+          const action = opener.current;
+          requestAnimationFrame(() => restoreDialogFocus(action));
+        }}
       >
         {children}
         {showCloseButton && (

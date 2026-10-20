@@ -1,0 +1,24 @@
+{
+  "alerts": [
+    "کد نادرست یا منقضی شده است."
+  ],
+  "controls": [
+    {
+      "height": 44,
+      "id": "_r_1_-phone",
+      "tag": "INPUT"
+    },
+    {
+      "height": 44,
+      "id": "_r_1_-code",
+      "tag": "INPUT"
+    },
+    {
+      "height": 44,
+      "id": "",
+      "tag": "BUTTON"
+    }
+  ],
+  "focusName": "phoneCode",
+  "invalid": "true"
+}

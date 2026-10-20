@@ -1,0 +1,260 @@
+{
+  "scope": "Only /api/v1/profile/account through the owned loopback proxy. Connection failure while proxy was stopped has no captured response. Other requests are omitted.",
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 401,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [
+        "displayName"
+      ],
+      "nameLength": 9,
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [
+        "profilePublic"
+      ],
+      "profilePublic": false,
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [
+        "profilePublic"
+      ],
+      "profilePublic": true,
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [
+        "displayName"
+      ],
+      "nameLength": 10,
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [
+        "profilePublic"
+      ],
+      "profilePublic": true,
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [
+        "displayName"
+      ],
+      "nameLength": 13,
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [
+        "displayName"
+      ],
+      "nameLength": 8,
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [
+        "displayName"
+      ],
+      "nameLength": 0,
+      "injected": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "status": 200,
+      "fields": [],
+      "injected": false
+    }
+  ]
+}

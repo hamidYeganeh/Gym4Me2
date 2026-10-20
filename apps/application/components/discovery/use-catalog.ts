@@ -8,6 +8,7 @@ import {
   type ClubFiltersDto,
 } from "@repo/api/catalog";
 import { detailView, summaryView } from "../../lib/catalog-view";
+import { availableCatalogData } from "../../lib/catalog-data";
 
 export function useCatalogClubs(
   filters: ClubFiltersDto = {},
@@ -16,24 +17,33 @@ export function useCatalogClubs(
 ) {
   const locale = useLocale();
   const query = useClubs(filters, savedOnly, guestIds);
+  const data = availableCatalogData(query.data, query.error);
   const clubs = useMemo(
-    () => (query.data ?? []).map((club) => summaryView(club, locale)),
-    [query.data, locale],
+    () => (data ?? []).map((club) => summaryView(club, locale)),
+    [data, locale],
   );
-  return { ...query, clubs };
+  return { ...query, data, clubs };
 }
 export function useCatalogClub(id: string, branchId?: string) {
   const locale = useLocale();
   const query = useClub(id);
+  const data = availableCatalogData(query.data, query.error);
   const main =
-    query.data?.branches.find((branch) => branch.id === branchId) ??
-    query.data?.branches.find((branch) => branch.isMain) ??
-    query.data?.branches[0];
+    data?.branches.find((branch) => branch.id === branchId) ??
+    data?.branches.find((branch) => branch.isMain) ??
+    data?.branches[0];
   const branch = useClubBranch(id, main?.id);
+  const branchData = availableCatalogData(branch.data, branch.error);
   const club = useMemo(
-    () =>
-      query.data ? detailView(query.data, branch.data, locale) : undefined,
-    [query.data, branch.data, locale],
+    () => (data ? detailView(data, branchData, locale) : undefined),
+    [data, branchData, locale],
   );
-  return { ...query, club, branch: branch.data, branchQuery: branch };
+  return {
+    ...query,
+    data,
+    club,
+    selectedBranchId: main?.id,
+    branch: branchData,
+    branchQuery: branch,
+  };
 }

@@ -1,0 +1,18 @@
+✔ a clean workspace reports a hoisted-only runtime, re-export and type dependency (13.674958ms)
+✔ a re-exported privacy hook resolves only its selected client and endpoint member (26.383ms)
+✔ conditional saved/guest catalog requests preserve candidates and inline contracts without sibling endpoints (12.609292ms)
+✔ generic sports wrappers bind the page argument without executing their transport (4.336917ms)
+✔ a resource path remains symbolic and a missing hook stays unresolved (0.778375ms)
+✔ callback parameters and sibling locals cannot borrow a hook argument (1.324833ms)
+✔ the page graph includes the actual selected SSR catalog client call (177.939542ms)
+✔ generation requires explicit paths to preserve historical baselines (0.258042ms)
+✔ regeneration reads source edits instead of retaining a previous AST or hash (47.478ms)
+✔ dated evidence binds matching HTTP/UI/source while exposing a changed build input (2.547542ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 525.201791

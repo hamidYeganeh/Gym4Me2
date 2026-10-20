@@ -1,4 +1,6 @@
 "use client";
+import { ChangeReasonField } from "./change-reason-field";
+import { changeReasonError } from "./change-reason";
 import { useTranslations } from "@repo/i18n";
 
 import {
@@ -18,7 +20,10 @@ import type {
 import Link from "next/link";
 import { useId, useRef, useState, type FormEvent } from "react";
 import { teamInvitationErrors } from "./team-invitation";
-import { isActiveSurfaceElement } from "../lib/active-surface";
+import {
+  isActiveSurfaceElement,
+  restoreOverlayFocus,
+} from "../lib/active-surface";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
 import { Button } from "@repo/ui/kit/Button";
@@ -279,8 +284,14 @@ export function TeamContent({ organization }: { organization: Organization }) {
   const [allBranches, setAllBranches] = useState(true);
   const [branchIds, setBranchIds] = useState<string[]>([]);
   const [phone, setPhone] = useState("");
+  const [inviteReason, setInviteReason] = useState("");
+  const [removalReason, setRemovalReason] = useState("");
+  const [removalAttempted, setRemovalAttempted] = useState(false);
+  const removalDialog = useRef<HTMLDivElement>(null);
   const [role, setRole] = useState("receptionist");
   const pending = useRef(false);
+  const inviteForm = useRef<HTMLFormElement>(null);
+  const removalTrigger = useRef<HTMLButtonElement | null>(null);
   const formId = useId();
   const [attempted, setAttempted] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -291,6 +302,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
   } | null>(null);
   const validation = teamInvitationErrors({
     phone,
+    reason: inviteReason,
     allBranches,
     branchIds,
     availableBranchIds:
@@ -305,12 +317,17 @@ export function TeamContent({ organization }: { organization: Organization }) {
     setAttempted(true);
     setError(null);
     const form = e.currentTarget;
-    const origin = document.activeElement;
+    const origin =
+      document.activeElement === document.body
+        ? (e.nativeEvent as SubmitEvent).submitter
+        : document.activeElement;
     const target = validation.phone
       ? '[name="invitePhone"]'
-      : validation.scope
-        ? "[data-team-scope] input"
-        : null;
+      : validation.reason
+        ? "[data-change-reason]"
+        : validation.scope
+          ? "[data-team-scope] input"
+          : null;
     if (target) {
       requestAnimationFrame(() => {
         if (
@@ -318,7 +335,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
           (document.activeElement === origin ||
             document.activeElement === document.body)
         )
-          form.querySelector<HTMLInputElement>(target)?.focus();
+          form.querySelector<HTMLElement>(target)?.focus();
       });
       return;
     }
@@ -330,11 +347,13 @@ export function TeamContent({ organization }: { organization: Organization }) {
         organizationId: organization.id,
         input: {
           phone,
+          reason: inviteReason.trim(),
           role: role as TeamRole,
           ...(allBranches ? {} : { branchIds }),
         },
       });
       setPhone("");
+      setInviteReason("");
       setAttempted(false);
 
       toast.success(t("Copy.theInvitationWillAppearInTheAccount"));
@@ -355,7 +374,19 @@ export function TeamContent({ organization }: { organization: Organization }) {
   }
   async function remove() {
     if (!removal || pending.current) return;
+    setRemovalAttempted(true);
+    if (changeReasonError(removalReason)) {
+      requestAnimationFrame(() => {
+        const target =
+          removalDialog.current?.querySelector<HTMLTextAreaElement>(
+            "[data-change-reason]",
+          );
+        if (target && isActiveSurfaceElement(target)) target.focus();
+      });
+      return;
+    }
     pending.current = true;
+    const origin = document.activeElement;
     setBusy(true);
     setError(null);
     try {
@@ -363,11 +394,13 @@ export function TeamContent({ organization }: { organization: Organization }) {
         await revokeInvitation.mutateAsync({
           organizationId: organization.id,
           invitationId: removal.id,
+          input: { reason: removalReason.trim() },
         });
       else
         await removeMember.mutateAsync({
           organizationId: organization.id,
           memberId: removal.id,
+          input: { reason: removalReason.trim() },
         });
       setRemoval(null);
 
@@ -377,7 +410,34 @@ export function TeamContent({ organization }: { organization: Organization }) {
     } finally {
       pending.current = false;
       setBusy(false);
+      requestAnimationFrame(() => {
+        if (
+          origin instanceof HTMLElement &&
+          isActiveSurfaceElement(origin) &&
+          document.activeElement === document.body
+        )
+          origin.focus();
+      });
     }
+  }
+  function restoreRemovalFocus() {
+    const target = isActiveSurfaceElement(removalTrigger.current)
+      ? removalTrigger.current
+      : (inviteForm.current?.querySelector<HTMLInputElement>(
+          '[name="invitePhone"]',
+        ) ?? null);
+    restoreOverlayFocus(target);
+    requestAnimationFrame(() => {
+      if (target && document.activeElement === target) {
+        const rect = target.getBoundingClientRect();
+        if (rect.top < 8 || rect.bottom > innerHeight - 8)
+          target.scrollIntoView({
+            block: "nearest",
+            inline: "nearest",
+            behavior: "instant",
+          });
+      }
+    });
   }
   if (organization.role !== "owner")
     return (
@@ -396,7 +456,12 @@ export function TeamContent({ organization }: { organization: Organization }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form noValidate onSubmit={invite} className="max-w-xl">
+          <form
+            ref={inviteForm}
+            noValidate
+            onSubmit={invite}
+            className="max-w-xl"
+          >
             <fieldset
               disabled={busy}
               aria-label={t("Copy.inviteColleague")}
@@ -408,6 +473,8 @@ export function TeamContent({ organization }: { organization: Organization }) {
                   <TextField
                     label={t("Copy.colleagueMobileNumber")}
                     name="invitePhone"
+                    id={`${formId}-phone`}
+                    className="min-h-11"
                     type="tel"
                     dir="ltr"
                     value={phone}
@@ -430,11 +497,13 @@ export function TeamContent({ organization }: { organization: Organization }) {
                   )}
                 </div>
                 <Field>
-                  <FieldLabel htmlFor="role">
+                  <FieldLabel htmlFor={`${formId}-role`}>
                     {t("Copy.organizationRole")}
                   </FieldLabel>
                   <NativeSelect
-                    id="role"
+                    id={`${formId}-role`}
+                    className="min-h-11"
+                    style={{ minHeight: 44 }}
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
                   >
@@ -446,9 +515,15 @@ export function TeamContent({ organization }: { organization: Organization }) {
                   </NativeSelect>
                 </Field>
               </FieldGroup>
+              <ChangeReasonField
+                value={inviteReason}
+                onChange={setInviteReason}
+                error={fieldErrors.reason}
+                disabled={busy}
+              />
               <fieldset
                 data-team-scope
-                className="grid min-w-0 gap-2"
+                className="grid min-w-0 gap-2 [&_button]:min-h-11"
                 aria-invalid={Boolean(fieldErrors.scope) || undefined}
                 aria-describedby={
                   [
@@ -462,7 +537,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
                 <legend className="mb-2 text-sm font-medium">
                   {t("StaffScope.title")}
                 </legend>
-                <label className="flex items-center gap-2 text-sm">
+                <label className="flex min-h-11 items-center gap-2 text-sm">
                   <input
                     type="checkbox"
                     checked={allBranches}
@@ -481,7 +556,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
                       {(branches.data ?? []).map((branch) => (
                         <label
                           key={branch.id}
-                          className="flex items-center gap-2 rounded-xl border px-3 py-2 text-sm"
+                          className="flex min-h-11 items-center gap-2 rounded-xl border px-3 py-2 text-sm"
                         >
                           <input
                             type="checkbox"
@@ -518,7 +593,9 @@ export function TeamContent({ organization }: { organization: Organization }) {
               </fieldset>
               <ErrorNotice error={error} />
               <div>
-                <Submit busy={busy}>{t("Copy.sendTeamInvitation")}</Submit>
+                <Submit busy={busy} className="min-h-11">
+                  {t("Copy.sendTeamInvitation")}
+                </Submit>
               </div>
             </fieldset>
           </form>
@@ -572,10 +649,18 @@ export function TeamContent({ organization }: { organization: Organization }) {
                             <Button
                               variant="ghost"
                               size="sm"
+                              className="min-h-11 min-w-11"
                               disabled={busy}
-                              onClick={() =>
-                                setRemoval({ id: member.id, invitation: false })
-                              }
+                              onClick={(event) => {
+                                removalTrigger.current = event.currentTarget;
+                                setRemovalReason("");
+                                setRemovalAttempted(false);
+                                setError(null);
+                                setRemoval({
+                                  id: member.id,
+                                  invitation: false,
+                                });
+                              }}
                             >
                               {t("Copy.revokeAccess")}{" "}
                             </Button>
@@ -630,10 +715,15 @@ export function TeamContent({ organization }: { organization: Organization }) {
                         <Button
                           variant="outline"
                           size="sm"
+                          className="min-h-11 min-w-11"
                           disabled={busy}
-                          onClick={() =>
-                            setRemoval({ id: inv.id, invitation: true })
-                          }
+                          onClick={(event) => {
+                            removalTrigger.current = event.currentTarget;
+                            setRemovalReason("");
+                            setRemovalAttempted(false);
+                            setError(null);
+                            setRemoval({ id: inv.id, invitation: true });
+                          }}
                         >
                           {t("Copy.invitationRevoked")}{" "}
                         </Button>
@@ -652,7 +742,14 @@ export function TeamContent({ organization }: { organization: Organization }) {
           if (!open && !busy) setRemoval(null);
         }}
       >
-        <DialogContent>
+        <DialogContent
+          ref={removalDialog}
+          className="[&_button]:min-h-11 [&_button]:min-w-11"
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            restoreRemovalFocus();
+          }}
+        >
           <DialogHeader>
             <DialogTitle>
               {t("Copy.revoke")}{" "}
@@ -664,6 +761,14 @@ export function TeamContent({ organization }: { organization: Organization }) {
               {t("Copy.thisPersonSOrganizationAccessWillEnd")}{" "}
             </DialogDescription>
           </DialogHeader>
+          <ChangeReasonField
+            value={removalReason}
+            onChange={setRemovalReason}
+            error={
+              removalAttempted ? changeReasonError(removalReason) : undefined
+            }
+            disabled={busy}
+          />
           <ErrorNotice error={error} />
           <DialogFooter>
             <Button

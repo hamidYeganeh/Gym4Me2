@@ -14,34 +14,11 @@ import {
 } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createMonitorScheduler } from "./monitor-loop.mjs";
+export { transition } from "./monitor-loop.mjs";
 
-export function transition(
-  previous = { status: "unknown", failures: 0, successes: 0 },
-  healthy,
-  now = new Date().toISOString(),
-) {
-  const next = {
-    ...previous,
-    failures: healthy ? 0 : previous.failures + 1,
-    successes: healthy ? previous.successes + 1 : 0,
-    checkedAt: now,
-  };
-  let event;
-  if (!healthy && next.failures >= 3 && previous.status !== "down") {
-    next.status = "down";
-    next.downSince = now;
-    event = { type: "incident", at: now };
-  } else if (healthy && next.successes >= 2 && previous.status !== "up") {
-    next.status = "up";
-    delete next.downSince;
-    event = {
-      type: previous.status === "down" ? "recovered" : "healthy",
-      at: now,
-    };
-  }
-  return { next, event };
-}
-export function probe(port, ca, timeoutMs = 10000) {
+export function probe(port, ca, timeoutMs = 10000, signal) {
+  if (signal?.aborted) return Promise.resolve(false);
   return new Promise((resolveResult) => {
     let finished = false;
     const finish = (healthy) => {
@@ -52,7 +29,13 @@ export function probe(port, ca, timeoutMs = 10000) {
       }
     };
     const req = https.get(
-      { hostname: "127.0.0.1", port, path: "/api/v1/system/health/ready", ca },
+      {
+        hostname: "127.0.0.1",
+        port,
+        path: "/api/v1/system/health/ready",
+        ca,
+        signal,
+      },
       (res) => {
         let body = "";
         res.setEncoding("utf8");
@@ -100,42 +83,47 @@ if (
   const alertConfig = resolve(root, ".ops-private/monitor.env");
   const alerts = existsSync(alertConfig) ? privateConfig(alertConfig) : {};
   const targets = { api: 7443, application: 7181, admin: 7182, business: 7183 };
-  // A fresh process gathers new evidence instead of trusting stale status files.
-  const states = {};
   let stopped = false;
   let timer;
   const stop = () => {
     stopped = true;
     clearTimeout(timer);
+    monitor.stop();
   };
-  process.on("SIGINT", stop);
-  process.on("SIGTERM", stop);
-  const tick = async () => {
-    const results = await Promise.all(
-      Object.entries(targets).map(async ([service, port]) => [
-        service,
-        await probe(port, ca),
-      ]),
+  const failed = () => {
+    console.error(
+      "Monitor failed to record health or deliver alerts; exiting.",
     );
-    if (existsSync(resolve(root, ".ops-private/backup.env"))) {
-      let operations = {};
-      try {
-        operations = JSON.parse(
-          readFileSync(
-            resolve(root, ".artifacts/operations/state.json"),
-            "utf8",
-          ),
-        );
-      } catch {
-        /* Missing state must alert, never imply a working backup. */
+    process.exitCode = 1;
+    stop();
+  };
+  // A fresh process gathers evidence; delivery cannot block subsequent probes.
+  const monitor = createMonitorScheduler({
+    check: async (signal) => {
+      const results = await Promise.all(
+        Object.entries(targets).map(async ([service, port]) => [
+          service,
+          await probe(port, ca, 10000, signal),
+        ]),
+      );
+      if (existsSync(resolve(root, ".ops-private/backup.env"))) {
+        let operations = {};
+        try {
+          operations = JSON.parse(
+            readFileSync(
+              resolve(root, ".artifacts/operations/state.json"),
+              "utf8",
+            ),
+          );
+        } catch {
+          /* Missing state must alert, never imply a working backup. */
+        }
+        results.push(...backupHealth(operations));
       }
-      results.push(...backupHealth(operations));
-    }
-    const now = new Date().toISOString();
-    for (const [service, healthy] of results) {
-      const { next, event } = transition(states[service], healthy, now);
-      states[service] = next;
-      if (event) {
+      return results;
+    },
+    publish(snapshot, events) {
+      for (const event of events) {
         if (existsSync(log) && statSync(log).size >= 1024 * 1024) {
           for (let i = 2; i >= 1; i--) {
             const source = `${log}.${i}`;
@@ -147,40 +135,45 @@ if (
           }
           renameSync(log, `${log}.1`);
         }
-        enqueueAlert(outbox, { service, ...event });
-        const line = JSON.stringify({ service, ...event });
+        enqueueAlert(outbox, event);
+        const line = JSON.stringify(event);
         appendFileSync(log, line + "\n", { mode: 0o600 });
         console.log(line);
       }
-    }
-    const alertDelivery = await deliverAlerts(
-      outbox,
-      alerts.MONITOR_WEBHOOK_URL,
-      alerts.MONITOR_WEBHOOK_TOKEN,
-    );
-    const snapshot = {
-      alertDelivery,
-      checkedAt: now,
-      results: Object.fromEntries(results),
-      states,
-    };
-    const temporary = resolve(directory, `status-${process.pid}.tmp`);
-    writeFileSync(temporary, JSON.stringify(snapshot, null, 2), {
-      mode: 0o600,
-    });
-    renameSync(temporary, resolve(directory, "status.json"));
-    if (mode === "--once") {
-      console.log(JSON.stringify(snapshot));
-      process.exitCode = results.every(([, healthy]) => healthy) ? 0 : 1;
-    } else if (!stopped)
-      timer = setTimeout(
-        () =>
-          void tick().catch(() => {
-            console.error("Monitor failed to record health; exiting.");
-            process.exitCode = 1;
-          }),
-        30000,
-      );
+      const temporary = resolve(directory, `status-${process.pid}.tmp`);
+      writeFileSync(temporary, JSON.stringify(snapshot, null, 2), {
+        mode: 0o600,
+      });
+      renameSync(temporary, resolve(directory, "status.json"));
+    },
+    deliver: (signal) =>
+      deliverAlerts(
+        outbox,
+        alerts.MONITOR_WEBHOOK_URL,
+        alerts.MONITOR_WEBHOOK_TOKEN,
+        fetch,
+        Date.now(),
+        signal,
+      ),
+    onError: failed,
+  });
+  process.on("SIGINT", stop);
+  process.on("SIGTERM", stop);
+  const tick = async () => {
+    await monitor.tick();
+    if (!stopped) timer = setTimeout(() => void tick().catch(failed), 30000);
   };
-  await tick();
+  if (mode === "--once") {
+    try {
+      const snapshot = await monitor.once();
+      if (!stopped) {
+        console.log(JSON.stringify(snapshot));
+        process.exitCode = Object.values(snapshot.results).every(Boolean)
+          ? 0
+          : 1;
+      }
+    } catch {
+      failed();
+    }
+  } else await tick().catch(failed);
 }

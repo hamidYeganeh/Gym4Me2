@@ -1,0 +1,335 @@
+{
+  "scope": "Authenticated page contexts and modal focus observations only; cancelling dialogs performs no mutation. Historical privacy snapshots retain changed-build disclosure; older profile sessions are not relabelled current.",
+  "sessions": [
+    {
+      "id": "privacy-web-2026-10-19",
+      "surface": "application",
+      "route": "/profile/settings/privacy",
+      "buildId": "WefDdxE0lp8sGQWe7o4Uz",
+      "report": "docs/qa/ph1-privacy-2026-10-19.md",
+      "http": "docs/qa/baselines/ph1-privacy-2026-10-19/http.json",
+      "buildInputs": "docs/qa/baselines/ph1-privacy-2026-10-19/build-inputs.json",
+      "referencedSourceSha256": {
+        "packages/ui/src/account/privacy.tsx": "1b1c3ca30bc144037423835ed1c5b508ec18abe43260bd794f095ddd6cff418d",
+        "apps/application/app/profile/settings/privacy/page.tsx": "8777916e5591d3d01c1ebad99de9549bf06f42a9f9cfbf572e4d9d4189a85b4c",
+        "packages/ui/src/account/mobile-account.tsx": "9eca6198b9c79128f8e114e13bf0e58450ec0945d2de17eea4515a213e2f743c",
+        "packages/api/src/profile/profile.hooks.ts": "b69b4fc87f942df5dc96b19ddd23fe91238cf9b9d1d49980e015ccb07510801d",
+        "packages/api/src/profile/profile.clients.ts": "92b969c52c11f87f4339bfa2404e83caaf59b104a123253bc11be7845bd599af",
+        "packages/api/src/profile/profile.endpoints.ts": "61622004999a5dfd634fe6c21f84901db0e5e34e8a8627aa999e99d26975611f",
+        "packages/api/src/provider.tsx": "9a5c6f6622352fda2d5a7cdf948b8a414ca4bf728fe95e07fe57e0412e386ba7",
+        "packages/api/src/query.ts": "79ac7c1c57440c6f4b8396f14d661bc87bb62c606fb5ac6cd68963c32bd60e37",
+        "packages/api/src/transport.ts": "608aab86dcca94e80fb4f0bcb1daa8678f8c76b0c3f18e6fdb033048562e9a96"
+      },
+      "states": [
+        {
+          "id": "marketing-saved",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useUpdatePrivacy",
+          "method": "POST",
+          "path": "profile/account/privacy/preferences",
+          "status": 201,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/final-save-focus.json",
+          "equals": {
+            "focus": "ذخیرهٔ انتخاب‌ها",
+            "focusTag": "BUTTON",
+            "marketing": "true"
+          }
+        },
+        {
+          "id": "external-revocation-reflected",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useUpdatePrivacy",
+          "method": "POST",
+          "path": "profile/account/privacy/preferences",
+          "status": 201,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/final-revocation-focus.json",
+          "equals": {
+            "focus": "ذخیرهٔ انتخاب‌ها",
+            "focusTag": "BUTTON",
+            "marketing": "false"
+          }
+        },
+        {
+          "id": "stale-session-error-inside-dialog",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useRequestDeletion",
+          "method": "POST",
+          "path": "profile/account/privacy/deletion",
+          "status": 409,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-failure.json",
+          "equals": {
+            "alertInside": true,
+            "alertVisible": true,
+            "dialog": true,
+            "focus": "ثبت درخواست حذف",
+            "focusTag": "BUTTON"
+          }
+        },
+        {
+          "id": "deletion-pending",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useRequestDeletion",
+          "method": "POST",
+          "path": "profile/account/privacy/deletion",
+          "status": 201,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-pending.json",
+          "equals": {
+            "dialog": false,
+            "focus": "لغو درخواست حذف"
+          }
+        },
+        {
+          "id": "deletion-cancelled",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useCancelDeletion",
+          "method": "POST",
+          "path": "profile/account/privacy/deletion/cancel",
+          "status": 201,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-cancelled.json",
+          "equals": {
+            "dialog": false,
+            "focus": "درخواست حذف حساب"
+          }
+        },
+        {
+          "id": "scoped-export-downloaded",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "useExportAccount",
+          "method": "GET",
+          "path": "profile/account/privacy/export",
+          "status": 200,
+          "receipt": "docs/qa/baselines/ph1-privacy-2026-10-19/export.json",
+          "equals": {
+            "ownAccount": true,
+            "ownPhone": true,
+            "otherFixturePhonesAbsent": true,
+            "forbiddenCredentialKeys": [],
+            "formatVersion": 2,
+            "focus": "دریافت خروجی داده‌ها"
+          }
+        }
+      ],
+      "artifactSha256": {
+        "docs/qa/baselines/ph1-privacy-2026-10-19/http.json": "2111c47b1c3e53d85382e2bcf18508803b47715f6055a14734c9b65319310211",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/build-inputs.json": "6b9d48f04f16f8625f41277203fdb7812c47870b36b37820a4c423e46f605c00",
+        "docs/qa/ph1-privacy-2026-10-19.md": "9b269fcd3163cbe96baa0f37aad9ccb588ff82959c348467d207757d245a8c07",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/final-save-focus.json": "59af926dce0b0d5aa9da41aa65b4d1d63acc6ca2ed8dee80fc8cc0020e7138c9",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/final-revocation-focus.json": "fb0021da6d94f094f435f010e580000f6c61a4c290740c49f388af40b9ec8943",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-failure.json": "9a636b15652e6333d39ac800e69b90ebb1194047e88e50b43ddd1689005af485",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-pending.json": "e37ff3e482601f2f8ef4bae6ba76f73b224ba8e1751b05e09e4a4375942c3a61",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/deletion-cancelled.json": "83ff1fd6eb90aa3778ba40966ba3cee4bcc82ec629eea53b0c22f3f2c7fd2e63",
+        "docs/qa/baselines/ph1-privacy-2026-10-19/export.json": "dd3189f60c8cc9cff22bd248e630c2bde4d2ae72589cee17550f6ea42d4f4ec9"
+      }
+    },
+    {
+      "id": "dialog-focus-admin-term-escape-2026-10-19",
+      "surface": "admin",
+      "route": "/taxonomies",
+      "buildId": "9hsRwB0ofGfZI2K9qkMOv",
+      "report": "docs/qa/ph1-dialog-focus-2026-10-19.md",
+      "http": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/admin-http.json",
+      "buildInputs": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/build-inputs.json",
+      "referencedSourceSha256": {
+        "packages/ui/src/kit/Dialog/Dialog.tsx": "39511878593cb856d22894a37d3ae4e47bb5c3d0ab14782157a2774a4d62babb",
+        "packages/ui/src/lib/dialog-focus.ts": "ca32e5364c3dee1fc7591ac511271eac59429ef3e570f3acbb9935a7a72400b9",
+        "packages/ui/src/lib/action-focus.ts": "4cbec37b6dc5cbabf00b681fb4d718b5a72a051c5705db87ec39a9ea855e6ebe",
+        "packages/ui/src/lib/active-surface.ts": "2bb4e5ee5f5340b4f6852070261a8a8deec9c67988b2e68cb518e9da60da51bc",
+        "packages/api/src/profile/profile.endpoints.ts": "61622004999a5dfd634fe6c21f84901db0e5e34e8a8627aa999e99d26975611f",
+        "packages/api/src/profile/profile.clients.ts": "92b969c52c11f87f4339bfa2404e83caaf59b104a123253bc11be7845bd599af",
+        "packages/api/src/profile/profile.hooks.ts": "b69b4fc87f942df5dc96b19ddd23fe91238cf9b9d1d49980e015ccb07510801d",
+        "packages/ui/src/account/workspace.tsx": "c40ee92798e0445b205e864ae9b46681b0e349c318b55aecb3a922363b180e42",
+        "packages/ui/src/account/admin-catalog.tsx": "4796bcdf6d35d811f7d823d93951fee56204bd3b8d0f2f0ee3c908125ea18fa3"
+      },
+      "states": [
+        {
+          "id": "term-escape",
+          "callSource": "packages/ui/src/account/workspace.tsx",
+          "hook": "useAccount",
+          "method": "GET",
+          "path": "profile/account",
+          "status": 200,
+          "receipt": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/term-escape.json",
+          "equals": {
+            "dialogCount": 0,
+            "focusTag": "BUTTON",
+            "focusText": "افزودن مورد",
+            "path": "/taxonomies",
+            "scrollY": 0
+          }
+        },
+        {
+          "id": "term-cancel",
+          "callSource": "packages/ui/src/account/workspace.tsx",
+          "hook": "useAccount",
+          "method": "GET",
+          "path": "profile/account",
+          "status": 200,
+          "receipt": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/term-cancel.json",
+          "equals": {
+            "dialogCount": 0,
+            "focusTag": "BUTTON",
+            "focusText": "افزودن مورد",
+            "path": "/taxonomies",
+            "scrollY": 0
+          }
+        },
+        {
+          "id": "term-close",
+          "callSource": "packages/ui/src/account/workspace.tsx",
+          "hook": "useAccount",
+          "method": "GET",
+          "path": "profile/account",
+          "status": 200,
+          "receipt": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/term-close.json",
+          "equals": {
+            "dialogCount": 0,
+            "focusTag": "BUTTON",
+            "focusText": "افزودن مورد",
+            "path": "/taxonomies",
+            "scrollY": 0
+          }
+        }
+      ],
+      "artifactSha256": {
+        "docs/qa/ph1-dialog-focus-2026-10-19.md": "e8354dae1162f5303f8790f2eb72e1d9a61c510eccf051db95ef1a88d12cadb2",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/admin-http.json": "1919833f5f1a9ce594f2b15bde2bcfc2a07f3ba7190584dc7534f29ee4b1e162",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/build-inputs.json": "f466ae2ed60f4fa9eb3991ef5695100ab276a2ee75d523f4a272f7cd527fc11c",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/term-escape.json": "fefb0794767246bc6813623b2d8f807adf39a16f3d187120c33370b885e0d612",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/term-cancel.json": "fefb0794767246bc6813623b2d8f807adf39a16f3d187120c33370b885e0d612",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/term-close.json": "fefb0794767246bc6813623b2d8f807adf39a16f3d187120c33370b885e0d612"
+      }
+    },
+    {
+      "id": "dialog-focus-admin-place-escape-2026-10-19",
+      "surface": "admin",
+      "route": "/locations",
+      "buildId": "9hsRwB0ofGfZI2K9qkMOv",
+      "report": "docs/qa/ph1-dialog-focus-2026-10-19.md",
+      "http": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/admin-http.json",
+      "buildInputs": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/build-inputs.json",
+      "referencedSourceSha256": {
+        "packages/ui/src/kit/Dialog/Dialog.tsx": "39511878593cb856d22894a37d3ae4e47bb5c3d0ab14782157a2774a4d62babb",
+        "packages/ui/src/lib/dialog-focus.ts": "ca32e5364c3dee1fc7591ac511271eac59429ef3e570f3acbb9935a7a72400b9",
+        "packages/ui/src/lib/action-focus.ts": "4cbec37b6dc5cbabf00b681fb4d718b5a72a051c5705db87ec39a9ea855e6ebe",
+        "packages/ui/src/lib/active-surface.ts": "2bb4e5ee5f5340b4f6852070261a8a8deec9c67988b2e68cb518e9da60da51bc",
+        "packages/api/src/profile/profile.endpoints.ts": "61622004999a5dfd634fe6c21f84901db0e5e34e8a8627aa999e99d26975611f",
+        "packages/api/src/profile/profile.clients.ts": "92b969c52c11f87f4339bfa2404e83caaf59b104a123253bc11be7845bd599af",
+        "packages/api/src/profile/profile.hooks.ts": "b69b4fc87f942df5dc96b19ddd23fe91238cf9b9d1d49980e015ccb07510801d",
+        "packages/ui/src/account/workspace.tsx": "c40ee92798e0445b205e864ae9b46681b0e349c318b55aecb3a922363b180e42",
+        "packages/ui/src/account/admin-catalog.tsx": "4796bcdf6d35d811f7d823d93951fee56204bd3b8d0f2f0ee3c908125ea18fa3"
+      },
+      "states": [
+        {
+          "id": "place-escape",
+          "callSource": "packages/ui/src/account/workspace.tsx",
+          "hook": "useAccount",
+          "method": "GET",
+          "path": "profile/account",
+          "status": 200,
+          "receipt": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/place-escape.json",
+          "equals": {
+            "dialogCount": 0,
+            "focusTag": "BUTTON",
+            "focusText": "افزودن کشور",
+            "path": "/locations",
+            "scrollY": 0
+          }
+        }
+      ],
+      "artifactSha256": {
+        "docs/qa/ph1-dialog-focus-2026-10-19.md": "e8354dae1162f5303f8790f2eb72e1d9a61c510eccf051db95ef1a88d12cadb2",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/admin-http.json": "1919833f5f1a9ce594f2b15bde2bcfc2a07f3ba7190584dc7534f29ee4b1e162",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/build-inputs.json": "f466ae2ed60f4fa9eb3991ef5695100ab276a2ee75d523f4a272f7cd527fc11c",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/place-escape.json": "f384ef2949fcfb5f939a20292f27c2c4cb4b0dacadfa5d1ccf9aeef67bff333e"
+      }
+    },
+    {
+      "id": "dialog-focus-admin-decision-cancel-2026-10-19",
+      "surface": "admin",
+      "route": "/users",
+      "buildId": "9hsRwB0ofGfZI2K9qkMOv",
+      "report": "docs/qa/ph1-dialog-focus-2026-10-19.md",
+      "http": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/admin-http.json",
+      "buildInputs": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/build-inputs.json",
+      "referencedSourceSha256": {
+        "packages/ui/src/kit/Dialog/Dialog.tsx": "39511878593cb856d22894a37d3ae4e47bb5c3d0ab14782157a2774a4d62babb",
+        "packages/ui/src/lib/dialog-focus.ts": "ca32e5364c3dee1fc7591ac511271eac59429ef3e570f3acbb9935a7a72400b9",
+        "packages/ui/src/lib/action-focus.ts": "4cbec37b6dc5cbabf00b681fb4d718b5a72a051c5705db87ec39a9ea855e6ebe",
+        "packages/ui/src/lib/active-surface.ts": "2bb4e5ee5f5340b4f6852070261a8a8deec9c67988b2e68cb518e9da60da51bc",
+        "packages/api/src/profile/profile.endpoints.ts": "61622004999a5dfd634fe6c21f84901db0e5e34e8a8627aa999e99d26975611f",
+        "packages/api/src/profile/profile.clients.ts": "92b969c52c11f87f4339bfa2404e83caaf59b104a123253bc11be7845bd599af",
+        "packages/api/src/profile/profile.hooks.ts": "b69b4fc87f942df5dc96b19ddd23fe91238cf9b9d1d49980e015ccb07510801d",
+        "packages/ui/src/account/workspace.tsx": "c40ee92798e0445b205e864ae9b46681b0e349c318b55aecb3a922363b180e42",
+        "packages/ui/src/account/admin.tsx": "88ff52c3889b422dc253c76a4880a1adfef8f7f74206cdef6298b962453891f0"
+      },
+      "states": [
+        {
+          "id": "decision-cancel",
+          "callSource": "packages/ui/src/account/workspace.tsx",
+          "hook": "useAccount",
+          "method": "GET",
+          "path": "profile/account",
+          "status": 200,
+          "receipt": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/decision-cancel.json",
+          "equals": {
+            "dialogCount": 0,
+            "focusTag": "BUTTON",
+            "focusText": "تعلیق",
+            "path": "/users",
+            "sameAthleteRow": true
+          }
+        }
+      ],
+      "artifactSha256": {
+        "docs/qa/ph1-dialog-focus-2026-10-19.md": "e8354dae1162f5303f8790f2eb72e1d9a61c510eccf051db95ef1a88d12cadb2",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/admin-http.json": "1919833f5f1a9ce594f2b15bde2bcfc2a07f3ba7190584dc7534f29ee4b1e162",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/build-inputs.json": "f466ae2ed60f4fa9eb3991ef5695100ab276a2ee75d523f4a272f7cd527fc11c",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/decision-cancel.json": "fcda6ba2cde145f153324527db4f8bcb9e0041f3bf07630a04a2cc2789a3433e"
+      }
+    },
+    {
+      "id": "dialog-focus-application-privacy-custom-cancel-2026-10-19",
+      "surface": "application",
+      "route": "/profile/settings/privacy",
+      "buildId": "6ivgxvtVgP2-IIGrwgy9c",
+      "report": "docs/qa/ph1-dialog-focus-2026-10-19.md",
+      "http": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/application-http.json",
+      "buildInputs": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/build-inputs.json",
+      "referencedSourceSha256": {
+        "packages/ui/src/kit/Dialog/Dialog.tsx": "39511878593cb856d22894a37d3ae4e47bb5c3d0ab14782157a2774a4d62babb",
+        "packages/ui/src/lib/dialog-focus.ts": "ca32e5364c3dee1fc7591ac511271eac59429ef3e570f3acbb9935a7a72400b9",
+        "packages/ui/src/lib/action-focus.ts": "4cbec37b6dc5cbabf00b681fb4d718b5a72a051c5705db87ec39a9ea855e6ebe",
+        "packages/ui/src/lib/active-surface.ts": "2bb4e5ee5f5340b4f6852070261a8a8deec9c67988b2e68cb518e9da60da51bc",
+        "packages/api/src/profile/profile.endpoints.ts": "61622004999a5dfd634fe6c21f84901db0e5e34e8a8627aa999e99d26975611f",
+        "packages/api/src/profile/profile.clients.ts": "92b969c52c11f87f4339bfa2404e83caaf59b104a123253bc11be7845bd599af",
+        "packages/api/src/profile/profile.hooks.ts": "b69b4fc87f942df5dc96b19ddd23fe91238cf9b9d1d49980e015ccb07510801d",
+        "packages/ui/src/account/privacy.tsx": "1b1c3ca30bc144037423835ed1c5b508ec18abe43260bd794f095ddd6cff418d"
+      },
+      "states": [
+        {
+          "id": "privacy-custom-cancel",
+          "callSource": "packages/ui/src/account/privacy.tsx",
+          "hook": "usePrivacy",
+          "method": "GET",
+          "path": "profile/account/privacy",
+          "status": 200,
+          "receipt": "docs/qa/baselines/ph1-dialog-focus-2026-10-19/privacy-custom-cancel.json",
+          "equals": {
+            "dialogCount": 0,
+            "documentWidth": 360,
+            "focusTag": "BUTTON",
+            "focusText": "درخواست حذف حساب",
+            "path": "/profile/settings/privacy",
+            "viewportWidth": 360
+          }
+        }
+      ],
+      "artifactSha256": {
+        "docs/qa/ph1-dialog-focus-2026-10-19.md": "e8354dae1162f5303f8790f2eb72e1d9a61c510eccf051db95ef1a88d12cadb2",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/application-http.json": "d6d194e57c9fc9711d6d393d118cb46bed92731d06ebc0c2240371ef817c7fcd",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/build-inputs.json": "f466ae2ed60f4fa9eb3991ef5695100ab276a2ee75d523f4a272f7cd527fc11c",
+        "docs/qa/baselines/ph1-dialog-focus-2026-10-19/privacy-custom-cancel.json": "a219a4a654d949d1647f30908e7d161c6f5d7eacbf1a3fddabec233b39815e32"
+      }
+    }
+  ]
+}

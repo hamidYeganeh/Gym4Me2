@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   accountEntryHref,
   accountRecovery,
+  accountReadDenied,
 } from "../../../packages/ui/src/lib/account-recovery";
 
 const destination =
@@ -55,4 +56,37 @@ test("recovery never forwards an external or malformed return destination", () =
     "",
   ])
     assert.equal(returnTo(accountEntryHref("/login", unsafe)), "/profile");
+});
+
+test("cached identity is retired after access denial while a temporary outage preserves the edit draft", () => {
+  for (const error of [
+    { status: 401 },
+    { status: 403 },
+    { status: 428 },
+    { status: 409, code: "Backend.privacyConsentRequired" },
+  ])
+    assert.equal(accountReadDenied(error), true);
+  for (const error of [
+    null,
+    undefined,
+    { status: 503 },
+    { status: 0 },
+    { status: 409, code: "Backend.capacityUnavailable" },
+  ])
+    assert.equal(accountReadDenied(error), false);
+});
+
+test("incorrect challenge or password is shown inline without a sign-in-again action", () => {
+  for (const code of [
+    "Backend.theCodeIsIncorrectOrExpired",
+    "Backend.invalidCredentials",
+  ])
+    assert.equal(accountRecovery({ status: 401, code }, destination), null);
+  assert.equal(
+    accountRecovery(
+      { status: 401, code: "Backend.theSessionHasEndedSignInAgain" },
+      destination,
+    )?.kind,
+    "signIn",
+  );
 });

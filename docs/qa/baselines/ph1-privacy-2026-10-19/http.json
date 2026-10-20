@@ -1,0 +1,66 @@
+{
+  "truncated": true,
+  "hasMore": false,
+  "requests": [
+    {
+      "path": "/api/v1/profile/account/privacy",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/profile/account/privacy/preferences",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/v1/profile/account/privacy",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/profile/account/privacy/preferences",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/v1/profile/account/privacy",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/profile/account/privacy/deletion",
+      "method": "POST",
+      "status": 409
+    },
+    {
+      "path": "/api/v1/profile/account/privacy",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/profile/account/privacy/deletion",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/v1/profile/account/privacy",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/profile/account/privacy/deletion/cancel",
+      "method": "POST",
+      "status": 201
+    },
+    {
+      "path": "/api/v1/profile/account/privacy",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/profile/account/privacy/export",
+      "method": "GET",
+      "status": 200
+    }
+  ]
+}

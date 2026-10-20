@@ -429,8 +429,8 @@
   border-radius: 1.75rem 1.75rem 0 0;
   max-height: 85dvh;
   padding-bottom: var(--app-safe-bottom);
-  animation-duration: 320ms;
-  transition-duration: 320ms;
+  animation-duration: 200ms;
+  transition-duration: 200ms;
 }
 .luma-sheet-body {
   padding: 0 1.25rem 1.5rem;

@@ -1,0 +1,73 @@
+▲ Next.js 16.4.0 (webpack)
+✓ Running next.config.ts took 205ms
+- Experiments (use with caution):
+  · cpus: 1
+  ✓ webpackMemoryOptimizations
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 48s
+  Running TypeScript ...
+  Finished TypeScript in 15.7s ...
+  Collecting page data using 1 worker ...
+  Generating static pages using 1 worker (0/51) ...
+  Generating static pages using 1 worker (12/51) 
+  Generating static pages using 1 worker (25/51) 
+  Generating static pages using 1 worker (38/51) 
+✓ Generating static pages using 1 worker (51/51) in 2.4s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /auth/login
+├ ○ /auth/otp
+├ ○ /bookings
+├ ○ /bookings/detail
+├ ○ /calendars
+├ ○ /calendars/detail
+├ ○ /checkout
+├ ○ /checkout/mock-gateway
+├ ○ /checkout/status
+├ ○ /discovery
+├ ○ /discovery/club
+├ ○ /discovery/compare
+├ ○ /discovery/map
+├ ○ /documents
+├ ○ /host
+├ ○ /invitations
+├ ○ /invitations/sports
+├ ○ /login
+├ ○ /membership-card
+├ ○ /memberships
+├ ○ /memberships/detail
+├ ○ /messages
+├ ○ /messages/conversation
+├ ○ /messages/details
+├ ○ /notifications
+├ ○ /notifications/preferences
+├ ○ /orders
+├ ○ /orders/detail
+├ ○ /privacy
+├ ○ /profile
+├ ○ /profile/complete
+├ ○ /profile/edit
+├ ○ /profile/settings
+├ ○ /profile/settings/privacy
+├ ○ /reset-password
+├ ○ /saved
+├ ○ /saved/clubs
+├ ○ /saved/coaches
+├ ○ /services
+├ ○ /services/detail
+├ ○ /sessions
+├ ○ /set-password
+├ ○ /support
+├ ○ /support/detail
+├ ○ /tickets/view
+├ ○ /training
+└ ○ /waitlist
+
+
+○  (Static)  prerendered as static content
+

@@ -1,5 +1,18 @@
 "use client";
 import { useApiQuery } from "../query";
+import { businessClients } from "../business/business.clients";
+import { adminClients } from "../admin/admin.clients";
 export function useMediaPreview(clubId: string, mediaId: string) {
-  return useApiQuery((scope) => [...scope, "media-preview", clubId, mediaId], (api, signal) => api.request<{ url: string; expiresIn: number | null }>({ method: "GET", path: `${api.scope[2] === "admin" ? "admin" : "business"}/clubs/${encodeURIComponent(clubId)}/media/${encodeURIComponent(mediaId)}/preview` }, { signal }), Boolean(clubId && mediaId), 30_000);
+  return useApiQuery(
+    (scope) => [...scope, "media-preview", clubId, mediaId],
+    (api, signal) =>
+      (api.scope[2] === "admin" ? adminClients : businessClients).mediaPreview(
+        api,
+        clubId,
+        mediaId,
+        { signal },
+      ),
+    Boolean(clubId && mediaId),
+    30_000,
+  );
 }

@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useTranslations } from "@repo/i18n";
 import { useAccount } from "@repo/api/profile";
 import { useLogout } from "@repo/api/auth";
@@ -17,6 +17,7 @@ import { AccountPrivacy, PrivacyNotice } from "./privacy";
 import { QueryError, Loading } from "./common";
 import { AuthRequired } from "./auth-entry";
 import { useAuthRecovery } from "../hooks/use-auth-recovery";
+import { accountReadDenied } from "../lib/account-recovery";
 
 type Section =
   "account" | "edit" | "settings" | "sessions" | "invitations" | "privacy";
@@ -70,7 +71,12 @@ export function MobileAccount({ section = "account" }: { section?: Section }) {
   const [error, setError] = useState<unknown>(null);
   const recovery = useAuthRecovery(query, paths[section]);
   const guest = recovery?.kind === "signIn";
-  const account = query.data;
+  const account =
+    accountReadDenied(query.error) || guest ? undefined : query.data;
+  const hadAccount = useRef(false);
+  useEffect(() => {
+    if (account) hadAccount.current = true;
+  }, [account]);
   const title = {
     account: t("title"),
     edit: t("edit"),
@@ -94,7 +100,12 @@ export function MobileAccount({ section = "account" }: { section?: Section }) {
       setError(err);
     }
   }
-  const login = <AuthRequired returnTo={paths[section]} />;
+  const login = (
+    <AuthRequired
+      returnTo={paths[section]}
+      focusOnEntry={guest && hadAccount.current}
+    />
+  );
   if (section === "edit" && account)
     return <MobileProfileEdit key={account.id} account={account} />;
   const Shell =

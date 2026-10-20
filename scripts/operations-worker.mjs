@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { spawnManaged } from "./managed-child.mjs";
 import {
   existsSync,
   mkdirSync,
@@ -64,15 +64,17 @@ export function createOperationsScheduler({
   onError = () => {},
 }) {
   const running = new Map();
+  const controller = new AbortController();
   let stopped = false,
     fatal;
   async function execute(job) {
     let result;
     try {
-      result = await run(job);
+      result = await run(job, controller.signal);
     } catch {
       result = { ok: false };
     }
+    if (stopped) return;
     const now = clock();
     const sourceAt = job === "check" ? now : Date.parse(result?.capturedAt);
     const ok =
@@ -88,6 +90,7 @@ export function createOperationsScheduler({
       .catch((error) => {
         fatal = error;
         stopped = true;
+        controller.abort();
         onError(error);
       })
       .finally(() => running.delete(lane));
@@ -117,6 +120,7 @@ export function createOperationsScheduler({
     },
     stop() {
       stopped = true;
+      controller.abort();
     },
     async drain() {
       await Promise.all(running.values());
@@ -156,60 +160,57 @@ if (
   let stopped = false,
     timer,
     scheduler;
-  const children = new Set();
   const stop = () => {
     stopped = true;
     clearTimeout(timer);
     scheduler?.stop();
-    for (const child of children) child.kill("SIGTERM");
+    // Managed children forward cancellation, finish cleanup, then release the lock on exit.
+    void scheduler?.drain().catch(() => {
+      process.exitCode = 1;
+    });
   };
   process.on("SIGINT", stop);
   process.on("SIGTERM", stop);
   const file = resolve(directory, "state.json");
   let state = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : {};
-  const run = (job) =>
-    new Promise((done) => {
-      const child = spawn(
-        process.execPath,
-        [
-          "scripts/staging-backup.mjs",
-          job,
-          ...(job === "snapshot" ? ["--separate-ledger-worker"] : []),
-        ],
-        {
-          cwd: root,
-          env: process.env,
-          stdio: ["ignore", "pipe", "ignore"],
-          timeout: 35 * 60000,
-        },
-      );
-      children.add(child);
-      let output = "",
-        invalid = false;
-      child.stdout.setEncoding("utf8");
-      child.stdout.on("data", (chunk) => {
-        if (output.length + chunk.length > 4096) {
-          invalid = true;
-          child.kill("SIGTERM");
-        } else output += chunk;
-      });
-      child.once("error", () => {
-        children.delete(child);
-        done({ ok: false });
-      });
-      child.once("close", (code) => {
-        children.delete(child);
-        try {
-          const receipt = JSON.parse(output);
-          done({
-            ok: code === 0 && !invalid && receipt.operation === job,
-            capturedAt: receipt.capturedAt,
-          });
-        } catch {
-          done({ ok: false });
-        }
-      });
+  const run = async (job, signal) => {
+    const task = spawnManaged(
+      process.execPath,
+      [
+        "scripts/staging-backup.mjs",
+        job,
+        ...(job === "snapshot" ? ["--separate-ledger-worker"] : []),
+      ],
+      {
+        cwd: root,
+        env: process.env,
+        stdio: ["ignore", "pipe", "ignore"],
+      },
+      { signal, timeoutMs: 35 * 60000, graceMs: 15000 },
+    );
+    const child = task.child;
+    let output = "",
+      invalid = false;
+    child.stdout.setEncoding("utf8");
+    child.stdout.on("data", (chunk) => {
+      if (output.length + chunk.length > 4096) {
+        invalid = true;
+        void task
+          .stop(new Error("Backup receipt exceeds its limit."))
+          .catch(() => {});
+      } else output += chunk;
     });
+    const { code } = await task.completed;
+    try {
+      const receipt = JSON.parse(output);
+      return {
+        ok: code === 0 && !invalid && receipt.operation === job,
+        capturedAt: receipt.capturedAt,
+      };
+    } catch {
+      return { ok: false };
+    }
+  };
   scheduler = createOperationsScheduler({
     state,
     run,

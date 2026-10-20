@@ -521,6 +521,9 @@
     "verifiedMobileNumber": "Verified mobile number",
     "saveChanges": "Save changes",
     "sessionEnded": "Session ended.",
+    "noActiveSessions": "No active sessions",
+    "signedInDevicesAppearHere": "Your signed-in devices appear here.",
+    "acceptInvitationFrom": "Accept invitation from {name}",
     "seeYourActiveSessionsAndRevokeAccess": "See your active sessions and revoke access from other devices.",
     "application": "Application",
     "thisSession": "This session",
@@ -614,6 +617,7 @@
     "panelBreadcrumb": "Gym4Me / {title}"
   },
   "Backend": {
+    "payloadTooLarge": "The uploaded data exceeds the allowed size.",
     "invalidDateRange": "Invalid date range.",
     "thisAccountDoesNotHaveAdministratorAccess": "This account does not have administrator access.",
     "userNotFound": "User not found.",
@@ -747,7 +751,8 @@
     "invalidNotificationCursor": "This notification page is no longer available. Reopen the list.",
     "notificationUnavailable": "This notification is unavailable.",
     "conversationChanged": "The conversation has changed. Review its current state.",
-    "conversationKeyReused": "This request key was already used for different details."
+    "conversationKeyReused": "This request key was already used for different details.",
+    "changeReasonRequired": "Enter a change reason between 3 and 500 characters."
   },
   "Preview": {
     "atlasAthleticClub": "Atlas Athletic Club",
@@ -987,6 +992,25 @@
     "paidAmenity": "Additional charge",
     "includedAmenity": "Included",
     "openingHours": "Opening hours",
+    "branchUpdated": "Last update to {branch} information:",
+    "branchInformation": "Information for {branch}",
+    "notDeclared": "Not announced",
+    "operatingStatus": "Operating status",
+    "operating_active": "Active",
+    "operating_temporarily_closed": "Temporarily closed",
+    "operating_permanently_closed": "Permanently closed",
+    "address": "Branch address",
+    "branchContact": "Contact this branch",
+    "extension": "Extension",
+    "sports": "Sports",
+    "equipment": "Equipment",
+    "equipmentCount": "Quantity: {count}",
+    "facilities": "Facilities and access costs",
+    "unavailableAmenity": "Unavailable",
+    "accessibility": "Accessibility features",
+    "audiencePolicy": "Announced audience conditions",
+    "minimumAge": "Minimum age: {age} years",
+    "maximumAge": "Maximum age: {age} years",
     "closed": "Closed",
     "directions": "Get directions",
     "anonymous": "Member",
@@ -1087,18 +1111,23 @@
   },
   "Comparison": {
     "title": "Compare clubs",
-    "hint": "Choose two or three clubs. Prices are compared using the same service and unit; review each tariff’s terms separately.",
+    "hint": "Choose two or three clubs. Each price row uses the same announced service, unit, validity, session allowance, included services, terms and branch scope. Unspecified does not mean unlimited.",
     "back": "Back to discovery",
     "selected": "Selected club",
     "remove": "Remove",
     "search": "Find a club",
     "chooseTwo": "Choose at least two clubs.",
     "criterion": "Criterion",
-    "noComparableOffer": "No tariff announced for this service and unit",
+    "noComparableOffer": "No offer with this announced definition",
     "categories": "Categories",
     "sports": "Sports",
     "rating": "Rating and review count",
-    "noRating": "No ratings yet"
+    "noRating": "No ratings yet",
+    "unspecifiedValidity": "Validity not specified",
+    "unspecifiedSessions": "Session allowance not specified",
+    "unspecifiedServices": "No included services announced",
+    "oneBranch": "One specified branch",
+    "branchUnavailable": "Branch not specified"
   },
   "Favorites": {
     "mergeError": "Favorites could not be merged. Guest saves are preserved; signing in again will retry.",
@@ -1152,6 +1181,7 @@
     "loginNotice": "Your phone sends a sign-in code and creates or recovers your account. Read the data policy before continuing.",
     "readPolicy": "Read data policy",
     "optionalName": "Name (optional)",
+    "nameLength": "Use 2 to 100 characters, or leave the name empty.",
     "confirmChoices": "Confirm the data policy and minimum age.",
     "stopMarketing": "Stop promotional messages",
     "hidePublicProfile": "Make name and biography private",
@@ -1752,5 +1782,13 @@
     "themeTokens": "Theme tokens",
     "secondarySample": "Luma secondary · IRANSansX · ۱۲۳ · 123",
     "tokenSample": "{token} · IRANSansX · ۱۲۳ · 123"
+  },
+  "AuditReason": {
+    "label": "Reason for this change",
+    "hint": "This reason is recorded with the change in the organization history.",
+    "tooShort": "Enter at least 3 characters for the reason.",
+    "tooLong": "Use no more than 500 characters for the reason.",
+    "confirm": "Confirm change",
+    "saved": "Change recorded."
   }
 }

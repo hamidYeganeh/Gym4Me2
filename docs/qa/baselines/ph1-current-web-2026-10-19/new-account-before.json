@@ -1,0 +1,18 @@
+{
+  "url": "http://127.0.0.1:7391/profile/complete?returnTo=%2Fprofile",
+  "checkboxes": [
+    {
+      "checked": "false",
+      "label": "سیاست داده را خوانده‌ام و می‌پذیرم."
+    },
+    {
+      "checked": "false",
+      "label": "تأیید می‌کنم حداقل ۱۸ سال دارم."
+    },
+    {
+      "checked": "false",
+      "label": "مایلم پیام‌های معرفی و پیشنهاد خدمات را دریافت کنم."
+    }
+  ],
+  "saveDisabled": true
+}

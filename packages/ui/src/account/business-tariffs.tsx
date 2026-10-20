@@ -1,5 +1,12 @@
 "use client";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
+import { toast } from "sonner";
+import { changeReasonError } from "./change-reason";
+import { ChangeReasonField } from "./change-reason-field";
+import {
+  isActiveSurfaceElement,
+  restoreOverlayFocus,
+} from "../lib/active-surface";
 import { useLocale, useTranslations } from "@repo/i18n";
 import {
   useBusinessTariffs,
@@ -48,6 +55,51 @@ export function BusinessTariffs({
   const locale = useLocale();
   const query = useBusinessTariffs(club.id);
   const status = useSetTariffStatus();
+  const audit = useTranslations("AuditReason");
+  const [statusTarget, setStatusTarget] = useState<TariffDto | null>(null);
+  const [statusReason, setStatusReason] = useState("");
+  const [statusAttempted, setStatusAttempted] = useState(false);
+  const statusPending = useRef(false);
+  const statusTrigger = useRef<HTMLButtonElement | null>(null);
+  const editTrigger = useRef<HTMLButtonElement | null>(null);
+  async function changeStatus(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!statusTarget || statusPending.current) return;
+    setStatusAttempted(true);
+    if (changeReasonError(statusReason)) {
+      event.currentTarget
+        .querySelector<HTMLTextAreaElement>("[data-change-reason]")
+        ?.focus();
+      return;
+    }
+    statusPending.current = true;
+    const origin =
+      document.activeElement === document.body
+        ? (event.nativeEvent as SubmitEvent).submitter
+        : document.activeElement;
+    try {
+      await status.mutateAsync({
+        id: club.id,
+        tariffId: statusTarget.id,
+        isActive: !statusTarget.isActive,
+        reason: statusReason.trim(),
+      });
+      setStatusTarget(null);
+      toast.success(audit("saved"));
+      restoreOverlayFocus(statusTrigger.current);
+    } catch {
+      requestAnimationFrame(() => {
+        if (
+          origin instanceof HTMLElement &&
+          isActiveSurfaceElement(origin) &&
+          document.activeElement === document.body
+        )
+          origin.focus();
+      });
+    } finally {
+      statusPending.current = false;
+    }
+  }
   const [editing, setEditing] = useState<TariffDto | null>();
   const [historyId, setHistoryId] = useState<string>();
   const [page, setPage] = useState(1);
@@ -64,7 +116,7 @@ export function BusinessTariffs({
         <CardTitle>{t("title")}</CardTitle>
         <CardDescription>{t("hint")}</CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-5">
+      <CardContent className="grid gap-5 [&_button]:min-h-11 [&_button]:min-w-11">
         <QueryError error={query.error} retry={query.refetch} />
         {query.isLoading && <Loading />}
         {!query.isLoading && !query.error && !query.data?.length && (
@@ -109,7 +161,10 @@ export function BusinessTariffs({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setEditing(tariff)}
+                    onClick={(event) => {
+                      editTrigger.current = event.currentTarget;
+                      setEditing(tariff);
+                    }}
                   >
                     {t("revise")}
                   </Button>
@@ -117,15 +172,13 @@ export function BusinessTariffs({
                     variant="ghost"
                     size="sm"
                     disabled={status.isPending}
-                    onClick={() =>
-                      void status
-                        .mutateAsync({
-                          id: club.id,
-                          tariffId: tariff.id,
-                          isActive: !tariff.isActive,
-                        })
-                        .catch(() => undefined)
-                    }
+                    onClick={(event) => {
+                      if (statusPending.current) return;
+                      statusTrigger.current = event.currentTarget;
+                      setStatusReason("");
+                      setStatusAttempted(false);
+                      setStatusTarget(tariff);
+                    }}
                   >
                     {t(tariff.isActive ? "deactivate" : "activate")}
                   </Button>
@@ -134,7 +187,45 @@ export function BusinessTariffs({
             </div>
           </article>
         ))}
-        <ErrorNotice error={status.error} />
+        {statusTarget && (
+          <form
+            noValidate
+            onSubmit={changeStatus}
+            className="grid gap-4 rounded-2xl border p-4"
+          >
+            <fieldset disabled={status.isPending} className="grid gap-4">
+              <h3 className="font-semibold">
+                {t(statusTarget.isActive ? "deactivate" : "activate")}{" "}
+                {statusTarget.name}
+              </h3>
+              <ChangeReasonField
+                value={statusReason}
+                onChange={setStatusReason}
+                error={
+                  statusAttempted ? changeReasonError(statusReason) : undefined
+                }
+                disabled={status.isPending}
+              />
+              <div className="flex gap-3">
+                <Submit busy={status.isPending}>{audit("confirm")}</Submit>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  disabled={status.isPending}
+                  onClick={() => {
+                    if (!statusPending.current) {
+                      setStatusTarget(null);
+                      restoreOverlayFocus(statusTrigger.current);
+                    }
+                  }}
+                >
+                  {t("cancel")}
+                </Button>
+              </div>
+            </fieldset>
+            <ErrorNotice error={status.error} />
+          </form>
+        )}
         {historyId && (
           <section className="grid gap-3 border-t pt-4">
             <h3 className="font-semibold">{t("history")}</h3>
@@ -184,7 +275,10 @@ export function BusinessTariffs({
           <Button
             variant="outline"
             className="w-fit"
-            onClick={() => setEditing(null)}
+            onClick={(event) => {
+              editTrigger.current = event.currentTarget;
+              setEditing(null);
+            }}
           >
             {t("add")}
           </Button>
@@ -195,7 +289,10 @@ export function BusinessTariffs({
             club={club}
             previous={editing}
             allBranches={allBranches}
-            onDone={() => setEditing(undefined)}
+            onDone={() => {
+              setEditing(undefined);
+              restoreOverlayFocus(editTrigger.current);
+            }}
           />
         )}
       </CardContent>
@@ -215,39 +312,77 @@ function TariffForm({
 }) {
   const t = useTranslations("Tariffs");
   const save = useSaveTariff();
+  const audit = useTranslations("AuditReason");
+  const [reason, setReason] = useState("");
+  const [attempted, setAttempted] = useState(false);
+  const pending = useRef(false);
   const optionalNumber = (value: FormDataEntryValue | null) =>
     value ? Number(value) : null;
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pending.current) return;
+    setAttempted(true);
+    if (previous && changeReasonError(reason)) {
+      event.currentTarget
+        .querySelector<HTMLTextAreaElement>("[data-change-reason]")
+        ?.focus();
+      return;
+    }
     const data = new FormData(event.currentTarget);
+    const origin =
+      document.activeElement === document.body
+        ? (event.nativeEvent as SubmitEvent).submitter
+        : document.activeElement;
+    pending.current = true;
     try {
-      await save.mutateAsync({
-        id: club.id,
-        tariffId: previous?.id,
-        input: {
-          name: String(data.get("tariffName")),
-          serviceType: String(data.get("serviceType")) as TariffService,
-          priceToman: Number(data.get("priceToman")),
-          unit: String(data.get("unit")) as TariffUnit,
-          durationDays: optionalNumber(data.get("durationDays")),
-          sessionCount: optionalNumber(data.get("sessionCount")),
-          includedServices: String(data.get("includedServices") ?? "")
-            .split("\n")
-            .map((line) => line.trim())
-            .filter(Boolean),
-          conditions: String(data.get("conditions")),
-          ...(!previous
-            ? { branchId: String(data.get("tariffBranch")) || null }
-            : {}),
-        },
-      });
+      const terms = {
+        name: String(data.get("tariffName")),
+        serviceType: String(data.get("serviceType")) as TariffService,
+        priceToman: Number(data.get("priceToman")),
+        unit: String(data.get("unit")) as TariffUnit,
+        durationDays: optionalNumber(data.get("durationDays")),
+        sessionCount: optionalNumber(data.get("sessionCount")),
+        includedServices: String(data.get("includedServices") ?? "")
+          .split("\n")
+          .map((line) => line.trim())
+          .filter(Boolean),
+        conditions: String(data.get("conditions")),
+      };
+      await save.mutateAsync(
+        previous
+          ? {
+              id: club.id,
+              tariffId: previous.id,
+              input: { ...terms, reason: reason.trim() },
+            }
+          : {
+              id: club.id,
+              input: {
+                ...terms,
+                branchId: String(data.get("tariffBranch")) || null,
+              },
+            },
+      );
+      toast.success(audit("saved"));
       onDone();
     } catch {
-      /* The shared error notice preserves the entered form values. */
+      requestAnimationFrame(() => {
+        if (
+          origin instanceof HTMLElement &&
+          isActiveSurfaceElement(origin) &&
+          document.activeElement === document.body
+        )
+          origin.focus();
+      });
+    } finally {
+      pending.current = false;
     }
   }
   return (
-    <form onSubmit={submit} className="grid gap-5 rounded-2xl border p-4">
+    <form
+      onSubmit={submit}
+      className="grid gap-5 rounded-2xl border p-4 [&_input]:min-h-11 [&_select]:min-h-11"
+    >
       <fieldset disabled={save.isPending} className="grid gap-5">
         <h3 className="font-semibold">{t(previous ? "revise" : "add")}</h3>
         <TextField
@@ -358,9 +493,24 @@ function TariffForm({
             maxLength={5000}
           />
         </Field>
+        {previous && (
+          <ChangeReasonField
+            value={reason}
+            onChange={setReason}
+            error={attempted ? changeReasonError(reason) : undefined}
+            disabled={save.isPending}
+          />
+        )}
         <div className="flex gap-3">
           <Submit busy={save.isPending}>{t("save")}</Submit>
-          <Button type="button" variant="ghost" onClick={onDone}>
+          <Button
+            type="button"
+            variant="ghost"
+            disabled={save.isPending}
+            onClick={() => {
+              if (!pending.current) onDone();
+            }}
+          >
             {t("cancel")}
           </Button>
         </div>

@@ -86,8 +86,7 @@ export function FavoritesSync() {
 export function useSavedClub(id: string) {
   const account = useAccount();
   const favorites = useFavorites(Boolean(account.data));
-  const setFavorite = useSetFavorite();
-  const t = useTranslations("Favorites");
+  const setSaved = useClubSaveCommand(account);
   const guest = useSyncExternalStore(
     subscribe,
     () => guestSaved(id),
@@ -95,16 +94,27 @@ export function useSavedClub(id: string) {
   );
   return [
     account.data ? (favorites.data ?? []).includes(id) : guest,
-    (saved: boolean) => {
-      if (account.isPending || setFavorite.isPending) return;
-      if (account.data)
-        void setFavorite
-          .mutateAsync({ id, saved })
-          .catch(() => toast.error(t("saveError")));
-      else if (account.error?.status === 401) writeGuest(id, saved);
-      else toast.error(t("saveError"));
-    },
+    (saved: boolean) => setSaved(id, saved),
   ] as const;
+}
+
+/** Mount once for a saved list: row mounts must not restart its guest account query. */
+export function useSetSavedClub() {
+  return useClubSaveCommand(useAccount());
+}
+
+function useClubSaveCommand(account: ReturnType<typeof useAccount>) {
+  const setFavorite = useSetFavorite();
+  const t = useTranslations("Favorites");
+  return (id: string, saved: boolean) => {
+    if (account.isPending || setFavorite.isPending) return;
+    if (account.data)
+      void setFavorite
+        .mutateAsync({ id, saved })
+        .catch(() => toast.error(t("saveError")));
+    else if (account.error?.status === 401) writeGuest(id, saved);
+    else toast.error(t("saveError"));
+  };
 }
 export function useSavedClubIds(ids?: string[]) {
   const account = useAccount();

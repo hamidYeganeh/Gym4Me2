@@ -1,0 +1,24 @@
+nice: setpriority: Operation not permitted
+✔ a completed action focuses a committed fallback when the original row was removed (0.547042ms)
+✔ a later user focus, query navigation or fragment navigation prevents restoration (0.109791ms)
+✔ disabled, hidden or detached destinations cannot receive async focus (0.113ms)
+✔ a triggerless modal repairs body focus without scrolling the opener (0.945125ms)
+✔ Radix restoration or a newer live focus takes precedence (0.094958ms)
+✔ a different active modal prevents fallback even while its focus is still body (0.082667ms)
+✔ a closing nested modal can return to an opener in its still-open parent (0.089458ms)
+✔ an inactive modal does not block the active route's opener (0.091ms)
+✔ missing opener or a later path, query or fragment prevents restoration (0.093917ms)
+✔ removed, hidden, native-disabled and aria-disabled openers cannot regain focus (0.1045ms)
+✔ closing a modal restores its trigger after the background is exposed (0.467333ms)
+✔ session recovery retains each client, sign-in method and complete scoped destination (0.750541ms)
+✔ policy round trips retain password mode and return hops for all three clients (0.266375ms)
+✔ expired session recovery cannot redirect to an external destination (0.211459ms)
+✔ forgotten-password and policy return keep the recovery flow before setting a new password (0.198833ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 607.610792

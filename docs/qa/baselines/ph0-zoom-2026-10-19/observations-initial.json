@@ -1,0 +1,947 @@
+[
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "#discovery-clubs",
+      "name": "مشاهده",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 72.30078125,
+        "x": 523.69921875,
+        "y": 142.5
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-0"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "انتخاب کنید",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 258,
+        "x": 366,
+        "y": 79.33203125
+      },
+      "tag": "SELECT",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-1"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "همهٔ خدماتورودی باشگاهعضویتزمین و فضاکلاسمربیگری",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 258,
+        "x": 366,
+        "y": 142.58203125
+      },
+      "tag": "SELECT",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-2"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "همهٔ واحدهامراجعهساعتجلسهماهبستهدوره",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 258,
+        "x": 96,
+        "y": 79.33203125
+      },
+      "tag": "SELECT",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-3"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": null,
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 258,
+        "x": 366,
+        "y": 142.58203125
+      },
+      "tag": "INPUT",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-4"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": null,
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 258,
+        "x": 96,
+        "y": 79.33203125
+      },
+      "tag": "INPUT",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-5"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "جدیدترین باشگاه‌هاقیمت کمترقیمت بیشتر",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 258,
+        "x": 366,
+        "y": 142.58203125
+      },
+      "tag": "SELECT",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-6"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d1?branch=a1000000-0000-4000-8000-000000000835",
+      "name": "مشاهده · باشگاه نمایشی آفتاب",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 80,
+        "width": 528,
+        "x": 96,
+        "y": 106.58203125
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-7"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d2?branch=a1000000-0000-4000-8000-000000000836",
+      "name": "مشاهده · باشگاه نمایشی سپید",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 80,
+        "width": 528,
+        "x": 96,
+        "y": 106.58203125
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-8"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d1?branch=a1000000-0000-4000-8000-000000000835",
+      "name": "مشاهده",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 72.30078125,
+        "x": 116,
+        "y": 79.33203125
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-9"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "باشگاه نمایشی آفتاب",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 188,
+        "width": 528,
+        "x": 96,
+        "y": 16.08203125
+      },
+      "tag": "DIV",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-10"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "نمایش گالری: فضای تمرین نمایشی برای بررسی طراحی",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 180,
+        "width": 320,
+        "x": 304,
+        "y": 7.33203125
+      },
+      "tag": "BUTTON",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-11"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d1?branch=a1000000-0000-4000-8000-000000000835",
+      "name": "مشاهده باشگاه نمایشی آفتاب",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 72.30078125,
+        "x": 96,
+        "y": 142.58203125
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-12"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "باشگاه نمایشی سپید",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 188,
+        "width": 528,
+        "x": 96,
+        "y": 16.08203125
+      },
+      "tag": "DIV",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-13"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "نمایش گالری: فضای تمرین نمایشی برای بررسی طراحی",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 180,
+        "width": 320,
+        "x": 304,
+        "y": 7.33203125
+      },
+      "tag": "BUTTON",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-14"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d2?branch=a1000000-0000-4000-8000-000000000836",
+      "name": "مشاهده باشگاه نمایشی سپید",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 72.30078125,
+        "x": 96,
+        "y": 142.58203125
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-15"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d1?branch=a1000000-0000-4000-8000-000000000835",
+      "name": "کشف باشگاه · باشگاه نمایشی آفتاب",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "-4px",
+      "rect": {
+        "height": 756.796875,
+        "width": 528,
+        "x": 96,
+        "y": 16.08203125
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-16"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "ذخیره باشگاه",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 44,
+        "x": 120,
+        "y": 79.33203125
+      },
+      "tag": "BUTTON",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-17"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d1?branch=a1000000-0000-4000-8000-000000000835",
+      "name": "کشف باشگاه",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 48,
+        "width": 480,
+        "x": 120,
+        "y": 88.12890625
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-18"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/compare?club=a1000000-0000-4000-8000-0000000007d1",
+      "name": "مقایسهٔ باشگاه",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 107.22265625,
+        "x": 516.77734375,
+        "y": 142.37890625
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-19"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d2?branch=a1000000-0000-4000-8000-000000000836",
+      "name": "کشف باشگاه · باشگاه نمایشی سپید",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "-4px",
+      "rect": {
+        "height": 756.796875,
+        "width": 528,
+        "x": 96,
+        "y": 15.87890625
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-20"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "ذخیره باشگاه",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 44,
+        "x": 120,
+        "y": 79.12890625
+      },
+      "tag": "BUTTON",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-21"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d2?branch=a1000000-0000-4000-8000-000000000836",
+      "name": "کشف باشگاه",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 48,
+        "width": 480,
+        "x": 120,
+        "y": 77.17578125
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-22"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": "/discovery/compare?club=a1000000-0000-4000-8000-0000000007d2",
+      "name": "مقایسهٔ باشگاه",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 44,
+        "width": 107.22265625,
+        "x": 516.77734375,
+        "y": 142.42578125
+      },
+      "tag": "A",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery",
+    "visualScale": 1,
+    "width": 720,
+    "label": "discovery-keyboard-23"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c",
+      "outline": "oklab(0.828155 -0.203821 0.135889 / 0.5) none 3px",
+      "outlineOffset": "0px",
+      "rect": {
+        "height": 713.1953125,
+        "width": 720,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "BODY",
+      "visible": false
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/",
+    "visualScale": 1,
+    "width": 720,
+    "label": "home-fa-dark-200",
+    "headings": [
+      "خانه",
+      "شروع یک حرکت تازه"
+    ],
+    "screenshot": "home-fa-dark-200.jpg"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c",
+      "outline": "oklab(0.828155 -0.203821 0.135889 / 0.5) none 3px",
+      "outlineOffset": "0px",
+      "rect": {
+        "height": 863.72265625,
+        "width": 720,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "BODY",
+      "visible": false
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/services",
+    "visualScale": 1,
+    "width": 720,
+    "label": "services-fa-dark-200",
+    "headings": [
+      "کلاس‌ها و سانس‌ها"
+    ],
+    "screenshot": "services-fa-dark-200.jpg"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c",
+      "outline": "oklab(0.828155 -0.203821 0.135889 / 0.5) none 3px",
+      "outlineOffset": "0px",
+      "rect": {
+        "height": 2377.3671875,
+        "width": 720,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "BODY",
+      "visible": false
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/calendars",
+    "visualScale": 1,
+    "width": 720,
+    "label": "calendars-fa-dark-200",
+    "headings": [
+      "تقویم‌ها"
+    ],
+    "screenshot": "calendars-fa-dark-200.jpg"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c",
+      "outline": "oklab(0.828155 -0.203821 0.135889 / 0.5) none 3px",
+      "outlineOffset": "0px",
+      "rect": {
+        "height": 4427.18359375,
+        "width": 720,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "BODY",
+      "visible": false
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d1?branch=a1000000-0000-4000-8000-000000000835",
+    "visualScale": 1,
+    "width": 720,
+    "label": "club-fa-dark-200",
+    "headings": [
+      "باشگاه نمایشی آفتاب",
+      "کمی درباره اینجا",
+      "گالری تصاویر",
+      "تعرفه و شرایط خدمات",
+      "اطلاعات «شعبهٔ مرکزی نمایشی»",
+      "همه‌چیز برای یک تمرین خوب",
+      "دسته‌بندی‌های باشگاه",
+      "شعبه‌های باشگاه",
+      "دیدگاه‌های باشگاه",
+      "باشگاه‌های پیشنهادی",
+      "باشگاه نمایشی سپید",
+      "اشتراک‌گذاری در"
+    ],
+    "screenshot": "club-fa-dark-200.jpg"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c",
+      "outline": "oklab(0.828155 -0.203821 0.135889 / 0.5) none 3px",
+      "outlineOffset": "0px",
+      "rect": {
+        "height": 306.5,
+        "width": 720,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "BODY",
+      "visible": false
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery/compare?club=a1000000-0000-4000-8000-0000000007d1",
+    "visualScale": 1,
+    "width": 720,
+    "label": "compare-fa-dark-200",
+    "headings": [
+      "مقایسهٔ باشگاه‌ها"
+    ],
+    "screenshot": "compare-fa-dark-200.jpg"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c",
+      "outline": "oklab(0.828155 -0.203821 0.135889 / 0.5) none 3px",
+      "outlineOffset": "0px",
+      "rect": {
+        "height": 512,
+        "width": 720,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "BODY",
+      "visible": false
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/discovery/clubs/a1000000-0000-4000-8000-0000000007d1/gallery?branch=a1000000-0000-4000-8000-000000000835",
+    "visualScale": 1,
+    "width": 720,
+    "label": "gallery-fa-dark-200",
+    "headings": [
+      "گالری (۲)"
+    ],
+    "screenshot": "gallery-fa-dark-200.jpg"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c",
+      "outline": "oklab(0.828155 -0.203821 0.135889 / 0.5) none 3px",
+      "outlineOffset": "0px",
+      "rect": {
+        "height": 1648.75,
+        "width": 720,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "BODY",
+      "visible": false
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/profile",
+    "visualScale": 1,
+    "width": 720,
+    "label": "profile-fa-dark-200",
+    "headings": [
+      "پروفایل",
+      "شما"
+    ],
+    "screenshot": "profile-fa-dark-200.jpg"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "0912 345 6789",
+      "outline": "oklch(0.985 0 0) solid 2px",
+      "outlineOffset": "3px",
+      "rect": {
+        "height": 56,
+        "width": 528,
+        "x": 96,
+        "y": 269.56939697265625
+      },
+      "tag": "INPUT",
+      "visible": true
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/auth/otp?returnTo=%2F",
+    "visualScale": 1,
+    "width": 720,
+    "label": "login-fa-dark-200",
+    "headings": [
+      "شماره همراهت را وارد کن"
+    ],
+    "screenshot": "login-fa-dark-200.jpg"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c",
+      "outline": "oklab(0.828155 -0.203821 0.135889 / 0.5) none 3px",
+      "outlineOffset": "0px",
+      "rect": {
+        "height": 989.25,
+        "width": 720,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "BODY",
+      "visible": false
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/privacy?from=login&method=otp&returnTo=%2F",
+    "visualScale": 1,
+    "width": 720,
+    "label": "policy-fa-dark-200",
+    "headings": [
+      "حریم خصوصی و داده‌ها",
+      "اطلاعات مورد نیاز حساب تو",
+      "انتخاب کن دیگران چه ببینند",
+      "داده‌های تو، انتخاب‌های تو"
+    ],
+    "screenshot": "policy-fa-dark-200.jpg"
+  },
+  {
+    "dpr": 4,
+    "focus": {
+      "centerHit": true,
+      "href": null,
+      "name": "((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=[\"light\",\"dark\"];function k(b){var c",
+      "outline": "oklab(0.828155 -0.203821 0.135889 / 0.5) none 3px",
+      "outlineOffset": "0px",
+      "rect": {
+        "height": 1482.75,
+        "width": 720,
+        "x": 0,
+        "y": 0
+      },
+      "tag": "BODY",
+      "visible": false
+    },
+    "height": 306,
+    "lang": "fa",
+    "scrollWidth": 720,
+    "theme": "dark",
+    "url": "/profile/settings",
+    "visualScale": 1,
+    "width": 720,
+    "label": "settings-fa-dark-200",
+    "headings": [
+      "تنظیمات",
+      "تنظیمات حساب",
+      "ترجیحات",
+      "زبان",
+      "اعلان‌ها",
+      "منابع"
+    ],
+    "screenshot": "settings-fa-dark-200.jpg"
+  }
+]

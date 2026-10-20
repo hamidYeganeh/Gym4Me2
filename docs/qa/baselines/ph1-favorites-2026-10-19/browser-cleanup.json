@@ -1,0 +1,8 @@
+{
+  "deletedOwnCookieNames": [
+    "better-auth.session_token",
+    "better-auth.dont_remember"
+  ],
+  "taskGuestKeysRemoved": true,
+  "originalCookieNames": []
+}

@@ -32,6 +32,7 @@ export type BranchDto = {
 export type NameDto = { name: string };
 export type TeamMemberDto = {
   id: string;
+  userId: string;
   phone: string;
   displayName: string | null;
   role: OrganizationRole;
@@ -50,7 +51,16 @@ export type TeamDto = {
   members: TeamMemberDto[];
   invitations: TeamInvitationDto[];
 };
+export type ChangeReasonDto = { reason: string };
+export type CreateTariffDto =
+  import("../catalog/catalog.dto").TariffInputDto & {
+    branchId?: string | null;
+  };
+export type ReviseTariffDto = import("../catalog/catalog.dto").TariffInputDto &
+  ChangeReasonDto;
+export type TariffStatusDto = ChangeReasonDto & { isActive: boolean };
 export type InviteTeamDto = {
+  reason: string;
   phone: string;
   role: TeamRole;
   branchIds?: string[];
@@ -72,5 +82,4 @@ export type AffiliationRecordDto = {
   endsOn: string | null;
   status: "pending" | "active" | "ended";
   createdAt: string;
-  updatedAt: string;
 };

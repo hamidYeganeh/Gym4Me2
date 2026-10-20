@@ -1,0 +1,13 @@
+{
+  "actions": [
+    {
+      "device": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "name": "خروج از این نشست"
+    },
+    {
+      "device": "Fixture device Beta",
+      "name": "پایان نشست"
+    }
+  ],
+  "focusDevice": "Fixture device Beta"
+}

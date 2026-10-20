@@ -1,0 +1,12 @@
+[
+  {
+    "method": "PATCH",
+    "path": "/api/v1/business/clubs/9d15604f-d9a1-4389-90df-6d5c6c5ce6dc/branches/723da233-1443-455d-8ce3-7792e0a47dcc",
+    "firstInterval": {
+      "dayOfWeek": 0,
+      "audience": "all",
+      "startMinute": 480,
+      "endMinute": 1260
+    }
+  }
+]

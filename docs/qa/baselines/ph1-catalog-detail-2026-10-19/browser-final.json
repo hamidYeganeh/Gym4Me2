@@ -1,0 +1,165 @@
+{
+  "buildId": "NLaU5wzKi4QZSpEj6I67j",
+  "states": [
+    {
+      "name": "fa-dark-mobile",
+      "dir": "rtl",
+      "hours": "ساعت کاریشنبه · بانوان · ۰۸:۰۰–۱۲:۰۰ · شنبه · آقایان · ۲۲:۰۰–۰۰:۰۰ روز بعدفاصله از شمانامشخصدیدگاه‌ها۴٫۵ (۲)تعداد مربیان۰",
+      "isolatedIntervals": [
+        "۲۳:۰۰–۰۱:۰۰ روز بعد"
+      ],
+      "lang": "fa",
+      "scrollWidth": 360,
+      "theme": "dark",
+      "updated": {
+        "at": "2026-10-19T09:00:00.000Z",
+        "background": "oklch(0.205 0 0)",
+        "card": "ساعات فعالیتآخرین به‌روزرسانی اطلاعات «شعبه مرکزی»: ۲۷ مهر ۱۴۰۵، ۱۲:۳۰شنبه · بانوان۰۸:۰۰–۱۲:۰۰شنبه · آقایان۲۲:۰۰–۰۰:۰۰ روز بعد۲۸ مهر ۱۴۰۵ · آقایان · ۲۳:۰۰–۰۱:۰۰ روز بعدسانس شبانهٔ آزمایشی۲۸ مهر ۱۴۰۵ · بانوان · تعطیلتعطیلی ویژهٔ بانوان برای بررسی رابطهمراه داشتن کفش مناسب الزامی است.مسیریابی",
+        "color": "oklch(0.708 0 0)",
+        "text": "۲۷ مهر ۱۴۰۵، ۱۲:۳۰",
+        "computedContrast": 6.908
+      },
+      "width": 360
+    },
+    {
+      "name": "fa-dark-desktop",
+      "dir": "rtl",
+      "hours": "ساعت کاریشنبه · بانوان · ۰۸:۰۰–۱۲:۰۰ · شنبه · آقایان · ۲۲:۰۰–۰۰:۰۰ روز بعدفاصله از شمانامشخصدیدگاه‌ها۴٫۵ (۲)تعداد مربیان۰",
+      "isolatedIntervals": [
+        "۲۳:۰۰–۰۱:۰۰ روز بعد"
+      ],
+      "lang": "fa",
+      "scrollWidth": 1280,
+      "theme": "dark",
+      "updated": {
+        "at": "2026-10-19T09:00:00.000Z",
+        "background": "oklch(0.205 0 0)",
+        "card": "ساعات فعالیتآخرین به‌روزرسانی اطلاعات «شعبه مرکزی»: ۲۷ مهر ۱۴۰۵، ۱۲:۳۰شنبه · بانوان۰۸:۰۰–۱۲:۰۰شنبه · آقایان۲۲:۰۰–۰۰:۰۰ روز بعد۲۸ مهر ۱۴۰۵ · آقایان · ۲۳:۰۰–۰۱:۰۰ روز بعدسانس شبانهٔ آزمایشی۲۸ مهر ۱۴۰۵ · بانوان · تعطیلتعطیلی ویژهٔ بانوان برای بررسی رابطهمراه داشتن کفش مناسب الزامی است.مسیریابی",
+        "color": "oklch(0.708 0 0)",
+        "text": "۲۷ مهر ۱۴۰۵، ۱۲:۳۰",
+        "computedContrast": 6.908
+      },
+      "width": 1280
+    },
+    {
+      "name": "fa-light-desktop",
+      "dir": "rtl",
+      "hours": "ساعت کاریشنبه · بانوان · ۰۸:۰۰–۱۲:۰۰ · شنبه · آقایان · ۲۲:۰۰–۰۰:۰۰ روز بعدفاصله از شمانامشخصدیدگاه‌ها۴٫۵ (۲)تعداد مربیان۰",
+      "isolatedIntervals": [
+        "۲۳:۰۰–۰۱:۰۰ روز بعد"
+      ],
+      "lang": "fa",
+      "scrollWidth": 1280,
+      "theme": "light",
+      "updated": {
+        "at": "2026-10-19T09:00:00.000Z",
+        "background": "oklch(1 0 0)",
+        "card": "ساعات فعالیتآخرین به‌روزرسانی اطلاعات «شعبه مرکزی»: ۲۷ مهر ۱۴۰۵، ۱۲:۳۰شنبه · بانوان۰۸:۰۰–۱۲:۰۰شنبه · آقایان۲۲:۰۰–۰۰:۰۰ روز بعد۲۸ مهر ۱۴۰۵ · آقایان · ۲۳:۰۰–۰۱:۰۰ روز بعدسانس شبانهٔ آزمایشی۲۸ مهر ۱۴۰۵ · بانوان · تعطیلتعطیلی ویژهٔ بانوان برای بررسی رابطهمراه داشتن کفش مناسب الزامی است.مسیریابی",
+        "color": "oklch(0.556 0 0)",
+        "text": "۲۷ مهر ۱۴۰۵، ۱۲:۳۰",
+        "computedContrast": 4.732
+      },
+      "width": 1280
+    },
+    {
+      "name": "fa-light-mobile",
+      "dir": "rtl",
+      "hours": "ساعت کاریشنبه · بانوان · ۰۸:۰۰–۱۲:۰۰ · شنبه · آقایان · ۲۲:۰۰–۰۰:۰۰ روز بعدفاصله از شمانامشخصدیدگاه‌ها۴٫۵ (۲)تعداد مربیان۰",
+      "isolatedIntervals": [
+        "۲۳:۰۰–۰۱:۰۰ روز بعد"
+      ],
+      "lang": "fa",
+      "scrollWidth": 360,
+      "theme": "light",
+      "updated": {
+        "at": "2026-10-19T09:00:00.000Z",
+        "background": "oklch(1 0 0)",
+        "card": "ساعات فعالیتآخرین به‌روزرسانی اطلاعات «شعبه مرکزی»: ۲۷ مهر ۱۴۰۵، ۱۲:۳۰شنبه · بانوان۰۸:۰۰–۱۲:۰۰شنبه · آقایان۲۲:۰۰–۰۰:۰۰ روز بعد۲۸ مهر ۱۴۰۵ · آقایان · ۲۳:۰۰–۰۱:۰۰ روز بعدسانس شبانهٔ آزمایشی۲۸ مهر ۱۴۰۵ · بانوان · تعطیلتعطیلی ویژهٔ بانوان برای بررسی رابطهمراه داشتن کفش مناسب الزامی است.مسیریابی",
+        "color": "oklch(0.556 0 0)",
+        "text": "۲۷ مهر ۱۴۰۵، ۱۲:۳۰",
+        "computedContrast": 4.732
+      },
+      "width": 360
+    },
+    {
+      "name": "en-light-mobile",
+      "dir": "ltr",
+      "hours": "Opening hoursSaturday · Women · 08:00–12:00 · Saturday · Men · 22:00–00:00 next dayDistance from youUnavailableReviews4.5 (2)Coaches0",
+      "isolatedIntervals": [
+        "23:00–01:00 next day"
+      ],
+      "lang": "en",
+      "scrollWidth": 360,
+      "theme": "light",
+      "updated": {
+        "at": "2026-10-19T09:00:00.000Z",
+        "background": "oklch(1 0 0)",
+        "card": "Opening hoursLast update to شعبه مرکزی information: Oct 19, 2026, 12:30 PMSaturday · Women08:00–12:00Saturday · Men22:00–00:00 next dayOct 20, 2026 · Men · 23:00–01:00 next dayسانس شبانهٔ آزمایشیOct 20, 2026 · Women · Closedتعطیلی ویژهٔ بانوان برای بررسی رابطهمراه داشتن کفش مناسب الزامی است.Get directions",
+        "color": "oklch(0.556 0 0)",
+        "text": "Oct 19, 2026, 12:30 PM",
+        "computedContrast": 4.732
+      },
+      "width": 360
+    },
+    {
+      "name": "en-light-desktop",
+      "dir": "ltr",
+      "hours": "Opening hoursSaturday · Women · 08:00–12:00 · Saturday · Men · 22:00–00:00 next dayDistance from youUnavailableReviews4.5 (2)Coaches0",
+      "isolatedIntervals": [
+        "23:00–01:00 next day"
+      ],
+      "lang": "en",
+      "scrollWidth": 1280,
+      "theme": "light",
+      "updated": {
+        "at": "2026-10-19T09:00:00.000Z",
+        "background": "oklch(1 0 0)",
+        "card": "Opening hoursLast update to شعبه مرکزی information: Oct 19, 2026, 12:30 PMSaturday · Women08:00–12:00Saturday · Men22:00–00:00 next dayOct 20, 2026 · Men · 23:00–01:00 next dayسانس شبانهٔ آزمایشیOct 20, 2026 · Women · Closedتعطیلی ویژهٔ بانوان برای بررسی رابطهمراه داشتن کفش مناسب الزامی است.Get directions",
+        "color": "oklch(0.556 0 0)",
+        "text": "Oct 19, 2026, 12:30 PM",
+        "computedContrast": 4.732
+      },
+      "width": 1280
+    },
+    {
+      "name": "en-dark-desktop",
+      "dir": "ltr",
+      "hours": "Opening hoursSaturday · Women · 08:00–12:00 · Saturday · Men · 22:00–00:00 next dayDistance from youUnavailableReviews4.5 (2)Coaches0",
+      "isolatedIntervals": [
+        "23:00–01:00 next day"
+      ],
+      "lang": "en",
+      "scrollWidth": 1280,
+      "theme": "dark",
+      "updated": {
+        "at": "2026-10-19T09:00:00.000Z",
+        "background": "oklch(0.205 0 0)",
+        "card": "Opening hoursLast update to شعبه مرکزی information: Oct 19, 2026, 12:30 PMSaturday · Women08:00–12:00Saturday · Men22:00–00:00 next dayOct 20, 2026 · Men · 23:00–01:00 next dayسانس شبانهٔ آزمایشیOct 20, 2026 · Women · Closedتعطیلی ویژهٔ بانوان برای بررسی رابطهمراه داشتن کفش مناسب الزامی است.Get directions",
+        "color": "oklch(0.708 0 0)",
+        "text": "Oct 19, 2026, 12:30 PM",
+        "computedContrast": 6.908
+      },
+      "width": 1280
+    },
+    {
+      "name": "en-dark-mobile",
+      "dir": "ltr",
+      "hours": "Opening hoursSaturday · Women · 08:00–12:00 · Saturday · Men · 22:00–00:00 next dayDistance from youUnavailableReviews4.5 (2)Coaches0",
+      "isolatedIntervals": [
+        "23:00–01:00 next day"
+      ],
+      "lang": "en",
+      "scrollWidth": 360,
+      "theme": "dark",
+      "updated": {
+        "at": "2026-10-19T09:00:00.000Z",
+        "background": "oklch(0.205 0 0)",
+        "card": "Opening hoursLast update to شعبه مرکزی information: Oct 19, 2026, 12:30 PMSaturday · Women08:00–12:00Saturday · Men22:00–00:00 next dayOct 20, 2026 · Men · 23:00–01:00 next dayسانس شبانهٔ آزمایشیOct 20, 2026 · Women · Closedتعطیلی ویژهٔ بانوان برای بررسی رابطهمراه داشتن کفش مناسب الزامی است.Get directions",
+        "color": "oklch(0.708 0 0)",
+        "text": "Oct 19, 2026, 12:30 PM",
+        "computedContrast": 6.908
+      },
+      "width": 360
+    }
+  ]
+}

@@ -1,31 +1,30 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { isActiveSurfaceElement } from "../lib/active-surface";
+import { useRef, useState, type RefObject } from "react";
+import { useActionFocus } from "./use-action-focus";
 
 /** Keep keyboard focus after a retry without overriding a user's next action. */
-export function useQueryRetry(retry: () => unknown) {
+export function useQueryRetry(
+  retry: () => unknown,
+  fallback?: RefObject<HTMLElement | null>,
+) {
   const button = useRef<HTMLButtonElement>(null);
   const pending = useRef(false);
   const [retrying, setRetrying] = useState(false);
+  const beginFocus = useActionFocus(retrying);
 
   const run = () => {
     if (pending.current) return;
-    const restoreFocus = document.activeElement === button.current;
+    const finishFocus = beginFocus(
+      () => button.current ?? fallback?.current ?? null,
+      document.activeElement === button.current ? button.current : null,
+    );
     pending.current = true;
     setRetrying(true);
     const complete = () => {
       pending.current = false;
       setRetrying(false);
-      requestAnimationFrame(() => {
-        if (
-          restoreFocus &&
-          isActiveSurfaceElement(button.current) &&
-          (document.activeElement === document.body ||
-            document.activeElement === button.current)
-        )
-          button.current?.focus();
-      });
+      finishFocus();
     };
     void Promise.resolve().then(retry).then(complete, complete);
   };

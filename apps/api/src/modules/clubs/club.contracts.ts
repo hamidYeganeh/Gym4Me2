@@ -1,15 +1,56 @@
-import { BadRequestException } from '@nestjs/common';
-import { ApiBody, type SchemaObject } from '@nestjs/swagger';
+import { applyDecorators, BadRequestException } from '@nestjs/common';
+import {
+  ApiBody,
+  ApiQuery,
+  ApiOkResponse,
+  type SchemaObject,
+} from '@nestjs/swagger';
 import { z } from 'zod';
 import { normalizeDigits } from '../auth/auth.contracts';
 
 export const id = z.uuid();
+export const LocationQuery = () =>
+  applyDecorators(
+    ApiQuery({
+      name: 'page',
+      required: false,
+      schema: { type: 'integer', minimum: 1, maximum: 100000, default: 1 },
+    }),
+    ApiQuery({
+      name: 'parentId',
+      required: false,
+      description:
+        'Required for provinces, cities and districts; ignored for countries.',
+      schema: { type: 'string', format: 'uuid' },
+    }),
+    ApiOkResponse({
+      description:
+        'Ordered by name then id. Countries: 300 per page; other kinds: 1000. A shorter page ends the list.',
+      schema: {
+        type: 'array',
+        items: {
+          type: 'object',
+          required: ['id', 'name'],
+          properties: {
+            id: { type: 'string', format: 'uuid' },
+            name: { type: 'string' },
+            code: { type: 'string' },
+            countryId: { type: 'string', format: 'uuid' },
+            provinceId: { type: 'string', format: 'uuid' },
+            cityId: { type: 'string', format: 'uuid' },
+          },
+        },
+      },
+    }),
+  );
 export const catalogFiltersSchema = z
   .object({
     page: z.coerce.number().int().min(1).max(10000).default(1),
     search: z.string().trim().max(100).default(''),
     categoryId: id.optional(),
     sportId: id.optional(),
+    countryId: id.optional(),
+    provinceId: id.optional(),
     cityId: id.optional(),
     districtId: id.optional(),
     serviceType: z

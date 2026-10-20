@@ -27,6 +27,10 @@ jobs:
         with:
           version: "11.25.0"
       - run: pnpm install --frozen-lockfile
+      - name: Verify direct workspace dependencies
+        run: |
+          node --test scripts/check-workspace-dependencies.test.mjs
+          node scripts/check-workspace-dependencies.mjs
       - name: Preserve approved cards and club details
         run: node scripts/check-protected-design.mjs
       - name: Lint and types
@@ -34,7 +38,7 @@ jobs:
       - name: Install encrypted backup tool
         run: sudo apt-get update && sudo apt-get install -y restic
       - name: Verify backup, scheduling, alerts and domain associations
-        run: node --test --test-concurrency=1 scripts/backup-media.test.mjs scripts/backup-verify.test.mjs scripts/backup-retention.test.mjs scripts/recovery-media.test.mjs scripts/operations-worker.test.mjs scripts/monitor-alerts.test.mjs scripts/app-associations.test.mjs
+        run: node --test --test-concurrency=1 scripts/backup-media.test.mjs scripts/backup-verify.test.mjs scripts/backup-retention.test.mjs scripts/recovery-media.test.mjs scripts/operations-worker.test.mjs scripts/operations-lifecycle.test.mjs scripts/operations-services.test.mjs scripts/monitor-alerts.test.mjs scripts/app-associations.test.mjs
       - name: Verify local TLS proxy
         run: |
           node scripts/staging-tls.mjs
@@ -93,6 +97,10 @@ jobs:
         with:
           version: "11.25.0"
       - run: pnpm install --frozen-lockfile
+      - name: Verify direct workspace dependencies
+        run: |
+          node --test scripts/check-workspace-dependencies.test.mjs
+          node scripts/check-workspace-dependencies.mjs
       - name: Export and synchronize iOS shell
         run: |
           pnpm --filter application build:native

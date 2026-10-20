@@ -148,8 +148,8 @@
   margin-inline: auto;
   border-radius: 1.5rem 1.5rem 0 0;
   padding-bottom: env(safe-area-inset-bottom);
-  animation-duration: 320ms;
-  transition-duration: 320ms;
+  animation-duration: 200ms;
+  transition-duration: 200ms;
 }
 .sports-host-sheet :is(button, input, textarea, select) {
   min-height: 2.75rem;

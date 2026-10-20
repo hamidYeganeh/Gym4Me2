@@ -1,12 +1,29 @@
 "use client";
-import {
-  defineTransition,
-  LinearIntegrator,
-  MultiAnimation,
-  WebAnimation,
-} from "@ssgoi/react";
+import { defineTransition, MultiAnimation, WebAnimation } from "@ssgoi/react";
 import type { AnimationFactoryArgs } from "@ssgoi/react";
+import { zoom } from "@ssgoi/react/view-transitions";
 import { routeMotion } from "./lib/route-motion";
+import { routeIntegrator } from "./lib/route-integrator";
+import { RouteAnimation } from "./lib/route-animation";
+import { withClubMotionOrigin } from "./lib/club-motion-origin";
+
+/** WAAPI bakes frames up front; a media change must finish the live execution. */
+function respectReducedMotion<T extends MultiAnimation>(animation: T): T {
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const finish = () => {
+    if (media.matches) animation.complete();
+  };
+  const dispose = animation.onDispose;
+  animation.onDispose = (context) => {
+    media.removeEventListener("change", finish);
+    dispose?.(context);
+  };
+  media.addEventListener("change", finish);
+  if (media.matches)
+    for (const track of animation.tracks())
+      track.set({ integrator: routeIntegrator(0) });
+  return animation;
+}
 function build(
   { from, to }: AnimationFactoryArgs<object>,
   backward: boolean,
@@ -14,23 +31,21 @@ function build(
   vertical = false,
 ) {
   const direction = document.documentElement.dir === "rtl" ? -1 : 1;
-  const integrator = () =>
-    new LinearIntegrator({
-      durationSec: fadeOnly
-        ? routeMotion.fade
-        : vertical
-          ? routeMotion.sheet
-          : routeMotion.push,
-    });
+  const duration = fadeOnly
+    ? routeMotion.fade
+    : vertical
+      ? routeMotion.sheet
+      : routeMotion.push;
   const eased = (t: number) => 1 - (1 - t) ** 3;
   const track = (element: HTMLElement, incoming: boolean) => {
     const original = {
       transform: element.style.transform,
       opacity: element.style.opacity,
     };
-    return new WebAnimation({
+    const animation = new WebAnimation({
       element,
-      integrator: integrator(),
+      integrator: routeIntegrator(duration),
+      motion: { handoffDuration: duration * 1000 },
       label: incoming ? "in" : "out",
       style: (progress) => {
         const t = eased(progress);
@@ -54,8 +69,65 @@ function build(
         }
       },
     });
+    return animation;
   };
-  return new MultiAnimation({ out: track(from, false), in: track(to, true) });
+  return respectReducedMotion(
+    new RouteAnimation(
+      new MultiAnimation({ out: track(from, false), in: track(to, true) }),
+      duration,
+    ),
+  );
+}
+
+/** Existing protected image anchors drive the shared visual; direct entry still pushes. */
+export function lumaClub() {
+  const preset = zoom({ type: "static", variant: "fade" });
+  return {
+    async prepare(args: Parameters<NonNullable<typeof preset.prepare>>[0]) {
+      const detail = await (args.context.direction === "backward"
+        ? args.from
+        : args.to);
+      // The App Router may commit its loading boundary before the hero arrives.
+      // Wait briefly for the existing image anchor; slow/error pages still fall back.
+      if (
+        !args.signal?.aborted &&
+        !detail.querySelector("[data-zoom-enter-key]")
+      ) {
+        await new Promise<void>((resolve) => {
+          const finish = () => {
+            observer.disconnect();
+            clearTimeout(timer);
+            args.signal?.removeEventListener("abort", finish);
+            resolve();
+          };
+          const observer = new MutationObserver(() => {
+            if (detail.querySelector("[data-zoom-enter-key]")) finish();
+          });
+          const timer = setTimeout(finish, 500);
+          observer.observe(detail, { childList: true, subtree: true });
+          args.signal?.addEventListener("abort", finish, { once: true });
+          args.onCleanup?.(finish);
+          if (args.signal?.aborted) finish();
+        });
+      }
+      return preset.prepare?.(args) ?? {};
+    },
+    animation(args: AnimationFactoryArgs<object>) {
+      const animation = withClubMotionOrigin(
+        args.from,
+        args.to,
+        args.context.direction === "backward",
+        () => preset.animation(args),
+      );
+      if (!animation?.tracks().length)
+        return build(args, args.context.direction === "backward");
+      for (const track of animation.tracks()) {
+        track.set({ integrator: routeIntegrator(routeMotion.push) });
+        track.motion.handoffDuration = routeMotion.push * 1000;
+      }
+      return respectReducedMotion(new RouteAnimation(animation, routeMotion.push));
+    },
+  };
 }
 export const lumaPush = () =>
   defineTransition({
@@ -79,12 +151,12 @@ function instant({ from, to }: AnimationFactoryArgs<object>) {
   return new MultiAnimation({
     out: new WebAnimation({
       element: from,
-      integrator: new LinearIntegrator({ durationSec: 0 }),
+      integrator: routeIntegrator(0),
       style: () => ({}),
     }),
     in: new WebAnimation({
       element: to,
-      integrator: new LinearIntegrator({ durationSec: 0 }),
+      integrator: routeIntegrator(0),
       style: () => ({}),
     }),
   });

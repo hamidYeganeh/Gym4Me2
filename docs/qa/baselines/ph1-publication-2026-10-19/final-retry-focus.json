@@ -1,0 +1,26 @@
+{
+  "active": {
+    "href": "/discovery",
+    "label": "بازگشت به باشگاه‌ها",
+    "tag": "A"
+  },
+  "images": [
+    {
+      "height": 941,
+      "src": "http://127.0.0.1:7489/api/v1/catalog/media/cc6db76d-dd22-4908-9940-da4a6f9957e7",
+      "width": 1672
+    },
+    {
+      "height": 941,
+      "src": "http://127.0.0.1:7489/api/v1/catalog/media/cc6db76d-dd22-4908-9940-da4a6f9957e7",
+      "width": 1672
+    },
+    {
+      "height": 941,
+      "src": "http://127.0.0.1:7489/api/v1/catalog/media/cc6db76d-dd22-4908-9940-da4a6f9957e7",
+      "width": 1672
+    }
+  ],
+  "scroll": 1280,
+  "width": 1280
+}

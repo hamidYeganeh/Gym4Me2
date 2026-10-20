@@ -1,0 +1,567 @@
+nice: setpriority: Operation not permitted
+✔ direct account links have a finite path back to discovery (1.006208ms)
+✔ public policy returns to login only for its explicit entry point (0.224042ms)
+✔ cold catalog links return through details while preserving branch (0.117417ms)
+✔ expired sessions preserve the complete purchase destination (0.727834ms)
+✔ signing in from profile completion preserves both return hops (0.154ms)
+✔ only the explicit consent error offers profile recovery (0.663958ms)
+✔ recovery never forwards an external or malformed return destination (0.154ms)
+✔ cached identity is retired after access denial while a temporary outage preserves the edit draft (0.110708ms)
+✔ incorrect challenge or password is shown inline without a sign-in-again action (0.12325ms)
+✔ a completed action focuses a committed fallback when the original row was removed (1.079209ms)
+✔ a later user focus, query navigation or fragment navigation prevents restoration (0.167666ms)
+✔ disabled, hidden or detached destinations cannot receive async focus (0.448416ms)
+✔ an internal push returns to the invitation and preserves the router's opaque state (2.385334ms)
+✔ cold entries never trust unrelated history length, and replace preserves a real predecessor across reload (0.668709ms)
+✔ overlay dismissal precedes traversal, and rapid Back cannot skip two pages (0.521459ms)
+✔ a slow router retains the Back lock until the destination commits (0.232ms)
+✔ a stale source commit and a URL pop cannot unlock a slow destination (0.327875ms)
+✔ a new forward intent supersedes a pending Back (0.234625ms)
+✔ navigation observations strip query data and cannot disrupt a Back (0.500875ms)
+✔ after one nested sheet settles, Back can dismiss its parent without a route commit (0.197ms)
+✔ login/payment intermediates, foreign metadata and unsafe fallbacks are rejected (0.913875ms)
+✔ query-only and native trailing-slash entries work with Back, Forward and replacement (0.681792ms)
+✔ disposing does not clobber a newer framework wrapper or change non-object states (0.168833ms)
+✔ a parent fallback retires the duplicate predecessor left by an authentication return (0.177625ms)
+✔ both auth routes retain the complete destination without a method query (1.2515ms)
+✔ bookmarked method links resolve to their canonical sign-in page (0.204125ms)
+✔ auth entry and Back reject external destinations and auth loops (0.300625ms)
+✔ both auth pages suppress bottom navigation on web and native trailing-slash URLs (0.71525ms)
+✔ only the accessible header Back affordance uses the history adapter (0.726708ms)
+✔ modified, secondary and already-consumed clicks preserve browser behavior (0.142459ms)
+✔ a cached club or branch is retired after authoritative unpublication or denial (0.482167ms)
+✔ an outage preserves the cached snapshot without changing it (0.099875ms)
+✔ catalog hours localize zero-padded time and mark midnight and overnight ends (83.118166ms)
+✔ the detail summary preserves the audience of each opening interval (3.840417ms)
+✔ a date-only exception preserves its calendar day without a branch-zone shift (13.24675ms)
+✔ country and province constrain discovery before a city is selected (1.135958ms)
+✔ all selected levels reach the shared client together; empty levels are omitted (59.363042ms)
+✔ missing-page retry restores after replacement, without overriding newer focus or another route (0.664708ms)
+✔ sensitive changes require a trimmed, bounded human reason (1.13925ms)
+✔ a membership purchase does not require a session (0.55075ms)
+✔ a missing or foreign session cannot continue checkout (0.09225ms)
+✔ the last available seat is allowed but a full session is blocked (0.123584ms)
+✔ a blocked resource is distinct from a full session (0.068125ms)
+✔ registration closes at the start instant; cancelled or invalid times fail closed (0.098959ms)
+✔ a course cannot continue when another session has lost capacity or its resource (0.116958ms)
+✔ remaining allowance subtracts both consumed and reserved sessions (0.56675ms)
+✔ single-session checkout excludes expired, frozen, empty and foreign memberships (0.560375ms)
+✔ the whole course needs enough unreserved sessions (0.122417ms)
+✔ expiry is exclusive and malformed dates do not create entitlement (0.098417ms)
+✔ an active row still cannot be used during a future or malformed freeze (0.105375ms)
+✔ document uploads accept the four server-supported MIME types (1.686292ms)
+✔ the 5 MiB boundary is inclusive and one more byte is rejected (0.295916ms)
+✔ empty and unsupported files have distinct useful errors (0.221583ms)
+✔ an approved document becomes expired at the exact expiry instant (0.121958ms)
+✔ unexpired review statuses are preserved (0.105583ms)
+✔ returning athletes keep the complete destination after either sign-in method (0.446458ms)
+✔ new athletes complete their profile before returning to their action (0.192541ms)
+✔ password recovery keeps the destination through credential setup (0.083292ms)
+✔ workspace sign-in does not enter athlete profile setup (0.067334ms)
+✔ unsafe return destinations cannot redirect outside the app (0.067291ms)
+✔ login accepts the mobile-number forms accepted by the server contract (1.466375ms)
+✔ missing and malformed phone errors stay distinct from password errors (0.217917ms)
+✔ existing passwords keep spaces and the server's 128-character boundary (0.124375ms)
+✔ SMS login does not validate an inactive password field (0.0735ms)
+✔ an issued challenge validates only its five-digit code (0.136333ms)
+✔ a five-character nonnumeric or padded code cannot pass the SMS guard (0.095625ms)
+✔ public custom and trusted HTTPS club links map to bundled routes (0.7115ms)
+✔ external origins, credentials, arbitrary routes and malformed IDs are rejected (0.190583ms)
+✔ untrusted query parameters never enter the app route (0.076875ms)
+✔ sports deep links resolve to static shells and strip untrusted parameters (0.206375ms)
+✔ successful share retains the private file for its recipient (1.089667ms)
+✔ unavailable platform or plugin never writes account data (0.428875ms)
+✔ failed write and cancelled or failed sharing remove this export (0.202666ms)
+✔ cleanup only removes expired account exports (0.167416ms)
+✔ native login saves its bearer only in the vault and strips it from the UI response (14.977333ms)
+✔ protected calls carry a valid bearer and a revoked session clears secure storage (0.226125ms)
+✔ expired credentials are removed before a request and never leave the device (0.190917ms)
+✔ saved catalog is authenticated while public catalog never receives a bearer (0.392875ms)
+✔ a failed vault write revokes the new server session and reports the storage failure (0.56625ms)
+✔ credentials cannot be sent to another host, path or an insecure API (0.173709ms)
+✔ cancellation and redirects cannot silently keep or transfer native credentials (0.220667ms)
+✔ password login stores the token securely and password reset removes the old credential (0.335708ms)
+✔ a wrong phone-change code preserves the native bearer and the readable error response (0.67075ms)
+✔ expired or unknown phone-change errors clear the credential; an unrelated read never treats 401 as a wrong code (0.421084ms)
+✔ initialization wraps the Capacitor proxy so Promise resolution never calls native then (1.0135ms)
+✔ initialization failures reject rather than leave account loading pending (0.375583ms)
+✔ a late failure from an old native session cannot delete a newer login (0.626333ms)
+✔ native compare/remove and writes serialize without losing a concurrent newer session (0.272333ms)
+✔ the fetch adapter passes the failed session to the vault when an older response arrives after login (16.114583ms)
+✔ native club identity tracks the club and view, excluding filters (0.693417ms)
+✔ every exported ID shell changes identity for IDs and ignores filters (0.20775ms)
+✔ web and native club detail, gallery, reviews and slots share identity and chrome (0.640708ms)
+✔ static commerce shells distinguish identifiers without remounting filters (0.079375ms)
+✔ a pristine form can explicitly refresh its server snapshot (1.431917ms)
+✔ refresh preserves a draft changed before or during the read (0.104708ms)
+✔ reverting the edits permits a later explicit refresh (0.089291ms)
+✔ a confirmed save becomes the new baseline for subsequent edits (0.072916ms)
+✔ SMS autofill and formatted paste accept all supported numeral systems (0.785417ms)
+✔ five-digit application codes never inherit the demo's four/six digit restriction (0.158125ms)
+✔ closing a modal restores its trigger after the background is exposed (1.415875ms)
+✔ browser Back dismisses only the top nested sheet; closing restores the parent (1.610042ms)
+✔ native dismissal and repeated Back do not close the sheet underneath (0.21375ms)
+✔ a removed parent drains safely after its child closes (0.114291ms)
+✔ closing and immediately reopening waits for the asynchronous pop (0.117917ms)
+✔ a route change closes overlays without consuming the destination history (0.133541ms)
+✔ Forward into a retired overlay does not reopen or trap history (0.105625ms)
+✔ saved removal waits for a replacement list, then picks next, previous, retained item or empty action (0.842625ms)
+✔ session recovery retains each client, sign-in method and complete scoped destination (1.65275ms)
+✔ policy round trips retain password mode and return hops for all three clients (0.338958ms)
+✔ expired session recovery cannot redirect to an external destination (0.410583ms)
+✔ forgotten-password and policy return keep the recovery flow before setting a new password (0.379833ms)
+✔ ticket validation applies the server's trimmed title and body limits (1.138083ms)
+✔ a reply accepts one trimmed character but rejects whitespace and oversized bodies (0.107375ms)
+✔ support references reject malformed or non-RFC UUIDs (0.195667ms)
+✔ one month with different validity, allowances, inclusions, conditions or branch scope never shares a price row (3.862709ms)
+✔ same announced entitlements compare despite plan names, price, version, inclusion order and Persian typography (0.475583ms)
+✔ each comparable cell retains all matching alternatives rather than picking the cheapest unrelated plan (0.856375ms)
+✔ inactive tariffs, other services and other units are excluded; no data remains empty (0.275792ms)
+✔ branch identities differ across clubs but all-branch access never matches a single branch (0.236167ms)
+✔ staff invitations accept server-supported phone formats and an explicit current branch (1.8555ms)
+✔ restricted grants never accept an empty, stale, duplicated or oversized selection (0.538ms)
+✔ unavailable branch reads block restricted grants without changing them to all branches (0.243375ms)
+✖ public PH0 fixture links catalog, branch services and calendars without issuing account access (20.8355ms)
+✖ calendar DTO simulation paginates list/services and links to consistent detail without granting writes (3.248916ms)
+✖ calendar simulation validates filtered cursors and contract limits (1.1045ms)
+✖ calendar page failures and final-empty pages retain the original cursor boundary (0.609ms)
+✖ calendar empty and denied followed views stay separate from public reads (0.787958ms)
+✖ protected catalog visual DTOs keep clubs and branches associated without granting writes (1.065125ms)
+✖ support simulation separates list/detail and never grants a session or writes (1.03125ms)
+✖ support empty, access denial and unavailable reads are distinct (0.884208ms)
+✖ conversation pages keep archived scopes and 20-row cursors separate (1.68025ms)
+✖ conversation empty, exhausted, continuation failure and forbidden states differ (1.198083ms)
+✖ notification pages preserve the server's 20-row cursor contract and unread filter (0.886959ms)
+✖ notification empty, exhausted, continuation failure and forbidden states differ (0.443166ms)
+✖ invitation pages use the returned cursor without gaps or duplicates (0.390042ms)
+✖ invitation empty and page-error scenarios remain distinguishable (0.392542ms)
+✖ an exhausted continuation can end the list without appending an invitation (0.3685ms)
+✖ preferences read scenarios do not grant a session or save preferences (0.34025ms)
+✖ preferences refresh can return a changed snapshot or an explicit failure (0.304375ms)
+✖ public policy rendering never grants account privacy access or accepts consent (0.356208ms)
+✖ session expiry simulation keeps public discovery readable and rejects all writes (0.415917ms)
+✖ documents stay private except the explicit read-only DTO scenario (0.344083ms)
+✖ failed document reads are not successful empty lists (0.261166ms)
+✖ checkout DTO simulation never grants profile/auth or allows a write (0.342792ms)
+✖ membership read failure remains distinct from an empty allowance list (0.306083ms)
+✖ public list and detail preserve their different API projections (0.297292ms)
+✖ search and branch filters have observable results without inventing auth (0.287ms)
+✖ all mutating methods are rejected, including payment and auth routes (0.291667ms)
+✖ local cookies never turn fixture profile or private routes into a session (0.263292ms)
+✖ empty mode removes the public catalog and its details (0.270334ms)
+✖ unavailable mode is a failure rather than a successful empty response (0.258083ms)
+✖ unknown media is rejected without a fallback image or external fetch (0.285666ms)
+✖ slow reads remain abortable and the isolated server can close (0.280916ms)
+ℹ tests 153
+ℹ suites 0
+ℹ pass 122
+ℹ fail 31
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11344.045042
+
+✖ failing tests:
+
+test at apps/application/test/web-read-fixture.test.ts:44:25
+✖ public PH0 fixture links catalog, branch services and calendars without issuing account access (20.8355ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:79:25
+✖ calendar DTO simulation paginates list/services and links to consistent detail without granting writes (3.248916ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:106:25
+✖ calendar simulation validates filtered cursors and contract limits (1.1045ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:123:25
+✖ calendar page failures and final-empty pages retain the original cursor boundary (0.609ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:144:25
+✖ calendar empty and denied followed views stay separate from public reads (0.787958ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:153:25
+✖ protected catalog visual DTOs keep clubs and branches associated without granting writes (1.065125ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:172:25
+✖ support simulation separates list/detail and never grants a session or writes (1.03125ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:193:25
+✖ support empty, access denial and unavailable reads are distinct (0.884208ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:208:25
+✖ conversation pages keep archived scopes and 20-row cursors separate (1.68025ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:235:25
+✖ conversation empty, exhausted, continuation failure and forbidden states differ (1.198083ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:261:25
+✖ notification pages preserve the server's 20-row cursor contract and unread filter (0.886959ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:290:25
+✖ notification empty, exhausted, continuation failure and forbidden states differ (0.443166ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:316:25
+✖ invitation pages use the returned cursor without gaps or duplicates (0.390042ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:333:25
+✖ invitation empty and page-error scenarios remain distinguishable (0.392542ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:343:25
+✖ an exhausted continuation can end the list without appending an invitation (0.3685ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:350:25
+✖ preferences read scenarios do not grant a session or save preferences (0.34025ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:362:25
+✖ preferences refresh can return a changed snapshot or an explicit failure (0.304375ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:376:25
+✖ public policy rendering never grants account privacy access or accepts consent (0.356208ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:389:25
+✖ session expiry simulation keeps public discovery readable and rejects all writes (0.415917ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:406:25
+✖ documents stay private except the explicit read-only DTO scenario (0.344083ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:425:25
+✖ failed document reads are not successful empty lists (0.261166ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:431:25
+✖ checkout DTO simulation never grants profile/auth or allows a write (0.342792ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:454:25
+✖ membership read failure remains distinct from an empty allowance list (0.306083ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:460:25
+✖ public list and detail preserve their different API projections (0.297292ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:476:25
+✖ search and branch filters have observable results without inventing auth (0.287ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:485:25
+✖ all mutating methods are rejected, including payment and auth routes (0.291667ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:504:25
+✖ local cookies never turn fixture profile or private routes into a session (0.263292ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:519:25
+✖ empty mode removes the public catalog and its details (0.270334ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:525:25
+✖ unavailable mode is a failure rather than a successful empty response (0.258083ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:530:25
+✖ unknown media is rejected without a fallback image or external fetch (0.285666ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }
+
+test at apps/application/test/web-read-fixture.test.ts:535:25
+✖ slow reads remain abortable and the isolated server can close (0.280916ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2306:21)
+      at listenInCluster (node:net:2437:12)
+      at node:net:2666:7
+      at processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }

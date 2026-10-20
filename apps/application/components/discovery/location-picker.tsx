@@ -4,12 +4,8 @@ import { useTranslations } from "@repo/i18n";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { Field, FieldLabel } from "@repo/ui/kit/Field";
 import { Button } from "@repo/ui/kit/Button";
-export type LocationValue = {
-  countryId?: string;
-  provinceId?: string;
-  cityId?: string;
-  districtId?: string;
-};
+import type { CatalogLocation } from "../../lib/catalog-location";
+export type LocationValue = CatalogLocation;
 export function LocationPicker({
   value,
   onChange,

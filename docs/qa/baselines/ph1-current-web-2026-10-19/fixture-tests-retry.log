@@ -1,0 +1,39 @@
+✔ public PH0 fixture links catalog, branch services and calendars without issuing account access (145.683833ms)
+✔ calendar DTO simulation paginates list/services and links to consistent detail without granting writes (1701.783417ms)
+✔ calendar simulation validates filtered cursors and contract limits (35.472167ms)
+✔ calendar page failures and final-empty pages retain the original cursor boundary (4944.124292ms)
+✔ calendar empty and denied followed views stay separate from public reads (34.369208ms)
+✔ protected catalog visual DTOs keep clubs and branches associated without granting writes (28.807542ms)
+✔ support simulation separates list/detail and never grants a session or writes (23.716125ms)
+✔ support empty, access denial and unavailable reads are distinct (9.513375ms)
+✔ conversation pages keep archived scopes and 20-row cursors separate (1675.496208ms)
+✔ conversation empty, exhausted, continuation failure and forbidden states differ (1670.033958ms)
+✔ notification pages preserve the server's 20-row cursor contract and unread filter (1642.705375ms)
+✔ notification empty, exhausted, continuation failure and forbidden states differ (1626.27ms)
+✔ invitation pages use the returned cursor without gaps or duplicates (842.584834ms)
+✔ invitation empty and page-error scenarios remain distinguishable (814.291083ms)
+✔ an exhausted continuation can end the list without appending an invitation (810.878667ms)
+✔ preferences read scenarios do not grant a session or save preferences (9.426084ms)
+✔ preferences refresh can return a changed snapshot or an explicit failure (1413.581167ms)
+✔ public policy rendering never grants account privacy access or accepts consent (9.710292ms)
+✔ session expiry simulation keeps public discovery readable and rejects all writes (13.055167ms)
+✔ documents stay private except the explicit read-only DTO scenario (10.716458ms)
+✔ failed document reads are not successful empty lists (3.573875ms)
+✔ checkout DTO simulation never grants profile/auth or allows a write (13.650583ms)
+✔ membership read failure remains distinct from an empty allowance list (26.68275ms)
+✔ public list and detail preserve their different API projections (5.662208ms)
+✔ search and branch filters have observable results without inventing auth (6.281958ms)
+✔ all mutating methods are rejected, including payment and auth routes (24.325ms)
+✔ local cookies never turn fixture profile or private routes into a session (3.495167ms)
+✔ empty mode removes the public catalog and its details (1.714958ms)
+✔ unavailable mode is a failure rather than a successful empty response (1.132375ms)
+✔ unknown media is rejected without a fallback image or external fetch (0.995708ms)
+✔ slow reads remain abortable and the isolated server can close (23.731208ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18757.780875

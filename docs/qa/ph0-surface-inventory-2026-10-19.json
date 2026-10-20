@@ -1,0 +1,2387 @@
+{
+  "scope": "Static entrypoints and shared-component consumers. API/state/keyboard/visual audits remain separate.",
+  "routes": [
+    {
+      "surface": "application",
+      "route": "/auth/login",
+      "source": "apps/application/app/auth/login/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/auth/otp",
+      "source": "apps/application/app/auth/otp/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/bookings/detail",
+      "source": "apps/application/app/bookings/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/bookings"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/bookings",
+      "source": "apps/application/app/bookings/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/bookings"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/calendars/detail",
+      "source": "apps/application/app/calendars/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/calendars",
+      "source": "apps/application/app/calendars/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/checkout/mock-gateway",
+      "source": "apps/application/app/checkout/mock-gateway/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/mock-gateway"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/checkout",
+      "source": "apps/application/app/checkout/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/checkout"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/checkout/status",
+      "source": "apps/application/app/checkout/status/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/checkout"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/discovery/club",
+      "source": "apps/application/app/discovery/club/page.tsx",
+      "imports": [
+        "react",
+        "../../../components/discovery/club-route",
+        "../../../components/discovery/catalog-state"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/discovery/clubs/[clubId]/gallery",
+      "source": "apps/application/app/discovery/clubs/[clubId]/gallery/page.tsx",
+      "imports": [
+        "../../../../../components/discovery/club-gallery",
+        "../../../../../lib/public-catalog"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/discovery/clubs/[clubId]",
+      "source": "apps/application/app/discovery/clubs/[clubId]/page.tsx",
+      "imports": [
+        "../../../../components/discovery/club-page",
+        "next",
+        "../../../../lib/public-catalog"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/discovery/clubs/[clubId]/reviews",
+      "source": "apps/application/app/discovery/clubs/[clubId]/reviews/page.tsx",
+      "imports": [
+        "../../../../../components/discovery/club-reviews",
+        "../../../../../lib/public-catalog"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/discovery/clubs/[clubId]/slots",
+      "source": "apps/application/app/discovery/clubs/[clubId]/slots/page.tsx",
+      "imports": [
+        "../../../../../components/luma/services",
+        "../../../../../lib/club-href",
+        "../../../../../lib/public-catalog"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/discovery/coaches/[coachId]",
+      "source": "apps/application/app/discovery/coaches/[coachId]/page.tsx",
+      "imports": [
+        "next/navigation",
+        "../../../../lib/clubs",
+        "../../../../lib/coaches",
+        "../../../../components/discovery/coach-page"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/discovery/compare",
+      "source": "apps/application/app/discovery/compare/page.tsx",
+      "imports": [
+        "react",
+        "../../../components/discovery/club-comparison",
+        "../../../components/discovery/catalog-state"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/discovery/map",
+      "source": "apps/application/app/discovery/map/page.tsx",
+      "imports": [
+        "../../../components/discovery/discovery-map"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/discovery",
+      "source": "apps/application/app/discovery/page.tsx",
+      "imports": [
+        "../../components/discovery/discovery"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/documents",
+      "source": "apps/application/app/documents/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/documents"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/host",
+      "source": "apps/application/app/host/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/invitations",
+      "source": "apps/application/app/invitations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/invitations/sports",
+      "source": "apps/application/app/invitations/sports/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/login",
+      "source": "apps/application/app/login/page.tsx",
+      "imports": [
+        "react",
+        "next/navigation",
+        "@repo/ui/lib/auth-routes",
+        "../auth/loading"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/membership-card",
+      "source": "apps/application/app/membership-card/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/ticket"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/memberships/detail",
+      "source": "apps/application/app/memberships/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/bookings"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/memberships",
+      "source": "apps/application/app/memberships/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/bookings"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/messages/conversation",
+      "source": "apps/application/app/messages/conversation/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/messages/details",
+      "source": "apps/application/app/messages/details/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/messages",
+      "source": "apps/application/app/messages/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/notifications",
+      "source": "apps/application/app/notifications/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/notifications/preferences",
+      "source": "apps/application/app/notifications/preferences/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/orders/detail",
+      "source": "apps/application/app/orders/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/bookings"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/orders",
+      "source": "apps/application/app/orders/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/bookings"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/",
+      "source": "apps/application/app/page.tsx",
+      "imports": [
+        "../components/luma/home"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/privacy",
+      "source": "apps/application/app/privacy/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/profile/complete",
+      "source": "apps/application/app/profile/complete/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/profile/edit",
+      "source": "apps/application/app/profile/edit/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/profile",
+      "source": "apps/application/app/profile/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/profile/settings",
+      "source": "apps/application/app/profile/settings/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/profile/settings/privacy",
+      "source": "apps/application/app/profile/settings/privacy/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/qa/ph0",
+      "source": "apps/application/app/qa/ph0/page.tsx",
+      "imports": [
+        "next/navigation"
+      ],
+      "qaOnly": true,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/reset-password",
+      "source": "apps/application/app/reset-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/saved/clubs",
+      "source": "apps/application/app/saved/clubs/page.tsx",
+      "imports": [
+        "../../../components/discovery/saved-pages"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/saved/coaches",
+      "source": "apps/application/app/saved/coaches/page.tsx",
+      "imports": [
+        "../../../components/discovery/saved-pages"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/saved",
+      "source": "apps/application/app/saved/page.tsx",
+      "imports": [
+        "../../components/discovery/saved-pages"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/services/detail",
+      "source": "apps/application/app/services/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/services"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/services",
+      "source": "apps/application/app/services/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/services"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/sessions",
+      "source": "apps/application/app/sessions/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/set-password",
+      "source": "apps/application/app/set-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/support/detail",
+      "source": "apps/application/app/support/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/support",
+      "source": "apps/application/app/support/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/community"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/tickets/view",
+      "source": "apps/application/app/tickets/view/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "react",
+        "../../../components/luma/ticket"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/training",
+      "source": "apps/application/app/training/page.tsx",
+      "imports": [
+        "@repo/i18n",
+        "@repo/ui/training-page"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "application",
+      "route": "/waitlist",
+      "source": "apps/application/app/waitlist/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "react",
+        "../../components/luma/bookings"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/branches",
+      "source": "apps/business/app/branches/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/calendar",
+      "source": "apps/business/app/calendar/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/imports",
+      "source": "apps/business/app/imports/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/invitations",
+      "source": "apps/business/app/invitations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/login",
+      "source": "apps/business/app/login/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/members",
+      "source": "apps/business/app/members/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/messages/[conversationId]",
+      "source": "apps/business/app/messages/[conversationId]/page.tsx",
+      "imports": [
+        "next/navigation",
+        "@repo/ui/sports-host-conversation"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/messages",
+      "source": "apps/business/app/messages/page.tsx",
+      "imports": [
+        "react",
+        "@repo/ui/sports-messages",
+        "@repo/i18n/server"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/organizations/[organizationId]/branches/[branchId]",
+      "source": "apps/business/app/organizations/[organizationId]/branches/[branchId]/page.tsx",
+      "imports": [
+        "@repo/ui/account",
+        "@repo/i18n/server"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/organizations/[organizationId]",
+      "source": "apps/business/app/organizations/[organizationId]/page.tsx",
+      "imports": [
+        "@repo/ui/account",
+        "@repo/i18n/server"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/organizations",
+      "source": "apps/business/app/organizations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/",
+      "source": "apps/business/app/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/payments",
+      "source": "apps/business/app/payments/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/privacy",
+      "source": "apps/business/app/privacy/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/profile",
+      "source": "apps/business/app/profile/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/reception",
+      "source": "apps/business/app/reception/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/reports",
+      "source": "apps/business/app/reports/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/reset-password",
+      "source": "apps/business/app/reset-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/resources",
+      "source": "apps/business/app/resources/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/services",
+      "source": "apps/business/app/services/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/sessions",
+      "source": "apps/business/app/sessions/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/set-password",
+      "source": "apps/business/app/set-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/team",
+      "source": "apps/business/app/team/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "business",
+      "route": "/training",
+      "source": "apps/business/app/training/page.tsx",
+      "imports": [
+        "@repo/i18n/server",
+        "@repo/ui/training-page"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/audit",
+      "source": "apps/admin/app/audit/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/catalog-reviews",
+      "source": "apps/admin/app/catalog-reviews/page.tsx",
+      "imports": [
+        "@repo/i18n/server",
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/invitations",
+      "source": "apps/admin/app/invitations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/locations",
+      "source": "apps/admin/app/locations/page.tsx",
+      "imports": [
+        "@repo/i18n/server",
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/login",
+      "source": "apps/admin/app/login/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/moderation",
+      "source": "apps/admin/app/moderation/page.tsx",
+      "imports": [
+        "@repo/i18n/server",
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/operations",
+      "source": "apps/admin/app/operations/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/organizations/[organizationId]/branches/[branchId]",
+      "source": "apps/admin/app/organizations/[organizationId]/branches/[branchId]/page.tsx",
+      "imports": [
+        "@repo/i18n/server",
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/organizations/[organizationId]",
+      "source": "apps/admin/app/organizations/[organizationId]/page.tsx",
+      "imports": [
+        "@repo/i18n/server",
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/organizations",
+      "source": "apps/admin/app/organizations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/",
+      "source": "apps/admin/app/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/privacy",
+      "source": "apps/admin/app/privacy/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/profile",
+      "source": "apps/admin/app/profile/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/reset-password",
+      "source": "apps/admin/app/reset-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/sessions",
+      "source": "apps/admin/app/sessions/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/set-password",
+      "source": "apps/admin/app/set-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/taxonomies",
+      "source": "apps/admin/app/taxonomies/page.tsx",
+      "imports": [
+        "@repo/i18n/server",
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/training",
+      "source": "apps/admin/app/training/page.tsx",
+      "imports": [
+        "@repo/i18n/server",
+        "@repo/ui/training-page"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/users/[userId]",
+      "source": "apps/admin/app/users/[userId]/page.tsx",
+      "imports": [
+        "@repo/i18n/server",
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    },
+    {
+      "surface": "admin",
+      "route": "/users",
+      "source": "apps/admin/app/users/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "qaOnly": false,
+      "runtimeAudit": "pending; source inventory is not acceptance evidence"
+    }
+  ],
+  "consumers": [
+    {
+      "surface": "application",
+      "source": "apps/application/app/auth/loading.tsx",
+      "imports": [
+        "@repo/ui/kit/Skeleton"
+      ],
+      "sha256": "d3425442b24d7dd24aa1015365cbd0571bd799bc4ca48f75916f75aa199e88da"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/auth/login/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "a007401e985bbd283d425faed88bad9f6f5fa5022f2943e458093514f4f41d07"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/auth/otp/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "cc19d2199efdb30ce3b8f88dfa4fcb552f0a6a86b916447a65c20766214bdb91"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/bookings/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/bookings"
+      ],
+      "sha256": "6feb48041a62a3401624b924df474000e0e5d73e79ed92cca7974185fcf174ca"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/bookings/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/bookings/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/bookings"
+      ],
+      "sha256": "b5a789af25c5c8e6969b9baf1fe1fa0e0cc003833c2180f466d609f6433d491b"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/calendars/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/community"
+      ],
+      "sha256": "5c6de976be586702cbd4f28861ff3d61bfca9e5de3d8b169b93de9ae0799dd5f"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/calendars/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/calendars/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/community"
+      ],
+      "sha256": "61ac7a87a054f9a6d0f8d258f04ce915e9752ac7386a4636eb376070da9b30cd"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/checkout/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/checkout/mock-gateway/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/mock-gateway"
+      ],
+      "sha256": "c692412da6ed1e033fe994ed68de50f100a0d0eab13a5f0b336c27ad613cdfbf"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/checkout/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/checkout"
+      ],
+      "sha256": "ee86dda83389d8355066a343650ffecaff9713c732eb5502e6c12b06112d3fe3"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/checkout/status/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/checkout"
+      ],
+      "sha256": "935ad74ba93efc0cbe22bca3d88022d9978e9d343ae0ddc658f478cea164327b"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/discovery/clubs/[clubId]/slots/page.tsx",
+      "imports": [
+        "../../../../../components/luma/services"
+      ],
+      "sha256": "22271c01a20157bf6528651f630cb855a6d55a2be7fdf28bc8bacca3722aa020"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/documents/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/documents/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/documents"
+      ],
+      "sha256": "9c2a8d460975251442a22ad79bf6f47fe277c9db743723e12ac29aab07d1fed3"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/host/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/host/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/community"
+      ],
+      "sha256": "cb71cf3ad0c88eb00172b3d28958928aa6ff100dcd8f18d9b85bf47ec930a7e7"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/invitations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "8fd2f49a2a5ec0f22164106cf49bc59248015c888fe7211109ffd3d95d24ed22"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/invitations/sports/loading.tsx",
+      "imports": [
+        "../../../components/luma/page-loading"
+      ],
+      "sha256": "b45058422f48cf2d1f1b0475d48cafff62e97939a56ed5d71fdb881bb3c51634"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/invitations/sports/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/community"
+      ],
+      "sha256": "059e276c906e6e9aa38e23a0802b358f226fa21a51b82d84a3fb6ce85429f3f8"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/login/page.tsx",
+      "imports": [
+        "@repo/ui/lib/auth-routes"
+      ],
+      "sha256": "ffa58d0d58c25f5101ba30ba7bcdbb45ff25feebaf6832e55134d06fc3e8dcbb"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/membership-card/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/membership-card/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/ticket"
+      ],
+      "sha256": "ac5855d4585961774ba18d2562f03a6f2dac219b61b3113c23ca456114d180a0"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/memberships/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/bookings"
+      ],
+      "sha256": "d6116fd4a8d053bef2ee7cefbe830be1ab83131c3e28e0f5288b63a51ab4d5ed"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/memberships/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/memberships/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/bookings"
+      ],
+      "sha256": "710ed0cf8877deb383a62517e2ac1c42411c83ec1d62ae79cfbe0b1dbea08326"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/messages/conversation/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/community"
+      ],
+      "sha256": "d8767aa69bcac8b5e7c8a3718b033c9b6620f96b9e6c69891087cad2c00879d4"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/messages/details/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/community"
+      ],
+      "sha256": "0ab1aad6bae68e7293fb5408da963777062d7a12be7065ad70df62475a639c31"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/messages/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/messages/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/community"
+      ],
+      "sha256": "a4d2e01ab11fc115d5b94fb5457c45605846a0c39aab4a6add84bde35dce10db"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/notifications/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/notifications/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/community"
+      ],
+      "sha256": "34f3b6b8099310350ea94546540c27dcb2b39ded8f2f0021d2c7d3cdcba2b8b7"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/notifications/preferences/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/community"
+      ],
+      "sha256": "2495e701d9570a893da66796c5fd306b3fd74ce05bf8ce1dce0d897cc86f7b07"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/orders/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/bookings"
+      ],
+      "sha256": "8ba155b055f27c4b6aefd657d354904bd953cfb5310d0166cf54ab6e4dba5d01"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/orders/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/orders/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/bookings"
+      ],
+      "sha256": "cbe39a1fcadee04a63b85c5244c9f0c5079c09d5a61a6245acd022dc8f1cbbcd"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/page.tsx",
+      "imports": [
+        "../components/luma/home"
+      ],
+      "sha256": "34816e6f80a5d76f1f76b25027e3d4c9afef807827408858371e811cb66f7398"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/privacy/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "ccb6ad3f94aec2517166c1ddae5d7e65de02e38191972b010f50e4c904a983f4"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/profile/complete/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "6fc29faf2dc6cbacc77a717151381ac457c61c215c80b214037f5ee49332e8d7"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/profile/edit/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "b6acfa808c4ded5deeb3a659a2275ee1b77694a027df26681a1a47bc7fbcda11"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/profile/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "0a686738e3d72e63a2ec250b99464aa4e6c45218c3dbfc9517d5a481e4381d9d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/profile/settings/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "00d71f7ff50cc61d8fc3ca4032c9cff429355ae93c4540f92e00513b9f9f53fb"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/profile/settings/privacy/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "8777916e5591d3d01c1ebad99de9549bf06f42a9f9cfbf572e4d9d4189a85b4c"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/reset-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "c53b0c36d769cb6866444bdddcd90e16ec9fbb1e568d3f5395a39c24ba207232"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/services/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/services"
+      ],
+      "sha256": "df4048582230bcfc5a1cc4f590b6236d4ba34b69aa742a2c7131eadc372a4027"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/services/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/services/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/services"
+      ],
+      "sha256": "c81ae815db09834962a51ee89dfc340aff6d4388258b30d5717f0b85dccf73d9"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/sessions/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "0bda4d5f4c0047a95d471c79d1637b5d03ac40ad2b0a94e37a23f43c40e9cfc0"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/set-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "4af8fb971989ddd437da04db5836fa8eb907c327263639215ca4904d4e578654"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/support/detail/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/community"
+      ],
+      "sha256": "b6b513f0a3e00209b190342bcdbe93b3c08a5ac41fc0ca38047d9c555f4cf171"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/support/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/support/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/community"
+      ],
+      "sha256": "0b2c799d0b9036626593092a76c0aacf7f4830798b5f4a64bfd7fadc063d7168"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/tickets/view/loading.tsx",
+      "imports": [
+        "../../../components/luma/page-loading"
+      ],
+      "sha256": "b45058422f48cf2d1f1b0475d48cafff62e97939a56ed5d71fdb881bb3c51634"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/tickets/view/page.tsx",
+      "imports": [
+        "../../../components/luma/page-loading",
+        "../../../components/luma/ticket"
+      ],
+      "sha256": "8ca00e6c0e7a5db5d4dd336647608761bdbad55c2191a9b5993c2e22fd54d403"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/training/page.tsx",
+      "imports": [
+        "@repo/ui/training-page"
+      ],
+      "sha256": "e7dead051e272b4ba4a399ea89e39d71338a92c5cc5f89f41b5bbdc51b0bb6ec"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/waitlist/loading.tsx",
+      "imports": [
+        "../../components/luma/page-loading"
+      ],
+      "sha256": "4577aabe7364aa1c0d77aa410e6afed1352428453f91e04b32332cb1b473e92d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/app/waitlist/page.tsx",
+      "imports": [
+        "../../components/luma/page-loading",
+        "../../components/luma/bookings"
+      ],
+      "sha256": "3e2bdb59f23c68d11a69ad4a4aa3a1513e5e69918116155e5bb49d5c76fa1aa9"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/app-providers.tsx",
+      "imports": [
+        "@repo/ui/kit/Direction",
+        "@repo/ui/kit/Tooltip",
+        "@repo/ui/kit/Sonner",
+        "./luma/shell",
+        "@repo/ui/account"
+      ],
+      "sha256": "cbf3cd25a68f778965e029bca5c4db87d9044f05b16a26eaf205fefaab1782cd"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/branch-information.tsx",
+      "imports": [
+        "@repo/ui/kit/Card"
+      ],
+      "sha256": "deda06d60ba527c7e6b4c6a04965c7a67dfd58805e67b641542b62ac089fe1cf"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/catalog-filters.tsx",
+      "imports": [
+        "@repo/ui/kit/Field",
+        "@repo/ui/kit/NativeSelect",
+        "@repo/ui/kit/Input"
+      ],
+      "sha256": "4133c1cb40ef6c66fed93a97cb32201506e4011978c2267c6443852e4bee01f5"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/catalog-pagination.tsx",
+      "imports": [
+        "@repo/ui/kit/Button"
+      ],
+      "sha256": "d45cad224fdad255adf02588b58bc1bc193415608776b8b0e3e021c913324540"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/catalog-state.tsx",
+      "imports": [
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Skeleton"
+      ],
+      "sha256": "2989011316a9a86afb82c4b4bf38f1b7a248bfced049cf807d30630b88f0837c"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/category-carousel.tsx",
+      "imports": [
+        "@repo/ui/kit/Carousel",
+        "@repo/ui/kit/ToggleGroup"
+      ],
+      "sha256": "84de717144523918cb1f5ed16a2db77f116f8fc0c50fd317807b0158d40a3844"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-availability.tsx",
+      "imports": [
+        "@repo/ui/kit/Card"
+      ],
+      "sha256": "49ada0d008346d33c6ff4a19f53c2c88571ecfe80cfd4084b0d299d30dc34ea3"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-comparison.tsx",
+      "imports": [
+        "@repo/ui/mobile-page",
+        "@repo/ui/hooks/use-query-retry",
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Input",
+        "@repo/ui/kit/Field",
+        "@repo/ui/kit/NativeSelect",
+        "@repo/ui/kit/Table"
+      ],
+      "sha256": "893967dfdac7251b122312dfc6c26c865e5c3dd0d1889372ecbd6604a35b09ed"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-gallery-preview.tsx",
+      "imports": [
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Card",
+        "@repo/ui/kit/Carousel",
+        "@repo/ui/kit/ClubDetail"
+      ],
+      "sha256": "eee6126be49f910c8d361607c39c4e0ec27860730a6f1fec887607edea9a20ee"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-gallery.tsx",
+      "imports": [
+        "@repo/ui/mobile-page",
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Carousel",
+        "@repo/ui/kit/ToggleGroup",
+        "@repo/ui/kit/ScrollArea",
+        "@repo/ui/lib/utils"
+      ],
+      "sha256": "3e1cc8436698c94f9ce1aa464ed984e048debd56bae038afde83498285c75758"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-list.tsx",
+      "imports": [
+        "@repo/ui/kit/ClubDetail"
+      ],
+      "sha256": "105878dd55a7587ed4b9eb4e5511b5e1a34a7903404d98bf03fd307b7199d8b8"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-page.tsx",
+      "imports": [
+        "@repo/ui/kit/ClubFeaturedCard",
+        "@repo/ui/kit/Carousel",
+        "@repo/ui/kit/ClubDetail",
+        "@repo/ui/kit/Sonner",
+        "@repo/ui/kit/ToggleGroup"
+      ],
+      "sha256": "1e5234b10e0469dc7aafb9b77d47e010ec57991c5c28d651e89a1c3983899eed"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-reviews.tsx",
+      "imports": [
+        "@repo/ui/mobile-page",
+        "@repo/ui/kit/ReviewCard",
+        "@repo/ui/kit/ReviewsSummary",
+        "@repo/ui/kit/Button"
+      ],
+      "sha256": "d92d814cf8c6cc3da6ba451fc40c6074f5dca5afb433429a93a5b8c2b7632513"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-route.tsx",
+      "imports": [
+        "../luma/services"
+      ],
+      "sha256": "021288f14e1f726a85bcd7878138703b50a7f4d60998b7eca395593c65179a73"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-share-sheet.tsx",
+      "imports": [
+        "@repo/ui/kit/Drawer",
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Sonner",
+        "@repo/ui/kit/ClubDetail"
+      ],
+      "sha256": "e813cff4a2171b9aa84fb66c00d9605a1603719270c056fe5a598280463eee5d"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-showcase.tsx",
+      "imports": [
+        "@repo/ui/kit/Dialog",
+        "@repo/ui/kit/Carousel",
+        "@repo/ui/kit/Badge",
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/ClubDetail"
+      ],
+      "sha256": "a0d3f246f06bb0e909ef1d86d2203d3cf6ac4c0a69ad34836f4edd9083a16c47"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-slots.tsx",
+      "imports": [
+        "@repo/ui/icons",
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/ToggleGroup",
+        "@repo/ui/kit/ChoiceOptionCard",
+        "@repo/ui/kit/Tabs",
+        "@repo/ui/kit/Skeleton",
+        "@repo/ui/kit/SlidingNumber",
+        "@repo/ui/kit/Sonner"
+      ],
+      "sha256": "58af8c76822e0848fcbb4f9d61a0a6b2098f2042dbb1c488a7b1ccf9128c5c26"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-social-share.tsx",
+      "imports": [
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Card",
+        "@repo/ui/kit/SocialIcon",
+        "@repo/ui/kit/Sonner"
+      ],
+      "sha256": "7e92bd7ba5343c82c868e1a67959c71df6e0b5fdcb8b17fc533f8c50d10e4e0a"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/club-tariffs.tsx",
+      "imports": [
+        "@repo/ui/kit/Card"
+      ],
+      "sha256": "31b6d9de053864f0d413016a5d623fc515ac86b85d90b3ed1e5bdc2230a4c2b9"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/coach-page.tsx",
+      "imports": [
+        "@repo/ui/kit/CoachDetail"
+      ],
+      "sha256": "b1b6b4bd61bc06a95c52bf7d6dab2cdae48e9698d9f8cc3d9c2505b67cf1fa99"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/coaches-carousel.tsx",
+      "imports": [
+        "@repo/ui/kit/CoachCard",
+        "@repo/ui/kit/CoachCard",
+        "@repo/ui/kit/Carousel"
+      ],
+      "sha256": "64cc7ce0bab29aec6e5e354e6b1840cb18377f60c4cafd4df44cc988f82db183"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/discovery-map.tsx",
+      "imports": [
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Carousel",
+        "@repo/ui/kit/Select",
+        "@repo/ui/kit/ToggleGroup",
+        "@repo/ui/kit/InputGroup",
+        "@repo/ui/lib/utils",
+        "@repo/ui/kit/ClubDetail"
+      ],
+      "sha256": "a96a14c5c6fff574c853ca8655ae328d7fe68e796ddecdab4530c2a342a558cb"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/discovery-tab-bar.tsx",
+      "imports": [
+        "@repo/ui/lib/utils"
+      ],
+      "sha256": "37e14dec723b3740853238e1189f88c4abe54e931dabef1e6eaf7b8bda6c587f"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/discovery.tsx",
+      "imports": [
+        "@repo/ui/kit/InputGroup",
+        "../luma/discovery-link",
+        "@repo/ui/kit/ClubFeaturedCard",
+        "@repo/ui/kit/LocationCard",
+        "@repo/ui/kit/Carousel",
+        "@repo/ui/kit/ClubCard",
+        "@repo/ui/kit/ClubDetail",
+        "@repo/ui/kit/AnimatedThemeToggler",
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Badge",
+        "@repo/ui/icons"
+      ],
+      "sha256": "b6396b5753aa2ade6d614127eb095fe77e02dafba8bec39c26bad54a042c9d98"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/gallery-indicators.tsx",
+      "imports": [
+        "@repo/ui/kit/Button",
+        "@repo/ui/lib/utils"
+      ],
+      "sha256": "43f6aec2393a4a770bd5ab52db10f5888c45b675dee6182b2a33c24c0c710f16"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/location-picker.tsx",
+      "imports": [
+        "@repo/ui/kit/NativeSelect",
+        "@repo/ui/kit/Field",
+        "@repo/ui/kit/Button"
+      ],
+      "sha256": "34103e2604285ea238d2a6fac0e6860fd0f2f80476159d37abeb378a28a9e2a6"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/neshan-map.tsx",
+      "imports": [
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/ClubDetail"
+      ],
+      "sha256": "7c38c11ff91ae952e9ef2e79b972c9282f0583ccb5e0f817416ad2e4c86a0406"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/discovery/saved-pages.tsx",
+      "imports": [
+        "@repo/ui/kit/ClubDetail",
+        "@repo/ui/kit/CoachCard",
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Avatar",
+        "@repo/ui/kit/DropdownMenu",
+        "@repo/ui/kit/Empty",
+        "@repo/ui/kit/Skeleton",
+        "@repo/ui/kit/Tabs"
+      ],
+      "sha256": "c4d562deeaa31d4c8cafb72bf7cc734128ed0dc538a65595400200568622474a"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/bookings.tsx",
+      "imports": [
+        "@repo/ui/sports-eligibility"
+      ],
+      "sha256": "d6994a3b2815f30dbc4f51bc5a38f3b200fc0f75e13697881784e13ac5c6bfc0"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/calendars.tsx",
+      "imports": [
+        "@repo/ui/account",
+        "@repo/ui/hooks/use-auth-recovery"
+      ],
+      "sha256": "2c15ed3d23ccd370ee43b378bd15af8e06ee72294992cfd01f92301d9918d05b"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/checkout.tsx",
+      "imports": [
+        "@repo/ui/sports-eligibility",
+        "@repo/ui/sports-cover"
+      ],
+      "sha256": "e222cd39724e4a12cef3984701b140fb9a27099f240272a23ef51e112daf4e6a"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/common.tsx",
+      "imports": [
+        "@repo/ui/hooks/use-query-retry",
+        "@repo/ui/hooks/use-auth-recovery",
+        "@repo/ui/lib/account-recovery",
+        "@repo/ui/account"
+      ],
+      "sha256": "742e84d327a2a09114a41f25ad043b6e35068f55b54fc483ab6fbb8a0bed3980"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/home.tsx",
+      "imports": [
+        "@repo/ui/account",
+        "@repo/ui/kit/Skeleton",
+        "@repo/ui/hooks/use-auth-recovery"
+      ],
+      "sha256": "675df9969440b42929ea35ed80c6ae7f62a7874cb1b73c448c0a2ffb03b62c11"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/invitations.tsx",
+      "imports": [
+        "@repo/ui/kit/Button",
+        "@repo/ui/lib/active-surface"
+      ],
+      "sha256": "235fbe90d4f4d239afcd310d104adb39a44a683c0206e69125b16317b20052a4"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/load-more.tsx",
+      "imports": [
+        "@repo/ui/lib/active-surface"
+      ],
+      "sha256": "727cbfe871c2809a3fe6d1d864a8f2a09cff3436b777fc2d6de0fb6e95a3601a"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/notification-preferences.tsx",
+      "imports": [
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Checkbox",
+        "@repo/ui/kit/Field",
+        "@repo/ui/kit/Alert",
+        "@repo/ui/hooks/use-query-retry"
+      ],
+      "sha256": "ba12600cf98fbdcd263d7afd989093c3a02875c92d27327d7a3d2848fae13049"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/notifications.tsx",
+      "imports": [
+        "@repo/ui/lib/active-surface"
+      ],
+      "sha256": "dbfe550c6b2fa3ee0fedb3fee34157ba00d7925ec3c72d6aa6e4bda9069754ff"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/page-loading.tsx",
+      "imports": [
+        "@repo/ui/kit/Skeleton"
+      ],
+      "sha256": "a72c0f1d87f6e86482293ec481a37ce47a584f338948432b34c630e950a29283"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/services.tsx",
+      "imports": [
+        "@repo/ui/sports-eligibility",
+        "@repo/ui/sports-cover"
+      ],
+      "sha256": "f6ff4d859949d88b2404b370af9a0726602d2c7f6335ddb15492e1a66a80c34e"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/sheet.tsx",
+      "imports": [
+        "@repo/ui/hooks/use-overlay-history",
+        "@repo/ui/lib/active-surface",
+        "@repo/ui/kit/Sheet"
+      ],
+      "sha256": "7b836939bd200b64512e5ab0ba7cf6d111ba9389aeb8a900aa741c5b1ed7ddfb"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/shell.tsx",
+      "imports": [
+        "@repo/ui/page-transitions"
+      ],
+      "sha256": "bbfcd2ec2b8d4fbf38b49a530b6ef265d195d16297a59602ce3c5beaf61f38b0"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/luma/support.tsx",
+      "imports": [
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/Input",
+        "@repo/ui/kit/Textarea",
+        "@repo/ui/kit/Field",
+        "@repo/ui/kit/Alert",
+        "@repo/ui/lib/active-surface",
+        "@repo/ui/hooks/use-query-retry"
+      ],
+      "sha256": "4bfca03ecf1cd24765b96a29ef3e2c1d5e33a090bccb1a95d31851219ad3bfa5"
+    },
+    {
+      "surface": "application",
+      "source": "apps/application/components/qa/ph0-reference.tsx",
+      "imports": [
+        "@repo/ui/kit/AnimatedThemeToggler",
+        "@repo/ui/kit/Button",
+        "@repo/ui/kit/ClubCard",
+        "@repo/ui/kit/CoachCard",
+        "@repo/ui/kit/ClubFeaturedCard",
+        "@repo/ui/kit/ClubBranchCard",
+        "../luma/sheet"
+      ],
+      "sha256": "2c5abc23cf133f6aa8898890e7b863fabeeff75405b89fc02aaad57129847ff1"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/branches/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "997c5a5165a734c7b6fc710f56ec1bc92a86251893fd304ed5ddddbedb863594"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/calendar/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "sha256": "9d27501bb5ebe2a91433c13929386892689b4272f0770e764e45dfe73de158a9"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/imports/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "sha256": "c71de97faf8fdb40f258bd7e5ff98b60beafa44ac35e7096cedc6ab495aaf306"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/invitations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "286a36503877f35112c622f66af948f467de90ae2be67b32b0e67a684cb52e83"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/login/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "4c7e54a39824beb41d1823075b1aad11f03d556fb391097545b3d9a72e9c9d39"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/members/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "sha256": "f81c9bece24fa7d400592147fcfd4cc6d3f351a0652c383890021fc156f663cf"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/messages/[conversationId]/page.tsx",
+      "imports": [
+        "@repo/ui/sports-host-conversation"
+      ],
+      "sha256": "485d8706890c1543b9c6142f0ac697af0eaf25877d2f8e9264b907013e52f0f1"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/messages/page.tsx",
+      "imports": [
+        "@repo/ui/sports-messages"
+      ],
+      "sha256": "87a9f862a03d73b5caf284dee0d0bdb8618f8fee318c47235e9d613dd40e4961"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/organizations/[organizationId]/branches/[branchId]/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "e752da2dc3b128c30fcd7fd8f295aa330a88361b422f502aa9397dc26cf810ee"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/organizations/[organizationId]/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "b3c4b62a4cf80ef73d90f6bc4743ef8bc067679e5ae613bc7547065631028459"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/organizations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "f7456da51e85227293b619c92793bc2adf32eb164cf02124d221908b429cf28a"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "13ebf77dbb51c0a104efc1cdb2471f8a727405c1216bf277eeaeb3c8c1391763"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/payments/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "sha256": "2ef64eb900aaa8e740c063e6eea1a57470491823c2e7c3e28b29c67cfade201c"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/privacy/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "921df1f04a49f6512f37652ab411617738681468dd4b81b5b1eaaa53866e78e4"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/profile/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "4a51925a9e92f9d4718e52f1bc0085d63626259ffac23b4a348d59d54749418d"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/providers.tsx",
+      "imports": [
+        "@repo/ui/kit/Direction",
+        "@repo/ui/kit/Tooltip",
+        "@repo/ui/kit/Sonner",
+        "@repo/ui/page-transitions"
+      ],
+      "sha256": "2d9f4ddbc05769c18b62050832db63a1b7902a94927c484092cf1ebc06eff53c"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/reception/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "sha256": "dd415fdc8fdd82a22b9ce36c32fa24654d41860a17ae41aea905ba8728ecb8ea"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/reports/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "sha256": "333536a3deea4edeae607ccfd021a16d348852ba9d10523119de8ca9ae7e5f39"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/reset-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "34f89fe830a45d4963b2c73a78ef0ef10ecee4883811db9bf5b0570f924d8a69"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/resources/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "sha256": "8e822aca70ed89b7dd8bef2d39ec829ff2b74ec37163074d6fe11a39e23a8b57"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/services/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "sha256": "814880ec1be267eafb336db57cf31ba941bd78b37da1398a649ff2b0313eb860"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/sessions/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "8b8c9b3564909e9ac52a85603b8ffc9bc0c084e1b1c9dfa80b69b157152633ce"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/set-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "e6a1fbc30439bef9f103063838cef41ca24a086618cb5e3c041e4d08bdba90b8"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/team/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "9e352d54ada3fdc4aa3dba7dba76131b8958c0e160ea1a5ca28eb398ba5f1d1a"
+    },
+    {
+      "surface": "business",
+      "source": "apps/business/app/training/page.tsx",
+      "imports": [
+        "@repo/ui/training-page"
+      ],
+      "sha256": "a855c12b895bc65e4fa0767217d92254868f5356892d18b1d672ccb24b16cad4"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/audit/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "c20ecaab1277f1902e8254fab5ce330ba91722987566004c30d4f7f24bbdb037"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/catalog-reviews/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "9b3d8d5e0075ca76c464fa1d41106fb16d152cf0cb8207a46764e02e6c1b7a78"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/invitations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "a5a6a8609a21d4931a9ddf45d571642fa71cc0e04e2758b1342705358ca728bf"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/layout.tsx",
+      "imports": [
+        "@repo/ui/kit/Direction",
+        "@repo/ui/kit/Tooltip",
+        "@repo/ui/kit/Sonner"
+      ],
+      "sha256": "a046d92b2f0ae7f7340fdb0670a7de07b57b1b8e54e4d163f845ca1374c4cf90"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/locations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "a853c80c5598cb3fafed9b24940e81a7a6ea194ac5603e017b146cdec786a0f9"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/login/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "50f65eb03573fd74b3d4511b7d77af9ba6c1d955d88172fc006c9860da8413f2"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/moderation/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "0be02e998e61ddf2040d4a84bf09cf592aad62b9f4a1d35333da4fbadae64c54"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/operations/page.tsx",
+      "imports": [
+        "@repo/ui/sports"
+      ],
+      "sha256": "4f27babffafd0b126bc5551c38c66d67c63b8e2993933ab19ed59763614675ce"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/organizations/[organizationId]/branches/[branchId]/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "62ee0a1523542c1efcb6515930c54a718d4c01d341ee0335fa76a7144deb2c30"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/organizations/[organizationId]/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "fe58d3105465bbc46dc12ed17fec2efbde3a0c3a851f691f0e17f3ab0ae5996d"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/organizations/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "cd6aef7e0c4e3a9e48a155548b11dffff67b41df38a7124a2831dc878079a99a"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/page-transitions.tsx",
+      "imports": [
+        "@repo/ui/page-transitions"
+      ],
+      "sha256": "b4888d58b2a164a61a14aeff01c952ab1308d1bc5c8c1cecf7b196a3b5c1575f"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "9ec6c3912a018517cafd157b1c3b8605e3835bcd1c85be5e8c22eb4853397d6b"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/privacy/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "921df1f04a49f6512f37652ab411617738681468dd4b81b5b1eaaa53866e78e4"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/profile/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "75167a935308afefcc88c9fe45772279ade46386d77ccd0761e38471b472d6ef"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/reset-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "edd9641a66f9bfe0574f897d4513d4decc49e27208f938b2bdf541b1e743919d"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/sessions/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "7cce27d762946257cdfda579ec88ba8e368e966c6f626f7cb4552163c2a84624"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/set-password/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "e6a1fbc30439bef9f103063838cef41ca24a086618cb5e3c041e4d08bdba90b8"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/taxonomies/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "343a0c836d39f949fb6425e67b78215f0e7ff51875f7e249467dceca00b35a09"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/training/page.tsx",
+      "imports": [
+        "@repo/ui/training-page"
+      ],
+      "sha256": "a855c12b895bc65e4fa0767217d92254868f5356892d18b1d672ccb24b16cad4"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/users/[userId]/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "c7bcf15b174ed9629672603c8f73aa85edb33bff36937d52fbc7500dc55ed87c"
+    },
+    {
+      "surface": "admin",
+      "source": "apps/admin/app/users/page.tsx",
+      "imports": [
+        "@repo/ui/account"
+      ],
+      "sha256": "c4963a4a66b71ab92676af24c9dd49e7cb1e81fad70d9cc8ec59f5744ec5ea4d"
+    }
+  ]
+}

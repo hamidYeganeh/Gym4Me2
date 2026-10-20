@@ -1,0 +1,45 @@
+✔ alerts persist offline and retry with a stable idempotency key (13.166ms)
+✔ twenty deferred records cannot hide a new due incident (8.101042ms)
+✔ a pass attempts at most twenty due alerts after skipping backoff (7.740666ms)
+✔ damaged records remain inspectable while valid alerts can be delivered (1.109792ms)
+✔ retry publishes a complete private record with the same event identity (0.910959ms)
+✔ rejected responses release their body before scheduling a retry (0.699417ms)
+✔ shutdown aborts delivery without advancing retry or starting another record (0.834084ms)
+✔ real fetch rejects untrusted TLS and retries HTTPS rejection without changing identity (495.57875ms)
+✔ alerts on three failures, suppresses duplicates, recovers after two successes (1.849167ms)
+✔ readiness validates dependency content, TLS and a total request deadline (76.098584ms)
+✔ slow delivery cannot block health, duplicate a sender or rewind a newer snapshot (0.603958ms)
+✔ overlapping ticks share one live probe (0.171ms)
+✖ a probe published while delivery finalizes still receives its following pass (0.590167ms)
+✔ once waits for the pass that includes events published during an older delivery (0.282875ms)
+✔ stop aborts both lanes and ignores their late completions (0.25975ms)
+✔ a failed publication rejects once and never starts delivery (0.335291ms)
+✔ delivery failure reaches once without pretending health delivery succeeded (0.144125ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 16
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 833.651375
+
+✖ failing tests:
+
+test at scripts/staging-monitor.test.mjs:170:1
+✖ a probe published while delivery finalizes still receives its following pass (0.590167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///Users/mahdi/Documents/projects/Gym4Me/scripts/staging-monitor.test.mjs:195:14)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,6 +1,17 @@
 "use client";
 import { useAccountExportFile } from "./account-export";
-import { useState, Suspense, type FormEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  Suspense,
+  type FormEvent,
+} from "react";
+import {
+  isActiveSurfaceElement,
+  restoreOverlayFocus,
+} from "../lib/active-surface";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { PrivacyDesignPage } from "./privacy-design";
@@ -10,7 +21,8 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "../kit/Accordion";
-import { applicationAuthHref } from "../lib/auth-routes";
+import { policyBackHref } from "../lib/session-navigation";
+import { useApiContext } from "@repo/api/provider";
 import { useTranslations } from "@repo/i18n";
 import {
   useAccount,
@@ -21,6 +33,7 @@ import {
   useRequestDeletion,
   useCancelDeletion,
   type PrivacyDto,
+  type UpdatePrivacyDto,
   type DataPolicyDto,
 } from "@repo/api/profile";
 import {
@@ -86,25 +99,18 @@ export function DataPolicyContent({ policy }: { policy: DataPolicyDto }) {
   );
 }
 export function PublicPrivacyPage({ mobile = false }: { mobile?: boolean }) {
-  return mobile ? (
+  return (
     <Suspense fallback={<Loading />}>
-      <MobilePrivacyPolicy />
+      {mobile ? <MobilePrivacyPolicy /> : <DesktopPrivacyPolicy />}
     </Suspense>
-  ) : (
-    <DesktopPrivacyPolicy />
   );
 }
+
 function MobilePrivacyPolicy() {
   const t = useTranslations("Privacy");
   const params = useSearchParams();
   const policy = useDataPolicy();
-  const backHref =
-    params.get("from") === "login"
-      ? applicationAuthHref(
-          params.get("method") === "password" ? "password" : "otp",
-          params.get("returnTo") ?? "/profile",
-        )
-      : "/profile/settings";
+  const backHref = policyBackHref("application", params.toString());
   return (
     <PrivacyDesignPage
       backHref={backHref}
@@ -131,13 +137,16 @@ function MobilePrivacyPolicy() {
   );
 }
 function DesktopPrivacyPolicy() {
+  const params = useSearchParams();
+  const { api } = useApiContext();
+  const backHref = policyBackHref(api.scope[2], params.toString());
   const t = useTranslations("Privacy");
   const policy = useDataPolicy();
   return (
     <main className="mx-auto grid max-w-3xl gap-6 p-5 sm:p-8">
       <div>
         <Button asChild variant="ghost">
-          <Link href="/">{t("back")}</Link>
+          <Link href={backHref}>{t("back")}</Link>
         </Button>
       </div>
       <Card>
@@ -191,35 +200,80 @@ export function PrivacyNotice({ href = "/profile" }: { href?: string }) {
 function PreferencesForm({ value }: { value: PrivacyDto }) {
   const t = useTranslations("Privacy");
   const mutation = useUpdatePrivacy();
+  const restoreFocus = usePrivacyActionFocus(mutation.isPending);
   const [accept, setAccept] = useState(false);
   const [age, setAge] = useState(false);
-  const [marketing, setMarketing] = useState(value.marketingConsent);
+  const [marketingChoice, setMarketingChoice] = useState({
+    confirmed: value.marketingConsent,
+    checked: value.marketingConsent,
+  });
+  // A different server choice (for example a revocation in another tab) wins.
+  // Unrelated refetches keep the current draft and the mounted focus target.
+  if (marketingChoice.confirmed !== value.marketingConsent)
+    setMarketingChoice({
+      confirmed: value.marketingConsent,
+      checked: value.marketingConsent,
+    });
+  const marketing =
+    marketingChoice.confirmed === value.marketingConsent
+      ? marketingChoice.checked
+      : value.marketingConsent;
   const [error, setError] = useState<string | null>(null);
+  const pending = useRef(false);
+  const form = useRef<HTMLFormElement>(null);
+  const id = useId();
+  async function save(input: UpdatePrivacyDto) {
+    if (pending.current) return;
+    pending.current = true;
+    const origin = document.activeElement;
+    const path = window.location.pathname + window.location.search;
+    setError(null);
+    try {
+      const saved = await mutation.mutateAsync(input);
+      if (input.marketingConsent !== undefined)
+        setMarketingChoice({
+          confirmed: saved.marketingConsent,
+          checked: saved.marketingConsent,
+        });
+      toast.success(t("saved"));
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      pending.current = false;
+      restoreFocus(
+        origin,
+        path,
+        () =>
+          form.current?.querySelector<HTMLButtonElement>(
+            'button[type="submit"]',
+          ) ?? null,
+      );
+    }
+  }
   async function submit(event: FormEvent) {
     event.preventDefault();
-    setError(null);
     if (value.acceptanceRequired && (!accept || !age)) {
       setError("Privacy.confirmChoices");
       return;
     }
-    try {
-      await mutation.mutateAsync({
-        marketingConsent: marketing,
-        ...(value.acceptanceRequired
-          ? {
-              acceptPolicy: true,
-              confirmMinimumAge: true,
-              policyVersion: value.policy.version,
-            }
-          : {}),
-      });
-      toast.success(t("saved"));
-    } catch (err) {
-      setError((err as Error).message);
-    }
+    await save({
+      marketingConsent: marketing,
+      ...(value.acceptanceRequired
+        ? {
+            acceptPolicy: true,
+            confirmMinimumAge: true,
+            policyVersion: value.policy.version,
+          }
+        : {}),
+    });
   }
   return (
-    <form onSubmit={submit} className="grid gap-5">
+    <form
+      ref={form}
+      onSubmit={submit}
+      aria-busy={mutation.isPending}
+      className="grid gap-5 [&_button]:min-h-11 [&_label]:min-h-11"
+    >
       {(value.marketingConsent || value.profilePublic) && (
         <div className="flex flex-wrap gap-3">
           {value.marketingConsent && (
@@ -227,13 +281,7 @@ function PreferencesForm({ value }: { value: PrivacyDto }) {
               type="button"
               variant="outline"
               disabled={mutation.isPending}
-              onClick={() => {
-                setError(null);
-                void mutation
-                  .mutateAsync({ marketingConsent: false })
-                  .then(() => toast.success(t("saved")))
-                  .catch((err: Error) => setError(err.message));
-              }}
+              onClick={() => void save({ marketingConsent: false })}
             >
               {t("stopMarketing")}
             </Button>
@@ -243,13 +291,7 @@ function PreferencesForm({ value }: { value: PrivacyDto }) {
               type="button"
               variant="outline"
               disabled={mutation.isPending}
-              onClick={() => {
-                setError(null);
-                void mutation
-                  .mutateAsync({ hidePublicProfile: true })
-                  .then(() => toast.success(t("saved")))
-                  .catch((err: Error) => setError(err.message));
-              }}
+              onClick={() => void save({ hidePublicProfile: true })}
             >
               {t("hidePublicProfile")}
             </Button>
@@ -260,21 +302,23 @@ function PreferencesForm({ value }: { value: PrivacyDto }) {
         <>
           <Field orientation="horizontal">
             <Checkbox
-              id="privacy-accept"
+              id={`${id}-accept`}
+              disabled={mutation.isPending}
               checked={accept}
               onCheckedChange={(checked) => setAccept(checked === true)}
             />
-            <FieldLabel htmlFor="privacy-accept">
+            <FieldLabel htmlFor={`${id}-accept`}>
               {t("acceptPolicy")}
             </FieldLabel>
           </Field>
           <Field orientation="horizontal">
             <Checkbox
-              id="privacy-age"
+              id={`${id}-age`}
+              disabled={mutation.isPending}
               checked={age}
               onCheckedChange={(checked) => setAge(checked === true)}
             />
-            <FieldLabel htmlFor="privacy-age">
+            <FieldLabel htmlFor={`${id}-age`}>
               {t("confirmAge", { age: value.policy.minimumAge })}
             </FieldLabel>
           </Field>
@@ -284,12 +328,18 @@ function PreferencesForm({ value }: { value: PrivacyDto }) {
       )}
       <Field orientation="horizontal">
         <Checkbox
-          id="privacy-marketing"
+          id={`${id}-marketing`}
+          disabled={mutation.isPending}
           checked={marketing}
-          onCheckedChange={(checked) => setMarketing(checked === true)}
+          onCheckedChange={(checked) =>
+            setMarketingChoice({
+              confirmed: value.marketingConsent,
+              checked: checked === true,
+            })
+          }
         />
         <div>
-          <FieldLabel htmlFor="privacy-marketing">{t("marketing")}</FieldLabel>
+          <FieldLabel htmlFor={`${id}-marketing`}>{t("marketing")}</FieldLabel>
           <FieldDescription>{t("marketingHint")}</FieldDescription>
         </div>
       </Field>
@@ -305,6 +355,42 @@ function PreferencesForm({ value }: { value: PrivacyDto }) {
     </form>
   );
 }
+/** Wait for the enabled replacement to commit, preserving newer focus/navigation. */
+function usePrivacyActionFocus(busy: boolean) {
+  const attempt = useRef<{
+    origin: HTMLElement;
+    path: string;
+    fallback: () => HTMLElement | null;
+  } | null>(null);
+  const [version, setVersion] = useState(0);
+  useEffect(() => {
+    if (busy || !attempt.current) return;
+    const current = attempt.current;
+    const { origin, path, fallback } = current;
+    const frame = requestAnimationFrame(() => {
+      if (attempt.current !== current) return;
+      attempt.current = null;
+      if (
+        window.location.pathname + window.location.search !== path ||
+        (document.activeElement !== document.body &&
+          document.activeElement !== origin)
+      )
+        return;
+      const target = isActiveSurfaceElement(origin) ? origin : fallback();
+      if (isActiveSurfaceElement(target)) target?.focus();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [busy, version]);
+  return (
+    origin: Element | null,
+    path: string,
+    fallback: () => HTMLElement | null,
+  ) => {
+    if (!(origin instanceof HTMLElement) || origin === document.body) return;
+    attempt.current = { origin, path, fallback };
+    setVersion((value) => value + 1);
+  };
+}
 export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
   const t = useTranslations("Privacy");
   const query = usePrivacy();
@@ -316,12 +402,19 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
   const dateLabel = useDateLabel();
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const pending = useRef(false);
+  const deletionAction = useRef<HTMLButtonElement>(null);
   const busy =
     exporting ||
     exportAccount.isPending ||
     requestDeletion.isPending ||
     cancelDeletion.isPending;
+  const restoreFocus = usePrivacyActionFocus(busy);
   async function exportData() {
+    if (pending.current) return;
+    pending.current = true;
+    const origin = document.activeElement;
+    const path = window.location.pathname + window.location.search;
     setError(null);
     setExporting(true);
     try {
@@ -331,10 +424,16 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
     } catch (err) {
       setError((err as Error).message);
     } finally {
+      pending.current = false;
       setExporting(false);
+      restoreFocus(origin, path, () => null);
     }
   }
   async function deletion(cancel = false) {
+    if (pending.current) return;
+    pending.current = true;
+    const origin = document.activeElement;
+    const path = window.location.pathname + window.location.search;
     setError(null);
     try {
       if (cancel) await cancelDeletion.mutateAsync(undefined);
@@ -343,6 +442,10 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
       toast.success(t(cancel ? "deletionCancelled" : "deletionRequested"));
     } catch (err) {
       setError((err as Error).message);
+    } finally {
+      pending.current = false;
+      // Closing the dialog handles successful requests; cancellation replaces its trigger.
+      restoreFocus(origin, path, () => deletionAction.current);
     }
   }
   const value = query.data;
@@ -370,10 +473,7 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
                 <DataPolicyContent policy={value.policy} />
               </div>
             </details>
-            <PreferencesForm
-              key={`${value.policy.version}:${value.acceptedAt}:${value.marketingConsent}`}
-              value={value}
-            />
+            <PreferencesForm key={value.policy.version} value={value} />
             <div className="grid gap-4 border-t pt-6">
               <p className="text-sm text-muted-foreground">{t("exportHint")}</p>
               <div>
@@ -395,6 +495,7 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
                     </p>
                     <div>
                       <Button
+                        ref={deletionAction}
                         variant="outline"
                         disabled={busy}
                         onClick={() => void deletion(true)}
@@ -416,9 +517,13 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
                   </p>
                   <div>
                     <Button
+                      ref={deletionAction}
                       variant="destructive"
                       disabled={busy || !value.canRequestDeletion}
-                      onClick={() => setConfirmOpen(true)}
+                      onClick={() => {
+                        setError(null);
+                        setConfirmOpen(true);
+                      }}
                     >
                       {t("requestDeletion")}
                     </Button>
@@ -426,9 +531,27 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
                 </>
               )}
             </div>
-            <ErrorNotice error={error} />
-            <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
-              <DialogContent>
+            {!confirmOpen && <ErrorNotice error={error} />}
+            <Dialog
+              open={confirmOpen}
+              onOpenChange={(open) => {
+                if (!pending.current) setConfirmOpen(open);
+              }}
+            >
+              <DialogContent
+                className="max-h-[calc(100dvh-2rem)] overflow-y-auto [&_button]:min-h-11 [&_button]:min-w-11"
+                showCloseButton={!busy}
+                onEscapeKeyDown={(event) => {
+                  if (pending.current) event.preventDefault();
+                }}
+                onPointerDownOutside={(event) => {
+                  if (pending.current) event.preventDefault();
+                }}
+                onCloseAutoFocus={(event) => {
+                  event.preventDefault();
+                  restoreOverlayFocus(deletionAction.current);
+                }}
+              >
                 <DialogHeader>
                   <DialogTitle>{t("deleteTitle")}</DialogTitle>
                   <DialogDescription>
@@ -437,6 +560,7 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
                     })}
                   </DialogDescription>
                 </DialogHeader>
+                <ErrorNotice error={error} />
                 <DialogFooter>
                   <Button
                     variant="outline"

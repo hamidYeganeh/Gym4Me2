@@ -1,0 +1,7 @@
+{
+  "alertInside": true,
+  "alertVisible": true,
+  "dialog": true,
+  "focus": "ثبت درخواست حذف",
+  "focusTag": "BUTTON"
+}

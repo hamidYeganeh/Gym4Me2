@@ -53,3 +53,104 @@ test("initialization failures reject rather than leave account loading pending",
     /storage unavailable/,
   );
 });
+
+import { nativeVault } from "../lib/native-vault";
+import { createNativeFetch, type NativeSession } from "../lib/native-fetch";
+
+function storageFixture() {
+  let current: NativeSession | null = null;
+  const store = {
+    setKeyPrefix: async () => undefined,
+    setSynchronize: async () => undefined,
+    setDefaultKeychainAccess: async () => undefined,
+    get: async () => current,
+    set: async (_key: string, value: NativeSession) => {
+      current = value;
+    },
+    remove: async () => {
+      current = null;
+    },
+  } as unknown as Awaited<
+    ReturnType<NonNullable<Parameters<typeof nativeVault>[1]>>
+  >["store"];
+  return store;
+}
+test("a late failure from an old native session cannot delete a newer login", async () => {
+  const store = storageFixture();
+  const vault = nativeVault("https://api.example/api/v1", async () => ({
+    store,
+  }));
+  const first = {
+    token: "a".repeat(43),
+    sessionId: "first",
+    expiresAt: new Date(Date.now() + 60000).toISOString(),
+  };
+  const second = { ...first, token: "b".repeat(43), sessionId: "second" };
+  await vault.set(first);
+  await vault.set(second);
+  await vault.clear(first);
+  assert.deepEqual(await vault.get(), second);
+  await vault.clear(second);
+  assert.equal(await vault.get(), null);
+});
+test("native compare/remove and writes serialize without losing a concurrent newer session", async () => {
+  const store = storageFixture();
+  const vault = nativeVault("https://api.example/api/v1", async () => ({
+    store,
+  }));
+  const first = {
+    token: "a".repeat(43),
+    sessionId: "first",
+    expiresAt: new Date(Date.now() + 60000).toISOString(),
+  };
+  const second = { ...first, token: "b".repeat(43), sessionId: "second" };
+  await vault.set(first);
+  await Promise.all([vault.clear(first), vault.set(second)]);
+  assert.deepEqual(await vault.get(), second);
+  await Promise.all([vault.set(first), vault.clear(second)]);
+  assert.deepEqual(await vault.get(), first);
+});
+
+test("the fetch adapter passes the failed session to the vault when an older response arrives after login", async () => {
+  const store = storageFixture();
+  const vault = nativeVault("https://api.example/api/v1", async () => ({
+    store,
+  }));
+  const first = {
+    token: "a".repeat(43),
+    sessionId: "first",
+    expiresAt: new Date(Date.now() + 60000).toISOString(),
+  };
+  const second = { ...first, token: "b".repeat(43), sessionId: "second" };
+  await vault.set(first);
+  let release!: () => void;
+  let started!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const ready = new Promise<void>((resolve) => {
+    started = resolve;
+  });
+  const request = createNativeFetch(
+    "https://api.example/api/v1",
+    vault,
+    async (_url, init) => {
+      assert.equal(
+        new Headers(init?.headers).get("Authorization"),
+        `Bearer ${first.token}`,
+      );
+      started();
+      await gate;
+      return new Response(
+        JSON.stringify({ code: "Backend.theSessionHasEndedSignInAgain" }),
+        { status: 401 },
+      );
+    },
+  );
+  const pending = request("https://api.example/api/v1/profile/account");
+  await ready;
+  await vault.set(second);
+  release();
+  await pending;
+  assert.deepEqual(await vault.get(), second);
+});

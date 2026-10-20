@@ -59,9 +59,11 @@ export class LocaleExceptionFilter implements ExceptionFilter {
     const message = typeof payload === 'string' ? payload : details.message;
     const code = hasMessage(message)
       ? message
-      : status >= 500
-        ? 'Backend.unexpectedError'
-        : 'Backend.requestFailed';
+      : status === 413
+        ? 'Backend.payloadTooLarge'
+        : status >= 500
+          ? 'Backend.unexpectedError'
+          : 'Backend.requestFailed';
     const parameters = record(details.parameters);
     const safeParameters = Object.fromEntries(
       Object.entries(parameters).filter(

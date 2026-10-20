@@ -1,0 +1,789 @@
+{
+  "truncated": false,
+  "scope": "Only account-related proxy observations, status and payload field names. Other requests were intentionally excluded. Manual scenario attribution; no shared correlation id.",
+  "requests": [
+    {
+      "at": "2026-10-19T11:53:30.618Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 401,
+      "injected": false,
+      "code": "Backend.signInFirst"
+    },
+    {
+      "at": "2026-10-19T11:53:54.787Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:53:54.863Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:53:54.868Z",
+      "method": "GET",
+      "path": "/api/v1/profile/invitations",
+      "action": "invitations",
+      "client": "application",
+      "status": 200,
+      "injected": false,
+      "count": 2
+    },
+    {
+      "at": "2026-10-19T11:54:05.436Z",
+      "method": "POST",
+      "path": "/api/v1/profile/invitations/{id}/accept",
+      "action": "accept",
+      "client": "application",
+      "status": 201,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:05.445Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:05.449Z",
+      "method": "GET",
+      "path": "/api/v1/profile/invitations",
+      "action": "invitations",
+      "client": "application",
+      "status": 200,
+      "injected": false,
+      "count": 1
+    },
+    {
+      "at": "2026-10-19T11:54:05.458Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:21.662Z",
+      "method": "POST",
+      "path": "/api/v1/profile/invitations/{id}/accept",
+      "action": "accept",
+      "client": "application",
+      "status": 201,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:21.668Z",
+      "method": "GET",
+      "path": "/api/v1/profile/invitations",
+      "action": "invitations",
+      "client": "application",
+      "status": 503,
+      "injected": true
+    },
+    {
+      "at": "2026-10-19T11:54:21.670Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:21.681Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:22.684Z",
+      "method": "GET",
+      "path": "/api/v1/profile/invitations",
+      "action": "invitations",
+      "client": "application",
+      "status": 503,
+      "injected": true
+    },
+    {
+      "at": "2026-10-19T11:54:42.380Z",
+      "method": "GET",
+      "path": "/api/v1/profile/invitations",
+      "action": "invitations",
+      "client": "application",
+      "status": 200,
+      "injected": false,
+      "count": 0
+    },
+    {
+      "at": "2026-10-19T11:54:42.800Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:42.853Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:47.215Z",
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "fields": [
+        "displayName"
+      ],
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:47.225Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:47.250Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:57.279Z",
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "fields": [
+        "profilePublic"
+      ],
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:57.286Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:54:57.294Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:55:07.678Z",
+      "method": "POST",
+      "path": "/api/v1/profile/account/phone/request",
+      "action": "send",
+      "client": "application",
+      "status": 201,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:55:21.318Z",
+      "method": "POST",
+      "path": "/api/v1/profile/account/phone/verify",
+      "action": "verify",
+      "client": "application",
+      "status": 401,
+      "injected": false,
+      "code": "Backend.theCodeIsIncorrectOrExpired"
+    },
+    {
+      "at": "2026-10-19T11:55:28.430Z",
+      "method": "POST",
+      "path": "/api/v1/profile/account/phone/verify",
+      "action": "verify",
+      "client": "application",
+      "status": 201,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:55:28.450Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 401,
+      "injected": false,
+      "code": "Backend.signInFirst"
+    },
+    {
+      "at": "2026-10-19T11:56:02.579Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:56:02.679Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:56:02.735Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:56:32.007Z",
+      "method": "POST",
+      "path": "/api/v1/profile/account/privacy/preferences",
+      "action": "privacy",
+      "client": "application",
+      "status": 201,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:56:32.017Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:56:32.040Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:56:54.908Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T11:56:54.992Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:10:41.027Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:10:41.082Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:10:41.083Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:10:50.326Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:10:58.619Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:10:58.724Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:10:58.778Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:10:58.781Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:10:58.815Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:10:58.822Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:13.632Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:13.635Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:13.660Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:13.741Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:13.768Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:13.842Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:13.880Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:13.883Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:23.243Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:23.327Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:23.360Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:42.486Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:44.361Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:45.578Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:52.134Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:52.489Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:54.787Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:11:56.103Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:21:29.772Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:21:29.927Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:21:30.819Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:21:31.580Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "application",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:22:36.712Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "business",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:22:37.135Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "business",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:22:37.590Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "business",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:23:02.223Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "business",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:23:02.273Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "business",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:23:08.933Z",
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "business",
+      "fields": [
+        "displayName"
+      ],
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:23:08.942Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "business",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:23:08.962Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "business",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:24:03.818Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "admin",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:24:03.865Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "admin",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:24:03.934Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "admin",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:24:33.328Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "admin",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:24:33.423Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "admin",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:24:50.662Z",
+      "method": "PATCH",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "admin",
+      "fields": [
+        "displayName"
+      ],
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:24:50.681Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "admin",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:24:50.716Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "admin",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:25:05.392Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "admin",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:25:05.403Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account",
+      "action": "account",
+      "client": "admin",
+      "status": 200,
+      "injected": false
+    },
+    {
+      "at": "2026-10-19T12:25:05.421Z",
+      "method": "GET",
+      "path": "/api/v1/profile/account/privacy",
+      "action": "privacy",
+      "client": "admin",
+      "status": 200,
+      "injected": false
+    }
+  ]
+}

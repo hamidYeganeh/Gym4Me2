@@ -1,6 +1,7 @@
 import type * as dto from "./catalog.dto";
 import type { ApiClient, RequestOptions } from "../transport";
 import { catalogEndpoints } from "./catalog.endpoints";
+import { readLocationPages } from "./location-pages";
 export const catalogClients = {
   guestSavedClubs: (
     api: ApiClient,
@@ -59,8 +60,23 @@ export const catalogClients = {
     parentId?: string,
     options: RequestOptions = {},
   ) =>
+    readLocationPages(
+      kind,
+      (page) =>
+        api.request<dto.PlaceDto[]>(
+          catalogEndpoints.locations(kind, parentId, page),
+          options,
+        ),
+      options.signal,
+    ),
+  locationPage: (
+    api: ApiClient,
+    kind: dto.GeographyKind,
+    filters: dto.LocationFiltersDto = {},
+    options: RequestOptions = {},
+  ) =>
     api.request<dto.PlaceDto[]>(
-      catalogEndpoints.locations(kind, parentId),
+      catalogEndpoints.locations(kind, filters.parentId, filters.page),
       options,
     ),
   reviews: (

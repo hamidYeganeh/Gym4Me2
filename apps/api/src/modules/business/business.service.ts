@@ -1,3 +1,4 @@
+import { checkedChangeReason } from '../../platform/audit/change-reason';
 import { lockWritableAccount } from '../auth/account-lock';
 import {
   BadRequestException,
@@ -170,8 +171,10 @@ export class BusinessService {
     orgId: string,
     phone: string,
     role: StaffRole,
-    branchIds?: string[],
+    branchIds: string[] | undefined,
+    reason: string,
   ) {
+    reason = checkedChangeReason(reason);
     return this.database.db.transaction(async (tx) => {
       await lockWritableAccount(tx, userId);
       const [owner] = await tx
@@ -247,12 +250,23 @@ export class BusinessService {
         organizationId: orgId,
         action: 'team.invited',
         targetId: invitation.id,
-        details: { role, scope: branchIds ? branchIds.join(',') : 'all' },
+        details: {
+          role,
+          scope: branchIds ? branchIds.join(',') : 'all',
+          reason,
+        },
       });
       return invitation;
     });
   }
-  async remove(userId: string, orgId: string, id: string, invitation: boolean) {
+  async remove(
+    userId: string,
+    orgId: string,
+    id: string,
+    invitation: boolean,
+    reason: string,
+  ) {
+    reason = checkedChangeReason(reason);
     return this.database.db.transaction(async (tx) => {
       await lockWritableAccount(tx, userId);
       const [owner] = await tx
@@ -267,6 +281,7 @@ export class BusinessService {
         .for('update');
       if (owner?.role !== 'owner')
         throw new ForbiddenException('Backend.onlyTheOwnerCanRevokeAccess');
+      let previous: Record<string, string> = {};
       if (invitation) {
         const rows = await tx
           .update(organizationInvitations)
@@ -282,6 +297,19 @@ export class BusinessService {
           .returning();
         if (!rows.length)
           throw new NotFoundException('Backend.noActiveInvitationFound');
+        const grants = await tx
+          .select({ branchId: organizationInvitationBranches.branchId })
+          .from(organizationInvitationBranches)
+          .where(eq(organizationInvitationBranches.invitationId, id));
+        previous = {
+          previousRole: rows[0].role,
+          previousScope: rows[0].allBranches
+            ? 'all'
+            : grants
+                .map((g) => g.branchId)
+                .sort()
+                .join(','),
+        };
       } else {
         const [target] = await tx
           .select()
@@ -296,6 +324,20 @@ export class BusinessService {
         if (!target) throw new NotFoundException('Backend.colleagueNotFound');
         if (target.role === 'owner')
           throw new ForbiddenException('Backend.theOwnerCannotBeRemoved');
+        const grants = await tx
+          .select({ branchId: organizationMemberBranches.branchId })
+          .from(organizationMemberBranches)
+          .where(eq(organizationMemberBranches.memberId, id));
+        previous = {
+          previousRole: target.role,
+          previousScope: target.allBranches
+            ? 'all'
+            : grants
+                .map((g) => g.branchId)
+                .sort()
+                .join(','),
+          affectedUserId: target.userId,
+        };
         await tx
           .delete(organizationMembers)
           .where(eq(organizationMembers.id, id));
@@ -305,6 +347,7 @@ export class BusinessService {
         organizationId: orgId,
         action: invitation ? 'invitation.revoked' : 'team.removed',
         targetId: id,
+        details: { ...previous, reason, resultingAccess: 'none' },
       });
       return { success: true };
     });
@@ -391,6 +434,17 @@ export class BusinessService {
         organizationId: inv.organizationId,
         action: 'invitation.accepted',
         targetId: id,
+        details: {
+          reasonCode: 'accepted-owner-invitation',
+          invitationId: id,
+          role: inv.role,
+          scope: inv.allBranches
+            ? 'all'
+            : grants
+                .map((g) => g.branchId)
+                .sort()
+                .join(','),
+        },
       });
       return { success: true };
     });

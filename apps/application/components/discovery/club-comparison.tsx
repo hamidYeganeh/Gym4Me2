@@ -1,6 +1,7 @@
 "use client";
 import { MobileHeader } from "@repo/ui/mobile-page";
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useQueryRetry } from "@repo/ui/hooks/use-query-retry";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useLocale, useTranslations } from "@repo/i18n";
@@ -11,6 +12,7 @@ import {
 } from "@repo/api/catalog";
 import { useCatalogClubs } from "./use-catalog";
 import { clubHref } from "../../lib/club-href";
+import { tariffComparisonRows } from "../../lib/tariff-comparison";
 import { CatalogState } from "./catalog-state";
 import { CatalogPagination } from "./catalog-pagination";
 import { Button } from "@repo/ui/kit/Button";
@@ -42,6 +44,15 @@ export function ClubComparison() {
   const [unit, setUnit] = useState<TariffUnit>("visit");
   const clubs = useCatalogClubs({ search, page });
   const comparison = useCompareClubs(selected);
+  const unitControl = useRef<HTMLSelectElement>(null);
+  const comparisonRetry = useQueryRetry(
+    () => comparison.refetch(),
+    unitControl,
+  );
+  const rows = useMemo(
+    () => tariffComparisonRows(comparison.data ?? [], service, unit),
+    [comparison.data, service, unit],
+  );
   const number = new Intl.NumberFormat(locale);
   const options = [
     "visit",
@@ -152,6 +163,7 @@ export function ClubComparison() {
           <FieldLabel htmlFor="compare-unit">{labels("unit")}</FieldLabel>
           <NativeSelect
             id="compare-unit"
+            ref={unitControl}
             value={unit}
             onChange={(event) => setUnit(event.target.value as TariffUnit)}
           >
@@ -170,14 +182,18 @@ export function ClubComparison() {
       ) : comparison.isPending ? (
         <CatalogState loading />
       ) : comparison.isError ? (
-        <CatalogState retry={() => void comparison.refetch()} />
+        <CatalogState
+          retry={comparisonRetry.run}
+          retryRef={comparisonRetry.button}
+          retrying={comparisonRetry.retrying}
+        />
       ) : (
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t("criterion")}</TableHead>
+              <TableHead scope="col">{t("criterion")}</TableHead>
               {comparison.data?.map((club) => (
-                <TableHead key={club.id}>
+                <TableHead key={club.id} scope="col">
                   <Link className="underline" href={clubHref(club.id)}>
                     {club.name}
                   </Link>
@@ -186,26 +202,99 @@ export function ClubComparison() {
             </TableRow>
           </TableHeader>
           <TableBody>
+            {rows.length ? (
+              rows.map((row) => (
+                <TableRow key={row.key}>
+                  <TableHead
+                    scope="row"
+                    className="h-auto whitespace-normal p-2 align-top font-normal"
+                  >
+                    <div className="grid min-w-44 gap-2">
+                      <p className="font-medium">
+                        {labels("price")} · {labels(`service_${service}`)} /{" "}
+                        {labels(`unit_${unit}`)}
+                      </p>
+                      <p>
+                        {row.terms.durationDays
+                          ? labels("validDays", {
+                              count: number.format(row.terms.durationDays),
+                            })
+                          : t("unspecifiedValidity")}
+                      </p>
+                      <p>
+                        {row.terms.sessionCount
+                          ? labels("sessionAllowance", {
+                              count: number.format(row.terms.sessionCount),
+                            })
+                          : t("unspecifiedSessions")}
+                      </p>
+                      <p>
+                        {row.terms.branchId === null
+                          ? labels("allBranches")
+                          : t("oneBranch")}
+                      </p>
+                      {row.terms.includedServices?.length ? (
+                        <ul className="list-inside list-disc">
+                          {row.terms.includedServices.map((item, index) => (
+                            <li key={index}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p>{t("unspecifiedServices")}</p>
+                      )}
+                      <p className="whitespace-pre-line">
+                        {row.terms.conditions}
+                      </p>
+                    </div>
+                  </TableHead>
+                  {comparison.data?.map((club) => (
+                    <TableCell key={club.id} className="align-top">
+                      <div className="grid min-w-44 gap-4">
+                        {row.offers.get(club.id)?.map((offer) => (
+                          <div key={offer.versionId} className="grid gap-1">
+                            <p className="font-medium">
+                              {number.format(offer.priceToman)}{" "}
+                              {labels("toman")} / {labels(`unit_${offer.unit}`)}
+                            </p>
+                            <p>{offer.name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {offer.branchId === null
+                                ? labels("allBranches")
+                                : (club.branches.find(
+                                    (branch) => branch.id === offer.branchId,
+                                  )?.name ?? t("branchUnavailable"))}{" "}
+                              ·{" "}
+                              {labels("version", {
+                                version: number.format(offer.version),
+                              })}
+                            </p>
+                          </div>
+                        )) ?? <p>{t("noComparableOffer")}</p>}
+                      </div>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableHead
+                  scope="row"
+                  className="h-auto whitespace-normal p-2 font-normal"
+                >
+                  {labels("price")}
+                </TableHead>
+                {comparison.data?.map((club) => (
+                  <TableCell key={club.id}>{t("noComparableOffer")}</TableCell>
+                ))}
+              </TableRow>
+            )}
             <TableRow>
-              <TableCell>{labels("price")}</TableCell>
-              {comparison.data?.map((club) => {
-                const offer = club.tariffs
-                  .filter(
-                    (tariff) =>
-                      tariff.serviceType === service && tariff.unit === unit,
-                  )
-                  .sort((a, b) => a.priceToman - b.priceToman)[0];
-                return (
-                  <TableCell key={club.id}>
-                    {offer
-                      ? `${number.format(offer.priceToman)} ${labels("toman")} / ${labels(`unit_${offer.unit}`)}`
-                      : t("noComparableOffer")}
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-            <TableRow>
-              <TableCell>{t("categories")}</TableCell>
+              <TableHead
+                scope="row"
+                className="h-auto whitespace-normal p-2 font-normal"
+              >
+                {t("categories")}
+              </TableHead>
               {comparison.data?.map((club) => (
                 <TableCell key={club.id}>
                   {club.categories.map((category) => category.name).join(" · ")}
@@ -213,7 +302,12 @@ export function ClubComparison() {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell>{t("sports")}</TableCell>
+              <TableHead
+                scope="row"
+                className="h-auto whitespace-normal p-2 font-normal"
+              >
+                {t("sports")}
+              </TableHead>
               {comparison.data?.map((club) => (
                 <TableCell key={club.id}>
                   {club.sports.map((sport) => sport.name).join(" · ")}
@@ -221,66 +315,17 @@ export function ClubComparison() {
               ))}
             </TableRow>
             <TableRow>
-              <TableCell>{t("rating")}</TableCell>
+              <TableHead
+                scope="row"
+                className="h-auto whitespace-normal p-2 font-normal"
+              >
+                {t("rating")}
+              </TableHead>
               {comparison.data?.map((club) => (
                 <TableCell key={club.id}>
                   {club.rating.average === null
                     ? t("noRating")
                     : `${number.format(club.rating.average)} (${number.format(club.rating.count)})`}
-                </TableCell>
-              ))}
-            </TableRow>
-            <TableRow>
-              <TableCell>{labels("conditions")}</TableCell>
-              {comparison.data?.map((club) => (
-                <TableCell key={club.id}>
-                  <div className="grid min-w-44 gap-4">
-                    {club.tariffs
-                      .filter(
-                        (tariff) =>
-                          tariff.serviceType === service &&
-                          tariff.unit === unit,
-                      )
-                      .map((tariff) => (
-                        <div key={tariff.versionId}>
-                          <p className="font-medium">
-                            {tariff.name} · {number.format(tariff.priceToman)}{" "}
-                            {labels("toman")}
-                          </p>
-                          <p className="whitespace-pre-line">
-                            {tariff.conditions}
-                          </p>
-                          {tariff.durationDays && (
-                            <p>
-                              {labels("validDays", {
-                                count: tariff.durationDays,
-                              })}
-                            </p>
-                          )}
-                          {tariff.sessionCount && (
-                            <p>
-                              {labels("sessionAllowance", {
-                                count: tariff.sessionCount,
-                              })}
-                            </p>
-                          )}
-                          <ul className="list-inside list-disc">
-                            {tariff.includedServices?.map((item, index) => (
-                              <li key={index}>{item}</li>
-                            ))}
-                          </ul>
-                          <p className="text-xs text-muted-foreground">
-                            {club.branches.find(
-                              (branch) => branch.id === tariff.branchId,
-                            )?.name ?? labels("allBranches")}{" "}
-                            ·{" "}
-                            {labels("version", {
-                              version: number.format(tariff.version),
-                            })}
-                          </p>
-                        </div>
-                      ))}
-                  </div>
                 </TableCell>
               ))}
             </TableRow>

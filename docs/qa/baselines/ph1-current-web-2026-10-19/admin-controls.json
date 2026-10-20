@@ -1,0 +1,29 @@
+{
+  "duplicateIds": [],
+  "inputs": [
+    {
+      "height": 44,
+      "id": "_r_4_",
+      "labels": [
+        "نام"
+      ],
+      "name": "termName"
+    },
+    {
+      "height": 44,
+      "id": "_r_5_",
+      "labels": [
+        "شناسه متنی"
+      ],
+      "name": "termSlug"
+    }
+  ],
+  "path": "/taxonomies",
+  "submit": [
+    {
+      "busy": "false",
+      "height": 44,
+      "width": 58.90625
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "scripts/monitor-alerts.mjs": "c30341baf9a072a77a98c8b7660da4192003247c15511738758103085906ef96",
+  "scripts/monitor-alerts.test.mjs": "c8826531a2127678c612c0e228a6e110cbc0b87a0425c4e543138e10e02d0223",
+  "docs/qa/ph1-monitor-alerts-2026-10-19.md": "f186b7c4a6a4f4dae66a390b787d0b95ccc84d8144fc5e2574f47bdcd3b674da",
+  "docs/qa/baselines/ph1-monitor-alerts-2026-10-19/baseline-tests.log": "104508c06d331790108e53f3cd68a6ea0cc78bfa5159fad87d3d43386361b087",
+  "docs/qa/baselines/ph1-monitor-alerts-2026-10-19/monitor-alerts.patch": "69972c76e4860ebb780c5c5c35bfd5860d891a5ffbb659caea42545f3c7965dc",
+  "docs/qa/baselines/ph1-monitor-alerts-2026-10-19/receipt.json": "6d977c620b56dde18a0553cf043a5765c8557e007f36ba2d71e91a3bf09e1d9b",
+  "docs/qa/baselines/ph1-monitor-alerts-2026-10-19/source-before.json": "b1b3efd7c319300c0a0f16240be1895d570ec516e13cfec462da6a802a11daeb",
+  "docs/qa/baselines/ph1-monitor-alerts-2026-10-19/tests.log": "9aa660f4506df6e0828c80b95980b35a5d302ccfd40c2df183aec48f70bc95f5"
+}

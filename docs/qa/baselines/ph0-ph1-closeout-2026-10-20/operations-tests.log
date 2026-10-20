@@ -1,0 +1,32 @@
+✔ only explicit signing identities generate domain associations (2.314167ms)
+✔ web associations are independent, public JSON and restricted to the configured app (31.994709ms)
+✔ unconfigured or invalid signing identities never publish a successful association (0.549542ms)
+✔ capture includes all feature media, deduplicates references and streams checksummed private files (9.445875ms)
+✔ older schemas query only present tables, while bad reference metadata fails closed (0.666917ms)
+✔ missing objects or failed streams cannot produce successful capture (1.854666ms)
+✔ restore selection runs against current references and excludes newer deleted attachments (0.245709ms)
+✔ capture rejects unsafe paths, public directories and symlinked object directories (1.079ms)
+✔ cancellation waits for nested child cleanup before its owner exits (119.967875ms)
+✔ a child ignoring termination is killed after the bounded grace period (96.425292ms)
+✔ cancellation kills a surviving same-group grandchild after its leader closes (152.492917ms)
+✔ a successful normal exit does not terminate a deliberately detached child (70.858ms)
+✔ an already cancelled operation cannot spawn another process (0.229458ms)
+✔ Restic adapter cancellation awaits an executable fixture's cleanup (483.825333ms)
+✔ stopping the scheduler aborts both job lanes and discards late receipts (3.743875ms)
+✔ capture cancellation closes its transaction and terminates only its tagged dump (197.44475ms)
+✔ generation covers every staging service without reading secrets or starting processes (7.012291ms)
+✔ API supervision uses only isolated runtime configuration and strips migration credentials (2.141916ms)
+✔ readiness retries until healthy; cancellation and deadlines prevent startup (17.589583ms)
+✔ schedule survives restarts, backs off failures and doesn't erase last good backup (1.314083ms)
+✔ ledger continues on its own schedule while a long snapshot holds the data lane (1.077166ms)
+✔ completion time never disguises an old, missing, or future capture as a fresh mirror (0.22725ms)
+✔ legacy and malformed/future state cannot suppress jobs or report healthy backups (0.167833ms)
+✔ one-shot verification is sequential; failed persistence stops new work (0.510209ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1579.832542

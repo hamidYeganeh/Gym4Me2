@@ -37,6 +37,7 @@ import { validCatalogPrices } from "@repo/api/catalog";
 import { LocationPicker, type LocationValue } from "./location-picker";
 import { CatalogFilters, type PriceFilters } from "./catalog-filters";
 import { useSavedClub } from "./use-saved-club";
+import { catalogLocationFilters } from "../../lib/catalog-location";
 
 function SavedClubCard({
   club,
@@ -74,6 +75,7 @@ export function Discovery() {
   const home = useTranslations("Home");
   const copy = useTranslations("Copy");
   const locale = useLocale();
+  const numbers = new Intl.NumberFormat(locale);
   const changeLocale = useChangeLocale();
   const [pending, startTransition] = useTransition();
   const queryCategory = useSyncExternalStore(
@@ -86,8 +88,6 @@ export function Discovery() {
   );
   const [category, setCategory] = useState<string | null>(null);
   const [place, setPlace] = useState<LocationValue>({});
-  const location = place.cityId ?? "";
-  const district = place.districtId ?? "";
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
@@ -99,8 +99,7 @@ export function Discovery() {
     ...filters,
     search: deferredSearch,
     categoryId: activeCategory || undefined,
-    cityId: location || undefined,
-    districtId: district || undefined,
+    ...catalogLocationFilters(place),
     page,
   });
   const allClubs = validPrices ? query.clubs : [];
@@ -257,9 +256,11 @@ export function Discovery() {
                           image: item.logo ?? item.photos[0].src,
                         }))}
                       countLabel={t("locationCount", {
-                        count: allClubs.filter(
-                          (item) => item.cityId === club.cityId,
-                        ).length,
+                        count: numbers.format(
+                          allClubs.filter(
+                            (item) => item.cityId === club.cityId,
+                          ).length,
+                        ),
                       })}
                       onSelect={() => {
                         const branch = query.data?.find(
@@ -332,7 +333,7 @@ export function Discovery() {
         ))}
       </section>
       <footer className="flex flex-wrap justify-between gap-3 border-t border-border pt-5 text-xs leading-6 text-muted-foreground">
-        <span>{t("count", { count: clubs.length })}</span>
+        <span>{t("count", { count: numbers.format(clubs.length) })}</span>
       </footer>
       {validPrices && (
         <CatalogPagination

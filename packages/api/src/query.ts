@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { useApiContext } from "./provider";
 import { ApiError, type ApiClient, type ApiScope } from "./transport";
+import { handleMutationError } from "./mutation-effects";
 
 export function useApiQuery<T>(
   key: (scope: ApiScope) => QueryKey,
@@ -45,15 +46,13 @@ export function useApiMutation<T, V>(
           ),
         );
     },
-    onError: async (error) => {
-      if (error.status === 409)
-        await Promise.all(
-          invalidate.map((key) =>
-            queryClient.invalidateQueries({
-              queryKey: [...context.api.scope, ...key],
-            }),
-          ),
-        );
-    },
+    onError: (error) =>
+      handleMutationError(
+        queryClient,
+        context.api.scope,
+        error,
+        invalidate,
+        context.resetSession,
+      ),
   });
 }

@@ -1,6 +1,9 @@
 "use client";
 import {
   createContext,
+  useCallback,
+  useEffect,
+  useRef,
   useContext,
   useMemo,
   useState,
@@ -14,6 +17,7 @@ import {
   type ApiClientOptions,
 } from "./transport";
 import { createQueryClient } from "./query-client";
+import { connectSessionSync } from "./session-sync";
 
 type ApiContextValue = { api: ApiClient; resetSession: () => Promise<void> };
 const ApiContext = createContext<ApiContextValue | null>(null);
@@ -37,6 +41,26 @@ export function ApiProvider({
 }: Omit<ApiClientOptions, "session"> & { children: ReactNode }) {
   const [queryClient] = useState(createQueryClient);
   const [session, setSession] = useState(0);
+  const sync = useRef<ReturnType<typeof connectSessionSync> | null>(null);
+  const resetLocalSession = useCallback(async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    setSession((value) => value + 1);
+  }, [queryClient]);
+  useEffect(() => {
+    const connection = connectSessionSync(
+      options.application,
+      options.baseUrl ?? "/api/v1",
+      () => {
+        void resetLocalSession();
+      },
+    );
+    sync.current = connection;
+    return () => {
+      sync.current = null;
+      connection.close();
+    };
+  }, [options.application, options.baseUrl, resetLocalSession]);
   const api = useMemo(
     () => createApiClient({ ...options, session }),
     [
@@ -52,12 +76,11 @@ export function ApiProvider({
     () => ({
       api,
       async resetSession() {
-        await queryClient.cancelQueries();
-        queryClient.clear();
-        setSession((value) => value + 1);
+        await resetLocalSession();
+        sync.current?.publish();
       },
     }),
-    [api, queryClient],
+    [api, resetLocalSession],
   );
   return (
     <QueryClientProvider client={queryClient}>

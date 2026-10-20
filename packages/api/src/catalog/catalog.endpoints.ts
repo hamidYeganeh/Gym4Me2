@@ -22,10 +22,14 @@ export const catalogEndpoints = {
     path: `catalog/taxonomies/${kind}`,
     query: filters,
   }),
-  locations: (kind: dto.GeographyKind, parentId?: string): ApiRequest => ({
+  locations: (
+    kind: dto.GeographyKind,
+    parentId?: string,
+    page = 1,
+  ): ApiRequest => ({
     method: "GET",
     path: `catalog/locations/${kind}`,
-    query: { parentId },
+    query: { parentId, page },
   }),
   reviews: (
     id: string,

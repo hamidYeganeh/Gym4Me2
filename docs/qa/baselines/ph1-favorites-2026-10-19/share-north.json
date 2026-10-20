@@ -1,0 +1,13 @@
+{
+  "url": "http://127.0.0.1:7394/discovery/clubs/be4503e4-9ca0-4bd8-923f-2e27bf58b1f4?branch=962de426-7a93-41a0-9743-37c25235af92",
+  "links": [
+    {
+      "href": "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fgym4me.ir%2Fdiscovery%2Fclubs%2Fbe4503e4-9ca0-4bd8-923f-2e27bf58b1f4%3Fbranch%3D962de426-7a93-41a0-9743-37c25235af92",
+      "label": "اشتراک‌گذاری در فیسبوک"
+    },
+    {
+      "href": "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgym4me.ir%2Fdiscovery%2Fclubs%2Fbe4503e4-9ca0-4bd8-923f-2e27bf58b1f4%3Fbranch%3D962de426-7a93-41a0-9743-37c25235af92",
+      "label": "اشتراک‌گذاری در لینکدین"
+    }
+  ]
+}

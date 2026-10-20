@@ -1,3 +1,5 @@
+import { nativeSportsRoutes } from "./native-link-routes.mjs";
+
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 /** Accept only public club links. Never forward arbitrary paths or credentials. */
 export function nativeClubLink(
@@ -57,31 +59,17 @@ export function nativeAppLink(
         ))
     )
       return null;
-    const routes: Record<string, string> = {
-      service: "/services/detail",
-      calendar: "/calendars/detail",
-      booking: "/bookings/detail",
-      order: "/orders/detail",
-      conversation: "/messages/conversation",
-      membership: "/memberships/detail",
-    };
     const parts = custom
       ? [url.hostname, url.pathname.slice(1)]
-      : /^\/(services|calendars|bookings|orders|messages|memberships)\/([^/]+)\/?$/
-          .exec(url.pathname)
-          ?.slice(1);
+      : /^\/([^/]+)\/([^/]+)\/?$/.exec(url.pathname)?.slice(1);
     if (!parts) return null;
-    const aliases: Record<string, string> = {
-      services: "service",
-      calendars: "calendar",
-      bookings: "booking",
-      orders: "order",
-      messages: "conversation",
-      memberships: "membership",
-    };
-    const target = routes[aliases[parts[0]] ?? parts[0]];
+    const target = nativeSportsRoutes.find(
+      (route) =>
+        route.webSegment === parts[0] ||
+        (custom && route.schemeHost === parts[0]),
+    );
     if (!target || !uuid.test(parts[1])) return null;
-    return `${target}?id=${parts[1]}`;
+    return `${target.shell}?id=${parts[1]}`;
   } catch {
     return null;
   }

@@ -7,6 +7,7 @@ import type {
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 import { getTranslator } from "@repo/i18n/messages";
 import { clubHref } from "./club-href";
+import { catalogInterval } from "./catalog-hours";
 
 const placeholder = "/images/club-placeholder.svg";
 export function catalogPhotos(
@@ -84,8 +85,6 @@ export function detailView(
 ): ClubDetailData {
   const t = getTranslator(locale);
   const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
-  const minute = (value: number) =>
-    `${String(Math.floor(value / 60) % 24).padStart(2, "0")}:${String(value % 60).padStart(2, "0")}`;
   const days = [
     "Catalog.day0",
     "Catalog.day1",
@@ -99,7 +98,7 @@ export function detailView(
     branch?.openingHours.weekly
       .map(
         (row) =>
-          `${t(days[row.dayOfWeek] ?? "Catalog.day0")} ${minute(row.startMinute)}–${minute(row.endMinute)}${row.endMinute > 1440 ? ` ${t("Catalog.nextDay")}` : ""}`,
+          `${t(days[row.dayOfWeek] ?? "Catalog.day0")} · ${t(`Catalog.audience_${row.audience}`)} · ${catalogInterval(row, locale)}`,
       )
       .join(" · ") ?? "";
   const tariff = club.tariffs

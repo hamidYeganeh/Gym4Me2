@@ -1,0 +1,32 @@
+{
+  "inputs": 877,
+  "changed": [
+    "apps/application/next-env.d.ts",
+    "apps/business/next-env.d.ts",
+    "apps/admin/next-env.d.ts"
+  ],
+  "mode": "Sequential Next.js webpack development servers; not production builds",
+  "applicationExit": 0,
+  "businessExit": 0,
+  "adminExit": 0,
+  "apiExit": 0,
+  "proxyFirstExit": 143,
+  "proxyFinalExit": 1,
+  "fixtureCounts": {
+    "users": 0,
+    "organizations": 0,
+    "sessions": 0
+  },
+  "databaseDropped": true,
+  "testContainerRestoredStopped": true,
+  "ownedTabsClosed": true,
+  "viewportReset": true,
+  "storageUntouched": true,
+  "generatedDuringDev": [
+    "apps/application/next-env.d.ts",
+    "apps/business/next-env.d.ts",
+    "apps/admin/next-env.d.ts"
+  ],
+  "generatedFilesRestoredExactly": true,
+  "changedAfterCleanup": []
+}

@@ -1,0 +1,21 @@
+{
+  "duplicateIds": [],
+  "inputs": [
+    {
+      "height": 44,
+      "id": "_r_0_",
+      "labels": [
+        "نام مجموعه"
+      ],
+      "name": "organizationName"
+    }
+  ],
+  "path": "/organizations",
+  "submits": [
+    {
+      "busy": "false",
+      "height": 44,
+      "width": 119.7265625
+    }
+  ]
+}

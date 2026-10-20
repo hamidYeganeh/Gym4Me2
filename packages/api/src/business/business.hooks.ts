@@ -72,18 +72,38 @@ export function useInviteTeam() {
 }
 export function useRemoveMember() {
   return useApiMutation(
-    (api, input: { organizationId: string; memberId: string }) =>
-      businessClients.removeMember(api, input.organizationId, input.memberId),
+    (
+      api,
+      input: {
+        organizationId: string;
+        memberId: string;
+        input: dto.ChangeReasonDto;
+      },
+    ) =>
+      businessClients.removeMember(
+        api,
+        input.organizationId,
+        input.memberId,
+        input.input,
+      ),
     [["business"], ["profile"], ["catalog"], ["admin"]],
   );
 }
 export function useRevokeInvitation() {
   return useApiMutation(
-    (api, input: { organizationId: string; invitationId: string }) =>
+    (
+      api,
+      input: {
+        organizationId: string;
+        invitationId: string;
+        input: dto.ChangeReasonDto;
+      },
+    ) =>
       businessClients.revokeInvitation(
         api,
         input.organizationId,
         input.invitationId,
+        input.input,
       ),
     [["business"], ["profile"], ["catalog"], ["admin"]],
   );
@@ -117,10 +137,18 @@ export function useCreateMedia() {
   );
 }
 export function useUploadMedia() {
-  return useApiMutation((api, input: { id: string; file: File; alt?: string }) => businessClients.uploadMedia(api, input.id, input), [["business"], ["catalog"], ["admin"]]);
+  return useApiMutation(
+    (api, input: { id: string; file: File; alt?: string }) =>
+      businessClients.uploadMedia(api, input.id, input),
+    [["business"], ["catalog"], ["admin"]],
+  );
 }
 export function useDeleteMedia() {
-  return useApiMutation((api, input: { id: string; mediaId: string }) => businessClients.deleteMedia(api, input.id, input.mediaId), [["business"], ["catalog"], ["admin"]]);
+  return useApiMutation(
+    (api, input: { id: string; mediaId: string }) =>
+      businessClients.deleteMedia(api, input.id, input.mediaId),
+    [["business"], ["catalog"], ["admin"]],
+  );
 }
 export function useCreateClubBranch() {
   return useApiMutation(

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import {
   Activity,
@@ -36,6 +36,7 @@ import {
 import { useOverlayHistory } from "../hooks/use-overlay-history";
 import { safeReturnPath } from "./safe-return-path";
 import { applicationAuthHref } from "../lib/auth-routes";
+import { isActiveSurfaceElement } from "../lib/active-surface";
 import "./auth-controls.css";
 
 /** A single entry point for both new and returning athletes. */
@@ -196,13 +197,37 @@ export function AuthWelcome({ returnTo = "/" }: { returnTo?: string }) {
 export function AuthRequired({
   returnTo,
   compact = false,
+  focusOnEntry = false,
 }: {
   returnTo: string;
   compact?: boolean;
+  focusOnEntry?: boolean;
 }) {
   const t = useTranslations("AuthDesign");
+  const entry = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!focusOnEntry) return;
+    const frame = requestAnimationFrame(() => {
+      const button =
+        entry.current?.querySelector<HTMLButtonElement>("[data-auth-action]");
+      if (
+        button &&
+        document.activeElement === document.body &&
+        isActiveSurfaceElement(button)
+      ) {
+        button.focus({ preventScroll: true });
+        button.scrollIntoView({
+          block: "nearest",
+          inline: "nearest",
+          behavior: "instant",
+        });
+      }
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [focusOnEntry]);
   return (
     <Empty
+      ref={entry}
       className="auth-required"
       data-compact={compact || undefined}
       data-gym-auth

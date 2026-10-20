@@ -1,0 +1,16 @@
+{
+  "at": "2026-10-20T05:49:03.356Z",
+  "testSources": 5,
+  "changedSources": [],
+  "copiedCliSources": 8,
+  "cliSourceHashesMatch": true,
+  "previousWebInputs": 882,
+  "changedWebInputs": [],
+  "ownedMockPortsListening": [],
+  "testResult": {
+    "pass": 18,
+    "fail": 0
+  },
+  "temporaryCapsuleRemoved": true,
+  "mockServersClosed": true
+}

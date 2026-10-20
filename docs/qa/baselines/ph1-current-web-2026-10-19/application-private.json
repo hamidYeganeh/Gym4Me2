@@ -1,0 +1,30 @@
+{
+  "focusId": "_r_0_-name",
+  "profileInputs": [
+    {
+      "disabled": false,
+      "id": "_r_0_-name",
+      "name": "displayName"
+    },
+    {
+      "disabled": false,
+      "id": "_r_0_-phone",
+      "name": ""
+    },
+    {
+      "disabled": false,
+      "id": "",
+      "name": ""
+    },
+    {
+      "disabled": false,
+      "id": "_r_1_-phone",
+      "name": "newPhone"
+    }
+  ],
+  "publicChecked": "false",
+  "saveDisabled": [
+    true,
+    true
+  ]
+}

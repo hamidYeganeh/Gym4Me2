@@ -1,3 +1,7 @@
+import {
+  changeReasonSchema,
+  changeReasonBodySchema,
+} from '../../platform/audit/change-reason';
 import { ConsentGuard } from '../profile/consent.guard';
 import {
   Body,
@@ -69,6 +73,7 @@ export class BusinessController {
     {
       phone: { type: 'string' },
       role: { type: 'string', enum: ['manager', 'receptionist', 'accountant'] },
+      reason: { type: 'string', minLength: 3, maxLength: 500 },
       branchIds: {
         type: 'array',
         items: { type: 'string', format: 'uuid' },
@@ -77,7 +82,7 @@ export class BusinessController {
         uniqueItems: true,
       },
     },
-    ['phone', 'role'],
+    ['phone', 'role', 'reason'],
   )
   invite(
     @Req() req: AuthRequest,
@@ -89,6 +94,7 @@ export class BusinessController {
         .object({
           phone: phoneSchema,
           role: z.enum(['manager', 'receptionist', 'accountant']),
+          reason: changeReasonSchema,
           branchIds: z
             .array(z.uuid())
             .min(1)
@@ -105,30 +111,39 @@ export class BusinessController {
       input.phone,
       input.role,
       input.branchIds,
+      input.reason,
     );
   }
-  @Post(':organizationId/team/:memberId/remove') remove(
+  @Post(':organizationId/team/:memberId/remove')
+  @JsonBody({ reason: { type: 'string', minLength: 3, maxLength: 500 } })
+  remove(
     @Req() req: AuthRequest,
     @Param('organizationId') id: string,
     @Param('memberId') memberId: string,
+    @Body() body: unknown,
   ) {
     return this.service.remove(
       businessUser(req),
       parse(z.uuid(), id),
       parse(z.uuid(), memberId),
       false,
+      parse(changeReasonBodySchema, body).reason,
     );
   }
-  @Post(':organizationId/invitations/:invitationId/revoke') revoke(
+  @Post(':organizationId/invitations/:invitationId/revoke')
+  @JsonBody({ reason: { type: 'string', minLength: 3, maxLength: 500 } })
+  revoke(
     @Req() req: AuthRequest,
     @Param('organizationId') id: string,
     @Param('invitationId') invitationId: string,
+    @Body() body: unknown,
   ) {
     return this.service.remove(
       businessUser(req),
       parse(z.uuid(), id),
       parse(z.uuid(), invitationId),
       true,
+      parse(changeReasonBodySchema, body).reason,
     );
   }
 }

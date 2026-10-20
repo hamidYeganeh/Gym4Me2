@@ -1,0 +1,13 @@
+{
+  "focusName": "displayName",
+  "ids": [
+    "_r_0_-name",
+    "_r_0_-phone",
+    "_r_3_-phone"
+  ],
+  "name": "پروفایل نسخه نهایی",
+  "path": "/profile",
+  "saveDisabled": [
+    true
+  ]
+}

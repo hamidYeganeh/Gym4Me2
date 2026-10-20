@@ -321,6 +321,12 @@ export class ClubService {
           publicBranchProfile(),
           isNull(s.branchProfiles.archivedAt),
           needle ? ilike(normalized, `%${needle}%`) : undefined,
+          filters.countryId
+            ? eq(s.branchProfiles.countryId, filters.countryId)
+            : undefined,
+          filters.provinceId
+            ? eq(s.branchProfiles.provinceId, filters.provinceId)
+            : undefined,
           filters.cityId
             ? eq(s.branchProfiles.cityId, filters.cityId)
             : undefined,
@@ -501,13 +507,15 @@ export class ClubService {
   async geography(
     kind: 'countries' | 'provinces' | 'cities' | 'districts',
     parentId?: string,
+    page = 1,
   ) {
     if (kind === 'countries')
       return this.database.db
         .select()
         .from(s.countries)
-        .orderBy(s.countries.name)
-        .limit(300);
+        .orderBy(s.countries.name, s.countries.id)
+        .limit(300)
+        .offset((page - 1) * 300);
     if (!parentId)
       throw new BadRequestException('Backend.aParentIdentifierIsRequired');
     if (kind === 'provinces')
@@ -515,21 +523,24 @@ export class ClubService {
         .select()
         .from(s.provinces)
         .where(eq(s.provinces.countryId, parentId))
-        .orderBy(s.provinces.name)
-        .limit(1000);
+        .orderBy(s.provinces.name, s.provinces.id)
+        .limit(1000)
+        .offset((page - 1) * 1000);
     if (kind === 'cities')
       return this.database.db
         .select()
         .from(s.cities)
         .where(eq(s.cities.provinceId, parentId))
-        .orderBy(s.cities.name)
-        .limit(1000);
+        .orderBy(s.cities.name, s.cities.id)
+        .limit(1000)
+        .offset((page - 1) * 1000);
     return this.database.db
       .select()
       .from(s.districts)
       .where(eq(s.districts.cityId, parentId))
-      .orderBy(s.districts.name)
-      .limit(1000);
+      .orderBy(s.districts.name, s.districts.id)
+      .limit(1000)
+      .offset((page - 1) * 1000);
   }
   async createGeography(
     p: Principal,

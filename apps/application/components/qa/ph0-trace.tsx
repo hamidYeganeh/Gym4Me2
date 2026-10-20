@@ -79,6 +79,28 @@ export function Ph0Trace() {
           interactiveRoutes: routes.filter(
             (route) => !route.inert && route.hidden !== "true",
           ).length,
+          animations: document
+            .getAnimations()
+            .slice(0, 24)
+            .map((animation) => {
+              const effect = animation.effect;
+              const target =
+                effect instanceof KeyframeEffect ? effect.target : null;
+              const timing = effect?.getComputedTiming();
+              return {
+                state: animation.playState,
+                rate: animation.playbackRate,
+                currentTime: animation.currentTime,
+                duration: timing?.duration,
+                progress: timing?.progress,
+                target: target instanceof Element ? target.tagName : null,
+                anchor:
+                  target instanceof Element
+                    ? (target.getAttribute("data-zoom-enter-key") ??
+                      target.getAttribute("data-zoom-exit-key"))
+                    : null,
+              };
+            }),
           routes,
           dialogs: [...document.querySelectorAll('[role="dialog"]')].map(
             (element) => {
@@ -110,11 +132,19 @@ export function Ph0Trace() {
       };
       frame = requestAnimationFrame(sample);
     };
+    const shortcut = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.shiftKey && event.code === "F8") {
+        event.preventDefault();
+        record();
+      }
+    };
     window.addEventListener("gym4me:ph0-trace", record);
+    window.addEventListener("keydown", shortcut);
     document.addEventListener("click", click, true);
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("gym4me:ph0-trace", record);
+      window.removeEventListener("keydown", shortcut);
       document.removeEventListener("click", click, true);
       stopNavigationObserver();
     };

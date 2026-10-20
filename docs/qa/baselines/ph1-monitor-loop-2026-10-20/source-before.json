@@ -1,0 +1,7 @@
+{
+  "scripts/monitor-loop.mjs": "06285c03f035c3e7d81f043c4ac23c553b29e0aed107654389a204cc6cd441ac",
+  "scripts/staging-monitor.mjs": "66b059fad3b380ed33306da390fc2f1448055b8a5ffbbe350fb09b02734350e3",
+  "scripts/staging-monitor.test.mjs": "0ae64f3bb27675c680f38f450fceb1b38bdc8bacaea1f6317f93853d7a419cc9",
+  "scripts/monitor-alerts.mjs": "ac5d729c888cbd52a4457ae857f10abdefede5e94f41a16bcc3498a4d64c0a23",
+  "scripts/monitor-alerts.test.mjs": "b58baf5b1b104df3f1cc57a7b212fee1d47edad3aee6ff053f7b9435ef0a4cf7"
+}

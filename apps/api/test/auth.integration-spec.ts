@@ -4,6 +4,9 @@ import { Test } from '@nestjs/testing';
 import { and, eq, or } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { randomBytes, randomUUID } from 'node:crypto';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { userInfo } from 'node:os';
 import { resolve } from 'node:path';
 import request, { type Response } from 'supertest';
 import type { App } from 'supertest/types';
@@ -394,7 +397,10 @@ test('only invited phone can accept and revoking a member takes effect immediate
     'business',
     business.cookie,
   )
-    .send({ phone: other.phone, role: 'manager' })
+    .send({
+      ...{ phone: other.phone, role: 'manager' },
+      reason: 'تغییر آزمایشی ثبت‌شده',
+    })
     .expect(201);
   await call(
     'post',
@@ -428,7 +434,10 @@ test('only invited phone can accept and revoking a member takes effect immediate
     'business',
     other.cookie,
   )
-    .send({ phone: phone(), role: 'manager' })
+    .send({
+      ...{ phone: phone(), role: 'manager' },
+      reason: 'تغییر آزمایشی ثبت‌شده',
+    })
     .expect(403);
   const member = (
     await db
@@ -446,7 +455,9 @@ test('only invited phone can accept and revoking a member takes effect immediate
     `business/organizations/${organizationId}/team/${member.id}/remove`,
     'business',
     business.cookie,
-  ).expect(201);
+  )
+    .send({ reason: 'تغییر آزمایشی ثبت‌شده' })
+    .expect(201);
   await call(
     'get',
     `business/organizations/${organizationId}/branches`,
@@ -471,7 +482,9 @@ test('an owner cannot be removed', async () => {
     `business/organizations/${organizationId}/team/${member.id}/remove`,
     'business',
     business.cookie,
-  ).expect(403);
+  )
+    .send({ reason: 'تغییر آزمایشی ثبت‌شده' })
+    .expect(403);
 });
 test('admin permission is checked independently of login and review records an audit event', async () => {
   const plainAdmin = await login('admin');
@@ -632,6 +645,21 @@ test('native OTP issues a bearer restricted to its native application session an
 });
 test('phone changes require a recent session, bind challenges to that session and revoke every prior device', async () => {
   const person = await login('application');
+  const otherTokens = [
+    randomBytes(32).toString('base64url'),
+    randomBytes(32).toString('base64url'),
+    randomBytes(32).toString('base64url'),
+  ];
+  await db.insert(authSessions).values(
+    otherTokens.map((token, index) => ({
+      userId: person.userId,
+      client: index === 0 ? 'business' : 'application',
+      transport: index === 1 ? ('native' as const) : ('web' as const),
+      tokenHash: tokenHash(token),
+      device: 'Phone change other device',
+      expiresAt: new Date(Date.now() + 3600000),
+    })),
+  );
   const newNumber = phone();
   const sent = await call(
     'post',
@@ -652,7 +680,26 @@ test('phone changes require a recent session, bind challenges to that session an
     'application',
     person.cookie,
   )
-    .send({ challengeId, code: '00000' })
+    .send({
+      challengeId,
+      code: delivered.get(newNumber) === '00000' ? '11111' : '00000',
+    })
+    .expect(401)
+    .expect((response) => {
+      expect(response.body).toMatchObject({
+        code: 'Backend.theCodeIsIncorrectOrExpired',
+      });
+    });
+  await call('get', 'profile/account', 'application', person.cookie).expect(
+    200,
+  );
+  await call(
+    'post',
+    'profile/account/phone/verify',
+    'application',
+    `gym4me_application=${otherTokens[2]}`,
+  )
+    .send({ challengeId, code: delivered.get(newNumber) })
     .expect(401);
   const finished = await call(
     'post',
@@ -671,6 +718,42 @@ test('phone changes require a recent session, bind challenges to that session an
     .from(users)
     .where(eq(users.id, person.userId));
   expect(changed.phone).toBe(newNumber);
+  const devices = await db
+    .select()
+    .from(authSessions)
+    .where(eq(authSessions.userId, person.userId));
+  expect(devices).toHaveLength(4);
+  expect(devices.every((device) => device.revokedAt !== null)).toBe(true);
+  await call(
+    'get',
+    'profile/account',
+    'business',
+    `gym4me_business=${otherTokens[0]}`,
+  ).expect(401);
+  await call(
+    'get',
+    'profile/account',
+    'application',
+    `gym4me_application=${otherTokens[2]}`,
+  ).expect(401);
+  await request(app.getHttpServer())
+    .get('/api/v1/profile/account')
+    .set('x-gym-client', 'application')
+    .set('x-gym-platform', 'native')
+    .set('Origin', 'capacitor://localhost')
+    .set('Authorization', `Bearer ${otherTokens[1]}`)
+    .expect(401);
+  // Model the elapsed resend cooldown on this consumed test-only challenge.
+  await db
+    .update(otpChallenges)
+    .set({ createdAt: new Date(Date.now() - 61000) })
+    .where(eq(otpChallenges.id, challengeId));
+  const newLoginChallenge = await challenge(newNumber, 'application');
+  const signedInAgain = await call('post', 'auth/otp/verify', 'application')
+    .send({ challengeId: newLoginChallenge, code: delivered.get(newNumber) })
+    .expect(201);
+  expect(payload(signedInAgain).user!.id).toBe(person.userId);
+
   const [event] = await db
     .select()
     .from(auditEvents)
@@ -1445,4 +1528,139 @@ describe('password authentication', () => {
       .send({ phone: identity.phone, password: 'wrong' })
       .expect(429);
   });
+});
+
+test('operator bootstrap requires a reason, records its OS actor and does not echo private data', async () => {
+  const person = await privacyIdentity('admin');
+  const [account] = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, person.userId));
+  const run = promisify(execFile);
+  const options = {
+    cwd: resolve(__dirname, '..'),
+    env: {
+      ...process.env,
+      DATABASE_URL: databaseUrl,
+      NODE_OPTIONS: '--max-old-space-size=192',
+    },
+    timeout: 15000,
+  };
+  await expect(
+    run(
+      process.execPath,
+      ['--import', 'tsx', 'scripts/grant-admin.ts', account.phone],
+      options,
+    ),
+  ).rejects.toMatchObject({ code: 1 });
+  expect(
+    await db
+      .select()
+      .from(platformAdmins)
+      .where(eq(platformAdmins.userId, person.userId)),
+  ).toHaveLength(0);
+  const reason = 'private-bootstrap-approval-for-isolated-test';
+  const result = await run(
+    process.execPath,
+    ['--import', 'tsx', 'scripts/grant-admin.ts', account.phone, reason],
+    options,
+  );
+  expect(result.stdout + result.stderr).not.toContain(account.phone);
+  expect(result.stdout + result.stderr).not.toContain(reason);
+  expect(
+    await db
+      .select()
+      .from(platformAdmins)
+      .where(eq(platformAdmins.userId, person.userId)),
+  ).toHaveLength(1);
+  await run(
+    process.execPath,
+    ['--import', 'tsx', 'scripts/grant-admin.ts', account.phone, reason],
+    options,
+  );
+  const events = await db
+    .select()
+    .from(auditEvents)
+    .where(
+      and(
+        eq(auditEvents.targetId, person.userId),
+        eq(auditEvents.action, 'admin.granted-by-operator'),
+      ),
+    );
+  expect(events).toHaveLength(1);
+  expect(events[0].actorId).toBeNull();
+  expect(events[0].createdAt).toBeInstanceOf(Date);
+  expect(events[0].details).toMatchObject({
+    actorKind: 'operator',
+    operator: userInfo().username,
+    reason,
+    source: 'operator-cli',
+  });
+});
+
+test('expired web and native sessions disappear from lists and cannot read or revoke an active device', async () => {
+  const person = await privacyIdentity('business');
+  const expiredTokens = [
+    randomBytes(32).toString('base64url'),
+    randomBytes(32).toString('base64url'),
+  ];
+  const expired = await db
+    .insert(authSessions)
+    .values(
+      expiredTokens.map((token, index) => ({
+        userId: person.userId,
+        client: index === 0 ? 'business' : 'application',
+        transport: index === 0 ? ('web' as const) : ('native' as const),
+        tokenHash: tokenHash(token),
+        device: 'Expired session QA',
+        expiresAt: new Date(Date.now() - 1000),
+      })),
+    )
+    .returning();
+  const list = await call(
+    'get',
+    'auth/sessions',
+    'business',
+    person.cookie,
+  ).expect(200);
+  const sessions = z
+    .array(z.object({ id: z.string(), current: z.boolean() }))
+    .parse(list.body);
+  expect(sessions).toHaveLength(1);
+  const active = sessions[0];
+  expect(active.current).toBe(true);
+  for (const row of expired)
+    expect(sessions.some((session) => session.id === row.id)).toBe(false);
+  await call(
+    'get',
+    'profile/account',
+    'business',
+    `gym4me_business=${expiredTokens[0]}`,
+  )
+    .expect(401)
+    .expect((response) => {
+      expect(response.body).toMatchObject({
+        code: 'Backend.theSessionHasEndedSignInAgain',
+      });
+    });
+  await call(
+    'post',
+    `auth/sessions/${active.id}/revoke`,
+    'business',
+    `gym4me_business=${expiredTokens[0]}`,
+  )
+    .expect(401)
+    .expect((response) => {
+      expect(response.body).toMatchObject({
+        code: 'Backend.theSessionHasEndedSignInAgain',
+      });
+    });
+  await request(app.getHttpServer())
+    .get('/api/v1/profile/account')
+    .set('x-gym-client', 'application')
+    .set('x-gym-platform', 'native')
+    .set('Origin', 'capacitor://localhost')
+    .set('Authorization', `Bearer ${expiredTokens[1]}`)
+    .expect(401);
+  await call('get', 'profile/account', 'business', person.cookie).expect(200);
 });

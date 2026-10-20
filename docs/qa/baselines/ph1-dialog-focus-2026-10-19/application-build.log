@@ -1,0 +1,82 @@
+▲ Next.js 16.4.0 (webpack)
+- Environments: .env.local
+✓ Running next.config.ts took 213ms
+- Experiments (use with caution):
+  · cpus: 1
+  ✓ webpackMemoryOptimizations
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 19.3s
+  Running TypeScript ...
+  Finished TypeScript in 7.3s ...
+  Collecting page data using 1 worker ...
+  Generating static pages using 1 worker (0/67) ...
+  Generating static pages using 1 worker (16/67) 
+  Generating static pages using 1 worker (33/67) 
+  Generating static pages using 1 worker (50/67) 
+✓ Generating static pages using 1 worker (67/67) in 2.3s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /.well-known/apple-app-site-association
+├ ƒ /.well-known/assetlinks.json
+├ ƒ /auth/login
+├ ƒ /auth/otp
+├ ƒ /bookings
+├ ƒ /bookings/detail
+├ ƒ /calendars
+├ ƒ /calendars/detail
+├ ƒ /checkout
+├ ƒ /checkout/mock-gateway
+├ ƒ /checkout/status
+├ ƒ /discovery
+├ ƒ /discovery/club
+├ ƒ /discovery/clubs/[clubId]
+├ ƒ /discovery/clubs/[clubId]/gallery
+├ ƒ /discovery/clubs/[clubId]/reviews
+├ ƒ /discovery/clubs/[clubId]/slots
+├ ƒ /discovery/coaches/[coachId]
+├ ƒ /discovery/compare
+├ ƒ /discovery/map
+├ ƒ /documents
+├ ƒ /host
+├ ƒ /invitations
+├ ƒ /invitations/sports
+├ ƒ /login
+├ ƒ /membership-card
+├ ƒ /memberships
+├ ƒ /memberships/detail
+├ ƒ /messages
+├ ƒ /messages/conversation
+├ ƒ /messages/details
+├ ƒ /notifications
+├ ƒ /notifications/preferences
+├ ƒ /orders
+├ ƒ /orders/detail
+├ ƒ /privacy
+├ ƒ /profile
+├ ƒ /profile/complete
+├ ƒ /profile/edit
+├ ƒ /profile/settings
+├ ƒ /profile/settings/privacy
+├ ƒ /qa/ph0
+├ ƒ /reset-password
+├ ƒ /saved
+├ ƒ /saved/clubs
+├ ƒ /saved/coaches
+├ ƒ /services
+├ ƒ /services/detail
+├ ƒ /sessions
+├ ƒ /set-password
+├ ƒ /support
+├ ƒ /support/detail
+├ ƒ /tickets/view
+├ ƒ /training
+└ ƒ /waitlist
+
+
+ƒ  (Dynamic)  server-rendered on demand
+

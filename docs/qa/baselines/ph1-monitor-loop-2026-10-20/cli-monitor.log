@@ -1,0 +1,4 @@
+{"service":"api","type":"healthy","at":"2026-10-20T05:47:26.546Z"}
+{"service":"application","type":"healthy","at":"2026-10-20T05:47:26.546Z"}
+{"service":"admin","type":"healthy","at":"2026-10-20T05:47:26.546Z"}
+{"service":"business","type":"healthy","at":"2026-10-20T05:47:26.546Z"}

@@ -1,0 +1,9 @@
+{
+  "ownAccount": true,
+  "ownPhone": true,
+  "otherFixturePhonesAbsent": true,
+  "forbiddenCredentialKeys": [],
+  "formatVersion": 2,
+  "sessionRecords": 1,
+  "focus": "دریافت خروجی داده‌ها"
+}

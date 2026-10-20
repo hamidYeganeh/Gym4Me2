@@ -2,6 +2,8 @@
 import { useLocale, useTranslations } from "@repo/i18n";
 import type { BranchProfileDto } from "@repo/api/catalog";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/kit/Card";
+import { catalogDate, catalogInterval } from "../../lib/catalog-hours";
+import { BranchInformation } from "./branch-information";
 
 export function ClubAvailability({ branch }: { branch?: BranchProfileDto }) {
   const t = useTranslations("Catalog");
@@ -15,15 +17,22 @@ export function ClubAvailability({ branch }: { branch?: BranchProfileDto }) {
     "day5",
     "day6",
   ] as const;
-  const number = new Intl.NumberFormat(locale, { useGrouping: false });
-  const minute = (value: number) =>
-    `${number.format(Math.floor(value / 60) % 24).padStart(2, number.format(0))}:${number.format(value % 60).padStart(2, number.format(0))}`;
   if (!branch) return null;
   return (
     <section className="flex min-w-0 flex-col gap-4">
       <Card>
         <CardHeader>
           <CardTitle>{t("openingHours")}</CardTitle>
+          <p className="text-xs leading-6 text-muted-foreground">
+            {t("branchUpdated", { branch: branch.name })}{" "}
+            <time dateTime={branch.updatedAt}>
+              {new Intl.DateTimeFormat(locale, {
+                dateStyle: "medium",
+                timeStyle: "short",
+                timeZone: branch.timezone,
+              }).format(new Date(branch.updatedAt))}
+            </time>
+          </p>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           {branch.openingHours.weekly.map((row, index) => (
@@ -35,10 +44,7 @@ export function ClubAvailability({ branch }: { branch?: BranchProfileDto }) {
                 {t(days[row.dayOfWeek] ?? "day0")} ·{" "}
                 {t(`audience_${row.audience}`)}
               </span>
-              <span dir="ltr">
-                {minute(row.startMinute)}–{minute(row.endMinute)}
-                {row.endMinute > 1440 ? ` ${t("nextDay")}` : ""}
-              </span>
+              <span dir="ltr">{catalogInterval(row, locale)}</span>
             </p>
           ))}
           {branch.openingHours.exceptions.map((row) => (
@@ -47,19 +53,18 @@ export function ClubAvailability({ branch }: { branch?: BranchProfileDto }) {
               className="border-t border-border pt-3 text-sm"
             >
               <p>
-                {new Intl.DateTimeFormat(locale, {
-                  dateStyle: "medium",
-                  timeZone: branch.timezone,
-                }).format(new Date(`${row.date}T12:00:00Z`))}{" "}
-                ·{" "}
+                <time dateTime={row.date}>{catalogDate(row.date, locale)}</time>{" "}
+                · {t(`audience_${row.audience}`)} ·{" "}
                 {row.isClosed
                   ? t("closed")
-                  : row.intervals
-                      .map(
-                        (interval) =>
-                          `${minute(interval.startMinute)}–${minute(interval.endMinute)}`,
-                      )
-                      .join(" · ")}
+                  : row.intervals.map((interval, index) => (
+                      <span
+                        key={`${interval.startMinute}:${interval.endMinute}`}
+                      >
+                        {index > 0 ? " · " : ""}
+                        <bdi dir="ltr">{catalogInterval(interval, locale)}</bdi>
+                      </span>
+                    ))}
               </p>
               {row.reason && (
                 <p className="text-muted-foreground">{row.reason}</p>
@@ -88,6 +93,7 @@ export function ClubAvailability({ branch }: { branch?: BranchProfileDto }) {
           )}
         </CardContent>
       </Card>
+      <BranchInformation branch={branch} />
     </section>
   );
 }

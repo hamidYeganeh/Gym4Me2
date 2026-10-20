@@ -1,4 +1,8 @@
 import {
+  changeReasonSchema,
+  checkedChangeReason,
+} from '../../platform/audit/change-reason';
+import {
   BadRequestException,
   Injectable,
   NotFoundException,
@@ -35,6 +39,9 @@ export const tariffSchema = z
       .transform((v) => (v ? new Date(v) : new Date())),
   })
   .strict();
+export const tariffRevisionSchema = tariffSchema.extend({
+  reason: changeReasonSchema,
+});
 export const tariffCreateSchema = tariffSchema.extend({
   branchId: id.nullable().default(null),
 });
@@ -135,7 +142,10 @@ export class ClubTariffService {
         createdBy: userId,
       });
       await invalidatePublication(tx, clubId);
-      await this.audit(tx, userId, clubId, group.id, 'tariff.created', 1);
+      await this.audit(tx, userId, clubId, group.id, 'tariff.created', 1, {
+        reasonCode: 'initial-tariff',
+        branchId: input.branchId ?? 'all',
+      });
       return (
         await tx
           .select(tariffSelection)
@@ -152,13 +162,19 @@ export class ClubTariffService {
     userId: string,
     clubId: string,
     groupId: string,
-    input: TariffInput,
+    input: TariffInput & { reason: string },
   ) {
+    const { reason: rawReason, ...terms } = input;
+    const reason = checkedChangeReason(rawReason);
     return this.database.db.transaction(async (tx) => {
       const group = await this.group(tx, clubId, groupId);
       await lockClub(tx, userId, clubId, group.branchId ?? undefined);
       const [latest] = await tx
-        .select({ version: s.tariffVersions.version })
+        .select({
+          version: s.tariffVersions.version,
+          id: s.tariffVersions.id,
+          priceToman: s.tariffVersions.priceToman,
+        })
         .from(s.tariffVersions)
         .where(eq(s.tariffVersions.groupId, groupId))
         .orderBy(desc(s.tariffVersions.version))
@@ -166,7 +182,7 @@ export class ClubTariffService {
       const [version] = await tx
         .insert(s.tariffVersions)
         .values({
-          ...input,
+          ...terms,
           groupId,
           version: latest.version + 1,
           createdBy: userId,
@@ -180,6 +196,14 @@ export class ClubTariffService {
         group.id,
         'tariff.revised',
         version.version,
+        {
+          reason,
+          previousVersionId: latest.id,
+          versionId: version.id,
+          previousPriceToman: String(latest.priceToman),
+          priceToman: String(version.priceToman),
+          branchId: group.branchId ?? 'all',
+        },
       );
       return {
         ...version,
@@ -216,7 +240,9 @@ export class ClubTariffService {
     clubId: string,
     groupId: string,
     isActive: boolean,
+    reason: string,
   ) {
+    reason = checkedChangeReason(reason);
     return this.database.db.transaction(async (tx) => {
       const group = await this.group(tx, clubId, groupId);
       await lockClub(tx, userId, clubId, group.branchId ?? undefined);
@@ -230,7 +256,12 @@ export class ClubTariffService {
         organizationId: clubId,
         action: 'tariff.status',
         targetId: groupId,
-        details: { isActive: String(isActive) },
+        details: {
+          reason,
+          previousIsActive: String(group.isActive),
+          isActive: String(isActive),
+          branchId: group.branchId ?? 'all',
+        },
       });
       return { id: groupId, isActive };
     });
@@ -252,13 +283,14 @@ export class ClubTariffService {
     groupId: string,
     action: string,
     version: number,
+    details: Record<string, string> = { reasonCode: 'initial-tariff' },
   ) {
     return tx.insert(s.auditEvents).values({
       actorId: userId,
       organizationId: clubId,
       action,
       targetId: groupId,
-      details: { version: String(version) },
+      details: { ...details, version: String(version) },
     });
   }
 }

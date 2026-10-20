@@ -2,6 +2,10 @@ import type * as dto from "./admin.dto";
 import type * as catalog from "../catalog/catalog.dto";
 import { resourceId, type ApiRequest } from "../transport";
 export const adminEndpoints = {
+  mediaPreview: (id: string, mediaId: string): ApiRequest => ({
+    method: "GET",
+    path: `admin/clubs/${resourceId(id)}/media/${resourceId(mediaId)}/preview`,
+  }),
   overview: (): ApiRequest => ({ method: "GET", path: "admin/overview" }),
   users: (filters: dto.AdminUserFiltersDto = {}): ApiRequest => ({
     method: "GET",
@@ -83,10 +87,14 @@ export const adminEndpoints = {
     path: `admin/taxonomies/${kind}/${resourceId(id)}`,
     body: input,
   }),
-  locations: (kind: catalog.GeographyKind, parentId?: string): ApiRequest => ({
+  locations: (
+    kind: catalog.GeographyKind,
+    parentId?: string,
+    page = 1,
+  ): ApiRequest => ({
     method: "GET",
     path: `admin/locations/${kind}`,
-    query: { parentId },
+    query: { parentId, page },
   }),
   createLocation: (input: catalog.CreatePlaceDto): ApiRequest => ({
     method: "POST",

@@ -1,9 +1,13 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
-import { join, relative, dirname } from "node:path";
+import { join, relative, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
+if (!process.argv[2])
+  throw new Error(
+    "An explicit output path is required; historical evidence must not be overwritten by default.",
+  );
 const surfaces = ["application", "business", "admin"];
 const routes = [],
   consumers = [];
@@ -58,7 +62,7 @@ for (const surface of surfaces) {
   }
 }
 await writeFile(
-  join(root, "docs/qa/ph0-surface-inventory-2026-10-18.json"),
+  resolve(root, process.argv[2]),
   JSON.stringify(
     {
       scope:

@@ -1,9 +1,11 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ServiceUnavailableException } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { randomBytes, randomUUID } from 'node:crypto';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { resolve } from 'node:path';
 import request, { type Response } from 'supertest';
 import sharp from 'sharp';
@@ -160,7 +162,7 @@ beforeAll(async () => {
     corsOrigins: ['http://localhost:7083'],
     docsEnabled: true,
   });
-  await app.init();
+  await app.listen(0, '127.0.0.1');
   owner = await identity('business');
   stranger = await identity('business');
   admin = await identity('admin');
@@ -480,6 +482,49 @@ test('persists complete branch profile and overnight hours; rejects overlaps', a
     })
     .expect(400);
 });
+test('branch freshness advances for name, timezone and child-only edits; invalid edits preserve it', async () => {
+  const path = `business/clubs/${clubId}/branches/${branchId}`;
+  const original = body<{
+    name: string;
+    timezone: string;
+    openingHours: object;
+  }>(await call('get', path, owner).expect(200));
+  const old = new Date('2020-01-01T00:00:00Z');
+  for (const change of [
+    { name: original.name },
+    { timezone: original.timezone },
+    { openingHours: original.openingHours },
+    { sportIds: [sportId] },
+  ]) {
+    await db
+      .update(s.branchProfiles)
+      .set({ updatedAt: old })
+      .where(eq(s.branchProfiles.branchId, branchId));
+    const edited = body<{ updatedAt: string }>(
+      await call('patch', path, owner).send(change).expect(200),
+    );
+    expect(new Date(edited.updatedAt).getTime()).toBeGreaterThan(old.getTime());
+    const [stored] = await db
+      .select({ updatedAt: s.branchProfiles.updatedAt })
+      .from(s.branchProfiles)
+      .where(eq(s.branchProfiles.branchId, branchId));
+    expect(edited.updatedAt).toBe(stored.updatedAt.toISOString());
+  }
+  const before = body<{ updatedAt: string }>(
+    await call('get', path, owner).expect(200),
+  );
+  await call('patch', path, owner)
+    .send({
+      openingHours: {
+        weekly: [{ dayOfWeek: 8, startMinute: 0, endMinute: 1 }],
+      },
+    })
+    .expect(400);
+  expect(
+    body<{ updatedAt: string }>(await call('get', path, owner).expect(200))
+      .updatedAt,
+  ).toBe(before.updatedAt);
+});
 test('publication requires complete content and admin approval; public owner data stays minimal', async () => {
   const incompleteBranch = body<{ id: string }>(
     await call('post', `business/clubs/${clubId}/branches`, owner)
@@ -545,6 +590,24 @@ test('public discovery returns real cover, geography and taxonomy with scoped fi
   });
   expect(result?.categories.some((item) => item.id === categoryId)).toBe(true);
   expect(list.some((item) => item.id === otherClubId)).toBe(false);
+  for (const query of [
+    `countryId=${countryId}`,
+    `provinceId=${provinceId}`,
+    `countryId=${countryId}&provinceId=${provinceId}`,
+  ]) {
+    const scoped = body<{ id: string }[]>(
+      await call('get', `catalog/clubs?${query}`).expect(200),
+    );
+    expect(scoped.some((item) => item.id === clubId)).toBe(true);
+  }
+  for (const query of [
+    `countryId=${randomUUID()}`,
+    `provinceId=${randomUUID()}`,
+    `countryId=${randomUUID()}&cityId=${cityId}`,
+  ])
+    expect(
+      body<unknown[]>(await call('get', `catalog/clubs?${query}`).expect(200)),
+    ).toEqual([]);
   const wrong = body<{ id: string }[]>(
     await call('get', `catalog/clubs?cityId=${randomUUID()}`).expect(200),
   );
@@ -567,14 +630,20 @@ test('public discovery returns real cover, geography and taxonomy with scoped fi
     'categoryId=invalid',
     'page=0',
     'cityId=invalid',
+    'countryId=invalid',
+    'provinceId=invalid',
     'unknown=true',
   ])
     await call('get', `catalog/clubs?${query}`).expect(400);
 });
 test('secondary branch location and tariff match together, stay private until complete, and never duplicate clubs', async () => {
+  const [secondaryProvince] = await db
+    .insert(s.provinces)
+    .values({ countryId, name: `استان فرعی ${prefix}` })
+    .returning();
   const [city] = await db
     .insert(s.cities)
-    .values({ provinceId, name: `فرعی ${prefix}` })
+    .values({ provinceId: secondaryProvince.id, name: `فرعی ${prefix}` })
     .returning();
   const [secondary] = await db
     .insert(s.branches)
@@ -592,6 +661,7 @@ test('secondary branch location and tariff match together, stay private until co
     ...main,
     branchId: secondary.id,
     isMain: false,
+    provinceId: secondaryProvince.id,
     cityId: city.id,
     address: 'نشانی فرعی یکتا',
   });
@@ -637,6 +707,17 @@ test('secondary branch location and tariff match together, stay private until co
       startingTariff: { priceToman: 123456 },
     });
     expect(
+      (
+        await rows(`countryId=${countryId}&provinceId=${secondaryProvince.id}`)
+      )[0]?.mainBranch.id,
+    ).toBe(secondary.id);
+    expect(await rows(`provinceId=${provinceId}&cityId=${city.id}`)).toEqual(
+      [],
+    );
+    expect(
+      await rows(`provinceId=${secondaryProvince.id}&cityId=${cityId}`),
+    ).toEqual([]);
+    expect(
       await rows(`cityId=${cityId}&maxPrice=123456&serviceType=visit`),
     ).toEqual([]);
     expect(await rows(`cityId=${city.id}&maxPrice=123455`)).toEqual([]);
@@ -661,6 +742,9 @@ test('secondary branch location and tariff match together, stay private until co
     await db.delete(s.tariffGroups).where(eq(s.tariffGroups.id, group.id));
     await db.delete(s.branches).where(eq(s.branches.id, secondary.id));
     await db.delete(s.cities).where(eq(s.cities.id, city.id));
+    await db
+      .delete(s.provinces)
+      .where(eq(s.provinces.id, secondaryProvince.id));
   }
 });
 test('account favorites merge idempotently, ignore unpublished clubs and isolate users before pagination', async () => {
@@ -747,7 +831,7 @@ test('tariffs keep immutable price and terms versions, publish effective prices 
         `business/clubs/${clubId}/tariffs/${tariff.id}/versions`,
         owner,
       )
-        .send({ ...terms, priceToman })
+        .send({ ...{ ...terms, priceToman }, reason: 'تغییر آزمایشی ثبت‌شده' })
         .expect(201),
     ),
   );
@@ -775,14 +859,14 @@ test('tariffs keep immutable price and terms versions, publish effective prices 
     `business/clubs/${clubId}/tariffs/${tariff.id}/versions`,
     owner,
   )
-    .send({ ...terms, priceToman: -1 })
+    .send({ ...{ ...terms, priceToman: -1 }, reason: 'تغییر آزمایشی ثبت‌شده' })
     .expect(400);
   await call(
     'post',
     `business/clubs/${otherClubId}/tariffs/${tariff.id}/versions`,
     stranger,
   )
-    .send(terms)
+    .send({ ...terms, reason: 'تغییر آزمایشی ثبت‌شده' })
     .expect(404);
   const future = body<{ id: string }>(
     await call('post', `business/clubs/${clubId}/tariffs`, owner)
@@ -835,7 +919,7 @@ test('tariffs keep immutable price and terms versions, publish effective prices 
     `business/clubs/${clubId}/tariffs/${tariff.id}/status`,
     owner,
   )
-    .send({ isActive: false })
+    .send({ ...{ isActive: false }, reason: 'تغییر آزمایشی ثبت‌شده' })
     .expect(201);
   const disabled = body<{ isActive: boolean }[]>(
     await call('get', `business/clubs/${clubId}/tariffs`, owner).expect(200),
@@ -846,7 +930,7 @@ test('tariffs keep immutable price and terms versions, publish effective prices 
     `business/clubs/${clubId}/tariffs/${tariff.id}/status`,
     owner,
   )
-    .send({ isActive: true })
+    .send({ ...{ isActive: true }, reason: 'تغییر آزمایشی ثبت‌شده' })
     .expect(201);
   await call(
     'post',
@@ -884,12 +968,25 @@ test('real S3 images remain private until publication, reject invalid files and 
       contentType: 'image/png',
     })
     .expect(400);
+  await call('post', path, owner)
+    .attach('file', Buffer.alloc(10 * 1024 * 1024 + 1), {
+      filename: 'oversized.png',
+      contentType: 'image/png',
+    })
+    .expect(413)
+    .expect((response) =>
+      expect(body<{ code: string }>(response).code).toBe(
+        'Backend.payloadTooLarge',
+      ),
+    );
+  await call('post', path, owner).expect(400);
   const media = body<{
     id: string;
     objectKey: string;
     width: number;
     height: number;
     contentType: string;
+    sizeBytes: number;
   }>(
     await call('post', path, owner)
       .attach('file', pixels, {
@@ -901,10 +998,16 @@ test('real S3 images remain private until publication, reject invalid files and 
   );
   uploadedKeys.push(media.objectKey);
   expect(media).toMatchObject({
+    organizationId: clubId,
+    uploadedBy: owner.id,
+    type: 'image',
+    alt: 'تصویر واقعی آزمایشی',
     width: 80,
     height: 60,
     contentType: 'image/webp',
   });
+  expect(media.objectKey).toBe(`clubs/${clubId}/${media.id}.webp`);
+  expect(media.sizeBytes).toBe((await storage.get(media.objectKey)).length);
   expect(
     (await sharp(await storage.get(media.objectKey)).metadata()).format,
   ).toBe('webp');
@@ -914,7 +1017,7 @@ test('real S3 images remain private until publication, reject invalid files and 
     `business/clubs/${clubId}/media/${media.id}/preview`,
     stranger,
   ).expect(403);
-  const preview = body<{ expiresIn: number }>(
+  const preview = body<{ url: string; expiresIn: number }>(
     await call(
       'get',
       `business/clubs/${clubId}/media/${media.id}/preview`,
@@ -922,6 +1025,16 @@ test('real S3 images remain private until publication, reject invalid files and 
     ).expect(200),
   );
   expect(preview.expiresIn).toBe(60);
+  const signed = await fetch(preview.url);
+  expect(signed.status).toBe(200);
+  expect(Buffer.from(await signed.arrayBuffer())).toEqual(
+    await storage.get(media.objectKey),
+  );
+  const unsigned = new URL(preview.url);
+  unsigned.search = '';
+  const anonymous = await fetch(unsigned);
+  expect(anonymous.status).toBe(403);
+  await anonymous.body?.cancel();
   await call('patch', `business/clubs/${clubId}`, owner)
     .send({ coverId: media.id })
     .expect(200);
@@ -950,11 +1063,32 @@ test('real S3 images remain private until publication, reject invalid files and 
     .send({ coverId: mediaId })
     .expect(200);
   await call('get', `catalog/media/${media.id}`).expect(404);
+  const unavailable = jest
+    .spyOn(storage, 'delete')
+    .mockRejectedValueOnce(
+      new ServiceUnavailableException('Backend.storageUnavailable'),
+    );
+  try {
+    await call(
+      'post',
+      `business/clubs/${clubId}/media/${media.id}/delete`,
+      owner,
+    ).expect(503);
+    expect(
+      await db.select().from(s.clubMedia).where(eq(s.clubMedia.id, media.id)),
+    ).toHaveLength(1);
+    expect((await storage.get(media.objectKey)).length).toBe(media.sizeBytes);
+  } finally {
+    unavailable.mockRestore();
+  }
   await call(
     'post',
     `business/clubs/${clubId}/media/${media.id}/delete`,
     owner,
   ).expect(201);
+  await expect(storage.get(media.objectKey)).rejects.toThrow(
+    'Backend.storageUnavailable',
+  );
   await call(
     'get',
     `business/clubs/${clubId}/media/${media.id}/preview`,
@@ -973,6 +1107,127 @@ test('real S3 images remain private until publication, reject invalid files and 
     `business/clubs/${clubId}/publication/publish`,
     owner,
   ).expect(201);
+});
+test('uploaded images strip camera metadata and scoped previews follow current branch grants', async () => {
+  const club = body<{ id: string }>(
+    await call('post', 'business/clubs', owner)
+      .send({ name: 'مجموعهٔ آزمون رسانهٔ خصوصی' })
+      .expect(201),
+  );
+  clubIds.push(club.id);
+  const first = body<{ branches: { id: string }[] }>(
+    await call('get', `business/clubs/${club.id}`, owner).expect(200),
+  ).branches[0].id;
+  const second = body<{ id: string }>(
+    await call('post', `business/organizations/${club.id}/branches`, owner)
+      .send({ name: 'شعبهٔ دوم رسانه' })
+      .expect(201),
+  ).id;
+  const jpeg = await sharp({
+    create: { width: 40, height: 30, channels: 3, background: '#123456' },
+  })
+    .jpeg()
+    .withMetadata({ exif: { IFD0: { Artist: 'qa-private-camera' } } })
+    .toBuffer();
+  expect((await sharp(jpeg).metadata()).exif).toBeDefined();
+  const media: { id: string; objectKey: string }[] = [];
+  for (let index = 0; index < 4; index++) {
+    const item = body<{ id: string; objectKey: string }>(
+      await call('post', `business/clubs/${club.id}/media/upload`, owner)
+        .attach('file', jpeg, {
+          filename: 'camera.jpg',
+          contentType: 'image/jpeg',
+        })
+        .expect(201),
+    );
+    uploadedKeys.push(item.objectKey);
+    media.push(item);
+    const metadata = await sharp(await storage.get(item.objectKey)).metadata();
+    expect(metadata).toMatchObject({ width: 40, height: 30, format: 'webp' });
+    expect(metadata.exif).toBeUndefined();
+    expect(metadata.xmp).toBeUndefined();
+    expect(metadata.iptc).toBeUndefined();
+  }
+  await call('patch', `business/clubs/${club.id}`, owner)
+    .send({ gallery: [{ mediaId: media[0].id }] })
+    .expect(200);
+  await call('patch', `business/clubs/${club.id}/branches/${first}`, owner)
+    .send({ gallery: [{ mediaId: media[1].id }] })
+    .expect(200);
+  await call('patch', `business/clubs/${club.id}/branches/${second}`, owner)
+    .send({ gallery: [{ mediaId: media[2].id }] })
+    .expect(200);
+  const previewPath = (id: string) =>
+    `business/clubs/${club.id}/media/${id}/preview`;
+  for (const role of ['manager', 'receptionist', 'accountant'] as const) {
+    const person = await identity('business');
+    const [member] = await db
+      .insert(s.organizationMembers)
+      .values({
+        organizationId: club.id,
+        userId: person.id,
+        role,
+        allBranches: false,
+      })
+      .returning();
+    await db.insert(s.organizationMemberBranches).values({
+      organizationId: club.id,
+      memberId: member.id,
+      branchId: first,
+    });
+    for (const item of media.slice(0, 2))
+      await call('get', previewPath(item.id), person).expect(200);
+    for (const item of media.slice(2)) {
+      await call('get', previewPath(item.id), person).expect(403);
+      await call(
+        'post',
+        `business/clubs/${club.id}/media/${item.id}/delete`,
+        person,
+      ).expect(403);
+    }
+    await call('get', previewPath(mediaId), person).expect(404);
+    await db
+      .update(s.branchProfiles)
+      .set({ archivedAt: new Date() })
+      .where(eq(s.branchProfiles.branchId, first));
+    await call('get', previewPath(media[1].id), person).expect(403);
+    await db
+      .update(s.branchProfiles)
+      .set({ archivedAt: null })
+      .where(eq(s.branchProfiles.branchId, first));
+    for (const field of ['coverId', 'logoId']) {
+      await call('patch', `business/clubs/${club.id}`, owner)
+        .send({ [field]: media[3].id })
+        .expect(200);
+      await call('get', previewPath(media[3].id), person).expect(200);
+      await call('patch', `business/clubs/${club.id}`, owner)
+        .send({ [field]: null })
+        .expect(200);
+      await call('get', previewPath(media[3].id), person).expect(403);
+    }
+    await db
+      .delete(s.organizationMemberBranches)
+      .where(eq(s.organizationMemberBranches.memberId, member.id));
+    await call('get', previewPath(media[1].id), person).expect(403);
+    await call('get', previewPath(media[0].id), person).expect(200);
+    await db
+      .update(s.organizationMembers)
+      .set({ allBranches: true })
+      .where(eq(s.organizationMembers.id, member.id));
+    for (const item of media)
+      await call('get', previewPath(item.id), person).expect(200);
+    await db
+      .delete(s.organizationMembers)
+      .where(eq(s.organizationMembers.id, member.id));
+    await call('get', previewPath(media[0].id), person).expect(403);
+  }
+  await call('get', previewPath(media[3].id), owner).expect(200);
+  await call(
+    'get',
+    `admin/clubs/${club.id}/media/${media[3].id}/preview`,
+    admin,
+  ).expect(200);
+  await call('get', previewPath(media[3].id), stranger).expect(403);
 });
 test('coach affiliation is visible only after the coach accepts it', async () => {
   await call('post', 'profile/coach', coach)
@@ -1192,7 +1447,12 @@ test('OpenAPI describes the required name and excludes removed fields', async ()
     document.paths[
       '/api/v1/business/organizations/{organizationId}/invitations'
     ].post!.requestBody!.content['application/json'].schema;
-  expect(invitation.required).toEqual(['phone', 'role']);
+  expect(invitation.required).toEqual(['phone', 'role', 'reason']);
+  expect(invitation.properties.reason).toMatchObject({
+    type: 'string',
+    minLength: 3,
+    maxLength: 500,
+  });
   expect(invitation.properties.branchIds).toMatchObject({
     type: 'array',
     items: { type: 'string', format: 'uuid' },
@@ -1444,14 +1704,23 @@ test('scoped invitation restricts the same account to its assigned branch in one
     .from(s.users)
     .where(eq(s.users.id, stranger.id));
   await call('post', `business/organizations/${clubId}/invitations`, owner)
-    .send({ phone: person.phone, role: 'manager', branchIds: [otherBranchId] })
+    .send({
+      ...{ phone: person.phone, role: 'manager', branchIds: [otherBranchId] },
+      reason: 'تغییر آزمایشی ثبت‌شده',
+    })
     .expect(400);
   await call('post', `business/organizations/${clubId}/invitations`, owner)
-    .send({ phone: person.phone, role: 'manager', branchIds: [] })
+    .send({
+      ...{ phone: person.phone, role: 'manager', branchIds: [] },
+      reason: 'تغییر آزمایشی ثبت‌شده',
+    })
     .expect(400);
   const invitation = body<{ id: string }>(
     await call('post', `business/organizations/${clubId}/invitations`, owner)
-      .send({ phone: person.phone, role: 'manager', branchIds: [branchId] })
+      .send({
+        ...{ phone: person.phone, role: 'manager', branchIds: [branchId] },
+        reason: 'تغییر آزمایشی ثبت‌شده',
+      })
       .expect(201),
   );
   await call(
@@ -1527,7 +1796,9 @@ test('scoped invitation restricts the same account to its assigned branch in one
     'post',
     `business/organizations/${clubId}/team/${target.id}/remove`,
     owner,
-  ).expect(201);
+  )
+    .send({ reason: 'تغییر آزمایشی ثبت‌شده' })
+    .expect(201);
   await call(
     'get',
     `business/clubs/${clubId}/branches/${branchId}`,
@@ -1572,9 +1843,12 @@ test('PH1 staff role matrix enforces branch grants, tenant boundaries and immedi
           owner,
         )
           .send({
-            phone: user.phone,
-            role,
-            ...(allBranches ? {} : { branchIds: [first] }),
+            ...{
+              phone: user.phone,
+              role,
+              ...(allBranches ? {} : { branchIds: [first] }),
+            },
+            reason: 'تغییر آزمایشی ثبت‌شده',
           })
           .expect(201),
       );
@@ -1618,7 +1892,10 @@ test('PH1 staff role matrix enforces branch grants, tenant boundaries and immedi
         `business/organizations/${club.id}/invitations`,
         person,
       )
-        .send({ phone: user.phone, role: 'manager' })
+        .send({
+          ...{ phone: user.phone, role: 'manager' },
+          reason: 'تغییر آزمایشی ثبت‌شده',
+        })
         .expect(403);
       await call('patch', `business/clubs/${club.id}`, person)
         .send({ shortDescription: 'تغییر مجاز فقط برای مدیریت کل مجموعه' })
@@ -1657,7 +1934,9 @@ test('PH1 staff role matrix enforces branch grants, tenant boundaries and immedi
         'post',
         `business/organizations/${club.id}/team/${member.id}/remove`,
         owner,
-      ).expect(201);
+      )
+        .send({ reason: 'تغییر آزمایشی ثبت‌شده' })
+        .expect(201);
       await call(
         'get',
         `business/clubs/${club.id}/branches/${first}`,
@@ -1677,9 +1956,12 @@ test('expired and revoked scoped staff invitations cannot create membership or e
     body<{ id: string }>(
       await call('post', `business/organizations/${clubId}/invitations`, owner)
         .send({
-          phone: user.phone,
-          role: 'receptionist',
-          branchIds: [branchId],
+          ...{
+            phone: user.phone,
+            role: 'receptionist',
+            branchIds: [branchId],
+          },
+          reason: 'تغییر آزمایشی ثبت‌شده',
         })
         .expect(201),
     );
@@ -1700,7 +1982,9 @@ test('expired and revoked scoped staff invitations cannot create membership or e
     'post',
     `business/organizations/${clubId}/invitations/${revoked.id}/revoke`,
     owner,
-  ).expect(201);
+  )
+    .send({ reason: 'تغییر آزمایشی ثبت‌شده' })
+    .expect(201);
   await call('post', `profile/invitations/${revoked.id}/accept`, person).expect(
     409,
   );
@@ -1839,4 +2123,453 @@ test('guest saved lookup validates bounded input, honors publication, filters an
     .send({ ids: [clubId, otherClubId], filters: { page: 2 } })
     .expect(201);
   expect(page.body).toEqual([]);
+});
+
+test('sensitive team and price changes reject absent reasons atomically and retain private audit scope', async () => {
+  const club = body<{ id: string }>(
+    await call('post', 'business/clubs', owner)
+      .send({ name: 'ممیزی عملیات حساس' })
+      .expect(201),
+  );
+  clubIds.push(club.id);
+  const [branch] = await db
+    .select()
+    .from(s.branches)
+    .where(eq(s.branches.organizationId, club.id));
+  const colleague = await identity('business');
+  const [person] = await db
+    .select()
+    .from(s.users)
+    .where(eq(s.users.id, colleague.id));
+  const invitePath = `business/organizations/${club.id}/invitations`;
+  const grant = {
+    phone: person.phone,
+    role: 'manager',
+    branchIds: [branch.id],
+  };
+  for (const reason of [undefined, ' ', 'ab', 'x'.repeat(501)])
+    await call('post', invitePath, owner)
+      .send({ ...grant, reason })
+      .expect(400);
+  expect(
+    await db
+      .select()
+      .from(s.organizationInvitations)
+      .where(eq(s.organizationInvitations.organizationId, club.id)),
+  ).toHaveLength(0);
+  const reason = '  audit-private-reason-for-scope-and-price  ';
+  const invitation = body<{ id: string }>(
+    await call('post', invitePath, owner)
+      .send({ ...grant, reason })
+      .expect(201),
+  );
+  const revokePath = `${invitePath}/${invitation.id}/revoke`;
+  await call('post', revokePath, owner).expect(400);
+  await call('post', revokePath, owner).send({ reason }).expect(201);
+  const second = body<{ id: string }>(
+    await call('post', invitePath, owner)
+      .send({ ...grant, reason })
+      .expect(201),
+  );
+  await call(
+    'post',
+    `profile/invitations/${second.id}/accept`,
+    colleague,
+  ).expect(201);
+  const [member] = await db
+    .select()
+    .from(s.organizationMembers)
+    .where(eq(s.organizationMembers.userId, colleague.id));
+  const removePath = `business/organizations/${club.id}/team/${member.id}/remove`;
+  await call('post', removePath, owner).send({ reason: ' ' }).expect(400);
+  await call(
+    'get',
+    `business/clubs/${club.id}/branches/${branch.id}`,
+    colleague,
+  ).expect(200);
+  await call('post', removePath, owner).send({ reason }).expect(201);
+  await call(
+    'get',
+    `business/clubs/${club.id}/branches/${branch.id}`,
+    colleague,
+  ).expect(403);
+  const terms = {
+    name: 'تعرفهٔ ممیزی',
+    serviceType: 'visit',
+    priceToman: 123000,
+    unit: 'visit',
+    conditions: 'شرایط آزمون',
+  };
+  const tariff = body<{ id: string; versionId: string }>(
+    await call('post', `business/clubs/${club.id}/tariffs`, owner)
+      .send({ ...terms, branchId: branch.id })
+      .expect(201),
+  );
+  const revisionPath = `business/clubs/${club.id}/tariffs/${tariff.id}/versions`;
+  const statusPath = `business/clubs/${club.id}/tariffs/${tariff.id}/status`;
+  for (const reason of [undefined, ' ', 'ab', 'x'.repeat(501)]) {
+    await call('post', revisionPath, owner)
+      .send({ ...terms, priceToman: 456000, reason })
+      .expect(400);
+    await call('post', statusPath, owner)
+      .send({ isActive: false, reason })
+      .expect(400);
+  }
+  const before = body<{ version: number; priceToman: number }[]>(
+    await call('get', revisionPath, owner).expect(200),
+  );
+  expect(before).toHaveLength(1);
+  expect(before[0]).toMatchObject({ version: 1, priceToman: 123000 });
+  const revised = body<{ versionId: string }>(
+    await call('post', revisionPath, owner)
+      .send({ ...terms, priceToman: 456000, reason })
+      .expect(201),
+  );
+  await call('post', statusPath, owner)
+    .send({ isActive: false, reason })
+    .expect(201);
+  const events = await db
+    .select()
+    .from(s.auditEvents)
+    .where(eq(s.auditEvents.organizationId, club.id));
+  const sensitive = events.filter((event) =>
+    [
+      'team.invited',
+      'team.removed',
+      'invitation.revoked',
+      'tariff.revised',
+      'tariff.status',
+    ].includes(event.action),
+  );
+  expect(sensitive).toHaveLength(6);
+  for (const event of sensitive) {
+    expect(event.actorId).toBe(owner.id);
+    expect(event.createdAt).toBeInstanceOf(Date);
+    expect(event.targetId).toBeTruthy();
+    expect(event.details.reason).toBe(reason.trim());
+  }
+  expect(
+    sensitive.find((event) => event.action === 'team.invited')?.details,
+  ).toMatchObject({ role: 'manager', scope: branch.id });
+  for (const action of ['team.removed', 'invitation.revoked'])
+    expect(
+      sensitive.find((event) => event.action === action)?.details,
+    ).toMatchObject({
+      previousRole: 'manager',
+      previousScope: branch.id,
+      resultingAccess: 'none',
+    });
+  expect(
+    sensitive.find((event) => event.action === 'tariff.revised')?.details,
+  ).toMatchObject({
+    previousVersionId: tariff.versionId,
+    versionId: revised.versionId,
+    previousPriceToman: '123000',
+    priceToman: '456000',
+    branchId: branch.id,
+  });
+  expect(
+    sensitive.find((event) => event.action === 'tariff.status')?.details,
+  ).toMatchObject({
+    previousIsActive: 'true',
+    isActive: 'false',
+    branchId: branch.id,
+  });
+  // Reasons belong to the restricted audit trail, never the tariff/history DTO.
+  for (const path of [revisionPath, `business/clubs/${club.id}/tariffs`]) {
+    const response = await call('get', path, owner).expect(200);
+    expect(JSON.stringify(response.body)).not.toContain(reason.trim());
+  }
+  await call('get', 'admin/audit', owner).expect(403);
+});
+
+test('PH1 geography pagination reaches records beyond every previous limit with deterministic ordering and parent isolation', async () => {
+  const existing = await db
+    .select({ code: s.countries.code })
+    .from(s.countries);
+  const used = new Set(existing.map((item) => item.code));
+  const codes: string[] = [];
+  for (let first = 65; first <= 90; first++)
+    for (let second = 65; second <= 90; second++) {
+      const code = String.fromCharCode(first, second);
+      if (!used.has(code)) codes.push(code);
+    }
+  const countries = await db
+    .insert(s.countries)
+    .values(
+      codes
+        .slice(0, 301)
+        .map((code) => ({ code, name: `qa-${prefix}-country` })),
+    )
+    .returning();
+  const parentCountry = countries[0].id;
+  let parentProvince: string | undefined;
+  let parentCity: string | undefined;
+  try {
+    const provinces = await db
+      .insert(s.provinces)
+      .values(
+        Array.from({ length: 1001 }, (_, index) => ({
+          countryId: parentCountry,
+          name: `qa-${String(index).padStart(4, '0')}`,
+        })),
+      )
+      .returning();
+    parentProvince = provinces[0].id;
+    const cities = await db
+      .insert(s.cities)
+      .values(
+        Array.from({ length: 1001 }, (_, index) => ({
+          provinceId: parentProvince!,
+          name: `qa-${String(index).padStart(4, '0')}`,
+        })),
+      )
+      .returning();
+    parentCity = cities[0].id;
+    const districts = await db
+      .insert(s.districts)
+      .values(
+        Array.from({ length: 1001 }, (_, index) => ({
+          cityId: parentCity!,
+          name: `qa-${String(index).padStart(4, '0')}`,
+        })),
+      )
+      .returning();
+    for (const domain of ['catalog', 'admin']) {
+      const person = domain === 'admin' ? admin : undefined;
+      for (const [kind, parentId, expected] of [
+        ['countries', undefined, countries],
+        ['provinces', parentCountry, provinces],
+        ['cities', parentProvince, cities],
+        ['districts', parentCity, districts],
+      ] as const) {
+        const suffix = parentId ? `parentId=${parentId}&` : '';
+        const pageSize = kind === 'countries' ? 300 : 1000;
+        const page1 = body<{ id: string; name: string }[]>(
+          await call(
+            'get',
+            `${domain}/locations/${kind}?${suffix}page=1`,
+            person,
+          ).expect(200),
+        );
+        const page2 = body<{ id: string; name: string }[]>(
+          await call(
+            'get',
+            `${domain}/locations/${kind}?${suffix}page=2`,
+            person,
+          ).expect(200),
+        );
+        expect(page1).toHaveLength(pageSize);
+        expect(page2).toHaveLength(
+          kind === 'countries' ? existing.length + 1 : 1,
+        );
+        const combined = [...page1, ...page2];
+        expect(new Set(combined.map((item) => item.id)).size).toBe(
+          combined.length,
+        );
+        const ids = new Set(expected.map((item: { id: string }) => item.id));
+        const selected = combined.filter((item) => ids.has(item.id));
+        expect(selected.map((item) => item.id)).toEqual(
+          [...expected]
+            .sort((a, b) =>
+              a.name === b.name
+                ? a.id.localeCompare(b.id)
+                : a.name.localeCompare(b.name),
+            )
+            .map((item) => item.id),
+        );
+        await call(
+          'get',
+          `${domain}/locations/${kind}?${suffix}page=3`,
+          person,
+        ).expect(200, []);
+        if (kind !== 'countries') {
+          await call(
+            'get',
+            `${domain}/locations/${kind}?parentId=${randomUUID()}`,
+            person,
+          ).expect(200, []);
+          await call('get', `${domain}/locations/${kind}`, person).expect(400);
+        }
+        for (const page of ['0', '-1', '1.5', '100001', 'invalid'])
+          await call(
+            'get',
+            `${domain}/locations/${kind}?${suffix}page=${page}`,
+            person,
+          ).expect(400);
+        await call(
+          'get',
+          `${domain}/locations/${kind}?parentId=not-a-uuid`,
+          person,
+        ).expect(400);
+      }
+    }
+    await call('get', 'admin/locations/countries?page=2', owner).expect(403);
+    const probe = await promisify(execFile)(
+      process.execPath,
+      [
+        '--import',
+        'tsx',
+        resolve(
+          __dirname,
+          '../../../packages/api/test/location-client.probe.ts',
+        ),
+      ],
+      {
+        cwd: resolve(__dirname, '..'),
+        timeout: 60000,
+        env: {
+          ...process.env,
+          NODE_OPTIONS: '--max-old-space-size=192',
+          PH1_LOCATION_API_URL: `${await app.getUrl()}/api/v1`,
+          PH1_LOCATION_PARENTS: JSON.stringify([
+            parentCountry,
+            parentProvince,
+            parentCity,
+          ]),
+          PH1_LOCATION_COOKIE: admin.cookie,
+        },
+      },
+    );
+    expect(JSON.parse(probe.stdout)).toEqual({
+      application: [existing.length + 301, 1001, 1001, 1001],
+      admin: [existing.length + 301, 1001, 1001, 1001],
+    });
+    const docs = body<{
+      paths: Record<
+        string,
+        {
+          get: {
+            parameters: {
+              name: string;
+              required?: boolean;
+              schema: { maximum?: number };
+            }[];
+            responses: Record<
+              string,
+              { content: Record<string, { schema: { type: string } }> }
+            >;
+          };
+        }
+      >;
+    }>(await call('get', 'system/docs/json').expect(200));
+    for (const domain of ['catalog', 'admin']) {
+      const operation = docs.paths[`/api/v1/${domain}/locations/{kind}`].get;
+      expect(
+        operation.parameters.find((parameter) => parameter.name === 'page'),
+      ).toMatchObject({ required: false, schema: { maximum: 100000 } });
+      expect(
+        operation.responses['200'].content['application/json'].schema.type,
+      ).toBe('array');
+    }
+  } finally {
+    if (parentCity)
+      await db.delete(s.districts).where(eq(s.districts.cityId, parentCity));
+    if (parentProvince)
+      await db.delete(s.cities).where(eq(s.cities.provinceId, parentProvince));
+    await db
+      .delete(s.provinces)
+      .where(eq(s.provinces.countryId, parentCountry));
+    await db.delete(s.countries).where(
+      inArray(
+        s.countries.id,
+        countries.map((item) => item.id),
+      ),
+    );
+  }
+});
+
+test('PH1 shared clients use real HTTP contracts and reach all 101 branches and coach affiliations', async () => {
+  const club = body<{ id: string; branches: { id: string }[] }>(
+    await call('post', 'business/clubs', owner)
+      .send({ name: 'مجموعهٔ قرارداد کلاینت' })
+      .expect(201),
+  );
+  clubIds.push(club.id);
+  const extra = await db
+    .insert(s.branches)
+    .values(
+      Array.from({ length: 100 }, (_, index) => ({
+        organizationId: club.id,
+        name: `شعبه ${index}`,
+        slug: `contract-${index}`,
+      })),
+    )
+    .returning();
+  await db
+    .insert(s.branchProfiles)
+    .values(extra.map((branch) => ({ clubId: club.id, branchId: branch.id })));
+  const person = await identity('application');
+  await call('post', 'profile/coach', person)
+    .send({ biography: 'مربی قرارداد' })
+    .expect(201);
+  const affiliations = await db
+    .insert(s.branchCoaches)
+    .values(
+      [club.branches[0].id, ...extra.map((branch) => branch.id)].map(
+        (branchId) => ({
+          branchId,
+          coachId: person.id,
+          createdAt: new Date('2026-01-01T00:00:00Z'),
+        }),
+      ),
+    )
+    .returning();
+  const path = 'profile/coach/affiliations';
+  const page1 = body<{ id: string }[]>(
+    await call('get', `${path}?page=1`, person).expect(200),
+  );
+  const page2 = body<{ id: string }[]>(
+    await call('get', `${path}?page=2`, person).expect(200),
+  );
+  expect(page1).toHaveLength(100);
+  expect(page2).toHaveLength(1);
+  expect([...page1, ...page2].map((row) => row.id)).toEqual(
+    affiliations.map((row) => row.id).sort(),
+  );
+  await call('get', `${path}?page=3`, person).expect(200, []);
+  await call('get', path, athlete).expect(200, []);
+  for (const page of ['0', '-1', '1.5', '100001', 'invalid'])
+    await call('get', `${path}?page=${page}`, person).expect(400);
+  const pixels = await sharp({
+    create: { width: 4, height: 3, channels: 3, background: '#123456' },
+  })
+    .png()
+    .toBuffer();
+  const probe = await promisify(execFile)(
+    process.execPath,
+    [
+      '--import',
+      'tsx',
+      resolve(__dirname, '../../../packages/api/test/ph1-contract.probe.ts'),
+    ],
+    {
+      cwd: resolve(__dirname, '..'),
+      timeout: 60000,
+      env: {
+        ...process.env,
+        NODE_OPTIONS: '--max-old-space-size=192',
+        PH1_CONTRACT_API_URL: `${await app.getUrl()}/api/v1`,
+        PH1_CONTRACT_INPUT: JSON.stringify({
+          clubId: club.id,
+          branchId: club.branches[0].id,
+          coachId: person.id,
+          ownerCookie: owner.cookie,
+          coachCookie: person.cookie,
+          adminCookie: admin.cookie,
+          foreignClubId: otherClubId,
+          image: pixels.toString('base64'),
+        }),
+      },
+    },
+  );
+  expect(JSON.parse(probe.stdout)).toMatchObject({
+    branches: 101,
+    affiliations: 101,
+    media: 'uploaded-previewed-deleted',
+    tariffs: 'created-revised-status',
+    errors: 'fa-en-validated',
+    profile: 'privacy-phone-favorites',
+    admin: 'authorized',
+  });
 });

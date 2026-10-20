@@ -1,5 +1,6 @@
 "use client";
 import { Share2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useTranslations } from "@repo/i18n";
 import { Button } from "@repo/ui/kit/Button";
 import {
@@ -12,6 +13,7 @@ import {
 import { SocialIcon, type SocialPlatform } from "@repo/ui/kit/SocialIcon";
 import { toast } from "@repo/ui/kit/Sonner";
 import { useClubUrl } from "./use-club-url";
+import { useCatalogClub } from "./use-catalog";
 
 export function ClubSocialShare({
   clubId,
@@ -22,7 +24,12 @@ export function ClubSocialShare({
 }) {
   const t = useTranslations("Social");
   const clubs = useTranslations("Clubs");
-  const url = useClubUrl(clubId);
+  const params = useSearchParams();
+  const { selectedBranchId } = useCatalogClub(
+    clubId,
+    params.get("branch") ?? undefined,
+  );
+  const url = useClubUrl(clubId, selectedBranchId);
   const platforms: SocialPlatform[] = ["facebook", "instagram", "linkedin"];
   async function copyInstagram() {
     try {

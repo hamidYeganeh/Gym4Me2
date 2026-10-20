@@ -1,3 +1,5 @@
+import { nativeHttpsPathPrefixes } from "./native-link-routes.mjs";
+
 /** Public signing identities only. Never infer a release identity from debug keys. */
 export function androidAssociation(fingerprints) {
   const values = fingerprints
@@ -33,7 +35,9 @@ export function appleAssociation(applicationId) {
       details: [
         {
           appIDs: [applicationId],
-          components: [{ "/": "/discovery/clubs/*" }],
+          components: nativeHttpsPathPrefixes.map((prefix) => ({
+            "/": `${prefix}*`,
+          })),
         },
       ],
     },

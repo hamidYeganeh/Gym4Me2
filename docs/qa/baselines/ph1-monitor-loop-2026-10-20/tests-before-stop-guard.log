@@ -1,0 +1,25 @@
+✔ alerts persist offline and retry with a stable idempotency key (17.948708ms)
+✔ twenty deferred records cannot hide a new due incident (5.5135ms)
+✔ a pass attempts at most twenty due alerts after skipping backoff (8.536416ms)
+✔ damaged records remain inspectable while valid alerts can be delivered (1.469ms)
+✔ retry publishes a complete private record with the same event identity (1.107958ms)
+✔ rejected responses release their body before scheduling a retry (0.927875ms)
+✔ shutdown aborts delivery without advancing retry or starting another record (1.022166ms)
+✔ real fetch rejects untrusted TLS and retries HTTPS rejection without changing identity (485.703875ms)
+✔ alerts on three failures, suppresses duplicates, recovers after two successes (1.709875ms)
+✔ readiness validates dependency content, TLS and a total request deadline (351.549125ms)
+✔ slow delivery cannot block health, duplicate a sender or rewind a newer snapshot (1.443375ms)
+✔ overlapping ticks share one live probe (0.361167ms)
+✔ a probe published while delivery finalizes still receives its following pass (0.635209ms)
+✔ once waits for the pass that includes events published during an older delivery (1.486ms)
+✔ stop aborts both lanes and ignores their late completions (0.827083ms)
+✔ a failed publication rejects once and never starts delivery (1.384125ms)
+✔ delivery failure reaches once without pretending health delivery succeeded (0.791208ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1440.371917

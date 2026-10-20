@@ -1,5 +1,15 @@
 import { LoginPage } from "@repo/ui/account";
 
-export default function Page() {
-  return <LoginPage client="business" />;
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ method?: string | string[] }>;
+}) {
+  const { method } = await searchParams;
+  return (
+    <LoginPage
+      client="business"
+      initialMethod={method === "password" ? "password" : "otp"}
+    />
+  );
 }

@@ -1,0 +1,118 @@
+{
+  "truncated": false,
+  "hasMore": false,
+  "responses": [
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/taxonomies/club-categories",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81/branches/a2ad7a8e-6666-4832-a8ef-dac345bef49f",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81/branches/a2ad7a8e-6666-4832-a8ef-dac345bef49f/reviews?page=1",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/locations/countries?page=1",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs?page=1",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/taxonomies/club-categories",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81/branches/a2ad7a8e-6666-4832-a8ef-dac345bef49f",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81/branches/a2ad7a8e-6666-4832-a8ef-dac345bef49f/reviews?page=1",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/taxonomies/club-categories",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/locations/countries?page=1",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs?page=1",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81/branches/a2ad7a8e-6666-4832-a8ef-dac345bef49f",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81/branches/a2ad7a8e-6666-4832-a8ef-dac345bef49f/reviews?page=1",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/taxonomies/club-categories",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/locations/countries?page=1",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs?page=1",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81/branches/a2ad7a8e-6666-4832-a8ef-dac345bef49f",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81/branches/a2ad7a8e-6666-4832-a8ef-dac345bef49f/reviews?page=1",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81/branches/724a1442-dc8f-428f-9f50-3f41d6cac3e5",
+      "status": 200
+    },
+    {
+      "url": "/api/v1/catalog/clubs/5863c29e-524c-49a7-a450-52ae4186bd81/branches/724a1442-dc8f-428f-9f50-3f41d6cac3e5/reviews?page=1",
+      "status": 200
+    }
+  ]
+}

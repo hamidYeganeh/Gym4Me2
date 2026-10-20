@@ -521,6 +521,9 @@
     "verifiedMobileNumber": "شماره موبایل تأییدشده",
     "saveChanges": "ذخیره تغییرات",
     "sessionEnded": "نشست پایان یافت.",
+    "noActiveSessions": "نشست فعالی وجود ندارد",
+    "signedInDevicesAppearHere": "دستگاه‌هایی که با آن‌ها وارد شده‌ای اینجا نمایش داده می‌شوند.",
+    "acceptInvitationFrom": "پذیرش دعوت {name}",
     "seeYourActiveSessionsAndRevokeAccess": "ورودهای فعال به حساب خود را ببین و دسترسی دستگاه‌های دیگر را قطع کن.",
     "application": "اپلیکیشن",
     "thisSession": "این نشست",
@@ -614,6 +617,7 @@
     "panelBreadcrumb": "جیم‌فورمی / {title}"
   },
   "Backend": {
+    "payloadTooLarge": "حجم دادهٔ ارسالی بیشتر از حد مجاز است.",
     "invalidDateRange": "بازه تاریخ معتبر نیست.",
     "thisAccountDoesNotHaveAdministratorAccess": "این حساب دسترسی ادمین ندارد.",
     "userNotFound": "کاربر پیدا نشد.",
@@ -747,7 +751,8 @@
     "invalidNotificationCursor": "صفحهٔ اعلان‌ها معتبر نیست؛ فهرست را دوباره باز کنید.",
     "notificationUnavailable": "اعلان در دسترس نیست.",
     "conversationChanged": "وضعیت گفتگو تغییر کرده است؛ اطلاعات فعلی را بررسی کنید.",
-    "conversationKeyReused": "این درخواست قبلاً با اطلاعات دیگری ثبت شده است."
+    "conversationKeyReused": "این درخواست قبلاً با اطلاعات دیگری ثبت شده است.",
+    "changeReasonRequired": "دلیل تغییر را بین ۳ تا ۵۰۰ نویسه وارد کنید."
   },
   "Preview": {
     "atlasAthleticClub": "باشگاه اطلس",
@@ -987,6 +992,25 @@
     "paidAmenity": "با هزینهٔ جداگانه",
     "includedAmenity": "شامل خدمات",
     "openingHours": "ساعات فعالیت",
+    "branchUpdated": "آخرین به‌روزرسانی اطلاعات «{branch}»:",
+    "branchInformation": "اطلاعات «{branch}»",
+    "notDeclared": "اعلام نشده",
+    "operatingStatus": "وضعیت فعالیت",
+    "operating_active": "فعال",
+    "operating_temporarily_closed": "موقتاً تعطیل",
+    "operating_permanently_closed": "برای همیشه تعطیل",
+    "address": "نشانی شعبه",
+    "branchContact": "تماس با شعبه",
+    "extension": "داخلی",
+    "sports": "رشته‌ها",
+    "equipment": "تجهیزات",
+    "equipmentCount": "تعداد: {count}",
+    "facilities": "امکانات و هزینهٔ استفاده",
+    "unavailableAmenity": "در دسترس نیست",
+    "accessibility": "امکانات دسترس‌پذیری",
+    "audiencePolicy": "شرایط اعلام‌شدهٔ مخاطب",
+    "minimumAge": "حداقل سن: {age} سال",
+    "maximumAge": "حداکثر سن: {age} سال",
     "closed": "تعطیل",
     "directions": "مسیریابی",
     "anonymous": "کاربر",
@@ -1087,18 +1111,23 @@
   },
   "Comparison": {
     "title": "مقایسهٔ باشگاه‌ها",
-    "hint": "دو یا سه باشگاه را انتخاب کنید. قیمت‌ها بر اساس نوع خدمت و واحد یکسان مقایسه می‌شوند؛ شرایط هر تعرفه را جداگانه بررسی کنید.",
+    "hint": "دو یا سه باشگاه انتخاب کنید. قیمت‌های هر ردیف فقط برای خدمت، واحد، اعتبار، تعداد جلسه، خدمات شامل‌شده، متن شرایط و دامنهٔ شعبهٔ یکسان‌اند. «اعلام‌نشده» به معنی نامحدود نیست.",
     "back": "بازگشت به کشف",
     "selected": "باشگاه انتخاب‌شده",
     "remove": "حذف از مقایسه",
     "search": "جست‌وجوی باشگاه",
     "chooseTwo": "حداقل دو باشگاه انتخاب کنید.",
     "criterion": "معیار",
-    "noComparableOffer": "تعرفه‌ای برای این خدمت و واحد اعلام نشده",
+    "noComparableOffer": "تعرفه‌ای با این تعریف اعلام نشده",
     "categories": "دسته‌بندی",
     "sports": "رشته‌های ورزشی",
     "rating": "امتیاز و تعداد نظر",
-    "noRating": "هنوز امتیازی ثبت نشده"
+    "noRating": "هنوز امتیازی ثبت نشده",
+    "unspecifiedValidity": "اعتبار اعلام نشده",
+    "unspecifiedSessions": "تعداد جلسه اعلام نشده",
+    "unspecifiedServices": "خدمات شامل‌شده اعلام نشده",
+    "oneBranch": "یک شعبهٔ مشخص",
+    "branchUnavailable": "شعبه اعلام نشده"
   },
   "Favorites": {
     "mergeError": "ادغام علاقه‌مندی‌های این دستگاه انجام نشد. ذخیره‌های مهمان حفظ شدند؛ پس از ورود دوباره تلاش می‌شود.",
@@ -1152,6 +1181,7 @@
     "loginNotice": "شماره برای ارسال کد ورود و ساخت یا بازیابی حساب استفاده می‌شود. پیش از ادامه می‌توانی سیاست داده را بخوانی.",
     "readPolicy": "خواندن سیاست داده",
     "optionalName": "نام (اختیاری)",
+    "nameLength": "نام را بین ۲ تا ۱۰۰ نویسه بنویس یا خالی بگذار.",
     "confirmChoices": "سیاست داده و حداقل سن را تأیید کن.",
     "stopMarketing": "توقف پیام‌های تبلیغاتی",
     "hidePublicProfile": "خصوصی‌کردن نام و معرفی",
@@ -1752,5 +1782,13 @@
     "themeTokens": "Theme tokens",
     "secondarySample": "Luma secondary · IRANSansX · ۱۲۳ · 123",
     "tokenSample": "{token} · IRANSansX · ۱۲۳ · 123"
+  },
+  "AuditReason": {
+    "label": "دلیل تغییر",
+    "hint": "این دلیل همراه تغییر در سابقهٔ مجموعه ثبت می‌شود.",
+    "tooShort": "دلیل تغییر را با حداقل ۳ نویسه وارد کن.",
+    "tooLong": "دلیل تغییر باید حداکثر ۵۰۰ نویسه باشد.",
+    "confirm": "ثبت تغییر",
+    "saved": "تغییر ثبت شد."
   }
 }

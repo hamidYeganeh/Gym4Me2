@@ -42,6 +42,7 @@ import { MobileAuth } from "./mobile-auth";
 import { useOtpAutofill } from "./otp-autofill";
 import { safeReturnPath } from "./safe-return-path";
 import { loginDestination } from "./login-destination";
+import { passwordRecoveryHref } from "../lib/session-navigation";
 import "./auth-controls.css";
 function restoreFailedLoginFocus(origin: Element | null) {
   requestAnimationFrame(() => {
@@ -251,11 +252,7 @@ export function LoginPage({
     <p className="text-sm leading-7 text-muted-foreground">
       {t("Privacy.loginNotice")}{" "}
       <Link
-        href={
-          client === "application"
-            ? `/privacy?${new URLSearchParams({ from: "login", method, returnTo: returnPath })}`
-            : "/privacy"
-        }
+        href={`/privacy?${new URLSearchParams({ from: "login", method, returnTo: returnPath, ...(recovery ? { recovery: "true" } : {}) })}`}
         className="inline-flex min-h-11 items-center justify-center underline underline-offset-4"
       >
         {t("Privacy.readPolicy")}
@@ -422,7 +419,7 @@ export function LoginPage({
         </form>
         {method === "password" && (
           <Link
-            href="/reset-password"
+            href={passwordRecoveryHref(returnPath)}
             className="inline-flex min-h-11 items-center justify-center text-sm underline underline-offset-4"
           >
             {authCopy("forgot")}

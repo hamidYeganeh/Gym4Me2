@@ -1,0 +1,11 @@
+{
+  "builds": {
+    "application": "8PNWxRJDcXP3ibGg_rkyO",
+    "business": "9S-o656uQCH61bzs8r-tL",
+    "admin": "CnpGn-DRdPYE-L3xiRv3J"
+  },
+  "inputs": 880,
+  "changedAfterBuild": [],
+  "mode": "full Next production build, isolated .next-qa, GYM_QA_WEB=true, webpack, one worker, heap640MiB, nice10",
+  "apiOrigin": "http://127.0.0.1:7399"
+}

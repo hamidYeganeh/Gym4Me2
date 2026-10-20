@@ -3,15 +3,22 @@ import test from "node:test";
 import { associations } from "./app-associations.mjs";
 import { associationResponse } from "../apps/application/lib/domain-associations.mjs";
 const digest = Array(32).fill("AB").join(":");
+const expectedPaths = [
+  "/discovery/clubs/*",
+  "/services/*",
+  "/calendars/*",
+  "/bookings/*",
+  "/orders/*",
+  "/messages/*",
+  "/memberships/*",
+].map((path) => ({ "/": path }));
 test("only explicit signing identities generate domain associations", () => {
   assert.throws(() => associations("", undefined));
   assert.throws(() => associations("placeholder", undefined));
   assert.throws(() => associations(digest, "WRONG.app"));
   const result = associations(digest, "ABCDEFGHIJ.com.gym4me.app");
   assert.equal(result.android[0].target.package_name, "com.gym4me.app");
-  assert.deepEqual(result.apple.applinks.details[0].components, [
-    { "/": "/discovery/clubs/*" },
-  ]);
+  assert.deepEqual(result.apple.applinks.details[0].components, expectedPaths);
   assert.equal(associations(digest).apple, undefined);
 });
 
@@ -33,7 +40,7 @@ test("web associations are independent, public JSON and restricted to the config
   assert.deepEqual((await apple.json()).applinks.details, [
     {
       appIDs: ["ABCDEFGHIJ.com.gym4me.app"],
-      components: [{ "/": "/discovery/clubs/*" }],
+      components: expectedPaths,
     },
   ]);
 });

@@ -25,10 +25,10 @@ export function ClubTariffs({ tariffs }: { tariffs: TariffDto[] }) {
             <p className="text-sm text-muted-foreground">
               {t(`service_${tariff.serviceType}`)}
               {tariff.durationDays
-                ? ` · ${t("validDays", { count: tariff.durationDays })}`
+                ? ` · ${t("validDays", { count: number.format(tariff.durationDays) })}`
                 : ""}
               {tariff.sessionCount
-                ? ` · ${t("sessionAllowance", { count: tariff.sessionCount })}`
+                ? ` · ${t("sessionAllowance", { count: number.format(tariff.sessionCount) })}`
                 : ""}
             </p>
             {tariff.includedServices?.length ? (

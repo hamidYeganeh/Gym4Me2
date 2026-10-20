@@ -1,3 +1,5 @@
+import { userInfo } from 'node:os';
+import { checkedChangeReason } from '../src/platform/audit/change-reason';
 import { config } from 'dotenv';
 import { resolve } from 'node:path';
 import { Pool } from 'pg';
@@ -5,6 +7,8 @@ import { phoneSchema } from '../src/modules/auth/auth.contracts';
 config({ path: resolve(__dirname, '../.env'), quiet: true });
 async function main() {
   const phone = phoneSchema.parse(process.argv[2]);
+  const reason = checkedChangeReason(process.argv[3]);
+  const operator = userInfo().username;
   const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 1 });
   try {
     const client = await pool.connect();
@@ -21,8 +25,19 @@ async function main() {
       );
       if (result.rowCount)
         await client.query(
-          'INSERT INTO audit_events(action, target_id, details) VALUES (\'admin.granted-by-operator\', $1, \'{"source":"operator-cli"}\')',
-          [rows[0].id],
+          'INSERT INTO audit_events(action, target_id, details) VALUES ($1, $2, $3::jsonb)',
+          [
+            'admin.granted-by-operator',
+            rows[0].id,
+            JSON.stringify({
+              source: 'operator-cli',
+              actorKind: 'operator',
+              operator,
+              scope: 'platform',
+              resultingRole: 'admin',
+              reason,
+            }),
+          ],
         );
       await client.query('COMMIT');
       console.log('Admin access granted to the verified account.');
@@ -38,7 +53,7 @@ async function main() {
 }
 void main().catch(() => {
   console.error(
-    'Admin grant failed. Supply a valid phone belonging to an active, verified account and check database configuration.',
+    'Admin grant failed. Supply a valid verified-account phone and a 3–500-character reason; check database configuration.',
   );
   process.exitCode = 1;
 });

@@ -1,12 +1,11 @@
 "use client";
-import type { TariffDto, TariffInputDto } from "../catalog/catalog.dto";
+import type { TariffInputDto } from "../catalog/catalog.dto";
 import { useApiMutation, useApiQuery } from "../query";
-const base = (id: string) => `business/clubs/${encodeURIComponent(id)}/tariffs`;
+import { businessClients } from "./business.clients";
 export function useBusinessTariffs(id: string) {
   return useApiQuery(
     (scope) => [...scope, "business", "tariffs", id],
-    (api, signal) =>
-      api.request<TariffDto[]>({ method: "GET", path: base(id) }, { signal }),
+    (api, signal) => businessClients.tariffs(api, id, { signal }),
     Boolean(id),
   );
 }
@@ -14,14 +13,7 @@ export function useTariffHistory(id: string, tariffId?: string, page = 1) {
   return useApiQuery(
     (scope) => [...scope, "business", "tariffs", id, "history", tariffId, page],
     (api, signal) =>
-      api.request<TariffDto[]>(
-        {
-          method: "GET",
-          path: `${base(id)}/${encodeURIComponent(tariffId ?? "")}/versions`,
-          query: { page },
-        },
-        { signal },
-      ),
+      businessClients.tariffHistory(api, id, tariffId ?? "", page, { signal }),
     Boolean(id && tariffId),
   );
 }
@@ -29,29 +21,39 @@ export function useSaveTariff() {
   return useApiMutation(
     (
       api,
-      input: {
-        id: string;
-        tariffId?: string;
-        input: TariffInputDto & { branchId?: string | null };
-      },
+      input: { id: string } & (
+        | { tariffId: string; input: TariffInputDto & { reason: string } }
+        | {
+            tariffId?: undefined;
+            input: TariffInputDto & { branchId?: string | null };
+          }
+      ),
     ) =>
-      api.request<TariffDto>({
-        method: "POST",
-        path: input.tariffId
-          ? `${base(input.id)}/${encodeURIComponent(input.tariffId)}/versions`
-          : base(input.id),
-        body: input.input,
-      }),
+      input.tariffId !== undefined
+        ? businessClients.reviseTariff(
+            api,
+            input.id,
+            input.tariffId,
+            input.input,
+          )
+        : businessClients.createTariff(api, input.id, input.input),
     [["business"], ["catalog"], ["admin"]],
   );
 }
 export function useSetTariffStatus() {
   return useApiMutation(
-    (api, input: { id: string; tariffId: string; isActive: boolean }) =>
-      api.request<{ id: string; isActive: boolean }>({
-        method: "POST",
-        path: `${base(input.id)}/${encodeURIComponent(input.tariffId)}/status`,
-        body: { isActive: input.isActive },
+    (
+      api,
+      input: {
+        id: string;
+        tariffId: string;
+        isActive: boolean;
+        reason: string;
+      },
+    ) =>
+      businessClients.setTariffStatus(api, input.id, input.tariffId, {
+        isActive: input.isActive,
+        reason: input.reason,
       }),
     [["business"], ["catalog"], ["admin"]],
   );

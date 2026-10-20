@@ -1,0 +1,33 @@
+{
+  "createdAt": "2026-10-19T12:41:43.358Z",
+  "configuredApi": "https://gym4me.ir/api/v1",
+  "routes": [
+    {
+      "path": "index.html",
+      "exists": true,
+      "sha256": "7ca88bfa6dc08fcc2d748543cf1055d2460b80837ebd3146f13959f6604eff02"
+    },
+    {
+      "path": "discovery/club/index.html",
+      "exists": true,
+      "sha256": "b33253710a2f709ecf00357c0792179e1218e9491c1e64ef7a5675626d7bc7f5"
+    },
+    {
+      "path": "profile/settings/privacy/index.html",
+      "exists": true,
+      "sha256": "6d3eb63f4f86e6520b864835f9d4e33bd57d6143b808902cb9edef121c7d4dce"
+    },
+    {
+      "path": "auth/otp/index.html",
+      "exists": true,
+      "sha256": "8ec28df966979d423edba908fb39692fd91729867c12c420c0d7ef7910c90239"
+    }
+  ],
+  "stages": [],
+  "files": 396,
+  "bytes": 20372572,
+  "generatedSourceChangesBeforeRestore": [
+    "apps/application/next-env.d.ts"
+  ],
+  "generatedSourceRestoredBeforeWebBuilds": true
+}

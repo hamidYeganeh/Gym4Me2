@@ -104,6 +104,68 @@ test("a failed vault write revokes the new server session and reports the storag
   );
   assert.equal(paths[1], `${base}/auth/sessions/logout`);
 });
+test(
+  "a hanging compensating logout is aborted without hiding the storage failure",
+  { timeout: 5000 },
+  async () => {
+    const store: SessionVault = {
+      get: async () => null,
+      set: async () => {
+        throw new Error("storage failed");
+      },
+      clear: async () => undefined,
+    };
+    let cleanupSignal: AbortSignal | undefined;
+    const request = createNativeFetch(base, store, async (url, init) => {
+      if (String(url).endsWith("logout")) {
+        cleanupSignal = init?.signal ?? undefined;
+        // Even a transport that ignores abort must not keep the form pending.
+        return new Promise<Response>(() => {});
+      }
+      return json({ ...next, user: {} }, 201);
+    });
+    await assert.rejects(
+      request(`${base}/auth/otp/verify`, { method: "POST" }),
+      (error) =>
+        error instanceof ApiError &&
+        error.code === "Errors.secureStorageUnavailable",
+    );
+    assert.equal(cleanupSignal?.aborted, true);
+  },
+);
+test("compensating logout has its own signal after the login request was cancelled", async () => {
+  const login = new AbortController();
+  const store: SessionVault = {
+    get: async () => null,
+    set: async () => {
+      login.abort();
+      throw new Error("storage failed");
+    },
+    clear: async () => undefined,
+  };
+  let revoked = false;
+  const request = createNativeFetch(base, store, async (url, init) => {
+    if (String(url).endsWith("logout")) {
+      assert.equal(login.signal.aborted, true);
+      assert.ok(init?.signal);
+      assert.notEqual(init.signal, login.signal);
+      assert.equal(init.signal.aborted, false);
+      revoked = true;
+      return json({ success: true });
+    }
+    return json({ ...next, user: {} }, 201);
+  });
+  await assert.rejects(
+    request(`${base}/auth/password/login`, {
+      method: "POST",
+      signal: login.signal,
+    }),
+    (error) =>
+      error instanceof ApiError &&
+      error.code === "Errors.secureStorageUnavailable",
+  );
+  assert.equal(revoked, true);
+});
 test("credentials cannot be sent to another host, path or an insecure API", async () => {
   const store = vault();
   await store.set(next);
@@ -158,4 +220,45 @@ test("password login stores the token securely and password reset removes the ol
   });
   await reset(`${base}/auth/password`, { method: "POST" });
   assert.equal(await store.get(), null);
+});
+
+test("a wrong phone-change code preserves the native bearer and the readable error response", async () => {
+  const store = vault();
+  await store.set(next);
+  const payload = {
+    code: "Backend.theCodeIsIncorrectOrExpired",
+    statusCode: 401,
+  };
+  const request = createNativeFetch(base, store, async (_url, init) => {
+    assert.equal(
+      new Headers(init?.headers).get("Authorization"),
+      `Bearer ${token}`,
+    );
+    return json(payload, 401);
+  });
+  const response = await request(`${base}/profile/account/phone/verify`, {
+    method: "POST",
+  });
+  assert.equal((await store.get())?.token, token);
+  assert.deepEqual(await response.json(), payload);
+});
+test("expired or unknown phone-change errors clear the credential; an unrelated read never treats 401 as a wrong code", async () => {
+  for (const [path, payload] of [
+    [
+      "profile/account/phone/verify",
+      { code: "Backend.theSessionHasEndedSignInAgain" },
+    ],
+    ["profile/account/phone/verify", {}],
+    ["profile/account", { code: "Backend.theCodeIsIncorrectOrExpired" }],
+  ] as const) {
+    const store = vault();
+    await store.set(next);
+    const request = createNativeFetch(base, store, async () =>
+      json(payload, 401),
+    );
+    await request(`${base}/${path}`, {
+      method: path.endsWith("verify") ? "POST" : "GET",
+    });
+    assert.equal(await store.get(), null);
+  }
 });

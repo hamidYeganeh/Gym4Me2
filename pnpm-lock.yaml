@@ -238,6 +238,9 @@ importers:
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      lucide-react:
+        specifier: ^1.55.0
+        version: 1.55.0(@types/react@19.2.18)(react@19.3.0)
       next:
         specifier: 16.4.0
         version: 16.4.0(@babel/core@8.0.1)(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
