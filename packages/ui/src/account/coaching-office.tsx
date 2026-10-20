@@ -186,7 +186,9 @@ function BusinessCoaching() {
           onSubmit={(f) => {
             const body = {
               mode: text(f, "mode"),
-              entryAmountMinor: String(BigInt(text(f, "entry") || "0") * 10n),
+              entryAmountMinor: String(
+                BigInt(text(f, "entry") || "0") * BigInt(10),
+              ),
               idempotencyKey: commandKey,
               service: {
                 ...scope,
@@ -196,7 +198,7 @@ function BusinessCoaching() {
                 coachName:
                   coaches.find((c) => c.userId === text(f, "coach"))
                     ?.displayName ?? "",
-                amountMinor: String(BigInt(text(f, "price")) * 10n),
+                amountMinor: String(BigInt(text(f, "price")) * BigInt(10)),
                 durationDays: text(f, "kind") === "membership" ? 30 : null,
                 sessionCount:
                   text(f, "kind") === "membership"
@@ -299,7 +301,7 @@ function BusinessCoaching() {
               endsOn: text(f, "endsOn") || null,
               shareBasisPoints: Math.round(Number(text(f, "share")) * 100),
               basis: text(f, "basis"),
-              costsMinor: String(BigInt(text(f, "costs") || "0") * 10n),
+              costsMinor: String(BigInt(text(f, "costs") || "0") * BigInt(10)),
               terms: text(f, "terms"),
             })
           }
@@ -358,7 +360,9 @@ function BusinessCoaching() {
                     .run("business/coaching/ledger", {
                       contractId: c.id,
                       kind: text(f, "kind"),
-                      amountMinor: String(BigInt(text(f, "amount")) * 10n),
+                      amountMinor: String(
+                        BigInt(text(f, "amount")) * BigInt(10),
+                      ),
                       reservationId: text(f, "reservation") || null,
                       reference: text(f, "reference"),
                       confirmed: checked(f, "confirmed"),

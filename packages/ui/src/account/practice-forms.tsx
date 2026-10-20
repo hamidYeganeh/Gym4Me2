@@ -156,7 +156,7 @@ export function PracticeMoney({ value }: { value: string }) {
   return (
     <span dir="auto">
       {new Intl.NumberFormat(locale === "fa" ? "fa-IR" : "en").format(
-        Number(BigInt(value) / 10n),
+        Number(BigInt(value) / BigInt(10)),
       )}{" "}
       {t("toman")}
     </span>

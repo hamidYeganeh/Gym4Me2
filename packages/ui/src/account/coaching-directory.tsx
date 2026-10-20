@@ -69,7 +69,7 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
                 specialty: text(f, "specialty"),
                 goal: text(f, "goal"),
                 maxPrice: text(f, "price")
-                  ? String(BigInt(text(f, "price")) * 10n)
+                  ? String(BigInt(text(f, "price")) * BigInt(10))
                   : undefined,
                 page: 1,
               });
