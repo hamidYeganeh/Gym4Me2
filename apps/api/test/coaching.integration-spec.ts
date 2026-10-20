@@ -513,6 +513,8 @@ it('coach responses, duplicate reports and reasoned moderation keep their histor
       rating: 5,
       body: 'Edited student review',
       published: true,
+      example: '',
+      exampleConsent: false,
       revision: 2,
     }),
   );
