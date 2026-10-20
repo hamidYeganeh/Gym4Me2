@@ -33,6 +33,8 @@ import {
   SportsPaymentCallbacksController,
 } from './commerce/commerce.controller';
 import { Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { DemoJobsInterceptor } from './commerce/demo-jobs.interceptor';
 import { DatabaseModule } from '../database/database.module';
 import { AuthModule } from './auth/auth.module';
 import {
@@ -132,6 +134,7 @@ import {
     AdminUsersController,
   ],
   providers: [
+    { provide: APP_INTERCEPTOR, useClass: DemoJobsInterceptor },
     CommerceService,
     { provide: PAYMENT_ADAPTER, useClass: SamanMockPaymentAdapter },
     CommunityService,

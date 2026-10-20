@@ -23,7 +23,7 @@ No live SMS or payment provider is configured. Use synthetic data only.
 ## Provisioning
 
 Run `apps/api/scripts/migrate.ts` against the new demo database, then
-`apps/api/scripts/seed-demo.ts` with
+`apps/api/scripts/seed-demo.ts` with `ts-node` (Nest requires decorator metadata),
 `DEMO_PROVISION_CONFIRM=gym4me-demo-postgres` and the API environment.
 The seed refuses an existing user database. A database marker is required
 before demo mode can start. An incomplete seed requires inspection; it is
@@ -56,7 +56,9 @@ The standard S3 adapter remains the default outside demo mode.
 
 Demo accounts and data are shared between visitors. Do not enter real personal
 or financial information. Retention and background commerce timers are disabled
-for the serverless demo; time-based tasks are not continuously processed.
+for the serverless demo. Successful sports commands await the durable job runner,
+so mock refunds and notifications can complete without an always-running server.
+Time-based tasks are not continuously processed while the demo is idle.
 Sample class sessions are dated relative to the initial seed.
 
 Vercel and Neon free-tier quotas apply. No paid plan, paid domain or automatic
