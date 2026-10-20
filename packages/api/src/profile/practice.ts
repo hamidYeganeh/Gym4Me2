@@ -114,6 +114,7 @@ export type FinanceDto = {
     id: string;
     coachId: string;
     version: number;
+    clubName: string;
     branchName: string;
     startsOn: string;
     endsOn: string | null;

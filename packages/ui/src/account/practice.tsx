@@ -465,14 +465,15 @@ function CoachFinance() {
       {q.data?.contracts.map((c) => (
         <article key={c.id} className="rounded-3xl border p-5">
           <h3>
-            {c.branchName} · {t("version")} {c.version}
+            {c.clubName} · {c.branchName} · {t("version")} {c.version}
           </h3>
           <p>
             <PracticeDate value={c.startsOn} /> —{" "}
             {c.endsOn ? <PracticeDate value={c.endsOn} /> : "…"}
           </p>
           <p>
-            {c.shareBasisPoints / 100}% · {c.basis}
+            {c.shareBasisPoints / 100}% ·{" "}
+            {t(c.basis === "net" ? "net" : "gross")}
           </p>
           <p>{c.terms}</p>
         </article>
