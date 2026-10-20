@@ -14,7 +14,7 @@ export async function capture(
   directory,
   env,
   ledgerOnly = false,
-  { signal } = {},
+  { signal, spawnDump = spawnManaged } = {},
 ) {
   signal?.throwIfAborted();
   const databaseUrl = new URL(env.MIGRATION_DATABASE_URL);
@@ -97,7 +97,7 @@ export async function capture(
     );
     if (!ledgerOnly) {
       dumpApplication = `gym4me_capture_${randomUUID().replaceAll("-", "")}`;
-      const task = spawnManaged(
+      const task = spawnDump(
         "docker",
         [
           "compose",

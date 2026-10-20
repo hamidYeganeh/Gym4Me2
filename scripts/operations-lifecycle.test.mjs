@@ -254,10 +254,6 @@ test(
     const { Pool } = require("pg");
     const originalConnect = Pool.prototype.connect,
       originalQuery = Pool.prototype.query;
-    const keys = ["PATH", "FIXTURE_NODE", "FIXTURE_SCRIPT", "FIXTURE_READY"];
-    const originalEnvironment = Object.fromEntries(
-      keys.map((key) => [key, process.env[key]]),
-    );
     const queries = [],
       releases = [];
     const controller = new AbortController();
@@ -277,12 +273,6 @@ test(
       process.on('SIGTERM',()=>process.exit(0));
       await writeFile(process.env.FIXTURE_READY,process.env.PGAPPNAME);setInterval(()=>{},1000);`,
       );
-      Object.assign(process.env, {
-        PATH: `${directory}:${process.env.PATH}`,
-        FIXTURE_NODE: process.execPath,
-        FIXTURE_SCRIPT: fixture,
-        FIXTURE_READY: ready,
-      });
       Pool.prototype.connect = async function () {
         return {
           query: async (sql) => {
@@ -308,7 +298,26 @@ test(
           S3_BUCKET: "fixture",
         },
         false,
-        { signal: controller.signal },
+        {
+          signal: controller.signal,
+          // Resolve the test executable explicitly; never depend on a runner's
+          // docker shim or mutate the process-wide PATH/environment.
+          spawnDump: (_command, args, options, lifecycle) =>
+            spawnManaged(
+              executable,
+              args,
+              {
+                ...options,
+                env: {
+                  ...options.env,
+                  FIXTURE_NODE: process.execPath,
+                  FIXTURE_SCRIPT: fixture,
+                  FIXTURE_READY: ready,
+                },
+              },
+              lifecycle,
+            ),
+        },
       );
       void operation.catch(() => {});
       // Cold SDK imports and process startup can exceed two seconds on CI.
@@ -338,10 +347,6 @@ test(
       await operation?.catch(() => {});
       Pool.prototype.connect = originalConnect;
       Pool.prototype.query = originalQuery;
-      for (const key of keys) {
-        if (originalEnvironment[key] === undefined) delete process.env[key];
-        else process.env[key] = originalEnvironment[key];
-      }
       await rm(directory, { recursive: true, force: true });
     }
   },
