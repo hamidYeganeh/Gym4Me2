@@ -316,6 +316,7 @@ function Builder() {
               ? t("draftSaved")
               : t("draftHint")}
       </p>
+      {loadingTemplate && <Loading />}
       <TrainingFeedback action={a} />
       {conflict && (
         <TrainingCard title={t("conflict")}>
@@ -425,6 +426,7 @@ function Builder() {
             {t("planTitle")}
             <input
               value={d.content.title}
+              disabled={loadingTemplate}
               maxLength={160}
               onChange={(e) =>
                 change((v) => {
@@ -438,6 +440,7 @@ function Builder() {
             {t("planNote")}
             <textarea
               value={d.content.note}
+              disabled={loadingTemplate}
               maxLength={2000}
               onChange={(e) =>
                 change((v) => {
@@ -851,7 +854,8 @@ function Builder() {
             type="button"
             onClick={() => setStep(step + 1)}
             disabled={
-              step === 0 ? d.content.title.trim().length < 2 : !valid(d)
+              loadingTemplate ||
+              (step === 0 ? d.content.title.trim().length < 2 : !valid(d))
             }
           >
             {t("next")}
@@ -860,7 +864,7 @@ function Builder() {
           <Button
             type="button"
             disabled={
-              !valid(d) || a.pending || !online || conflict || !effective
+              loadingTemplate || !valid(d) || a.pending || !online || conflict || !effective
             }
             onClick={() => {
               void (async () => {
@@ -910,7 +914,7 @@ function Builder() {
         <Button
           type="button"
           variant="ghost"
-          disabled={!valid(d) || !online || a.pending}
+          disabled={loadingTemplate || !valid(d) || !online || a.pending}
           onClick={() => {
             blocked.current = false;
             void save();

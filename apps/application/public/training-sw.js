@@ -1,6 +1,6 @@
 /* Public training shells/static assets only. Never cache an API response or private media. */
 // Bump with training client changes: offline reload must use the reviewed bundle.
-const CACHE = "gym4me-training-shell-v2";
+const CACHE = "gym4me-training-shell-v3";
 const shells = [
   "/training",
   "/training/plan",
