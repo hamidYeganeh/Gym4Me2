@@ -6,6 +6,13 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "@repo/i18n";
 import {
+  MapPin,
+  SlidersHorizontal,
+  BadgeCheck,
+  ArrowUpLeft,
+} from "lucide-react";
+import { MotionDisclosure } from "../motion-controls";
+import {
   usePracticeQuery,
   useAccount,
   type CoachDirectoryDto,
@@ -26,6 +33,7 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
   const t = useTranslations("Practice"),
     params = useSearchParams(),
     id = params.get("id") ?? "";
+  const visual = useTranslations("Visual");
   const [filters, setFilters] = useState({
     search: "",
     city: "",
@@ -75,11 +83,26 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
               });
             }}
           >
-            {(["search", "city", "specialty", "goal"] as const).map((key) => (
-              <Field key={key} name={key} label={t(key)} />
-            ))}
-            <Field name="price" type="number" label={t("maxPrice")} />
-            <Button type="submit">{t("search")}</Button>
+            <div className="coach-directory-search">
+              <Field name="search" label={t("search")} />
+              <Button type="submit">{t("search")}</Button>
+            </div>
+            <MotionDisclosure
+              className="coach-directory-filters"
+              label={
+                <span className="flex items-center gap-2">
+                  <SlidersHorizontal size={15} />
+                  {visual("moreFilters")}
+                </span>
+              }
+            >
+              <div className="coach-directory-filter-grid">
+                {(["city", "specialty", "goal"] as const).map((key) => (
+                  <Field key={key} name={key} label={t(key)} />
+                ))}
+                <Field name="price" type="number" label={t("maxPrice")} />
+              </div>
+            </MotionDisclosure>
           </form>
           {q.isLoading ? (
             <Loading />
@@ -89,26 +112,53 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
             <p>{t("noCoaches")}</p>
           ) : (
             q.data.items.map((c) => (
-              <article
-                key={c.userId}
-                className="space-y-3 rounded-3xl border bg-card p-5"
-              >
-                <h2 className="text-xl font-semibold">
-                  {c.displayName ?? t("coach")}
-                </h2>
-                <p>
-                  {c.city} · {c.specialties.join("، ")}
+              <article key={c.userId} className="coach-directory-card">
+                <div className="coach-directory-identity">
+                  <span className="coach-directory-avatar" aria-hidden="true">
+                    {(c.displayName || t("coach"))
+                      .trim()
+                      .split(/\s+/)
+                      .slice(0, 2)
+                      .map((part) => part[0])
+                      .join(" ")}
+                  </span>
+                  <div className="min-w-0">
+                    <h2>{c.displayName ?? t("coach")}</h2>
+                    <p className="flex items-center gap-1">
+                      <MapPin size={13} />
+                      {c.city}
+                    </p>
+                  </div>
+                </div>
+                <div className="coach-directory-tags">
+                  {c.specialties.map((specialty) => (
+                    <span key={specialty}>{specialty}</span>
+                  ))}
+                </div>
+                <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                  <span>
+                    {t("experienceYears")}: {c.experienceYears}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <BadgeCheck size={14} />
+                    {t("credentialChecked")}
+                  </span>
                 </p>
-                <p>
-                  {t("experienceYears")}: {c.experienceYears}
-                </p>
-                <p>{t("credentialChecked")}</p>
-                {c.fromPriceMinor && <PracticeMoney value={c.fromPriceMinor} />}
-                <Button asChild>
-                  <Link href={`/coaches/detail?id=${c.userId}`}>
-                    {t("viewCoach")}
-                  </Link>
-                </Button>
+                <div className="coach-directory-footer">
+                  <span>
+                    {c.fromPriceMinor ? (
+                      <PracticeMoney value={c.fromPriceMinor} />
+                    ) : (
+                      visual("meetCoach")
+                    )}
+                  </span>
+                  <Button variant="outline" asChild>
+                    <Link href={`/coaches/detail?id=${c.userId}`}>
+                      {t("viewCoach")}
+                      <ArrowUpLeft className="ltr:rotate-90" size={16} />
+                    </Link>
+                  </Button>
+                </div>
               </article>
             ))
           )}

@@ -5,6 +5,7 @@ import { useTranslations } from "@repo/i18n";
 import { ChevronLeft } from "lucide-react";
 import { Button } from "./kit/Button";
 import { cn } from "./lib/utils";
+import "./account/account-design.css";
 
 export function MobileHeader({
   title,

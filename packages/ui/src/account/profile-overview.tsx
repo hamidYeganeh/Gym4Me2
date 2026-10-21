@@ -2,17 +2,17 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useTranslations } from "@repo/i18n";
+import { useTranslations, useLocale } from "@repo/i18n";
+import { useTrainingQuery, type TrainingProgress } from "@repo/api/profile";
+import { QueryError, Loading } from "./common";
 import type { Account } from "@repo/api/auth";
 import {
-  Activity,
-  ArrowDown,
+  Dumbbell,
+  ArrowUpLeft,
   CalendarDays,
-  Flame,
   MoreHorizontal,
   Pencil,
   RefreshCw,
-  Sparkles,
   UserRound,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "../kit/Avatar";
@@ -28,7 +28,6 @@ import {
 } from "../kit/Card";
 import { AccountNavigation } from "./account-design";
 import { cn } from "../lib/utils";
-import { Separator } from "../kit/Separator";
 import { useDateLabel } from "./common";
 
 export function ProfileOverview({
@@ -44,6 +43,21 @@ export function ProfileOverview({
 }) {
   const t = useTranslations("ProfileOverview");
   const dateLabel = useDateLabel();
+  const locale = useLocale();
+  const visual = useTranslations("Visual");
+  const progress = useTrainingQuery<TrainingProgress>(
+    "profile/training/progress",
+    {},
+    Boolean(account),
+  );
+  const completed =
+    progress.data?.sessions.filter(
+      (session) => session.state === "completed",
+    ) ?? [];
+  const latest = completed
+    .map((session) => session.endedAt || session.startedAt)
+    .sort()
+    .at(-1);
   const name = account?.displayName || t("you");
   return (
     <main className="profile-overview relative flex min-h-dvh flex-col gap-6 px-5 pb-[calc(8rem+var(--app-safe-bottom,0px))] pt-[calc(2rem+var(--app-safe-top,0px))] sm:px-6">
@@ -76,7 +90,7 @@ export function ProfileOverview({
             </Button>
           </div>
           <Badge variant="outline">
-            <Sparkles data-icon="inline-start" />
+            <Dumbbell data-icon="inline-start" />
             {t("journey")}
           </Badge>
         </div>
@@ -84,74 +98,59 @@ export function ProfileOverview({
       <Card className="profile-progress relative">
         <CardHeader className="sr-only">
           <CardTitle>{t("progress")}</CardTitle>
-          <CardDescription>{t("activityHint")}</CardDescription>
+          <CardDescription>{visual("viewTraining")}</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-6">
-          <div className="grid grid-cols-2 gap-3">
-            <div className="profile-stat profile-stat-current flex min-h-40 flex-col items-start justify-between gap-6 rounded-4xl p-5 sm:min-h-48">
-              <Badge>{t("now")}</Badge>
-              <div className="flex flex-col gap-2">
-                <p className="flex items-center gap-2 text-4xl font-semibold">
-                  <ArrowDown className="size-7 text-primary" />
-                  <span aria-label={t("noActivity")}>—</span>
-                </p>
-                <p className="text-sm font-medium">{t("lastDays")}</p>
-              </div>
-            </div>
-            <div className="profile-stat flex min-h-40 flex-col items-start justify-between gap-6 rounded-4xl border border-border p-5 sm:min-h-48">
-              <Badge variant="outline">{t("before")}</Badge>
-              <div className="flex flex-col gap-2 text-muted-foreground">
-                <p
-                  className="text-4xl font-semibold"
-                  aria-label={t("noActivity")}
-                >
-                  —
-                </p>
-                <p className="text-sm font-medium">{t("dailyAverage")}</p>
-              </div>
-            </div>
-          </div>
-          <p className="flex items-center justify-center gap-2 py-1 text-center font-semibold text-primary">
-            <Activity className="size-5 shrink-0" />
-            {t("motivation")}
-          </p>
-          <Separator />
-          <div className="grid grid-cols-2 gap-3">
-            <div className="flex flex-col items-center gap-3 rounded-3xl bg-muted p-4 text-center">
-              <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                <CalendarDays className="size-4 shrink-0" />
-                {t("memberSince")}
-              </p>
-              <p className="text-lg font-semibold">
-                {account?.createdAt ? (
-                  <time dateTime={account.createdAt}>
-                    {dateLabel(account.createdAt)}
-                  </time>
-                ) : (
-                  "—"
-                )}
-              </p>
-            </div>
-            <div className="flex flex-col items-center gap-3 rounded-3xl bg-muted p-4 text-center">
-              <p className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Flame className="size-4 shrink-0" />
-                {t("bestStreak")}
-              </p>
-              <p className="text-lg font-semibold" aria-label={t("noActivity")}>
-                —
-              </p>
-            </div>
-          </div>
-          <p className="text-center text-xs leading-5 text-muted-foreground">
-            {t("activityHint")}
-          </p>
+        <CardContent className="flex flex-col gap-5">
+          {account ? (
+            progress.isPending ? (
+              <Loading />
+            ) : progress.error ? (
+              <QueryError error={progress.error} retry={progress.refetch} />
+            ) : (
+              <dl className="profile-activity">
+                <div>
+                  <dt>{visual("completedWorkouts")}</dt>
+                  <dd data-metric="count">
+                    {new Intl.NumberFormat(locale).format(completed.length)}
+                  </dd>
+                </div>
+                <div>
+                  <dt>{visual("lastWorkout")}</dt>
+                  <dd>{latest ? dateLabel(latest) : visual("noneYet")}</dd>
+                </div>
+              </dl>
+            )
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              {visual("trainingProgressHint")}
+            </p>
+          )}
+          <Link href="/training" className="profile-training-link">
+            <span>
+              <Dumbbell size={19} />
+              {visual("viewTraining")}
+            </span>
+            <ArrowUpLeft size={19} className="ltr:rotate-90" />
+          </Link>
+          {account?.createdAt && (
+            <p className="flex items-center gap-2 border-t border-border pt-4 text-xs text-muted-foreground">
+              <CalendarDays size={14} />
+              {t("memberSince")}{" "}
+              <time dateTime={account.createdAt}>
+                {dateLabel(account.createdAt)}
+              </time>
+            </p>
+          )}
         </CardContent>
         <CardFooter>
           <Button
             variant="outline"
             className="w-full"
             disabled={refreshing}
-            onClick={refresh}
+            onClick={() => {
+              refresh();
+              if (account) void progress.refetch();
+            }}
           >
             <RefreshCw
               data-icon="inline-start"

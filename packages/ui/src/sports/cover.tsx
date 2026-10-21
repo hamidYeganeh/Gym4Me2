@@ -15,6 +15,29 @@ import { Input } from "../kit/Input";
 import { Field, FieldGroup, FieldLabel, FieldDescription } from "../kit/Field";
 import { Loading } from "../account/common";
 import { QueryError } from "./query-error";
+import { Dumbbell } from "lucide-react";
+
+/** Small public cover for catalog rows; a missing cover remains an honest icon. */
+export function ServiceCoverThumbnail({
+  cover,
+}: {
+  cover: ServiceCoverDto | null;
+}) {
+  const { api } = useApiContext();
+  const [failedId, setFailedId] = useState<string | null>(null);
+  if (!cover || failedId === cover.id)
+    return <Dumbbell size={23} aria-hidden="true" />;
+  return (
+    <Image
+      src={`${api.scope[1]}/sports/media/${encodeURIComponent(cover.id)}`}
+      alt=""
+      width={84}
+      height={84}
+      unoptimized
+      onError={() => setFailedId(cover.id)}
+    />
+  );
+}
 
 function CoverImage({
   cover,

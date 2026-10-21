@@ -1,6 +1,6 @@
 /* Public training shells/static assets only. Never cache an API response or private media. */
 // Bump with training client changes: offline reload must use the reviewed bundle.
-const CACHE = "gym4me-training-shell-v3";
+const CACHE = "gym4me-training-shell-v4";
 const shells = [
   "/training",
   "/training/plan",
@@ -8,7 +8,7 @@ const shells = [
   "/training/conversation",
 ];
 const asset = (path) =>
-  path.startsWith("/_next/static/") || path.startsWith("/images/exercises/");
+  path.startsWith("/_next/static/") || path.startsWith("/images/exercises/") || path === "/images/clubs/training.webp";
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {

@@ -34,7 +34,10 @@
   gap: 0.75rem;
   margin-bottom: 1.75rem;
 }
-.luma-guest-home { display: flex; flex-direction: column; }
+.luma-guest-home {
+  display: flex;
+  flex-direction: column;
+}
 .luma-header h1 {
   min-width: 0;
   font-size: 1.5rem;
@@ -96,7 +99,13 @@
   flex: none;
   border-radius: 1rem;
   background: var(--muted);
-  color: var(--primary);
+  color: var(--foreground);
+  overflow: hidden;
+}
+.luma-row-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .luma-row-copy {
   display: flex;
@@ -400,8 +409,8 @@
 @media (prefers-reduced-motion: no-preference) {
   .luma-navigation a {
     transition:
-      background-color 180ms ease,
-      color 180ms ease;
+      background-color 120ms ease-out,
+      color 120ms ease-out;
   }
 }
 
@@ -423,7 +432,12 @@
   font-size: 0.75rem;
 }
 .luma-shortcuts .luma-shortcut svg {
-  color: var(--primary);
+  color: var(--foreground);
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0.7rem;
+  border-radius: 1rem;
+  background: var(--muted);
 }
 .luma-sheet[data-slot="sheet-content"] {
   border-radius: 1.75rem 1.75rem 0 0;
@@ -440,6 +454,110 @@
 @media (prefers-reduced-motion: reduce) {
   .luma-sheet[data-slot="sheet-content"] {
     animation: none;
+    transition: none;
+  }
+}
+
+/* Editorial imagery stays on the next action; everyday rows remain quiet. */
+.luma-home-training {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 1rem;
+  min-height: 15rem;
+  padding: 1.4rem;
+  justify-content: end;
+  border-radius: 1.75rem;
+  color: #fff;
+  background:
+    linear-gradient(0deg, #101010e8, #10101038),
+    url("/images/clubs/training.webp") center 42% / cover;
+}
+.luma-home-training h2 {
+  font-size: 1.4rem;
+  font-weight: 650;
+  line-height: 1.65;
+  max-width: 24ch;
+  text-wrap: balance;
+}
+.luma-home-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.75rem;
+  color: #fff;
+  opacity: 0.85;
+}
+.luma-home-training-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #171717;
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+.luma-page .luma-empty--compact {
+  align-items: start;
+  flex-direction: row;
+  justify-content: start;
+  border-radius: 1.25rem;
+  padding: 1rem;
+  background: color-mix(in oklch, var(--muted) 60%, var(--background));
+  text-align: start;
+  gap: 0.75rem;
+}
+.luma-page .luma-empty--compact a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+.luma-row {
+  border-color: color-mix(in oklch, var(--border) 65%, transparent);
+  min-height: 6rem;
+}
+.luma-row-title {
+  font-weight: 650;
+  text-wrap: pretty;
+}
+.luma-section-title a {
+  font-size: 0.75rem;
+}
+.luma-shortcuts {
+  gap: 0.6rem;
+  padding-block: 0.25rem 0.75rem;
+}
+.luma-shortcuts .luma-shortcut {
+  flex-basis: 4.5rem;
+}
+.luma-pill {
+  font-weight: 500;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
+}
+.luma-header h1 {
+  font-size: 1.4rem;
+}
+.luma-page :is(.luma-icon, .luma-cta, .luma-row) {
+  transition:
+    background-color 120ms ease-out,
+    opacity 120ms ease-out;
+}
+.luma-page :is(.luma-icon, .luma-cta):active {
+  opacity: 0.72;
+}
+@media (hover: hover) {
+  .luma-page a.luma-row:hover {
+    background: color-mix(in oklch, var(--muted) 45%, transparent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .luma-page :is(.luma-icon, .luma-cta, .luma-row) {
     transition: none;
   }
 }

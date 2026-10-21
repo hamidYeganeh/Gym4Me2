@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Dumbbell,
   ArrowUpRight,
@@ -14,6 +15,7 @@ import {
   type TrainingWorkspace,
   type Workout,
   type Exercise,
+  type PlanContent,
 } from "@repo/api/profile";
 import {
   saveTrainingLocal,
@@ -33,12 +35,52 @@ import {
   useTrainingEvent,
 } from "./common";
 import { TrainingProgressPanel } from "./progress";
+import { SlidingSegments } from "../motion-controls";
 export function TrainingHome() {
   const t = useTranslations("Training");
   return (
     <TrainingGate title={t("title")} back="/">
       <HomeContent />
     </TrainingGate>
+  );
+}
+function PlanPreview({
+  content,
+  library,
+}: {
+  content: PlanContent;
+  library: Exercise[];
+}) {
+  const t = useTranslations("Training");
+  const exercises = content.days.flatMap((day) => day.exercises);
+  const previews = [...new Set(exercises.map((item) => item.exerciseId))]
+    .slice(0, 3)
+    .map((id) => library.find((item) => item.id === id))
+    .filter(Boolean);
+  return (
+    <div className="training-plan-preview">
+      <span className="training-muted">
+        {t("planSummary", {
+          days: content.days.length,
+          exercises: exercises.length,
+        })}
+      </span>
+      <div className="training-plan-thumbnails" aria-hidden="true">
+        {previews.map(
+          (exercise) =>
+            exercise && (
+              <Image
+                key={exercise.id}
+                src={exercise.illustration}
+                alt=""
+                width={42}
+                height={48}
+                unoptimized
+              />
+            ),
+        )}
+      </div>
+    </div>
   );
 }
 function HomeContent() {
@@ -113,19 +155,16 @@ function HomeContent() {
     coaching = d.relationships.filter((r) => r.coachId === owner);
   return (
     <>
-      <nav className="training-tabs" aria-label={t("title")}>
-        {(["today", "plans", "progress"] as const).map((k) => (
-          <Button
-            type="button"
-            key={k}
-            variant={tab === k ? "secondary" : "ghost"}
-            onClick={() => setTab(k)}
-            aria-pressed={tab === k}
-          >
-            {t(k)}
-          </Button>
-        ))}
-      </nav>
+      <SlidingSegments
+        className="training-tabs"
+        label={t("title")}
+        options={(["today", "plans", "progress"] as const).map((value) => ({
+          value,
+          label: t(value),
+        }))}
+        value={tab}
+        onChange={setTab}
+      />
       {pending.length > 0 && (
         <p className="training-notice" role="status">
           {t("pendingWorkouts", { count: pending.length })}
@@ -186,8 +225,27 @@ function HomeContent() {
                 {t("pendingSyncTitle")} · {item.workout.snapshot.title}
               </TrainingLink>
             ))}
+          {!!d.relationships.length && (
+            <TrainingCard title={t("collaboration")}>
+              {d.relationships.map((r) => (
+                <TrainingLink
+                  key={r.id}
+                  href={`/training/conversation?id=${r.id}`}
+                >
+                  <MessageCircle size={17} />
+                  {r.displayName ||
+                    t(r.coachId === owner ? "student" : "coach")}
+                </TrainingLink>
+              ))}
+            </TrainingCard>
+          )}
           {d.assignments.map((a) => (
-            <TrainingCard key={a.id} title={a.content.title}>
+            <TrainingCard
+              key={a.id}
+              title={a.content.title}
+              className="training-plan-card"
+            >
+              <PlanPreview content={a.content} library={library.data ?? []} />
               <p className="training-muted">
                 {t("version")} {fmt.number(a.version)} ·{" "}
                 {a.relationshipId ? t("coachPlan") : t("personalPlan")}
@@ -211,20 +269,6 @@ function HomeContent() {
           ))}
           {!d.assignments.length && !active && (
             <TrainingEmpty>{t("noAssigned")}</TrainingEmpty>
-          )}
-          {!!d.relationships.length && (
-            <TrainingCard title={t("collaboration")}>
-              {d.relationships.map((r) => (
-                <TrainingLink
-                  key={r.id}
-                  href={`/training/conversation?id=${r.id}`}
-                >
-                  <MessageCircle size={17} />
-                  {r.displayName ||
-                    t(r.coachId === owner ? "student" : "coach")}
-                </TrainingLink>
-              ))}
-            </TrainingCard>
           )}
           {!!coaching.length && (
             <TrainingCard title={t("coachWork")}>

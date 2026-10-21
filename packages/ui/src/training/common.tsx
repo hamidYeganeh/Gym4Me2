@@ -147,13 +147,15 @@ export function TrainingCard({
   title,
   children,
   actions,
+  className = "",
 }: {
   title?: string;
   children?: ReactNode;
   actions?: ReactNode;
+  className?: string;
 }) {
   return (
-    <section className="training-card">
+    <section className={`training-card ${className}`}>
       {(title || actions) && (
         <div className="training-card-heading">
           {title && <h2>{title}</h2>}

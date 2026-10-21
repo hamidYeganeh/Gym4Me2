@@ -11,8 +11,13 @@ import {
   Receipt,
   Ticket,
 } from "lucide-react";
-import { useLocale } from "@repo/i18n";
-import { useAccount } from "@repo/api/profile";
+import { useLocale, useTranslations } from "@repo/i18n";
+import {
+  useAccount,
+  useTrainingQuery,
+  type TrainingWorkspace,
+} from "@repo/api/profile";
+import { ServiceCoverThumbnail } from "@repo/ui/sports-cover";
 import { AuthWelcome } from "@repo/ui/account";
 import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
@@ -67,7 +72,13 @@ export function HomePage() {
 }
 function SignedInHome() {
   const t = useLuma();
+  const visual = useTranslations("Visual");
   const locale = useLocale();
+  const training = useTrainingQuery<TrainingWorkspace>("profile/training");
+  const active = training.data?.sessions.find(
+    (session) => session.state === "in_progress",
+  );
+  const nextPlan = training.data?.assignments[0];
   const bookings = useSportsQuery<BookingPageDto>(
     "sports/account/bookings/page",
     { tab: "upcoming", limit: 3 },
@@ -79,6 +90,24 @@ function SignedInHome() {
   const services = useSportsQuery<ServiceDto[]>("sports/services");
   return (
     <LumaPage title={t("home")} actions={<CreateAction />}>
+      <Link
+        className="luma-home-training"
+        href={active ? `/training/workout?id=${active.id}` : "/training"}
+      >
+        <span className="luma-home-eyebrow">
+          <Dumbbell size={15} />
+          {visual("yourNextMove")}
+        </span>
+        <h2>
+          {active?.snapshot.title ??
+            nextPlan?.content.title ??
+            visual("makeRoomForYou")}
+        </h2>
+        <span className="luma-home-training-action">
+          {active ? visual("continueWorkout") : visual("viewTraining")}
+          <Dumbbell size={17} />
+        </span>
+      </Link>
       <Section title={t("yourBookings")} href="/bookings">
         <QueryState query={bookings} compact>
           {bookings.data?.items.map((r) => (
@@ -121,27 +150,31 @@ function SignedInHome() {
           </Link>
         ))}
       </div>
-      {calendars.error?.status !== 401 && (
-        <Section title={t("yourCalendars")} href="/calendars?view=following">
-          <QueryState query={calendars}>
-            {calendars.data?.items.map((c) => (
-              <Row
-                key={c.id}
-                title={c.title}
-                href={`/calendars/detail?id=${c.id}`}
-                meta={c.description}
-              />
-            ))}
-            {!calendars.data?.items.length && <Empty compact />}
-          </QueryState>
-        </Section>
-      )}
+      {(calendars.isPending ||
+        calendars.error ||
+        Boolean(calendars.data?.items.length)) &&
+        calendars.error?.status !== 401 && (
+          <Section title={t("yourCalendars")} href="/calendars?view=following">
+            <QueryState query={calendars}>
+              {calendars.data?.items.map((c) => (
+                <Row
+                  key={c.id}
+                  title={c.title}
+                  href={`/calendars/detail?id=${c.id}`}
+                  meta={c.description}
+                />
+              ))}
+              {!calendars.data?.items.length && <Empty compact />}
+            </QueryState>
+          </Section>
+        )}
       <Section title={t("picked")} href="/services">
         <QueryState query={services}>
           {services.data?.slice(0, 6).map((s) => (
             <Row
               key={s.id}
               title={s.title}
+              icon={<ServiceCoverThumbnail cover={s.cover} />}
               meta={[s.clubName, stamp(s.nextStartAt, locale)]
                 .filter(Boolean)
                 .join(" · ")}

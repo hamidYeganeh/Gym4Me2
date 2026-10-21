@@ -1,4 +1,5 @@
 "use client";
+import "../workspace-design.css";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -159,7 +160,7 @@ export function SportsFrame({
   return (
     <main
       className={cn(
-        "min-h-dvh bg-muted/40 p-5 sm:p-10 [&_button]:min-h-11 [&_button]:min-w-11 [&_select]:min-h-11",
+        "gym-workspace min-h-dvh bg-muted/40 p-5 sm:p-10 [&_button]:min-h-11 [&_button]:min-w-11 [&_select]:min-h-11",
         className,
       )}
     >
@@ -1799,7 +1800,7 @@ export function SportsAdmin() {
     }[];
   }>("admin/sports", undefined, true, true);
   return (
-    <main className="min-h-dvh bg-muted/40 p-5 sm:p-10">
+    <main className="gym-workspace min-h-dvh bg-muted/40 p-5 sm:p-10">
       <div className="mx-auto max-w-6xl">
         <header className="flex justify-between mb-8">
           <h1 className="text-2xl font-bold">{t("operations")}</h1>

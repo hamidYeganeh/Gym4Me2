@@ -1,0 +1,189 @@
+/* Shared account surfaces, intentionally scoped away from catalog cards. */
+.account-design,
+.mobile-page,
+.profile-overview {
+  --surface-soft: color-mix(in oklch, var(--muted) 65%, var(--background));
+  --surface-line: color-mix(in oklch, var(--border) 65%, transparent);
+  color: var(--foreground);
+  text-align: start;
+}
+.application-frame .account-design {
+  background: var(--background);
+}
+.account-design-header {
+  z-index: 20;
+  background: color-mix(in srgb, var(--background) 94%, transparent);
+  backdrop-filter: blur(18px);
+  margin-inline: -1.25rem;
+  padding-inline: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.account-design-header h1,
+.mobile-page > header h1 {
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  line-height: 1.55;
+}
+.account-design-content {
+  min-width: 0;
+}
+.account-design-content > :is(article, form).border,
+.account-design [data-slot="card"],
+.mobile-page [data-slot="card"] {
+  border-color: var(--surface-line);
+  box-shadow: 0 3px 18px color-mix(in srgb, var(--foreground) 2%, transparent);
+  border-radius: 1.5rem;
+}
+.account-design :is(input, select, textarea),
+.mobile-page :is(input, select, textarea) {
+  font-size: max(1rem, 16px);
+}
+.account-design [data-slot="card-description"],
+.mobile-page [data-slot="card-description"] {
+  max-width: 65ch;
+  line-height: 1.8;
+}
+.account-design :is(h2, h3),
+.mobile-page :is(h2, h3) {
+  text-wrap: pretty;
+}
+.account-design [data-slot="avatar-fallback"],
+.profile-overview [data-slot="avatar-fallback"] {
+  background: var(--surface-soft);
+  color: var(--foreground);
+  font-weight: 600;
+}
+.coach-directory-search {
+  display: flex;
+  gap: 0.65rem;
+  align-items: end;
+}
+.coach-directory-search > :first-child {
+  flex: 1;
+  min-width: 0;
+}
+.coach-directory-filters {
+  margin-top: 1rem;
+  color: var(--muted-foreground);
+}
+.coach-directory-filters summary {
+  cursor: pointer;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+}
+.coach-directory-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+  color: var(--foreground);
+}
+.coach-directory-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: 1.35rem;
+  border: 1px solid var(--surface-line);
+  border-radius: 1.75rem;
+  background: var(--card);
+}
+.coach-directory-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+}
+.coach-directory-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1.4rem;
+  background: color-mix(in oklch, var(--primary) 13%, var(--muted));
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.coach-directory-card h2 {
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+.coach-directory-card p {
+  color: var(--muted-foreground);
+  font-size: 0.85rem;
+  line-height: 1.9;
+}
+.coach-directory-tags {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+.coach-directory-tags span {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 0.65rem;
+  background: var(--surface-soft);
+}
+.coach-directory-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-block-start: 1px solid var(--surface-line);
+  padding-block-start: 1rem;
+}
+.coach-directory-footer > span {
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+.profile-activity {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.profile-activity > div {
+  border-radius: 1.25rem;
+  background: var(--surface-soft);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.85rem;
+}
+.profile-activity dt {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+.profile-activity dd {
+  font-weight: 650;
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+}
+.profile-activity dd[data-metric="count"] {
+  font-size: 2.4rem;
+  line-height: 1;
+}
+.profile-training-link {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0 0.25rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.profile-training-link span {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .account-design-header {
+    backdrop-filter: none;
+  }
+}

@@ -1,7 +1,7 @@
 "use client";
 import { useTrainingEvent } from "@repo/ui/training";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
-import { ServiceCover } from "@repo/ui/sports-cover";
+import { ServiceCover, ServiceCoverThumbnail } from "@repo/ui/sports-cover";
 import Link from "next/link";
 import { useDeferredValue, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -53,6 +53,7 @@ export function ServicesPage({
           <Row
             key={s.id}
             title={s.title}
+            icon={<ServiceCoverThumbnail cover={s.cover} />}
             meta={[s.clubName, stamp(s.nextStartAt, locale)]
               .filter(Boolean)
               .join(" · ")}

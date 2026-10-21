@@ -21,7 +21,8 @@
     "./sports-cover": "./src/sports/cover.tsx",
     "./sports-messages": "./src/sports/host-conversations.tsx",
     "./sports-host-conversation": "./src/sports/host-conversation.tsx",
-    "./training": "./src/training/index.ts"
+    "./training": "./src/training/index.ts",
+    "./motion-controls": "./src/motion-controls.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

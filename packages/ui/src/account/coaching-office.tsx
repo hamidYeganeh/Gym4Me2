@@ -1,4 +1,5 @@
 "use client";
+import "../workspace-design.css";
 import Link from "next/link";
 import { useState, useRef } from "react";
 import { useTranslations } from "@repo/i18n";
@@ -30,7 +31,7 @@ import {
 export function CoachingOffice({ surface }: { surface: "business" | "admin" }) {
   const t = useTranslations("Practice");
   return (
-    <main className="mx-auto min-h-dvh max-w-5xl space-y-6 px-5 py-10">
+    <main className="gym-workspace mx-auto min-h-dvh max-w-5xl space-y-6 px-5 py-10">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold">
           {t(surface === "admin" ? "coachReview" : "coachingManagement")}

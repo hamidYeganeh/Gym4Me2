@@ -2247,6 +2247,19 @@
     "performanceHint": "The highest recorded value in each workout is shown. Missing values are left out.",
     "performanceMetric": "Compare by",
     "noMetricData": "No values recorded for this exercise and metric yet.",
-    "movement": "Exercise"
+    "movement": "Exercise",
+    "planSummary": "{days} days · {exercises} exercises"
+  },
+  "Visual": {
+    "yourNextMove": "Your next move",
+    "makeRoomForYou": "Make a little time for you",
+    "continueWorkout": "Continue workout",
+    "viewTraining": "Go to training",
+    "moreFilters": "More filters",
+    "meetCoach": "Meet your coach",
+    "completedWorkouts": "Completed workouts",
+    "lastWorkout": "Last workout",
+    "noneYet": "Not recorded yet",
+    "trainingProgressHint": "Sign in to follow your plans and training here."
   }
 }

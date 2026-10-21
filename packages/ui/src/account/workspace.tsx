@@ -1,4 +1,5 @@
 "use client";
+import "../workspace-design.css";
 import { DemoPanel } from "../training/service-reviews";
 import { useTranslations, useLocale, getDirection } from "@repo/i18n";
 
@@ -266,7 +267,7 @@ export function AccountWorkspace({
     <div
       ref={workspace}
       dir={getDirection(locale)}
-      className="min-h-dvh bg-muted/25 lg:flex"
+      className="gym-workspace min-h-dvh bg-muted/25 lg:flex"
     >
       {client !== "application" && (
         <aside className="flex flex-col border-b bg-background p-5 lg:sticky lg:top-0 lg:h-dvh lg:w-64 lg:shrink-0 lg:overflow-y-auto lg:border-b-0 lg:border-e">

@@ -22,6 +22,7 @@ import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
 import { accountRecovery } from "@repo/ui/lib/account-recovery";
 import { AuthRequired } from "@repo/ui/account";
 import "./luma.css";
+import { SlidingSegments } from "@repo/ui/motion-controls";
 export function useLuma() {
   return useTranslations("Luma");
 }
@@ -380,22 +381,13 @@ export function Segments({
   onChange: (v: string) => void;
 }) {
   return (
-    <div
+    <SlidingSegments
       className="luma-segments"
-      role="group"
-      aria-label={options.map((o) => o.label).join(" / ")}
-    >
-      {options.map((o) => (
-        <button
-          type="button"
-          key={o.value}
-          aria-pressed={o.value === value}
-          onClick={() => onChange(o.value)}
-        >
-          {o.label}
-        </button>
-      ))}
-    </div>
+      options={options}
+      value={value}
+      onChange={onChange}
+      label={options.map((option) => option.label).join(" / ")}
+    />
   );
 }
 export function Field({

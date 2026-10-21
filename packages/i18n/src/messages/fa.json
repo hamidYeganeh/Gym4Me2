@@ -2247,6 +2247,19 @@
     "performanceHint": "بیشترین مقدار ثبت‌شده در هر تمرین نمایش داده می‌شود؛ مقدار ثبت‌نشده در نمودار نمی‌آید.",
     "performanceMetric": "معیار مقایسه",
     "noMetricData": "برای این حرکت و معیار هنوز مقداری ثبت نشده است.",
-    "movement": "حرکت"
+    "movement": "حرکت",
+    "planSummary": "{days} روز · {exercises} حرکت"
+  },
+  "Visual": {
+    "yourNextMove": "قدم بعدی تو",
+    "makeRoomForYou": "یک وقت کوچک، برای خودت",
+    "continueWorkout": "ادامهٔ تمرین",
+    "viewTraining": "رفتن به تمرین",
+    "moreFilters": "فیلترهای بیشتر",
+    "meetCoach": "آشنایی با مربی",
+    "completedWorkouts": "تمرین‌های کامل‌شده",
+    "lastWorkout": "آخرین تمرین",
+    "noneYet": "هنوز ثبت نشده",
+    "trainingProgressHint": "با ورود به حساب، برنامه‌ها و مسیر تمرینت را اینجا دنبال کن."
   }
 }

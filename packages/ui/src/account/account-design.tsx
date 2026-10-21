@@ -7,6 +7,7 @@ import { ChevronLeft, Dumbbell, Home, UserRound } from "lucide-react";
 import { Button } from "../kit/Button";
 import { Avatar, AvatarFallback } from "../kit/Avatar";
 import { cn } from "../lib/utils";
+import "./account-design.css";
 
 export function AccountAvatar({
   name,
@@ -80,7 +81,9 @@ export function AccountDesignPage({
           {actions}
         </div>
       </header>
-      <div className="flex flex-col gap-7 pb-6">{children}</div>
+      <div className="account-design-content flex flex-col gap-6 pb-6">
+        {children}
+      </div>
       <AccountNavigation />
     </main>
   );
