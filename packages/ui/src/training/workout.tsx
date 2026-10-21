@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Timer, X, CheckCircle2, RotateCcw } from "lucide-react";
 import { useTranslations, useLocale } from "@repo/i18n";
@@ -30,6 +30,7 @@ import {
   useTrainingAction,
   useTrainingLocale,
 } from "./common";
+import { replaceRemainingSets } from "./workout-state";
 type LocalWorkout = {
   workout: Workout;
   pending: WorkoutCommand | null;
@@ -463,7 +464,9 @@ function WorkoutContent() {
         </TrainingCard>
       )}
       {exercises.map((p) => {
-        const sample = w.logs.find((l) => l.prescriptionId === p.id),
+        const sample =
+            w.logs.find((l) => l.prescriptionId === p.id && !l.done) ??
+            w.logs.find((l) => l.prescriptionId === p.id),
           e = library.find(
             (e) => e.id === (sample?.exerciseId ?? p.exerciseId),
           ),
@@ -500,25 +503,17 @@ function WorkoutContent() {
                   {t("alternative")}
                   <select
                     value={e?.id ?? p.exerciseId}
+                    disabled={
+                      w.logs.filter((l) => l.prescriptionId === p.id && l.done)
+                        .length >= p.sets
+                    }
                     onChange={(event) =>
                       change((next) => {
-                        for (let i = 1; i <= p.sets; i++) {
-                          const log = next.logs.find(
-                            (l) => l.prescriptionId === p.id && l.set === i,
-                          );
-                          if (log) log.exerciseId = event.target.value;
-                          else
-                            next.logs.push({
-                              prescriptionId: p.id,
-                              set: i,
-                              exerciseId: event.target.value,
-                              reps: null,
-                              seconds: null,
-                              load: null,
-                              rpe: null,
-                              done: false,
-                            });
-                        }
+                        next.logs = replaceRemainingSets(
+                          next.logs,
+                          p,
+                          event.target.value,
+                        );
                       })
                     }
                   >
@@ -538,114 +533,131 @@ function WorkoutContent() {
               const row = w.logs.find(
                   (l) => l.prescriptionId === p.id && l.set === set,
                 ),
-                exerciseId = e?.id ?? p.exerciseId;
+                exerciseId = row?.exerciseId ?? e?.id ?? p.exerciseId;
               return (
-                <div className="training-set" key={set} data-done={row?.done}>
-                  <span className="training-set-number">{fmt.number(set)}</span>
-                  <label>
-                    {t(p.reps === null ? "seconds" : "reps")}
-                    <input
-                      aria-label={`${t("set")} ${set} ${t(p.reps === null ? "seconds" : "reps")}`}
-                      type="number"
-                      inputMode="numeric"
-                      min={0}
-                      max={p.reps === null ? 86400 : 1000}
+                <Fragment key={set}>
+                  {row?.exerciseId && row.exerciseId !== e?.id && (
+                    <p className="training-muted">
+                      {t("set")} {fmt.number(set)} ·{" "}
+                      {locale === "fa"
+                        ? (library.find((ex) => ex.id === row.exerciseId)
+                            ?.nameFa ?? row.exerciseId)
+                        : (library.find((ex) => ex.id === row.exerciseId)
+                            ?.nameEn ?? row.exerciseId)}
+                    </p>
+                  )}
+                  <div className="training-set" data-done={row?.done}>
+                    <span className="training-set-number">
+                      {fmt.number(set)}
+                    </span>
+                    <label>
+                      {t(p.reps === null ? "seconds" : "reps")}
+                      <input
+                        aria-label={`${t("set")} ${set} ${t(p.reps === null ? "seconds" : "reps")}`}
+                        type="number"
+                        inputMode="numeric"
+                        min={0}
+                        max={p.reps === null ? 86400 : 1000}
+                        disabled={finished}
+                        placeholder={String(p.reps ?? p.seconds ?? 0)}
+                        value={
+                          (p.reps === null ? row?.seconds : row?.reps) ?? ""
+                        }
+                        onChange={(event) =>
+                          updateLog(
+                            p.id,
+                            set,
+                            exerciseId,
+                            p.reps === null
+                              ? {
+                                  seconds:
+                                    event.target.value === ""
+                                      ? null
+                                      : Number(event.target.value),
+                                }
+                              : {
+                                  reps:
+                                    event.target.value === ""
+                                      ? null
+                                      : Number(event.target.value),
+                                },
+                          )
+                        }
+                      />
+                    </label>
+                    <label>
+                      {t("load")}
+                      <input
+                        aria-label={`${t("set")} ${set} ${t("load")}`}
+                        type="number"
+                        inputMode="decimal"
+                        min={0}
+                        max={1000}
+                        step="0.5"
+                        disabled={finished}
+                        placeholder={String(p.load ?? 0)}
+                        value={row?.load ?? ""}
+                        onChange={(event) =>
+                          updateLog(p.id, set, exerciseId, {
+                            load:
+                              event.target.value === ""
+                                ? null
+                                : Number(event.target.value),
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      {t("rpe")}
+                      <input
+                        aria-label={`${t("set")} ${set} ${t("rpe")}`}
+                        type="number"
+                        inputMode="decimal"
+                        min={1}
+                        max={10}
+                        step="0.5"
+                        disabled={finished}
+                        value={row?.rpe ?? ""}
+                        onChange={(event) =>
+                          updateLog(p.id, set, exerciseId, {
+                            rpe:
+                              event.target.value === ""
+                                ? null
+                                : Number(event.target.value),
+                          })
+                        }
+                      />
+                    </label>
+                    <Button
+                      type="button"
+                      aria-label={`${t(row?.done ? "uncheckSet" : "completeSet")} ${set}`}
+                      aria-pressed={!!row?.done}
                       disabled={finished}
-                      placeholder={String(p.reps ?? p.seconds ?? 0)}
-                      value={(p.reps === null ? row?.seconds : row?.reps) ?? ""}
-                      onChange={(event) =>
+                      size="icon"
+                      variant={row?.done ? "secondary" : "outline"}
+                      onClick={() => {
                         updateLog(
                           p.id,
                           set,
                           exerciseId,
-                          p.reps === null
-                            ? {
-                                seconds:
-                                  event.target.value === ""
-                                    ? null
-                                    : Number(event.target.value),
-                              }
-                            : {
-                                reps:
-                                  event.target.value === ""
-                                    ? null
-                                    : Number(event.target.value),
-                              },
-                        )
-                      }
-                    />
-                  </label>
-                  <label>
-                    {t("load")}
-                    <input
-                      aria-label={`${t("set")} ${set} ${t("load")}`}
-                      type="number"
-                      inputMode="decimal"
-                      min={0}
-                      max={1000}
-                      step="0.5"
-                      disabled={finished}
-                      placeholder={String(p.load ?? 0)}
-                      value={row?.load ?? ""}
-                      onChange={(event) =>
-                        updateLog(p.id, set, exerciseId, {
-                          load:
-                            event.target.value === ""
-                              ? null
-                              : Number(event.target.value),
-                        })
-                      }
-                    />
-                  </label>
-                  <label>
-                    {t("rpe")}
-                    <input
-                      aria-label={`${t("set")} ${set} ${t("rpe")}`}
-                      type="number"
-                      inputMode="decimal"
-                      min={1}
-                      max={10}
-                      step="0.5"
-                      disabled={finished}
-                      value={row?.rpe ?? ""}
-                      onChange={(event) =>
-                        updateLog(p.id, set, exerciseId, {
-                          rpe:
-                            event.target.value === ""
-                              ? null
-                              : Number(event.target.value),
-                        })
-                      }
-                    />
-                  </label>
-                  <Button
-                    type="button"
-                    aria-label={`${t(row?.done ? "uncheckSet" : "completeSet")} ${set}`}
-                    aria-pressed={!!row?.done}
-                    disabled={finished}
-                    size="icon"
-                    variant={row?.done ? "secondary" : "outline"}
-                    onClick={() => {
-                      updateLog(
-                        p.id,
-                        set,
-                        exerciseId,
-                        {
-                          done: !row?.done,
-                          reps: p.reps === null ? null : (row?.reps ?? p.reps),
-                          seconds:
-                            p.reps === null
-                              ? (row?.seconds ?? p.seconds)
-                              : null,
-                          load: row?.load ?? p.load,
-                        },
-                        !row?.done ? p.restSeconds : undefined,
-                      );
-                    }}
-                  >
-                    <Check size={19} />
-                  </Button>
-                </div>
+                          {
+                            done: !row?.done,
+                            reps:
+                              p.reps === null ? null : (row?.reps ?? p.reps),
+                            seconds:
+                              p.reps === null
+                                ? (row?.seconds ?? p.seconds)
+                                : null,
+                            load: row?.load ?? p.load,
+                          },
+                          !row?.done ? p.restSeconds : undefined,
+                        );
+                      }}
+                    >
+                      <Check size={19} />
+                    </Button>
+                  </div>
+                </Fragment>
               );
             })}
           </TrainingCard>

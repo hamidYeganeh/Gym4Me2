@@ -77,8 +77,12 @@ export async function removeTrainingLocal(
 }
 export async function clearTrainingLocal() {
   epoch++;
-  if (typeof localStorage !== "undefined")
-    localStorage.removeItem("gym4me.training.owner");
+  try {
+    if (typeof localStorage !== "undefined")
+      localStorage.removeItem("gym4me.training.owner");
+  } catch {
+    /* A restricted preference store must not prevent IndexedDB cleanup. */
+  }
   if (typeof window !== "undefined")
     window.dispatchEvent(new Event("gym4me:training-reset"));
   if (typeof indexedDB !== "undefined")

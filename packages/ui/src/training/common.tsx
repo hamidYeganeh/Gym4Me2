@@ -12,6 +12,8 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { useAccount, useTrainingCommand } from "@repo/api/profile";
 import { useApiContext } from "@repo/api/provider";
+import { clearTrainingLocal } from "@repo/api/training-offline";
+import { trainingIdentity } from "./identity";
 import { AccountDesignPage } from "../account/account-design";
 import { ErrorNotice, Loading, QueryError } from "../account/common";
 import { Button } from "../kit/Button";
@@ -68,24 +70,60 @@ export function TrainingGate({
   }, []);
   const q = useAccount(),
     online = useTrainingOnline(),
+    { resetSession } = useApiContext(),
     t = useTranslations("Training");
   const [cached, setCached] = useState("");
+  const denied = useRef(false),
+    wasOnline = useRef(true);
   useEffect(() => {
     const reset = () => setCached("");
     window.addEventListener("gym4me:training-reset", reset);
     return () => window.removeEventListener("gym4me:training-reset", reset);
   }, []);
   useEffect(() => {
-    setCached(localStorage.getItem("gym4me.training.owner") ?? "");
+    try {
+      setCached(localStorage.getItem("gym4me.training.owner") ?? "");
+    } catch {
+      /* Online identity still works without persistent storage. */
+    }
   }, []);
   useEffect(() => {
-    if (q.data) {
-      localStorage.setItem("gym4me.training.owner", q.data.id);
-      setCached(q.data.id);
-    }
-  }, [q.data]);
-  const rejected = q.error && [401, 403].includes(q.error.status);
-  const owner = rejected ? "" : (q.data?.id ?? (!online ? cached : ""));
+    if (!q.data || q.error) return;
+    denied.current = false;
+    const id = q.data.id;
+    let cancelled = false;
+    void (async () => {
+      let previous = "";
+      try {
+        previous = localStorage.getItem("gym4me.training.owner") ?? "";
+      } catch {
+        /* Storage may be unavailable. */
+      }
+      if (previous && previous !== id)
+        await clearTrainingLocal().catch(() => undefined);
+      if (cancelled) return;
+      try {
+        localStorage.setItem("gym4me.training.owner", id);
+      } catch {
+        /* Current online identity remains usable. */
+      }
+      setCached(id);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [q.data, q.error]);
+  useEffect(() => {
+    if (q.error?.status !== 401 || denied.current) return;
+    denied.current = true;
+    setCached("");
+    void resetSession();
+  }, [q.error?.status, resetSession]);
+  useEffect(() => {
+    if (online && !wasOnline.current) void q.refetch();
+    wasOnline.current = online;
+  }, [online, q.refetch]);
+  const owner = trainingIdentity(q.data?.id, cached, q.error?.status, !online);
   return (
     <AccountDesignPage title={title} backHref={back}>
       <div className="training-root">
