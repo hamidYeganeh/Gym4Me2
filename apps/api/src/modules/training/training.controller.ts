@@ -89,6 +89,19 @@ export class TrainingController {
       ),
     );
   }
+  @Post('plans/:id/review') @SchemaBody(c.reviewPlan) review(
+    @Req() req: AuthRequest,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ) {
+    return dto(
+      this.training.review(
+        coachingActor(req),
+        uuid(id),
+        parse(c.reviewPlan, body),
+      ),
+    );
+  }
   @Get('progress') progress(@Req() req: AuthRequest) {
     return dto(this.training.progress(coachingActor(req)));
   }

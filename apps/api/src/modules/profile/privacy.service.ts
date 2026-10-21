@@ -433,7 +433,7 @@ export class PrivacyService {
           training: {
             plans: (
               await tx.execute(
-                sql`SELECT p.id,p.title,p.draft,p.is_template,p.created_at FROM training_plans p WHERE p.athlete_id=${userId} OR (p.owner_id=${userId} AND p.relationship_id IS NULL)`,
+                sql`SELECT p.id,CASE WHEN p.owner_id=${userId} THEN p.title ELSE (SELECT content->>'title' FROM training_versions WHERE plan_id=p.id ORDER BY version DESC LIMIT 1) END AS title,CASE WHEN p.owner_id=${userId} THEN p.draft ELSE NULL END AS draft,p.is_template,p.created_at FROM training_plans p WHERE (p.athlete_id=${userId} AND EXISTS(SELECT 1 FROM training_assignments a JOIN training_versions v ON v.id=a.version_id WHERE v.plan_id=p.id AND a.athlete_id=${userId})) OR (p.owner_id=${userId} AND p.relationship_id IS NULL)`,
               )
             ).rows,
             versions: (

@@ -16,6 +16,7 @@ import {
 import { seedUiCatalog } from './ui.catalog-fixture';
 import { ClubCommunityService } from '../src/modules/clubs/club.community.service';
 import type { Principal } from '../src/modules/auth/auth.service';
+import { RetentionService } from '../src/modules/profile/retention.service';
 import { PrivacyService } from '../src/modules/profile/privacy.service';
 import { StorageService } from '../src/modules/clubs/storage.service';
 import { rows } from '../src/modules/commerce/commerce.service';
@@ -517,7 +518,7 @@ it('requires completed service proof and retains reasoned report history', async
     sql`INSERT INTO sport_orders(id,user_id,organization_id,service_id,version_id,amount_minor,snapshot,status,idempotency_key,request_hash,expires_at) VALUES(${order},${person.id},${club.id},${service},${version},0,'{}','paid',${randomUUID()},'fixture',now()+interval '1 day')`,
   );
   await db.execute(
-    sql`INSERT INTO sport_reservations(id,user_id,occurrence_id,order_id,status) VALUES(${reservation},${person.id},${occurrence},${order},'completed')`,
+    sql`INSERT INTO sport_reservations(id,user_id,occurrence_id,order_id,status,expires_at) VALUES(${reservation},${person.id},${occurrence},${order},'completed',now()+interval '1 day')`,
   );
   const review = await community.createReview(
     principal,
@@ -565,6 +566,59 @@ it('requires completed service proof and retains reasoned report history', async
     )?.history,
   ).toHaveLength(1);
 });
+it('does not expose unpublished coach drafts or later draft edits in athlete exports', async () => {
+  const p = await create(coach, relation);
+  p.content.title = 'Unpublished private coach draft';
+  await training.save(coach, { ...p, revision: 1, operationId: randomUUID() });
+  await expect(training.plan(athlete, p.id)).rejects.toThrow();
+  expect(
+    JSON.stringify(await testingModule.get(PrivacyService).export(athlete)),
+  ).not.toContain(p.content.title);
+  await publish(coach, p.id, 2);
+  await training.save(coach, {
+    ...p,
+    revision: 3,
+    operationId: randomUUID(),
+    content: { ...p.content, title: 'Later unpublished coach edit' },
+  });
+  const data = JSON.stringify(
+    await testingModule.get(PrivacyService).export(athlete),
+  );
+  expect(data).toContain('Unpublished private coach draft');
+  expect(data).not.toContain('Later unpublished coach edit');
+  expect((await training.plan(athlete, p.id)).title).toBe(
+    'Unpublished private coach draft',
+  );
+  expect(
+    (await collaboration.workspace(athlete, relation)).plans.find(
+      (plan) => plan.id === p.id,
+    )?.title,
+  ).toBe('Unpublished private coach draft');
+});
+it('surfaces due coach plans and records a revision-checked review', async () => {
+  const p = await create(coach, relation);
+  await publish(coach, p.id);
+  await db.execute(
+    sql`UPDATE training_plans SET review_due_at=now()-interval '1 day' WHERE id=${p.id}`,
+  );
+  const before = (await training.workspace(coach)).tasks.find(
+    (t) => t.relationship_id === relation,
+  );
+  expect(Number(before?.plans)).toBeGreaterThan(0);
+  const input = { operationId: randomUUID(), revision: 2 };
+  await training.review(coach, p.id, input);
+  await training.review(coach, p.id, input);
+  const after = (await training.workspace(coach)).tasks.find(
+    (t) => t.relationship_id === relation,
+  );
+  expect(Number(after?.plans)).toBe(Number(before?.plans) - 1);
+  await expect(
+    training.review(athlete, p.id, { operationId: randomUUID(), revision: 3 }),
+  ).rejects.toThrow();
+  await expect(
+    training.review(coach, p.id, { operationId: randomUUID(), revision: 2 }),
+  ).rejects.toThrow();
+});
 it('exports owned training data without another athlete’s private records', async () => {
   const data = await testingModule.get(PrivacyService).export(athlete);
   expect(JSON.stringify(data)).toContain('training');
@@ -574,15 +628,63 @@ it('revokes coach records, images and replayed plan writes at relationship end w
   const p = await create(coach, relation),
     assignment = await publish(coach, p.id),
     input = command(assignment, p.content);
-  input.state = 'completed';
   input.shared = true;
   await training.sync(athlete, input);
+  const checkinInput = {
+    operationId: randomUUID(),
+    weekStart: '2025-01-04',
+    adherence: 2,
+    difficulty: 3,
+    body: 'Before relationship ended',
+    revision: 0,
+  };
+  const checkin = await collaboration.checkin(athlete, relation, checkinInput);
+  const feedbackInput = {
+    operationId: randomUUID(),
+    body: 'Before end',
+    revision: 1,
+  };
+  await collaboration.feedback(
+    coach,
+    relation,
+    'checkin',
+    String(checkin.id),
+    feedbackInput,
+  );
+  const messageInput = {
+    operationId: randomUUID(),
+    body: 'Before end',
+    workoutId: null,
+  };
+  await collaboration.send(athlete, relation, messageInput);
   const imageMessage = (
     await collaboration.messages(coach, relation)
   ).items.find((m) => m.has_image);
   await db.execute(
     sql`UPDATE coaching_relationships SET status='ended' WHERE id=${relation}`,
   );
+  const completed = await training.sync(athlete, {
+    ...input,
+    state: 'completed',
+    revision: 1,
+    operationId: randomUUID(),
+  });
+  expect(completed.shared).toBe(false);
+  await expect(
+    collaboration.checkin(athlete, relation, checkinInput),
+  ).rejects.toThrow();
+  await expect(
+    collaboration.feedback(
+      coach,
+      relation,
+      'checkin',
+      String(checkin.id),
+      feedbackInput,
+    ),
+  ).rejects.toThrow();
+  await expect(
+    collaboration.send(athlete, relation, messageInput),
+  ).rejects.toThrow();
   await expect(collaboration.workspace(coach, relation)).rejects.toThrow();
   await expect(training.save(coach, p)).rejects.toThrow();
   if (imageMessage)
@@ -597,4 +699,82 @@ it('revokes coach records, images and replayed plan writes at relationship end w
       (a) => a.id === assignment,
     ),
   ).toBe(true);
+});
+
+it('erases training history and private images while preserving another athlete', async () => {
+  const p = await create(stranger),
+    assignment = await publish(stranger, p.id);
+  const input = command(assignment, p.content);
+  input.state = 'completed';
+  await training.sync(stranger, input);
+  await training.measure(stranger, {
+    kind: 'weight',
+    value: 80,
+    measuredOn: today,
+    operationId: randomUUID(),
+  });
+  const [r] = await rows<{ id: string }>(
+    db,
+    sql`INSERT INTO coaching_relationships(coach_id,student_id,status) VALUES(${coach},${stranger},'active') RETURNING id`,
+  );
+  const buffer = await sharp({
+    create: { width: 2, height: 2, channels: 3, background: '#abc' },
+  })
+    .png()
+    .toBuffer();
+  const message = await collaboration.send(
+    stranger,
+    r.id,
+    {
+      operationId: randomUUID(),
+      body: 'Private deletion test',
+      workoutId: input.id,
+    },
+    {
+      buffer,
+      size: buffer.length,
+      mimetype: 'image/png',
+    } as Express.Multer.File,
+  );
+  const [media] = await rows<{ image_key: string }>(
+    db,
+    sql`SELECT image_key FROM training_messages WHERE id=${String(message.id)}`,
+  );
+  expect(files.has(media.image_key)).toBe(true);
+  await db.execute(
+    sql`INSERT INTO account_deletion_requests(user_id,eligible_after) VALUES(${stranger},now()-interval '1 day')`,
+  );
+  await db.execute(
+    sql`UPDATE users SET deletion_pending=true WHERE id=${stranger}`,
+  );
+  const result = await testingModule.get(RetentionService).run(true);
+  expect(result.deletedAccounts).toBe(1);
+  expect(files.has(media.image_key)).toBe(false);
+  expect(
+    await rows(
+      db,
+      sql`SELECT id FROM training_plans WHERE athlete_id=${stranger}`,
+    ),
+  ).toHaveLength(0);
+  expect(
+    await rows(
+      db,
+      sql`SELECT id FROM training_sessions WHERE athlete_id=${stranger}`,
+    ),
+  ).toHaveLength(0);
+  expect(
+    await rows(
+      db,
+      sql`SELECT id FROM training_measurements WHERE athlete_id=${stranger}`,
+    ),
+  ).toHaveLength(0);
+  expect(
+    await rows(
+      db,
+      sql`SELECT id FROM training_messages WHERE id=${String(message.id)}`,
+    ),
+  ).toHaveLength(0);
+  expect(
+    (await training.workspace(athlete)).assignments.length,
+  ).toBeGreaterThan(0);
 });

@@ -2235,10 +2235,13 @@
     "imageLimit": "تصویر باید حداکثر ۳ مگابایت باشد.",
     "saveFirst": "پیش‌نویس هنوز ذخیره نشده؛ دوباره تلاش کن.",
     "read": "خوانده شد",
-    "followupCounts": "{workouts} تمرین، {messages} پیام و {checkins} گزارش نیازمند بررسی",
+    "followupCounts": "{plans} برنامه، {workouts} تمرین، {messages} پیام و {checkins} گزارش نیازمند بررسی",
     "pendingSyncTitle": "تکمیل همگام‌سازی تمرین",
     "pendingWorkouts": "{count} تمرین روی دستگاه منتظر ارسال است",
     "startFromTemplate": "شروع از الگوی خودم",
-    "blankPlan": "برنامهٔ خالی"
+    "blankPlan": "برنامهٔ خالی",
+    "nextPlanReview": "بازبینی بعدی برنامه",
+    "markPlanReviewed": "برنامه را بررسی کردم",
+    "editPlan": "ویرایش برنامه"
   }
 }

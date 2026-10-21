@@ -2235,10 +2235,13 @@
     "imageLimit": "Images must be no larger than 3 MiB.",
     "saveFirst": "Draft has not been saved yet. Retry.",
     "read": "Read",
-    "followupCounts": "{workouts} workouts, {messages} messages and {checkins} check-ins to review",
+    "followupCounts": "{plans} plans, {workouts} workouts, {messages} messages and {checkins} check-ins to review",
     "pendingSyncTitle": "Finish syncing workout",
     "pendingWorkouts": "{count} workouts on this device are waiting to sync",
     "startFromTemplate": "Start from my template",
-    "blankPlan": "Blank plan"
+    "blankPlan": "Blank plan",
+    "nextPlanReview": "Next plan review",
+    "markPlanReviewed": "Mark plan reviewed",
+    "editPlan": "Edit plan"
   }
 }

@@ -450,6 +450,36 @@ function CollaborationContent() {
                   <summary>
                     {p.title} · {t("version")} {p.version}
                   </summary>
+                  {p.reviewDueAt && (
+                    <p className="training-muted">
+                      {t("nextPlanReview")} · {fmt.date(p.reviewDueAt)}
+                    </p>
+                  )}
+                  {p.canReview && (
+                    <div className="training-actions">
+                      <TrainingLink href={`/training/plan?id=${p.id}`}>
+                        {t("editPlan")}
+                      </TrainingLink>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        disabled={a.pending}
+                        onClick={() =>
+                          void a.run(() =>
+                            a.mutation.mutateAsync({
+                              path: `profile/training/plans/${p.id}/review`,
+                              body: {
+                                revision: p.revision,
+                                operationId: crypto.randomUUID(),
+                              },
+                            }),
+                          )
+                        }
+                      >
+                        {t("markPlanReviewed")}
+                      </Button>
+                    </div>
+                  )}
                   {p.content.days.map((day, i) => (
                     <p key={i}>
                       {day.name} · {day.exercises.length} {t("movements")}

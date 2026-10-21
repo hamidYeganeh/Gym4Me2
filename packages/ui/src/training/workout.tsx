@@ -269,6 +269,11 @@ function WorkoutContent() {
         workout: {
           ...latest.workout,
           revision: response.revision,
+          shared:
+            latest.workout.shared === command.shared
+              ? response.shared
+              : latest.workout.shared,
+          relationshipId: response.relationshipId,
           feedback: response.feedback,
           reviewedAt: response.reviewedAt,
         },
@@ -498,7 +503,7 @@ function WorkoutContent() {
                     onChange={(event) =>
                       change((next) => {
                         for (let i = 1; i <= p.sets; i++) {
-                          let log = next.logs.find(
+                          const log = next.logs.find(
                             (l) => l.prescriptionId === p.id && l.set === i,
                           );
                           if (log) log.exerciseId = event.target.value;

@@ -112,6 +112,7 @@ export class TrainingService {
       sql`SELECT r.id AS relationship_id,
       (SELECT count(*)::int FROM training_sessions s WHERE s.athlete_id=r.student_id AND s.state='completed' AND s.reviewed_at IS NULL AND ((s.shared AND s.relationship_id=r.id) OR (s.relationship_id IS NULL AND coalesce(sh.personal_plans,false)))) AS workouts,
       (SELECT count(*)::int FROM training_checkins c WHERE c.relationship_id=r.id AND c.feedback='') AS checkins,
+      (SELECT count(*)::int FROM training_plans p WHERE p.relationship_id=r.id AND p.owner_id=${actor} AND NOT p.archived AND p.review_due_at<=now()) AS plans,
       (SELECT count(*)::int FROM training_messages m WHERE m.relationship_id=r.id AND m.sender_id<>${actor} AND m.created_at>coalesce((SELECT read_at FROM training_reads WHERE relationship_id=r.id AND user_id=${actor}),'1970-01-01')) AS messages
       FROM coaching_relationships r LEFT JOIN training_sharing sh ON sh.relationship_id=r.id WHERE r.coach_id=${actor} AND r.status='active'`,
     );
@@ -158,8 +159,15 @@ export class TrainingService {
       this.db,
       sql`SELECT * FROM training_versions WHERE plan_id=${id} ORDER BY version DESC LIMIT 50`,
     );
+    if (p.owner_id !== actor && !versions.length)
+      throw new NotFoundException('Training.notFound');
     return {
       ...p,
+      title:
+        p.owner_id === actor
+          ? p.title
+          : ((versions[0]?.content as c.PlanContent | undefined)?.title ??
+            p.title),
       draft: p.owner_id === actor ? p.draft : null,
       canEdit: p.owner_id === actor,
       versions,
@@ -267,7 +275,7 @@ export class TrainingService {
           sql`INSERT INTO training_assignments(version_id,athlete_id,relationship_id) VALUES(${v.id},${p.athlete_id},${p.relationship_id}) RETURNING *`,
         );
         await tx.execute(
-          sql`UPDATE training_plans SET revision=revision+1,updated_at=now() WHERE id=${id}`,
+          sql`UPDATE training_plans SET revision=revision+1,updated_at=now(),review_due_at=CASE WHEN relationship_id IS NOT NULL THEN ${input.effectiveFrom}::date+interval '7 days' ELSE NULL END WHERE id=${id}`,
         );
         if (p.athlete_id !== actor)
           await deliverSportsNotification(tx, {
@@ -361,14 +369,27 @@ export class TrainingService {
         }
         if (input.state === 'completed' && !input.logs.some((l) => l.done))
           throw new BadRequestException('Training.logFirst');
+        let shared = false;
         if (input.shared && relation) {
-          const r = await trainingRelationship(tx, actor, relation);
-          if (r.status !== 'active')
-            throw new ConflictException('Coaching.notFound');
+          const [r] = await rows<{
+            status: string;
+            coach_status: string;
+            deletion_pending: boolean;
+            deleted_at: Date | null;
+          }>(
+            tx,
+            sql`SELECT r.status,c.status AS coach_status,c.deletion_pending,c.deleted_at FROM coaching_relationships r JOIN users c ON c.id=r.coach_id WHERE r.id=${relation} AND r.student_id=${actor} FOR SHARE OF r`,
+          );
+          shared =
+            !!r &&
+            r.status === 'active' &&
+            r.coach_status === 'active' &&
+            !r.deletion_pending &&
+            !r.deleted_at;
         }
         const [result] = await rows(
           tx,
-          sql`INSERT INTO training_sessions(id,athlete_id,assignment_id,relationship_id,snapshot,logs,day_index,state,shared,started_at,ended_at) VALUES(${input.id},${actor},${input.assignmentId},${relation},${JSON.stringify(snapshot)}::jsonb,${JSON.stringify(input.logs)}::jsonb,${input.dayIndex},${input.state},${input.shared},${input.startedAt},${input.state === 'in_progress' ? null : new Date()}) ON CONFLICT(id) DO UPDATE SET logs=EXCLUDED.logs,state=EXCLUDED.state,shared=EXCLUDED.shared,ended_at=EXCLUDED.ended_at,revision=training_sessions.revision+1,updated_at=now() RETURNING *`,
+          sql`INSERT INTO training_sessions(id,athlete_id,assignment_id,relationship_id,snapshot,logs,day_index,state,shared,started_at,ended_at) VALUES(${input.id},${actor},${input.assignmentId},${relation},${JSON.stringify(snapshot)}::jsonb,${JSON.stringify(input.logs)}::jsonb,${input.dayIndex},${input.state},${shared},${input.startedAt},${input.state === 'in_progress' ? null : new Date()}) ON CONFLICT(id) DO UPDATE SET logs=EXCLUDED.logs,state=EXCLUDED.state,shared=EXCLUDED.shared,ended_at=EXCLUDED.ended_at,revision=training_sessions.revision+1,updated_at=now() RETURNING *`,
         );
         if (input.state === 'completed')
           await tx.execute(
@@ -376,6 +397,38 @@ export class TrainingService {
           );
         return result;
       },
+    );
+  }
+  async review(actor: string, id: string, input: z.infer<typeof c.reviewPlan>) {
+    const authorize = async (tx: Tx) => {
+      const [p] = await rows<PlanRow>(
+        tx,
+        sql`SELECT * FROM training_plans WHERE id=${id} AND owner_id=${actor} AND relationship_id IS NOT NULL`,
+      );
+      if (!p) throw new NotFoundException('Training.notFound');
+      await trainingRelationship(tx, actor, p.relationship_id!, true);
+    };
+    return trainingCommand(
+      this.db,
+      actor,
+      input.operationId,
+      ['reviewPlan', id, input],
+      async (tx) => {
+        const [p] = await rows<PlanRow>(
+          tx,
+          sql`SELECT * FROM training_plans WHERE id=${id} AND owner_id=${actor} FOR UPDATE`,
+        );
+        if (!p) throw new NotFoundException('Training.notFound');
+        if (p.revision !== input.revision)
+          throw new ConflictException('Training.conflict');
+        await approvedCoach(tx, actor);
+        const [result] = await rows(
+          tx,
+          sql`UPDATE training_plans SET review_due_at=now()+interval '7 days',revision=revision+1,updated_at=now() WHERE id=${id} RETURNING id,revision,review_due_at`,
+        );
+        return result;
+      },
+      authorize,
     );
   }
   async sessionSharing(

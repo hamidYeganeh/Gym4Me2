@@ -43,7 +43,7 @@ export class CollaborationService {
       );
       const plans = await rows(
         tx,
-        sql`SELECT p.id,p.title,v.content,v.version FROM training_plans p JOIN LATERAL(SELECT content,version FROM training_versions WHERE plan_id=p.id ORDER BY version DESC LIMIT 1) v ON true WHERE p.athlete_id=${r.student_id} AND (p.relationship_id=${id} OR (${sharing?.personal_plans ?? false} AND p.relationship_id IS NULL)) ORDER BY p.updated_at DESC LIMIT 50`,
+        sql`SELECT p.id,v.content->>'title' AS title,p.revision,p.review_due_at,(p.owner_id=${actor}) AS can_review,v.content,v.version FROM training_plans p JOIN LATERAL(SELECT content,version FROM training_versions WHERE plan_id=p.id ORDER BY version DESC LIMIT 1) v ON true WHERE p.athlete_id=${r.student_id} AND (p.relationship_id=${id} OR (${sharing?.personal_plans ?? false} AND p.relationship_id IS NULL)) ORDER BY p.updated_at DESC LIMIT 50`,
       );
       const measurements =
         r.student_id === actor || sharing?.measurements
@@ -177,6 +177,7 @@ export class CollaborationService {
           });
           return m;
         },
+        (tx) => trainingRelationship(tx, actor, id, true),
       );
       if (key) {
         const [used] = await rows(
@@ -251,6 +252,7 @@ export class CollaborationService {
         });
         return item;
       },
+      (tx) => trainingRelationship(tx, actor, id, true),
     );
   }
   async feedback(
@@ -292,6 +294,7 @@ export class CollaborationService {
         });
         return { success: true };
       },
+      (tx) => trainingRelationship(tx, actor, id, true),
     );
   }
 }

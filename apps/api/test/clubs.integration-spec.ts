@@ -1322,7 +1322,7 @@ test('reviews are paginated and moderated before affecting ratings; owners can r
     sql`INSERT INTO sport_orders(id,user_id,organization_id,service_id,version_id,amount_minor,snapshot,status,idempotency_key,request_hash,expires_at) VALUES(${f.order},${athlete.id},${clubId},${f.service},${f.version},0,'{}','paid',${randomUUID()},'fixture',now()+interval '1 day')`,
   );
   await db.execute(
-    sql`INSERT INTO sport_reservations(id,user_id,occurrence_id,order_id,status) VALUES(${f.reservation},${athlete.id},${f.occurrence},${f.order},'completed')`,
+    sql`INSERT INTO sport_reservations(id,user_id,occurrence_id,order_id,status,expires_at) VALUES(${f.reservation},${athlete.id},${f.occurrence},${f.order},'completed',now()+interval '1 day')`,
   );
 
   const review = body<{ id: string }>(

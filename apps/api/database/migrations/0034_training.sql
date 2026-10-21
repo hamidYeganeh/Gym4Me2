@@ -10,7 +10,7 @@ CREATE TABLE training_plans (
   athlete_id uuid REFERENCES users(id) ON DELETE CASCADE,
   relationship_id uuid REFERENCES coaching_relationships(id) ON DELETE SET NULL,
   title text NOT NULL, draft jsonb NOT NULL, revision integer NOT NULL DEFAULT 1,
-  archived boolean NOT NULL DEFAULT false, is_template boolean NOT NULL DEFAULT false,
+  archived boolean NOT NULL DEFAULT false, is_template boolean NOT NULL DEFAULT false, review_due_at timestamptz,
   created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()
 );
 CREATE INDEX training_plans_owner ON training_plans(owner_id, updated_at DESC);

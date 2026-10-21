@@ -113,6 +113,7 @@ export type TrainingWorkspace = {
     relationshipId: string;
     workouts: number;
     checkins: number;
+    plans: number;
     messages: number;
   }[];
   capabilities: { privateVideo: false };
@@ -146,7 +147,15 @@ export type Collaboration = {
   };
   sharing: { personalPlans: boolean; measurements: boolean };
   sessions: Workout[];
-  plans: { id: string; title: string; content: PlanContent; version: number }[];
+  plans: {
+    id: string;
+    title: string;
+    content: PlanContent;
+    version: number;
+    revision: number;
+    reviewDueAt: string | null;
+    canReview: boolean;
+  }[];
   measurements: Measurement[];
   checkins: WeeklyCheckin[];
 };

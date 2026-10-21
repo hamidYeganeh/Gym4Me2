@@ -245,6 +245,9 @@ function HomeContent() {
                       messages:
                         d.tasks?.find((x) => x.relationshipId === r.id)
                           ?.messages ?? 0,
+                      plans:
+                        d.tasks?.find((x) => x.relationshipId === r.id)
+                          ?.plans ?? 0,
                       checkins:
                         d.tasks?.find((x) => x.relationshipId === r.id)
                           ?.checkins ?? 0,

@@ -132,3 +132,7 @@ export const page = z
 export const sessionSharing = operation
   .extend({ shared: z.boolean(), revision: z.number().int().positive() })
   .strict();
+
+export const reviewPlan = operation
+  .extend({ revision: z.number().int().positive() })
+  .strict();
