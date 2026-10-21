@@ -95,7 +95,6 @@ export function ClubReviews({
         <ReviewsSummary
           counts={getReviewCounts(reviews)}
           locale={locale}
-          onReport={() => setReportId(review.id)}
           labels={{
             average: t("average"),
             users: (count) =>
@@ -117,6 +116,7 @@ export function ClubReviews({
             key={review.id}
             review={review}
             locale={locale}
+            onReport={() => setReportId(review.id)}
             labels={{
               verified: t("verified"),
               like: t("like"),
