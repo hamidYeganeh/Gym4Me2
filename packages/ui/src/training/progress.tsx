@@ -70,10 +70,20 @@ export function TrainingProgressPanel() {
     })
     .slice(0, 12)
     .reverse();
+  const exerciseName = (id: string) => {
+    const exercise = library.data?.find((e) => e.id === id);
+    return (
+      (fmt.locale === "fa" ? exercise?.nameFa : exercise?.nameEn) ??
+      id.replaceAll("-", " ")
+    );
+  };
   const unit = metric === "load" ? "kg" : metric;
   return (
     <>
       <TrainingFeedback action={a} />
+      {library.error && (
+        <QueryError error={library.error} retry={library.refetch} />
+      )}
       <TrainingCard title={t("progress")}>
         <p>{t("completedCount", { count: fmt.number(sessions.length) })}</p>
         <p className="training-muted">{t("progressHint")}</p>
@@ -81,11 +91,7 @@ export function TrainingProgressPanel() {
           <dl className="training-grid">
             {[...record].slice(0, 8).map(([name, max]) => (
               <div key={name}>
-                <dt>
-                  {fmt.locale === "fa"
-                    ? library.data?.find((e) => e.id === name)?.nameFa
-                    : library.data?.find((e) => e.id === name)?.nameEn}
-                </dt>
+                <dt>{exerciseName(name)}</dt>
                 <dd>
                   {fmt.number(max)} {t("kg")}
                 </dd>
@@ -107,9 +113,7 @@ export function TrainingProgressPanel() {
               {!exercises.length && <option value="">{t("noWorkouts")}</option>}
               {exercises.map((id) => (
                 <option key={id} value={id}>
-                  {fmt.locale === "fa"
-                    ? library.data?.find((e) => e.id === id)?.nameFa
-                    : library.data?.find((e) => e.id === id)?.nameEn}
+                  {exerciseName(id)}
                 </option>
               ))}
             </select>
