@@ -17,6 +17,14 @@ weekly check-ins and feedback. Video is deferred by the user's explicit decision
 The PH4 additive seed is `apps/api/scripts/provision-demo-ph4.ts`; it requires
 the named isolated demo marker and never resets existing data or ended relationships.
 
+## Visual showcase catalog
+
+The additional fictional catalog and visual changes are documented in
+[visual acceptance](qa/visual-polish-2026-10-21.md). Existing demo data is retained.
+The guarded additive script is `apps/api/scripts/provision-demo-showcase.ts`;
+it also requires `DEMO_SHOWCASE_CONFIRM=gym4me-visual-catalog-v1` and the existing
+isolated demo marker. It is not a production seed or a database reset.
+
 ## Configuration
 
 - Git branch: `main` (demo branch merged on 2026-10-20) in `hamidYeganeh/Gym4Me2`.
