@@ -50,10 +50,8 @@ export function ProfileOverview({
     {},
     Boolean(account),
   );
-  const completed =
-    progress.data?.sessions.filter(
-      (session) => session.state === "completed",
-    ) ?? [];
+  // The progress endpoint already projects completed sessions only.
+  const completed = progress.data?.sessions ?? [];
   const latest = completed
     .map((session) => session.endedAt || session.startedAt)
     .sort()

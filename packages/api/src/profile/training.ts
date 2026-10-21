@@ -127,7 +127,16 @@ export type Measurement = {
 };
 export type TrainingProgress = {
   measurements: Measurement[];
-  sessions: Workout[];
+  sessions: Pick<
+    Workout,
+    | "id"
+    | "snapshot"
+    | "logs"
+    | "dayIndex"
+    | "startedAt"
+    | "endedAt"
+    | "feedback"
+  >[];
 };
 export type WeeklyCheckin = {
   id: string;
