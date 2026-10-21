@@ -430,6 +430,38 @@ export class PrivacyService {
               sql`SELECT l.* FROM coaching_ledger l JOIN coaching_contracts c ON c.id=l.contract_id WHERE c.coach_id=${userId} OR l.actor_id=${userId}`,
             )
           ).rows,
+          training: {
+            plans: (
+              await tx.execute(
+                sql`SELECT p.id,p.title,p.draft,p.is_template,p.created_at FROM training_plans p WHERE p.athlete_id=${userId} OR (p.owner_id=${userId} AND p.relationship_id IS NULL)`,
+              )
+            ).rows,
+            versions: (
+              await tx.execute(
+                sql`SELECT v.* FROM training_versions v JOIN training_plans p ON p.id=v.plan_id WHERE p.athlete_id=${userId}`,
+              )
+            ).rows,
+            sessions: (
+              await tx.execute(
+                sql`SELECT * FROM training_sessions WHERE athlete_id=${userId}`,
+              )
+            ).rows,
+            measurements: (
+              await tx.execute(
+                sql`SELECT * FROM training_measurements WHERE athlete_id=${userId}`,
+              )
+            ).rows,
+            checkins: (
+              await tx.execute(
+                sql`SELECT c.* FROM training_checkins c JOIN coaching_relationships r ON r.id=c.relationship_id WHERE r.student_id=${userId}`,
+              )
+            ).rows,
+            messages: (
+              await tx.execute(
+                sql`SELECT m.id,m.body,m.sender_id,m.created_at,(m.image_key IS NOT NULL) AS has_image FROM training_messages m JOIN coaching_relationships r ON r.id=m.relationship_id WHERE r.student_id=${userId} OR (r.coach_id=${userId} AND r.status='active')`,
+              )
+            ).rows,
+          },
           coachingReviewReports: (
             await tx.execute(
               sql`SELECT * FROM coaching_review_reports WHERE reporter_id=${userId}`,

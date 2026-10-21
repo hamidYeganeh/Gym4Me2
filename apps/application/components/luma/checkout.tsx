@@ -1,4 +1,5 @@
 "use client";
+import { useTrainingEvent } from "@repo/ui/training";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
 import { ServiceCover } from "@repo/ui/sports-cover";
 import Link from "next/link";
@@ -33,6 +34,7 @@ import {
 export function CheckoutPage() {
   const params = useSearchParams();
   const service = params.get("service");
+  useTrainingEvent("checkout_opened", service);
   const occurrence = params.get("occurrence");
   return (
     <CheckoutForm

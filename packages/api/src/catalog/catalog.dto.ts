@@ -74,6 +74,7 @@ export type ClubSummaryDto = {
   rating: { average: number | null; count: number };
 };
 export type PublicReviewDto = {
+  verified?: boolean;
   id: string;
   author: string | null;
   rating: number;

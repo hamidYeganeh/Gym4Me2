@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { z } from 'zod';
 import { ApiQuery } from '@nestjs/swagger';
+import { jsonDto } from '../commerce/commerce.service';
 import { DomainController } from '../../platform/http/domain-controller.decorator';
 import { ClientHeader } from '../auth/auth.contracts';
 import { AuthGuard, ClientGuard, type AuthRequest } from '../auth/auth.guard';
@@ -139,6 +140,27 @@ export class ClubReviewsController {
       c.validate(c.pageSchema, page),
     );
   }
+  @Post(':id/branches/:branchId/reviews/:reviewId/report')
+  @ClientHeader()
+  @UseGuards(ClientGuard, AuthGuard, ConsentGuard)
+  report(
+    @Req() req: AuthRequest,
+    @Param('id') id: string,
+    @Param('branchId') branch: string,
+    @Param('reviewId') review: string,
+    @Body() body: unknown,
+  ) {
+    return this.service.reportReview(
+      req.principal,
+      c.validate(c.id, id),
+      c.validate(c.id, branch),
+      c.validate(c.id, review),
+      c.validate(
+        z.object({ reason: z.string().trim().min(5).max(1000) }).strict(),
+        body,
+      ).reason,
+    );
+  }
   @Post(':id/branches/:branchId/reviews')
   @ClientHeader()
   @UseGuards(ClientGuard, AuthGuard, ConsentGuard)
@@ -162,6 +184,30 @@ export class ClubReviewsController {
 @UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class AdminClubReviewsController {
   constructor(private readonly service: ClubCommunityService) {}
+  @Get('reports') async reports(@Req() req: AuthRequest) {
+    return jsonDto(await this.service.reviewReports(req.principal));
+  }
+  @Post('reports/:id/resolve') resolve(
+    @Req() req: AuthRequest,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ) {
+    return this.service.resolveReport(
+      req.principal,
+      c.validate(c.id, id),
+      c.validate(
+        z
+          .object({
+            reason: z.string().trim().min(5).max(1000),
+            hidden: z.boolean(),
+            revision: z.number().int().positive(),
+          })
+          .strict(),
+        body,
+      ),
+    );
+  }
+
   @Get() list(
     @Req() req: AuthRequest,
     @Query('page') page: unknown,

@@ -76,6 +76,9 @@ export function CoachingPracticePanel() {
   return (
     <section className="space-y-5">
       <nav aria-label={t("workspace")} className="flex flex-wrap gap-2">
+        <Button variant="outline" asChild>
+          <Link href="/training">{t("trainingWorkspace")}</Link>
+        </Button>
         {(["profile", "calendar", "sessions", "finance"] as const).map((x) => (
           <Button
             key={x}

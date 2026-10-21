@@ -476,7 +476,11 @@ export const spacePatchSchema = spaceSchema.partial().extend({
   operatingStatus: operatingStatus.optional(),
 });
 export const reviewSchema = z
-  .object({ rating: z.number().int().min(1).max(5), body: optionalText(3000) })
+  .object({
+    rating: z.number().int().min(1).max(5),
+    body: optionalText(3000),
+    reservationId: z.uuid().optional(),
+  })
   .strict();
 export const decisionSchema = z
   .object({

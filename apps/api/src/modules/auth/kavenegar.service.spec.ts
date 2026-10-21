@@ -8,6 +8,7 @@ const make = (key?: string) =>
     new ConfigService(
       validateEnvironment({
         DATABASE_URL: 'postgresql://localhost/test',
+        SMS_PROVIDER: key ? 'kavenegar' : 'disabled',
         KAVENEGAR_API_KEY: key,
       }),
     ),
@@ -83,6 +84,7 @@ test('adds the server-configured Android hash as token2 without accepting client
     new ConfigService(
       validateEnvironment({
         DATABASE_URL: 'postgresql://localhost/test',
+        SMS_PROVIDER: 'kavenegar',
         KAVENEGAR_API_KEY: 'testkey',
         KAVENEGAR_ANDROID_APP_HASH: 'z5rk2X8HKrl',
       }),
@@ -92,4 +94,20 @@ test('adds the server-configured Android hash as token2 without accepting client
   expect(
     (fetchMock.mock.calls[0][1]?.body as URLSearchParams).get('token2'),
   ).toBe('z5rk2X8HKrl');
+});
+
+test('adding a key alone never enables real SMS', async () => {
+  const send = jest.spyOn(globalThis, 'fetch');
+  const service = new KavenegarService(
+    new ConfigService(
+      validateEnvironment({
+        DATABASE_URL: 'postgresql://localhost/test',
+        KAVENEGAR_API_KEY: 'testkey',
+      }),
+    ),
+  );
+  await expect(
+    service.sendOtp('+989123456789', '12345'),
+  ).rejects.toBeInstanceOf(ServiceUnavailableException);
+  expect(send).not.toHaveBeenCalled();
 });

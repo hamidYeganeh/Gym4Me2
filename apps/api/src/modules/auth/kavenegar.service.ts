@@ -7,7 +7,10 @@ export class KavenegarService {
   constructor(private readonly config: ConfigService<Environment, true>) {}
   async sendOtp(phone: string, code: string): Promise<void> {
     const key = this.config.get('KAVENEGAR_API_KEY', { infer: true });
-    if (!key)
+    if (
+      this.config.get('SMS_PROVIDER', { infer: true }) !== 'kavenegar' ||
+      !key
+    )
       throw new ServiceUnavailableException(
         'Backend.smsDeliveryIsNotConfiguredYet',
       );

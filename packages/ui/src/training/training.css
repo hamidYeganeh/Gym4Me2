@@ -1,0 +1,302 @@
+.training-root {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-width: 0;
+  max-width: 100%;
+  padding-bottom: 1.5rem;
+}
+.training-root h2 {
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+.training-root h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.training-card {
+  border: 1px solid var(--border);
+  border-radius: 1.75rem;
+  background: var(--card);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+.training-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.training-muted,
+.training-empty {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+.training-empty {
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: 1.25rem;
+}
+.training-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.training-tabs {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.35rem;
+  border-radius: 2rem;
+  background: var(--muted);
+  width: 100%;
+}
+.training-tabs > * {
+  flex: 1;
+  min-width: 0;
+}
+.training-hero {
+  padding: 1.6rem;
+  border-radius: 1.75rem;
+  background: linear-gradient(135deg, var(--muted), var(--card));
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.training-hero-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1.25rem;
+  background: var(--background);
+  display: grid;
+  place-items: center;
+}
+.training-notice {
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--muted);
+  font-size: 0.875rem;
+}
+.training-status:empty {
+  display: none;
+}
+.training-status {
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+.training-root label {
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+.training-root input:not([type="checkbox"]):not([type="file"]),
+.training-root select,
+.training-root textarea {
+  min-height: 2.75rem;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: var(--background);
+  color: var(--foreground);
+  padding: 0.65rem 0.8rem;
+  font: inherit;
+}
+.training-root input[type="checkbox"] {
+  height: 1.25rem;
+  width: 1.25rem;
+  accent-color: var(--foreground);
+}
+.training-root .training-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+  line-height: 1.7;
+}
+.training-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+.training-field-wide {
+  grid-column: 1/-1;
+}
+.training-exercise-image {
+  width: 4.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+.training-exercise-heading {
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+}
+.training-set {
+  display: grid;
+  grid-template-columns: 1.7rem 1fr 1fr 1fr 2.75rem;
+  gap: 0.4rem;
+  align-items: end;
+}
+.training-set label {
+  font-size: 0.7rem;
+}
+.training-set input:not([type="checkbox"]) {
+  padding: 0.5rem 0.3rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.training-set-number {
+  align-self: center;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+.training-set[data-done="true"] {
+  opacity: 0.7;
+}
+.training-timer {
+  position: sticky;
+  bottom: calc(6.7rem + var(--app-safe-bottom, 0px));
+  z-index: 12;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  background: var(--card);
+  box-shadow: 0 8px 30px #0002;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.training-timer strong {
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.training-steps {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.training-steps span {
+  flex: 1;
+  font-size: 0.75rem;
+  border-block-end: 3px solid var(--border);
+  padding-block-end: 0.6rem;
+}
+.training-steps span[aria-current="step"] {
+  border-color: var(--foreground);
+  font-weight: 700;
+}
+.training-bubble {
+  max-width: 88%;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  padding: 0.85rem 1rem;
+  background: var(--muted);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.training-bubble[data-own="true"] {
+  align-self: flex-end;
+  background: var(--card);
+}
+.training-bubble small {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--muted-foreground);
+}
+.training-chart {
+  height: 10rem;
+  display: flex;
+  align-items: end;
+  gap: 0.7rem;
+  padding-top: 1rem;
+  overflow-x: auto;
+}
+.training-bar {
+  min-width: 2.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  gap: 0.4rem;
+  height: 100%;
+  font-size: 0.65rem;
+}
+.training-bar span {
+  width: 100%;
+  max-width: 2.5rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background: var(--foreground);
+  min-height: 2px;
+}
+.training-preview {
+  max-width: 100%;
+  max-height: 18rem;
+  border-radius: 1rem;
+  object-fit: contain;
+}
+.training-root a,
+.training-root button {
+  touch-action: manipulation;
+}
+.training-root button {
+  transition:
+    background-color 120ms ease-out,
+    opacity 120ms ease-out;
+}
+.training-root details > summary {
+  cursor: pointer;
+  padding-block: 0.5rem;
+  font-size: 0.875rem;
+}
+.training-root :focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  scroll-margin-block: 6rem 9rem;
+}
+.training-day-list {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.training-root fieldset:disabled {
+  opacity: 0.65;
+}
+.training-root fieldset {
+  min-width: 0;
+  display: contents;
+}
+.training-card p {
+  overflow-wrap: anywhere;
+}
+.training-root .training-danger {
+  color: var(--destructive);
+}
+@media (min-width: 768px) {
+  .training-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .training-set {
+    gap: 0.75rem;
+  }
+  .training-card {
+    padding: 1.5rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .training-root button {
+    transition: none;
+  }
+}

@@ -32,6 +32,7 @@ const environmentSchema = z.object({
     .pipe(z.array(z.url()).min(1)),
   API_DOCS_ENABLED: z.enum(['true', 'false']).optional(),
   AUTH_SECRET: z.string().min(32).optional(),
+  SMS_PROVIDER: z.enum(['disabled', 'kavenegar']).default('disabled'),
   KAVENEGAR_API_KEY: z.preprocess(
     (value) =>
       value === 'KAVEHNEGARD_API' || value === '' ? undefined : value,
@@ -107,6 +108,11 @@ export function validateEnvironment(input: Record<string, unknown>) {
   if (result.data.NODE_ENV === 'production' && !result.data.AUTH_SECRET) {
     throw new Error('Invalid API configuration: AUTH_SECRET');
   }
+  if (
+    result.data.SMS_PROVIDER === 'kavenegar' &&
+    !result.data.KAVENEGAR_API_KEY
+  )
+    throw new Error('Kavenegar provider requires its key');
   if (result.data.DEMO_MODE && result.data.KAVENEGAR_API_KEY)
     throw new Error('Demo configuration must not include live SMS credentials');
 

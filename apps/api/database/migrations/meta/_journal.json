@@ -239,6 +239,13 @@
       "when": 1792454402000,
       "tag": "0033_coaching_review_moderation",
       "breakpoints": false
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1792540800000,
+      "tag": "0034_training",
+      "breakpoints": false
     }
   ]
 }

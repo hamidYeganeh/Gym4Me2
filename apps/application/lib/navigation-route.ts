@@ -14,6 +14,9 @@ export function navigationRoute(pathname: string, search: string) {
     "/orders/detail": "/orders",
     "/calendars/detail": "/calendars",
     "/messages/conversation": "/messages",
+    "/training/conversation": "/training/conversation",
+    "/training/workout": "/training/workout",
+    "/training/plan": "/training/plan",
     "/support/detail": "/support",
     "/tickets/view": "/tickets",
   };

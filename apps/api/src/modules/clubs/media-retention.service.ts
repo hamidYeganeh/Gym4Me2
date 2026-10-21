@@ -16,6 +16,11 @@ export class MediaRetentionService {
   ) {}
 
   async eraseCoaching(tx: Tx, userId: string) {
+    const trainingFiles = await tx.execute<{ image_key: string }>(
+      sql`SELECT m.image_key FROM training_messages m JOIN coaching_relationships r ON r.id=m.relationship_id WHERE (r.student_id=${userId} OR r.coach_id=${userId}) AND m.image_key IS NOT NULL`,
+    );
+    for (const file of trainingFiles.rows)
+      await this.storage.delete(file.image_key);
     const media = await tx.execute<{ object_key: string }>(
       sql`SELECT object_key FROM coaching_credentials WHERE coach_id=${userId} AND object_key IS NOT NULL`,
     );
@@ -130,6 +135,18 @@ export class MediaRetentionService {
         sql`SELECT id FROM coaching_credentials WHERE object_key=${object.key} LIMIT 1`,
       );
       if (referenced.rows.length) continue;
+      result.eligibleObjects++;
+      if (apply) {
+        await this.storage.delete(object.key);
+        result.deletedObjects++;
+      }
+    }
+    for await (const object of this.storage.objects('training/')) {
+      if (object.modifiedAt >= cutoff) continue;
+      const references = await this.database.db.execute(
+        sql`SELECT id FROM training_messages WHERE image_key=${object.key} LIMIT 1`,
+      );
+      if (references.rows.length) continue;
       result.eligibleObjects++;
       if (apply) {
         await this.storage.delete(object.key);

@@ -11,6 +11,7 @@ import { useClubReviews } from "@repo/api/catalog";
 import { useCatalogClub } from "./use-catalog";
 import { CatalogState } from "./catalog-state";
 import { clubHref } from "../../lib/club-href";
+import { ServiceReviewForm, ReviewReportForm } from "@repo/ui/training";
 import { useState } from "react";
 export function ClubReviews({
   clubId,
@@ -25,6 +26,7 @@ export function ClubReviews({
   const t = useTranslations("Reviews");
   const copy = useTranslations("Catalog");
   const [page, setPage] = useState(1);
+  const [reportId, setReportId] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const requestedBranch = branchId ?? searchParams.get("branch") ?? undefined;
   const club = useCatalogClub(clubId, requestedBranch);
@@ -36,6 +38,7 @@ export function ClubReviews({
     body: review.body ?? "",
     date: review.createdAt,
     rating: review.rating,
+    verified: review.verified,
     author: { displayName: review.author ?? copy("anonymous") },
   }));
   if (!club.club || club.branchQuery.isError) {
@@ -92,6 +95,7 @@ export function ClubReviews({
         <ReviewsSummary
           counts={getReviewCounts(reviews)}
           locale={locale}
+          onReport={() => setReportId(review.id)}
           labels={{
             average: t("average"),
             users: (count) =>
@@ -104,20 +108,38 @@ export function ClubReviews({
       )}
       {query.isPending && <CatalogState loading />}
       {query.isError && <CatalogState retry={() => void query.refetch()} />}
+      {currentBranch && (
+        <ServiceReviewForm clubId={clubId} branchId={currentBranch} />
+      )}
       {(full ? reviews : reviews.slice(0, 5)).map((review) => (
-        <ReviewCard
-          key={review.id}
-          review={review}
-          locale={locale}
-          labels={{
-            verified: t("verified"),
-            like: t("like"),
-            dislike: t("dislike"),
-            report: t("report"),
-            more: t("more"),
-            rating: t("rating"),
-          }}
-        />
+        <div key={review.id} className="space-y-3">
+          <ReviewCard
+            key={review.id}
+            review={review}
+            locale={locale}
+            labels={{
+              verified: t("verified"),
+              like: t("like"),
+              dislike: t("dislike"),
+              report: t("report"),
+              more: t("more"),
+              rating: t("rating"),
+            }}
+          />
+          {query.data?.find((r) => r.id === review.id)?.reply && (
+            <p className="rounded-2xl bg-muted p-4 text-sm">
+              {query.data.find((r) => r.id === review.id)?.reply}
+            </p>
+          )}
+          {reportId === review.id && currentBranch && (
+            <ReviewReportForm
+              clubId={clubId}
+              branchId={currentBranch}
+              reviewId={review.id}
+              onClose={() => setReportId(null)}
+            />
+          )}
+        </div>
       ))}
       {!query.isPending && !query.isError && !reviews.length && (
         <p className="text-muted-foreground">{t("empty")}</p>

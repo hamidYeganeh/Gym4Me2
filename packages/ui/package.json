@@ -20,7 +20,8 @@
     "./sports-eligibility": "./src/sports/eligibility.tsx",
     "./sports-cover": "./src/sports/cover.tsx",
     "./sports-messages": "./src/sports/host-conversations.tsx",
-    "./sports-host-conversation": "./src/sports/host-conversation.tsx"
+    "./sports-host-conversation": "./src/sports/host-conversation.tsx",
+    "./training": "./src/training/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

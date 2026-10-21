@@ -1,4 +1,5 @@
 "use client";
+import { AdminServiceReports } from "../training/service-reviews";
 import { useTranslations, useLocale } from "@repo/i18n";
 
 import {
@@ -678,6 +679,7 @@ export function AdminModerationContent() {
   }
   return (
     <>
+      <AdminServiceReports />
       <div className="flex flex-wrap items-end justify-between gap-3">
         <Field className="w-56">
           <FieldLabel htmlFor="moderationStatus">

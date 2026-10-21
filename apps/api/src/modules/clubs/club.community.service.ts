@@ -11,6 +11,7 @@ import * as s from '../../database/schema';
 import { AdminService } from '../admin/admin.service';
 import type { Principal } from '../auth/auth.service';
 import { lockWritableAccount } from '../auth/account-lock';
+import { rows } from '../commerce/commerce.service';
 import { ClubService } from './club.service';
 import { affiliationSchema, reviewSchema } from './club.contracts';
 import { activeTerms, lockClub, requireBranch } from './club.repository';
@@ -177,16 +178,22 @@ export class ClubCommunityService {
         throw new ForbiddenException(
           'Backend.teamMembersAndActiveCoachesCannotRate',
         );
+      const [proof] = await rows<{ id: string }>(
+        tx,
+        sql`SELECT r.id FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN sport_services v ON v.id=o.service_id WHERE r.user_id=${p.user.id} AND v.branch_id=${branchId} AND v.organization_id=${clubId} AND r.status='completed' AND (${input.reservationId ?? null}::uuid IS NULL OR r.id=${input.reservationId ?? null}::uuid) ORDER BY o.start_at DESC LIMIT 1 FOR SHARE OF r`,
+      );
+      if (!proof)
+        throw new ForbiddenException('Training.completedServiceRequired');
+      const reviewInput = { rating: input.rating, body: input.body ?? null };
       const [review] = await tx
         .insert(s.clubReviews)
-        .values({ ...input, authorId: p.user.id, branchId })
+        .values({ ...reviewInput, authorId: p.user.id, branchId })
         .onConflictDoUpdate({
           target: [s.clubReviews.branchId, s.clubReviews.authorId],
           set: {
-            ...input,
-            body: input.body ?? null,
-            status: 'pending',
-            moderationReason: null,
+            ...reviewInput,
+            status: sql`CASE WHEN club_reviews.status='rejected' THEN 'rejected' ELSE 'pending' END`,
+            moderationReason: sql`CASE WHEN club_reviews.status='rejected' THEN club_reviews.moderation_reason ELSE NULL END`,
             reply: null,
             repliedBy: null,
             repliedAt: null,
@@ -194,6 +201,9 @@ export class ClubCommunityService {
           },
         })
         .returning();
+      await tx.execute(
+        sql`INSERT INTO club_review_proofs(review_id,reservation_id) VALUES(${review.id},${proof.id}) ON CONFLICT(review_id) DO UPDATE SET reservation_id=EXCLUDED.reservation_id`,
+      );
       return review;
     });
   }
@@ -206,6 +216,7 @@ export class ClubCommunityService {
           string | null
         >`CASE WHEN ${s.users.profilePublic} AND NOT ${s.users.deletionPending} THEN ${s.users.displayName} ELSE NULL END`,
         rating: s.clubReviews.rating,
+        verified: sql<boolean>`EXISTS(SELECT 1 FROM club_review_proofs p JOIN sport_reservations r ON r.id=p.reservation_id WHERE p.review_id=${s.clubReviews.id} AND r.status='completed')`,
         body: s.clubReviews.body,
         reply: s.clubReviews.reply,
         repliedAt: s.clubReviews.repliedAt,
@@ -222,6 +233,81 @@ export class ClubCommunityService {
       .orderBy(desc(s.clubReviews.createdAt), s.clubReviews.id)
       .limit(25)
       .offset((page - 1) * 25);
+  }
+  async reportReview(
+    p: Principal,
+    clubId: string,
+    branchId: string,
+    reviewId: string,
+    reason: string,
+  ) {
+    if (p.session.client !== 'application') throw new ForbiddenException();
+    await this.clubs.publicBranch(clubId, branchId);
+    return this.clubs.write(async (tx) => {
+      await lockWritableAccount(tx, p.user.id);
+      const [review] = await rows(
+        tx,
+        sql`SELECT id FROM club_reviews WHERE id=${reviewId} AND branch_id=${branchId} AND status='published' FOR UPDATE`,
+      );
+      if (!review) throw new NotFoundException('Backend.reviewNotFound');
+      const [quota] = await rows<{ count: string }>(
+        tx,
+        sql`SELECT count(*)::text AS count FROM club_review_reports WHERE reporter_id=${p.user.id} AND created_at>now()-interval '1 day'`,
+      );
+      if (Number(quota.count) >= 10)
+        throw new ConflictException('Training.reportLimit');
+      const [report] = await rows(
+        tx,
+        sql`INSERT INTO club_review_reports(review_id,reporter_id,reason) VALUES(${reviewId},${p.user.id},${reason}) ON CONFLICT(review_id,reporter_id) DO UPDATE SET reason=EXCLUDED.reason,status='open',decision=NULL,revision=club_review_reports.revision+1,created_at=now() RETURNING id`,
+      );
+      return report;
+    });
+  }
+  async reviewReports(p: Principal) {
+    await this.admin.requireAdmin(p);
+    return rows(
+      this.database.db,
+      sql`SELECT r.id,r.review_id,r.reason,r.status,r.revision,r.decision,v.body,v.reply,v.status AS review_status,(SELECT coalesce(jsonb_agg(jsonb_build_object('reason',a.details->>'reason','status',a.details->>'status','at',a.created_at) ORDER BY a.created_at),'[]'::jsonb) FROM audit_events a WHERE a.action='review.report.resolved' AND a.target_id=v.id) AS history FROM club_review_reports r JOIN club_reviews v ON v.id=r.review_id ORDER BY r.created_at DESC LIMIT 100`,
+    );
+  }
+  async resolveReport(
+    p: Principal,
+    id: string,
+    input: { reason: string; hidden: boolean; revision: number },
+  ) {
+    await this.admin.requireAdmin(p);
+    return this.clubs.write(async (tx) => {
+      const [lookup] = await rows<{ review_id: string }>(
+        tx,
+        sql`SELECT review_id FROM club_review_reports WHERE id=${id}`,
+      );
+      if (!lookup) throw new NotFoundException();
+      await rows(
+        tx,
+        sql`SELECT id FROM club_reviews WHERE id=${lookup.review_id} FOR UPDATE`,
+      );
+      const [r] = await rows<{
+        review_id: string;
+        revision: number;
+        status: string;
+      }>(tx, sql`SELECT * FROM club_review_reports WHERE id=${id} FOR UPDATE`);
+      if (!r || r.revision !== input.revision || r.status !== 'open')
+        throw new ConflictException('Training.conflict');
+      const status = input.hidden ? 'rejected' : 'published';
+      await tx.execute(
+        sql`UPDATE club_reviews SET status=${status},moderation_reason=${input.reason},updated_at=now() WHERE id=${r.review_id}`,
+      );
+      await tx.execute(
+        sql`UPDATE club_review_reports SET status='resolved',decision=${input.reason},resolved_by=${p.user.id},resolved_at=now(),revision=revision+1 WHERE review_id=${r.review_id} AND status='open'`,
+      );
+      await tx.insert(s.auditEvents).values({
+        actorId: p.user.id,
+        action: 'review.report.resolved',
+        targetId: r.review_id,
+        details: { reason: input.reason, status, reportId: id },
+      });
+      return { success: true };
+    });
   }
   async moderationQueue(
     p: Principal,

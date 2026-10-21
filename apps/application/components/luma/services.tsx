@@ -1,4 +1,5 @@
 "use client";
+import { useTrainingEvent } from "@repo/ui/training";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
 import { ServiceCover } from "@repo/ui/sports-cover";
 import Link from "next/link";
@@ -31,6 +32,7 @@ export function ServicesPage({
   const locale = useLocale();
   const [q, setQ] = useState("");
   const search = useDeferredValue(q);
+  useTrainingEvent("discovery_searched");
   const query = useSportsQuery<ServiceDto[]>("sports/services", {
     q: search,
     organizationId,
@@ -69,6 +71,7 @@ export function ServicesPage({
 export function ServiceDetail() {
   const params = useSearchParams();
   const id = params.get("id");
+  useTrainingEvent("service_selected", id);
   const t = useLuma();
   const locale = useLocale();
   const query = useSportsQuery<ServiceDto>(

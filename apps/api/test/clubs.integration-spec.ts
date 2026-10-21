@@ -1,7 +1,7 @@
 import { INestApplication, ServiceUnavailableException } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { eq, inArray } from 'drizzle-orm';
+import { eq, inArray, sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { randomBytes, randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
@@ -34,6 +34,15 @@ if (!new URL(databaseUrl).pathname.endsWith('_test'))
   throw new Error('Requires dedicated _test database');
 let app: INestApplication<App>;
 let db: DatabaseService['db'];
+let reviewProofFixture:
+  | {
+      service: string;
+      version: string;
+      occurrence: string;
+      order: string;
+      reservation: string;
+    }
+  | undefined;
 let storage: StorageService;
 let objects: S3Client;
 let mediaBucketCreated = false;
@@ -171,6 +180,21 @@ beforeAll(async () => {
   await db.insert(s.platformAdmins).values({ userId: admin.id });
 }, 30000);
 afterAll(async () => {
+  if (reviewProofFixture && db) {
+    const f = reviewProofFixture;
+    await db.execute(
+      sql`DELETE FROM sport_reservations WHERE id=${f.reservation}`,
+    );
+    await db.execute(sql`DELETE FROM sport_orders WHERE id=${f.order}`);
+    await db.execute(
+      sql`DELETE FROM sport_occurrences WHERE id=${f.occurrence}`,
+    );
+    await db.execute(
+      sql`DELETE FROM sport_service_versions WHERE id=${f.version}`,
+    );
+    await db.execute(sql`DELETE FROM sport_services WHERE id=${f.service}`);
+  }
+
   if (!db) return;
   if (mediaBucketCreated) {
     for (const key of uploadedKeys) await storage.delete(key);
@@ -1271,6 +1295,36 @@ test('coach affiliation is visible only after the coach accepts it', async () =>
     .expect(403);
 });
 test('reviews are paginated and moderated before affecting ratings; owners can reply', async () => {
+  await call(
+    'post',
+    `catalog/clubs/${clubId}/branches/${branchId}/reviews`,
+    athlete,
+  )
+    .send({ rating: 4, body: 'No attendance yet' })
+    .expect(403);
+  const f = (reviewProofFixture = {
+    service: randomUUID(),
+    version: randomUUID(),
+    occurrence: randomUUID(),
+    order: randomUUID(),
+    reservation: randomUUID(),
+  });
+  await db.execute(
+    sql`INSERT INTO sport_services(id,organization_id,branch_id,kind,title) VALUES(${f.service},${clubId},${branchId},'class','Review proof fixture')`,
+  );
+  await db.execute(
+    sql`INSERT INTO sport_service_versions(id,service_id,version,amount_minor,description,policy,title) VALUES(${f.version},${f.service},1,0,'Synthetic attendance proof','{}','Review proof fixture')`,
+  );
+  await db.execute(
+    sql`INSERT INTO sport_occurrences(id,service_id,version_id,start_at,end_at,capacity,status) VALUES(${f.occurrence},${f.service},${f.version},now()-interval '2 hours',now()-interval '1 hour',1,'completed')`,
+  );
+  await db.execute(
+    sql`INSERT INTO sport_orders(id,user_id,organization_id,service_id,version_id,amount_minor,snapshot,status,idempotency_key,request_hash,expires_at) VALUES(${f.order},${athlete.id},${clubId},${f.service},${f.version},0,'{}','paid',${randomUUID()},'fixture',now()+interval '1 day')`,
+  );
+  await db.execute(
+    sql`INSERT INTO sport_reservations(id,user_id,occurrence_id,order_id,status) VALUES(${f.reservation},${athlete.id},${f.occurrence},${f.order},'completed')`,
+  );
+
   const review = body<{ id: string }>(
     await call(
       'post',
@@ -1331,6 +1385,46 @@ test('reviews are paginated and moderated before affecting ratings; owners can r
   )
     .send({ reply: 'از بازخورد شما متشکریم' })
     .expect(201);
+  const listed = body<{ id: string; verified: boolean }[]>(
+    await call(
+      'get',
+      `catalog/clubs/${clubId}/branches/${branchId}/reviews`,
+    ).expect(200),
+  );
+  expect(listed.find((r) => r.id === review.id)?.verified).toBe(true);
+  const report = body<{ id: string }>(
+    await call(
+      'post',
+      `catalog/clubs/${clubId}/branches/${branchId}/reviews/${review.id}/report`,
+      athlete,
+    )
+      .send({ reason: 'Synthetic moderation report' })
+      .expect(201),
+  );
+  const duplicate = body<{ id: string }>(
+    await call(
+      'post',
+      `catalog/clubs/${clubId}/branches/${branchId}/reviews/${review.id}/report`,
+      athlete,
+    )
+      .send({ reason: 'Updated synthetic report' })
+      .expect(201),
+  );
+  expect(duplicate.id).toBe(report.id);
+  const queue = body<{ id: string; revision: number }[]>(
+    await call('get', 'admin/reviews/reports', admin).expect(200),
+  );
+  await call('post', `admin/reviews/reports/${report.id}/resolve`, admin)
+    .send({
+      reason: 'Valid experience; keep public',
+      hidden: false,
+      revision: queue.find((r) => r.id === report.id)!.revision,
+    })
+    .expect(201);
+  const resolved = body<{ id: string; history: unknown[] }[]>(
+    await call('get', 'admin/reviews/reports', admin).expect(200),
+  );
+  expect(resolved.find((r) => r.id === report.id)!.history.length).toBe(1);
 });
 test('public names and coach biographies follow revocable privacy choices without changing private records', async () => {
   await call('post', 'profile/account/privacy/preferences', owner)

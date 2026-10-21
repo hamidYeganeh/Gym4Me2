@@ -131,10 +131,22 @@ export class AuthService {
       });
     });
     try {
-      if (!demo) await this.sms.sendOtp(phone, code);
+      let demoDelay = false;
+      if (demo) {
+        const result = await this.database.db.execute<{ outcome: string }>(
+          sql`DELETE FROM demo_delivery_modes WHERE user_id=(SELECT user_id FROM gym4me_demo_accounts WHERE phone=${phone}) AND channel='sms' RETURNING outcome`,
+        );
+        const outcome = result.rows[0]?.outcome ?? 'success';
+        demoDelay = outcome === 'delay';
+        await this.database.db.execute(
+          sql`INSERT INTO demo_deliveries(user_id,channel,outcome,state,due_at) SELECT user_id,'sms',${outcome},${outcome === 'failure' ? 'failed' : demoDelay ? 'pending' : 'delivered'},now()+${demoDelay ? 30 : 0}*interval '1 second' FROM gym4me_demo_accounts WHERE phone=${phone}`,
+        );
+        if (outcome === 'failure')
+          throw new ServiceUnavailableException('Training.demoSmsFailed');
+      } else await this.sms.sendOtp(phone, code);
       await this.database.db
         .update(otpChallenges)
-        .set({ sentAt: new Date() })
+        .set({ sentAt: new Date(Date.now() + (demoDelay ? 30000 : 0)) })
         .where(eq(otpChallenges.id, id));
     } catch (error) {
       await this.database.db
@@ -164,6 +176,7 @@ export class AuthService {
         challenge.transport !== transport ||
         challenge.purpose !== 'sign-in' ||
         !challenge.sentAt ||
+        challenge.sentAt > new Date() ||
         challenge.consumedAt ||
         challenge.expiresAt <= new Date() ||
         challenge.attempts >= 5
@@ -290,6 +303,7 @@ export class AuthService {
           challenge.transport !== principal.session.transport ||
           challenge.client !== principal.session.client ||
           !challenge.sentAt ||
+          challenge.sentAt > new Date() ||
           challenge.consumedAt ||
           challenge.expiresAt <= new Date() ||
           challenge.attempts >= 5

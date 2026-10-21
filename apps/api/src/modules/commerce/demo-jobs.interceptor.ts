@@ -26,14 +26,16 @@ export class DemoJobsInterceptor implements NestInterceptor {
     if (
       demo &&
       request.method === 'GET' &&
-      /^\/api\/v1\/sports\/services(?:\/|$)/.test(request.path)
+      /^\/api\/v1\/(?:sports\/services|profile\/training|profile\/coaching-collaboration|sports\/community\/notifications)(?:\/|$)/.test(
+        request.path,
+      )
     ) {
       return from(this.flush()).pipe(mergeMap(() => next.handle()));
     }
     if (
       this.config.get('DEMO_MODE', { infer: true }) !== true ||
       ['GET', 'HEAD', 'OPTIONS'].includes(request.method) ||
-      !/^\/api\/v1\/(?:sports\/account|profile\/coaching|business\/sports|admin\/sports)(?:[/-]|$)/.test(
+      !/^\/api\/v1\/(?:sports\/account|profile\/coaching|profile\/training|business\/sports|admin\/sports)(?:[/-]|$)/.test(
         request.path,
       )
     )

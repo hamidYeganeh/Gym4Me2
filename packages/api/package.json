@@ -12,7 +12,8 @@
     "./admin": "./src/admin/index.ts",
     "./catalog": "./src/catalog/index.ts",
     "./system": "./src/system/index.ts",
-    "./sports": "./src/sports/index.ts"
+    "./sports": "./src/sports/index.ts",
+    "./training-offline": "./src/profile/training-offline.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

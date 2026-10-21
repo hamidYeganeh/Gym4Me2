@@ -321,6 +321,25 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
       .where(eq(s.clubReviews.repliedBy, userId));
     await this.media.eraseCoaching(tx, userId);
     await tx.execute(
+      sql`DELETE FROM training_sessions WHERE athlete_id=${userId}`,
+    );
+    await tx.execute(
+      sql`DELETE FROM training_plans WHERE athlete_id=${userId} OR (owner_id=${userId} AND relationship_id IS NULL)`,
+    );
+    await tx.execute(
+      sql`UPDATE training_plans SET owner_id=NULL WHERE owner_id=${userId}`,
+    );
+    await tx.execute(
+      sql`DELETE FROM training_measurements WHERE athlete_id=${userId}`,
+    );
+    await tx.execute(
+      sql`DELETE FROM training_receipts WHERE actor_id=${userId}`,
+    );
+    await tx.execute(sql`DELETE FROM product_events WHERE actor_id=${userId}`);
+    await tx.execute(
+      sql`UPDATE club_review_reports SET reporter_id=NULL,reason='[deleted]' WHERE reporter_id=${userId}`,
+    );
+    await tx.execute(
       sql`UPDATE sport_services SET status='archived',published_version_id=NULL WHERE id IN(SELECT service_id FROM coaching_services WHERE coach_id=${userId})`,
     );
     await tx.execute(

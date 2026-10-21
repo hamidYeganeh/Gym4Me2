@@ -1,4 +1,5 @@
 "use client";
+import { DemoPanel } from "../training/service-reviews";
 import { useTranslations, useLocale, getDirection } from "@repo/i18n";
 
 import { useAccount, useAccess } from "@repo/api/profile";
@@ -69,7 +70,8 @@ export type Section =
   | "catalog-reviews"
   | "taxonomies"
   | "locations"
-  | "moderation";
+  | "moderation"
+  | "demo";
 const commonNav = [
   {
     key: "profile",
@@ -132,6 +134,12 @@ const businessNav = [
   },
 ] as const;
 const adminNav = [
+  {
+    key: "demo",
+    href: "/demo",
+    title: "Training.demoControls",
+    icon: ShieldCheck,
+  },
   {
     key: "coaching",
     href: "/coaching",
@@ -422,6 +430,7 @@ function WorkspaceContent({
       return <AdminOrganizationsContent publicationQueue />;
     if (section === "taxonomies") return <AdminTaxonomiesContent />;
     if (section === "locations") return <AdminLocationsContent />;
+    if (section === "demo") return <DemoPanel />;
     if (section === "moderation") return <AdminModerationContent />;
     if (section === "users") return <AdminUsersContent />;
     if (section === "organizations") return <AdminOrganizationsContent />;
