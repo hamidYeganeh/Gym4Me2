@@ -15,6 +15,8 @@ import { serviceSchema } from '../src/modules/commerce/commerce.contracts';
 import { CoachingPracticeService } from '../src/modules/coaching/practice.service';
 import { TrainingService } from '../src/modules/training/training.service';
 import { type PlanContent } from '../src/modules/training/training.contracts';
+import { ClubService } from '../src/modules/clubs/club.service';
+import { catalogFiltersSchema } from '../src/modules/clubs/club.contracts';
 import {
   showcaseCities,
   showcaseClubs,
@@ -168,6 +170,9 @@ export async function provisionDemoShowcase() {
         );
         await tx.execute(
           sql`INSERT INTO club_sport_links(club_id,sport_id) VALUES(${clubId},${id(`sport:${club.sport}`)}) ON CONFLICT DO NOTHING`,
+        );
+        await tx.execute(
+          sql`INSERT INTO club_phones(id,club_id,number,label,is_primary) VALUES(${id(`phone:${club.key}`)},${clubId},${`0210000000${index}`},'پذیرش دمو',true) ON CONFLICT DO NOTHING`,
         );
         for (const [n, name] of club.branches.entries()) {
           const branchId = id(`branch:${club.key}:${n}`),
@@ -460,6 +465,21 @@ export async function provisionDemoShowcase() {
           operationId: randomUUID(),
         });
     }
+    const publicClubs = await app
+      .get(ClubService)
+      .listPublic(catalogFiltersSchema.parse({}));
+    const visibleClubs = new Set(publicClubs.map((club) => club.id));
+    if (showcaseClubs.some((club) => !visibleClubs.has(id(`club:${club.key}`))))
+      throw new Error('Showcase public catalog acceptance failed');
+    const publicServices = new Set(
+      (await commerce.catalog()).map((service) => service.id),
+    );
+    const examples = await rows<{ entity_id: string }>(
+      db,
+      sql`SELECT entity_id FROM gym4me_demo_showcase_objects WHERE kind='service'`,
+    );
+    if (examples.some((example) => !publicServices.has(example.entity_id)))
+      throw new Error('Showcase public services acceptance failed');
     console.log(
       'Showcase ready: six cities, six additional clubs, eight branches, four additional coaches and six plans/templates. Existing account data retained.',
     );
