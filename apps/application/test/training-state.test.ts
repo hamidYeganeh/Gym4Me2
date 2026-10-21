@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { trainingIdentity } from "../../../packages/ui/src/training/identity.ts";
-import { replaceRemainingSets } from "../../../packages/ui/src/training/workout-state.ts";
+import { trainingIdentity } from "../../../packages/ui/src/training/identity";
+import { replaceRemainingSets } from "../../../packages/ui/src/training/workout-state";
 import type { Prescription, SetLog } from "@repo/api/profile";
 const prescription: Prescription = {
   id: "p",
