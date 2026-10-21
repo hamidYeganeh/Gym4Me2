@@ -81,6 +81,8 @@ jobs:
         with:
           # v3 defaults include the retired "tools" package; command-line tools are installed separately.
           packages: platform-tools
+      - name: Synchronize Android native dependencies
+        run: pnpm --filter application exec cap sync android
       - name: Build Android and run native unit tests
         working-directory: apps/application/android
         run: ./gradlew :app:assembleDebug :app:testDebugUnitTest
