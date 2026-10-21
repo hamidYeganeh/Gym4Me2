@@ -3,6 +3,20 @@
 This deployment uses four Hobby projects and one isolated Neon Free database.
 No live SMS or payment provider is configured. Use synthetic data only.
 
+## PH0–PH4 demo delivery
+
+- [Application / training](https://gym4me-demo-application.vercel.app/training)
+- [Business](https://gym4me-demo-business.vercel.app)
+- [Admin / demo controls](https://gym4me-demo-admin.vercel.app/demo)
+- [Persian role accounts and manual walkthrough](qa/ph4-manual-demo.md)
+- [Acceptance evidence](qa/ph4-demo-2026-10-21.md) and [task matrix](qa/ph0-ph4-task-acceptance.md)
+
+Personal and coach-assigned programs share versioned execution, offline drafts,
+explicit conflict resolution and progress. Private coaching supports text/images,
+weekly check-ins and feedback. Video is deferred by the user's explicit decision.
+The PH4 additive seed is `apps/api/scripts/provision-demo-ph4.ts`; it requires
+the named isolated demo marker and never resets existing data or ended relationships.
+
 ## Configuration
 
 - Git branch: `main` (demo branch merged on 2026-10-20) in `hamidYeganeh/Gym4Me2`.
