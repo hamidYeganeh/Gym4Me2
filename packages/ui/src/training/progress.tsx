@@ -24,6 +24,8 @@ export function TrainingProgressPanel() {
     q = useTrainingQuery<TrainingProgress>("profile/training/progress"),
     a = useTrainingAction();
   const library = useTrainingQuery<Exercise[]>("profile/training/exercises");
+  const [exerciseId, setExerciseId] = useState("");
+  const [metric, setMetric] = useState<"load" | "reps" | "seconds">("load");
   const [kind, setKind] = useState<Measurement["kind"]>("weight"),
     [value, setValue] = useState(""),
     [date, setDate] = useState(trainingToday);
@@ -44,6 +46,31 @@ export function TrainingProgressPanel() {
           Math.max(record.get(log.exerciseId) ?? 0, log.load),
         );
     }
+  const exercises = [
+    ...new Set(
+      sessions.flatMap((s) =>
+        s.logs.filter((l) => l.done).map((l) => l.exerciseId),
+      ),
+    ),
+  ];
+  const selectedExercise = exercises.includes(exerciseId)
+    ? exerciseId
+    : exercises[0];
+  const performance = sessions
+    .flatMap((s) => {
+      const values = s.logs
+        .filter(
+          (l) =>
+            l.done && l.exerciseId === selectedExercise && l[metric] !== null,
+        )
+        .map((l) => l[metric] as number);
+      return values.length
+        ? [{ id: s.id, date: s.startedAt, value: Math.max(...values) }]
+        : [];
+    })
+    .slice(0, 12)
+    .reverse();
+  const unit = metric === "load" ? "kg" : metric;
   return (
     <>
       <TrainingFeedback action={a} />
@@ -65,6 +92,77 @@ export function TrainingProgressPanel() {
               </div>
             ))}
           </dl>
+        )}
+      </TrainingCard>
+      <TrainingCard title={t("performanceChart")}>
+        <p className="training-muted">{t("performanceHint")}</p>
+        <div className="training-grid">
+          <label>
+            {t("movement")}
+            <select
+              value={selectedExercise ?? ""}
+              onChange={(e) => setExerciseId(e.target.value)}
+              disabled={!exercises.length}
+            >
+              {!exercises.length && <option value="">{t("noWorkouts")}</option>}
+              {exercises.map((id) => (
+                <option key={id} value={id}>
+                  {fmt.locale === "fa"
+                    ? library.data?.find((e) => e.id === id)?.nameFa
+                    : library.data?.find((e) => e.id === id)?.nameEn}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            {t("performanceMetric")}
+            <select
+              value={metric}
+              onChange={(e) => setMetric(e.target.value as typeof metric)}
+            >
+              {(["load", "reps", "seconds"] as const).map((key) => (
+                <option key={key} value={key}>
+                  {t(key)}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        {performance.length ? (
+          <>
+            <div
+              className="training-chart"
+              role="img"
+              aria-label={`${t("performanceChart")} · ${t(unit)}`}
+            >
+              {performance.map((point) => (
+                <div className="training-bar" key={point.id}>
+                  <strong>{fmt.number(point.value)}</strong>
+                  <span
+                    style={{
+                      height: `${(point.value / Math.max(1, ...performance.map((v) => v.value))) * 75}%`,
+                    }}
+                  />
+                  <small>{fmt.date(point.date)}</small>
+                </div>
+              ))}
+            </div>
+            <details>
+              <summary>{t("showValues")}</summary>
+              <dl>
+                {performance.map((point) => (
+                  <div className="training-card-heading" key={point.id}>
+                    <dt>{fmt.date(point.date)}</dt>
+                    <dd>
+                      {fmt.number(point.value)} {t(unit)}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </details>
+          </>
+        ) : (
+          <TrainingEmpty>{t("noMetricData")}</TrainingEmpty>
         )}
       </TrainingCard>
       <TrainingCard title={t("measurements")}>

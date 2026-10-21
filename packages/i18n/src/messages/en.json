@@ -2242,6 +2242,11 @@
     "blankPlan": "Blank plan",
     "nextPlanReview": "Next plan review",
     "markPlanReviewed": "Mark plan reviewed",
-    "editPlan": "Edit plan"
+    "editPlan": "Edit plan",
+    "performanceChart": "Exercise performance",
+    "performanceHint": "The highest recorded value in each workout is shown. Missing values are left out.",
+    "performanceMetric": "Compare by",
+    "noMetricData": "No values recorded for this exercise and metric yet.",
+    "movement": "Exercise"
   }
 }
