@@ -4,7 +4,7 @@ import { ApiError } from "@repo/api";
 import { AuthRequired } from "./auth-entry";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useTranslations } from "@repo/i18n";
+import { useTranslations, useLocale } from "@repo/i18n";
 import {
   MapPin,
   SlidersHorizontal,
@@ -34,6 +34,7 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
     params = useSearchParams(),
     id = params.get("id") ?? "";
   const visual = useTranslations("Visual");
+  const locale = useLocale();
   const [filters, setFilters] = useState({
     search: "",
     city: "",
@@ -42,6 +43,12 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
     maxPrice: undefined as string | undefined,
     page: 1,
   });
+  const activeFilters = [
+    filters.city,
+    filters.specialty,
+    filters.goal,
+    filters.maxPrice,
+  ].filter(Boolean).length;
   const q = usePracticeQuery<{ items: CoachDirectoryDto[]; hasMore: boolean }>(
     "coaching/directory",
     filters,
@@ -93,6 +100,16 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
                 <span className="flex items-center gap-2">
                   <SlidersHorizontal size={15} />
                   {visual("moreFilters")}
+                  {activeFilters > 0 && (
+                    <span className="text-xs">
+                      ·{" "}
+                      {visual("activeFilters", {
+                        count: new Intl.NumberFormat(locale).format(
+                          activeFilters,
+                        ),
+                      })}
+                    </span>
+                  )}
                 </span>
               }
             >
@@ -137,7 +154,8 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
                 </div>
                 <p className="flex flex-wrap items-center gap-x-4 gap-y-1">
                   <span>
-                    {t("experienceYears")}: {c.experienceYears}
+                    {t("experienceYears")}:{" "}
+                    {new Intl.NumberFormat(locale).format(c.experienceYears)}
                   </span>
                   <span className="flex items-center gap-1">
                     <BadgeCheck size={14} />

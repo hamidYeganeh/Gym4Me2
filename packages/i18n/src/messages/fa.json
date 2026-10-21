@@ -2260,6 +2260,7 @@
     "completedWorkouts": "تمرین‌های کامل‌شده",
     "lastWorkout": "آخرین تمرین",
     "noneYet": "هنوز ثبت نشده",
-    "trainingProgressHint": "با ورود به حساب، برنامه‌ها و مسیر تمرینت را اینجا دنبال کن."
+    "trainingProgressHint": "با ورود به حساب، برنامه‌ها و مسیر تمرینت را اینجا دنبال کن.",
+    "activeFilters": "{count} فیلتر فعال"
   }
 }

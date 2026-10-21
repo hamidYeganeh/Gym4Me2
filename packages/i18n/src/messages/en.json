@@ -2260,6 +2260,7 @@
     "completedWorkouts": "Completed workouts",
     "lastWorkout": "Last workout",
     "noneYet": "Not recorded yet",
-    "trainingProgressHint": "Sign in to follow your plans and training here."
+    "trainingProgressHint": "Sign in to follow your plans and training here.",
+    "activeFilters": "{count} active filters"
   }
 }
