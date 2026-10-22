@@ -68,6 +68,7 @@ function ClubContent({
   onBranchChange: (id: string) => void;
   tariffs: import("@repo/api/catalog").TariffDto[];
 }) {
+  const router = useRouter();
   const clubId = club.id;
   const [shareOpen, setShareOpen] = useState(false);
   const locale = useLocale();
@@ -194,6 +195,12 @@ function ClubContent({
         saved={saved}
         onSavedChange={setSaved}
         onShare={() => setShareOpen(true)}
+        onPlanVisit={
+          branch
+            ? () =>
+                router.push(clubHref(clubId, "slots", { branch: branch.id }))
+            : undefined
+        }
         labels={{
           back: t("back"),
           save: t("save"),

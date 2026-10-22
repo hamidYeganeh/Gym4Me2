@@ -14,7 +14,6 @@ import {
 } from "../../icons";
 import { cn } from "../../lib/utils";
 import { Badge } from "../Badge";
-import { ProgressiveBlur } from "../ProgressiveBlur";
 import { Button } from "../Button";
 import { clubCardStyles as s } from "./ClubCard.styles";
 import type { ClubCardProps } from "./ClubCard.types";
@@ -36,10 +35,11 @@ export function ClubCard({
   const icons = [BarbellHorizontalIcon, UsersThreeIcon, Ruler1Icon];
   return (
     <article
+      data-slot="club-card"
       data-variant={variant}
       className={cn(s.root({ size, variant }), className)}
     >
-      <div className="absolute inset-0" data-zoom-exit-key={`club-${club.id}`}>
+      <div className={s.cover({ size })} data-zoom-exit-key={`club-${club.id}`}>
         <Image
           src={photo.src}
           alt={photo.alt}
@@ -50,11 +50,6 @@ export function ClubCard({
           unoptimized
         />
       </div>
-      <ProgressiveBlur
-        className="absolute inset-x-0 bottom-0 z-0 h-3/5"
-        blurIntensity={2}
-      />
-      <div className={s.overlay()} />
       <Link
         href={href}
         scroll={false}
@@ -77,7 +72,7 @@ export function ClubCard({
           <Button
             className="pointer-events-auto"
             size="icon-lg"
-            variant="image"
+            variant="imageSolid"
             aria-label={saved ? labels.unsave : labels.save}
             aria-pressed={saved}
             onClick={() => onSavedChange(!saved)}
@@ -102,7 +97,7 @@ export function ClubCard({
           </div>
           <ul className={s.facilities()}>
             {club.facilities.map((item, index) => {
-              const Icon = icons[index]!;
+              const Icon = icons[index % icons.length]!;
               return (
                 <li key={item} className={s.facility()}>
                   <Icon />
@@ -128,7 +123,7 @@ export function ClubCard({
           </p>
           <ul className={s.facilities()}>
             {club.facilities.map((item, index) => {
-              const Icon = icons[index]!;
+              const Icon = icons[index % icons.length]!;
               return (
                 <li key={item} className={s.facility()}>
                   <Icon />

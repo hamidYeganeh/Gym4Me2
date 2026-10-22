@@ -5,8 +5,14 @@ import {
   useSyncExternalStore,
   useTransition,
 } from "react";
-import Image from "next/image";
-import { Map, Search, X, UserRound } from "lucide-react";
+import {
+  Map,
+  Search,
+  X,
+  UserRound,
+  SlidersHorizontal,
+  Bookmark,
+} from "lucide-react";
 import {
   InputGroup,
   InputGroupInput,
@@ -15,20 +21,14 @@ import {
 } from "@repo/ui/kit/InputGroup";
 import { ServicesLink } from "../luma/discovery-link";
 import { DiscoveryTabBar } from "./discovery-tab-bar";
-import { ClubList } from "./club-list";
 import Link from "next/link";
-import { ClubFeaturedCard } from "@repo/ui/kit/ClubFeaturedCard";
-import { LocationCard } from "@repo/ui/kit/LocationCard";
-import { Carousel, CarouselContent, CarouselItem } from "@repo/ui/kit/Carousel";
 import { CategoryCarousel } from "./category-carousel";
-import { ClubShowcase } from "./club-showcase";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { useChangeLocale } from "@repo/i18n/client-provider";
 import { ClubCard } from "@repo/ui/kit/ClubCard";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 import { AnimatedThemeToggler } from "@repo/ui/kit/AnimatedThemeToggler";
 import { Button } from "@repo/ui/kit/Button";
-import { Badge } from "@repo/ui/kit/Badge";
 import { BarbellHorizontalIcon, GlobeIcon } from "@repo/ui/icons";
 import { useCatalogClubs } from "./use-catalog";
 import { CatalogState } from "./catalog-state";
@@ -38,6 +38,7 @@ import { LocationPicker, type LocationValue } from "./location-picker";
 import { CatalogFilters, type PriceFilters } from "./catalog-filters";
 import { useSavedClub } from "./use-saved-club";
 import { catalogLocationFilters } from "../../lib/catalog-location";
+import "./discovery.css";
 
 function SavedClubCard({
   club,
@@ -49,7 +50,7 @@ function SavedClubCard({
   const t = useTranslations("Clubs");
   const [saved, setSaved] = useSavedClub(club.id);
   return (
-    <div className="grid gap-3">
+    <div className="discovery-result">
       <ClubCard
         club={club}
         variant="portrait"
@@ -64,7 +65,7 @@ function SavedClubCard({
           discover: t("discover"),
         }}
       />
-      <Button asChild variant="outline" className="w-fit">
+      <Button asChild variant="ghost" className="discovery-compare">
         <Link href={`/discovery/compare?club=${club.id}`}>{t("compare")}</Link>
       </Button>
     </div>
@@ -74,6 +75,8 @@ export function Discovery() {
   const t = useTranslations("Discovery");
   const home = useTranslations("Home");
   const copy = useTranslations("Copy");
+  const tabs = useTranslations("DiscoveryTabs");
+  const catalog = useTranslations("Catalog");
   const locale = useLocale();
   const numbers = new Intl.NumberFormat(locale);
   const changeLocale = useChangeLocale();
@@ -104,10 +107,13 @@ export function Discovery() {
   });
   const allClubs = validPrices ? query.clubs : [];
   const clubs = allClubs;
-  const fa = locale === "fa";
+  const filterCount = [
+    ...Object.values(place),
+    ...Object.values(filters),
+  ].filter(Boolean).length;
   return (
-    <main className="flex min-h-dvh w-full flex-col gap-10 px-5 pt-[calc(1.5rem+var(--app-safe-top))] pb-[calc(8rem+var(--app-safe-bottom))] sm:px-6">
-      <header className="flex items-center justify-between gap-4 border-b border-border pb-6">
+    <main className="discovery-page">
+      <header className="discovery-header">
         <Link
           href="/"
           className="flex items-center gap-2.5 text-lg font-bold tracking-tight"
@@ -115,7 +121,7 @@ export function Discovery() {
           <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-xl text-primary-foreground">
             <BarbellHorizontalIcon />
           </span>
-          <span className="sr-only sm:not-sr-only">{home("brand")}</span>
+          <span>{home("brand")}</span>
         </Link>
         <div className="flex shrink-0 items-center gap-1.5">
           <Button asChild variant="outline" size="icon-lg" className="size-11">
@@ -143,66 +149,38 @@ export function Discovery() {
           </Button>
         </div>
       </header>
-      <section className="relative isolate flex min-h-80 flex-col justify-end gap-5 overflow-hidden rounded-4xl p-6 text-image-foreground">
-        <Image
-          src="/images/clubs/training.png"
-          alt=""
-          fill
-          sizes="576px"
-          className="object-cover"
-          priority
-          unoptimized
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-image-surface/95 via-image-surface/40 to-image-surface/10" />
-        <div className="relative flex flex-col items-start gap-3">
-          <Badge>{t("eyebrow")}</Badge>
-          <h1 className="text-3xl font-semibold leading-tight">{t("title")}</h1>
-          <p className="text-sm text-image-foreground/80">{t("description")}</p>
-        </div>
-        <div className="relative rounded-full bg-background p-1 text-foreground">
-          <InputGroup className="h-12 rounded-full">
-            <InputGroupAddon>
-              <Search />
+      <section className="discovery-intro">
+        <p className="discovery-eyebrow">{t("eyebrow")}</p>
+        <h1>{t("title")}</h1>
+        <p>{t("description")}</p>
+        <InputGroup className="discovery-search">
+          <InputGroupAddon>
+            <Search />
+          </InputGroupAddon>
+          <InputGroupInput
+            value={search}
+            onChange={(event) => {
+              setSearch(event.target.value);
+              setPage(1);
+            }}
+            placeholder={t("search")}
+            aria-label={t("search")}
+          />
+          {search && (
+            <InputGroupAddon align="inline-end">
+              <InputGroupButton
+                size="icon-lg"
+                aria-label={t("clearSearch")}
+                onClick={() => {
+                  setSearch("");
+                  setPage(1);
+                }}
+              >
+                <X />
+              </InputGroupButton>
             </InputGroupAddon>
-            <InputGroupInput
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setPage(1);
-              }}
-              placeholder={t("search")}
-              aria-label={t("search")}
-            />
-            {search && (
-              <InputGroupAddon align="inline-end">
-                <InputGroupButton
-                  size="icon-lg"
-                  aria-label={t("clearSearch")}
-                  onClick={() => {
-                    setSearch("");
-                    setPage(1);
-                  }}
-                >
-                  <X />
-                </InputGroupButton>
-              </InputGroupAddon>
-            )}
-          </InputGroup>
-        </div>
-      </section>
-      <section className="relative -mt-16 flex items-center justify-between gap-4 rounded-3xl border-8 border-background bg-card p-5 text-card-foreground">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-lg font-semibold">{t("heroPromo")}</h2>
-          <p className="text-sm text-muted-foreground">
-            {t("heroPromoDescription")}
-          </p>
-          <Button asChild size="sm" className="self-start">
-            <a href="#discovery-clubs">{t("view")}</a>
-          </Button>
-        </div>
-        <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-primary/15 text-3xl text-primary">
-          <BarbellHorizontalIcon />
-        </span>
+          )}
+        </InputGroup>
       </section>
       <CategoryCarousel
         locale={locale}
@@ -213,74 +191,47 @@ export function Discovery() {
           setPage(1);
         }}
       />
-      <LocationPicker
-        value={place}
-        onChange={(place) => {
-          setPlace(place);
-          setPage(1);
-        }}
-      />
-      <CatalogFilters
-        value={filters}
-        onChange={(value) => {
-          setFilters(value);
-          setPage(1);
-        }}
-      />
-      {allClubs.some((club) => club.cityId) && (
-        <section className="flex min-w-0 flex-col gap-4">
-          <h2 className="text-xl font-semibold">{t("locations")}</h2>
-          <Carousel
-            opts={{ align: "start", direction: fa ? "rtl" : "ltr" }}
-            aria-label={t("locations")}
-          >
-            <CarouselContent>
-              {allClubs
-                .filter(
-                  (club, index, list) =>
-                    club.cityId &&
-                    list.findIndex((item) => item.cityId === club.cityId) ===
-                      index,
-                )
-                .map((club) => (
-                  <CarouselItem key={club.id} className="basis-auto">
-                    <LocationCard
-                      name={club.cityName ?? club.address}
-                      parent=""
-                      cover={club.photos[0]}
-                      clubs={allClubs
-                        .filter((item) => item.cityId === club.cityId)
-                        .map((item) => ({
-                          id: item.id,
-                          name: item.name,
-                          image: item.logo ?? item.photos[0].src,
-                        }))}
-                      countLabel={t("locationCount", {
-                        count: numbers.format(
-                          allClubs.filter(
-                            (item) => item.cityId === club.cityId,
-                          ).length,
-                        ),
-                      })}
-                      onSelect={() => {
-                        const branch = query.data?.find(
-                          (item) => item.id === club.id,
-                        )?.mainBranch;
-                        setPlace({
-                          countryId: branch?.countryId ?? undefined,
-                          provinceId: branch?.provinceId ?? undefined,
-                          cityId: club.cityId ?? undefined,
-                        });
-                        setPage(1);
-                        setCategory("");
-                      }}
-                    />
-                  </CarouselItem>
-                ))}
-            </CarouselContent>
-          </Carousel>
-        </section>
+      <details className="discovery-filters">
+        <summary>
+          <SlidersHorizontal size={18} />
+          <span>{t("filters")}</span>
+          {filterCount > 0 && (
+            <span className="discovery-filter-count">
+              {numbers.format(filterCount)}
+            </span>
+          )}
+        </summary>
+        <div className="discovery-filter-fields">
+          <LocationPicker
+            value={place}
+            onChange={(place) => {
+              setPlace(place);
+              setPage(1);
+            }}
+          />
+          <CatalogFilters
+            value={filters}
+            onChange={(value) => {
+              setFilters(value);
+              setPage(1);
+            }}
+          />
+        </div>
+      </details>
+      {!validPrices && (
+        <p role="alert" className="text-sm text-destructive">
+          {catalog("invalidPriceRange")}
+        </p>
       )}
+      <div className="discovery-results-heading">
+        <h2>{t("clubs")}</h2>
+        <Button asChild variant="ghost">
+          <Link href="/saved">
+            <Bookmark size={17} />
+            {tabs("saved")}
+          </Link>
+        </Button>
+      </div>
       {(activeCategory ||
         Object.values(place).some(Boolean) ||
         search ||
@@ -303,30 +254,18 @@ export function Discovery() {
       {validPrices && query.isError && (
         <CatalogState retry={() => void query.refetch()} />
       )}
-      <ClubList clubs={clubs} title={t("clubs")} viewLabel={t("view")} />
       {validPrices &&
         !query.isPending &&
         !query.isError &&
         clubs.length === 0 && (
-          <p role="status" className="text-sm text-muted-foreground">
+          <p role="status" className="discovery-empty">
             {t("noClubs")}
           </p>
         )}
-      {clubs[0] && <ClubFeaturedCard club={clubs[0]} viewLabel={t("view")} />}
-      <section aria-label={t("images")} className="flex flex-col gap-8">
-        {clubs.map((club) => (
-          <ClubShowcase
-            key={club.id}
-            club={club}
-            locale={locale}
-            viewLabel={t("view")}
-          />
-        ))}
-      </section>
       <section
         id="discovery-clubs"
         aria-label={t("clubs")}
-        className="grid grid-cols-1 gap-6"
+        className="discovery-results"
       >
         {clubs.map((club, index) => (
           <SavedClubCard key={club.id} club={club} priority={index === 0} />

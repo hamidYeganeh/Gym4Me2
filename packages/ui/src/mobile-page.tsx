@@ -52,14 +52,14 @@ export function MobilePage({
   actions?: ReactNode;
 }) {
   return (
-    <main className="mobile-page mx-auto flex min-h-dvh w-full max-w-xl flex-col gap-8 bg-background px-5 pt-[calc(1.5rem+var(--app-safe-top,0px))] pb-[calc(2rem+var(--app-safe-bottom,0px))] sm:px-6">
+    <main className="mobile-page mx-auto flex min-h-dvh w-full max-w-xl flex-col gap-6 bg-background px-5 pt-[calc(1.5rem+var(--app-safe-top,0px))] pb-[calc(7.5rem+var(--app-safe-bottom,0px))] sm:px-6">
       <MobileHeader
         title={title}
         backHref={backHref}
         subtitle={subtitle}
         actions={actions}
       />
-      <div className="grid gap-6">{children}</div>
+      <div className="mobile-page-content grid gap-5">{children}</div>
     </main>
   );
 }

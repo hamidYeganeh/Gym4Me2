@@ -21,7 +21,6 @@ import {
 } from "../../icons";
 import { Button } from "../Button";
 import { Separator } from "../Separator";
-import { ProgressiveBlur } from "../ProgressiveBlur";
 import { EquipmentCard } from "../EquipmentCard";
 import { SlidingNumber } from "../SlidingNumber";
 import { clubDetailStyles as s } from "./ClubDetail.styles";
@@ -79,11 +78,6 @@ export function ClubDetail({
       <nav className={s.nav({ scrolled })} aria-label={labels.back}>
         {scrolled && (
           <>
-            <ProgressiveBlur
-              direction="top"
-              className={s.navBlur()}
-              blurIntensity={2}
-            />
             <div aria-hidden="true" className={s.navGradient()} />
           </>
         )}
@@ -126,11 +120,6 @@ export function ClubDetail({
         </div>
         <div className={s.overlay()} />
         <div className={s.heading()}>
-          <ProgressiveBlur
-            className={s.headingBlur()}
-            blurLayers={16}
-            blurIntensity={0.25}
-          />
           <div aria-hidden="true" className={s.headingGradient()} />
           <div className={s.headingContent()}>
             <p className={s.category()}>{club.category}</p>
@@ -259,23 +248,17 @@ export function ClubDetail({
         {recommendations}
         {socialShare}
         <footer className={s.footer()}>
-          <ProgressiveBlur
-            className={s.footerBlur()}
-            blurLayers={16}
-            blurIntensity={0.25}
-          />
-          <div aria-hidden="true" className={s.footerGradient()} />
           <Button
             variant="outline"
             size="icon-lg"
-            className="size-14"
+            className="size-12"
             aria-label={labels.share}
             onClick={onShare}
           >
             <Share1Icon />
           </Button>
           {onPlanVisit && (
-            <Button size="lg" className="h-14 flex-1" onClick={onPlanVisit}>
+            <Button size="lg" className="h-12 flex-1" onClick={onPlanVisit}>
               <CalendarPlusIcon data-icon="inline-start" />
               {labels.visit}
             </Button>

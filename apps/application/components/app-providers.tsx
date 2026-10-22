@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useLocale, getDirection, type Locale } from "@repo/i18n";
 import { ClientLocaleProvider } from "@repo/i18n/client-provider";
 import { ApiProvider, setNativeApiForeground } from "@repo/api/provider";
@@ -120,6 +120,7 @@ function NativeRuntime() {
   return null;
 }
 function DirectionAndMotion({ children }: { children: ReactNode }) {
+  const qa = usePathname().startsWith("/qa/");
   const locale = useLocale();
   const direction = getDirection(locale);
   return (
@@ -148,7 +149,7 @@ function DirectionAndMotion({ children }: { children: ReactNode }) {
           <DirectionProvider dir={direction}>
             <TooltipProvider>
               <NativeRuntime />
-              <FavoritesSync />
+              {!qa && <FavoritesSync />}
               <LumaShell>{children}</LumaShell>
               <Toaster
                 dir={direction}

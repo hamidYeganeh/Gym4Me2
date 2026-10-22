@@ -46,13 +46,79 @@ textarea,
 .application-frame [data-slot="native-select"] {
   min-height: 2.75rem;
 }
-.application-frame [data-slot="button"] { min-width: 2.75rem; }
-.mobile-page [data-slot="card"] { box-shadow: none; }
-.mobile-page [data-slot="card-description"] { line-height: 1.75rem; }
-.mobile-page [data-slot="checkbox"] { margin-block: .75rem; }
+.application-frame [data-slot="button"] {
+  min-width: 2.75rem;
+}
+.mobile-page [data-slot="card"] {
+  box-shadow: none;
+}
+.mobile-page [data-slot="card-description"] {
+  line-height: 1.75rem;
+}
+.mobile-page [data-slot="checkbox"] {
+  margin-block: 0.75rem;
+}
 
 /* Fixed layered blurs force expensive repainting on mobile WebViews. */
 @media (pointer: coarse) {
-  .discovery-tab-bar-backdrop span { display: none; }
-  .luma-navigation, .profile-navigation, .account-design-page > header { backdrop-filter: none; }
+  .discovery-tab-bar-backdrop span {
+    display: none;
+  }
+  .luma-navigation,
+  .profile-navigation,
+  .account-design-page > header {
+    backdrop-filter: none;
+  }
+}
+
+/* Mobile visual system: quiet canvas, editorial media and a single green action. */
+.application-frame {
+  --mobile-line: color-mix(in oklch, var(--border) 75%, transparent);
+}
+.application-frame
+  :is(.mobile-page, .account-design, .luma-page, .discovery-page) {
+  background: var(--background);
+}
+.application-frame :is(input, textarea, select) {
+  font-size: max(1rem, 16px);
+}
+.application-frame :is(h1, h2, h3) {
+  text-wrap: pretty;
+}
+.application-frame :is(.luma-row, .luma-shortcut, .coach-directory-card) {
+  border-color: var(--mobile-line);
+}
+.application-frame .luma-navigation {
+  border-color: var(--mobile-line);
+}
+.application-frame .luma-navigation a {
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+}
+.application-frame .luma-navigation a[aria-current="page"] {
+  background: var(--foreground);
+  color: var(--background);
+}
+.application-frame .luma-shortcut {
+  border: 1px solid var(--mobile-line);
+  background: var(--card);
+  font-size: 0.8rem;
+}
+.application-frame .luma-pill {
+  font-size: 0.7rem;
+  line-height: 1.6;
+}
+.application-frame .luma-row {
+  border-color: var(--mobile-line);
+}
+.application-frame .luma-page > .luma-field:first-of-type input {
+  background: var(--muted);
+  border-color: transparent;
+  border-radius: 1rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .application-frame .luma-navigation a {
+    transition: none;
+  }
 }

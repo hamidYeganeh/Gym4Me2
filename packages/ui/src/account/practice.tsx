@@ -75,7 +75,7 @@ export function CoachingPracticePanel() {
     }).format(new Date(v));
   return (
     <section className="space-y-5">
-      <nav aria-label={t("workspace")} className="flex flex-wrap gap-2">
+      <nav aria-label={t("workspace")} className="practice-navigation">
         <Button variant="outline" asChild>
           <Link href="/training">{t("trainingWorkspace")}</Link>
         </Button>

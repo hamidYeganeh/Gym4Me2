@@ -405,7 +405,7 @@ function WorkoutContent() {
     }, rest);
   return (
     <>
-      <section className="training-hero">
+      <section className="training-hero training-workout-summary">
         <h2>{w.snapshot.title}</h2>
         <p>{w.snapshot.days[w.dayIndex]!.name}</p>
         <p className="training-muted" role="status">
@@ -529,6 +529,13 @@ function WorkoutContent() {
                 </label>
               )}
             </details>
+            <div className="training-set-head" aria-hidden="true">
+              <span>{t("set")}</span>
+              <span>{t(p.reps === null ? "seconds" : "reps")}</span>
+              <span>{t("load")}</span>
+              <span>{t("rpe")}</span>
+              <span />
+            </div>
             {Array.from({ length: p.sets }, (_, i) => i + 1).map((set) => {
               const row = w.logs.find(
                   (l) => l.prescriptionId === p.id && l.set === set,
@@ -551,7 +558,9 @@ function WorkoutContent() {
                       {fmt.number(set)}
                     </span>
                     <label>
-                      {t(p.reps === null ? "seconds" : "reps")}
+                      <span className="sr-only">
+                        {t(p.reps === null ? "seconds" : "reps")}
+                      </span>
                       <input
                         aria-label={`${t("set")} ${set} ${t(p.reps === null ? "seconds" : "reps")}`}
                         type="number"
@@ -586,7 +595,7 @@ function WorkoutContent() {
                       />
                     </label>
                     <label>
-                      {t("load")}
+                      <span className="sr-only">{t("load")}</span>
                       <input
                         aria-label={`${t("set")} ${set} ${t("load")}`}
                         type="number"
@@ -608,7 +617,7 @@ function WorkoutContent() {
                       />
                     </label>
                     <label>
-                      {t("rpe")}
+                      <span className="sr-only">{t("rpe")}</span>
                       <input
                         aria-label={`${t("set")} ${set} ${t("rpe")}`}
                         type="number"

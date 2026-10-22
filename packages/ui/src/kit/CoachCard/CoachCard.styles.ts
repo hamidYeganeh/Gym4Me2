@@ -6,9 +6,9 @@ export const coachCardVariants = cva(
     variants: {
       variant: {
         default:
-          "aspect-[3/4] rounded-[32px] border border-border bg-card text-card-foreground",
+          "aspect-[4/5] rounded-3xl border border-border bg-card text-card-foreground",
         portrait:
-          "aspect-[4/5] rounded-4xl bg-image-surface text-image-foreground",
+          "aspect-[4/5] rounded-3xl bg-image-surface text-image-foreground",
       },
     },
     defaultVariants: { variant: "default" },
@@ -40,14 +40,14 @@ export const coachCardStyles = {
     defaultVariants: { variant: "default" },
   }),
   title: cva("leading-tight font-bold tracking-tight", {
-    variants: { variant: { default: "text-2xl", portrait: "text-3xl" } },
+    variants: { variant: { default: "text-xl", portrait: "text-2xl" } },
     defaultVariants: { variant: "default" },
   }),
   specialty: cva("leading-snug", {
     variants: {
       variant: {
-        default: "text-base",
-        portrait: "text-xl text-image-foreground/80",
+        default: "text-sm",
+        portrait: "text-base text-image-foreground/80",
       },
     },
     defaultVariants: { variant: "default" },

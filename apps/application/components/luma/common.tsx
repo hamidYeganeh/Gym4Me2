@@ -47,8 +47,11 @@ export function amount(value: string, locale: string) {
   const sign = rial < BigInt(0) && whole === BigInt(0) ? "-" : "";
   return `${sign}${formatter.format(whole)}${decimal}${formatter.format(tenth)}`;
 }
-export function LumaNavigation() {
-  const path = usePathname();
+export function LumaNavigation({
+  pathOverride,
+}: { pathOverride?: string } = {}) {
+  const pathname = usePathname();
+  const path = pathOverride ?? pathname;
   const t = useLuma();
   return (
     <nav className="luma-navigation" aria-label={t("navigation")}>
@@ -256,6 +259,7 @@ export function Row({
   children,
   state,
   icon,
+  date,
 }: {
   title: string;
   meta?: string;
@@ -263,12 +267,34 @@ export function Row({
   children?: ReactNode;
   state?: string;
   icon?: ReactNode;
+  date?: string;
 }) {
   const t = useLuma();
+  const locale = useLocale();
+  const validDate =
+    date && Number.isFinite(Date.parse(date)) ? new Date(date) : null;
   const content = (
     <>
       <span className="luma-row-icon">
-        {icon ?? <CalendarDays size={24} />}
+        {icon ??
+          (validDate ? (
+            <span className="luma-date" aria-hidden="true">
+              <small>
+                {new Intl.DateTimeFormat(locale, {
+                  month: "short",
+                  timeZone: "Asia/Tehran",
+                }).format(validDate)}
+              </small>
+              <strong>
+                {new Intl.DateTimeFormat(locale, {
+                  day: "numeric",
+                  timeZone: "Asia/Tehran",
+                }).format(validDate)}
+              </strong>
+            </span>
+          ) : (
+            <CalendarDays size={24} />
+          ))}
       </span>
       <span className="luma-row-copy">
         <span className="luma-row-title">{title}</span>

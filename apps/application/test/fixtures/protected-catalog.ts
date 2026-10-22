@@ -18,7 +18,7 @@ export function protectedCatalogFixtures() {
     const image: MediaDto = {
       id: webFixtureId(2201 + index),
       type: "image",
-      url: `/images/clubs/${index ? "training" : "studio"}.png`,
+      url: `/images/clubs/${index ? "training" : "studio"}.webp`,
       thumbnailUrl: null,
       alt: "فضای تمرین نمایشی برای بررسی طراحی",
       width: 1024,

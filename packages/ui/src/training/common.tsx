@@ -51,6 +51,7 @@ export function TrainingGate({
 }) {
   useEffect(() => {
     if (
+      process.env.NODE_ENV !== "production" ||
       !("serviceWorker" in navigator) ||
       window.location.protocol === "capacitor:"
     )

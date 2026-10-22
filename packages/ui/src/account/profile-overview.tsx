@@ -58,9 +58,9 @@ export function ProfileOverview({
     .at(-1);
   const name = account?.displayName || t("you");
   return (
-    <main className="profile-overview relative flex min-h-dvh flex-col gap-6 px-5 pb-[calc(8rem+var(--app-safe-bottom,0px))] pt-[calc(2rem+var(--app-safe-top,0px))] sm:px-6">
+    <main className="profile-overview relative flex min-h-dvh flex-col gap-6 px-5 pb-[calc(8rem+var(--app-safe-bottom,0px))] pt-[calc(1.25rem+var(--app-safe-top,0px))] sm:px-6">
       <header className="relative flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-semibold tracking-tight">{t("title")}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
         <Button variant="outline" size="icon-lg" asChild>
           <Link href="/profile/settings" aria-label={t("settings")}>
             <MoreHorizontal />
@@ -68,10 +68,10 @@ export function ProfileOverview({
         </Button>
       </header>
       <section
-        className="relative flex items-center justify-center gap-5 py-9"
+        className="relative flex items-center justify-start gap-4 py-5"
         aria-label={t("identity")}
       >
-        <Avatar className="size-24 shrink-0 sm:size-28">
+        <Avatar className="size-20 shrink-0">
           <AvatarFallback>
             {account?.displayName?.trim().slice(0, 2).toLocaleUpperCase() || (
               <UserRound className="size-10" />
@@ -80,7 +80,7 @@ export function ProfileOverview({
         </Avatar>
         <div className="flex min-w-0 flex-col items-start gap-3">
           <div className="flex max-w-full items-center gap-2">
-            <h2 className="truncate text-3xl font-semibold">{name}</h2>
+            <h2 className="truncate text-2xl font-semibold">{name}</h2>
             <Button variant="ghost" size="icon" asChild>
               <Link href="/profile/edit" aria-label={t("edit")}>
                 <Pencil />

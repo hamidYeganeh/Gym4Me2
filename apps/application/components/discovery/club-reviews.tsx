@@ -74,7 +74,7 @@ export function ClubReviews({
     <section className="flex min-w-0 flex-col gap-4" aria-label={t("title")}>
       {!full && (
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-2xl font-semibold">{t("title")}</h2>
+          <h2 className="text-lg font-semibold">{t("title")}</h2>
           {reviews.length > 5 && (
             <Button asChild variant="ghost" className="shrink-0">
               <Link
@@ -91,20 +91,23 @@ export function ClubReviews({
           )}
         </div>
       )}
-      {!query.isPending && reviews.length < 25 && page === 1 && (
-        <ReviewsSummary
-          counts={getReviewCounts(reviews)}
-          locale={locale}
-          labels={{
-            average: t("average"),
-            users: (count) =>
-              t("users", {
-                count: new Intl.NumberFormat(locale).format(count),
-              }),
-            rating: t("rating"),
-          }}
-        />
-      )}
+      {!query.isPending &&
+        reviews.length > 0 &&
+        reviews.length < 25 &&
+        page === 1 && (
+          <ReviewsSummary
+            counts={getReviewCounts(reviews)}
+            locale={locale}
+            labels={{
+              average: t("average"),
+              users: (count) =>
+                t("users", {
+                  count: new Intl.NumberFormat(locale).format(count),
+                }),
+              rating: t("rating"),
+            }}
+          />
+        )}
       {query.isPending && <CatalogState loading />}
       {query.isError && <CatalogState retry={() => void query.refetch()} />}
       {currentBranch && (

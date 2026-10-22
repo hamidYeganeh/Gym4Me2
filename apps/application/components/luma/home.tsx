@@ -107,6 +107,7 @@ function SignedInHome() {
             <Row
               key={r.id}
               title={r.title}
+              date={r.startAt}
               meta={`${stamp(r.startAt, locale)} · ${r.branchName}`}
               state={r.status}
               href={`/bookings/detail?id=${r.id}`}

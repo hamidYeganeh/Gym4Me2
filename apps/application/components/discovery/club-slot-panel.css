@@ -1,8 +1,8 @@
 /* Date selection: transitions.dev tabs-sliding, tuned to the shared motion scale. */
 :root {
-  --duration-fast: 250ms;
+  --duration-fast: 120ms;
   --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --tabs-dur: var(--duration-fast);
+  --tabs-dur: 220ms;
   --tabs-ease: var(--ease-smooth-out);
   --tabs-text-muted: var(--foreground);
   --tabs-text-active: var(--primary);
@@ -73,7 +73,7 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   width: 100%;
   height: auto;
-  min-height: 100px;
+  min-height: 80px;
   gap: 8px;
   padding: 0;
   border-radius: 0;
@@ -84,9 +84,9 @@
   flex-direction: column;
   gap: 4px;
   min-width: 0;
-  height: 100px;
+  height: 80px;
   padding: 12px 4px;
-  border-radius: 24px;
+  border-radius: 16px;
   background: var(--muted);
 }
 .club-slot-days .t-tab[aria-selected="true"] {
@@ -100,7 +100,7 @@
   height: 100%;
   z-index: 2;
   border: 2px solid var(--primary);
-  border-radius: 24px;
+  border-radius: 16px;
   background: transparent;
 }
 .club-slot-days .t-tabs-pill:not([data-positioned]) {
@@ -111,7 +111,7 @@
   color: var(--muted-foreground);
 }
 .club-slot-day-number {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 600;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
@@ -129,11 +129,11 @@
   display: flex;
   height: auto;
   min-width: 0;
-  min-height: 100px;
+  min-height: 80px;
   flex-direction: column;
   gap: 4px;
   padding: 12px 4px;
-  border-radius: 24px;
+  border-radius: 16px;
   background: var(--muted);
   color: var(--foreground);
   transition:

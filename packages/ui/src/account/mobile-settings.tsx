@@ -40,10 +40,10 @@ function SettingsRow({
       href={href}
       className="flex min-h-16 items-center gap-4 px-5 py-4 transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
     >
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-foreground">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted text-foreground">
         {icon}
       </span>
-      <span className="min-w-0 flex-1 text-base">{children}</span>
+      <span className="min-w-0 flex-1 text-sm">{children}</span>
       <ChevronLeft className="size-4 shrink-0 text-muted-foreground ltr:rotate-180" />
     </Link>
   );
@@ -62,7 +62,7 @@ function SettingsGroup({
           {title}
         </h2>
       )}
-      <div className="overflow-hidden rounded-4xl bg-card">{children}</div>
+      <div className="overflow-hidden rounded-3xl border border-border bg-card">{children}</div>
     </section>
   );
 }

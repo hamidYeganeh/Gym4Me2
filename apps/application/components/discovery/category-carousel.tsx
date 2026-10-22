@@ -1,13 +1,9 @@
 "use client";
-import { useTranslations } from "@repo/i18n";
-
-import Image from "next/image";
 import Link from "next/link";
-import { Carousel, CarouselContent, CarouselItem } from "@repo/ui/kit/Carousel";
-import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";
+import { useTranslations } from "@repo/i18n";
 import { useTaxonomies } from "@repo/api/catalog";
+
 export function CategoryCarousel({
-  locale,
   selected = "",
   onSelect,
 }: {
@@ -15,68 +11,33 @@ export function CategoryCarousel({
   selected?: string;
   onSelect?: (value: string) => void;
 }) {
-  const copy = useTranslations();
-
-  const fa = locale === "fa";
+  const t = useTranslations("Copy");
   const query = useTaxonomies("club-categories");
-  const categories = query.data ?? [];
-  const items = categories;
-  const card = (category: (typeof categories)[number]) => (
-    <>
-      <span className="relative block aspect-square w-full overflow-hidden rounded-2xl bg-muted">
-        <Image
-          src="/images/club-placeholder.svg"
-          alt=""
-          fill
-          sizes="112px"
-          className="object-cover"
-          unoptimized
-        />
-      </span>
-      <span className="text-sm font-medium">{category.name}</span>
-    </>
-  );
-  if (!items.length && !query.isPending) return null;
+  if (!query.data?.length) return null;
   return (
-    <section className="flex min-w-0 flex-col gap-4">
-      <h2 className="text-xl font-semibold">{copy("Copy.clubCategories")}</h2>
-      <Carousel
-        opts={{ align: "start", direction: fa ? "rtl" : "ltr" }}
-        aria-label={copy("Copy.categories")}
-      >
-        <ToggleGroup
-          type="single"
-          value={selected}
-          onValueChange={onSelect}
-          asChild
-        >
-          <CarouselContent>
-            {items.map((category) => (
-              <CarouselItem key={category.id} className="basis-1/3">
-                <div className="flex flex-col gap-2">
-                  {onSelect ? (
-                    <ToggleGroupItem
-                      value={category.id}
-                      className="h-auto w-full flex-col gap-2 rounded-2xl p-2"
-                      aria-label={category.name}
-                    >
-                      {card(category)}
-                    </ToggleGroupItem>
-                  ) : (
-                    <Link
-                      href={`/discovery?category=${category.id}`}
-                      className="flex flex-col gap-2 rounded-2xl p-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                      scroll={false}
-                    >
-                      {card(category)}
-                    </Link>
-                  )}
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </ToggleGroup>
-      </Carousel>
+    <section className="discovery-categories" aria-label={t("categories")}>
+      {query.data.map((category) =>
+        onSelect ? (
+          <button
+            key={category.id}
+            type="button"
+            aria-pressed={selected === category.id}
+            onClick={() =>
+              onSelect(selected === category.id ? "" : category.id)
+            }
+          >
+            {category.name}
+          </button>
+        ) : (
+          <Link
+            key={category.id}
+            href={`/discovery?category=${category.id}`}
+            scroll={false}
+          >
+            {category.name}
+          </Link>
+        ),
+      )}
     </section>
   );
 }

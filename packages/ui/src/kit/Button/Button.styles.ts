@@ -1,11 +1,11 @@
 import { cva } from "class-variance-authority";
 export const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-4xl border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none    active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20   [&_.sandow-icon]:text-base [&_.sandow-icon]:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-2xl border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-[background-color,color,border-color,transform,opacity] duration-120 motion-reduce:transition-none outline-none select-none    active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20   [&_.sandow-icon]:text-base [&_.sandow-icon]:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         image:
-          "border-image-foreground/10 bg-image-surface/40 text-image-foreground backdrop-blur-md hover:bg-image-surface/65 aria-pressed:bg-primary aria-pressed:text-primary-foreground",
+          "border-image-foreground/10 bg-image-surface/70 text-image-foreground hover:bg-image-surface/65 aria-pressed:bg-primary aria-pressed:text-primary-foreground",
         imageSolid:
           "bg-image-foreground text-image-surface hover:bg-image-foreground/90",
         default: "bg-primary text-primary-foreground hover:bg-primary/80",
@@ -25,10 +25,10 @@ export const buttonVariants = cva(
         xs: "h-6 gap-1 px-2.5 text-xs has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2 [&_svg:not([class*='size-'])]:size-3",
         sm: "h-8 gap-1 px-3 has-data-[icon=inline-end]:pe-2 has-data-[icon=inline-start]:ps-2",
         lg: "h-10 gap-1.5 px-4 has-data-[icon=inline-end]:pe-3 has-data-[icon=inline-start]:ps-3",
-        icon: "size-9",
-        "icon-xs": "size-6 [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm": "size-8",
-        "icon-lg": "size-10",
+        icon: "size-9 rounded-full",
+        "icon-xs": "size-6 rounded-full [&_svg:not([class*='size-'])]:size-3",
+        "icon-sm": "size-8 rounded-full",
+        "icon-lg": "size-10 rounded-full",
       },
     },
     defaultVariants: {

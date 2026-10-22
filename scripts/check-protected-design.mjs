@@ -10,4 +10,4 @@ for(const [path,expected] of Object.entries(baseline)) {
  if(actual!==expected)changed.push(path);
 }
 if(changed.length)throw new Error(`Protected design changed: ${changed.join(', ')}`);
-console.log(`${Object.keys(baseline).length} protected cards, club details and shared dependencies unchanged.`);
+console.log(`${Object.keys(baseline).length} catalog files match the reviewed design baseline.`);

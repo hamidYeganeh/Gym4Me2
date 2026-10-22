@@ -3,19 +3,10 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Activity,
-  Dumbbell,
-  KeyRound,
-  ShieldCheck,
-  Smartphone,
-  Sparkles,
-  Wind,
-  X,
-} from "lucide-react";
+import { KeyRound, ShieldCheck, Smartphone, Sparkles, X } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
 import { Button } from "../kit/Button";
-import { Badge } from "../kit/Badge";
+import Image from "next/image";
 import {
   Empty,
   EmptyContent,
@@ -125,53 +116,34 @@ export function AuthEntryButton({
   );
 }
 
-/** Decorative exercise posters: no fabricated bookings or account information. */
+/** Local artwork stays independent of accounts and the live catalog. */
 export function AuthArtwork() {
   const t = useTranslations("AuthDesign");
   return (
-    <div className="auth-artwork" aria-hidden="true">
-      <div className="auth-artwork-tray">
-        <div>
-          <span>{t("yourMovement")}</span>
-          <span className="auth-artwork-avatar">
-            <Activity strokeWidth={1.5} />
-          </span>
-        </div>
+    <div className="auth-artwork auth-artwork--photos" aria-hidden="true">
+      <div className="auth-photo auth-photo--main">
+        <Image
+          src="/images/clubs/studio.webp"
+          alt=""
+          fill
+          sizes="280px"
+          priority
+          unoptimized
+        />
       </div>
-      <div className="auth-poster auth-poster--left">
-        <span>
-          {t("flowLine1")}
-          <br />
-          {t("flowLine2")}
-          <br />
-          {t("flowLine3")}
-        </span>
-        <Wind strokeWidth={1} />
-        <small>{t("flowCaption")}</small>
+      <div className="auth-photo auth-photo--detail">
+        <Image
+          src="/images/clubs/training.webp"
+          alt=""
+          fill
+          sizes="180px"
+          unoptimized
+        />
       </div>
-      <div className="auth-poster auth-poster--right">
-        <span>
-          {t("stepLine1")}
-          <br />
-          {t("stepLine2")}
-          <br />
-          {t("stepLine3")}
-        </span>
-        <Activity strokeWidth={1} />
-        <small>{t("stepCaption")}</small>
-      </div>
-      <div className="auth-poster auth-poster--center">
-        <small>{t("moveCaption")}</small>
-        <strong>
-          {t("moveLine1")}
-          <br />
-          {t("moveLine2")}
-          <br />
-          {t("moveLine3")}
-        </strong>
-        <Dumbbell strokeWidth={1} />
-        <Badge variant="secondary">{t("madeForYou")}</Badge>
-      </div>
+      <span className="auth-photo-caption">
+        <Sparkles size={16} />
+        {t("yourMovement")}
+      </span>
     </div>
   );
 }

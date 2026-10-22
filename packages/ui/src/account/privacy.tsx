@@ -272,7 +272,7 @@ function PreferencesForm({ value }: { value: PrivacyDto }) {
       ref={form}
       onSubmit={submit}
       aria-busy={mutation.isPending}
-      className="grid gap-5 [&_button]:min-h-11 [&_label]:min-h-11"
+      className="grid gap-5 [&_[data-slot=button]]:min-h-11 [&_label]:min-h-11"
     >
       {(value.marketingConsent || value.profilePublic) && (
         <div className="flex flex-wrap gap-3">
@@ -539,7 +539,7 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
               }}
             >
               <DialogContent
-                className="max-h-[calc(100dvh-2rem)] overflow-y-auto [&_button]:min-h-11 [&_button]:min-w-11"
+                className="max-h-[calc(100dvh-2rem)] overflow-y-auto [&_[data-slot=button]]:min-h-11 [&_[data-slot=button]]:min-w-11"
                 showCloseButton={!busy}
                 onEscapeKeyDown={(event) => {
                   if (pending.current) event.preventDefault();

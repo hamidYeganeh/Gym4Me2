@@ -225,11 +225,9 @@
 }
 .discovery-map-heading::before {
   background: linear-gradient(to bottom, var(--background), transparent);
-  backdrop-filter: blur(4px);
   mask-image: linear-gradient(to bottom, black 15%, transparent);
 }
 .discovery-map-heading::after {
-  backdrop-filter: blur(12px);
   mask-image: linear-gradient(to bottom, black, transparent 65%);
 }
 .discovery-map-categories [data-slot="toggle-group-item"],
@@ -265,7 +263,7 @@
     transform var(--panel-close-dur) var(--panel-ease),
     opacity var(--panel-close-dur) var(--panel-ease),
     filter var(--panel-close-dur) var(--panel-ease);
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 .t-panel-slide[data-open="true"] {
   transform: translateY(0);
