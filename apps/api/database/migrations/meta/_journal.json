@@ -253,6 +253,13 @@
       "when": 1792630800000,
       "tag": "0035_operational_analytics_indexes",
       "breakpoints": false
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1792717200000,
+      "tag": "0036_web_push",
+      "breakpoints": false
     }
   ]
 }

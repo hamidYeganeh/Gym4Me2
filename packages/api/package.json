@@ -14,7 +14,8 @@
     "./system": "./src/system/index.ts",
     "./analytics": "./src/analytics.ts",
     "./sports": "./src/sports/index.ts",
-    "./training-offline": "./src/profile/training-offline.ts"
+    "./training-offline": "./src/profile/training-offline.ts",
+    "./web-push": "./src/web-push.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

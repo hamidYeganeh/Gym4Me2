@@ -27,8 +27,8 @@ export async function deliverSportsNotification(
         AND status='active' AND deleted_at IS NULL AND NOT deletion_pending
       FOR SHARE
     )
-    INSERT INTO sport_notifications(user_id,title,body,href,source_key)
-    SELECT recipient.id,${input.title},${input.body},${input.href},${input.sourceKey}
+    INSERT INTO sport_notifications(user_id,title,body,href,source_key,preference)
+    SELECT recipient.id,${input.title},${input.body},${input.href},${input.sourceKey},${input.preference ?? null}
     FROM recipient
     WHERE ${input.preference ? sql`coalesce((SELECT ${preference} FROM sport_notification_preferences p WHERE p.user_id=recipient.id),true)` : sql`true`}
     ON CONFLICT(source_key) DO NOTHING RETURNING id

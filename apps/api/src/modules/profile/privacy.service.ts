@@ -478,6 +478,11 @@ export class PrivacyService {
             FROM coaching_relationships WHERE coach_id=${userId} OR student_id=${userId}
           `)
           ).rows,
+          pushDevices: (
+            await tx.execute(
+              sql`SELECT id,session_id,locale,created_at,updated_at FROM web_push_subscriptions WHERE user_id=${userId}`,
+            )
+          ).rows,
           sports: {
             orders: (
               await tx.execute(

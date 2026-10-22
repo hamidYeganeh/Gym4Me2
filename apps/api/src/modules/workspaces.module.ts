@@ -1,3 +1,11 @@
+import { PushJobsController } from './push/push-jobs.controller';
+import { WebPushService } from './push/push.service';
+import { WebPushSender } from './push/push.sender';
+import { WebPushInterceptor } from './push/push.interceptor';
+import {
+  PushConfigurationController,
+  WebPushController,
+} from './push/push.controller';
 import { DemoController } from './training/demo.controller';
 import {
   AdminAnalyticsController,
@@ -116,6 +124,9 @@ import {
 @Module({
   imports: [DatabaseModule, AuthModule, StorageModule],
   controllers: [
+    PushJobsController,
+    PushConfigurationController,
+    WebPushController,
     AdminAnalyticsController,
     BusinessAnalyticsController,
     CoachAnalyticsController,
@@ -168,6 +179,9 @@ import {
     AdminUsersController,
   ],
   providers: [
+    WebPushService,
+    WebPushSender,
+    { provide: APP_INTERCEPTOR, useClass: WebPushInterceptor },
     AnalyticsService,
     TrainingService,
     CollaborationService,

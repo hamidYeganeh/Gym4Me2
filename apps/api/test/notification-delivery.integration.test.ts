@@ -4,7 +4,14 @@ import { resolve } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import { before, after, test } from 'node:test';
 import { ConfigService } from '@nestjs/config';
-import { sql } from 'drizzle-orm';
+import { sql, eq } from 'drizzle-orm';
+import webpush from 'web-push';
+import { WebPushService } from '../src/modules/push/push.service';
+import {
+  WebPushSender,
+  type PushTarget,
+  type PushOutcome,
+} from '../src/modules/push/push.sender';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { DatabaseService } from '../src/database/database.service';
 import {
@@ -1172,3 +1179,191 @@ void test(
     assert.equal((await orderJobNotices(job, reserved.userId)).length, 0);
   },
 );
+
+// Real PostgreSQL Web Push queue tests. The browser-vendor HTTP seam is replaced;
+// no subscription or private payload leaves this disposable test database.
+async function pushDevice() {
+  const userId = await person();
+  const [user] = await db
+    .select()
+    .from(schema.users)
+    .where(eq(schema.users.id, userId));
+  const [session] = await db
+    .insert(schema.authSessions)
+    .values({
+      userId,
+      client: 'application',
+      transport: 'web',
+      device: 'Isolated push test',
+      tokenHash: randomUUID(),
+      expiresAt: new Date(Date.now() + 3600000),
+    })
+    .returning();
+  const principal = { user, session };
+  const key = webpush.generateVAPIDKeys();
+  const pushConfig = new ConfigService<Environment, true>(
+    validateEnvironment({
+      DATABASE_URL: databaseUrl,
+      NODE_ENV: 'test',
+      PUSH_PROVIDER: 'web-push',
+      WEB_PUSH_PUBLIC_KEY: key.publicKey,
+      WEB_PUSH_PRIVATE_KEY: key.privateKey,
+    }),
+  );
+  const sent: { id: string; notificationId: string }[] = [];
+  let outcome: PushOutcome = 'accepted';
+  const sender = {
+    send: (target: PushTarget, notificationId: string) => {
+      sent.push({ id: target.id, notificationId });
+      return Promise.resolve(outcome);
+    },
+  } as WebPushSender;
+  const service = new WebPushService(database, pushConfig, sender);
+  const input = {
+    endpoint: 'https://fcm.googleapis.com/fcm/send/' + randomUUID(),
+    keys: {
+      p256dh: key.publicKey,
+      auth: Buffer.alloc(16, 1).toString('base64url'),
+    },
+    locale: 'fa' as const,
+  };
+  await service.subscribe(principal, input);
+  return {
+    principal,
+    service,
+    sent,
+    input,
+    setOutcome: (next: PushOutcome) => {
+      outcome = next;
+    },
+  };
+}
+
+void test('push queues only future eligible notices, sends once and never replays on subscribe', async () => {
+  const p = await pushDevice();
+  try {
+    const id = await deliverSportsNotification(db, notice(p.principal.user.id));
+    assert.ok(id);
+    await Promise.all([p.service.drain(), p.service.drain()]);
+    assert.equal(p.sent.length, 1);
+    assert.equal(p.sent[0].notificationId, id);
+    await p.service.drain();
+    assert.equal(p.sent.length, 1);
+    await p.service.subscribe(p.principal, p.input);
+    await p.service.drain();
+    assert.equal(p.sent.length, 1);
+  } finally {
+    await p.service.unsubscribe(p.principal);
+  }
+});
+void test('a different account cannot take over a live browser endpoint', async () => {
+  const a = await pushDevice(),
+    b = await pushDevice();
+  try {
+    await assert.rejects(
+      b.service.subscribe(b.principal, a.input),
+      /pushDeviceAlreadyRegistered/,
+    );
+    await deliverSportsNotification(db, notice(a.principal.user.id));
+    await a.service.drain();
+    assert.equal(a.sent.length, 1);
+    assert.equal(
+      (await a.service.status(a.principal)).subscriptionId,
+      a.sent[0].id,
+    );
+  } finally {
+    await a.service.unsubscribe(a.principal);
+    await b.service.unsubscribe(b.principal);
+  }
+});
+void test('push rechecks preference withdrawal and notice retirement before vendor delivery', async () => {
+  const p = await pushDevice(),
+    id = p.principal.user.id;
+  try {
+    await deliverSportsNotification(db, {
+      ...notice(id),
+      preference: 'messages',
+    });
+    await db.execute(
+      sql`INSERT INTO sport_notification_preferences(user_id,messages) VALUES(${id},false)`,
+    );
+    await p.service.drain();
+    assert.equal(p.sent.length, 0);
+    const readId = await deliverSportsNotification(db, notice(id));
+    await db.execute(
+      sql`UPDATE sport_notifications SET read_at=now() WHERE id=${readId}`,
+    );
+    const deletedId = await deliverSportsNotification(db, notice(id));
+    await db.execute(
+      sql`DELETE FROM sport_notifications WHERE id=${deletedId}`,
+    );
+    await p.service.drain();
+    assert.equal(p.sent.length, 0);
+  } finally {
+    await p.service.unsubscribe(p.principal);
+  }
+});
+void test('logout and account deletion revoke devices and cascade pending push work', async () => {
+  const a = await pushDevice();
+  await deliverSportsNotification(db, notice(a.principal.user.id));
+  await db.execute(
+    sql`UPDATE auth_sessions SET revoked_at=now() WHERE id=${a.principal.session.id}`,
+  );
+  assert.equal((await a.service.status(a.principal)).subscriptionId, null);
+  await a.service.drain();
+  assert.equal(a.sent.length, 0);
+  const b = await pushDevice();
+  await deliverSportsNotification(db, notice(b.principal.user.id));
+  await state(db, b.principal.user.id, 'pending');
+  assert.equal((await b.service.status(b.principal)).subscriptionId, null);
+  await b.service.drain();
+  assert.equal(b.sent.length, 0);
+});
+void test('transient push failures remain durable and expired vendor subscriptions are removed', async () => {
+  const p = await pushDevice();
+  try {
+    p.setOutcome('retry');
+    await deliverSportsNotification(db, notice(p.principal.user.id));
+    await p.service.drain();
+    assert.equal(p.sent.length, 1);
+    const { rows } = await db.execute<{
+      attempts: number;
+      finished_at: Date | null;
+    }>(
+      sql`SELECT attempts,finished_at FROM web_push_deliveries d JOIN web_push_subscriptions s ON s.id=d.subscription_id WHERE s.session_id=${p.principal.session.id}`,
+    );
+    assert.equal(rows[0].attempts, 1);
+    assert.equal(rows[0].finished_at, null);
+    p.setOutcome('accepted');
+    await db.execute(
+      sql`UPDATE web_push_deliveries d SET due_at=now() FROM web_push_subscriptions s WHERE s.id=d.subscription_id AND s.session_id=${p.principal.session.id}`,
+    );
+    await p.service.drain();
+    assert.equal(p.sent.length, 2);
+    p.setOutcome('expired');
+    await deliverSportsNotification(db, notice(p.principal.user.id));
+    await p.service.drain();
+    assert.equal((await p.service.status(p.principal)).subscriptionId, null);
+  } finally {
+    await p.service.unsubscribe(p.principal);
+  }
+});
+void test('the real server test is device-scoped and rate limited', async () => {
+  const p = await pushDevice();
+  try {
+    assert.equal((await p.service.test(p.principal)).status, 'accepted');
+    assert.equal(p.sent.length, 1);
+    await assert.rejects(p.service.test(p.principal), /pushTestWait/);
+  } finally {
+    await p.service.unsubscribe(p.principal);
+  }
+});
+void test('server test never describes a permanent vendor failure as queued', async () => {
+  const p = await pushDevice();
+  try {
+    p.setOutcome('failed');
+    assert.equal((await p.service.test(p.principal)).status, 'failed');
+  } finally {
+    await p.service.unsubscribe(p.principal);
+  }
+});

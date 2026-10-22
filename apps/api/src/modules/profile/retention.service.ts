@@ -275,6 +275,9 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
       sql`DELETE FROM sport_conversation_preferences WHERE user_id=${userId}`,
     );
     await tx.execute(
+      sql`DELETE FROM web_push_subscriptions WHERE user_id=${userId}`,
+    );
+    await tx.execute(
       sql`DELETE FROM sport_notification_preferences WHERE user_id=${userId}`,
     );
     await tx.execute(

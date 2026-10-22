@@ -1,3 +1,4 @@
+import { WebPushService } from '../push/push.service';
 import {
   Injectable,
   Logger,
@@ -15,6 +16,7 @@ export class CommerceWorker implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly service: CommerceService,
     private readonly config: ConfigService<Environment, true>,
+    private readonly push: WebPushService,
   ) {}
   onModuleInit() {
     if (
@@ -32,6 +34,7 @@ export class CommerceWorker implements OnModuleInit, OnModuleDestroy {
     this.running = true;
     try {
       await this.service.runJobs();
+      await this.push.drain();
     } catch {
       this.logger.error('Sports worker failed; durable jobs will be retried');
     } finally {

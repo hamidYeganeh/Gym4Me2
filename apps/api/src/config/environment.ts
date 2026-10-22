@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { validVapidPair } from '../modules/push/push.contracts';
 
 const databaseUrl = z
   .string()
@@ -32,6 +33,17 @@ const environmentSchema = z.object({
     .pipe(z.array(z.url()).min(1)),
   API_DOCS_ENABLED: z.enum(['true', 'false']).optional(),
   AUTH_SECRET: z.string().min(32).optional(),
+  PUSH_JOBS_SECRET: z.string().min(32).max(256).optional(),
+  PUSH_PROVIDER: z.enum(['disabled', 'web-push']).default('disabled'),
+  WEB_PUSH_PUBLIC_KEY: z
+    .string()
+    .regex(/^[A-Za-z0-9_-]{87}$/)
+    .optional(),
+  WEB_PUSH_PRIVATE_KEY: z
+    .string()
+    .regex(/^[A-Za-z0-9_-]{43}$/)
+    .optional(),
+  WEB_PUSH_SUBJECT: z.url().default('https://gym4me.ir'),
   SMS_PROVIDER: z.enum(['disabled', 'kavenegar']).default('disabled'),
   KAVENEGAR_API_KEY: z.preprocess(
     (value) =>
@@ -115,6 +127,18 @@ export function validateEnvironment(input: Record<string, unknown>) {
     throw new Error('Kavenegar provider requires its key');
   if (result.data.DEMO_MODE && result.data.KAVENEGAR_API_KEY)
     throw new Error('Demo configuration must not include live SMS credentials');
+
+  if (
+    result.data.PUSH_PROVIDER === 'web-push' &&
+    (!result.data.WEB_PUSH_PUBLIC_KEY ||
+      !result.data.WEB_PUSH_PRIVATE_KEY ||
+      !validVapidPair(
+        result.data.WEB_PUSH_PUBLIC_KEY,
+        result.data.WEB_PUSH_PRIVATE_KEY,
+      ) ||
+      new URL(result.data.WEB_PUSH_SUBJECT).protocol !== 'https:')
+  )
+    throw new Error('Invalid API configuration: WEB_PUSH keys or subject');
 
   return {
     ...result.data,

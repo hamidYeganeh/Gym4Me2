@@ -17,6 +17,7 @@ import {
   type ApiClientOptions,
 } from "./transport";
 import { createQueryClient } from "./query-client";
+import { clearPushLocal } from "./push-local";
 import { clearTrainingLocal } from "./profile/training-offline";
 import { connectSessionSync } from "./session-sync";
 
@@ -45,10 +46,12 @@ export function ApiProvider({
   const sync = useRef<ReturnType<typeof connectSessionSync> | null>(null);
   const resetLocalSession = useCallback(async () => {
     await queryClient.cancelQueries();
+    if (options.application === "application" && !options.fetch)
+      await clearPushLocal().catch(() => undefined);
     await clearTrainingLocal().catch(() => undefined);
     queryClient.clear();
     setSession((value) => value + 1);
-  }, [queryClient]);
+  }, [queryClient, options.application, options.fetch]);
   useEffect(() => {
     const connection = connectSessionSync(
       options.application,

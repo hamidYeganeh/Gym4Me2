@@ -63,7 +63,7 @@ export class CommunityService {
   ) {
     if (input)
       return this.db.transaction(async (tx) => {
-        await lockWritableAccount(tx, userId);
+        await lockWritableAccount(tx, userId, 'update');
         await rows(
           tx,
           sql`INSERT INTO sport_notification_preferences(user_id,reminders,messages,invitations) VALUES(${userId},${input.reminders},${input.messages},${input.invitations}) ON CONFLICT(user_id) DO UPDATE SET reminders=EXCLUDED.reminders,messages=EXCLUDED.messages,invitations=EXCLUDED.invitations`,

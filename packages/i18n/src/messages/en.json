@@ -765,7 +765,9 @@
     "notificationUnavailable": "This notification is unavailable.",
     "conversationChanged": "The conversation has changed. Review its current state.",
     "conversationKeyReused": "This request key was already used for different details.",
-    "changeReasonRequired": "Enter a change reason between 3 and 500 characters."
+    "changeReasonRequired": "Enter a change reason between 3 and 500 characters.",
+    "pushDeviceAlreadyRegistered": "This device is already registered. Sign out of its previous session and retry.",
+    "pushTestWait": "Wait 30 seconds before sending another test."
   },
   "Preview": {
     "atlasAthleticClub": "Atlas Athletic Club",
@@ -2393,20 +2395,31 @@
     "occupied": "Confirmed, completed & no-show bookings"
   },
   "DeviceNotifications": {
-    "title": "Device notifications",
-    "deliveryStatus": "In-app notifications are available. Background push delivery is not configured yet. This button checks notification display on this device only.",
-    "checking": "Checking device…",
-    "unsupported": "Browser notifications are unavailable here. You can still read notifications in the app.",
-    "default": "Your permission is needed to check notifications.",
-    "granted": "Notification permission granted.",
-    "denied": "Notifications blocked.",
-    "deniedHelp": "Enable notifications in your browser site settings, then return here.",
-    "test": "Check device notification",
-    "sending": "Sending…",
+    "title": "Notifications on this device",
+    "deliveryStatus": "Enable device notifications to receive updates while the app is closed. Private message text stays off your lock screen.",
+    "checking": "Checking this device…",
+    "unsupported": "This environment does not support Web Push.",
+    "default": "Notification permission has not been granted.",
+    "granted": "Notifications are allowed by the browser.",
+    "denied": "The browser has blocked notifications.",
+    "deniedHelp": "Allow notifications in your browser’s site settings, then return here.",
+    "test": "Send notification from server",
+    "sending": "Working…",
     "testTitle": "Gym4Me",
     "testBody": "Notification display works on this device.",
     "sent": "Notification display requested; system settings may limit its display.",
-    "error": "Could not display the notification. Check your connection and browser settings, then retry."
+    "error": "Could not complete this action. Check your connection and notification settings, then retry.",
+    "installHelp": "On iPhone, add the website to your Home Screen and open it there. On Android, open the website in a compatible browser.",
+    "signIn": "Sign in to enable notifications.",
+    "loadError": "Could not load notification status. Try again.",
+    "unconfigured": "Server push delivery has not been enabled yet.",
+    "enable": "Enable device notifications",
+    "disable": "Turn off device notifications",
+    "retry": "Retry",
+    "enabled": "Device notifications are enabled.",
+    "disabled": "Device notifications are off.",
+    "accepted": "The push service accepted the notification. Display depends on your device settings.",
+    "queued": "The notification is queued and will be retried if delivery fails."
   },
   "ReservationUI": {
     "summary": "Booking summary",

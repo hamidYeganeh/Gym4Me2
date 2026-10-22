@@ -1,0 +1,24 @@
+name: Deliver due notifications
+on:
+  schedule:
+    - cron: "7,22,37,52 * * * *"
+  workflow_dispatch:
+permissions: {}
+concurrency:
+  group: push-delivery
+  cancel-in-progress: false
+jobs:
+  deliver:
+    # Public-repository Linux runners only. Forks and private copies stay off.
+    if: github.repository_id == '1417162336' && vars.GYM_PUSH_JOBS_ENABLED == 'true' && github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Process due jobs and retry transient push failures
+        env:
+          PUSH_JOBS_SECRET: ${{ secrets.GYM_PUSH_JOBS_TOKEN }}
+        run: |
+          test -n "$PUSH_JOBS_SECRET"
+          curl --fail --silent --show-error --retry 2 --retry-delay 3 --max-time 50 \
+            --header "Authorization: Bearer $PUSH_JOBS_SECRET" \
+            https://gym4me-demo-api.vercel.app/api/v1/system/push-jobs
