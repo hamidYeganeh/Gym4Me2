@@ -45,6 +45,7 @@ export function applicationRouteLayout(pathname: string, search: string) {
       "/reset-password",
       "/set-password",
       "/profile/complete",
+      "/checkout",
     ].includes(logical) ||
     logical.startsWith("/qa/") ||
     logical.startsWith("/tickets/") ||

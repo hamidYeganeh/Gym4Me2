@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import Script from "next/script";
+import { loadMapSdk } from "./map-sdk";
 import { LocateFixed, MapPin, RotateCcw } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
 import { Button } from "@repo/ui/kit/Button";
@@ -32,7 +32,7 @@ declare global {
     L?: LeafletSdk;
   }
 }
-const library = "https://unpkg.com/leaflet@1.9.4/dist";
+const library = "/vendor/leaflet";
 const validPoint = (
   point: ClubDetailData["coordinates"],
 ): point is [number, number] =>
@@ -74,6 +74,19 @@ export function CatalogMap({
     active = useRef(true);
   const lastRecenter = useRef(recenter);
   useEffect(() => {
+    let alive = true;
+    void loadMapSdk()
+      .then(() => {
+        if (alive) setSdkReady(true);
+      })
+      .catch(() => {
+        if (alive) setStatus("error");
+      });
+    return () => {
+      alive = false;
+    };
+  }, [attempt]);
+  useEffect(() => {
     select.current = onSelect;
   }, [onSelect]);
   useEffect(() => {
@@ -111,6 +124,8 @@ export function CatalogMap({
     let loadedTiles = 0;
     tiles.on("tileload", () => {
       loadedTiles += 1;
+      window.clearTimeout(timeout);
+      if (alive) setStatus("ready");
     });
     tiles
       .on("load", () => {
@@ -242,14 +257,6 @@ export function CatalogMap({
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossOrigin="anonymous"
       />
-      <Script
-        src={`${library}/leaflet.js`}
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossOrigin="anonymous"
-        strategy="afterInteractive"
-        onReady={() => setSdkReady(true)}
-        onError={() => setStatus("error")}
-      />
       <div
         ref={container}
         className="discovery-map-map"
@@ -299,8 +306,7 @@ export function CatalogMap({
               variant="outline"
               onClick={() => {
                 setStatus("loading");
-                if (sdkReady) setAttempt((v) => v + 1);
-                else window.location.reload();
+                setAttempt((v) => v + 1);
               }}
             >
               <RotateCcw />

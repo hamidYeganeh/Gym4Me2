@@ -278,7 +278,6 @@ export function Row({
   icon?: ReactNode;
   date?: string;
 }) {
-  const t = useLuma();
   const locale = useLocale();
   const validDate =
     date && Number.isFinite(Date.parse(date)) ? new Date(date) : null;
@@ -308,11 +307,7 @@ export function Row({
       <span className="luma-row-copy">
         <span className="luma-row-title">{title}</span>
         {meta && <span className="luma-meta">{meta}</span>}
-        {state && (
-          <span className="luma-pill" data-state={state}>
-            {statusKeys[state] ? t(statusKeys[state]) : state}
-          </span>
-        )}
+        {state && <StatusBadge state={state} />}
         {children}
       </span>
       {href && <ChevronLeft size={18} className="ltr:rotate-180 shrink-0" />}
@@ -324,6 +319,14 @@ export function Row({
     </Link>
   ) : (
     <div className="luma-row">{content}</div>
+  );
+}
+export function StatusBadge({ state }: { state: string }) {
+  const t = useLuma();
+  return (
+    <span className="luma-pill" data-state={state}>
+      {statusKeys[state] ? t(statusKeys[state]) : state}
+    </span>
   );
 }
 export function Empty({

@@ -28,6 +28,8 @@ import {
   stamp,
   useLuma,
 } from "./common";
+import { ReservationSummary } from "./reservation-design";
+import { useTranslations } from "@repo/i18n";
 import { LumaSheet } from "./sheet";
 export function BookingsPage() {
   const t = useLuma();
@@ -55,7 +57,7 @@ export function BookingsPage() {
     } else if (query.error) nextFocus.current = null;
   }, [data.length, query.isFetchingNextPage, query.error]);
   return (
-    <LumaPage title={t("yourBookings")} back="/">
+    <LumaPage title={t("yourBookings")} back="/" className="reservation-list">
       <Segments
         value={tab}
         onChange={(value) => {
@@ -113,6 +115,7 @@ export function BookingsPage() {
   );
 }
 export function BookingDetail() {
+  const copy = useTranslations("ReservationUI");
   const id = useSearchParams().get("id");
   const t = useLuma();
   const locale = useLocale();
@@ -149,18 +152,29 @@ export function BookingDetail() {
       </LumaPage>
     );
   return (
-    <LumaPage title={query.data?.title ?? t("yourBookings")} back="/bookings">
+    <LumaPage
+      title={copy("bookingDetails")}
+      back="/bookings"
+      className="reservation-detail"
+    >
       <QueryState query={query}>
         {query.data && (
           <>
-            <Row
-              title={stamp(query.data.startAt, locale)}
-              meta={query.data.branchName}
+            <ReservationSummary
+              title={query.data.title}
+              venue={query.data.branchName}
+              startAt={query.data.startAt}
+              endAt={query.data.endAt}
+              amountMinor={query.data.amountMinor}
               state={query.data.status}
+              orderTotal
             />
-            <Section title={t("conditions")}>
-              <p className="luma-meta">{query.data.snapshot.policy.terms}</p>
-            </Section>
+            <details className="reservation-policy">
+              <summary>{copy("cancellationPolicy")}</summary>
+              <p className="luma-meta whitespace-pre-wrap">
+                {query.data.snapshot.policy.terms}
+              </p>
+            </details>
             <ServiceEligibilitySummary
               value={query.data.snapshot.eligibility}
             />
@@ -389,7 +403,7 @@ export function OrdersPage() {
   const locale = useLocale();
   const query = useSportsQuery<OrderDto[]>("sports/account/orders");
   return (
-    <LumaPage title={t("orders")} back="/">
+    <LumaPage title={t("orders")} back="/" className="reservation-list">
       <QueryState query={query}>
         {query.data?.map((o) => (
           <Row

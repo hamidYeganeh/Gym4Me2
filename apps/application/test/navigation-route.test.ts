@@ -93,3 +93,15 @@ test("static commerce shells distinguish identifiers without remounting filters"
     "/messages/one",
   );
 });
+
+test("checkout reserves its bottom edge for payment actions on web and native", () => {
+  assert.equal(
+    applicationRouteLayout("/checkout", "?service=example").navigationVisible,
+    false,
+  );
+  assert.equal(
+    applicationRouteLayout("/checkout/", "?service=example").navigationVisible,
+    false,
+  );
+  assert.equal(applicationRouteLayout("/bookings", "").navigationVisible, true);
+});

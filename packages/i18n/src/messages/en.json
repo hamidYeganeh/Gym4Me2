@@ -2407,5 +2407,17 @@
     "testBody": "Notification display works on this device.",
     "sent": "Notification display requested; system settings may limit its display.",
     "error": "Could not display the notification. Check your connection and browser settings, then retry."
+  },
+  "ReservationUI": {
+    "summary": "Booking summary",
+    "total": "Total",
+    "orderTotal": "Related order total",
+    "bookingDetails": "Booking details",
+    "cancellationPolicy": "Cancellation & rescheduling policy",
+    "reviewCheckout": "Review & checkout",
+    "reviewHint": "Review your service and time. The final amount is calculated before confirmation.",
+    "quoteFirst": "Review price first",
+    "membershipOrCoupon": "Use a membership or coupon",
+    "estimatedTotal": "Before final review"
   }
 }

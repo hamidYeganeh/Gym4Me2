@@ -1,0 +1,191 @@
+/* Fresha's concise booking hierarchy, using Gym4Me's theme tokens. */
+.reservation-summary {
+  padding: 1.25rem;
+  margin-block: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  background: var(--card);
+}
+.reservation-summary-heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.reservation-summary h2 {
+  font-size: 1.125rem;
+  font-weight: 650;
+  line-height: 1.7;
+  margin-block: 0.4rem;
+  overflow-wrap: anywhere;
+}
+.reservation-thumbnail {
+  width: 3.75rem;
+  height: 3.75rem;
+  border-radius: 1.1rem;
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: var(--muted);
+  overflow: hidden;
+  color: var(--muted-foreground);
+}
+.reservation-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.reservation-meta {
+  display: flex;
+  align-items: start;
+  gap: 0.4rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 1.8;
+}
+.reservation-meta svg {
+  flex: none;
+  margin-top: 0.2rem;
+}
+.reservation-schedule {
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 1.1rem;
+  margin-top: 1.1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+.reservation-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding-top: 1.1rem;
+  margin-top: 1.1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+}
+.reservation-total strong {
+  font-size: 1.1rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.reservation-list #booking-results {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.reservation-list .luma-row {
+  padding: 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 1.4rem;
+  background: var(--card);
+  margin-bottom: 0.75rem;
+}
+.reservation-list .luma-row-icon {
+  background: var(--muted);
+  border-radius: 1rem;
+}
+.reservation-list .luma-row-title {
+  font-size: 1rem;
+}
+.reservation-policy {
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  margin-block: 1.2rem;
+  background: var(--card);
+}
+.reservation-policy summary {
+  min-height: 44px;
+  display: list-item;
+  padding-block: 0.6rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.reservation-policy p {
+  margin-top: 0.5rem;
+}
+.reservation-detail > .luma-cta.bg-muted,
+.payment-page > .luma-cta.bg-muted {
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+.checkout-page .luma-field {
+  margin-block: 1.1rem;
+}
+.checkout-page .luma-group {
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+.checkout-page .luma-row-icon {
+  display: none;
+}
+.checkout-page .luma-row-copy {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+.checkout-review-label {
+  color: var(--muted-foreground);
+  font-size: 0.8rem;
+  margin-block: 1rem 0.25rem;
+}
+.checkout-footer {
+  position: sticky;
+  bottom: calc(1rem + var(--app-safe-bottom, 0px));
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  margin-top: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 1.4rem;
+  background: var(--card);
+  box-shadow: 0 4px 24px color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+.checkout-footer > div {
+  min-width: 0;
+  flex: 1;
+}
+.checkout-footer p {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+.checkout-footer strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.checkout-footer .luma-cta {
+  width: auto;
+  margin: 0;
+  min-width: 7rem;
+  flex: 0 0 auto;
+}
+.checkout-page:has(input:not([type="checkbox"]):focus, select:focus)
+  .checkout-footer {
+  position: static;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .reservation-list .luma-row {
+    transition:
+      background-color 120ms ease-out,
+      border-color 120ms ease-out;
+  }
+  .reservation-list .luma-row:active {
+    background: var(--muted);
+  }
+}
+
+.checkout-page {
+  padding-bottom: calc(1.5rem + var(--app-safe-bottom, 0px));
+}
+.checkout-page :is(input:not([type="checkbox"]), select) {
+  font-size: 1rem;
+}

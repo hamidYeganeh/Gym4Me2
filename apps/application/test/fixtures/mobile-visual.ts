@@ -1,4 +1,4 @@
-import type { ServiceDto, BookingDto } from "@repo/api/sports";
+import type { ServiceDto, BookingDto, OrderDto } from "@repo/api/sports";
 import type {
   PlanContent,
   Workout,
@@ -123,6 +123,22 @@ export function createMobileFixtureFetch(
       status,
       headers: { "Content-Type": "application/json" },
     });
+  const order: OrderDto = {
+    id: booking.orderId,
+    amountMinor: booking.amountMinor,
+    refundedMinor: "0",
+    status: state === "payment-pending" ? "awaiting_payment" : "paid",
+    expiresAt: new Date(Date.now() + 900000).toISOString(),
+    balanceDueMinor: state === "payment-pending" ? booking.amountMinor : "0",
+    createdAt: at,
+    snapshot: booking.snapshot,
+    reservations: state === "payment-pending" ? [] : [booking],
+    payments:
+      state === "payment-pending"
+        ? []
+        : [{ id: webFixtureId(704), state: "verified", provider: "sandbox" }],
+    refunds: [],
+  };
   return async (input, init) => {
     const url = new URL(String(input), "http://visual.invalid"),
       path = url.pathname.replace(/^\/visual-fixture\//, "");
@@ -134,6 +150,17 @@ export function createMobileFixtureFetch(
     )
       return reply({ code: "Errors.requestFailed" }, 401);
     if (init?.method && init.method !== "GET") {
+      if (path === "sports/account/quote")
+        return reply({
+          id: webFixtureId(705),
+          amountMinor: booking.amountMinor,
+          payNowMinor: booking.amountMinor,
+          balanceDueMinor: "0",
+          expiresAt: order.expiresAt,
+          policy: booking.snapshot.policy,
+          eligibility: services[0]!.eligibility,
+          cover: null,
+        });
       if (path === "profile/training/sessions/sync") {
         const body = JSON.parse(String(init.body));
         workout = { ...workout, ...body, revision: workout.revision + 1 };
@@ -143,6 +170,8 @@ export function createMobileFixtureFetch(
       return reply({ code: "Errors.requestFailed" }, 403);
     }
     const empty = state === "empty";
+    if (path === "sports/account/orders") return reply(empty ? [] : [order]);
+    if (path.startsWith("sports/account/orders/")) return reply(order);
     if (
       [
         "admin/analytics",

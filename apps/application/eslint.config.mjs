@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     ".next-native/**",
     "android/**",
     "ios/**",
+    "public/vendor/**", // Integrity-verified upstream Leaflet distribution.
     "out/**",
     "build/**",
     "next-env.d.ts",

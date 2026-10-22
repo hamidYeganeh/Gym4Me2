@@ -1,11 +1,11 @@
 "use client";
 import { useTrainingEvent } from "@repo/ui/training";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
-import { ServiceCover } from "@repo/ui/sports-cover";
+import { ReservationSummary } from "./reservation-design";
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale, useTranslations } from "@repo/i18n";
+import { useTranslations } from "@repo/i18n";
 import { checkoutIssue } from "../../lib/checkout-availability";
 import {
   remainingMembershipSessions,
@@ -27,8 +27,6 @@ import {
   Price,
   QueryState,
   Row,
-  Section,
-  stamp,
   useLuma,
 } from "./common";
 export function CheckoutPage() {
@@ -53,8 +51,8 @@ function CheckoutForm({
   occurrence: string | null;
 }) {
   const t = useLuma();
+  const copy = useTranslations("ReservationUI");
   const practiceCopy = useTranslations("Practice");
-  const locale = useLocale();
   const router = useRouter();
   const query = useSportsQuery<ServiceDto>(
     `sports/services/${service}`,
@@ -71,6 +69,7 @@ function CheckoutForm({
   const [coupon, setCoupon] = useState("");
   const key = useRef<string | null>(null);
   const membershipHintId = useId();
+  const consent = useRef<HTMLLabelElement>(null);
   if (!service)
     return (
       <LumaPage title={t("checkout")} back="/services">
@@ -87,15 +86,22 @@ function CheckoutForm({
     !eligibleMemberships.some((item) => item.id === membership);
   const busy = quote.isPending || checkout.isPending;
   return (
-    <LumaPage title={t("checkout")} back={`/services/detail?id=${service}`}>
+    <LumaPage
+      title={copy("reviewCheckout")}
+      back={`/services/detail?id=${service}`}
+      className="checkout-page"
+    >
       <QueryState query={query}>
         {query.data && (
           <>
-            <Row
+            <p className="checkout-review-label">{copy("reviewHint")}</p>
+            <ReservationSummary
               title={query.data.title}
-              meta={
-                selected ? stamp(selected.startAt, locale) : query.data.clubName
-              }
+              venue={`${query.data.clubName} · ${query.data.branchName}`}
+              startAt={selected?.startAt}
+              endAt={selected?.endAt}
+              amountMinor={quote.data?.amountMinor ?? query.data.amountMinor}
+              cover={quote.data ? quote.data.cover : query.data.cover}
             />
             {unavailable && (
               <p role="alert" className="luma-meta">
@@ -108,24 +114,15 @@ function CheckoutForm({
                 </Link>
               </p>
             )}
-            <ServiceCover
-              cover={quote.data ? quote.data.cover : query.data.cover}
-            />
-            <Section title={t("conditions")}>
-              <p className="leading-8 whitespace-pre-wrap">
+            <details className="reservation-policy">
+              <summary>{t("conditions")}</summary>
+              <p className="luma-meta whitespace-pre-wrap">
                 {quote.data?.policy.terms ?? query.data.policy.terms}
               </p>
-            </Section>
+            </details>
             <ServiceEligibilitySummary
               value={quote.data?.eligibility ?? query.data.eligibility}
             />
-            <div className="luma-group">
-              <Row title={t("price")}>
-                <Price
-                  value={quote.data?.amountMinor ?? query.data.amountMinor}
-                />
-              </Row>
-            </div>
             {quote.data?.coaching && (
               <div className="luma-group">
                 <Row title={practiceCopy("entryIncluded")}>
@@ -143,103 +140,79 @@ function CheckoutForm({
               <p className="luma-meta mt-6">{t("checkoutSignInHint")}</p>
             )}
             <QueryState query={memberships}>
-              {query.data.kind !== "membership" && (
-                <Field label={t("useMembership")}>
-                  <select
-                    value={membership}
+              <details className="reservation-policy">
+                <summary>{copy("membershipOrCoupon")}</summary>
+                {query.data.kind !== "membership" && (
+                  <Field label={t("useMembership")}>
+                    <select
+                      value={membership}
+                      disabled={busy}
+                      aria-describedby={membershipHintId}
+                      aria-errormessage={
+                        membershipUnavailable
+                          ? `${membershipHintId}-error`
+                          : undefined
+                      }
+                      aria-invalid={membershipUnavailable}
+                      onChange={(e) => {
+                        setMembership(e.target.value);
+                        key.current = null;
+                        quote.reset();
+                        setAccepted(false);
+                      }}
+                    >
+                      <option value="">{t("noMembership")}</option>
+                      {membershipUnavailable && (
+                        <option value={membership} disabled>
+                          {t("checkoutMembershipUnavailable")}
+                        </option>
+                      )}
+                      {eligibleMemberships.map((m) => (
+                        <option value={m.id} key={m.id}>
+                          {m.title} ·{" "}
+                          {m.granted === null
+                            ? t("checkoutMembershipUnlimited")
+                            : t("checkoutMembershipRemaining", {
+                                count: remainingMembershipSessions(m)!,
+                              })}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                )}
+                {query.data.kind !== "membership" && (
+                  <p id={membershipHintId} className="luma-meta">
+                    {t("checkoutMembershipHint")}{" "}
+                    <Link className="underline" href="/memberships">
+                      {t("memberships")}
+                    </Link>
+                  </p>
+                )}
+                {membershipUnavailable && (
+                  <p
+                    id={`${membershipHintId}-error`}
+                    role="alert"
+                    className="luma-error"
+                  >
+                    {t("checkoutMembershipUnavailable")}
+                  </p>
+                )}
+                <Field label={t("coupon")}>
+                  <input
+                    value={coupon}
                     disabled={busy}
-                    aria-describedby={membershipHintId}
-                    aria-errormessage={
-                      membershipUnavailable
-                        ? `${membershipHintId}-error`
-                        : undefined
-                    }
-                    aria-invalid={membershipUnavailable}
                     onChange={(e) => {
-                      setMembership(e.target.value);
+                      setCoupon(e.target.value);
                       key.current = null;
                       quote.reset();
                       setAccepted(false);
                     }}
-                  >
-                    <option value="">{t("noMembership")}</option>
-                    {membershipUnavailable && (
-                      <option value={membership} disabled>
-                        {t("checkoutMembershipUnavailable")}
-                      </option>
-                    )}
-                    {eligibleMemberships.map((m) => (
-                      <option value={m.id} key={m.id}>
-                        {m.title} ·{" "}
-                        {m.granted === null
-                          ? t("checkoutMembershipUnlimited")
-                          : t("checkoutMembershipRemaining", {
-                              count: remainingMembershipSessions(m)!,
-                            })}
-                      </option>
-                    ))}
-                  </select>
+                    maxLength={60}
+                    autoCapitalize="characters"
+                  />
                 </Field>
-              )}
-              {query.data.kind !== "membership" && (
-                <p id={membershipHintId} className="luma-meta">
-                  {t("checkoutMembershipHint")}{" "}
-                  <Link className="underline" href="/memberships">
-                    {t("memberships")}
-                  </Link>
-                </p>
-              )}
-              {membershipUnavailable && (
-                <p
-                  id={`${membershipHintId}-error`}
-                  role="alert"
-                  className="luma-error"
-                >
-                  {t("checkoutMembershipUnavailable")}
-                </p>
-              )}
-              <Field label={t("coupon")}>
-                <input
-                  value={coupon}
-                  disabled={busy}
-                  onChange={(e) => {
-                    setCoupon(e.target.value);
-                    key.current = null;
-                    quote.reset();
-                    setAccepted(false);
-                  }}
-                  maxLength={60}
-                  autoCapitalize="characters"
-                />
-              </Field>
-              {
-                <button
-                  className="luma-cta"
-                  disabled={
-                    busy ||
-                    membershipUnavailable ||
-                    Boolean(unavailable) ||
-                    (!occurrence && query.data.kind !== "membership")
-                  }
-                  onClick={() => {
-                    setAccepted(false);
-                    key.current = null;
-                    checkout.reset();
-                    quote.mutate({
-                      serviceId: service,
-                      occurrenceId:
-                        query.data?.kind === "membership"
-                          ? undefined
-                          : (occurrence ?? undefined),
-                      membershipId: membership || undefined,
-                      coupon: coupon || undefined,
-                    });
-                  }}
-                >
-                  {t("reviewPrice")}
-                </button>
-              }
-              {quote.data && (
+              </details>
+              {quote.data && quote.data.balanceDueMinor !== "0" && (
                 <>
                   <Row title={t("payNow")}>
                     <Price value={quote.data.payNowMinor} />
@@ -251,7 +224,11 @@ function CheckoutForm({
                   )}
                 </>
               )}
-              <label className="luma-consent flex gap-3 items-start mt-6 leading-7">
+              <label
+                ref={consent}
+                tabIndex={-1}
+                className="luma-consent flex gap-3 items-start mt-6 leading-7"
+              >
                 <input
                   type="checkbox"
                   className="mt-2 size-5"
@@ -262,46 +239,84 @@ function CheckoutForm({
                 <span>{t("termsAccept")}</span>
               </label>
               <CommandError error={checkout.error ?? quote.error} />
-              <button
-                className="luma-cta"
-                disabled={
-                  !accepted ||
-                  !quote.data ||
-                  busy ||
-                  membershipUnavailable ||
-                  Boolean(unavailable) ||
-                  (!occurrence && query.data.kind !== "membership")
-                }
-                onClick={() => {
-                  key.current ??= crypto.randomUUID();
-                  checkout.mutate(
-                    {
-                      serviceId: service,
-                      occurrenceId:
-                        query.data?.kind === "membership"
-                          ? undefined
-                          : (occurrence ?? undefined),
-                      membershipId: membership || undefined,
-                      coupon: coupon || undefined,
-                      quoteId: quote.data!.id,
-                      idempotencyKey: key.current,
-                    },
-                    {
-                      onSuccess: (order) =>
-                        router.push(`/checkout/status?order=${order.id}`),
-                      onError: (error) => {
-                        if (error.status === 409) {
-                          quote.reset();
-                          key.current = null;
-                          setAccepted(false);
-                        }
+              <div className="checkout-footer">
+                <div>
+                  <p>{quote.data ? t("payNow") : copy("estimatedTotal")}</p>
+                  <strong>
+                    {quote.data ? (
+                      <Price value={quote.data.payNowMinor} />
+                    ) : (
+                      <Price value={query.data.amountMinor} />
+                    )}
+                  </strong>
+                </div>
+                <button
+                  className="luma-cta"
+                  disabled={
+                    (Boolean(quote.data) && !accepted) ||
+                    busy ||
+                    membershipUnavailable ||
+                    Boolean(unavailable) ||
+                    (!occurrence && query.data.kind !== "membership")
+                  }
+                  onClick={() => {
+                    if (!quote.data) {
+                      setAccepted(false);
+                      key.current = null;
+                      checkout.reset();
+                      quote.mutate(
+                        {
+                          serviceId: service,
+                          occurrenceId:
+                            query.data?.kind === "membership"
+                              ? undefined
+                              : (occurrence ?? undefined),
+                          membershipId: membership || undefined,
+                          coupon: coupon || undefined,
+                        },
+                        {
+                          onSuccess: () =>
+                            requestAnimationFrame(() => {
+                              consent.current?.focus({ preventScroll: true });
+                              consent.current?.scrollIntoView({
+                                block: "center",
+                                behavior: "instant",
+                              });
+                            }),
+                        },
+                      );
+                      return;
+                    }
+                    key.current ??= crypto.randomUUID();
+                    checkout.mutate(
+                      {
+                        serviceId: service,
+                        occurrenceId:
+                          query.data?.kind === "membership"
+                            ? undefined
+                            : (occurrence ?? undefined),
+                        membershipId: membership || undefined,
+                        coupon: coupon || undefined,
+                        quoteId: quote.data!.id,
+                        idempotencyKey: key.current,
                       },
-                    },
-                  );
-                }}
-              >
-                {t("continue")}
-              </button>
+                      {
+                        onSuccess: (order) =>
+                          router.push(`/checkout/status?order=${order.id}`),
+                        onError: (error) => {
+                          if (error.status === 409) {
+                            quote.reset();
+                            key.current = null;
+                            setAccepted(false);
+                          }
+                        },
+                      },
+                    );
+                  }}
+                >
+                  {t(quote.data ? "continue" : "reviewPrice")}
+                </button>
+              </div>
             </QueryState>
           </>
         )}
@@ -327,20 +342,29 @@ export function PaymentStatus() {
   const paymentKey = useRef<string | null>(null);
   if (!id)
     return (
-      <LumaPage title={t("paymentStatus")} back="/orders">
+      <LumaPage
+        title={t("paymentStatus")}
+        back="/orders"
+        className="payment-page"
+      >
         <Empty />
       </LumaPage>
     );
   const order = query.data;
   return (
-    <LumaPage title={t("paymentStatus")} back="/orders">
+    <LumaPage
+      title={t("paymentStatus")}
+      back="/orders"
+      className="payment-page"
+    >
       <QueryState query={query}>
         {order && (
           <>
-            <Row title={order.snapshot.title} state={order.status} />
-            <p className="text-2xl font-semibold mt-5">
-              <Price value={order.amountMinor} />
-            </p>
+            <ReservationSummary
+              title={order.snapshot.title}
+              amountMinor={order.amountMinor}
+              state={order.status}
+            />
             {["awaiting_payment", "partially_paid"].includes(order.status) && (
               <>
                 <p className="luma-meta mt-6">{t("sandbox")}</p>

@@ -35,3 +35,13 @@ Existing source inventory: [mobile redesign](mobile-redesign-2026-10-22.md).
 Local: application/admin/business/API type checks, 62 API unit tests and 20 targeted analytics/navigation tests passed during development. Final lint/CI/browser matrix and deployment receipts are recorded below after completion.
 
 Public data/accounts remain absent by user request; testing uses isolated browser fixtures and disposable CI PostgreSQL, never production seeding. Real phone acceptance, background push delivery, real payment/SMS and independent backups remain separate from this browser/technical verification.
+
+## Fresha follow-up
+
+The user's follow-up explicitly selected Fresha for reservation/payment layouts, retaining theme colors. Applied a shared compact reservation/price summary, dated booking cards, a collapsed policy and optional membership/coupon section, and a single checkout footer that advances from price review to confirmation. Quote bodies, amount calculation, consent, capacity checks, revisions and idempotency keys remain intact. Consent remains a manual choice. Checkout suppresses the ordinary app navigation on both web/native so its payment footer has an unobstructed bottom edge; booking and payment-status navigation keep their normal safe spacing. No Fresha artwork or purple palette is copied.
+
+References inspected: [Fresha reservation overview](https://mobbin.com/screens/8193002c-a1fa-4dff-83ae-1ae8af0fd3aa), [Fresha review and checkout](https://mobbin.com/screens/4d4c3586-75d9-4618-a378-bf24e82b856f).
+
+A repeated-route browser test exposed a Next Script lifecycle failure. Leaflet is now loaded once from the bundled, unmodified 1.9.4 distribution, with retry after failure, a 20s timeout, published SRI hashes and retained licence. A dedicated test validates both distribution hashes. A successful first tile removes the loading overlay, without waiting for every remote tile. External requests are limited to visible OpenStreetMap tiles.
+
+Technical baseline `2154bf7`: [full CI](https://github.com/hamidYeganeh/Gym4Me2/actions/runs/39818340599) succeeded, including new real-PostgreSQL analytics permission/boundary/precision/consent tests, existing domain regressions, four builds and native verification. Migration 0035 was applied to the existing Neon database: eight indexes present; users, organizations and services remained 0 before and after. API, business and admin production deployments are READY at this source.
