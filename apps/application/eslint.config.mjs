@@ -10,6 +10,8 @@ const eslintConfig = defineConfig([
     // Default ignores of eslint-config-next:
     ".next/**",
     ".next-staging/**",
+    ".next-qa/**",
+    ".artifacts/**",
     ".native-build-*/**",
     ".next-native/**",
     "android/**",
