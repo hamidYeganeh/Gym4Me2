@@ -1,4 +1,7 @@
-import { assertBranchCapacity } from '../advanced-business/ph5.access';
+import {
+  assertBranchCapacity,
+  createBasicSubscription,
+} from '../advanced-business/ph5.access';
 import { checkedChangeReason } from '../../platform/audit/change-reason';
 import { lockWritableAccount } from '../auth/account-lock';
 import {
@@ -73,9 +76,7 @@ export class BusinessService {
         .insert(organizationMembers)
         .values({ organizationId: org.id, userId, role: 'owner' });
       await tx.insert(clubs).values({ id: org.id, ownerId: userId });
-      await tx.execute(
-        sql`INSERT INTO business_subscriptions(organization_id,plan_code,terms_snapshot) VALUES(${org.id},'basic','{}'::jsonb)`,
-      );
+      await createBasicSubscription(tx, org.id);
       const [mainBranch] = await tx
         .insert(branches)
         .values({ organizationId: org.id, name, slug: 'main' })

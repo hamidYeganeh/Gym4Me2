@@ -266,6 +266,19 @@ test('creates a club, owner membership and main branch atomically from name alon
   clubId = club.id;
   clubIds.push(clubId);
   branchId = club.branches[0].id;
+  // Both public business creation routes receive the same Basic entitlement.
+  for (const route of [
+    `business/clubs/${clubId}/branches`,
+    `business/organizations/${clubId}/branches`,
+  ]) {
+    await call('post', route, owner).send({ name: 'Beyond Basic' }).expect(409);
+  }
+  // Remaining catalog/media tests need a multi-branch fixture; plan activation
+  // itself is exercised by the dedicated PH5 acceptance suite.
+  await db.execute(sql`UPDATE business_subscriptions SET plan_code='pro',
+    terms_snapshot='{"branchLimit":20,"advancedFinance":true}'::jsonb
+    WHERE organization_id=${clubId}`);
+
   expect(club.ownerId).toBe(owner.id);
   expect(club.owner).not.toHaveProperty('phone');
   expect(club.branches[0].isMain).toBe(true);
@@ -1139,6 +1152,9 @@ test('uploaded images strip camera metadata and scoped previews follow current b
       .expect(201),
   );
   clubIds.push(club.id);
+  await db.execute(sql`UPDATE business_subscriptions SET plan_code='pro',
+    terms_snapshot='{"branchLimit":20,"advancedFinance":true}'::jsonb
+    WHERE organization_id=${club.id}`);
   const first = body<{ branches: { id: string }[] }>(
     await call('get', `business/clubs/${club.id}`, owner).expect(200),
   ).branches[0].id;

@@ -1,4 +1,8 @@
 import {
+  assertBranchCapacity,
+  createBasicSubscription,
+} from '../advanced-business/ph5.access';
+import {
   BadRequestException,
   ConflictException,
   ForbiddenException,
@@ -80,6 +84,7 @@ export class ClubService {
         .insert(s.organizationMembers)
         .values({ organizationId: org.id, userId, role: 'owner' });
       await tx.insert(s.clubs).values({ id: org.id, ownerId: userId });
+      await createBasicSubscription(tx, org.id);
       const [branch] = await tx
         .insert(s.branches)
         .values({ organizationId: org.id, name: input.name, slug: 'main' })
@@ -128,6 +133,7 @@ export class ClubService {
   ) {
     const id = await this.write(async (tx) => {
       await lockClub(tx, userId, clubId);
+      await assertBranchCapacity(tx, clubId);
       const [branch] = await tx
         .insert(s.branches)
         .values({

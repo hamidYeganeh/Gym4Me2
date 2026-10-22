@@ -2,6 +2,10 @@ import { ConflictException, ForbiddenException } from '@nestjs/common';
 import { sql } from 'drizzle-orm';
 import type { Db, Tx } from '../clubs/club.repository';
 import { rows } from '../commerce/commerce.service';
+export async function createBasicSubscription(tx: Tx, organizationId: string) {
+  await tx.execute(sql`INSERT INTO business_subscriptions(organization_id,plan_code,terms_snapshot)
+    VALUES(${organizationId},'basic','{}'::jsonb)`);
+}
 export async function businessAccess(
   db: Db | Tx,
   actor: string,
