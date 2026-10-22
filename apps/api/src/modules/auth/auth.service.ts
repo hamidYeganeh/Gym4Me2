@@ -66,7 +66,7 @@ export class AuthService {
       );
       if (!allowed.rows.length || requestedBy)
         throw new ForbiddenException(
-          'Demo sign-in is limited to the supplied demo accounts',
+          'Backend.signInIsNotConfiguredYet',
         );
     }
     const id = randomUUID();
