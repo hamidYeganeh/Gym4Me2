@@ -25,22 +25,22 @@
     "next-intl": "^4.13.0"
   },
   "peerDependencies": {
-    "next": "^16.4.0",
+    "next": "^16.4.2",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
+    "@eslint/js": "^9",
     "@repo/eslint-config": "workspace:*",
-    "@types/react": "^19",
+    "@repo/typescript-config": "workspace:*",
     "@types/node": "^24",
-    "typescript": "^5.9.3",
+    "@types/react": "^19",
     "eslint": "^9",
-    "next": "16.4.0",
+    "globals": "^17.0.0",
+    "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "typescript-eslint": "^8.20.0",
-    "@eslint/js": "^9",
-    "globals": "^17.0.0"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.20.0"
   }
 }

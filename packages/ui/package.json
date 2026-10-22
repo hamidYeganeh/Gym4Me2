@@ -40,7 +40,7 @@
     "eslint": "^9",
     "eslint-plugin-react-hooks": "^7.0.1",
     "globals": "^17.0.0",
-    "next": "16.4.0",
+    "next": "16.4.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "shadcn": "^4.21.4",
@@ -50,6 +50,8 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
+    "@repo/api": "workspace:*",
+    "@repo/i18n": "workspace:*",
     "@repo/theme": "workspace:*",
     "@shadcn/react": "^0.3.1",
     "@ssgoi/react": "^7.4.1",
@@ -68,13 +70,11 @@
     "react-use-measure": "^2.1.7",
     "recharts": "3.8.0",
     "sonner": "^2.0.8",
-    "vaul": "^1.1.2",
-    "@repo/api": "workspace:*",
-    "@repo/i18n": "workspace:*"
+    "vaul": "^1.1.2"
   },
   "type": "module",
   "peerDependencies": {
-    "next": "^16.4.0",
+    "next": "^16.4.2",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   }
