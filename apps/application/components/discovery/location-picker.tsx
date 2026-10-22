@@ -1,9 +1,8 @@
 "use client";
-import { useLocations, type GeographyKind } from "@repo/api/catalog";
+import { catalogSelectSource, type GeographyKind } from "@repo/api/catalog";
 import { useTranslations } from "@repo/i18n";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { Field, FieldLabel } from "@repo/ui/kit/Field";
-import { Button } from "@repo/ui/kit/Button";
 import type { CatalogLocation } from "../../lib/catalog-location";
 export type LocationValue = CatalogLocation;
 export function LocationPicker({
@@ -70,7 +69,6 @@ function LocationSelect({
   value: string;
   onChange: (id: string) => void;
 }) {
-  const query = useLocations(kind, parentId);
   const t = useTranslations("Catalog");
   return (
     <Field>
@@ -78,21 +76,12 @@ function LocationSelect({
       <NativeSelect
         id={`discovery-${kind}`}
         value={value}
+        optionsSource={catalogSelectSource(kind, parentId)}
         disabled={kind !== "countries" && !parentId}
         onChange={(event) => onChange(event.target.value)}
       >
         <NativeSelectOption value="">{t("allLocations")}</NativeSelectOption>
-        {(query.data ?? []).map((place) => (
-          <NativeSelectOption key={place.id} value={place.id}>
-            {place.name}
-          </NativeSelectOption>
-        ))}
       </NativeSelect>
-      {query.isError && (
-        <Button variant="ghost" onClick={() => void query.refetch()}>
-          {t("retry")}
-        </Button>
-      )}
     </Field>
   );
 }

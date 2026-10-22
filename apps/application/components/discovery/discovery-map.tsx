@@ -19,15 +19,8 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@repo/ui/kit/Carousel";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectGroup,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/kit/Select";
-import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";
+import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import {
   InputGroup,
   InputGroupInput,
@@ -37,7 +30,7 @@ import {
 import { cn } from "@repo/ui/lib/utils";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 import { useCatalogClubs } from "./use-catalog";
-import { useTaxonomies } from "@repo/api/catalog";
+import { useTaxonomies, catalogSelectSource } from "@repo/api/catalog";
 import { CatalogPagination } from "./catalog-pagination";
 import { useSavedClub } from "./use-saved-club";
 import { CatalogMap } from "./catalog-map";
@@ -122,32 +115,30 @@ function MapFilter({
   onChange,
   label,
   options,
+  optionsSource,
 }: {
   value: string;
   onChange: (value: string) => void;
   label: string;
   options: [string, string][];
+  optionsSource?: React.ComponentProps<typeof NativeSelect>["optionsSource"];
 }) {
-  const locale = useLocale();
   return (
-    <Select
-      value={value}
-      onValueChange={onChange}
-      dir={locale === "fa" ? "rtl" : "ltr"}
-    >
-      <SelectTrigger aria-label={label} className={"discovery-map-filter"}>
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent position="popper">
-        <SelectGroup>
-          {options.map(([id, text]) => (
-            <SelectItem key={id} value={id}>
-              {text}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <label className="grid gap-2 text-sm">
+      {label}
+      <NativeSelect
+        value={value}
+        sheetTitle={label}
+        optionsSource={optionsSource}
+        onChange={(event) => onChange(event.target.value)}
+      >
+        {options.map(([id, text]) => (
+          <NativeSelectOption key={id} value={id}>
+            {text}
+          </NativeSelectOption>
+        ))}
+      </NativeSelect>
+    </label>
   );
 }
 
@@ -155,6 +146,7 @@ export function DiscoveryMap() {
   const locale = useLocale();
   const t = useTranslations("DiscoveryMap");
   const discovery = useTranslations("Discovery");
+  const copy = useTranslations("Copy");
   const fa = locale === "fa";
   const categories = useTaxonomies("club-categories");
   const [search, setSearch] = useState("");
@@ -225,25 +217,6 @@ export function DiscoveryMap() {
               <ChevronLeft className="rtl:rotate-180" />
             </Link>
           </Button>
-          <div className="discovery-map-categories min-w-0 flex-1 overflow-x-auto">
-            <ToggleGroup
-              type="single"
-              value={category}
-              spacing={2}
-              onValueChange={(value) => {
-                setCategory(value || "all");
-                setPage(1);
-              }}
-              aria-label={t("filters")}
-            >
-              <ToggleGroupItem value="all">{t("allClubs")}</ToggleGroupItem>
-              {(categories.data ?? []).map((item) => (
-                <ToggleGroupItem key={item.id} value={item.id}>
-                  {item.name}
-                </ToggleGroupItem>
-              ))}
-            </ToggleGroup>
-          </div>
         </div>
         <div className="mt-3 flex items-center gap-2">
           <InputGroup className="discovery-map-search">
@@ -288,36 +261,62 @@ export function DiscoveryMap() {
           <span className="sr-only" role="status">
             {t("results", { count })}
           </span>
-          <MapFilter
-            label={t("pricePerVisit")}
-            value={price}
-            onChange={(value) => {
-              setPrice(value);
-              setPage(1);
-            }}
-            options={[
-              ["all", t("pricePerVisit")],
-              ...[350000, 400000, 450000].map((value): [string, string] => [
-                String(value),
-                t("upTo", {
-                  price: new Intl.NumberFormat(locale).format(value),
-                }),
-              ]),
-            ]}
-          />
-          <MapFilter
-            label={t("sort")}
-            value={sort}
-            onChange={(value) => {
-              setSort(value);
-              setPage(1);
-            }}
-            options={[
-              ["recommended", t("newest")],
-              ["priceLow", t("priceLow")],
-              ["priceHigh", t("priceHigh")],
-            ]}
-          />
+          <FilterSheet
+            count={
+              [
+                category !== "all",
+                price !== "all",
+                sort !== "recommended",
+              ].filter(Boolean).length
+            }
+          >
+            <MapFilter
+              label={copy("categories")}
+              value={category}
+              optionsSource={catalogSelectSource("club-categories")}
+              onChange={(value) => {
+                setCategory(value);
+                setPage(1);
+              }}
+              options={[
+                ["all", t("allClubs")],
+                ...(categories.data ?? []).map((item): [string, string] => [
+                  item.id,
+                  item.name,
+                ]),
+              ]}
+            />
+            <MapFilter
+              label={t("pricePerVisit")}
+              value={price}
+              onChange={(value) => {
+                setPrice(value);
+                setPage(1);
+              }}
+              options={[
+                ["all", t("pricePerVisit")],
+                ...[350000, 400000, 450000].map((value): [string, string] => [
+                  String(value),
+                  t("upTo", {
+                    price: new Intl.NumberFormat(locale).format(value),
+                  }),
+                ]),
+              ]}
+            />
+            <MapFilter
+              label={t("sort")}
+              value={sort}
+              onChange={(value) => {
+                setSort(value);
+                setPage(1);
+              }}
+              options={[
+                ["recommended", t("newest")],
+                ["priceLow", t("priceLow")],
+                ["priceHigh", t("priceHigh")],
+              ]}
+            />
+          </FilterSheet>
           <Button
             variant="secondary"
             size="icon-lg"

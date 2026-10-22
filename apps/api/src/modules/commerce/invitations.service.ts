@@ -95,11 +95,17 @@ export class SportsInvitationService {
     await this.service(this.db, serviceId, actor);
     return this.page(sql`i.service_id=${serviceId}`, cursor);
   }
-  async recipients(actor: string, serviceId: string, search: string) {
+  async recipients(
+    actor: string,
+    serviceId: string,
+    search: string,
+    page = 1,
+    limit = 30,
+  ) {
     const service = await this.service(this.db, serviceId, actor);
     return rows(
       this.db,
-      sql`SELECT u.id,u.display_name,right(u.phone,4) phone_suffix FROM users u WHERE ${eligible(service)} AND (coalesce(u.display_name,'') ILIKE ${`%${search}%`} OR u.phone ILIKE ${`%${search}%`}) ORDER BY u.display_name NULLS LAST,u.id LIMIT 30`,
+      sql`SELECT u.id,u.display_name,right(u.phone,4) phone_suffix FROM users u WHERE ${eligible(service)} AND (coalesce(u.display_name,'') ILIKE ${`%${search}%`} OR u.phone ILIKE ${`%${search}%`}) ORDER BY u.display_name NULLS LAST,u.id LIMIT ${limit} OFFSET ${(page - 1) * limit}`,
     );
   }
   private command(

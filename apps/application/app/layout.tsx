@@ -7,6 +7,7 @@ import { getLocale, getTranslations } from "@repo/i18n/server";
 import { iranSansX } from "@repo/theme/fonts";
 import "./globals.css";
 import "@repo/ui/focus.css";
+import "./application-focus.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Metadata");

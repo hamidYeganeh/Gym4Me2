@@ -1,4 +1,5 @@
 "use client";
+import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { useEffect, useRef, useState } from "react";
 import { Send, ImagePlus, MessageCircle } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
@@ -284,7 +285,7 @@ function CollaborationContent() {
                   <div className="training-root">
                     <label>
                       {t("relatedWorkout")}
-                      <select
+                      <NativeSelect
                         value={workoutId}
                         onChange={(e) => setWorkoutId(e.target.value)}
                       >
@@ -294,7 +295,7 @@ function CollaborationContent() {
                             {s.snapshot.title} · {fmt.date(s.startedAt)}
                           </option>
                         ))}
-                      </select>
+                      </NativeSelect>
                     </label>
                     <label>
                       <span className="training-actions">

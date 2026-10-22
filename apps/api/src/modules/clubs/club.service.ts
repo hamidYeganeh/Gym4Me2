@@ -453,11 +453,19 @@ export class ClubService {
     await readClub(this.database.db, id, true);
     return readBranch(this.database.db, id, branchId, true);
   }
+  private optionSearch(column: Parameters<typeof ilike>[0], search: string) {
+    if (!search) return undefined;
+    const needle = normalizeCatalogSearch(search).replace(/[\\%_]/g, '\\$&');
+    const normalized = sql`lower(regexp_replace(translate(${column}, 'يىك٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹‌‍', 'ییک01234567890123456789  '), '\\s+', ' ', 'g'))`;
+    return ilike(normalized, `%${needle}%`);
+  }
   async listTaxonomy(
     kind: TaxonomyKind,
     page: number,
     includeInactive = false,
     search = '',
+    limit = 100,
+    selectedId?: string,
   ) {
     const t = taxonomies[kind];
     return this.database.db
@@ -465,15 +473,14 @@ export class ClubService {
       .from(t)
       .where(
         and(
+          selectedId ? eq(t.id, selectedId) : undefined,
           includeInactive ? undefined : eq(t.isActive, true),
-          search
-            ? ilike(t.name, `%${search.replace(/[\\%_]/g, '\\$&')}%`)
-            : undefined,
+          this.optionSearch(t.name, search),
         ),
       )
       .orderBy(t.name, t.id)
-      .limit(100)
-      .offset((page - 1) * 100);
+      .limit(limit)
+      .offset((page - 1) * limit);
   }
   async saveTaxonomy(
     p: Principal,
@@ -508,39 +515,69 @@ export class ClubService {
     kind: 'countries' | 'provinces' | 'cities' | 'districts',
     parentId?: string,
     page = 1,
+    search = '',
+    pageSize?: number,
+    selectedId?: string,
   ) {
+    const limit = pageSize ?? (kind === 'countries' ? 300 : 1000);
+    const match = (column: Parameters<typeof ilike>[0]) =>
+      this.optionSearch(column, search);
     if (kind === 'countries')
       return this.database.db
         .select()
         .from(s.countries)
+        .where(
+          and(
+            match(s.countries.name),
+            selectedId ? eq(s.countries.id, selectedId) : undefined,
+          ),
+        )
         .orderBy(s.countries.name, s.countries.id)
-        .limit(300)
-        .offset((page - 1) * 300);
+        .limit(limit)
+        .offset((page - 1) * limit);
     if (!parentId)
       throw new BadRequestException('Backend.aParentIdentifierIsRequired');
     if (kind === 'provinces')
       return this.database.db
         .select()
         .from(s.provinces)
-        .where(eq(s.provinces.countryId, parentId))
+        .where(
+          and(
+            eq(s.provinces.countryId, parentId),
+            match(s.provinces.name),
+            selectedId ? eq(s.provinces.id, selectedId) : undefined,
+          ),
+        )
         .orderBy(s.provinces.name, s.provinces.id)
-        .limit(1000)
-        .offset((page - 1) * 1000);
+        .limit(limit)
+        .offset((page - 1) * limit);
     if (kind === 'cities')
       return this.database.db
         .select()
         .from(s.cities)
-        .where(eq(s.cities.provinceId, parentId))
+        .where(
+          and(
+            eq(s.cities.provinceId, parentId),
+            match(s.cities.name),
+            selectedId ? eq(s.cities.id, selectedId) : undefined,
+          ),
+        )
         .orderBy(s.cities.name, s.cities.id)
-        .limit(1000)
-        .offset((page - 1) * 1000);
+        .limit(limit)
+        .offset((page - 1) * limit);
     return this.database.db
       .select()
       .from(s.districts)
-      .where(eq(s.districts.cityId, parentId))
+      .where(
+        and(
+          eq(s.districts.cityId, parentId),
+          match(s.districts.name),
+          selectedId ? eq(s.districts.id, selectedId) : undefined,
+        ),
+      )
       .orderBy(s.districts.name, s.districts.id)
-      .limit(1000)
-      .offset((page - 1) * 1000);
+      .limit(limit)
+      .offset((page - 1) * limit);
   }
   async createGeography(
     p: Principal,

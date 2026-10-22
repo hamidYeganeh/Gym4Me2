@@ -54,8 +54,8 @@
   "packages/theme/src/index.ts": "d4a057937a2e96f5f1f3095b36f1ffca48dbac6dea379a318d72e85b960ef07b",
   "packages/theme/src/icons.css": "57730c88b3c553079e7fe90acb0a47c7df96f3d09eb42a4a19124a99945babb1",
   "packages/theme/src/globals.css": "585427384b05c121b2e54a542767062c5f65bb86a54e29eb450c6cf7c199407c",
-  "packages/theme/src/provider.tsx": "194332de565f7f1bd23459d50c8011606bd16dd350c50777e4d84245c6e78bfa",
+  "packages/theme/src/provider.tsx": "54c03c0a78e41f089f0d84b49b3c30746695773e2c93783d68d78af4c1adcdb5",
   "apps/application/components/discovery/club-page.tsx": "263784632cc2eb7e58f20f7c17a423b1a752f939a6ed6cb1db42c9d1a57982e0",
   "apps/application/components/discovery/club-showcase.tsx": "a0d3f246f06bb0e909ef1d86d2203d3cf6ac4c0a69ad34836f4edd9083a16c47",
-  "apps/application/components/discovery/discovery-map.tsx": "06ddb99fae319a0dce1fbf6cfb3bcc204a3240946098a177c8f1c3694b469daa"
+  "apps/application/components/discovery/discovery-map.tsx": "1983d187b6010b4f2214b3551b242ac754fbc16d3b575cd50fc8f9cced406a2d"
 }

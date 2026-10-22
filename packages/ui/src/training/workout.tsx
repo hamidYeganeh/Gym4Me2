@@ -1,4 +1,5 @@
 "use client";
+import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Timer, X, CheckCircle2, RotateCcw } from "lucide-react";
@@ -501,7 +502,7 @@ function WorkoutContent() {
               {!finished && !!original?.alternatives.length && (
                 <label>
                   {t("alternative")}
-                  <select
+                  <NativeSelect
                     value={e?.id ?? p.exerciseId}
                     disabled={
                       w.logs.filter((l) => l.prescriptionId === p.id && l.done)
@@ -525,7 +526,7 @@ function WorkoutContent() {
                         </option>
                       );
                     })}
-                  </select>
+                  </NativeSelect>
                 </label>
               )}
             </details>

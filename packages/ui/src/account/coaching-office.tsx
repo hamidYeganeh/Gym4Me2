@@ -1,4 +1,5 @@
 "use client";
+import { FilterSheet } from "../kit/BottomSheet";
 import "../workspace-design.css";
 import Link from "next/link";
 import { useState, useRef } from "react";
@@ -148,37 +149,39 @@ function BusinessCoaching() {
   return (
     <>
       <PracticeFeedback action={a} />
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="grid gap-2">
-          {t("club")}
-          <NativeSelect
-            value={org}
-            onChange={(e) => {
-              setOrg(e.target.value);
-              setBranch("");
-            }}
-          >
-            {orgs.data?.map((o) => (
-              <NativeSelectOption key={o.id} value={o.id}>
-                {o.name}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </label>
-        <label className="grid gap-2">
-          {t("branch")}
-          <NativeSelect
-            value={branch}
-            onChange={(e) => setBranch(e.target.value)}
-          >
-            {branches.data?.map((b) => (
-              <NativeSelectOption key={b.id} value={b.id}>
-                {b.name}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </label>
-      </div>
+      <FilterSheet>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="grid gap-2">
+            {t("club")}
+            <NativeSelect
+              value={org}
+              onChange={(e) => {
+                setOrg(e.target.value);
+                setBranch("");
+              }}
+            >
+              {orgs.data?.map((o) => (
+                <NativeSelectOption key={o.id} value={o.id}>
+                  {o.name}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </label>
+          <label className="grid gap-2">
+            {t("branch")}
+            <NativeSelect
+              value={branch}
+              onChange={(e) => setBranch(e.target.value)}
+            >
+              {branches.data?.map((b) => (
+                <NativeSelectOption key={b.id} value={b.id}>
+                  {b.name}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </label>
+        </div>
+      </FilterSheet>
       {candidates.error && (
         <QueryError error={candidates.error} retry={candidates.refetch} />
       )}{" "}

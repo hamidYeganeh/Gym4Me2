@@ -1,4 +1,5 @@
 "use client";
+import { FilterSheet } from "../kit/BottomSheet";
 import { useState, useId } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "@repo/i18n";
@@ -231,99 +232,103 @@ export function AnalyticsPanel({ surface }: { surface: AnalyticsSurface }) {
       </div>
       <Card>
         <CardContent className="grid gap-5 pt-5">
-          <div className="flex flex-wrap gap-2" aria-label={t("presets")}>
-            {[7, 30, 90, 365].map((days) => (
-              <Button
-                key={days}
-                size="sm"
-                variant="outline"
-                onClick={() => setDraft((d) => ({ ...d, ...period(days) }))}
-              >
-                {t("lastDays", { days })}
-              </Button>
-            ))}
-          </div>
-          <form
-            className="analytics-filters"
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (valid) setFilters(draft);
-            }}
-          >
-            <TextField
-              label={t("from")}
-              name={`${id}-from`}
-              type="date"
-              dir="ltr"
-              value={draft.from}
-              max={draft.to}
-              required
-              onChange={(e) =>
-                setDraft((d) => ({ ...d, from: e.target.value }))
-              }
-            />
-            <TextField
-              label={t("to")}
-              name={`${id}-to`}
-              type="date"
-              dir="ltr"
-              value={draft.to}
-              min={draft.from}
-              required
-              onChange={(e) => setDraft((d) => ({ ...d, to: e.target.value }))}
-            />
-            {select(
-              "interval",
-              (["day", "week", "month"] as const).map((k) => ({
-                id: k,
-                name: t(k),
-              })),
-            )}
-            <details className="analytics-refine">
-              <summary>{t("refine")}</summary>
-              <div className="analytics-filters mt-4">
-                {select("organizationId", organizations)}
-                {select("branchId", branches)}
-                {select(
-                  "kind",
-                  (
-                    [
-                      "class",
-                      "course",
-                      "court",
-                      "access",
-                      "membership",
-                    ] as const
-                  ).map((k) => ({ id: k, name: luma(`kinds.${k}`) })),
-                )}
-                {select(
-                  "serviceId",
-                  services.map((s) => ({ id: s.id, name: s.title })),
-                )}
-              </div>
-            </details>
-            <div className="flex flex-wrap items-end gap-2">
-              <Button type="submit" disabled={!valid || query.isFetching}>
-                {t("apply")}
-              </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => {
-                  const f = period(30);
-                  setDraft(f);
-                  setFilters(f);
-                }}
-              >
-                {t("reset")}
-              </Button>
+          <FilterSheet onOpen={() => setDraft(filters)}>
+            <div className="flex flex-wrap gap-2" aria-label={t("presets")}>
+              {[7, 30, 90, 365].map((days) => (
+                <Button
+                  key={days}
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setDraft((d) => ({ ...d, ...period(days) }))}
+                >
+                  {t("lastDays", { days })}
+                </Button>
+              ))}
             </div>
-          </form>
-          {!valid && (
-            <p role="alert" className="text-sm text-destructive">
-              {t("invalidRange")}
-            </p>
-          )}
+            <form
+              className="analytics-filters"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (valid) setFilters(draft);
+              }}
+            >
+              <TextField
+                label={t("from")}
+                name={`${id}-from`}
+                type="date"
+                dir="ltr"
+                value={draft.from}
+                max={draft.to}
+                required
+                onChange={(e) =>
+                  setDraft((d) => ({ ...d, from: e.target.value }))
+                }
+              />
+              <TextField
+                label={t("to")}
+                name={`${id}-to`}
+                type="date"
+                dir="ltr"
+                value={draft.to}
+                min={draft.from}
+                required
+                onChange={(e) =>
+                  setDraft((d) => ({ ...d, to: e.target.value }))
+                }
+              />
+              {select(
+                "interval",
+                (["day", "week", "month"] as const).map((k) => ({
+                  id: k,
+                  name: t(k),
+                })),
+              )}
+              <fieldset className="analytics-refine">
+                <legend>{t("refine")}</legend>
+                <div className="analytics-filters mt-4">
+                  {select("organizationId", organizations)}
+                  {select("branchId", branches)}
+                  {select(
+                    "kind",
+                    (
+                      [
+                        "class",
+                        "course",
+                        "court",
+                        "access",
+                        "membership",
+                      ] as const
+                    ).map((k) => ({ id: k, name: luma(`kinds.${k}`) })),
+                  )}
+                  {select(
+                    "serviceId",
+                    services.map((s) => ({ id: s.id, name: s.title })),
+                  )}
+                </div>
+              </fieldset>
+              <div className="flex flex-wrap items-end gap-2">
+                <Button type="submit" disabled={!valid || query.isFetching}>
+                  {t("apply")}
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => {
+                    const f = period(30);
+                    setDraft(f);
+                    setFilters(f);
+                  }}
+                >
+                  {t("reset")}
+                </Button>
+              </div>
+            </form>
+            {!valid && (
+              <p role="alert" className="text-sm text-destructive">
+                {t("invalidRange")}
+              </p>
+            )}
+          </FilterSheet>
           <details className="text-xs leading-6 text-muted-foreground">
             <summary>{t("definitions")}</summary>
             <p>{t("timeBasis")}</p>

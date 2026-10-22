@@ -79,3 +79,36 @@ test("an active row still cannot be used during a future or malformed freeze", (
     1,
   );
 });
+
+test("shared memberships allow only explicitly granted services across branches", () => {
+  const shared = {
+    ...valid,
+    branchId: "another-branch",
+    sharedServiceIds: [service.id],
+  };
+  assert.equal(usableCheckoutMemberships(service, [shared], +now).length, 1);
+  assert.equal(
+    usableCheckoutMemberships(
+      service,
+      [{ ...shared, sharedServiceIds: ["another-service"] }],
+      +now,
+    ).length,
+    0,
+  );
+  assert.equal(
+    usableCheckoutMemberships(
+      service,
+      [{ ...valid, sharedServiceIds: ["another-service"] }],
+      +now,
+    ).length,
+    0,
+  );
+  assert.equal(
+    usableCheckoutMemberships(
+      service,
+      [{ ...shared, organizationId: "foreign-organization" }],
+      +now,
+    ).length,
+    0,
+  );
+});

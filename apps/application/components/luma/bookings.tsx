@@ -1,4 +1,6 @@
 "use client";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
+import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -58,17 +60,19 @@ export function BookingsPage() {
   }, [data.length, query.isFetchingNextPage, query.error]);
   return (
     <LumaPage title={t("yourBookings")} back="/" className="reservation-list">
-      <Segments
-        value={tab}
-        onChange={(value) => {
-          nextFocus.current = null;
-          setTab(value === "past" ? "past" : "upcoming");
-        }}
-        options={(["upcoming", "past"] as const).map((v) => ({
-          value: v,
-          label: t(v),
-        }))}
-      />
+      <FilterSheet count={tab === "past" ? 1 : 0}>
+        <Segments
+          value={tab}
+          onChange={(value) => {
+            nextFocus.current = null;
+            setTab(value === "past" ? "past" : "upcoming");
+          }}
+          options={(["upcoming", "past"] as const).map((v) => ({
+            value: v,
+            label: t(v),
+          }))}
+        />
+      </FilterSheet>
       <QueryState
         query={{
           isPending: query.isPending,
@@ -241,7 +245,7 @@ export function BookingDetail() {
                 </button>
                 {rescheduleOpen && (
                   <Field label={t("chooseSession")}>
-                    <select
+                    <NativeSelect
                       value={target}
                       onChange={(e) => setTarget(e.target.value)}
                     >
@@ -258,7 +262,7 @@ export function BookingDetail() {
                             {stamp(o.startAt, locale)}
                           </option>
                         ))}
-                    </select>
+                    </NativeSelect>
                     <button
                       className="luma-cta"
                       disabled={!target || change.isPending}

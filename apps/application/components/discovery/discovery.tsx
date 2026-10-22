@@ -5,14 +5,7 @@ import {
   useSyncExternalStore,
   useTransition,
 } from "react";
-import {
-  Map,
-  Search,
-  X,
-  UserRound,
-  SlidersHorizontal,
-  Bookmark,
-} from "lucide-react";
+import { Map, Search, X, UserRound, Bookmark } from "lucide-react";
 import {
   InputGroup,
   InputGroupInput,
@@ -22,7 +15,9 @@ import {
 import { ServicesLink } from "../luma/discovery-link";
 import { DiscoveryTabBar } from "./discovery-tab-bar";
 import Link from "next/link";
-import { CategoryCarousel } from "./category-carousel";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
+import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
+import { useTaxonomies, catalogSelectSource } from "@repo/api/catalog";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { useChangeLocale } from "@repo/i18n/client-provider";
 import { ClubCard } from "@repo/ui/kit/ClubCard";
@@ -72,6 +67,7 @@ function SavedClubCard({
   );
 }
 export function Discovery() {
+  const categories = useTaxonomies("club-categories");
   const t = useTranslations("Discovery");
   const home = useTranslations("Home");
   const copy = useTranslations("Copy");
@@ -108,6 +104,7 @@ export function Discovery() {
   const allClubs = validPrices ? query.clubs : [];
   const clubs = allClubs;
   const filterCount = [
+    activeCategory,
     ...Object.values(place),
     ...Object.values(filters),
   ].filter(Boolean).length;
@@ -182,25 +179,31 @@ export function Discovery() {
           )}
         </InputGroup>
       </section>
-      <CategoryCarousel
-        locale={locale}
-        selected={activeCategory}
-        onSelect={(value) => {
-          setCategory(value);
-          setPlace({});
-          setPage(1);
-        }}
-      />
-      <details className="discovery-filters">
-        <summary>
-          <SlidersHorizontal size={18} />
-          <span>{t("filters")}</span>
-          {filterCount > 0 && (
-            <span className="discovery-filter-count">
-              {numbers.format(filterCount)}
-            </span>
-          )}
-        </summary>
+      <FilterSheet count={filterCount}>
+        <label className="grid gap-2 text-sm">
+          {copy("categories")}
+          <NativeSelect
+            value={activeCategory}
+            optionsSource={catalogSelectSource("club-categories")}
+            sheetTitle={copy("categories")}
+            onChange={(event) => {
+              setCategory(event.target.value);
+              setPlace({});
+              setPage(1);
+            }}
+          >
+            <NativeSelectOption value="">{t("allClubs")}</NativeSelectOption>
+            {(categories.data ?? []).map((category) => (
+              <NativeSelectOption
+                key={category.id}
+                value={category.id}
+                subtitle={category.description ?? undefined}
+              >
+                {category.name}
+              </NativeSelectOption>
+            ))}
+          </NativeSelect>
+        </label>
         <div className="discovery-filter-fields">
           <LocationPicker
             value={place}
@@ -217,7 +220,7 @@ export function Discovery() {
             }}
           />
         </div>
-      </details>
+      </FilterSheet>
       {!validPrices && (
         <p role="alert" className="text-sm text-destructive">
           {catalog("invalidPriceRange")}

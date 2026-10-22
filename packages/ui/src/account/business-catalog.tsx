@@ -14,7 +14,11 @@ import {
   useCreateMedia,
   useUploadMedia,
 } from "@repo/api/business";
-import { useTaxonomies, useLocations } from "@repo/api/catalog";
+import {
+  useTaxonomies,
+  useLocations,
+  catalogSelectSource,
+} from "@repo/api/catalog";
 import { MediaLink } from "./media-link";
 import { BusinessTariffs } from "./business-tariffs";
 import type {
@@ -273,7 +277,13 @@ export function BusinessClubContent({ id }: { id: string }) {
             </div>
             <ClubForm key={id} club={query.data} editable={editable} />
             <ClubImages club={query.data} editable={editable} />
-          <BusinessTariffs club={query.data} editable={access?.role === "owner" || access?.role === "manager"} allBranches={access?.role === "owner" || Boolean(access?.allBranches)} />
+            <BusinessTariffs
+              club={query.data}
+              editable={access?.role === "owner" || access?.role === "manager"}
+              allBranches={
+                access?.role === "owner" || Boolean(access?.allBranches)
+              }
+            />
             <Section title={t("branches")}>
               <div className="grid gap-3 sm:grid-cols-2">
                 {query.data.branches.map((branch) => (
@@ -494,14 +504,21 @@ function ClubImages({ club, editable }: { club: ClubDto; editable: boolean }) {
     setSaving(true);
     try {
       const file = data.get("file");
-      const media = file instanceof File && file.size > 0 ? await upload.mutateAsync({ id: club.id, file, alt: text(data, "alt") || undefined }) : await create.mutateAsync({
-        id: club.id,
-        input: {
-          type: "image",
-          url: text(data, "url"),
-          alt: optional(data, "alt"),
-        },
-      });
+      const media =
+        file instanceof File && file.size > 0
+          ? await upload.mutateAsync({
+              id: club.id,
+              file,
+              alt: text(data, "alt") || undefined,
+            })
+          : await create.mutateAsync({
+              id: club.id,
+              input: {
+                type: "image",
+                url: text(data, "url"),
+                alt: optional(data, "alt"),
+              },
+            });
       await update.mutateAsync({
         id: club.id,
         input: {
@@ -543,7 +560,11 @@ function ClubImages({ club, editable }: { club: ClubDto; editable: boolean }) {
       <div className="grid gap-3 sm:grid-cols-2">
         {club.gallery.map((media) => (
           <div key={media.id} className="grid gap-3 rounded-2xl border p-4">
-            <MediaLink clubId={club.id} mediaId={media.id} label={media.alt ?? t("imageUrl")} />
+            <MediaLink
+              clubId={club.id}
+              mediaId={media.id}
+              label={media.alt ?? t("imageUrl")}
+            />
             {club.coverId === media.id && (
               <Badge className="w-fit">{t("cover")}</Badge>
             )}
@@ -578,7 +599,12 @@ function ClubImages({ club, editable }: { club: ClubDto; editable: boolean }) {
             disabled={saving || update.isPending}
             className="grid gap-4 sm:grid-cols-2"
           >
-            <TextField label={t("uploadImage")} name="file" type="file" accept="image/jpeg,image/png,image/webp" />
+            <TextField
+              label={t("uploadImage")}
+              name="file"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+            />
             <TextField
               label={t("imageUrl")}
               name="url"
@@ -834,6 +860,23 @@ function BranchForm({
                   <FieldLabel htmlFor={name}>{t(label)}</FieldLabel>
                   <NativeSelect
                     id={name}
+                    optionsSource={catalogSelectSource(
+                      (
+                        {
+                          countryId: "countries",
+                          provinceId: "provinces",
+                          cityId: "cities",
+                          districtId: "districts",
+                        } as const
+                      )[name],
+                      name === "provinceId"
+                        ? (location.countryId ?? undefined)
+                        : name === "cityId"
+                          ? (location.provinceId ?? undefined)
+                          : name === "districtId"
+                            ? (location.cityId ?? undefined)
+                            : undefined,
+                    )}
                     value={location[name] ?? ""}
                     disabled={
                       query.isLoading ||

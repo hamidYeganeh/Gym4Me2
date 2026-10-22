@@ -1,4 +1,5 @@
 "use client";
+import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { useTrainingEvent } from "@repo/ui/training";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
 import { ReservationSummary } from "./reservation-design";
@@ -144,7 +145,7 @@ function CheckoutForm({
                 <summary>{copy("membershipOrCoupon")}</summary>
                 {query.data.kind !== "membership" && (
                   <Field label={t("useMembership")}>
-                    <select
+                    <NativeSelect
                       value={membership}
                       disabled={busy}
                       aria-describedby={membershipHintId}
@@ -168,16 +169,21 @@ function CheckoutForm({
                         </option>
                       )}
                       {eligibleMemberships.map((m) => (
-                        <option value={m.id} key={m.id}>
-                          {m.title} ·{" "}
-                          {m.granted === null
-                            ? t("checkoutMembershipUnlimited")
-                            : t("checkoutMembershipRemaining", {
-                                count: remainingMembershipSessions(m)!,
-                              })}
-                        </option>
+                        <NativeSelectOption
+                          value={m.id}
+                          key={m.id}
+                          subtitle={
+                            m.granted === null
+                              ? t("checkoutMembershipUnlimited")
+                              : t("checkoutMembershipRemaining", {
+                                  count: remainingMembershipSessions(m)!,
+                                })
+                          }
+                        >
+                          {m.title}
+                        </NativeSelectOption>
                       ))}
-                    </select>
+                    </NativeSelect>
                   </Field>
                 )}
                 {query.data.kind !== "membership" && (
@@ -376,7 +382,7 @@ export function PaymentStatus() {
                 ) ? (
                   <>
                     <Field label={t("pay")}>
-                      <select
+                      <NativeSelect
                         value={scenario}
                         onChange={(e) => {
                           setScenario(e.target.value);
@@ -390,7 +396,7 @@ export function PaymentStatus() {
                             {t(v)}
                           </option>
                         ))}
-                      </select>
+                      </NativeSelect>
                     </Field>
                     <button
                       className="luma-cta"

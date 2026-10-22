@@ -1,3 +1,5 @@
+import { AdvancedBusinessService } from '../advanced-business/ph5.service';
+import { Optional } from '@nestjs/common';
 import { Get, Headers, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { timingSafeEqual } from 'node:crypto';
@@ -21,6 +23,7 @@ export class PushJobsController {
     private readonly config: ConfigService<Environment, true>,
     private readonly commerce: CommerceService,
     private readonly push: WebPushService,
+    @Optional() private readonly advanced?: AdvancedBusinessService,
   ) {}
   @Get() async run(
     @Headers('authorization') authorization: string | undefined,
@@ -33,6 +36,7 @@ export class PushJobsController {
     )
       throw new UnauthorizedException();
     await this.commerce.runJobs();
+    await this.advanced?.reconcileDue();
     let processed = 0;
     for (let i = 0; i < 3; i++) {
       const result = await this.push.drain();

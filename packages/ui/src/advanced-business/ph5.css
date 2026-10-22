@@ -1,0 +1,9 @@
+.ph5-navigation.motion-segments {
+  width: max-content;
+  min-width: 100%;
+}
+.ph5-navigation.motion-segments .t-tab {
+  flex: 0 0 auto;
+  min-width: max-content;
+  white-space: nowrap;
+}

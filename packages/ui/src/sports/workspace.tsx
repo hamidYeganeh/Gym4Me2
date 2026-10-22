@@ -1,4 +1,5 @@
 "use client";
+import { FilterSheet } from "../kit/BottomSheet";
 import {
   useManagementFilters,
   ManagementFilterBar,
@@ -287,39 +288,41 @@ export function SportsWorkspace({ page }: { page: Page }) {
     );
   return (
     <SportsFrame title={title}>
-      <div className="grid sm:grid-cols-2 gap-4 mb-8">
-        <FormField label={t("organization")}>
-          <NativeSelect
-            className="min-h-11 w-full [&_select]:min-h-11"
-            value={org ?? ""}
-            disabled={organizations.isPending || !organizations.data?.length}
-            onChange={(e) => {
-              setOrganization(e.target.value);
-              setBranch("");
-            }}
-          >
-            {organizations.data?.map((o) => (
-              <NativeSelectOption value={o.id} key={o.id}>
-                {o.name}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </FormField>
-        <FormField label={t("branch")}>
-          <NativeSelect
-            className="min-h-11 w-full [&_select]:min-h-11"
-            value={branch ?? ""}
-            disabled={branches.isPending || !branches.data?.length}
-            onChange={(e) => setBranch(e.target.value)}
-          >
-            {branches.data?.map((b) => (
-              <NativeSelectOption value={b.id} key={b.id}>
-                {b.name}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </FormField>
-      </div>
+      <FilterSheet>
+        <div className="grid sm:grid-cols-2 gap-4 mb-8">
+          <FormField label={t("organization")}>
+            <NativeSelect
+              className="min-h-11 w-full [&_select]:min-h-11"
+              value={org ?? ""}
+              disabled={organizations.isPending || !organizations.data?.length}
+              onChange={(e) => {
+                setOrganization(e.target.value);
+                setBranch("");
+              }}
+            >
+              {organizations.data?.map((o) => (
+                <NativeSelectOption value={o.id} key={o.id}>
+                  {o.name}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormField>
+          <FormField label={t("branch")}>
+            <NativeSelect
+              className="min-h-11 w-full [&_select]:min-h-11"
+              value={branch ?? ""}
+              disabled={branches.isPending || !branches.data?.length}
+              onChange={(e) => setBranch(e.target.value)}
+            >
+              {branches.data?.map((b) => (
+                <NativeSelectOption value={b.id} key={b.id}>
+                  {b.name}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormField>
+        </div>
+      </FilterSheet>
       <QueryError
         error={error}
         retry={() => {

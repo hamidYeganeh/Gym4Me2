@@ -260,6 +260,20 @@
       "when": 1792717200000,
       "tag": "0036_web_push",
       "breakpoints": false
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1792803600000,
+      "tag": "0037_advanced_business",
+      "breakpoints": false
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1792803600001,
+      "tag": "0038_business_source_reconciliation",
+      "breakpoints": false
     }
   ]
 }

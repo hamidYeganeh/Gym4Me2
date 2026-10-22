@@ -1,4 +1,9 @@
 import {
+  sharedMembershipCondition,
+  assertBranchWrite,
+  effectivePrice,
+} from '../advanced-business/ph5.access';
+import {
   managementWhere,
   managementPage,
   managementDirection,
@@ -433,16 +438,24 @@ export class CommerceService {
     };
     return transaction ? execute(transaction) : this.db.transaction(execute);
   }
-  private insertVersion(
+  private async insertVersion(
     tx: Tx,
     id: string,
     version: number,
     input: ServiceInput,
   ) {
+    await assertBranchWrite(tx, input.organizationId, input.branchId);
+    const amountMinor = await effectivePrice(
+      tx,
+      input.organizationId,
+      input.branchId,
+      input.kind,
+      input.amountMinor,
+    );
     return rows(
       tx,
       sql`INSERT INTO sport_service_versions(service_id,version,title,amount_minor,description,policy,eligibility,requirements,resource_ids,duration_days,session_count,level,coach_name,visibility,approval_required,show_participants,coach_user_id)
-      VALUES(${id},${version},${input.title},${input.amountMinor},${input.description},${JSON.stringify(input.policy)}::jsonb,${JSON.stringify(input.eligibility)}::jsonb,${JSON.stringify(input.requirements)}::jsonb,${`{${input.resourceIds.join(',')}}`}::uuid[],${input.durationDays},${input.sessionCount},${input.level},${input.coachName},${input.visibility},${input.approvalRequired},${input.showParticipants},${input.coachUserId})`,
+      VALUES(${id},${version},${input.title},${amountMinor},${input.description},${JSON.stringify(input.policy)}::jsonb,${JSON.stringify(input.eligibility)}::jsonb,${JSON.stringify(input.requirements)}::jsonb,${`{${input.resourceIds.join(',')}}`}::uuid[],${input.durationDays},${input.sessionCount},${input.level},${input.coachName},${input.visibility},${input.approvalRequired},${input.showParticipants},${input.coachUserId})`,
     );
   }
   async publish(
@@ -1037,7 +1050,7 @@ export class CommerceService {
     if (input.membershipId) {
       await one(
         this.db,
-        sql`SELECT id FROM sport_memberships WHERE id=${input.membershipId} AND user_id=${userId} AND organization_id=${service.organization_id} AND branch_id=${service.branch_id} AND status='active' AND (ends_at IS NULL OR ends_at>now())`,
+        sql`SELECT id FROM sport_memberships WHERE id=${input.membershipId} AND user_id=${userId} AND organization_id=${service.organization_id} AND ${sharedMembershipCondition(input.membershipId, service.id, service.branch_id)} AND status='active' AND (ends_at IS NULL OR ends_at>now())`,
       );
       amount = '0';
     }
@@ -1188,7 +1201,7 @@ export class CommerceService {
           consumed: number;
         }>(
           tx,
-          sql`SELECT * FROM sport_memberships WHERE id=${input.membershipId} AND user_id=${userId} AND organization_id=${service.organization_id} AND branch_id=${service.branch_id} AND status='active' AND (ends_at IS NULL OR ends_at>now()) AND version_id IN(SELECT id FROM sport_service_versions WHERE coach_user_id IS NULL OR coach_user_id=${service.coach_user_id}) FOR UPDATE`,
+          sql`SELECT * FROM sport_memberships WHERE id=${input.membershipId} AND user_id=${userId} AND organization_id=${service.organization_id} AND ${sharedMembershipCondition(input.membershipId, service.id, service.branch_id)} AND status='active' AND (ends_at IS NULL OR ends_at>now()) AND version_id IN(SELECT id FROM sport_service_versions WHERE coach_user_id IS NULL OR coach_user_id=${service.coach_user_id}) FOR UPDATE`,
         );
         const [held] = await rows<{ count: number }>(
           tx,
@@ -1981,7 +1994,7 @@ export class CommerceService {
   async memberships(userId: string) {
     return rows(
       this.db,
-      sql`SELECT m.*,v.title,v.policy,v.amount_minor::text,(SELECT count(*)::int FROM sport_reservations r WHERE r.membership_id=m.id AND r.consumed=false AND r.status IN ('held','pending_approval','confirmed')) held FROM sport_memberships m JOIN sport_service_versions v ON v.id=m.version_id WHERE m.user_id=${userId} ORDER BY m.created_at DESC LIMIT 100`,
+      sql`SELECT m.*,v.title,v.policy,v.amount_minor::text,coalesce((SELECT jsonb_agg(ms.service_id) FROM business_membership_scope ms WHERE ms.membership_id=m.id),'[]'::jsonb) shared_service_ids,(SELECT count(*)::int FROM sport_reservations r WHERE r.membership_id=m.id AND r.consumed=false AND r.status IN ('held','pending_approval','confirmed')) held FROM sport_memberships m JOIN sport_service_versions v ON v.id=m.version_id WHERE m.user_id=${userId} ORDER BY m.created_at DESC LIMIT 100`,
     );
   }
   async membership(userId: string, id: string) {

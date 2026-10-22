@@ -425,6 +425,31 @@ export class PrivacyService {
               sql`SELECT * FROM coaching_contracts WHERE coach_id=${userId} OR created_by=${userId}`,
             )
           ).rows,
+          advancedStatements: (
+            await tx.execute(
+              sql`SELECT * FROM business_statements WHERE coach_id=${userId}`,
+            )
+          ).rows,
+          advancedEarnings: (
+            await tx.execute(
+              sql`SELECT e.* FROM business_earnings e JOIN business_statements st ON st.id=e.statement_id WHERE st.coach_id=${userId}`,
+            )
+          ).rows,
+          advancedPayouts: (
+            await tx.execute(
+              sql`SELECT p.* FROM business_payouts p JOIN business_statements st ON st.id=p.statement_id WHERE st.coach_id=${userId}`,
+            )
+          ).rows,
+          advancedDisputes: (
+            await tx.execute(
+              sql`SELECT d.* FROM business_disputes d JOIN business_earnings e ON e.id=d.earning_id JOIN business_statements st ON st.id=e.statement_id WHERE st.coach_id=${userId}`,
+            )
+          ).rows,
+          advancedAdjustments: (
+            await tx.execute(
+              sql`SELECT a.* FROM business_adjustments a JOIN business_earnings e ON e.id=a.earning_id JOIN business_statements st ON st.id=e.statement_id WHERE st.coach_id=${userId}`,
+            )
+          ).rows,
           coachingLedger: (
             await tx.execute(
               sql`SELECT l.* FROM coaching_ledger l JOIN coaching_contracts c ON c.id=l.contract_id WHERE c.coach_id=${userId} OR l.actor_id=${userId}`,

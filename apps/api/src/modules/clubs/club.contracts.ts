@@ -23,9 +23,24 @@ export const LocationQuery = () =>
         'Required for provinces, cities and districts; ignored for countries.',
       schema: { type: 'string', format: 'uuid' },
     }),
+    ApiQuery({
+      name: 'search',
+      required: false,
+      schema: { type: 'string', maxLength: 100 },
+    }),
+    ApiQuery({
+      name: 'limit',
+      required: false,
+      schema: { type: 'integer', minimum: 1, maximum: 1000 },
+    }),
+    ApiQuery({
+      name: 'id',
+      required: false,
+      schema: { type: 'string', format: 'uuid' },
+    }),
     ApiOkResponse({
       description:
-        'Ordered by name then id. Countries: 300 per page; other kinds: 1000. A shorter page ends the list.',
+        'Ordered by name then id. Defaults: countries 300 per page; other kinds 1000. An explicit limit sets the page size. Search filters before pagination; id resolves a selected option. A shorter page ends the list.',
       schema: {
         type: 'array',
         items: {
@@ -542,3 +557,10 @@ export const affiliationSchema = z
     (v) => !v.startsOn || !v.endsOn || v.startsOn <= v.endsOn,
     'Backend.invalidAffiliationDateRange',
   );
+
+// Existing geography readers retain their historic default page sizes.
+export const optionSearchSchema = z.string().trim().max(100).default('');
+export const optionLimitSchema = (fallback?: number) => {
+  const limit = z.coerce.number().int().min(1).max(1000);
+  return fallback === undefined ? limit.optional() : limit.default(fallback);
+};

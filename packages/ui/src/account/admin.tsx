@@ -1,4 +1,5 @@
 "use client";
+import { FilterSheet } from "../kit/BottomSheet";
 import type { TranslationKey } from "@repo/i18n/messages";
 import { useLabelMap } from "./common";
 import { useTranslations, useLocale } from "@repo/i18n";
@@ -613,65 +614,70 @@ export function AdminAuditContent({
       <p className="text-muted-foreground">
         {t("Copy.accessChangesAndAdministrativeDecisionsAreRecorded")}{" "}
       </p>
-      <form
-        className="flex flex-wrap items-end gap-3"
-        onSubmit={(e) => {
-          e.preventDefault();
-          setFilters(input);
-          setPage(1);
-        }}
+      <FilterSheet
+        count={Object.values(filters).filter(Boolean).length}
+        onOpen={() => setInput(filters)}
       >
-        <Field className="w-64">
-          <FieldLabel htmlFor="auditAction">{t("Copy.event")}</FieldLabel>
-          <NativeSelect
-            id="auditAction"
-            value={input.action}
-            onChange={(e) => setInput({ ...input, action: e.target.value })}
-          >
-            <NativeSelectOption value="">
-              {t("Copy.allEvents")}
-            </NativeSelectOption>
-            {Object.entries(eventNames).map(([key, label]) => (
-              <NativeSelectOption key={key} value={key}>
-                {label}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </Field>
-        <TextField
-          label={t("Copy.fromDateGregorian")}
-          name="auditFrom"
-          fieldClassName="w-full sm:w-48"
-          type="date"
-          dir="ltr"
-          value={input.from}
-          max={input.to || undefined}
-          onChange={(e) => setInput({ ...input, from: e.target.value })}
-        />
-        <TextField
-          label={t("Copy.toDateGregorian")}
-          name="auditTo"
-          fieldClassName="w-full sm:w-48"
-          type="date"
-          dir="ltr"
-          value={input.to}
-          min={input.from || undefined}
-          onChange={(e) => setInput({ ...input, to: e.target.value })}
-        />
-        <Button type="submit">{t("Copy.applyFilters")}</Button>
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => {
-            const empty = { action: "", from: "", to: "" };
-            setInput(empty);
-            setFilters(empty);
+        <form
+          className="flex flex-wrap items-end gap-3"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setFilters(input);
             setPage(1);
           }}
         >
-          {t("Copy.clear")}{" "}
-        </Button>
-      </form>
+          <Field className="w-64">
+            <FieldLabel htmlFor="auditAction">{t("Copy.event")}</FieldLabel>
+            <NativeSelect
+              id="auditAction"
+              value={input.action}
+              onChange={(e) => setInput({ ...input, action: e.target.value })}
+            >
+              <NativeSelectOption value="">
+                {t("Copy.allEvents")}
+              </NativeSelectOption>
+              {Object.entries(eventNames).map(([key, label]) => (
+                <NativeSelectOption key={key} value={key}>
+                  {label}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </Field>
+          <TextField
+            label={t("Copy.fromDateGregorian")}
+            name="auditFrom"
+            fieldClassName="w-full sm:w-48"
+            type="date"
+            dir="ltr"
+            value={input.from}
+            max={input.to || undefined}
+            onChange={(e) => setInput({ ...input, from: e.target.value })}
+          />
+          <TextField
+            label={t("Copy.toDateGregorian")}
+            name="auditTo"
+            fieldClassName="w-full sm:w-48"
+            type="date"
+            dir="ltr"
+            value={input.to}
+            min={input.from || undefined}
+            onChange={(e) => setInput({ ...input, to: e.target.value })}
+          />
+          <Button type="submit">{t("Copy.applyFilters")}</Button>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => {
+              const empty = { action: "", from: "", to: "" };
+              setInput(empty);
+              setFilters(empty);
+              setPage(1);
+            }}
+          >
+            {t("Copy.clear")}{" "}
+          </Button>
+        </form>
+      </FilterSheet>
       <QueryError error={query.error} retry={query.refetch} />
       {query.isLoading ? (
         <Loading />

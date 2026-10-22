@@ -145,9 +145,18 @@ export class CoachingRecordsService {
         ends_on: string | null;
       }>(
         tx,
-        sql`SELECT * FROM coaching_contracts WHERE id=${input.contractId}`,
+        sql`SELECT * FROM coaching_contracts WHERE id=${input.contractId} FOR UPDATE`,
       );
       if (!contract) throw new NotFoundException();
+      if (
+        (
+          await rows(
+            tx,
+            sql`SELECT contract_id FROM business_contract_rules WHERE contract_id=${input.contractId} LIMIT 1`,
+          )
+        ).length
+      )
+        throw new ConflictException('PH5.advancedLedger');
       await this.commerce.staff(
         tx,
         actor,

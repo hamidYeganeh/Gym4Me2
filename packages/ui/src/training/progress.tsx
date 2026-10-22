@@ -1,4 +1,6 @@
 "use client";
+import { FilterSheet } from "../kit/BottomSheet";
+import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { useState } from "react";
 import { useTranslations } from "@repo/i18n";
 import {
@@ -102,36 +104,40 @@ export function TrainingProgressPanel() {
       </TrainingCard>
       <TrainingCard title={t("performanceChart")}>
         <p className="training-muted">{t("performanceHint")}</p>
-        <div className="training-grid">
-          <label>
-            {t("movement")}
-            <select
-              value={selectedExercise ?? ""}
-              onChange={(e) => setExerciseId(e.target.value)}
-              disabled={!exercises.length}
-            >
-              {!exercises.length && <option value="">{t("noWorkouts")}</option>}
-              {exercises.map((id) => (
-                <option key={id} value={id}>
-                  {exerciseName(id)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            {t("performanceMetric")}
-            <select
-              value={metric}
-              onChange={(e) => setMetric(e.target.value as typeof metric)}
-            >
-              {(["load", "reps", "seconds"] as const).map((key) => (
-                <option key={key} value={key}>
-                  {t(key)}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
+        <FilterSheet>
+          <div className="training-grid">
+            <label>
+              {t("movement")}
+              <NativeSelect
+                value={selectedExercise ?? ""}
+                onChange={(e) => setExerciseId(e.target.value)}
+                disabled={!exercises.length}
+              >
+                {!exercises.length && (
+                  <option value="">{t("noWorkouts")}</option>
+                )}
+                {exercises.map((id) => (
+                  <option key={id} value={id}>
+                    {exerciseName(id)}
+                  </option>
+                ))}
+              </NativeSelect>
+            </label>
+            <label>
+              {t("performanceMetric")}
+              <NativeSelect
+                value={metric}
+                onChange={(e) => setMetric(e.target.value as typeof metric)}
+              >
+                {(["load", "reps", "seconds"] as const).map((key) => (
+                  <option key={key} value={key}>
+                    {t(key)}
+                  </option>
+                ))}
+              </NativeSelect>
+            </label>
+          </div>
+        </FilterSheet>
         {performance.length ? (
           <>
             <div
@@ -171,19 +177,21 @@ export function TrainingProgressPanel() {
       </TrainingCard>
       <TrainingCard title={t("measurements")}>
         <p className="training-muted">{t("measurementHint")}</p>
-        <label>
-          {t("measurementType")}
-          <select
-            value={kind}
-            onChange={(e) => setKind(e.target.value as Measurement["kind"])}
-          >
-            {(["weight", "waist", "chest", "hip"] as const).map((k) => (
-              <option key={k} value={k}>
-                {t(k)}
-              </option>
-            ))}
-          </select>
-        </label>
+        <FilterSheet>
+          <label>
+            {t("measurementType")}
+            <NativeSelect
+              value={kind}
+              onChange={(e) => setKind(e.target.value as Measurement["kind"])}
+            >
+              {(["weight", "waist", "chest", "hip"] as const).map((k) => (
+                <option key={k} value={k}>
+                  {t(k)}
+                </option>
+              ))}
+            </NativeSelect>
+          </label>
+        </FilterSheet>
         {history.length ? (
           <>
             <div

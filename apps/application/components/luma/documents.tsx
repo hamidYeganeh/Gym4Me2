@@ -1,4 +1,5 @@
 "use client";
+import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { useId, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "@repo/i18n";
@@ -138,13 +139,13 @@ function DocumentUpload({
     >
       <p className="luma-meta">{t("documentPrivacyHint")}</p>
       <Field label={t("requiredDocuments")}>
-        <select name="name" required disabled={upload.isPending}>
+        <NativeSelect name="name" required disabled={upload.isPending}>
           {requirements.map((name) => (
             <option key={name} value={name}>
               {name}
             </option>
           ))}
-        </select>
+        </NativeSelect>
       </Field>
       <Field label={t("documents")}>
         <div

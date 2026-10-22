@@ -12,7 +12,7 @@ export function remainingMembershipSessions(
 export function usableCheckoutMemberships(
   service: Pick<
     ServiceDto,
-    "organizationId" | "branchId" | "kind" | "occurrences"
+    "id" | "organizationId" | "branchId" | "kind" | "occurrences"
   >,
   memberships: MembershipDto[],
   now = Date.now(),
@@ -22,7 +22,9 @@ export function usableCheckoutMemberships(
   return memberships.filter((membership) => {
     if (
       membership.organizationId !== service.organizationId ||
-      membership.branchId !== service.branchId ||
+      (membership.sharedServiceIds?.length
+        ? !membership.sharedServiceIds.includes(service.id)
+        : membership.branchId !== service.branchId) ||
       membership.status !== "active"
     )
       return false;

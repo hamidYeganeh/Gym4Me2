@@ -1,4 +1,5 @@
 "use client";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import { MobileHeader } from "@repo/ui/mobile-page";
 import { useMemo, useRef, useState } from "react";
 import { useQueryRetry } from "@repo/ui/hooks/use-query-retry";
@@ -44,7 +45,7 @@ export function ClubComparison() {
   const [unit, setUnit] = useState<TariffUnit>("visit");
   const clubs = useCatalogClubs({ search, page });
   const comparison = useCompareClubs(selected);
-  const unitControl = useRef<HTMLSelectElement>(null);
+  const unitControl = useRef<HTMLButtonElement>(null);
   const comparisonRetry = useQueryRetry(
     () => comparison.refetch(),
     unitControl,
@@ -142,39 +143,42 @@ export function ClubComparison() {
         next={(clubs.data?.length ?? 0) === 25}
         busy={clubs.isFetching}
       />
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Field>
-          <FieldLabel htmlFor="compare-service">{labels("service")}</FieldLabel>
-          <NativeSelect
-            id="compare-service"
-            value={service}
-            onChange={(event) =>
-              setService(event.target.value as TariffService)
-            }
-          >
-            {options.map((value) => (
-              <NativeSelectOption key={value} value={value}>
-                {labels(`service_${value}`)}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="compare-unit">{labels("unit")}</FieldLabel>
-          <NativeSelect
-            id="compare-unit"
-            ref={unitControl}
-            value={unit}
-            onChange={(event) => setUnit(event.target.value as TariffUnit)}
-          >
-            {units.map((value) => (
-              <NativeSelectOption key={value} value={value}>
-                {labels(`unit_${value}`)}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </Field>
-      </div>
+      <FilterSheet triggerRef={unitControl}>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Field>
+            <FieldLabel htmlFor="compare-service">
+              {labels("service")}
+            </FieldLabel>
+            <NativeSelect
+              id="compare-service"
+              value={service}
+              onChange={(event) =>
+                setService(event.target.value as TariffService)
+              }
+            >
+              {options.map((value) => (
+                <NativeSelectOption key={value} value={value}>
+                  {labels(`service_${value}`)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="compare-unit">{labels("unit")}</FieldLabel>
+            <NativeSelect
+              id="compare-unit"
+              value={unit}
+              onChange={(event) => setUnit(event.target.value as TariffUnit)}
+            >
+              {units.map((value) => (
+                <NativeSelectOption key={value} value={value}>
+                  {labels(`unit_${value}`)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </Field>
+        </div>
+      </FilterSheet>
       {selected.length < 2 ? (
         <p role="status" className="text-sm text-muted-foreground">
           {t("chooseTwo")}

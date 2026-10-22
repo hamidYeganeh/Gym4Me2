@@ -221,6 +221,7 @@ export type CreateCouponInput = Pick<
   "code" | "basisPoints" | "maxUses" | "expiresAt"
 >;
 export type MembershipDto = {
+  sharedServiceIds?: string[];
   id: string;
   title: string;
   serviceId: string;

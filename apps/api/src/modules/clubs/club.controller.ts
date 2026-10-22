@@ -189,10 +189,17 @@ export class PublicTaxonomiesController {
   @Get(':kind') list(
     @Param('kind') kind: string,
     @Query('page') page: unknown,
+    @Query('search') search: unknown,
+    @Query('limit') limit: unknown,
+    @Query('id') selectedId: unknown,
   ) {
     return this.service.listTaxonomy(
       c.validate(c.taxonomyKindSchema, kind),
       c.validate(c.pageSchema, page),
+      false,
+      c.validate(c.optionSearchSchema, search),
+      c.validate(c.optionLimitSchema(100), limit),
+      c.validate(c.id.optional(), selectedId),
     );
   }
 }
@@ -209,13 +216,17 @@ export class AdminTaxonomiesController {
     @Param('kind') kind: string,
     @Query('page') page: unknown,
     @Query('search') search: unknown,
+    @Query('limit') limit: unknown,
+    @Query('id') selectedId: unknown,
   ) {
     await this.admin.requireAdmin(req.principal);
     return this.service.listTaxonomy(
       c.validate(c.taxonomyKindSchema, kind),
       c.validate(c.pageSchema, page),
       true,
-      c.validate(z.string().trim().max(100).default(''), search),
+      c.validate(c.optionSearchSchema, search),
+      c.validate(c.optionLimitSchema(100), limit),
+      c.validate(c.id.optional(), selectedId),
     );
   }
   @Post(':kind') @c.SchemaBody(c.taxonomyCreateSchema) create(
@@ -250,11 +261,17 @@ export class PublicLocationsController {
     @Param('kind') kind: string,
     @Query('parentId') parentId: unknown,
     @Query('page') page: unknown,
+    @Query('search') search: unknown,
+    @Query('limit') limit: unknown,
+    @Query('id') selectedId: unknown,
   ) {
     return this.service.geography(
       c.validate(c.geographyKindSchema, kind),
       c.validate(c.id.optional(), parentId),
       c.validate(c.pageSchema, page),
+      c.validate(c.optionSearchSchema, search),
+      c.validate(c.optionLimitSchema(), limit),
+      c.validate(c.id.optional(), selectedId),
     );
   }
 }
@@ -271,12 +288,18 @@ export class AdminLocationsController {
     @Param('kind') kind: string,
     @Query('parentId') parentId: unknown,
     @Query('page') page: unknown,
+    @Query('search') search: unknown,
+    @Query('limit') limit: unknown,
+    @Query('id') selectedId: unknown,
   ) {
     await this.admin.requireAdmin(req.principal);
     return this.service.geography(
       c.validate(c.geographyKindSchema, kind),
       c.validate(c.id.optional(), parentId),
       c.validate(c.pageSchema, page),
+      c.validate(c.optionSearchSchema, search),
+      c.validate(c.optionLimitSchema(), limit),
+      c.validate(c.id.optional(), selectedId),
     );
   }
   @Patch(':kind/:id') @c.SchemaBody(c.geographyPatchSchema) update(

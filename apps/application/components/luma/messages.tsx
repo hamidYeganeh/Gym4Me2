@@ -1,4 +1,5 @@
 "use client";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import { useId } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "@repo/i18n";
@@ -22,19 +23,21 @@ export function MessagesPage() {
     (query.error.status === 0 || query.error.status >= 500);
   return (
     <LumaPage title={t("messages")}>
-      <Segments
-        value={tab}
-        onChange={(value) =>
-          router.replace(
-            value === "archived" ? "/messages?view=archived" : "/messages",
-            { scroll: false },
-          )
-        }
-        options={(["all", "archived"] as const).map((v) => ({
-          value: v,
-          label: t(v),
-        }))}
-      />
+      <FilterSheet count={tab === "archived" ? 1 : 0}>
+        <Segments
+          value={tab}
+          onChange={(value) =>
+            router.replace(
+              value === "archived" ? "/messages?view=archived" : "/messages",
+              { scroll: false },
+            )
+          }
+          options={(["all", "archived"] as const).map((v) => ({
+            value: v,
+            label: t(v),
+          }))}
+        />
+      </FilterSheet>
       <QueryState
         query={{
           isPending: query.isPending,

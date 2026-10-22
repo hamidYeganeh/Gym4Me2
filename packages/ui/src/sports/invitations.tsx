@@ -58,7 +58,14 @@ export function ServiceInvitations({ service }: { service: ServiceDto }) {
     cancelKey = useRef<{ id: string; key: string } | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const items = query.data?.pages.flatMap((page) => page.items) ?? [];
-  const selected = recipients.data?.find((person) => person.id === recipient);
+  const [recipientPages, setRecipientPages] = useState<{
+    serviceId: string;
+    items: InvitationRecipientDto[];
+  }>({ serviceId: service.id, items: [] });
+  const selected = [
+    ...(recipients.data ?? []),
+    ...(recipientPages.serviceId === service.id ? recipientPages.items : []),
+  ].find((person) => person.id === recipient);
   const label = (person: { displayName: string | null; phoneSuffix: string }) =>
     `${person.displayName || t("invitationUnnamed")} · ${t("invitationPhoneEnding", { digits: person.phoneSuffix })}`;
   return (
@@ -155,6 +162,51 @@ export function ServiceInvitations({ service }: { service: ServiceDto }) {
                   id={`${id}-recipient`}
                   className="min-h-11"
                   value={recipient}
+                  optionsSource={{
+                    key: ["invitation-recipients", service.id, search],
+                    async loadPage(api, request) {
+                      const people = await api.request<
+                        InvitationRecipientDto[]
+                      >(
+                        {
+                          method: "GET",
+                          path: `sports/community/host/services/${service.id}/recipients`,
+                          query: {
+                            search: request.search || search,
+                            page: request.page,
+                            limit: request.pageSize,
+                          },
+                        },
+                        { signal: request.signal },
+                      );
+                      setRecipientPages((current) => ({
+                        serviceId: service.id,
+                        items: [
+                          ...new Map(
+                            [
+                              ...(current.serviceId === service.id
+                                ? current.items
+                                : []),
+                              ...people,
+                            ].map((person) => [person.id, person]),
+                          ).values(),
+                        ],
+                      }));
+                      return {
+                        items: people.map((person) => ({
+                          value: person.id,
+                          label: person.displayName ?? t("invitationUnnamed"),
+                          subtitle: t("invitationPhoneEnding", {
+                            digits: person.phoneSuffix,
+                          }),
+                        })),
+                        nextPage:
+                          people.length === request.pageSize
+                            ? request.page + 1
+                            : undefined,
+                      };
+                    },
+                  }}
                   aria-describedby={`${id}-recipient-note`}
                   disabled={recipients.isPending}
                   onChange={(event) => {

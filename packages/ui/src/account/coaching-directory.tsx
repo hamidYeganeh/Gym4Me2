@@ -5,13 +5,8 @@ import { AuthRequired } from "./auth-entry";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useTranslations, useLocale } from "@repo/i18n";
-import {
-  MapPin,
-  SlidersHorizontal,
-  BadgeCheck,
-  ArrowUpLeft,
-} from "lucide-react";
-import { MotionDisclosure } from "../motion-controls";
+import { MapPin, BadgeCheck, ArrowUpLeft } from "lucide-react";
+import { FilterSheet } from "../kit/BottomSheet";
 import {
   usePracticeQuery,
   useAccount,
@@ -73,54 +68,54 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
       )}
       {!detail ? (
         <>
-          <form
-            className="space-y-3 rounded-3xl border bg-card p-5"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const f = new FormData(e.currentTarget);
-              setFilters({
-                search: text(f, "search"),
-                city: text(f, "city"),
-                specialty: text(f, "specialty"),
-                goal: text(f, "goal"),
-                maxPrice: text(f, "price")
-                  ? String(BigInt(text(f, "price")) * BigInt(10))
-                  : undefined,
-                page: 1,
-              });
-            }}
-          >
-            <div className="coach-directory-search">
-              <Field name="search" label={t("search")} />
-              <Button type="submit">{t("search")}</Button>
-            </div>
-            <MotionDisclosure
-              className="coach-directory-filters"
-              label={
-                <span className="flex items-center gap-2">
-                  <SlidersHorizontal size={15} />
-                  {visual("moreFilters")}
-                  {activeFilters > 0 && (
-                    <span className="text-xs">
-                      ·{" "}
-                      {visual("activeFilters", {
-                        count: new Intl.NumberFormat(locale).format(
-                          activeFilters,
-                        ),
-                      })}
-                    </span>
-                  )}
-                </span>
-              }
+          <FilterSheet count={activeFilters}>
+            <form
+              className="space-y-3 rounded-3xl border bg-card p-5"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const f = new FormData(e.currentTarget);
+                setFilters({
+                  search: text(f, "search"),
+                  city: text(f, "city"),
+                  specialty: text(f, "specialty"),
+                  goal: text(f, "goal"),
+                  maxPrice: text(f, "price")
+                    ? String(BigInt(text(f, "price")) * BigInt(10))
+                    : undefined,
+                  page: 1,
+                });
+              }}
             >
+              <div className="coach-directory-search">
+                <Field
+                  name="search"
+                  label={t("search")}
+                  value={filters.search}
+                />
+                <Button type="submit">{t("search")}</Button>
+              </div>
               <div className="coach-directory-filter-grid">
                 {(["city", "specialty", "goal"] as const).map((key) => (
-                  <Field key={key} name={key} label={t(key)} />
+                  <Field
+                    key={key}
+                    name={key}
+                    label={t(key)}
+                    value={filters[key]}
+                  />
                 ))}
-                <Field name="price" type="number" label={t("maxPrice")} />
+                <Field
+                  name="price"
+                  type="number"
+                  label={t("maxPrice")}
+                  value={
+                    filters.maxPrice
+                      ? String(BigInt(filters.maxPrice) / BigInt(10))
+                      : ""
+                  }
+                />
               </div>
-            </MotionDisclosure>
-          </form>
+            </form>
+          </FilterSheet>
           {q.isLoading ? (
             <Loading />
           ) : q.error ? (

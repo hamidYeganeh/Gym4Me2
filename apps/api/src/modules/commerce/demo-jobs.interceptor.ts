@@ -1,3 +1,5 @@
+import { AdvancedBusinessService } from '../advanced-business/ph5.service';
+import { Optional } from '@nestjs/common';
 import {
   CallHandler,
   ExecutionContext,
@@ -19,9 +21,11 @@ export class DemoJobsInterceptor implements NestInterceptor {
   constructor(
     private readonly config: ConfigService<Environment, true>,
     private readonly commerce: CommerceService,
+    @Optional() private readonly advanced?: AdvancedBusinessService,
   ) {
     this.dueWork = new RequestDueWork(async () => {
       await this.commerce.runJobs();
+      await this.advanced?.reconcileDue();
     });
   }
   intercept(context: ExecutionContext, next: CallHandler) {
@@ -32,7 +36,7 @@ export class DemoJobsInterceptor implements NestInterceptor {
     if (
       demo &&
       request.method === 'GET' &&
-      /^\/api\/v1\/(?:sports\/services|profile\/training|profile\/coaching-collaboration|sports\/community\/notifications)(?:\/|$)/.test(
+      /^\/api\/v1\/(?:sports\/services|profile\/training|profile\/coaching-collaboration|sports\/community\/notifications|business\/advanced|profile\/settlements)(?:\/|$)/.test(
         request.path,
       )
     ) {
@@ -41,7 +45,7 @@ export class DemoJobsInterceptor implements NestInterceptor {
     if (
       this.config.get('DEMO_MODE', { infer: true }) !== true ||
       ['GET', 'HEAD', 'OPTIONS'].includes(request.method) ||
-      !/^\/api\/v1\/(?:sports\/account|profile\/coaching|profile\/training|business\/sports|admin\/sports)(?:[/-]|$)/.test(
+      !/^\/api\/v1\/(?:sports\/account|profile\/coaching|profile\/training|business\/sports|business\/advanced|profile\/settlements|admin\/advanced|admin\/sports)(?:[/-]|$)/.test(
         request.path,
       )
     )

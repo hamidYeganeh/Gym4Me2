@@ -1,3 +1,5 @@
+import { AdvancedBusinessService } from '../advanced-business/ph5.service';
+import { Optional } from '@nestjs/common';
 import { WebPushService } from '../push/push.service';
 import {
   Injectable,
@@ -17,6 +19,7 @@ export class CommerceWorker implements OnModuleInit, OnModuleDestroy {
     private readonly service: CommerceService,
     private readonly config: ConfigService<Environment, true>,
     private readonly push: WebPushService,
+    @Optional() private readonly advanced?: AdvancedBusinessService,
   ) {}
   onModuleInit() {
     if (
@@ -34,6 +37,7 @@ export class CommerceWorker implements OnModuleInit, OnModuleDestroy {
     this.running = true;
     try {
       await this.service.runJobs();
+      await this.advanced?.reconcileDue();
       await this.push.drain();
     } catch {
       this.logger.error('Sports worker failed; durable jobs will be retried');

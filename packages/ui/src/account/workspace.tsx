@@ -97,6 +97,7 @@ const commonNav = [
   },
 ] as const;
 const businessNav = [
+  { key: "advanced", href: "/advanced", title: "PH5.title", icon: ScrollText },
   {
     key: "coaching",
     href: "/coaching",
@@ -138,6 +139,7 @@ const businessNav = [
   },
 ] as const;
 const adminNav = [
+  { key: "advanced", href: "/advanced", title: "PH5.title", icon: ScrollText },
   {
     key: "analytics",
     href: "/analytics",

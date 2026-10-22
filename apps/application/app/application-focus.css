@@ -1,0 +1,47 @@
+/* Keep keyboard location visible without drawing rings, including portal sheets. */
+body:is([data-gym-focus="application"], #gym-application) :focus,
+body:is([data-gym-focus="application"], #gym-application) :focus-visible,
+body:is([data-gym-focus="application"], #gym-application)
+  [data-gym-focus-proxy]:focus-within,
+body:is([data-gym-focus="application"], #gym-application)
+  [data-sheet-search]:focus-within,
+body:is([data-gym-focus="application"], #gym-application)
+  [role="option"].ring-inset {
+  outline: none !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-ring-offset-shadow: 0 0 #0000;
+}
+
+body:is([data-gym-focus="application"], #gym-application)
+  :is(
+    button,
+    input,
+    textarea,
+    select,
+    [role="combobox"],
+    [role="tab"]
+  ):focus-visible,
+body:is([data-gym-focus="application"], #gym-application)
+  [data-gym-focus-proxy]:focus-within {
+  background-color: color-mix(
+    in oklab,
+    var(--primary) 12%,
+    var(--background)
+  ) !important;
+}
+
+body:is([data-gym-focus="application"], #gym-application) a:focus-visible {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+@media (forced-colors: active) {
+  body:is([data-gym-focus="application"], #gym-application) :focus-visible {
+    background-color: Highlight !important;
+    color: HighlightText !important;
+    forced-color-adjust: none;
+  }
+}

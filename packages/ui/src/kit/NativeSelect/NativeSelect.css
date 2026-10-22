@@ -1,0 +1,15 @@
+/* Keep the accessible two-tone focus indicator inside the fixed search header. */
+[data-gym-focus] [data-sheet-search]:focus-within {
+  outline-offset: -2px !important;
+  box-shadow: inset 0 0 0 4px var(--background) !important;
+}
+[data-gym-focus] [data-sheet-search] input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+[data-sheet-search] input {
+  flex: 1 1 0%;
+  width: 0;
+  min-width: 0;
+  max-width: 100%;
+}

@@ -466,6 +466,8 @@ export class SportsCommunityController {
         r.principal.user.id,
         id(value),
         parse(invitationRecipientSchema, query).search,
+        parse(invitationRecipientSchema, query).page,
+        parse(invitationRecipientSchema, query).limit,
       ),
     );
   }

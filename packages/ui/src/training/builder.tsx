@@ -1,4 +1,5 @@
 "use client";
+import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { useEffect, useRef, useState } from "react";
 import { useApiContext } from "@repo/api/provider";
 import { useRouter } from "next/navigation";
@@ -386,7 +387,7 @@ function Builder() {
           {!!workspace.data?.plans.some((p) => p.isTemplate) && (
             <label>
               {t("startFromTemplate")}
-              <select
+              <NativeSelect
                 defaultValue=""
                 disabled={loadingTemplate || !online}
                 onChange={(event) => {
@@ -419,7 +420,7 @@ function Builder() {
                       {p.title}
                     </option>
                   ))}
-              </select>
+              </NativeSelect>
             </label>
           )}
           <label>
@@ -607,7 +608,7 @@ function Builder() {
                   </label>
                   <label>
                     {t("targetType")}
-                    <select
+                    <NativeSelect
                       value={p.reps === null ? "time" : "reps"}
                       onChange={(e) =>
                         updatePrescription(
@@ -620,7 +621,7 @@ function Builder() {
                     >
                       <option value="reps">{t("reps")}</option>
                       <option value="time">{t("seconds")}</option>
-                    </select>
+                    </NativeSelect>
                   </label>
                   <label>
                     {t(p.reps === null ? "seconds" : "reps")}
@@ -677,7 +678,7 @@ function Builder() {
                   <div className="training-grid">
                     <label>
                       {t("group")}
-                      <select
+                      <NativeSelect
                         value={p.group}
                         onChange={(e) =>
                           updatePrescription(i, {
@@ -696,7 +697,7 @@ function Builder() {
                             </option>
                           ),
                         )}
-                      </select>
+                      </NativeSelect>
                     </label>
                     {p.group !== "single" && (
                       <label>
@@ -864,7 +865,12 @@ function Builder() {
           <Button
             type="button"
             disabled={
-              loadingTemplate || !valid(d) || a.pending || !online || conflict || !effective
+              loadingTemplate ||
+              !valid(d) ||
+              a.pending ||
+              !online ||
+              conflict ||
+              !effective
             }
             onClick={() => {
               void (async () => {

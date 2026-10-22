@@ -1,4 +1,6 @@
 "use client";
+import { catalogSelectSource } from "@repo/api/catalog";
+import { FilterSheet } from "../kit/BottomSheet";
 import { AdminServiceReports } from "../training/service-reviews";
 import { useTranslations, useLocale } from "@repo/i18n";
 
@@ -86,49 +88,51 @@ export function AdminTaxonomiesContent() {
       <p className="text-sm text-muted-foreground">
         {t("Copy.categoriesAreUsedInClubFormsAnd")}{" "}
       </p>
-      <form
-        className="flex flex-wrap items-end gap-3"
-        onSubmit={(e) => {
-          e.preventDefault();
-          setSearch(input);
-          setPage(1);
-        }}
-      >
-        <Field className="w-56">
-          <FieldLabel htmlFor="taxonomyKind">{t("Copy.group")}</FieldLabel>
-          <NativeSelect
-            id="taxonomyKind"
-            value={kind}
-            onChange={(e) => {
-              setKind(e.target.value as TaxonomyKind);
-              setPage(1);
-              setSearch("");
-              setInput("");
-            }}
-          >
-            {taxonomies.map((t) => (
-              <NativeSelectOption key={t.id} value={t.id}>
-                {t.name}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </Field>
-        <TextField
-          name="termSearch"
-          fieldClassName="w-full sm:w-64"
-          label={t("Copy.search")}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          maxLength={100}
-          placeholder={t("Copy.categoryName")}
-        />
-        <Button type="submit" variant="outline">
-          {t("Copy.search")}{" "}
-        </Button>
-        <Button type="button" onClick={() => setEditing("new")}>
-          {t("Copy.addItem")}{" "}
-        </Button>
-      </form>
+      <FilterSheet>
+        <form
+          className="flex flex-wrap items-end gap-3"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSearch(input);
+            setPage(1);
+          }}
+        >
+          <Field className="w-56">
+            <FieldLabel htmlFor="taxonomyKind">{t("Copy.group")}</FieldLabel>
+            <NativeSelect
+              id="taxonomyKind"
+              value={kind}
+              onChange={(e) => {
+                setKind(e.target.value as TaxonomyKind);
+                setPage(1);
+                setSearch("");
+                setInput("");
+              }}
+            >
+              {taxonomies.map((t) => (
+                <NativeSelectOption key={t.id} value={t.id}>
+                  {t.name}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </Field>
+          <TextField
+            name="termSearch"
+            fieldClassName="w-full sm:w-64"
+            label={t("Copy.search")}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            maxLength={100}
+            placeholder={t("Copy.categoryName")}
+          />
+          <Button type="submit" variant="outline">
+            {t("Copy.search")}{" "}
+          </Button>
+        </form>
+      </FilterSheet>
+      <Button type="button" onClick={() => setEditing("new")}>
+        {t("Copy.addItem")}
+      </Button>
       <QueryError error={query.error} retry={query.refetch} />
       {query.isLoading ? (
         <Loading />
@@ -374,59 +378,64 @@ export function AdminLocationsContent() {
       <p className="text-sm text-muted-foreground">
         {t("Copy.manageCountriesProvincesCitiesAndDistrictsIn")}{" "}
       </p>
-      <div className="grid gap-3 sm:grid-cols-3">
-        <PlaceSelect
-          label={t("Copy.country")}
-          id="countryScope"
-          value={country}
-          items={countries.data}
-          loading={countries.isLoading}
-          onChange={(v) => {
-            setCountry(v);
-            setProvince("");
-            setCity("");
-          }}
-        />
-        <PlaceSelect
-          label={t("Copy.province")}
-          id="provinceScope"
-          value={province}
-          items={provinces.data}
-          loading={provinces.isLoading}
-          disabled={!country}
-          onChange={(v) => {
-            setProvince(v);
-            setCity("");
-          }}
-        />
-        <PlaceSelect
-          label={t("Copy.city")}
-          id="cityScope"
-          value={city}
-          items={cities.data}
-          loading={cities.isLoading}
-          disabled={!province}
-          onChange={setCity}
-        />
-      </div>
       {[countries, provinces, cities].map((q, i) => (
         <QueryError key={i} error={q.error} retry={q.refetch} />
       ))}
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <Field className="w-56">
-          <FieldLabel htmlFor="placeKind">{t("Copy.list")}</FieldLabel>
-          <NativeSelect
-            id="placeKind"
-            value={kind}
-            onChange={(e) => setKind(e.target.value as PlaceKind)}
-          >
-            {Object.entries(placeNames).map(([key, label]) => (
-              <NativeSelectOption key={key} value={key}>
-                {label}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </Field>
+        <FilterSheet count={[country, province, city].filter(Boolean).length}>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <PlaceSelect
+              label={t("Copy.country")}
+              id="countryScope"
+              optionsSource={catalogSelectSource("countries", undefined, true)}
+              value={country}
+              items={countries.data}
+              loading={countries.isLoading}
+              onChange={(v) => {
+                setCountry(v);
+                setProvince("");
+                setCity("");
+              }}
+            />
+            <PlaceSelect
+              label={t("Copy.province")}
+              id="provinceScope"
+              optionsSource={catalogSelectSource("provinces", country, true)}
+              value={province}
+              items={provinces.data}
+              loading={provinces.isLoading}
+              disabled={!country}
+              onChange={(v) => {
+                setProvince(v);
+                setCity("");
+              }}
+            />
+            <PlaceSelect
+              label={t("Copy.city")}
+              id="cityScope"
+              optionsSource={catalogSelectSource("cities", province, true)}
+              value={city}
+              items={cities.data}
+              loading={cities.isLoading}
+              disabled={!province}
+              onChange={setCity}
+            />
+          </div>
+          <Field className="w-56">
+            <FieldLabel htmlFor="placeKind">{t("Copy.list")}</FieldLabel>
+            <NativeSelect
+              id="placeKind"
+              value={kind}
+              onChange={(e) => setKind(e.target.value as PlaceKind)}
+            >
+              {Object.entries(placeNames).map(([key, label]) => (
+                <NativeSelectOption key={key} value={key}>
+                  {label}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </Field>
+        </FilterSheet>
         <Button
           disabled={!canCreate || query.isLoading}
           onClick={() => setEditing("new")}
@@ -513,6 +522,7 @@ function PlaceSelect({
   onChange,
   disabled,
   loading,
+  optionsSource,
 }: {
   label: string;
   id: string;
@@ -521,6 +531,7 @@ function PlaceSelect({
   onChange: (v: string) => void;
   disabled?: boolean;
   loading: boolean;
+  optionsSource?: React.ComponentProps<typeof NativeSelect>["optionsSource"];
 }) {
   const t = useTranslations();
 
@@ -529,6 +540,7 @@ function PlaceSelect({
       <FieldLabel htmlFor={id}>{label}</FieldLabel>
       <NativeSelect
         id={id}
+        optionsSource={optionsSource}
         value={value}
         disabled={disabled || loading}
         onChange={(e) => onChange(e.target.value)}
@@ -681,29 +693,31 @@ export function AdminModerationContent() {
     <>
       <AdminServiceReports />
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <Field className="w-56">
-          <FieldLabel htmlFor="moderationStatus">
-            {t("Copy.reviewStatus")}
-          </FieldLabel>
-          <NativeSelect
-            id="moderationStatus"
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value);
-              setPage(1);
-            }}
-          >
-            <NativeSelectOption value="pending">
-              {t("Copy.pendingReview")}{" "}
-            </NativeSelectOption>
-            <NativeSelectOption value="published">
-              {t("Copy.published")}
-            </NativeSelectOption>
-            <NativeSelectOption value="rejected">
-              {t("Copy.rejected")}
-            </NativeSelectOption>
-          </NativeSelect>
-        </Field>
+        <FilterSheet>
+          <Field className="w-56">
+            <FieldLabel htmlFor="moderationStatus">
+              {t("Copy.reviewStatus")}
+            </FieldLabel>
+            <NativeSelect
+              id="moderationStatus"
+              value={status}
+              onChange={(e) => {
+                setStatus(e.target.value);
+                setPage(1);
+              }}
+            >
+              <NativeSelectOption value="pending">
+                {t("Copy.pendingReview")}{" "}
+              </NativeSelectOption>
+              <NativeSelectOption value="published">
+                {t("Copy.published")}
+              </NativeSelectOption>
+              <NativeSelectOption value="rejected">
+                {t("Copy.rejected")}
+              </NativeSelectOption>
+            </NativeSelect>
+          </Field>
+        </FilterSheet>
         <Button variant="outline" onClick={() => void query.refetch()}>
           {t("Copy.refreshList")}{" "}
         </Button>

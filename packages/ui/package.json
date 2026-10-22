@@ -23,7 +23,8 @@
     "./sports-messages": "./src/sports/host-conversations.tsx",
     "./sports-host-conversation": "./src/sports/host-conversation.tsx",
     "./training": "./src/training/index.ts",
-    "./motion-controls": "./src/motion-controls.tsx"
+    "./motion-controls": "./src/motion-controls.tsx",
+    "./advanced-business": "./src/advanced-business/panel.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

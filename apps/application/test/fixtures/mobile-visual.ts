@@ -1,3 +1,8 @@
+import { ph5Visual } from "./ph5-visual";
+import {
+  filterSelectOptions,
+  pageSelectOptions,
+} from "@repo/api/select-options";
 import type { ServiceDto, BookingDto, OrderDto } from "@repo/api/sports";
 import type {
   PlanContent,
@@ -139,9 +144,37 @@ export function createMobileFixtureFetch(
         : [{ id: webFixtureId(704), state: "verified", provider: "sandbox" }],
     refunds: [],
   };
+  let pickerFailedOnce = false;
   return async (input, init) => {
     const url = new URL(String(input), "http://visual.invalid"),
       path = url.pathname.replace(/^\/visual-fixture\//, "");
+    if (path === "qa/select-options") {
+      const page = Number(url.searchParams.get("page") ?? 1),
+        limit = Number(url.searchParams.get("limit") ?? 25);
+      if (state === "error" && page === 2 && !pickerFailedOnce) {
+        pickerFailedOnce = true;
+        return reply({ code: "Errors.requestFailed" }, 503);
+      }
+      const options = Array.from({ length: 137 }, (_, i) => ({
+        value: `movement-${i + 1}`,
+        label: `Movement ${String(i + 1).padStart(3, "0")}`,
+        subtitle:
+          i === 136
+            ? "Last page · قدرت"
+            : `Strength · Group ${Math.floor(i / 25) + 1}`,
+      }));
+      return reply(
+        pageSelectOptions(
+          filterSelectOptions(options, url.searchParams.get("search") ?? ""),
+          page,
+          limit,
+        ),
+      );
+    }
+    if (state !== "error" && state !== "guest") {
+      const advanced = ph5Visual(path);
+      if (advanced) return advanced;
+    }
     if (state === "error") return reply({ code: "Errors.requestFailed" }, 503);
     if (
       state === "guest" &&

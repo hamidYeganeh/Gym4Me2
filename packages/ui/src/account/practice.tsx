@@ -494,12 +494,16 @@ export function CoachingPracticePanel() {
   );
 }
 function CoachFinance() {
+  const ph5 = useTranslations("PH5");
   const t = useTranslations("Practice");
   const q = usePracticeQuery<FinanceDto>("profile/coaching-practice/finance");
   if (q.isLoading) return <Loading />;
   if (q.error) return <QueryError error={q.error} retry={q.refetch} />;
   return (
     <div className="space-y-4">
+      <Button asChild variant="outline">
+        <Link href="/coaching/settlements">{ph5("title")}</Link>
+      </Button>
       <p>{t("financeHint")}</p>
       {!q.data?.contracts.length && !q.data?.ledger.length && (
         <p>{t("noFinance")}</p>

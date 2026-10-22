@@ -1,4 +1,5 @@
 "use client";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import Link from "next/link";
 import { useId, useRef } from "react";
 import { isActiveSurfaceElement } from "@repo/ui/lib/active-surface";
@@ -41,21 +42,23 @@ export function NotificationsPage() {
       <Link className="luma-shortcut" href="/notifications/preferences">
         {t("notifyPreferences")}
       </Link>
-      <Segments
-        value={view}
-        options={[
-          { value: "all", label: t("all") },
-          { value: "unread", label: t("unreadNotifications") },
-        ]}
-        onChange={(value) =>
-          router.replace(
-            value === "unread"
-              ? "/notifications?view=unread"
-              : "/notifications",
-            { scroll: false },
-          )
-        }
-      />
+      <FilterSheet count={view === "unread" ? 1 : 0}>
+        <Segments
+          value={view}
+          options={[
+            { value: "all", label: t("all") },
+            { value: "unread", label: t("unreadNotifications") },
+          ]}
+          onChange={(value) =>
+            router.replace(
+              value === "unread"
+                ? "/notifications?view=unread"
+                : "/notifications",
+              { scroll: false },
+            )
+          }
+        />
+      </FilterSheet>
       <div
         ref={list}
         role="region"

@@ -1,6 +1,7 @@
 "use client";
 import { useId, useState } from "react";
 import { useTranslations } from "@repo/i18n";
+import { FilterSheet } from "../kit/BottomSheet";
 import { Button } from "../kit/Button";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { TextField } from "../account/common";
@@ -44,119 +45,133 @@ export function ManagementFilterBar({
     (draft.to >= draft.from &&
       Date.parse(draft.to) - Date.parse(draft.from) <= 730 * 86400000);
   return (
-    <form
-      className="management-filters mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (valid) onApply(draft);
-      }}
+    <FilterSheet
+      count={
+        [
+          value.search,
+          value.status,
+          value.kind,
+          value.from,
+          value.to,
+          value.sort !== "newest",
+        ].filter(Boolean).length
+      }
+      onOpen={() => set(value)}
     >
-      <TextField
-        name={`${id}-search`}
-        label={t("search")}
-        value={draft.search ?? ""}
-        maxLength={100}
-        onChange={(e) =>
-          set((d) => ({ ...d, search: e.target.value || undefined }))
-        }
-      />
-      {statuses.length > 0 && (
+      <form
+        className="management-filters mb-5 grid gap-3 sm:grid-cols-2"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (valid) onApply(draft);
+        }}
+      >
+        <TextField
+          name={`${id}-search`}
+          label={t("search")}
+          value={draft.search ?? ""}
+          maxLength={100}
+          onChange={(e) =>
+            set((d) => ({ ...d, search: e.target.value || undefined }))
+          }
+        />
+        {statuses.length > 0 && (
+          <label className="grid gap-2 text-sm">
+            {t("status")}
+            <NativeSelect
+              value={draft.status ?? ""}
+              onChange={(e) =>
+                set((d) => ({ ...d, status: e.target.value || undefined }))
+              }
+            >
+              <NativeSelectOption value="">{t("all")}</NativeSelectOption>
+              {statuses.map((s) => (
+                <NativeSelectOption key={s} value={s}>
+                  {luma.has(`status.${s}` as Parameters<typeof luma>[0])
+                    ? luma(`status.${s}` as Parameters<typeof luma>[0])
+                    : t.has(`state.${s}` as Parameters<typeof t>[0])
+                      ? t(`state.${s}` as Parameters<typeof t>[0])
+                      : s}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </label>
+        )}
+        {kinds && (
+          <label className="grid gap-2 text-sm">
+            {t("kind")}
+            <NativeSelect
+              value={draft.kind ?? ""}
+              onChange={(e) =>
+                set((d) => ({ ...d, kind: e.target.value || undefined }))
+              }
+            >
+              <NativeSelectOption value="">{t("all")}</NativeSelectOption>
+              {(
+                ["class", "course", "court", "access", "membership"] as const
+              ).map((k) => (
+                <NativeSelectOption key={k} value={k}>
+                  {luma(`kinds.${k}`)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </label>
+        )}
+        <TextField
+          name={`${id}-from`}
+          label={t("from")}
+          type="date"
+          dir="ltr"
+          value={draft.from ?? ""}
+          max={draft.to}
+          onChange={(e) =>
+            set((d) => ({ ...d, from: e.target.value || undefined }))
+          }
+        />
+        <TextField
+          name={`${id}-to`}
+          label={t("to")}
+          type="date"
+          dir="ltr"
+          value={draft.to ?? ""}
+          min={draft.from}
+          onChange={(e) =>
+            set((d) => ({ ...d, to: e.target.value || undefined }))
+          }
+        />
         <label className="grid gap-2 text-sm">
-          {t("status")}
+          {t("sort")}
           <NativeSelect
-            value={draft.status ?? ""}
-            onChange={(e) =>
-              set((d) => ({ ...d, status: e.target.value || undefined }))
-            }
+            value={draft.sort}
+            onChange={(e) => set((d) => ({ ...d, sort: e.target.value }))}
           >
-            <NativeSelectOption value="">{t("all")}</NativeSelectOption>
-            {statuses.map((s) => (
-              <NativeSelectOption key={s} value={s}>
-                {luma.has(`status.${s}` as Parameters<typeof luma>[0])
-                  ? luma(`status.${s}` as Parameters<typeof luma>[0])
-                  : t.has(`state.${s}` as Parameters<typeof t>[0])
-                    ? t(`state.${s}` as Parameters<typeof t>[0])
-                    : s}
+            {(["newest", "oldest"] as const).map((v) => (
+              <NativeSelectOption key={v} value={v}>
+                {t(v)}
               </NativeSelectOption>
             ))}
           </NativeSelect>
         </label>
-      )}
-      {kinds && (
-        <label className="grid gap-2 text-sm">
-          {t("kind")}
-          <NativeSelect
-            value={draft.kind ?? ""}
-            onChange={(e) =>
-              set((d) => ({ ...d, kind: e.target.value || undefined }))
-            }
+        <div className="flex flex-wrap items-end gap-2">
+          <Button type="submit" disabled={!valid}>
+            {t("apply")}
+          </Button>
+          <Button
+            variant="ghost"
+            type="button"
+            onClick={() => {
+              set(initial);
+              onApply(initial);
+            }}
           >
-            <NativeSelectOption value="">{t("all")}</NativeSelectOption>
-            {(
-              ["class", "course", "court", "access", "membership"] as const
-            ).map((k) => (
-              <NativeSelectOption key={k} value={k}>
-                {luma(`kinds.${k}`)}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </label>
-      )}
-      <TextField
-        name={`${id}-from`}
-        label={t("from")}
-        type="date"
-        dir="ltr"
-        value={draft.from ?? ""}
-        max={draft.to}
-        onChange={(e) =>
-          set((d) => ({ ...d, from: e.target.value || undefined }))
-        }
-      />
-      <TextField
-        name={`${id}-to`}
-        label={t("to")}
-        type="date"
-        dir="ltr"
-        value={draft.to ?? ""}
-        min={draft.from}
-        onChange={(e) =>
-          set((d) => ({ ...d, to: e.target.value || undefined }))
-        }
-      />
-      <label className="grid gap-2 text-sm">
-        {t("sort")}
-        <NativeSelect
-          value={draft.sort}
-          onChange={(e) => set((d) => ({ ...d, sort: e.target.value }))}
-        >
-          {(["newest", "oldest"] as const).map((v) => (
-            <NativeSelectOption key={v} value={v}>
-              {t(v)}
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
-      </label>
-      <div className="flex flex-wrap items-end gap-2">
-        <Button type="submit" disabled={!valid}>
-          {t("apply")}
-        </Button>
-        <Button
-          variant="ghost"
-          type="button"
-          onClick={() => {
-            set(initial);
-            onApply(initial);
-          }}
-        >
-          {t("reset")}
-        </Button>
-      </div>
-      {!valid && (
-        <p role="alert" className="text-sm text-destructive">
-          {t("invalidRange")}
-        </p>
-      )}
-    </form>
+            {t("reset")}
+          </Button>
+        </div>
+        {!valid && (
+          <p role="alert" className="text-sm text-destructive">
+            {t("invalidRange")}
+          </p>
+        )}
+      </form>
+    </FilterSheet>
   );
 }

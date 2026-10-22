@@ -1,3 +1,4 @@
+import { assertBranchWrite } from '../advanced-business/ph5.access';
 import {
   BadRequestException,
   ForbiddenException,
@@ -57,6 +58,7 @@ export async function lockClub(
       throw new ForbiddenException('Backend.youCannotEditThisClub');
     await branchAccess(tx, member, branchId);
   }
+  if (branchId) await assertBranchWrite(tx, clubId, branchId);
   if (club.archivedAt)
     throw new BadRequestException('Backend.archivedClubsCannotBeEdited');
   return club;

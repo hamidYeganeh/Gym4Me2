@@ -1,4 +1,5 @@
 "use client";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import { AuthEntryButton } from "@repo/ui/account";
 import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
 import { useDeferredValue, useId, useState } from "react";
@@ -44,19 +45,23 @@ export function CalendarsPage() {
     ![401, 403].includes(query.error?.status ?? 0);
   return (
     <LumaPage title={t("calendars")} back="/">
-      <Segments
-        value={view}
-        options={[
-          { value: "all", label: t("all") },
-          { value: "following", label: t("yourCalendars") },
-        ]}
-        onChange={(value) =>
-          router.replace(
-            value === "following" ? "/calendars?view=following" : "/calendars",
-            { scroll: false },
-          )
-        }
-      />
+      <FilterSheet count={view === "all" ? 0 : 1}>
+        <Segments
+          value={view}
+          options={[
+            { value: "all", label: t("all") },
+            { value: "following", label: t("yourCalendars") },
+          ]}
+          onChange={(value) =>
+            router.replace(
+              value === "following"
+                ? "/calendars?view=following"
+                : "/calendars",
+              { scroll: false },
+            )
+          }
+        />
+      </FilterSheet>
       <Field label={t("search")}>
         <input
           type="search"

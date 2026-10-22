@@ -6,6 +6,8 @@ import {
   openingHoursSchema,
   taxonomyPatchSchema,
   spacePatchSchema,
+  optionSearchSchema,
+  optionLimitSchema,
 } from './club.contracts';
 const id = randomUUID();
 test('draft only requires a name and protects server-owned fields', () => {
@@ -142,4 +144,14 @@ test('partial updates do not inject create-time defaults', () => {
   expect(spacePatchSchema.parse({ capacity: null })).not.toHaveProperty(
     'operatingStatus',
   );
+});
+
+test('picker search and pagination reject unbounded or invalid input', () => {
+  expect(optionLimitSchema(100).parse(undefined)).toBe(100);
+  expect(optionLimitSchema().parse(undefined)).toBeUndefined();
+  expect(optionLimitSchema().parse('25')).toBe(25);
+  for (const limit of ['0', '-1', '1001', '2.5', 'abc'])
+    expect(optionLimitSchema().safeParse(limit).success).toBe(false);
+  expect(optionSearchSchema.parse('  Tehran  ')).toBe('Tehran');
+  expect(optionSearchSchema.safeParse('a'.repeat(101)).success).toBe(false);
 });

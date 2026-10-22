@@ -1,4 +1,5 @@
 "use client";
+import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "@repo/i18n";
@@ -57,7 +58,7 @@ export function ServiceReviewForm({
           <ErrorNotice error={m.error} />
           <label>
             {t("rating")}
-            <select
+            <NativeSelect
               value={rating}
               onChange={(e) => setRating(Number(e.target.value))}
             >
@@ -66,7 +67,7 @@ export function ServiceReviewForm({
                   {v} / 5
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </label>
           <label>
             {t("reviewBody")}
@@ -279,30 +280,30 @@ export function DemoPanel() {
             >
               <label>
                 {t("demoAccount")}
-                <select name="userId">
+                <NativeSelect name="userId">
                   {q.data?.accounts.map((u) => (
                     <option key={u.userId} value={u.userId}>
                       {u.displayName ?? u.userId}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </label>
               <label>
                 {t("channel")}
-                <select name="channel">
+                <NativeSelect name="channel">
                   <option value="sms">{t("sms")}</option>
                   <option value="push">{t("push")}</option>
-                </select>
+                </NativeSelect>
               </label>
               <label>
                 {t("scenario")}
-                <select name="outcome">
+                <NativeSelect name="outcome">
                   {(["success", "failure", "delay"] as const).map((v) => (
                     <option key={v} value={v}>
                       {t(v)}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </label>
               <Button type="submit" disabled={a.pending}>
                 {t("applyScenario")}

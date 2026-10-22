@@ -1,3 +1,9 @@
+import { AdvancedBusinessService } from './advanced-business/ph5.service';
+import {
+  AdvancedBusinessController,
+  CoachSettlementsController,
+  AdminAdvancedController,
+} from './advanced-business/ph5.controller';
 import { PushJobsController } from './push/push-jobs.controller';
 import { WebPushService } from './push/push.service';
 import { WebPushSender } from './push/push.sender';
@@ -124,6 +130,9 @@ import {
 @Module({
   imports: [DatabaseModule, AuthModule, StorageModule],
   controllers: [
+    AdvancedBusinessController,
+    CoachSettlementsController,
+    AdminAdvancedController,
     PushJobsController,
     PushConfigurationController,
     WebPushController,
@@ -179,6 +188,7 @@ import {
     AdminUsersController,
   ],
   providers: [
+    AdvancedBusinessService,
     WebPushService,
     WebPushSender,
     { provide: APP_INTERCEPTOR, useClass: WebPushInterceptor },

@@ -1,4 +1,5 @@
 "use client";
+import { FilterSheet } from "../kit/BottomSheet";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRef } from "react";
@@ -54,60 +55,64 @@ export function SportsHostConversations() {
         <p className="text-muted-foreground mb-6">
           {t("hostConversationHint")}
         </p>
-        <FieldGroup className="grid grid-cols-2 gap-3 mb-6">
-          <Field>
-            <FieldLabel htmlFor="host-chat-organization">
-              {t("organization")}
-            </FieldLabel>
-            <NativeSelect
-              id="host-chat-organization"
-              value={organizationId ?? ""}
-              disabled={organizations.isPending || !organizations.data?.length}
-              onChange={(event) =>
-                update({
-                  organizationId: event.target.value,
-                  branchId: undefined,
-                })
-              }
-            >
-              {organizations.data?.map((o) => (
-                <NativeSelectOption key={o.id} value={o.id}>
-                  {o.name}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="host-chat-branch">{t("branch")}</FieldLabel>
-            <NativeSelect
-              id="host-chat-branch"
-              value={branchId ?? ""}
-              disabled={branches.isPending || !branches.data?.length}
-              onChange={(event) =>
-                update({ organizationId, branchId: event.target.value })
-              }
-            >
-              {branches.data?.map((b) => (
-                <NativeSelectOption key={b.id} value={b.id}>
-                  {b.name}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </Field>
-        </FieldGroup>
-        <ToggleGroup
-          type="single"
-          value={archived ? "archived" : "all"}
-          aria-label={t("messages")}
-          onValueChange={(value) => {
-            if (value)
-              update({ view: value === "archived" ? value : undefined });
-          }}
-          className="mb-6"
-        >
-          <ToggleGroupItem value="all">{t("inbox")}</ToggleGroupItem>
-          <ToggleGroupItem value="archived">{t("archived")}</ToggleGroupItem>
-        </ToggleGroup>
+        <FilterSheet count={archived ? 1 : 0}>
+          <FieldGroup className="grid grid-cols-2 gap-3 mb-6">
+            <Field>
+              <FieldLabel htmlFor="host-chat-organization">
+                {t("organization")}
+              </FieldLabel>
+              <NativeSelect
+                id="host-chat-organization"
+                value={organizationId ?? ""}
+                disabled={
+                  organizations.isPending || !organizations.data?.length
+                }
+                onChange={(event) =>
+                  update({
+                    organizationId: event.target.value,
+                    branchId: undefined,
+                  })
+                }
+              >
+                {organizations.data?.map((o) => (
+                  <NativeSelectOption key={o.id} value={o.id}>
+                    {o.name}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="host-chat-branch">{t("branch")}</FieldLabel>
+              <NativeSelect
+                id="host-chat-branch"
+                value={branchId ?? ""}
+                disabled={branches.isPending || !branches.data?.length}
+                onChange={(event) =>
+                  update({ organizationId, branchId: event.target.value })
+                }
+              >
+                {branches.data?.map((b) => (
+                  <NativeSelectOption key={b.id} value={b.id}>
+                    {b.name}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </Field>
+          </FieldGroup>
+          <ToggleGroup
+            type="single"
+            value={archived ? "archived" : "all"}
+            aria-label={t("messages")}
+            onValueChange={(value) => {
+              if (value)
+                update({ view: value === "archived" ? value : undefined });
+            }}
+            className="mb-6"
+          >
+            <ToggleGroupItem value="all">{t("inbox")}</ToggleGroupItem>
+            <ToggleGroupItem value="archived">{t("archived")}</ToggleGroupItem>
+          </ToggleGroup>
+        </FilterSheet>
         <QueryError
           error={error}
           retry={() => {
