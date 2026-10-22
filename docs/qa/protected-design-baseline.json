@@ -57,5 +57,5 @@
   "packages/theme/src/provider.tsx": "194332de565f7f1bd23459d50c8011606bd16dd350c50777e4d84245c6e78bfa",
   "apps/application/components/discovery/club-page.tsx": "263784632cc2eb7e58f20f7c17a423b1a752f939a6ed6cb1db42c9d1a57982e0",
   "apps/application/components/discovery/club-showcase.tsx": "a0d3f246f06bb0e909ef1d86d2203d3cf6ac4c0a69ad34836f4edd9083a16c47",
-  "apps/application/components/discovery/discovery-map.tsx": "a96a14c5c6fff574c853ca8655ae328d7fe68e796ddecdab4530c2a342a558cb"
+  "apps/application/components/discovery/discovery-map.tsx": "06ddb99fae319a0dce1fbf6cfb3bcc204a3240946098a177c8f1c3694b469daa"
 }

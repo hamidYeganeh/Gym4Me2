@@ -14,6 +14,12 @@ import {
 import { Button } from "../kit/Button";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { AccountDesignPage } from "./account-design";
+import {
+  useManagementFilters,
+  ManagementFilterBar,
+} from "../sports/management-filters";
+import { Pager } from "./admin";
+import { AnalyticsPanel } from "../analytics/panel";
 import { Loading, QueryError } from "./common";
 import {
   usePracticeAction,
@@ -60,9 +66,18 @@ export function CredentialPreview({
 export function CoachingPracticePanel() {
   const t = useTranslations("Practice"),
     locale = useLocale();
-  const q = usePracticeQuery<PracticeWorkspaceDto>("profile/coaching-practice");
+  const q = usePracticeQuery<PracticeWorkspaceDto>(
+    "profile/coaching-practice",
+    { view: "summary" },
+  );
   const a = usePracticeAction();
   const [tab, setTab] = useState("profile");
+  const sessionList = useManagementFilters();
+  const sessions = usePracticeQuery<PracticeSessionDto[]>(
+    "profile/coaching-practice/sessions",
+    sessionList.filters,
+    tab === "sessions",
+  );
   if (q.isLoading) return <Loading />;
   if (q.error) return <QueryError error={q.error} retry={q.refetch} />;
   if (!q.data) return null;
@@ -79,7 +94,9 @@ export function CoachingPracticePanel() {
         <Button variant="outline" asChild>
           <Link href="/training">{t("trainingWorkspace")}</Link>
         </Button>
-        {(["profile", "calendar", "sessions", "finance"] as const).map((x) => (
+        {(
+          ["profile", "calendar", "sessions", "finance", "analytics"] as const
+        ).map((x) => (
           <Button
             key={x}
             variant={tab === x ? "secondary" : "outline"}
@@ -94,6 +111,7 @@ export function CoachingPracticePanel() {
         </Button>
       </nav>
       <PracticeFeedback action={a} />
+      {tab === "analytics" && <AnalyticsPanel surface="coach" />}
       {tab === "profile" && (
         <>
           <Form
@@ -312,8 +330,29 @@ export function CoachingPracticePanel() {
               required
             />
           </Form>
-          {!d.sessions.length && <p>{t("noSessions")}</p>}
-          {d.sessions.map((s, i) => (
+          <ManagementFilterBar
+            value={sessionList.filters}
+            onApply={sessionList.apply}
+            statuses={[
+              "scheduled",
+              "pending_approval",
+              "confirmed",
+              "completed",
+              "no_show",
+              "cancelled",
+            ]}
+          />
+          <QueryError error={sessions.error} retry={sessions.refetch} />
+          {sessions.isLoading && <Loading />}
+          {sessions.isSuccess && !sessions.data?.length && (
+            <p>{t("noSessions")}</p>
+          )}
+          <Pager
+            page={sessionList.filters.page}
+            setPage={sessionList.page}
+            count={sessions.data?.length ?? 0}
+          />
+          {sessions.data?.map((s, i) => (
             <article
               key={s.id ?? `${s.occurrenceId}-${i}`}
               className="space-y-3 rounded-3xl border p-5"

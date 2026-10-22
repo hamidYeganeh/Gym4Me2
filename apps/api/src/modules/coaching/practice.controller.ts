@@ -1,3 +1,4 @@
+import { managementFilters } from '../commerce/management-filters';
 import {
   Body,
   ForbiddenException,
@@ -68,8 +69,14 @@ export class CoachingPracticeController {
     private readonly commerce: CommerceService,
     private readonly operations: SportsOperationsService,
   ) {}
-  @Get() workspace(@Req() req: AuthRequest) {
-    return dto(this.practice.workspace(coachingActor(req)));
+  @Get() workspace(@Req() req: AuthRequest, @Query('view') view: unknown) {
+    const mode = parse(z.enum(['summary']).optional(), view);
+    return dto(this.practice.workspace(coachingActor(req), mode !== 'summary'));
+  }
+  @Get('sessions') sessions(@Req() req: AuthRequest, @Query() query: unknown) {
+    return dto(
+      this.practice.sessions(coachingActor(req), managementFilters(query)),
+    );
   }
   @Post() @SchemaBody(c.practiceSchema) save(
     @Req() req: AuthRequest,

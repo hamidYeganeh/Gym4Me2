@@ -1,3 +1,4 @@
+import { managementFilters } from './management-filters';
 import {
   Body,
   Get,
@@ -141,15 +142,31 @@ export class SportsOperationsController {
     @Req() r: AuthRequest,
     @Query('organizationId') org: string,
     @Query('branchId') branch: string,
+    @Query() filters: unknown,
   ) {
-    return dto(this.s.members(this.user(r), id(org), id(branch)));
+    return dto(
+      this.s.members(
+        this.user(r),
+        id(org),
+        id(branch),
+        managementFilters(filters),
+      ),
+    );
   }
   @Get('orders') orders(
     @Req() r: AuthRequest,
     @Query('organizationId') org: string,
     @Query('branchId') branch: string,
+    @Query() filters: unknown,
   ) {
-    return dto(this.s.orders(this.user(r), id(org), id(branch)));
+    return dto(
+      this.s.orders(
+        this.user(r),
+        id(org),
+        id(branch),
+        managementFilters(filters),
+      ),
+    );
   }
   @Post('orders/:id/cash')
   @JsonBody({ reason: { type: 'string' } })
@@ -242,11 +259,14 @@ export class AdminSportsController {
     private readonly s: SportsOperationsService,
     private readonly commerce: CommerceService,
   ) {}
-  @Get() overview(@Req() r: AuthRequest) {
-    return dto(this.s.adminOverview(r.principal));
+  @Get() overview(@Req() r: AuthRequest, @Query() filters: unknown) {
+    return dto(this.s.adminOverview(r.principal, managementFilters(filters)));
   }
-  @Get('scheduling') scheduling(@Req() r: AuthRequest) {
-    return dto(this.s.adminSchedule(r.principal));
+  @Get('scheduling') scheduling(
+    @Req() r: AuthRequest,
+    @Query() filters: unknown,
+  ) {
+    return dto(this.s.adminSchedule(r.principal, managementFilters(filters)));
   }
   @Get('services/:id/occurrences') occurrences(
     @Req() r: AuthRequest,

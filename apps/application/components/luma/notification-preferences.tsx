@@ -1,4 +1,5 @@
 "use client";
+import { DeviceNotifications } from "./device-notifications";
 
 import { useId, useRef, useState, type FormEvent } from "react";
 import type { ApiError } from "@repo/api";
@@ -35,6 +36,7 @@ export function NotificationPreferences() {
   const canEdit = query.data && ![401, 403].includes(query.error?.status ?? 0);
   return (
     <LumaPage title={t("notifyPreferences")} back="/notifications">
+      <DeviceNotifications />
       {canEdit ? (
         <PreferencesForm
           snapshot={query.data!}

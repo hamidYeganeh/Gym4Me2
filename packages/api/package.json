@@ -12,6 +12,7 @@
     "./admin": "./src/admin/index.ts",
     "./catalog": "./src/catalog/index.ts",
     "./system": "./src/system/index.ts",
+    "./analytics": "./src/analytics.ts",
     "./sports": "./src/sports/index.ts",
     "./training-offline": "./src/profile/training-offline.ts"
   },

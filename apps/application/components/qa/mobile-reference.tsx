@@ -8,6 +8,9 @@ import {
   TrainingWorkout,
   TrainingBuilder,
 } from "@repo/ui/training";
+import { AnalyticsPanel } from "@repo/ui/analytics";
+import { DiscoveryMap } from "../discovery/discovery-map";
+import { NotificationPreferences } from "../luma/notification-preferences";
 import { MobileAccount, CoachingWorkspace } from "@repo/ui/account";
 import { ClubPage } from "../discovery/club-page";
 import { ClubGallery } from "../discovery/club-gallery";
@@ -32,6 +35,12 @@ import {
 import { createMobileFixtureFetch } from "../../test/fixtures/mobile-visual";
 
 const screens = [
+  "analytics",
+  "business-analytics",
+  "coach-analytics",
+  "map",
+  "notification-preferences",
+  "profile-edit",
   "discovery",
   "cards",
   "club",
@@ -69,48 +78,69 @@ export function MobileReference() {
     () => createMobileFixtureFetch(catalog, services, state),
     [catalog, services, state],
   );
-  const content =
-    screen === "club" ? (
-      <ClubPage clubId={catalog.clubs[0]!.id} />
-    ) : screen === "gallery" ? (
-      <ClubGallery clubId={catalog.clubs[0]!.id} />
-    ) : screen === "cards" ? (
-      <Ph0Reference summary={catalog.summaries[0]!} />
-    ) : screen === "home" ? (
-      <HomePage />
-    ) : screen === "services" ? (
-      <ServicesPage />
-    ) : screen === "service" ? (
-      <ServiceDetail />
-    ) : screen === "bookings" ? (
-      <BookingsPage />
-    ) : screen === "booking" ? (
-      <BookingDetail />
-    ) : screen === "memberships" ? (
-      <MembershipsPage />
-    ) : screen === "orders" ? (
-      <OrdersPage />
-    ) : screen === "messages" ? (
-      <MessagesPage />
-    ) : screen === "notifications" ? (
-      <NotificationsPage />
-    ) : screen === "profile" ? (
-      <MobileAccount section="account" />
-    ) : screen === "settings" ? (
-      <MobileAccount section="settings" />
-    ) : screen === "privacy" ? (
-      <MobileAccount section="privacy" />
-    ) : screen === "coaching" ? (
-      <CoachingWorkspace />
-    ) : screen === "training" ? (
-      <TrainingHome />
-    ) : screen === "workout" ? (
-      <TrainingWorkout />
-    ) : screen === "builder" ? (
-      <TrainingBuilder />
-    ) : (
-      <Discovery />
-    );
+  const content = [
+    "analytics",
+    "business-analytics",
+    "coach-analytics",
+  ].includes(screen) ? (
+    <main className="gym-workspace min-h-dvh p-5 pb-32">
+      <AnalyticsPanel
+        surface={
+          screen === "analytics"
+            ? "admin"
+            : screen === "business-analytics"
+              ? "business"
+              : "coach"
+        }
+      />
+    </main>
+  ) : screen === "map" ? (
+    <DiscoveryMap />
+  ) : screen === "notification-preferences" ? (
+    <NotificationPreferences />
+  ) : screen === "profile-edit" ? (
+    <MobileAccount section="edit" />
+  ) : screen === "club" ? (
+    <ClubPage clubId={catalog.clubs[0]!.id} />
+  ) : screen === "gallery" ? (
+    <ClubGallery clubId={catalog.clubs[0]!.id} />
+  ) : screen === "cards" ? (
+    <Ph0Reference summary={catalog.summaries[0]!} />
+  ) : screen === "home" ? (
+    <HomePage />
+  ) : screen === "services" ? (
+    <ServicesPage />
+  ) : screen === "service" ? (
+    <ServiceDetail />
+  ) : screen === "bookings" ? (
+    <BookingsPage />
+  ) : screen === "booking" ? (
+    <BookingDetail />
+  ) : screen === "memberships" ? (
+    <MembershipsPage />
+  ) : screen === "orders" ? (
+    <OrdersPage />
+  ) : screen === "messages" ? (
+    <MessagesPage />
+  ) : screen === "notifications" ? (
+    <NotificationsPage />
+  ) : screen === "profile" ? (
+    <MobileAccount section="account" />
+  ) : screen === "settings" ? (
+    <MobileAccount section="settings" />
+  ) : screen === "privacy" ? (
+    <MobileAccount section="privacy" />
+  ) : screen === "coaching" ? (
+    <CoachingWorkspace />
+  ) : screen === "training" ? (
+    <TrainingHome />
+  ) : screen === "workout" ? (
+    <TrainingWorkout />
+  ) : screen === "builder" ? (
+    <TrainingBuilder />
+  ) : (
+    <Discovery />
+  );
   return (
     <>
       {params.get("presentation") !== "1" && (
@@ -161,16 +191,36 @@ export function MobileReference() {
       >
         {content}
       </ApiProvider>
-      {!["cards", "club", "gallery"].includes(screen) && (
+      {![
+        "cards",
+        "club",
+        "gallery",
+        "map",
+        "analytics",
+        "business-analytics",
+        "coach-analytics",
+      ].includes(screen) && (
         <LumaNavigation
           pathOverride={
             screen === "discovery" ||
             screen === "services" ||
             screen === "service"
               ? "/discovery"
-              : screen === "messages"
-                ? "/messages"
-                : "/"
+              : ["training", "builder", "workout"].includes(screen)
+                ? "/training"
+                : [
+                      "profile",
+                      "profile-edit",
+                      "settings",
+                      "privacy",
+                      "coaching",
+                    ].includes(screen)
+                  ? "/profile"
+                  : screen === "messages"
+                    ? "/messages"
+                    : screen === "home"
+                      ? "/"
+                      : `/${screen}`
           }
         />
       )}

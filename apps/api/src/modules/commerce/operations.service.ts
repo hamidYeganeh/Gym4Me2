@@ -1,3 +1,9 @@
+import {
+  managementWhere,
+  managementPage,
+  managementDirection,
+  type ManagementFilters,
+} from './management-filters';
 import { assertSchedulingAdmin } from './scheduling-authority';
 import { retireReservationReminders } from './scheduled-notifications';
 import {
@@ -330,7 +336,12 @@ export class SportsOperationsService {
       return { ok: true };
     });
   }
-  async members(userId: string, org: string, branch: string) {
+  async members(
+    userId: string,
+    org: string,
+    branch: string,
+    filters?: ManagementFilters,
+  ) {
     await this.commerce.staff(this.db, userId, org, branch, [
       'owner',
       'manager',
@@ -338,10 +349,15 @@ export class SportsOperationsService {
     ]);
     return rows(
       this.db,
-      sql`SELECT m.id,m.user_id,m.status,m.granted,m.consumed,m.ends_at,u.display_name,u.phone,v.title FROM sport_memberships m JOIN users u ON u.id=m.user_id JOIN sport_service_versions v ON v.id=m.version_id WHERE m.organization_id=${org} AND m.branch_id=${branch} ORDER BY m.created_at DESC LIMIT 100`,
+      sql`SELECT m.id,m.user_id,m.status,m.granted,m.consumed,m.ends_at,u.display_name,u.phone,v.title FROM sport_memberships m JOIN users u ON u.id=m.user_id JOIN sport_service_versions v ON v.id=m.version_id WHERE m.organization_id=${org} AND m.branch_id=${branch} AND ${managementWhere(filters, sql`m.created_at`, sql`m.status`, [sql`u.display_name`, sql`u.phone`, sql`v.title`])} ORDER BY m.created_at ${managementDirection(filters)},m.id ${managementPage(filters)}`,
     );
   }
-  async orders(userId: string, org: string, branch: string) {
+  async orders(
+    userId: string,
+    org: string,
+    branch: string,
+    filters?: ManagementFilters,
+  ) {
     await this.commerce.staff(this.db, userId, org, branch, [
       'owner',
       'manager',
@@ -350,7 +366,7 @@ export class SportsOperationsService {
     ]);
     return rows(
       this.db,
-      sql`SELECT id,user_id,status,amount_minor::text,refunded_minor::text,created_at,snapshot FROM sport_orders WHERE organization_id=${org} AND snapshot->>'branchId'=${branch} ORDER BY created_at DESC LIMIT 100`,
+      sql`SELECT id,user_id,status,amount_minor::text,refunded_minor::text,created_at,snapshot FROM sport_orders WHERE organization_id=${org} AND snapshot->>'branchId'=${branch} AND ${managementWhere(filters, sql`created_at`, sql`status`, [sql`id::text`, sql`snapshot->>'title'`])} ORDER BY created_at ${managementDirection(filters)},id ${managementPage(filters)}`,
     );
   }
   async cash(userId: string, orderId: string, reason: string) {
@@ -448,11 +464,11 @@ export class SportsOperationsService {
       return { ok: true };
     });
   }
-  async adminSchedule(principal: Principal) {
+  async adminSchedule(principal: Principal, filters?: ManagementFilters) {
     await this.admin.requireAdmin(principal);
     return rows(
       this.db,
-      sql`SELECT s.id,s.title,s.organization_id,s.branch_id,s.revision,s.kind,s.status,b.name branch_name,g.name organization_name FROM sport_services s JOIN branches b ON b.id=s.branch_id JOIN organizations g ON g.id=s.organization_id WHERE s.kind<>'membership' ORDER BY s.created_at DESC,s.id LIMIT 100`,
+      sql`SELECT s.id,s.title,s.organization_id,s.branch_id,s.revision,s.kind,s.status,b.name branch_name,g.name organization_name FROM sport_services s JOIN branches b ON b.id=s.branch_id JOIN organizations g ON g.id=s.organization_id WHERE s.kind<>'membership' AND ${managementWhere(filters, sql`s.created_at`, sql`s.status`, [sql`s.title`, sql`b.name`, sql`g.name`], sql`s.kind`)} ORDER BY s.created_at ${managementDirection(filters)},s.id ${managementPage(filters)}`,
     );
   }
   async adminOccurrences(principal: Principal, serviceId: string) {
@@ -462,33 +478,33 @@ export class SportsOperationsService {
       sql`SELECT o.*,(SELECT count(*)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status='confirmed' OR r.status IN ('held','pending_approval') AND r.expires_at>now())) reserved FROM sport_occurrences o WHERE o.service_id=${serviceId} ORDER BY start_at DESC,o.id LIMIT 100`,
     );
   }
-  async adminOverview(principal: Principal) {
+  async adminOverview(principal: Principal, filters?: ManagementFilters) {
     await this.admin.requireAdmin(principal);
     const [orders, payments, refunds, jobs, tickets, reports] =
       await Promise.all([
         rows(
           this.db,
-          sql`SELECT id,status,amount_minor::text,created_at FROM sport_orders WHERE status='review' ORDER BY created_at LIMIT 100`,
+          sql`SELECT id,status,amount_minor::text,created_at FROM sport_orders WHERE status='review' AND ${managementWhere(filters, sql`created_at`, sql`status`, [sql`id::text`, sql`snapshot->>'title'`])} ORDER BY created_at ${managementDirection(filters)},id ${managementPage(filters)}`,
         ),
         rows(
           this.db,
-          sql`SELECT id,order_id,provider,state,amount_minor::text FROM sport_payments WHERE state='unknown' ORDER BY created_at LIMIT 100`,
+          sql`SELECT id,order_id,provider,state,amount_minor::text FROM sport_payments WHERE state='unknown' AND ${managementWhere(filters, sql`created_at`, sql`state`, [sql`order_id::text`, sql`reference`])} ORDER BY created_at ${managementDirection(filters)},id ${managementPage(filters)}`,
         ),
         rows(
           this.db,
-          sql`SELECT id,order_id,state,amount_minor::text,reason FROM sport_refunds WHERE state NOT IN ('succeeded','failed') ORDER BY created_at LIMIT 100`,
+          sql`SELECT id,order_id,state,amount_minor::text,reason FROM sport_refunds WHERE state NOT IN ('succeeded','failed') AND ${managementWhere(filters, sql`created_at`, sql`state`, [sql`order_id::text`, sql`reason`])} ORDER BY created_at ${managementDirection(filters)},id ${managementPage(filters)}`,
         ),
         rows(
           this.db,
-          sql`SELECT id,kind,aggregate_id,attempts,last_error,due_at FROM sport_outbox WHERE processed_at IS NULL ORDER BY due_at LIMIT 100`,
+          sql`SELECT id,kind,aggregate_id,attempts,last_error,due_at FROM sport_outbox WHERE processed_at IS NULL AND ${managementWhere(filters, sql`due_at`, sql`kind`, [sql`kind`, sql`aggregate_id::text`])} ORDER BY due_at ${managementDirection(filters)},id ${managementPage(filters)}`,
         ),
         rows(
           this.db,
-          sql`SELECT id,title,status,created_at FROM sport_tickets WHERE status<>'resolved' ORDER BY created_at LIMIT 100`,
+          sql`SELECT id,title,status,created_at FROM sport_tickets WHERE status<>'resolved' AND ${managementWhere(filters, sql`created_at`, sql`status`, [sql`title`, sql`id::text`])} ORDER BY created_at ${managementDirection(filters)},id ${managementPage(filters)}`,
         ),
         rows(
           this.db,
-          sql`SELECT r.id,r.message_id,r.reason,r.status,r.revision,left(m.body,500) body,m.sender_id,m.conversation_id FROM sport_message_reports r JOIN sport_messages m ON m.id=r.message_id WHERE r.status='open' ORDER BY r.created_at LIMIT 100`,
+          sql`SELECT r.id,r.message_id,r.reason,r.status,r.revision,left(m.body,500) body,m.sender_id,m.conversation_id FROM sport_message_reports r JOIN sport_messages m ON m.id=r.message_id WHERE r.status='open' AND ${managementWhere(filters, sql`r.created_at`, sql`r.status`, [sql`r.reason`, sql`r.id::text`])} ORDER BY r.created_at ${managementDirection(filters)},r.id ${managementPage(filters)}`,
         ),
       ]);
     return { orders, payments, refunds, jobs, tickets, reports };

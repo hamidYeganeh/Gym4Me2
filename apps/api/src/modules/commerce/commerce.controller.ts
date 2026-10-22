@@ -1,3 +1,4 @@
+import { managementFilters } from './management-filters';
 import {
   Body,
   Get,
@@ -313,8 +314,16 @@ export class BusinessSportsController {
     @Req() req: AuthRequest,
     @Query('organizationId') org: string,
     @Query('branchId') branch: string,
+    @Query() filters: unknown,
   ) {
-    return dto(this.service.business(this.user(req), id(org), id(branch)));
+    return dto(
+      this.service.business(
+        this.user(req),
+        id(org),
+        id(branch),
+        managementFilters(filters),
+      ),
+    );
   }
   @Post('services')
   @ApiBody({ schema: serviceBodySchema })
@@ -464,8 +473,16 @@ export class BusinessSportsController {
     @Req() req: AuthRequest,
     @Query('organizationId') org: string,
     @Query('branchId') branch: string,
+    @Query() filters: unknown,
   ) {
-    return dto(this.service.reception(this.user(req), id(org), id(branch)));
+    return dto(
+      this.service.reception(
+        this.user(req),
+        id(org),
+        id(branch),
+        managementFilters(filters),
+      ),
+    );
   }
   @Post('check-in')
   @JsonBody({ token: { type: 'string' }, reason: { type: 'string' } })

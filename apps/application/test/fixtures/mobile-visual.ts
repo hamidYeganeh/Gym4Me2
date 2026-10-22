@@ -143,6 +143,72 @@ export function createMobileFixtureFetch(
       return reply({ code: "Errors.requestFailed" }, 403);
     }
     const empty = state === "empty";
+    if (
+      [
+        "admin/analytics",
+        "business/analytics",
+        "profile/coach-analytics",
+      ].includes(path)
+    ) {
+      const from = url.searchParams.get("from")!,
+        to = url.searchParams.get("to")!,
+        interval = url.searchParams.get("interval") ?? "day";
+      return reply({
+        filters: { from, to, interval },
+        timezone: "Asia/Tehran",
+        generatedAt: at,
+        data: empty
+          ? []
+          : [
+              { bucket: from, metric: "bookings", value: "17" },
+              { bucket: from, metric: "attendance", value: "12" },
+              { bucket: from, metric: "collectedMinor", value: "84000000" },
+              { bucket: from, metric: "refundedMinor", value: "4000000" },
+              { bucket: from, metric: "orders", value: "15" },
+              { bucket: from, metric: "sessions", value: "8" },
+              { bucket: from, metric: "capacity", value: "40" },
+              { bucket: from, metric: "occupied", value: "17" },
+            ],
+        statuses: empty
+          ? []
+          : [
+              { status: "confirmed", count: 9 },
+              { status: "completed", count: 8 },
+            ],
+        platform: [],
+        options: {
+          branches: empty
+            ? []
+            : [
+                {
+                  id: booking.branchId,
+                  name: "شعبه مرکزی",
+                  organization_id: catalog.clubs[0]!.id,
+                  organization_name: catalog.clubs[0]!.name,
+                },
+              ],
+          services: empty
+            ? []
+            : [
+                {
+                  id: services[0]!.id,
+                  title: services[0]!.title,
+                  branch_id: booking.branchId,
+                  organization_id: catalog.clubs[0]!.id,
+                  kind: "class",
+                },
+              ],
+        },
+      });
+    }
+    if (path === "sports/community/preferences")
+      return reply({
+        reminders: true,
+        invitations: true,
+
+        messages: true,
+      });
+
     if (path === "profile/account")
       return reply({
         id: actorId,

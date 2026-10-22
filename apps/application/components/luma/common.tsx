@@ -7,6 +7,7 @@ import {
   ChevronLeft,
   CircleUserRound,
   Compass,
+  Dumbbell,
   Home,
   MessageCircle,
   Plus,
@@ -60,11 +61,7 @@ export function LumaNavigation({
           href: "/",
           label: t("home"),
           Icon: Home,
-          active:
-            !path.startsWith("/discovery") &&
-            !path.startsWith("/services") &&
-            !path.startsWith("/calendars") &&
-            !path.startsWith("/messages"),
+          active: path === "/",
         },
         {
           href: "/discovery",
@@ -76,10 +73,22 @@ export function LumaNavigation({
             path.startsWith("/calendars"),
         },
         {
+          href: "/training",
+          label: t("training"),
+          Icon: Dumbbell,
+          active: path.startsWith("/training"),
+        },
+        {
           href: "/messages",
           label: t("messages"),
           Icon: MessageCircle,
           active: path.startsWith("/messages"),
+        },
+        {
+          href: "/profile",
+          label: t("account"),
+          Icon: CircleUserRound,
+          active: path.startsWith("/profile") || path.startsWith("/coaching"),
         },
       ].map(({ href, label, Icon, active }) => (
         <Link

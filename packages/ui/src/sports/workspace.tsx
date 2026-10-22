@@ -1,4 +1,9 @@
 "use client";
+import {
+  useManagementFilters,
+  ManagementFilterBar,
+} from "./management-filters";
+import { Pager } from "../account/admin";
 import "../workspace-design.css";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -258,7 +263,7 @@ export function SportsWorkspace({ page }: { page: Page }) {
   const [branchSelection, setBranch] = useState("");
   const branch = branchSelection || branches.data?.[0]?.id;
   const enabled = Boolean(org && branch);
-  const needsServices = ["services", "imports", "calendar"].includes(page);
+  const needsServices = ["imports", "calendar"].includes(page);
   const scope = { organizationId: org, branchId: branch };
   const services = useSportsQuery<ServiceDto[]>(
     "business/sports/services",
@@ -336,6 +341,7 @@ export function SportsWorkspace({ page }: { page: Page }) {
               branch={branch!}
               services={services.data ?? []}
               loading={services.isPending}
+              key={`${org}:${branch}`}
             />
           )}{" "}
           {page === "resources" && (
@@ -345,9 +351,15 @@ export function SportsWorkspace({ page }: { page: Page }) {
               branch={branch!}
             />
           )}{" "}
-          {page === "reception" && <Reception org={org!} branch={branch!} />}{" "}
-          {page === "members" && <Members org={org!} branch={branch!} />}{" "}
-          {page === "payments" && <Payments org={org!} branch={branch!} />}{" "}
+          {page === "reception" && (
+            <Reception key={`${org}:${branch}`} org={org!} branch={branch!} />
+          )}{" "}
+          {page === "members" && (
+            <Members key={`${org}:${branch}`} org={org!} branch={branch!} />
+          )}{" "}
+          {page === "payments" && (
+            <Payments key={`${org}:${branch}`} org={org!} branch={branch!} />
+          )}{" "}
           {page === "reports" && <Reports org={org!} branch={branch!} />}{" "}
           {page === "imports" && <Imports services={services.data ?? []} />}{" "}
           {page === "calendar" && (
@@ -372,8 +384,6 @@ export function SportsWorkspace({ page }: { page: Page }) {
 function Services({
   org,
   branch,
-  services,
-  loading,
 }: {
   org: string;
   branch: string;
@@ -381,6 +391,14 @@ function Services({
   loading: boolean;
 }) {
   const t = useTranslations("Luma");
+  const list = useManagementFilters();
+  const query = useSportsQuery<ServiceDto[]>("business/sports/services", {
+    organizationId: org,
+    branchId: branch,
+    ...list.filters,
+  });
+  const services = query.data ?? [],
+    loading = query.isPending;
   const create = useSportsCommand("business/sports/services");
   const resources = useSportsQuery<{ id: string; name: string }[]>(
     "business/sports/resources",
@@ -389,6 +407,13 @@ function Services({
   const [formOpen, setFormOpen] = useState(false);
   return (
     <div className="grid gap-6">
+      <ManagementFilterBar
+        value={list.filters}
+        onApply={list.apply}
+        statuses={["draft", "published", "archived"]}
+        kinds
+      />
+      <QueryError error={query.error} retry={query.refetch} />
       <Button onClick={() => setFormOpen((v) => !v)}>{t("newService")}</Button>
       {formOpen && (
         <Card>
@@ -611,6 +636,11 @@ function Services({
       {services.map((s) => (
         <ServiceActions key={s.id} service={s} />
       ))}
+      <Pager
+        page={list.filters.page}
+        setPage={list.page}
+        count={services.length}
+      />
     </div>
   );
 }
@@ -1215,11 +1245,12 @@ function DocumentReview({ document }: { document: DocumentReviewDto }) {
 function Reception({ org, branch }: { org: string; branch: string }) {
   const t = useTranslations("Luma");
   const locale = useLocale();
+  const list = useManagementFilters();
   const query = useSportsQuery<
     (BookingDto & { displayName: string; paymentStatus: string })[]
   >(
     "business/sports/reception",
-    { organizationId: org, branchId: branch },
+    { organizationId: org, branchId: branch, ...list.filters },
     true,
     true,
   );
@@ -1232,6 +1263,19 @@ function Reception({ org, branch }: { org: string; branch: string }) {
   );
   return (
     <div className="grid gap-6">
+      <ManagementFilterBar
+        value={list.filters}
+        onApply={list.apply}
+        statuses={[
+          "held",
+          "pending_approval",
+          "confirmed",
+          "cancelled",
+          "expired",
+          "completed",
+          "no_show",
+        ]}
+      />
       <Card>
         <CardHeader>
           <CardTitle>{t("checkIn")}</CardTitle>
@@ -1276,6 +1320,11 @@ function Reception({ org, branch }: { org: string; branch: string }) {
       {query.data?.map((r) => (
         <ReservationActions key={r.id} item={r} />
       ))}
+      <Pager
+        page={list.filters.page}
+        setPage={list.page}
+        count={query.data?.length ?? 0}
+      />
     </div>
   );
 }
@@ -1405,6 +1454,7 @@ function ReservationActions({
 }
 function Members({ org, branch }: { org: string; branch: string }) {
   const t = useTranslations("Luma");
+  const list = useManagementFilters();
   const query = useSportsQuery<
     {
       id: string;
@@ -1418,6 +1468,7 @@ function Members({ org, branch }: { org: string; branch: string }) {
   >("business/sports-operations/members", {
     organizationId: org,
     branchId: branch,
+    ...list.filters,
   });
   return (
     <Card>
@@ -1425,6 +1476,11 @@ function Members({ org, branch }: { org: string; branch: string }) {
         <CardTitle>{t("members")}</CardTitle>
       </CardHeader>
       <CardContent>
+        <ManagementFilterBar
+          value={list.filters}
+          onApply={list.apply}
+          statuses={["pending", "active", "frozen", "expired", "cancelled"]}
+        />
         {query.data?.map((m) => (
           <div
             key={m.id}
@@ -1441,6 +1497,11 @@ function Members({ org, branch }: { org: string; branch: string }) {
             <Status value={m.status} />
           </div>
         ))}
+        <Pager
+          page={list.filters.page}
+          setPage={list.page}
+          count={query.data?.length ?? 0}
+        />
         <QueryError error={query.error} />
         {query.isSuccess && !query.data?.length && <Blank>{t("empty")}</Blank>}
       </CardContent>
@@ -1448,16 +1509,34 @@ function Members({ org, branch }: { org: string; branch: string }) {
   );
 }
 function Payments({ org, branch }: { org: string; branch: string }) {
+  const list = useManagementFilters();
   const query = useSportsQuery<OrderDto[]>(
     "business/sports-operations/orders",
-    { organizationId: org, branchId: branch },
+    { organizationId: org, branchId: branch, ...list.filters },
   );
   return (
     <div className="grid gap-4">
+      <ManagementFilterBar
+        value={list.filters}
+        onApply={list.apply}
+        statuses={[
+          "awaiting_payment",
+          "paid",
+          "partially_refunded",
+          "refunded",
+          "cancelled",
+          "review",
+        ]}
+      />
       <QueryError error={query.error} />
       {query.data?.map((o) => (
         <CashOrder key={o.id} order={o} />
       ))}
+      <Pager
+        page={list.filters.page}
+        setPage={list.page}
+        count={query.data?.length ?? 0}
+      />
     </div>
   );
 }
@@ -1792,7 +1871,15 @@ function OccurrenceActions({
 }
 export function SportsAdmin() {
   const t = useTranslations("Luma");
+  const list = useManagementFilters();
   const query = useSportsQuery<{
+    refunds: {
+      id: string;
+      orderId: string;
+      state: string;
+      amountMinor: string;
+      reason: string;
+    }[];
     orders: { id: string; status: string; amountMinor: string }[];
     payments: { id: string; orderId: string; state: string }[];
     jobs: { id: string; kind: string; attempts: number }[];
@@ -1804,7 +1891,7 @@ export function SportsAdmin() {
       body: string;
       revision: number;
     }[];
-  }>("admin/sports", undefined, true, true);
+  }>("admin/sports", list.filters, true, true);
   return (
     <main className="gym-workspace min-h-dvh bg-muted/40 p-5 sm:p-10">
       <div className="mx-auto max-w-6xl">
@@ -1812,11 +1899,25 @@ export function SportsAdmin() {
           <h1 className="text-2xl font-bold">{t("operations")}</h1>
           <Link href="/">{t("home")}</Link>
         </header>
+        <ManagementFilterBar value={list.filters} onApply={list.apply} />
         <QueryError error={query.error} />
         {query.isPending && <Loading />}
         {query.data && (
           <div className="grid gap-6">
             <AdminSchedulePanel />
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("refunds")}</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {query.data.refunds?.map((r) => (
+                  <div key={r.id}>
+                    <p className="text-sm">{r.reason}</p>
+                    <ReconcileRow id={r.orderId} />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
             <Card>
               <CardHeader>
                 <CardTitle>{t("reconciliation")}</CardTitle>
@@ -1858,6 +1959,20 @@ export function SportsAdmin() {
                 ))}
               </CardContent>
             </Card>
+            <Pager
+              page={list.filters.page}
+              setPage={list.page}
+              count={Math.max(
+                ...[
+                  query.data.orders,
+                  query.data.payments,
+                  query.data.refunds ?? [],
+                  query.data.jobs,
+                  query.data.tickets,
+                  query.data.reports,
+                ].map((rows) => rows.length),
+              )}
+            />
           </div>
         )}
       </div>

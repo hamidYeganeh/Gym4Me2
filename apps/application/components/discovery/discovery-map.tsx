@@ -40,7 +40,7 @@ import { useCatalogClubs } from "./use-catalog";
 import { useTaxonomies } from "@repo/api/catalog";
 import { CatalogPagination } from "./catalog-pagination";
 import { useSavedClub } from "./use-saved-club";
-import { NeshanMap } from "./neshan-map";
+import { CatalogMap } from "./catalog-map";
 import "./discovery-map.css";
 
 function MapClubCard({
@@ -207,7 +207,7 @@ export function DiscoveryMap() {
   return (
     <main className="discovery-map-root" data-panel-open={Boolean(activeId)}>
       <h1 className="sr-only">{t("title")}</h1>
-      <NeshanMap
+      <CatalogMap
         clubs={clubs}
         selectedId={activeId}
         onSelect={selectClub}

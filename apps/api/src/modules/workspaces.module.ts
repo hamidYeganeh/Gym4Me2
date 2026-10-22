@@ -1,5 +1,11 @@
 import { DemoController } from './training/demo.controller';
 import {
+  AdminAnalyticsController,
+  BusinessAnalyticsController,
+  CoachAnalyticsController,
+} from './analytics/analytics.controller';
+import { AnalyticsService } from './analytics/analytics.service';
+import {
   TrainingController,
   CollaborationController,
 } from './training/training.controller';
@@ -110,6 +116,9 @@ import {
 @Module({
   imports: [DatabaseModule, AuthModule, StorageModule],
   controllers: [
+    AdminAnalyticsController,
+    BusinessAnalyticsController,
+    CoachAnalyticsController,
     TrainingController,
     CollaborationController,
     DemoController,
@@ -159,6 +168,7 @@ import {
     AdminUsersController,
   ],
   providers: [
+    AnalyticsService,
     TrainingService,
     CollaborationService,
     CoachingService,

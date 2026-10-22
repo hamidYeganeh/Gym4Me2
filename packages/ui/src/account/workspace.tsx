@@ -1,6 +1,7 @@
 "use client";
 import "../workspace-design.css";
 import { DemoPanel } from "../training/service-reviews";
+import { AnalyticsPanel } from "../analytics/panel";
 import { useTranslations, useLocale, getDirection } from "@repo/i18n";
 
 import { useAccount, useAccess } from "@repo/api/profile";
@@ -59,6 +60,7 @@ import { sessionSignInHref } from "../lib/session-navigation";
 import { accountReadDenied } from "../lib/account-recovery";
 import { isActiveSurfaceElement } from "../lib/active-surface";
 export type Section =
+  | "analytics"
   | "overview"
   | "organizations"
   | "branches"
@@ -135,6 +137,12 @@ const businessNav = [
   },
 ] as const;
 const adminNav = [
+  {
+    key: "analytics",
+    href: "/analytics",
+    title: "Analytics.title",
+    icon: LayoutDashboard,
+  },
   {
     key: "demo",
     href: "/demo",
@@ -273,7 +281,7 @@ export function AccountWorkspace({
         <aside className="flex flex-col border-b bg-background p-5 lg:sticky lg:top-0 lg:h-dvh lg:w-64 lg:shrink-0 lg:overflow-y-auto lg:border-b-0 lg:border-e">
           <Link
             href="/"
-            className="mb-8 flex items-center gap-2 text-xl font-semibold"
+            className="mb-4 flex items-center gap-2 text-xl font-semibold lg:mb-8"
           >
             <Dumbbell className="size-7 text-primary" />
             <span dir="ltr">
@@ -415,6 +423,7 @@ function WorkspaceContent({
   if (section === "sessions") return <SessionsContent />;
   if (section === "invitations") return <InvitationsContent />;
   if (client === "admin") {
+    if (section === "analytics") return <AnalyticsPanel surface="admin" />;
     if (section === "users" && entityId)
       return <AdminUserDetailContent key={entityId} id={entityId} />;
     if (section === "organizations" && entityId)

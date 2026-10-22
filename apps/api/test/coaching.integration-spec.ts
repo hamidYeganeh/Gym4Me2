@@ -1,4 +1,7 @@
 import { Test, type TestingModule } from '@nestjs/testing';
+import { AnalyticsService } from '../src/modules/analytics/analytics.service';
+import { analyticsFilters } from '../src/modules/analytics/analytics.contracts';
+import type { Principal } from '../src/modules/auth/auth.service';
 import { ConfigModule } from '@nestjs/config';
 import { sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
@@ -716,4 +719,60 @@ it('expired invitations cannot be accepted and invite attempts are bounded', asy
   await expect(coaching.invite(coach, '+989000009998')).rejects.toMatchObject({
     status: 429,
   });
+});
+
+it('coach analytics exposes aggregate service activity only and revokes ended affiliation access', async () => {
+  const analytics = testingModule.get(AnalyticsService);
+  const principal = {
+    user: { id: coach },
+    session: { client: 'application' },
+  } as Principal;
+  const filter = analyticsFilters.parse({
+    from: '2026-01-01',
+    to: '2027-12-31',
+    interval: 'month',
+    serviceId: service,
+  });
+  const report = await analytics.report(principal, 'coach', filter);
+  expect(report.options.services.some((s) => s.id === service)).toBe(true);
+  expect(report.platform).toEqual([]);
+  expect(JSON.stringify(report)).not.toMatch(
+    /phone|student_id|studentId|assessment|measurements|feedback|body/,
+  );
+  await expect(
+    analytics.report(
+      {
+        user: { id: stranger },
+        session: { client: 'application' },
+      } as Principal,
+      'coach',
+      filter,
+    ),
+  ).rejects.toThrow();
+  await rows(
+    db,
+    sql`UPDATE branch_coaches SET status='ended' WHERE branch_id=${branch} AND coach_id=${coach}`,
+  );
+  try {
+    await expect(
+      analytics.report(principal, 'coach', filter),
+    ).rejects.toThrow();
+    const remaining = await analytics.report(
+      principal,
+      'coach',
+      analyticsFilters.parse({
+        from: '2026-01-01',
+        to: '2027-12-31',
+        interval: 'month',
+      }),
+    );
+    expect(remaining.options.services.some((s) => s.id === service)).toBe(
+      false,
+    );
+  } finally {
+    await rows(
+      db,
+      sql`UPDATE branch_coaches SET status='active' WHERE branch_id=${branch} AND coach_id=${coach}`,
+    );
+  }
 });

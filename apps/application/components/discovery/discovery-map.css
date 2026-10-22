@@ -289,3 +289,60 @@
     transition: none;
   }
 }
+/* Keep map controls and licence above map panes, clear of app overlays. */
+.discovery-map-root .leaflet-pane {
+  z-index: 1;
+}
+.discovery-map-root .leaflet-control-container {
+  position: absolute;
+  top: calc(150px + var(--app-safe-top));
+  inset-inline-end: 12px;
+  z-index: 2;
+}
+.discovery-map-root .leaflet-control a {
+  min-width: 44px;
+  min-height: 44px;
+  line-height: 44px;
+}
+.discovery-map-attribution {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 2px 8px;
+  font-size: 10px;
+  background: #fff;
+  color: #222;
+  text-align: center;
+  padding-top: var(--app-safe-top);
+}
+.discovery-map-attribution a {
+  text-decoration: underline;
+}
+.discovery-map-locate {
+  position: absolute;
+  z-index: 3;
+  top: calc(260px + var(--app-safe-top));
+  inset-inline-end: 12px;
+  max-width: 12rem;
+}
+.discovery-map-locate p {
+  font-size: 0.75rem;
+  background: var(--background);
+  border-radius: 1rem;
+  padding: 0.75rem;
+}
+.discovery-map-root .gym-map-icon {
+  background: transparent;
+  border: 0;
+}
+/* Leaflet's generic image rules must not resize our photo markers. */
+.discovery-map-root .discovery-map-marker {
+  overflow: hidden;
+}
+.discovery-map-root .discovery-map-marker img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+}

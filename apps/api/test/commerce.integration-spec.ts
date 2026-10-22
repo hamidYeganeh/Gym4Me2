@@ -1,3 +1,6 @@
+import { AnalyticsService } from '../src/modules/analytics/analytics.service';
+import { analyticsFilters } from '../src/modules/analytics/analytics.contracts';
+import { managementFilters } from '../src/modules/commerce/management-filters';
 import { Test } from '@nestjs/testing';
 import {
   S3Client,
@@ -3619,4 +3622,187 @@ test('individual session edits preserve identities, replay safely and enforce ad
     sql`SELECT * FROM audit_events WHERE target_id=${item.id} AND action='sports.occurrence.edit'`,
   );
   expect(saved).toHaveLength(1);
+});
+
+test('analytics uses Tehran boundaries, exact money and rejects cross-role/cross-branch access', async () => {
+  const analytics = testingModule.get(AnalyticsService);
+  const service = await create('class', '10000');
+  const [version] = await rows<{ id: string }>(
+    db,
+    sql`SELECT id FROM sport_service_versions WHERE service_id=${service.id} ORDER BY version DESC LIMIT 1`,
+  );
+  for (const [at, amount] of [
+    ['2026-04-30T20:29:59Z', '100'],
+    ['2026-04-30T20:30:00Z', '9007199254740993'],
+    ['2026-05-01T20:29:59Z', '7'],
+    ['2026-05-01T20:30:00Z', '200'],
+  ]) {
+    const [order] = await rows<{ id: string }>(
+      db,
+      sql`INSERT INTO sport_orders(user_id,organization_id,service_id,version_id,amount_minor,snapshot,status,idempotency_key,request_hash,expires_at,created_at) VALUES(${athlete},${org},${service.id},${version.id},${amount},${JSON.stringify({ title: 'Analytics isolated', branchId: branch })}::jsonb,'paid',${randomUUID()},'analytics-test',now()+interval '1 day',${at}::timestamptz) RETURNING id`,
+    );
+    await rows(
+      db,
+      sql`INSERT INTO sport_payments(order_id,reference,amount_minor,scenario,state,verified_at,created_at) VALUES(${order.id},${randomUUID()},${amount},'success','verified',${at}::timestamptz,${at}::timestamptz)`,
+    );
+  }
+  const business = {
+    user: { id: owner },
+    session: { client: 'business' },
+  } as Principal;
+  const filter = analyticsFilters.parse({
+    from: '2026-05-01',
+    to: '2026-05-01',
+    serviceId: service.id,
+  });
+  const report = await analytics.report(business, 'business', filter);
+  expect(report.data.find((r) => r.metric === 'collectedMinor')?.value).toBe(
+    '9007199254741000',
+  );
+  expect(report.data.find((r) => r.metric === 'orders')?.value).toBe('2');
+  expect(
+    report.options.branches.some((b) => b.organization_id === secondOrg),
+  ).toBe(false);
+  expect(report.platform).toEqual([]);
+  await expect(
+    analytics.report(business, 'business', {
+      ...filter,
+      organizationId: secondOrg,
+    }),
+  ).rejects.toThrow();
+  await expect(
+    analytics.report(
+      { ...business, session: { client: 'application' } } as Principal,
+      'business',
+      filter,
+    ),
+  ).rejects.toThrow();
+  await expect(
+    analytics.report(
+      { user: { id: athlete }, session: { client: 'business' } } as Principal,
+      'business',
+      filter,
+    ),
+  ).rejects.toThrow();
+  const scoped = await calendarStaff(branch, 'manager');
+  const manager = {
+    user: { id: scoped.userId },
+    session: { client: 'business' },
+  } as Principal;
+  const scope = await calendarBranch();
+  await expect(
+    analytics.report(manager, 'business', {
+      ...filter,
+      branchId: scope.branchId,
+    }),
+  ).rejects.toThrow();
+  const own = await analytics.report(manager, 'business', filter);
+  expect(own.options.branches.map((b) => b.id)).toEqual([branch]);
+  expect(JSON.stringify(own)).not.toMatch(
+    /phone|display_name|measurements|training_messages|assessment/,
+  );
+  await expect(analytics.report(business, 'admin', filter)).rejects.toThrow();
+});
+
+test('management list filters are applied before pagination and preserve staff authorization', async () => {
+  const operations = testingModule.get(SportsOperationsService),
+    service = await create();
+  const matches = await commerce.business(
+    owner,
+    org,
+    branch,
+    managementFilters({ search: service.title, page: 1, status: 'published' }),
+  );
+  expect(matches.map((s) => s.id)).toEqual([service.id]);
+  expect(
+    await commerce.business(
+      owner,
+      org,
+      branch,
+      managementFilters({ search: service.title, page: 2 }),
+    ),
+  ).toEqual([]);
+  expect(
+    await commerce.business(
+      owner,
+      org,
+      branch,
+      managementFilters({ search: "%' OR true --", page: 1 }),
+    ),
+  ).toEqual([]);
+  await expect(
+    operations.members(athlete, org, branch, managementFilters({ page: 1 })),
+  ).rejects.toThrow();
+});
+
+test('only the active coach can aggregate workouts the athlete still shares', async () => {
+  const analytics = testingModule.get(AnalyticsService),
+    coach = await invitationAthlete();
+  await db.insert(s.coachProfiles).values({ userId: coach.id });
+  try {
+    const [relationship] = await rows<{ id: string }>(
+      db,
+      sql`INSERT INTO coaching_relationships(coach_id,student_id,status) VALUES(${coach.id},${athlete},'active') RETURNING id`,
+    );
+    const sharedId = randomUUID();
+    for (const shared of [true, false])
+      await rows(
+        db,
+        sql`INSERT INTO training_sessions(id,athlete_id,relationship_id,snapshot,day_index,state,shared,started_at,ended_at) VALUES(${shared ? sharedId : randomUUID()},${athlete},${relationship.id},'{}'::jsonb,0,'completed',${shared},'2026-05-01T10:00:00Z','2026-05-01T11:00:00Z')`,
+      );
+    const f = analyticsFilters.parse({ from: '2026-05-01', to: '2026-05-01' }),
+      principal = {
+        user: { id: coach.id },
+        session: { client: 'application' },
+      } as Principal;
+    expect(
+      (await analytics.report(principal, 'coach', f)).data.find(
+        (r) => r.metric === 'sharedWorkouts',
+      )?.value,
+    ).toBe('1');
+    expect(
+      (
+        await analytics.report(
+          {
+            user: { id: other },
+            session: { client: 'application' },
+          } as Principal,
+          'coach',
+          f,
+        )
+      ).data.some((r) => r.metric === 'sharedWorkouts'),
+    ).toBe(false);
+    await rows(
+      db,
+      sql`UPDATE training_sessions SET shared=false WHERE id=${sharedId}`,
+    );
+    expect(
+      (await analytics.report(principal, 'coach', f)).data.some(
+        (r) => r.metric === 'sharedWorkouts',
+      ),
+    ).toBe(false);
+    await rows(
+      db,
+      sql`UPDATE training_sessions SET shared=true WHERE id=${sharedId}`,
+    );
+    await rows(
+      db,
+      sql`UPDATE coaching_relationships SET status='ended' WHERE id=${relationship.id}`,
+    );
+    expect(
+      (await analytics.report(principal, 'coach', f)).data.some(
+        (r) => r.metric === 'sharedWorkouts',
+      ),
+    ).toBe(false);
+  } finally {
+    await rows(
+      db,
+      sql`DELETE FROM training_sessions WHERE relationship_id IN (SELECT id FROM coaching_relationships WHERE coach_id=${coach.id})`,
+    );
+    await rows(
+      db,
+      sql`DELETE FROM coaching_relationships WHERE coach_id=${coach.id}`,
+    );
+    await rows(db, sql`DELETE FROM coach_profiles WHERE user_id=${coach.id}`);
+  }
 });

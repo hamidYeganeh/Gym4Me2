@@ -54,3 +54,51 @@
       color 120ms ease-out;
   }
 }
+/* Shared phone geometry for every administration, business and coach surface. */
+.gym-workspace {
+  overflow-wrap: anywhere;
+}
+.gym-workspace
+  :is(header, section, form, fieldset, [data-slot="card-content"]) {
+  min-width: 0;
+}
+.gym-workspace :is(input, select, textarea) {
+  max-width: 100%;
+}
+.gym-workspace :is(button, nav a) {
+  min-height: 44px;
+}
+.gym-workspace :is(a, button, input, select, textarea):focus-visible {
+  scroll-margin-block: 5rem;
+}
+main.gym-workspace {
+  padding-top: calc(1.25rem + var(--app-safe-top, 0px));
+  padding-bottom: calc(2rem + var(--app-safe-bottom, 0px));
+}
+@media (max-width: 767px) {
+  .gym-workspace > aside {
+    padding-top: calc(1rem + var(--app-safe-top, 0px));
+  }
+  .gym-workspace > aside > p {
+    display: none;
+  }
+  .gym-workspace header {
+    align-items: flex-start;
+  }
+  .gym-workspace header h1 {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .gym-workspace nav {
+    max-width: 100%;
+    scrollbar-width: thin;
+    overscroll-behavior-inline: contain;
+  }
+  .gym-workspace [data-slot="native-select"] {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .analytics-kpis p.text-xl {
+    font-size: 1.05rem;
+  }
+}

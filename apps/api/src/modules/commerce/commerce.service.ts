@@ -1,3 +1,9 @@
+import {
+  managementWhere,
+  managementPage,
+  managementDirection,
+  type ManagementFilters,
+} from './management-filters';
 import type { Principal } from '../auth/auth.service';
 import { assertSchedulingAdmin } from './scheduling-authority';
 import { coachingVisible, publicServiceVisible } from './public-service';
@@ -314,7 +320,12 @@ export class CommerceService {
     );
     return { ...service, occurrences };
   }
-  async business(userId: string, org: string, branch: string) {
+  async business(
+    userId: string,
+    org: string,
+    branch: string,
+    filters?: ManagementFilters,
+  ) {
     await this.staff(this.db, userId, org, branch, [
       'owner',
       'manager',
@@ -324,7 +335,7 @@ export class CommerceService {
     return rows(
       this.db,
       sql`SELECT s.*,v.title AS title,v.amount_minor::text,v.description,v.policy,v.eligibility,v.duration_days,v.session_count,v.requirements,v.resource_ids,v.level,v.coach_name,v.coach_user_id,v.visibility,v.approval_required,v.show_participants,(s.published_version_id IS DISTINCT FROM v.id) has_unpublished_changes,${serviceCoverProjection} FROM sport_services s
-      JOIN LATERAL(SELECT * FROM sport_service_versions WHERE service_id=s.id ORDER BY version DESC LIMIT 1) v ON true WHERE s.organization_id=${org} AND s.branch_id=${branch} ORDER BY s.created_at DESC LIMIT 100`,
+      JOIN LATERAL(SELECT * FROM sport_service_versions WHERE service_id=s.id ORDER BY version DESC LIMIT 1) v ON true WHERE s.organization_id=${org} AND s.branch_id=${branch} AND ${managementWhere(filters, sql`s.created_at`, sql`s.status`, [sql`v.title`, sql`v.coach_name`], sql`s.kind`)} ORDER BY s.created_at ${managementDirection(filters)},s.id ${managementPage(filters)}`,
     );
   }
   async coupons(userId: string, serviceId: string) {
@@ -2236,7 +2247,12 @@ export class CommerceService {
     );
     return { token, expiresAt };
   }
-  async reception(userId: string, org: string, branch: string) {
+  async reception(
+    userId: string,
+    org: string,
+    branch: string,
+    filters?: ManagementFilters,
+  ) {
     await this.staff(this.db, userId, org, branch, [
       'owner',
       'manager',
@@ -2244,7 +2260,7 @@ export class CommerceService {
     ]);
     return rows(
       this.db,
-      sql`SELECT r.*,ord.snapshot->>'title' AS title,o.start_at,o.end_at,u.display_name,ord.status payment_status FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN sport_services s ON s.id=o.service_id JOIN sport_orders ord ON ord.id=r.order_id JOIN users u ON u.id=r.user_id WHERE s.organization_id=${org} AND s.branch_id=${branch} AND o.end_at>now()-interval '1 day' ORDER BY o.start_at LIMIT 100`,
+      sql`SELECT r.*,ord.snapshot->>'title' AS title,o.start_at,o.end_at,u.display_name,ord.status payment_status FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN sport_services s ON s.id=o.service_id JOIN sport_orders ord ON ord.id=r.order_id JOIN users u ON u.id=r.user_id WHERE s.organization_id=${org} AND s.branch_id=${branch} AND ${filters?.from || filters?.to ? sql`true` : sql`o.end_at>now()-interval '1 day'`} AND ${managementWhere(filters, sql`o.start_at`, sql`r.status`, [sql`u.display_name`, sql`ord.snapshot->>'title'`, sql`r.id::text`])} ORDER BY o.start_at ${managementDirection(filters)},r.id ${managementPage(filters)}`,
     );
   }
   async receptionVisits(userId: string, org: string, branch: string) {

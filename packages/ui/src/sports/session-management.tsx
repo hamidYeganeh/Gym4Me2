@@ -1,4 +1,9 @@
 "use client";
+import {
+  useManagementFilters,
+  ManagementFilterBar,
+} from "./management-filters";
+import { Pager } from "../account/admin";
 import { useRef, useState } from "react";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { useSportsCommand, useSportsQuery } from "@repo/api/sports";
@@ -232,8 +237,12 @@ export function SessionManager({
   );
 }
 export function AdminSchedulePanel() {
-  const t = useTranslations("Luma"),
-    query = useSportsQuery<ScheduleService[]>("admin/sports/scheduling");
+  const t = useTranslations("Luma");
+  const list = useManagementFilters();
+  const query = useSportsQuery<ScheduleService[]>(
+    "admin/sports/scheduling",
+    list.filters,
+  );
   const [serviceId, setServiceId] = useState("");
   const service = query.data?.find((x) => x.id === serviceId);
   return (
@@ -242,6 +251,17 @@ export function AdminSchedulePanel() {
         <CardTitle>{t("manageSessions")}</CardTitle>
       </CardHeader>
       <CardContent>
+        <ManagementFilterBar
+          value={list.filters}
+          onApply={list.apply}
+          statuses={["draft", "published", "archived"]}
+          kinds
+        />
+        <Pager
+          page={list.filters.page}
+          setPage={list.page}
+          count={query.data?.length ?? 0}
+        />
         <QueryError error={query.error} retry={() => query.refetch()} />
         <NativeSelect
           aria-label={t("chooseSession")}

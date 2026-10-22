@@ -15,6 +15,7 @@
     "./page-transitions": "./src/page-transitions.tsx",
     "./training-page": "./src/training-page.tsx",
     "./account": "./src/account/index.ts",
+    "./analytics": "./src/analytics/panel.tsx",
     "./mobile-page": "./src/mobile-page.tsx",
     "./sports": "./src/sports/workspace.tsx",
     "./sports-eligibility": "./src/sports/eligibility.tsx",
