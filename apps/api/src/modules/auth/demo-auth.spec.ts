@@ -16,7 +16,7 @@ describe('demo sign-in boundary', () => {
     );
     await expect(
       auth.requestOtp('+989123456789', 'application', '127.0.0.1'),
-    ).rejects.toThrow('demo accounts');
+    ).rejects.toThrow('Backend.signInIsNotConfiguredYet');
     execute.mockResolvedValue({ rows: [{ user_id: 'seeded' }] });
     await expect(
       auth.requestOtp(
@@ -26,7 +26,7 @@ describe('demo sign-in boundary', () => {
         'web',
         'seeded',
       ),
-    ).rejects.toThrow('demo accounts');
+    ).rejects.toThrow('Backend.signInIsNotConfiguredYet');
     expect(transaction).not.toHaveBeenCalled();
     expect(sendOtp).not.toHaveBeenCalled();
   });
