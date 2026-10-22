@@ -93,9 +93,15 @@ Passed locally:
 
 Additional corrections from visual review: club detail now exposes its existing branch-specific booking destination; empty reviews do not display a fabricated zero average; profile gradient removed; privacy explanations collapse above controls; coaching navigation scrolls on one row. Training service worker registers only in production; cache bumped to v6 so published training assets refresh. The stale worker cache on the disposable localhost QA origin was cleared.
 
-Runtime screenshots and DOM measurements are under `.artifacts/mobile-redesign/`. Fixtures stay behind GYM_QA_WEB, are excluded from native export, reject real mutations and never recreate server data. The production QA route must return 404.
+Runtime screenshots and DOM measurements are under `.artifacts/mobile-redesign/`. Fixtures stay behind GYM_QA_WEB, are excluded from native export, reject real mutations and never recreate server data. The production QA route renders the not-found page with noindex. Next streams this response with HTTP 200 after the root layout has started; there is no fixture UI on the public route.
 
-Remote CI and publication: pending.
+Public verification:
+- Application 43eeedc, business/admin acc75e1 are READY on their existing free Vercel projects. API is unchanged.
+- Public `/qa/mobile` visibly renders “404: This page could not be found.” with `noindex`; no fixture controls appear. `/qa/ph0` is gated too.
+- Public catalog: 0 clubs and 0 services. No accounts or catalog entries were recreated.
+- Published welcome checked at 390px; screenshot `.artifacts/mobile-redesign/published-home-390.png`.
+
+CI repairs: translated the local QA controls, corrected an existing API formatting violation, and excluded the QA-only harness from the native staging type graph (fixtures are deliberately absent there). A staged TypeScript graph check confirms that exclusion; the normal web typecheck still checks the harness. Final full CI/native verification is pending.
 
 ## Intentionally refreshed design baseline
 

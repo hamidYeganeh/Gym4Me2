@@ -65,9 +65,7 @@ export class AuthService {
         sql`select user_id from gym4me_demo_accounts where phone = ${phone}`,
       );
       if (!allowed.rows.length || requestedBy)
-        throw new ForbiddenException(
-          'Backend.signInIsNotConfiguredYet',
-        );
+        throw new ForbiddenException('Backend.signInIsNotConfiguredYet');
     }
     const id = randomUUID();
     const code = demo ? '11111' : String(randomInt(10000, 100000));

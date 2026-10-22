@@ -67,7 +67,13 @@ try {
   const tsconfig = JSON.parse(
     readFileSync(join(appDirectory, "tsconfig.json"), "utf8"),
   );
-  tsconfig.exclude = [...tsconfig.exclude, ".native-build-*"];
+  // QA routes are not staged. Their visual harness imports disposable test fixtures
+  // that are absent from a native export; keep the harness out of native typegen too.
+  tsconfig.exclude = [
+    ...tsconfig.exclude,
+    ".native-build-*",
+    "components/qa/mobile-reference.tsx",
+  ];
   writeFileSync(join(stage, "tsconfig.json"), JSON.stringify(tsconfig));
   result = spawnSync(
     process.execPath,
