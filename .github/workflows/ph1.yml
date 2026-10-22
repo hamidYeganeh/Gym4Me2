@@ -76,6 +76,9 @@ jobs:
           pnpm --filter business exec next build --webpack
           pnpm --filter admin exec next build --webpack
       - name: Build bundled mobile shell
+        env:
+          NEXT_PUBLIC_API_URL: https://gym4me-demo-api.vercel.app/api/v1
+          NEXT_PUBLIC_SITE_URL: https://gym4me-demo-application.vercel.app
         run: pnpm --filter application build:native
       - uses: actions/setup-java@v4
         with:
@@ -104,7 +107,8 @@ jobs:
     timeout-minutes: 35
     env:
       NEXT_TELEMETRY_DISABLED: "1"
-      NEXT_PUBLIC_SITE_URL: https://gym4me.ir
+      NEXT_PUBLIC_SITE_URL: https://gym4me-demo-application.vercel.app
+      NEXT_PUBLIC_API_URL: https://gym4me-demo-api.vercel.app/api/v1
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
