@@ -25,6 +25,35 @@ The guarded additive script is `apps/api/scripts/provision-demo-showcase.ts`;
 it also requires `DEMO_SHOWCASE_CONFIRM=gym4me-visual-catalog-v1` and the existing
 isolated demo marker. It is not a production seed or a database reset.
 
+## Android demo APK
+
+The manual `Android demo APK` workflow (`.github/workflows/android-demo.yml`)
+builds a debug-signed, bundled application with
+`NEXT_PUBLIC_API_URL=https://gym4me-demo-api.vercel.app/api/v1`. The general
+verification workflow's unconfigured shell is not the connected demo APK.
+
+The first connected demo build uses source `739c7c17655e6020c19382adffabd691cafa854a`:
+[successful build and native tests](https://github.com/hamidYeganeh/Gym4Me2/actions/runs/39741061825).
+The `gym4me-demo-android` artifact is retained for seven days; the downloaded
+copy is `.artifacts/android-demo/Gym4Me-demo-android.apk` (22,875,268 bytes).
+SHA-256: `b3034f95d56cc53e409288814cd1b5dd101d5c357b4d261dc1512e53a65c5a12`.
+Package `com.gym4me.app`, version 1.0 (3), minimum Android API 24 (Android 7).
+APK signature verification passed; assets and the demo API URL are bundled,
+and there is no remote `server.url` override. This is an installable test build,
+not a Play Store production release or a physical-device acceptance claim.
+
+With explicit user approval on 2026-10-22, only the existing native origins
+`https://localhost` and `capacitor://localhost` were appended to production
+CORS for this isolated demo API. API deployment `dpl_7na1sTwe4BRvPb3oNGmY8nhVTXxj`
+is READY on the same source. Checks passed for both native preflights, rejection
+of an unrelated origin, native OTP/token login, authenticated account/training
+reads and logout of the temporary test session. No token/cookie is included
+in the artifact or committed evidence. The existing web origins were retained.
+
+Open the APK on an Android phone and approve installation from the app used to
+open this file. Athlete `09000000003` or coach `09000000008` uses demo OTP `11111`.
+The online demo API requires internet; real SMS and payments remain disabled.
+
 ## Configuration
 
 - Git branch: `main` (demo branch merged on 2026-10-20) in `hamidYeganeh/Gym4Me2`.
