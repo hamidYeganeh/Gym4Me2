@@ -190,7 +190,7 @@ export function useTrainingQuery<T>(
     (scope) => [...scope, "training", path, query],
     (api, signal) => api.request<T>({ method: "GET", path, query }, { signal }),
     enabled,
-    0,
+    path === "profile/training/home-summary" ? 30_000 : 0,
   );
 }
 export function useTrainingCommand() {

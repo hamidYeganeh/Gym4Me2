@@ -50,3 +50,9 @@ textarea,
 .mobile-page [data-slot="card"] { box-shadow: none; }
 .mobile-page [data-slot="card-description"] { line-height: 1.75rem; }
 .mobile-page [data-slot="checkbox"] { margin-block: .75rem; }
+
+/* Fixed layered blurs force expensive repainting on mobile WebViews. */
+@media (pointer: coarse) {
+  .discovery-tab-bar-backdrop span { display: none; }
+  .luma-navigation, .profile-navigation, .account-design-page > header { backdrop-filter: none; }
+}

@@ -32,6 +32,9 @@ export class TrainingController {
   @Get() workspace(@Req() req: AuthRequest) {
     return dto(this.training.workspace(coachingActor(req)));
   }
+  @Get('home-summary') homeSummary(@Req() req: AuthRequest) {
+    return dto(this.training.homeSummary(coachingActor(req)));
+  }
   @Get('exercises') exercises(
     @Req() req: AuthRequest,
     @Query() query: unknown,

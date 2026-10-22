@@ -3572,3 +3572,51 @@ test('host conversation filters reject unknown scope fields and require both org
   ])
     expect(hostConversationPageSchema.safeParse(input).success).toBe(false);
 });
+
+test('individual session edits preserve identities, replay safely and enforce administrator authority', async () => {
+  const service = await create();
+  const item = await occurrence(service.id, 3);
+  const input = {
+    startAt: new Date(Date.now() + 3 * 86400000).toISOString(),
+    endAt: new Date(Date.now() + 3 * 86400000 + 3600000).toISOString(),
+    capacity: 4,
+    revision: 1,
+    reason: 'Correct session timing',
+    idempotencyKey: randomUUID(),
+  };
+  await expect(
+    commerce.editOccurrence(other, item.id, input),
+  ).rejects.toThrow();
+  await db.execute(
+    sql`INSERT INTO platform_admins(user_id) VALUES(${owner}) ON CONFLICT DO NOTHING`,
+  );
+  const admin = {
+    user: { id: owner },
+    session: { client: 'admin' },
+  } as Principal;
+  const wrong = {
+    user: { id: owner },
+    session: { client: 'application' },
+  } as Principal;
+  await expect(
+    commerce.editOccurrence(owner, item.id, input, wrong),
+  ).rejects.toThrow();
+  const first = await commerce.editOccurrence(owner, item.id, input, admin);
+  expect((first as { id: string }).id).toBe(item.id);
+  await expect(
+    commerce.editOccurrence(owner, item.id, input, admin),
+  ).resolves.toBeDefined();
+  await expect(
+    commerce.editOccurrence(
+      owner,
+      item.id,
+      { ...input, idempotencyKey: randomUUID() },
+      admin,
+    ),
+  ).rejects.toThrow('Backend.seriesChanged');
+  const saved = await rows(
+    db,
+    sql`SELECT * FROM audit_events WHERE target_id=${item.id} AND action='sports.occurrence.edit'`,
+  );
+  expect(saved).toHaveLength(1);
+});

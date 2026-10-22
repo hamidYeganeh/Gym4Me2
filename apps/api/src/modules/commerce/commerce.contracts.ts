@@ -117,6 +117,12 @@ export const occurrenceSeriesEditSchema = occurrenceSchema.safeExtend({
 export type OccurrenceSeriesEditInput = z.infer<
   typeof occurrenceSeriesEditSchema
 >;
+export const occurrenceEditSchema = occurrenceSchema.safeExtend({
+  revision,
+  idempotencyKey: commandKey,
+  reason: z.string().trim().min(5).max(500),
+});
+export type OccurrenceEditInput = z.infer<typeof occurrenceEditSchema>;
 export const checkoutSchema = z
   .object({
     serviceId: z.uuid(),

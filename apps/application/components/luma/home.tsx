@@ -12,11 +12,7 @@ import {
   Ticket,
 } from "lucide-react";
 import { useLocale, useTranslations } from "@repo/i18n";
-import {
-  useAccount,
-  useTrainingQuery,
-  type TrainingWorkspace,
-} from "@repo/api/profile";
+import { useAccount, useTrainingQuery } from "@repo/api/profile";
 import { ServiceCoverThumbnail } from "@repo/ui/sports-cover";
 import { AuthWelcome } from "@repo/ui/account";
 import { Skeleton } from "@repo/ui/kit/Skeleton";
@@ -74,11 +70,12 @@ function SignedInHome() {
   const t = useLuma();
   const visual = useTranslations("Visual");
   const locale = useLocale();
-  const training = useTrainingQuery<TrainingWorkspace>("profile/training");
-  const active = training.data?.sessions.find(
-    (session) => session.state === "in_progress",
-  );
-  const nextPlan = training.data?.assignments[0];
+  const training = useTrainingQuery<{
+    active: { id: string; title: string } | null;
+    plan: { title: string } | null;
+  }>("profile/training/home-summary");
+  const active = training.data?.active;
+  const nextPlan = training.data?.plan;
   const bookings = useSportsQuery<BookingPageDto>(
     "sports/account/bookings/page",
     { tab: "upcoming", limit: 3 },
@@ -98,11 +95,7 @@ function SignedInHome() {
           <Dumbbell size={15} />
           {visual("yourNextMove")}
         </span>
-        <h2>
-          {active?.snapshot.title ??
-            nextPlan?.content.title ??
-            visual("makeRoomForYou")}
-        </h2>
+        <h2>{active?.title ?? nextPlan?.title ?? visual("makeRoomForYou")}</h2>
         <span className="luma-home-training-action">
           {active ? visual("continueWorkout") : visual("viewTraining")}
           <Dumbbell size={17} />

@@ -37,6 +37,7 @@ import { Empty, EmptyHeader, EmptyDescription } from "../kit/Empty";
 import { Loading } from "../account/common";
 import { QueryError } from "./query-error";
 import { ResourceManager } from "./resources";
+import { SessionManager, AdminSchedulePanel } from "./session-management";
 import { OccurrenceSeriesManager } from "./occurrence-series";
 import { ServiceCoverEditor } from "./cover";
 import { ServiceInvitations } from "./invitations";
@@ -949,7 +950,12 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
             {t("seriesScheduled", { count: scheduleResult })}
           </p>
         )}
-        {open && <OccurrenceSeriesManager serviceId={s.id} />}
+        {open && (
+          <>
+            <OccurrenceSeriesManager serviceId={s.id} />
+            <SessionManager serviceId={s.id} />
+          </>
+        )}
         <QueryError error={publish.error ?? schedule.error} />
         {documentsOpen && <DocumentReviewQueue serviceId={s.id} />}
         {couponsOpen && <CouponManager serviceId={s.id} />}
@@ -1810,6 +1816,7 @@ export function SportsAdmin() {
         {query.isPending && <Loading />}
         {query.data && (
           <div className="grid gap-6">
+            <AdminSchedulePanel />
             <Card>
               <CardHeader>
                 <CardTitle>{t("reconciliation")}</CardTitle>

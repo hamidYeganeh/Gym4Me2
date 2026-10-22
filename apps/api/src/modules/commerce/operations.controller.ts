@@ -16,8 +16,14 @@ import { ClientHeader, JsonBody, parse } from '../auth/auth.contracts';
 import { AuthGuard, ClientGuard, type AuthRequest } from '../auth/auth.guard';
 import { ConsentGuard } from '../profile/consent.guard';
 import { SportsOperationsService } from './operations.service';
-import { jsonDto } from './commerce.service';
-import { commandKey, serviceSchema } from './commerce.contracts';
+import { CommerceService, jsonDto } from './commerce.service';
+import {
+  commandKey,
+  serviceSchema,
+  occurrenceEditSchema,
+  occurrenceSeriesSchema,
+  occurrenceSeriesEditSchema,
+} from './commerce.contracts';
 const id = (value: string) => parse(z.uuid(), value);
 const reason = z.string().trim().min(3).max(1000);
 const dto = async (p: Promise<unknown>) => jsonDto(await p);
@@ -25,7 +31,10 @@ const dto = async (p: Promise<unknown>) => jsonDto(await p);
 @ClientHeader()
 @UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class SportsOperationsController {
-  constructor(private readonly s: SportsOperationsService) {}
+  constructor(
+    private readonly s: SportsOperationsService,
+    private readonly commerce: CommerceService,
+  ) {}
   private user(r: AuthRequest) {
     if (r.principal.session.client !== 'business')
       throw new ForbiddenException();
@@ -61,6 +70,20 @@ export class SportsOperationsController {
     @Param('id') value: string,
   ) {
     return dto(this.s.occurrences(this.user(r), id(value)));
+  }
+  @Post('occurrences/:id/edit')
+  editOccurrence(
+    @Req() r: AuthRequest,
+    @Param('id') value: string,
+    @Body() body: unknown,
+  ) {
+    return dto(
+      this.commerce.editOccurrence(
+        this.user(r),
+        id(value),
+        parse(occurrenceEditSchema, body),
+      ),
+    );
   }
   @Post('occurrences/:id/cancel')
   @JsonBody({ revision: { type: 'integer' }, reason: { type: 'string' } })
@@ -215,9 +238,99 @@ export class SportsOperationsController {
 @ClientHeader()
 @UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class AdminSportsController {
-  constructor(private readonly s: SportsOperationsService) {}
+  constructor(
+    private readonly s: SportsOperationsService,
+    private readonly commerce: CommerceService,
+  ) {}
   @Get() overview(@Req() r: AuthRequest) {
     return dto(this.s.adminOverview(r.principal));
+  }
+  @Get('scheduling') scheduling(@Req() r: AuthRequest) {
+    return dto(this.s.adminSchedule(r.principal));
+  }
+  @Get('services/:id/occurrences') occurrences(
+    @Req() r: AuthRequest,
+    @Param('id') value: string,
+  ) {
+    return dto(this.s.adminOccurrences(r.principal, id(value)));
+  }
+  @Get('services/:id/occurrence-series') series(
+    @Req() r: AuthRequest,
+    @Param('id') value: string,
+  ) {
+    return dto(
+      this.commerce.listSeries(r.principal.user.id, id(value), r.principal),
+    );
+  }
+  @Post('services/:id/occurrence-series') schedule(
+    @Req() r: AuthRequest,
+    @Param('id') value: string,
+    @Body() body: unknown,
+  ) {
+    const input = parse(
+      occurrenceSeriesSchema.safeExtend({
+        reason: z.string().trim().min(5).max(500),
+      }),
+      body,
+    );
+    return dto(
+      this.commerce.scheduleSeries(
+        r.principal.user.id,
+        id(value),
+        input,
+        r.principal,
+        input.reason,
+      ),
+    );
+  }
+  @Post('services/:id/occurrence-series/:seriesId/edit') editSeries(
+    @Req() r: AuthRequest,
+    @Param('id') value: string,
+    @Param('seriesId') seriesId: string,
+    @Body() body: unknown,
+  ) {
+    return dto(
+      this.commerce.editSeries(
+        r.principal.user.id,
+        id(value),
+        id(seriesId),
+        parse(occurrenceSeriesEditSchema, body),
+        r.principal,
+      ),
+    );
+  }
+  @Post('occurrences/:id/edit') editOccurrence(
+    @Req() r: AuthRequest,
+    @Param('id') value: string,
+    @Body() body: unknown,
+  ) {
+    return dto(
+      this.commerce.editOccurrence(
+        r.principal.user.id,
+        id(value),
+        parse(occurrenceEditSchema, body),
+        r.principal,
+      ),
+    );
+  }
+  @Post('occurrences/:id/cancel') cancelOccurrence(
+    @Req() r: AuthRequest,
+    @Param('id') value: string,
+    @Body() body: unknown,
+  ) {
+    const input = parse(
+      z.object({ revision: z.number().int().positive(), reason }).strict(),
+      body,
+    );
+    return dto(
+      this.s.cancelOccurrence(
+        r.principal.user.id,
+        id(value),
+        input.revision,
+        input.reason,
+        r.principal,
+      ),
+    );
   }
   @Get('support/:id') ticket(
     @Req() r: AuthRequest,

@@ -75,6 +75,43 @@ function storageFixture() {
   >["store"];
   return store;
 }
+test("native initialization is reused while every read observes fresh secure storage", async () => {
+  const store = storageFixture();
+  let initializations = 0;
+  const vault = nativeVault("https://api.example/api/v1", async () => {
+    initializations++;
+    return { store };
+  });
+  const first = {
+    token: "a".repeat(43),
+    sessionId: "first",
+    expiresAt: new Date(Date.now() + 60000).toISOString(),
+  };
+  const second = { ...first, token: "b".repeat(43), sessionId: "second" };
+  await vault.set(first);
+  assert.deepEqual(await vault.get(), first);
+  // Simulate a native store update outside the vault: no cached token survives.
+  await store.set("unused-fixture-key", second, false, false);
+  assert.deepEqual(await vault.get(), second);
+  await vault.clear(first);
+  assert.deepEqual(await vault.get(), second);
+  await vault.clear(second);
+  assert.equal(await vault.get(), null);
+  assert.equal(initializations, 1);
+});
+
+test("a failed native initialization can retry on the next operation", async () => {
+  const store = storageFixture();
+  let initializations = 0;
+  const vault = nativeVault("https://api.example/api/v1", async () => {
+    if (++initializations === 1) throw new Error("temporarily locked");
+    return { store };
+  });
+  await assert.rejects(vault.get(), /Errors.secureStorageUnavailable/);
+  assert.equal(await vault.get(), null);
+  assert.equal(initializations, 2);
+});
+
 test("a late failure from an old native session cannot delete a newer login", async () => {
   const store = storageFixture();
   const vault = nativeVault("https://api.example/api/v1", async () => ({

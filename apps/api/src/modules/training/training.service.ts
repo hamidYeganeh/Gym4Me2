@@ -90,6 +90,17 @@ export class TrainingService {
       sql`SELECT * FROM training_exercises WHERE NOT archived AND (name_fa ILIKE ${term} OR name_en ILIKE ${term} OR equipment ILIKE ${term} OR array_to_string(tags,' ') ILIKE ${term}) ORDER BY id LIMIT 100`,
     );
   }
+  async homeSummary(actor: string) {
+    const [active] = await rows<{ id: string; title: string }>(
+      this.db,
+      sql`SELECT id,snapshot->>'title' title FROM training_sessions WHERE athlete_id=${actor} AND state='in_progress' ORDER BY started_at DESC LIMIT 1`,
+    );
+    const [plan] = await rows<{ title: string }>(
+      this.db,
+      sql`SELECT v.content->>'title' title FROM training_assignments a JOIN training_versions v ON v.id=a.version_id WHERE a.athlete_id=${actor} AND v.effective_from<=(now() AT TIME ZONE 'Asia/Tehran')::date ORDER BY v.effective_from DESC,v.version DESC LIMIT 1`,
+    );
+    return { active: active ?? null, plan: plan ?? null };
+  }
   async workspace(actor: string) {
     const plans = await rows(
       this.db,

@@ -1,3 +1,5 @@
+import type { Principal } from '../auth/auth.service';
+import { assertSchedulingAdmin } from './scheduling-authority';
 import { coachingVisible, publicServiceVisible } from './public-service';
 import { serviceCoverProjection, type ServiceCover } from './service-cover';
 import {
@@ -47,6 +49,7 @@ import {
   type ServiceEligibility,
   type ServicePolicy,
   type OccurrenceSeriesInput,
+  type OccurrenceEditInput,
   type OccurrenceSeriesEditInput,
   type PaymentScenario,
   type checkoutSchema,
@@ -496,10 +499,25 @@ export class CommerceService {
       })
       .catch(scheduleFailure);
   }
+  private async schedulingAccess(
+    db: Db | Tx,
+    userId: string,
+    service: { organization_id: string; branch_id: string },
+    administrator?: Principal,
+  ) {
+    if (administrator) {
+      await assertSchedulingAdmin(db, administrator, userId);
+      await requireBranch(db, service.organization_id, service.branch_id);
+      return;
+    }
+    await this.staff(db, userId, service.organization_id, service.branch_id);
+  }
   async scheduleSeries(
     userId: string,
     id: string,
     input: OccurrenceSeriesInput,
+    administrator?: Principal,
+    reason?: string,
   ) {
     const requestHash = hash(
       JSON.stringify({
@@ -521,7 +539,7 @@ export class CommerceService {
             sql`SELECT id FROM sport_services WHERE id=${id} FOR UPDATE`,
           );
           const draft = await this.service(tx, id);
-          await this.staff(tx, userId, draft.organization_id, draft.branch_id);
+          await this.schedulingAccess(tx, userId, draft, administrator);
           const [previous] = await rows<{ id: string; request_hash: string }>(
             tx,
             sql`SELECT id,request_hash FROM sport_occurrence_series WHERE actor_id=${userId} AND idempotency_key=${input.idempotencyKey}`,
@@ -580,7 +598,7 @@ export class CommerceService {
           await rows(
             tx,
             sql`INSERT INTO audit_events(actor_id,organization_id,action,target_id,details)
-          VALUES(${userId},${service.organization_id},'sports.occurrence-series.create',${series.id},${JSON.stringify({ serviceId: id, count: input.count, intervalDays: input.intervalDays })}::jsonb)`,
+          VALUES(${userId},${service.organization_id},'sports.occurrence-series.create',${series.id},${JSON.stringify({ serviceId: id, count: input.count, intervalDays: input.intervalDays, reason })}::jsonb)`,
           );
           return { id: series.id, occurrences };
         })
@@ -608,14 +626,13 @@ export class CommerceService {
     if (sold.length)
       throw new ConflictException('Backend.courseScheduleLocked');
   }
-  async listSeries(userId: string, serviceId: string) {
+  async listSeries(
+    userId: string,
+    serviceId: string,
+    administrator?: Principal,
+  ) {
     const service = await this.service(this.db, serviceId);
-    await this.staff(
-      this.db,
-      userId,
-      service.organization_id,
-      service.branch_id,
-    );
+    await this.schedulingAccess(this.db, userId, service, administrator);
     return rows(
       this.db,
       sql`SELECT x.id,x.service_id,x.version_id,x.interval_days,x.occurrence_count,x.revision,
@@ -641,6 +658,7 @@ export class CommerceService {
     serviceId: string,
     seriesId: string,
     input: OccurrenceSeriesEditInput,
+    administrator?: Principal,
   ) {
     const commandKey = `series-edit:${input.idempotencyKey}`;
     const requestHash = hash(
@@ -663,12 +681,7 @@ export class CommerceService {
           sql`SELECT id FROM sport_services WHERE id=${serviceId} FOR UPDATE`,
         );
         const service = await this.service(tx, serviceId);
-        await this.staff(
-          tx,
-          userId,
-          service.organization_id,
-          service.branch_id,
-        );
+        await this.schedulingAccess(tx, userId, service, administrator);
         const [receipt] = await rows<{
           request_hash: string;
           result: SeriesEditResult;
@@ -783,6 +796,107 @@ export class CommerceService {
         throw new ConflictException('Backend.scheduleConflict');
       throw error;
     }
+  }
+  async editOccurrence(
+    userId: string,
+    id: string,
+    input: OccurrenceEditInput,
+    administrator?: Principal,
+  ) {
+    const commandKey = `occurrence-edit:${input.idempotencyKey}`;
+    const requestHash = hash(JSON.stringify({ id, ...input }));
+    return this.db
+      .transaction(async (tx) => {
+        await lockWritableAccount(tx, userId);
+        const target = await one<{ service_id: string }>(
+          tx,
+          sql`SELECT service_id FROM sport_occurrences WHERE id=${id}`,
+        );
+        await rows(
+          tx,
+          sql`SELECT id FROM sport_services WHERE id=${target.service_id} FOR UPDATE`,
+        );
+        const service = await this.service(tx, target.service_id);
+        await this.schedulingAccess(tx, userId, service, administrator);
+        const [receipt] = await rows<{ request_hash: string; result: unknown }>(
+          tx,
+          sql`SELECT request_hash,result FROM sport_command_receipts WHERE user_id=${userId} AND command_key=${commandKey}`,
+        );
+        if (receipt) {
+          if (receipt.request_hash !== requestHash)
+            throw new ConflictException('Backend.scheduleKeyReused');
+          return receipt.result;
+        }
+        const current = await one<
+          Occurrence & { revision: number; version_id: string }
+        >(tx, sql`SELECT * FROM sport_occurrences WHERE id=${id} FOR UPDATE`);
+        if (
+          current.revision !== input.revision ||
+          current.status !== 'scheduled' ||
+          current.start_at <= new Date()
+        )
+          throw new ConflictException('Backend.seriesChanged');
+        const changedTime =
+          current.start_at.getTime() !== Date.parse(input.startAt) ||
+          current.end_at.getTime() !== Date.parse(input.endAt);
+        if (Date.parse(input.startAt) <= Date.now())
+          throw new BadRequestException('Backend.scheduleStartInPast');
+        const [usage] = await rows<{ reserved: number; locked: boolean }>(
+          tx,
+          sql`SELECT
+        (SELECT count(*)::int FROM sport_reservations WHERE occurrence_id=${id} AND (status='confirmed' OR status IN ('held','pending_approval') AND expires_at>now())) reserved,
+        (EXISTS(SELECT 1 FROM sport_reservations WHERE occurrence_id=${id}) OR EXISTS(SELECT 1 FROM sport_waitlist WHERE occurrence_id=${id}) OR EXISTS(SELECT 1 FROM sport_conversations WHERE occurrence_id=${id}) OR EXISTS(SELECT 1 FROM sport_invitations WHERE service_id=${service.id})) locked`,
+        );
+        if (
+          input.capacity < usage.reserved ||
+          (changedTime &&
+            (usage.locked || current.version_id !== service.version_id))
+        )
+          throw new ConflictException('Backend.seriesLocked');
+        if (service.kind === 'course')
+          await this.assertCourseScheduleOpen(tx, service);
+        if (changedTime) {
+          await rows(
+            tx,
+            sql`DELETE FROM sport_occupancies WHERE occurrence_id=${id}`,
+          );
+          await rows(
+            tx,
+            sql`DELETE FROM sport_coach_claims WHERE occurrence_id=${id}`,
+          );
+        }
+        const result = await one<Occurrence>(
+          tx,
+          sql`UPDATE sport_occurrences SET start_at=${input.startAt},end_at=${input.endAt},capacity=${input.capacity},revision=revision+1 WHERE id=${id} RETURNING *`,
+        );
+        if (changedTime) {
+          if (service.kind === 'class' || service.kind === 'course')
+            await this.occupy(tx, service, result);
+          else if (service.kind === 'court') {
+            await resourceClaims(tx, service);
+            await assertResourcesAvailable(tx, id);
+          }
+          if (service.coach_user_id)
+            await rows(
+              tx,
+              sql`INSERT INTO sport_coach_claims(coach_user_id,occurrence_id,period) VALUES(${service.coach_user_id},${id},tstzrange(${result.start_at},${result.end_at},'[)'))`,
+            );
+        }
+        await rows(
+          tx,
+          sql`INSERT INTO sport_command_receipts(user_id,command_key,request_hash,result) VALUES(${userId},${commandKey},${requestHash},${JSON.stringify(result)}::jsonb)`,
+        );
+        await rows(
+          tx,
+          sql`INSERT INTO audit_events(actor_id,organization_id,action,target_id,details) VALUES(${userId},${service.organization_id},'sports.occurrence.edit',${id},${JSON.stringify({ reason: input.reason, previous: current, next: result })}::jsonb)`,
+        );
+        await rows(
+          tx,
+          sql`UPDATE sport_occurrence_series SET revision=revision+1,updated_at=now() WHERE id=(SELECT series_id FROM sport_occurrences WHERE id=${id})`,
+        );
+        return result;
+      })
+      .catch(scheduleFailure);
   }
   private async occupy(
     tx: Tx,

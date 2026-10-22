@@ -9,15 +9,21 @@ import { ConfigService } from '@nestjs/config';
 import { from, mergeMap } from 'rxjs';
 import type { Environment } from '../../config/environment';
 import { CommerceService } from './commerce.service';
+import { RequestDueWork } from './request-due-work';
 
 /** Serverless demos finish durable payment/refund work while a request is alive. */
 @Injectable()
 export class DemoJobsInterceptor implements NestInterceptor {
   private readonly logger = new Logger(DemoJobsInterceptor.name);
+  private readonly dueWork: RequestDueWork;
   constructor(
     private readonly config: ConfigService<Environment, true>,
     private readonly commerce: CommerceService,
-  ) {}
+  ) {
+    this.dueWork = new RequestDueWork(async () => {
+      await this.commerce.runJobs();
+    });
+  }
   intercept(context: ExecutionContext, next: CallHandler) {
     const request = context
       .switchToHttp()
@@ -30,7 +36,7 @@ export class DemoJobsInterceptor implements NestInterceptor {
         request.path,
       )
     ) {
-      return from(this.flush()).pipe(mergeMap(() => next.handle()));
+      return from(this.flush('read')).pipe(mergeMap(() => next.handle()));
     }
     if (
       this.config.get('DEMO_MODE', { infer: true }) !== true ||
@@ -42,14 +48,14 @@ export class DemoJobsInterceptor implements NestInterceptor {
       return next.handle();
     return next.handle().pipe(
       mergeMap(async (result: unknown) => {
-        await this.flush();
+        await this.flush('command');
         return result;
       }),
     );
   }
-  private async flush() {
+  private async flush(mode: 'read' | 'command') {
     try {
-      await this.commerce.runJobs();
+      await this.dueWork.run(mode);
     } catch {
       this.logger.warn('Demo jobs remain pending for the next request');
     }

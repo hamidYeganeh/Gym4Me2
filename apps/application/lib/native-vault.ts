@@ -42,6 +42,18 @@ export function nativeVault(
   loadStorage: () => Promise<{ store: Storage }> = secureStorage,
 ): SessionVault {
   const key = encodeURIComponent(baseUrl ?? "unconfigured");
+  // Native plugin configuration is process-local and immutable. Reuse only the
+  // initialized adapter; session values are still read from secure storage for
+  // every operation, including compare/remove after a late response.
+  let storage: ReturnType<typeof loadStorage> | undefined;
+  const initializedStorage = () => {
+    if (!storage)
+      storage = loadStorage().catch((error: unknown) => {
+        storage = undefined;
+        throw error;
+      });
+    return storage;
+  };
   // Compare/remove and writes share one queue, so a late failure cannot erase a newer login.
   let tail: Promise<unknown> = Promise.resolve();
   const serialized = <T>(operation: () => Promise<T>): Promise<T> => {
@@ -53,7 +65,7 @@ export function nativeVault(
     get() {
       return serialized(async () => {
         try {
-          const { store } = await loadStorage();
+          const { store } = await initializedStorage();
           const value = await store.get(key, false, false);
           if (!value) return null;
           if (
@@ -79,7 +91,7 @@ export function nativeVault(
     set(session) {
       return serialized(async () => {
         try {
-          const { store } = await loadStorage();
+          const { store } = await initializedStorage();
           await store.set(key, session, false, false);
         } catch {
           throw new ApiError(0, "Errors.secureStorageUnavailable");
@@ -89,7 +101,7 @@ export function nativeVault(
     clear(expected) {
       return serialized(async () => {
         try {
-          const { store } = await loadStorage();
+          const { store } = await initializedStorage();
           if (expected) {
             const current = await store.get(key, false, false);
             if (
