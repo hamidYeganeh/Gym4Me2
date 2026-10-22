@@ -64,6 +64,7 @@ self.addEventListener("push", (event) => {
           lang: english ? "en" : "fa",
           dir: english ? "ltr" : "rtl",
           tag: `gym4me-${data.notificationId}`,
+          icon: "/icons/icon-192.png",
           data: {
             bindingId: data.bindingId,
             notificationId: data.notificationId,

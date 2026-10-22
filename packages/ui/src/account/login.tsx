@@ -1,4 +1,5 @@
 "use client";
+import { Logo } from "@repo/theme/logo";
 import { useTranslations, useLocale, getDirection } from "@repo/i18n";
 
 import { useRequestOtp, useVerifyOtp, usePasswordLogin } from "@repo/api/auth";
@@ -14,7 +15,7 @@ import {
   type FormEvent,
 } from "react";
 import { isActiveSurfaceElement } from "@repo/ui/lib/active-surface";
-import { ArrowLeft, Dumbbell, ShieldCheck, Smartphone } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Smartphone } from "lucide-react";
 import { Button } from "@repo/ui/kit/Button";
 import {
   Card,
@@ -507,7 +508,7 @@ export function LoginPage({
             href="/"
             className="flex min-h-11 items-center gap-2 text-xl font-semibold"
           >
-            <Dumbbell className="size-7 text-primary" />
+            <Logo size={28} className="shrink-0 text-primary" />
             <span dir="ltr">
               {t("Copy.brand")}{" "}
               <span className="ms-2 text-sm font-normal text-muted-foreground">

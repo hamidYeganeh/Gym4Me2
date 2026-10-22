@@ -10,7 +10,13 @@ import "@repo/ui/focus.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Metadata");
-  return { title: t("brand"), description: t("description") };
+  return {
+    title: t("brand"),
+    description: t("description"),
+    manifest: "/manifest.webmanifest",
+    appleWebApp: { capable: true, title: "Gym4Me", statusBarStyle: "default" },
+    icons: { apple: "/icons/icon-180.png" },
+  };
 }
 
 export default async function RootLayout({

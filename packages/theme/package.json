@@ -10,7 +10,8 @@
     "./globals.css": "./src/globals.css",
     "./icons.css": "./src/icons.css",
     "./preset": "./src/preset.ts",
-    "./transition": "./src/transition.ts"
+    "./transition": "./src/transition.ts",
+    "./logo": "./src/logo.tsx"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

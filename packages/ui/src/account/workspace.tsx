@@ -1,4 +1,5 @@
 "use client";
+import { Logo } from "@repo/theme/logo";
 import "../workspace-design.css";
 import { DemoPanel } from "../training/service-reviews";
 import { AnalyticsPanel } from "../analytics/panel";
@@ -283,7 +284,7 @@ export function AccountWorkspace({
             href="/"
             className="mb-4 flex items-center gap-2 text-xl font-semibold lg:mb-8"
           >
-            <Dumbbell className="size-7 text-primary" />
+            <Logo size={28} className="shrink-0 text-primary" />
             <span dir="ltr">
               {t("Copy.brand")}{" "}
               <span className="text-xs text-muted-foreground">

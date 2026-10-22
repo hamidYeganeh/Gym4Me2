@@ -1,4 +1,5 @@
 "use client";
+import { Logo } from "@repo/theme/logo";
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -69,7 +70,7 @@ export function AuthEntryButton({
         <div className="auth-sheet-handle" aria-hidden="true" />
         <div className="auth-sheet-top">
           <div className="auth-emblem" aria-hidden="true">
-            <Sparkles strokeWidth={1.5} />
+            <Logo size={28} />
           </div>
           <SheetClose asChild>
             <Button
