@@ -1929,6 +1929,9 @@ test('PH1 staff role matrix enforces branch grants, tenant boundaries and immedi
       .expect(201),
   );
   clubIds.push(foreign.id);
+  await db.execute(sql`UPDATE business_subscriptions SET plan_code='pro',
+    terms_snapshot='{"branchLimit":20,"advancedFinance":true}'::jsonb
+    WHERE organization_id=${club.id}`);
   const first = body<{ branches: { id: string }[] }>(
     await call('get', `business/clubs/${club.id}`, owner).expect(200),
   ).branches[0].id;
