@@ -19,6 +19,11 @@
     "dialogDescription": "برنامه بعدی خود را با جیم فور می بسازید.",
     "close": "بستن"
   },
+  "MobileReference": {
+    "label": "بررسی بصری محلی",
+    "screen": "صفحهٔ بررسی",
+    "state": "وضعیت بررسی"
+  },
   "Discovery": {
     "filters": "فیلترها",
     "eyebrow": "شروع یک عادت خوب",

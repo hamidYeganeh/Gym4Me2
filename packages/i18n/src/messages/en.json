@@ -19,6 +19,11 @@
     "dialogDescription": "Build your next training plan with Gym4Me.",
     "close": "Close"
   },
+  "MobileReference": {
+    "label": "Local visual QA",
+    "screen": "QA screen",
+    "state": "QA state"
+  },
   "Discovery": {
     "filters": "Filters",
     "eyebrow": "FIND YOUR NEXT ROUTINE",

@@ -1,7 +1,7 @@
 "use client";
 import { useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useLocale } from "@repo/i18n";
+import { useLocale, useTranslations } from "@repo/i18n";
 import { ApiProvider } from "@repo/api/provider";
 import {
   TrainingHome,
@@ -54,6 +54,7 @@ const screens = [
   "builder",
 ] as const;
 export function MobileReference() {
+  const qa = useTranslations("MobileReference");
   const router = useRouter();
   const params = useSearchParams(),
     locale = useLocale();
@@ -115,12 +116,12 @@ export function MobileReference() {
       {params.get("presentation") !== "1" && (
         <aside
           className="flex flex-wrap gap-2 border-b p-3 text-xs"
-          aria-label="Local visual QA"
+          aria-label={qa("label")}
         >
           <label>
-            Screen{" "}
+            {qa("screen")}{" "}
             <select
-              aria-label="QA screen"
+              aria-label={qa("screen")}
               value={screen}
               onChange={(e) => {
                 router.push(
@@ -134,9 +135,9 @@ export function MobileReference() {
             </select>
           </label>
           <label>
-            State{" "}
+            {qa("state")}{" "}
             <select
-              aria-label="QA state"
+              aria-label={qa("state")}
               value={state}
               onChange={(e) => {
                 router.push(
