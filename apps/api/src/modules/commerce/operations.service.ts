@@ -452,14 +452,14 @@ export class SportsOperationsService {
     await this.admin.requireAdmin(principal);
     return rows(
       this.db,
-      sql`SELECT s.id,s.title,s.organization_id,s.branch_id,s.revision,s.kind,s.status,b.name branch_name,g.name organization_name FROM sport_services s JOIN branches b ON b.id=s.branch_id JOIN organizations g ON g.id=s.organization_id WHERE s.kind<>'membership' ORDER BY s.created_at DESC LIMIT 100`,
+      sql`SELECT s.id,s.title,s.organization_id,s.branch_id,s.revision,s.kind,s.status,b.name branch_name,g.name organization_name FROM sport_services s JOIN branches b ON b.id=s.branch_id JOIN organizations g ON g.id=s.organization_id WHERE s.kind<>'membership' ORDER BY s.created_at DESC,s.id LIMIT 100`,
     );
   }
   async adminOccurrences(principal: Principal, serviceId: string) {
     await this.admin.requireAdmin(principal);
     return rows(
       this.db,
-      sql`SELECT o.*,(SELECT count(*)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status='confirmed' OR r.status IN ('held','pending_approval') AND r.expires_at>now())) reserved FROM sport_occurrences o WHERE o.service_id=${serviceId} ORDER BY start_at DESC LIMIT 100`,
+      sql`SELECT o.*,(SELECT count(*)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status='confirmed' OR r.status IN ('held','pending_approval') AND r.expires_at>now())) reserved FROM sport_occurrences o WHERE o.service_id=${serviceId} ORDER BY start_at DESC,o.id LIMIT 100`,
     );
   }
   async adminOverview(principal: Principal) {

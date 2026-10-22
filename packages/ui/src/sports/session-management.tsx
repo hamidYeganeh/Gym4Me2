@@ -64,8 +64,14 @@ export function SessionEditor({
         }
         setInvalid(false);
         const draft = {
-          startAt: start.toISOString(),
-          endAt: end.toISOString(),
+          startAt:
+            String(form.get("start")) === localTime(item.startAt)
+              ? item.startAt
+              : start.toISOString(),
+          endAt:
+            String(form.get("end")) === localTime(item.endAt)
+              ? item.endAt
+              : end.toISOString(),
           capacity: Number(form.get("capacity")),
           revision: item.revision,
           reason: String(form.get("reason")).trim(),

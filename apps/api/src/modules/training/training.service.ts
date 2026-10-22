@@ -97,7 +97,7 @@ export class TrainingService {
     );
     const [plan] = await rows<{ title: string }>(
       this.db,
-      sql`SELECT v.content->>'title' title FROM training_assignments a JOIN training_versions v ON v.id=a.version_id WHERE a.athlete_id=${actor} AND v.effective_from<=(now() AT TIME ZONE 'Asia/Tehran')::date ORDER BY v.effective_from DESC,v.version DESC LIMIT 1`,
+      sql`SELECT v.content->>'title' title FROM training_assignments a JOIN training_versions v ON v.id=a.version_id WHERE a.athlete_id=${actor} AND v.effective_from<=(now() AT TIME ZONE 'Asia/Tehran')::date ORDER BY v.effective_from DESC,v.version DESC,a.id LIMIT 1`,
     );
     return { active: active ?? null, plan: plan ?? null };
   }
