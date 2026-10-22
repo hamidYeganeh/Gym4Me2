@@ -1,7 +1,7 @@
 import { INestApplication, ServiceUnavailableException } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { and, eq, or } from 'drizzle-orm';
+import { and, eq, or, sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { randomBytes, randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
@@ -361,6 +361,19 @@ test('organization creation atomically grants ownership; another tenant cannot a
     .expect(201);
   organizationId = payload(result).id!;
   orgIds.push(organizationId);
+  await call(
+    'post',
+    `business/organizations/${organizationId}/branches`,
+    'business',
+    business.cookie,
+  )
+    .send({ name: 'شعبه مرکزی' })
+    .expect(409);
+  // Basic includes the automatically created main branch. PH5 tests plan
+  // transitions; these authorization scenarios explicitly need multiple branches.
+  await db.execute(sql`UPDATE business_subscriptions SET plan_code='pro',
+    terms_snapshot='{"branchLimit":20,"advancedFinance":true}'::jsonb
+    WHERE organization_id=${organizationId}`);
   await call(
     'post',
     `business/organizations/${organizationId}/branches`,
