@@ -101,7 +101,14 @@ Public verification:
 - Public catalog: 0 clubs and 0 services. No accounts or catalog entries were recreated.
 - Published welcome checked at 390px; screenshot `.artifacts/mobile-redesign/published-home-390.png`.
 
-CI repairs: translated the local QA controls, corrected an existing API formatting violation, and excluded the QA-only harness from the native staging type graph (fixtures are deliberately absent there). A staged TypeScript graph check confirms that exclusion; the normal web typecheck still checks the harness. Final full CI/native verification is pending.
+CI repairs: translated the local QA controls, corrected an existing API formatting violation, and excluded the QA-only harness from the native staging type graph (fixtures are deliberately absent there). A staged TypeScript graph check confirms that exclusion; the normal web typecheck still checks the harness. Final verification:
+- Full CI [39764965028](https://github.com/hamidYeganeh/Gym4Me2/actions/runs/39764965028), source `052eba8`: verify and iOS jobs both SUCCESS. Includes lint/types, existing unit and PostgreSQL integration suites, commerce/coaching/training/notifications, backup drill, four project builds and native builds.
+- Connected Android [39764726543](https://github.com/hamidYeganeh/Gym4Me2/actions/runs/39764726543), source `0c553ad`: SUCCESS. Installed-app testing on a physical phone remains outside these results.
+- Local file `.artifacts/android-demo/Gym4Me-mobile-refresh.apk`: 22,873,549 bytes; SHA-256 `07ad85ba38e7d01ac76ff41775d57813b34862bf6875afe8f3081bc433d10a8f`. Artifact ZIP digest, APK signature, app ID and bundled online API verified. Receipt `.artifacts/mobile-redesign/android-receipt.json`.
+- This debug APK has a different signing certificate from the previous download and cannot update that installation in place. Keep/export any local draft before a manual reinstall; no installed app or local phone data was deleted by this task.
+- 39 targeted local navigation/native/motion tests and 54 API unit tests pass. The local dev server and temporary browser viewport overrides were stopped/reset.
+
+No dependency, paid service, seed, account provisioning or database mutation was added by the visual work. The online catalog remains empty by the earlier user request.
 
 ## Intentionally refreshed design baseline
 
