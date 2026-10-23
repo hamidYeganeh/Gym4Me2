@@ -5,13 +5,14 @@ import {
   useSyncExternalStore,
   useTransition,
 } from "react";
-import { Map, Search, X, UserRound, Bookmark } from "lucide-react";
+import { Map, Search, X, Building2, Bookmark } from "lucide-react";
 import {
   InputGroup,
   InputGroupInput,
   InputGroupAddon,
   InputGroupButton,
 } from "@repo/ui/kit/InputGroup";
+import { EmptyState } from "@repo/ui/account";
 import { ServicesLink } from "../luma/discovery-link";
 import { DiscoveryTabBar } from "./discovery-tab-bar";
 import Link from "next/link";
@@ -108,6 +109,58 @@ export function Discovery() {
     ...Object.values(place),
     ...Object.values(filters),
   ].filter(Boolean).length;
+  const hasFilters = Boolean(search || filterCount);
+  function resetFilters() {
+    setCategory("");
+    setPlace({});
+    setSearch("");
+    setFilters({});
+    setPage(1);
+  }
+  const filterSheet = (
+    <FilterSheet count={filterCount} onReset={resetFilters}>
+      <label className="grid gap-2 text-sm">
+        {copy("categories")}
+        <NativeSelect
+          value={activeCategory}
+          optionsSource={catalogSelectSource("club-categories")}
+          sheetTitle={copy("categories")}
+          onChange={(event) => {
+            setCategory(event.target.value);
+            setPlace({});
+            setPage(1);
+          }}
+        >
+          <NativeSelectOption value="">{t("allClubs")}</NativeSelectOption>
+          {(categories.data ?? []).map((category) => (
+            <NativeSelectOption
+              key={category.id}
+              value={category.id}
+              subtitle={category.description ?? undefined}
+            >
+              {category.name}
+            </NativeSelectOption>
+          ))}
+        </NativeSelect>
+      </label>
+      <div className="discovery-filter-fields">
+        <LocationPicker
+          value={place}
+          onChange={(place) => {
+            setPlace(place);
+            setPage(1);
+          }}
+        />
+        <CatalogFilters
+          value={filters}
+          onChange={(value) => {
+            setFilters(value);
+            setPage(1);
+          }}
+        />
+      </div>
+    </FilterSheet>
+  );
   return (
     <main className="discovery-page">
       <header className="discovery-header">
@@ -121,11 +174,6 @@ export function Discovery() {
           <span>{home("brand")}</span>
         </Link>
         <div className="flex shrink-0 items-center gap-1.5">
-          <Button asChild variant="outline" size="icon-lg" className="size-11">
-            <Link href="/profile" aria-label={copy("userAccount")}>
-              <UserRound />
-            </Link>
-          </Button>
           <Button asChild variant="outline" size="icon-lg">
             <Link href="/discovery/map" scroll={false} aria-label={t("map")}>
               <Map />
@@ -179,48 +227,7 @@ export function Discovery() {
           )}
         </InputGroup>
       </section>
-      <FilterSheet count={filterCount}>
-        <label className="grid gap-2 text-sm">
-          {copy("categories")}
-          <NativeSelect
-            value={activeCategory}
-            optionsSource={catalogSelectSource("club-categories")}
-            sheetTitle={copy("categories")}
-            onChange={(event) => {
-              setCategory(event.target.value);
-              setPlace({});
-              setPage(1);
-            }}
-          >
-            <NativeSelectOption value="">{t("allClubs")}</NativeSelectOption>
-            {(categories.data ?? []).map((category) => (
-              <NativeSelectOption
-                key={category.id}
-                value={category.id}
-                subtitle={category.description ?? undefined}
-              >
-                {category.name}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </label>
-        <div className="discovery-filter-fields">
-          <LocationPicker
-            value={place}
-            onChange={(place) => {
-              setPlace(place);
-              setPage(1);
-            }}
-          />
-          <CatalogFilters
-            value={filters}
-            onChange={(value) => {
-              setFilters(value);
-              setPage(1);
-            }}
-          />
-        </div>
-      </FilterSheet>
+
       {!validPrices && (
         <p role="alert" className="text-sm text-destructive">
           {catalog("invalidPriceRange")}
@@ -228,31 +235,15 @@ export function Discovery() {
       )}
       <div className="discovery-results-heading">
         <h2>{t("clubs")}</h2>
-        <Button asChild variant="ghost">
-          <Link href="/saved">
-            <Bookmark size={17} />
-            {tabs("saved")}
-          </Link>
-        </Button>
+        <div className="flex shrink-0 items-center gap-1">
+          {filterSheet}
+          <Button asChild variant="ghost" size="icon-lg">
+            <Link href="/saved" aria-label={tabs("saved")}>
+              <Bookmark size={18} />
+            </Link>
+          </Button>
+        </div>
       </div>
-      {(activeCategory ||
-        Object.values(place).some(Boolean) ||
-        search ||
-        Object.keys(filters).length > 0) && (
-        <Button
-          variant="outline"
-          className="self-start"
-          onClick={() => {
-            setCategory("");
-            setPlace({});
-            setSearch("");
-            setFilters({});
-            setPage(1);
-          }}
-        >
-          {t("allClubs")}
-        </Button>
-      )}
       {validPrices && query.isPending && <CatalogState loading />}
       {validPrices && query.isError && (
         <CatalogState retry={() => void query.refetch()} />
@@ -261,9 +252,22 @@ export function Discovery() {
         !query.isPending &&
         !query.isError &&
         clubs.length === 0 && (
-          <p role="status" className="discovery-empty">
-            {t("noClubs")}
-          </p>
+          <section role="status">
+            <EmptyState
+              title={t(hasFilters ? "noResultsTitle" : "emptyTitle")}
+              description={t(
+                hasFilters ? "noResultsDescription" : "emptyDescription",
+              )}
+              icon={<Building2 />}
+              action={
+                hasFilters ? (
+                  <Button variant="outline" onClick={resetFilters}>
+                    {t("resetFilters")}
+                  </Button>
+                ) : undefined
+              }
+            />
+          </section>
         )}
       <section
         id="discovery-clubs"

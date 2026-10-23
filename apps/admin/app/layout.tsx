@@ -1,3 +1,4 @@
+import { WorkspaceShell } from "@repo/ui/account";
 import { AdminPageTransitions } from "./page-transitions";
 import { ApiProvider } from "@repo/api/provider";
 import type { Metadata } from "next";
@@ -46,7 +47,9 @@ export default async function RootLayout({
             <ThemeProvider>
               <DirectionProvider dir={direction}>
                 <TooltipProvider>
-                  <AdminPageTransitions>{children}</AdminPageTransitions>
+                  <WorkspaceShell client="admin">
+                    <AdminPageTransitions>{children}</AdminPageTransitions>
+                  </WorkspaceShell>
                   <Toaster dir={direction} />
                 </TooltipProvider>
               </DirectionProvider>

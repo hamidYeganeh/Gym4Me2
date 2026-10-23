@@ -62,10 +62,14 @@ export function AdvancedBusinessPanel({
     to: range.to || undefined,
   });
   const data = query.data;
+  const scopeBranch = allowedBranches.find((b) => b.id === branchId);
   const owner = surface === "business" && selectedOrg?.role === "owner";
   if (!account.data && account.isLoading) return <Loading />;
   return (
-    <main className="gym-workspace mx-auto min-h-dvh max-w-6xl space-y-6 px-4 py-7 sm:px-6">
+    <main
+      data-ph5-surface={surface}
+      className="gym-workspace ph5-panel mx-auto min-h-dvh max-w-6xl space-y-6 px-4 py-7 sm:px-6"
+    >
       <header className="flex items-start justify-between gap-4">
         <div>
           <p className="mb-2 text-sm text-muted-foreground">
@@ -87,75 +91,102 @@ export function AdvancedBusinessPanel({
           </Link>
         </Button>
       </header>
-      <FilterSheet
-        count={[branch, range.from, range.to].filter(Boolean).length}
-      >
-        <Field name="organization" label={t("organization")}>
-          <NativeSelect
-            value={organizationId}
-            onChange={(e) => {
-              setOrg(e.target.value);
-              setBranch("");
-            }}
-          >
-            <NativeSelectOption value="">{t("choose")}</NativeSelectOption>
-            {options.map((o) => (
-              <NativeSelectOption key={o.id} value={o.id}>
-                {o.name}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </Field>
-        {surface !== "coach" && (
-          <Field name="branch" label={t("branch")}>
+      <div className="ph5-scope">
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold">
+            {selectedOrg?.name ?? t("chooseOrganization")}
+          </p>
+          {selectedOrg && (
+            <p className="mt-1 text-xs leading-6 text-muted-foreground">
+              {scopeBranch?.name ?? t("allBranches")}
+              {range.from && (
+                <>
+                  {" "}
+                  · {t("from")} {date(range.from)}
+                </>
+              )}
+              {range.to && (
+                <>
+                  {" "}
+                  · {t("to")} {date(range.to)}
+                </>
+              )}
+            </p>
+          )}
+        </div>
+        <FilterSheet
+          count={[branch, range.from, range.to].filter(Boolean).length}
+          onReset={() => {
+            setRange({ from: "", to: "" });
+            setBranch("");
+            setPage(1);
+          }}
+        >
+          <Field name="organization" label={t("organization")}>
             <NativeSelect
-              value={branchId ?? ""}
+              value={organizationId}
               onChange={(e) => {
                 setPage(1);
-                setBranch(e.target.value);
+                setOrg(e.target.value);
+                setBranch("");
               }}
             >
-              {selectedOrg?.all_branches && (
-                <NativeSelectOption value="">
-                  {t("allBranches")}
-                </NativeSelectOption>
-              )}
-              {allowedBranches.map((b) => (
-                <NativeSelectOption key={b.id} value={b.id}>
-                  {b.name}
+              <NativeSelectOption value="">{t("choose")}</NativeSelectOption>
+              {options.map((o) => (
+                <NativeSelectOption key={o.id} value={o.id}>
+                  {o.name}
                 </NativeSelectOption>
               ))}
             </NativeSelect>
           </Field>
-        )}
-        <Field name="from" label={t("from")}>
-          <input
-            type="date"
-            className="min-h-11 rounded-xl border px-3"
-            value={range.from}
-            max={range.to || undefined}
-            onChange={(e) => setRange((r) => ({ ...r, from: e.target.value }))}
-          />
-        </Field>
-        <Field name="to" label={t("to")}>
-          <input
-            type="date"
-            className="min-h-11 rounded-xl border px-3"
-            value={range.to}
-            min={range.from || undefined}
-            onChange={(e) => setRange((r) => ({ ...r, to: e.target.value }))}
-          />
-        </Field>
-        <Button
-          variant="outline"
-          onClick={() => {
-            setRange({ from: "", to: "" });
-            setBranch("");
-          }}
-        >
-          {t("reset")}
-        </Button>
-      </FilterSheet>
+          {surface !== "coach" && (
+            <Field name="branch" label={t("branch")}>
+              <NativeSelect
+                value={branchId ?? ""}
+                onChange={(e) => {
+                  setPage(1);
+                  setBranch(e.target.value);
+                }}
+              >
+                {selectedOrg?.all_branches && (
+                  <NativeSelectOption value="">
+                    {t("allBranches")}
+                  </NativeSelectOption>
+                )}
+                {allowedBranches.map((b) => (
+                  <NativeSelectOption key={b.id} value={b.id}>
+                    {b.name}
+                  </NativeSelectOption>
+                ))}
+              </NativeSelect>
+            </Field>
+          )}
+          <Field name="from" label={t("from")}>
+            <input
+              type="date"
+              className="min-h-11 rounded-xl border px-3"
+              value={range.from}
+              max={range.to || undefined}
+              onChange={(e) => {
+                setPage(1);
+                setRange((r) => ({ ...r, from: e.target.value }));
+              }}
+            />
+          </Field>
+          <Field name="to" label={t("to")}>
+            <input
+              type="date"
+              className="min-h-11 rounded-xl border px-3"
+              value={range.to}
+              min={range.from || undefined}
+              onChange={(e) => {
+                setPage(1);
+                setRange((r) => ({ ...r, to: e.target.value }));
+              }}
+            />
+          </Field>
+        </FilterSheet>
+      </div>
       {scopes.error ? (
         <QueryError error={scopes.error} retry={scopes.refetch} />
       ) : !organizationId ? (
@@ -171,7 +202,7 @@ export function AdvancedBusinessPanel({
       ) : (
         data && (
           <>
-            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+            <div className="ph5-totals">
               {(
                 [
                   [
@@ -216,7 +247,7 @@ export function AdvancedBusinessPanel({
                   ],
                 ] as const
               ).map(([label, Icon, n]) => (
-                <Card key={label}>
+                <Card key={label} className="gap-0 py-0">
                   <CardContent className="space-y-2 px-3 py-4 sm:px-5">
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
                       {t(label)}

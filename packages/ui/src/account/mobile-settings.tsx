@@ -62,7 +62,9 @@ function SettingsGroup({
           {title}
         </h2>
       )}
-      <div className="overflow-hidden rounded-3xl border border-border bg-card">{children}</div>
+      <div className="overflow-hidden rounded-3xl border border-border bg-card">
+        {children}
+      </div>
     </section>
   );
 }
@@ -137,10 +139,10 @@ export function MobileSettings({
         </SettingsRow>
         <Separator />
         <div className="flex min-h-16 items-center gap-4 px-5 py-4">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/15">
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted">
             <Palette className="size-5" />
           </span>
-          <span className="flex-1 text-base">
+          <span className="flex-1 text-sm">
             {t("AccountDesign.appearance")}
           </span>
           <AnimatedThemeToggler
@@ -148,11 +150,14 @@ export function MobileSettings({
             size="icon-lg"
           />
         </div>
-      </SettingsGroup>
-      <SettingsGroup title={t("Luma.language")}>
+        <Separator />
         <div className="flex min-h-16 items-center gap-4 px-5 py-4">
-          <Languages className="size-5" />
+          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted">
+            <Languages className="size-5" />
+          </span>
+          <span className="min-w-0 flex-1 text-sm">{t("Luma.language")}</span>
           <NativeSelect
+            className="max-w-36"
             aria-label={t("Luma.language")}
             value={locale}
             onChange={(e) => {
@@ -167,8 +172,7 @@ export function MobileSettings({
             </NativeSelectOption>
           </NativeSelect>
         </div>
-      </SettingsGroup>
-      <SettingsGroup title={t("Luma.notifications")}>
+        <Separator />
         <SettingsRow
           href="/notifications/preferences"
           icon={<Bell className="size-5" />}

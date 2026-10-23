@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
   ...(qaWeb
     ? {
         distDir: ".next-qa",
+        devIndicators: false,
         experimental: { cpus: 1, webpackMemoryOptimizations: true },
       }
     : {}),

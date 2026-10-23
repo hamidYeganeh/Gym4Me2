@@ -1,0 +1,4 @@
+/* Test-only canvas: workspace fixtures use the actual desktop viewport. */
+body:has([data-qa-workspace]) .application-frame {
+  max-width: none;
+}

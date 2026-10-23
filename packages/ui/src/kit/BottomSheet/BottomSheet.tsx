@@ -28,6 +28,7 @@ export function BottomSheet({
   children,
   onOpenAutoFocus,
   fixedHeader,
+  footer,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -36,6 +37,7 @@ export function BottomSheet({
   children: ReactNode;
   onOpenAutoFocus?: (event: Event) => void;
   fixedHeader?: ReactNode;
+  footer?: ReactNode;
 }) {
   const locale = useLocale();
   const trigger = useRef<HTMLElement | null>(null);
@@ -77,6 +79,11 @@ export function BottomSheet({
         >
           {children}
         </div>
+        {footer && (
+          <div className="shrink-0 border-t border-border bg-popover px-5 py-4">
+            {footer}
+          </div>
+        )}
       </SheetContent>
     </Sheet>
   );
@@ -95,11 +102,13 @@ export function FilterSheet({
   count = 0,
   onOpen,
   triggerRef,
+  onReset,
 }: {
   children: ReactNode;
   count?: number;
   onOpen?: () => void;
   triggerRef?: Ref<HTMLButtonElement>;
+  onReset?: () => void;
 }) {
   const t = useTranslations("SheetPicker");
   const locale = useLocale();
@@ -131,6 +140,29 @@ export function FilterSheet({
         onOpenChange={setOpen}
         title={t("filters")}
         description={t("filterHint")}
+        footer={
+          !hasForm(children) && (
+            <div className="flex gap-3">
+              {onReset && count > 0 && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="min-h-11"
+                  onClick={onReset}
+                >
+                  {t("clearFilters")}
+                </Button>
+              )}
+              <Button
+                type="button"
+                className="min-h-11 flex-1"
+                onClick={() => setOpen(false)}
+              >
+                {t("done")}
+              </Button>
+            </div>
+          )
+        }
       >
         <div
           className="grid gap-5"
@@ -144,17 +176,6 @@ export function FilterSheet({
         >
           {children}
         </div>
-        {!hasForm(children) && (
-          <div className="sticky bottom-0 mt-5 border-t border-border bg-popover pt-4">
-            <Button
-              type="button"
-              className="min-h-11 w-full"
-              onClick={() => setOpen(false)}
-            >
-              {t("done")}
-            </Button>
-          </div>
-        )}
       </BottomSheet>
     </>
   );

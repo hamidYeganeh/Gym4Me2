@@ -1,5 +1,5 @@
 "use client";
-import { Logo } from "@repo/theme/logo";
+import { workspaceNavigation } from "./workspace-navigation";
 import "../workspace-design.css";
 import { DemoPanel } from "../training/service-reviews";
 import { AnalyticsPanel } from "../analytics/panel";
@@ -17,18 +17,11 @@ import { useEffect, useRef, useState, Suspense, type ReactNode } from "react";
 import {
   Building2,
   Dumbbell,
-  LayoutDashboard,
   LogOut,
   ShieldCheck,
   Users,
-  UserRound,
-  Monitor,
   ScrollText,
-  Mail,
-  MapPin,
-  Tags,
   MessageSquare,
-  CalendarDays,
 } from "lucide-react";
 import { Button } from "@repo/ui/kit/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/kit/Card";
@@ -76,133 +69,6 @@ export type Section =
   | "locations"
   | "moderation"
   | "demo";
-const commonNav = [
-  {
-    key: "profile",
-    href: "/profile",
-    title: "Copy.myProfile",
-    icon: UserRound,
-  },
-  {
-    key: "sessions",
-    href: "/sessions",
-    title: "Copy.activeSessions",
-    icon: Monitor,
-  },
-  {
-    key: "invitations",
-    href: "/invitations",
-    title: "Copy.teamInvitations",
-    icon: Mail,
-  },
-] as const;
-const businessNav = [
-  { key: "advanced", href: "/advanced", title: "PH5.title", icon: ScrollText },
-  {
-    key: "coaching",
-    href: "/coaching",
-    title: "Practice.coachingManagement",
-    icon: Users,
-  },
-  { key: "overview", href: "/", title: "Copy.overview", icon: LayoutDashboard },
-  {
-    key: "organizations",
-    href: "/organizations",
-    title: "Copy.myOrganizations",
-    icon: Building2,
-  },
-  { key: "branches", href: "/branches", title: "Copy.branches", icon: MapPin },
-  { key: "team", href: "/team", title: "Copy.teamMembers", icon: Users },
-  {
-    key: "sports-services",
-    href: "/services",
-    title: "Luma.services",
-    icon: CalendarDays,
-  },
-  {
-    key: "reception",
-    href: "/reception",
-    title: "Luma.reception",
-    icon: Users,
-  },
-  {
-    key: "sports-calendar",
-    href: "/calendar",
-    title: "Luma.calendar",
-    icon: CalendarDays,
-  },
-  {
-    key: "sports-messages",
-    href: "/messages",
-    title: "Luma.messages",
-    icon: MessageSquare,
-  },
-] as const;
-const adminNav = [
-  { key: "advanced", href: "/advanced", title: "PH5.title", icon: ScrollText },
-  {
-    key: "analytics",
-    href: "/analytics",
-    title: "Analytics.title",
-    icon: LayoutDashboard,
-  },
-  {
-    key: "demo",
-    href: "/demo",
-    title: "Training.demoControls",
-    icon: ShieldCheck,
-  },
-  {
-    key: "coaching",
-    href: "/coaching",
-    title: "Practice.coachReview",
-    icon: Users,
-  },
-  { key: "overview", href: "/", title: "Copy.overview", icon: LayoutDashboard },
-  { key: "users", href: "/users", title: "Copy.users", icon: Users },
-  {
-    key: "sports-operations",
-    href: "/operations",
-    title: "Luma.operations",
-    icon: CalendarDays,
-  },
-  {
-    key: "organizations",
-    href: "/organizations",
-    title: "Copy.reviewOrganizations",
-    icon: Building2,
-  },
-  {
-    key: "catalog-reviews",
-    href: "/catalog-reviews",
-    title: "Copy.publicationQueue",
-    icon: ShieldCheck,
-  },
-  {
-    key: "taxonomies",
-    href: "/taxonomies",
-    title: "Copy.categories",
-    icon: Tags,
-  },
-  {
-    key: "locations",
-    href: "/locations",
-    title: "Copy.geography",
-    icon: MapPin,
-  },
-  {
-    key: "moderation",
-    href: "/moderation",
-    title: "Copy.reviewModeration",
-    icon: MessageSquare,
-  },
-  {
-    key: "audit",
-    href: "/audit",
-    title: "Copy.auditLog",
-    icon: ScrollText,
-  },
-] as const;
 export function AccountWorkspace({
   client,
   section,
@@ -257,14 +123,10 @@ export function AccountWorkspace({
     }
   }
   const locale = useLocale();
-  const nav = [
-    ...(client === "business"
-      ? businessNav
-      : client === "admin"
-        ? adminNav
-        : []),
-    ...commonNav,
-  ].map((item) => ({ ...item, title: t(item.title) }));
+  const nav = workspaceNavigation(client).map((item) => ({
+    ...item,
+    title: t(item.title),
+  }));
   const title =
     (client === "admin" || client === "business") && entityId
       ? section === "users"
@@ -280,54 +142,6 @@ export function AccountWorkspace({
       dir={getDirection(locale)}
       className="gym-workspace min-h-dvh bg-muted/25 lg:flex"
     >
-      {client !== "application" && (
-        <aside className="flex flex-col border-b bg-background p-5 lg:sticky lg:top-0 lg:h-dvh lg:w-64 lg:shrink-0 lg:overflow-y-auto lg:border-b-0 lg:border-e">
-          <Link
-            href="/"
-            className="mb-4 flex items-center gap-2 text-xl font-semibold lg:mb-8"
-          >
-            <Logo size={28} className="shrink-0 text-primary" />
-            <span dir="ltr">
-              {t("Copy.brand")}{" "}
-              <span className="text-xs text-muted-foreground">
-                {client === "business"
-                  ? t("Copy.businessBrand")
-                  : t("Copy.adminBrand")}
-              </span>
-            </span>
-          </Link>
-          <p className="mb-3 px-3 text-xs text-muted-foreground">
-            {client === "business"
-              ? t("Copy.clubWorkspace")
-              : t("Copy.platformManagement")}
-          </p>
-          <nav
-            aria-label={t("Copy.panelNavigation")}
-            className="flex gap-1 overflow-x-auto lg:flex-col"
-          >
-            {nav.map((item) => (
-              <Button
-                key={item.key}
-                variant={section === item.key ? "secondary" : "ghost"}
-                className="shrink-0 justify-start"
-                asChild
-              >
-                <Link
-                  href={item.href}
-                  aria-current={section === item.key ? "page" : undefined}
-                >
-                  <item.icon data-icon="inline-start" />
-                  {item.title}
-                </Link>
-              </Button>
-            ))}
-          </nav>
-          <div className="mt-auto hidden pt-8 text-xs leading-6 text-muted-foreground lg:block">
-            <ShieldCheck className="mb-2 size-5" />
-            {t("Copy.accessDependsOnEachPersonSRole")}{" "}
-          </div>
-        </aside>
-      )}
       <div className="min-w-0 flex-1">
         <header className="flex items-center justify-between gap-4 border-b bg-background px-5 py-4 lg:px-10">
           <div>
@@ -342,7 +156,7 @@ export function AccountWorkspace({
             <span className="hidden text-sm sm:inline">
               {account?.displayName ?? account?.phone}
             </span>
-            {account && (
+            {account && client === "application" && (
               <Button
                 variant="outline"
                 size="sm"

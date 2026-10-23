@@ -13,6 +13,8 @@ import { Button } from "@repo/ui/kit/Button";
 import {
   Empty,
   EmptyHeader,
+  EmptyMedia,
+  EmptyContent,
   EmptyTitle,
   EmptyDescription,
 } from "@repo/ui/kit/Empty";
@@ -20,6 +22,7 @@ import { Field, FieldLabel } from "@repo/ui/kit/Field";
 import { Input } from "@repo/ui/kit/Input";
 import { Spinner } from "@repo/ui/kit/Spinner";
 import { Badge } from "@repo/ui/kit/Badge";
+import { Inbox } from "lucide-react";
 import { cn } from "../lib/utils";
 
 const roleKeys = {
@@ -102,16 +105,24 @@ export function ErrorNotice({ error }: { error: unknown }) {
 export function Blank({
   title,
   description,
+  icon,
+  action,
 }: {
   title: string;
   description: string;
+  icon?: ReactNode;
+  action?: ReactNode;
 }) {
   return (
-    <Empty className="border border-dashed">
+    <Empty className="rounded-3xl border bg-card px-6 py-8 md:p-10">
       <EmptyHeader>
+        <EmptyMedia variant="icon" aria-hidden="true">
+          {icon ?? <Inbox />}
+        </EmptyMedia>
         <EmptyTitle>{title}</EmptyTitle>
         <EmptyDescription>{description}</EmptyDescription>
       </EmptyHeader>
+      {action && <EmptyContent>{action}</EmptyContent>}
     </Empty>
   );
 }

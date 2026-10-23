@@ -1,0 +1,423 @@
+[
+  {
+    "bodyText": 761,
+    "busy": 0,
+    "heading": "پلن، شعب و تسویه",
+    "screen": "business-shell",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 481,
+    "busy": 0,
+    "heading": "پلن، شعب و تسویه",
+    "screen": "admin-shell",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 656,
+    "busy": 0,
+    "heading": "جایی برای قوی‌تر شدن.",
+    "screen": "discovery",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 260,
+    "busy": 0,
+    "heading": "تنظیمات",
+    "screen": "settings",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 280,
+    "busy": 0,
+    "heading": "پروفایل",
+    "screen": "profile",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 458,
+    "busy": 0,
+    "heading": "ویرایش پروفایل",
+    "screen": "profile-edit",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 30,
+    "busy": 0,
+    "heading": "خانه",
+    "screen": "home",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 420,
+    "busy": 0,
+    "heading": "کلاس‌ها و سانس‌ها",
+    "screen": "services",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 684,
+    "busy": 0,
+    "heading": "یوگا و انعطاف صبحگاهی",
+    "screen": "service",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 137,
+    "busy": 0,
+    "heading": "رزروهای شما",
+    "screen": "bookings",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 302,
+    "busy": 0,
+    "heading": "جزئیات رزرو",
+    "screen": "booking",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 54,
+    "busy": 0,
+    "heading": "عضویت‌ها",
+    "screen": "memberships",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 97,
+    "busy": 0,
+    "heading": "خریدها",
+    "screen": "orders",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 422,
+    "busy": 0,
+    "heading": "مرور و پرداخت",
+    "screen": "checkout",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 112,
+    "busy": 0,
+    "heading": "نتیجه پرداخت",
+    "screen": "payment",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 644,
+    "busy": 0,
+    "heading": "خانه",
+    "screen": "home",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 119,
+    "busy": 0,
+    "heading": "گفتگو",
+    "screen": "messages",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 162,
+    "busy": 0,
+    "heading": "اعلان‌ها",
+    "screen": "notifications",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 441,
+    "busy": 0,
+    "heading": "ترجیحات اعلان",
+    "screen": "notification-preferences",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 621,
+    "busy": 0,
+    "heading": "مربی و شاگرد",
+    "screen": "coaching",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 194,
+    "busy": 0,
+    "heading": "تمرین",
+    "screen": "training",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 245,
+    "busy": 0,
+    "heading": "ساخت برنامه",
+    "screen": "builder",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 449,
+    "busy": 0,
+    "heading": "اجرای تمرین",
+    "screen": "workout",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 483,
+    "busy": 0,
+    "heading": "پلن، شعب و تسویه",
+    "screen": "ph5-coach",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 709,
+    "busy": 0,
+    "screen": "analytics",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 815,
+    "busy": 0,
+    "screen": "coach-analytics",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 643,
+    "busy": 0,
+    "heading": "حریم خصوصی و داده‌ها",
+    "screen": "privacy",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 1158,
+    "busy": 0,
+    "heading": "PH0 · مرجع مصنوعی طراحی",
+    "screen": "cards",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 1503,
+    "busy": 0,
+    "heading": "باشگاه نمایشی آفتاب",
+    "screen": "club",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 30,
+    "busy": 0,
+    "heading": "گالری (۲)",
+    "screen": "gallery",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 142,
+    "busy": 0,
+    "heading": "کشف باشگاه‌ها روی نقشه",
+    "screen": "map",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 363,
+    "busy": 0,
+    "heading": "جایی برای قوی‌تر شدن.",
+    "screen": "discovery",
+    "scrollWidth": 360,
+    "state": "empty",
+    "width": 360
+  },
+  {
+    "bodyText": 317,
+    "busy": 0,
+    "heading": "جایی برای قوی‌تر شدن.",
+    "screen": "discovery",
+    "scrollWidth": 360,
+    "state": "error",
+    "width": 360
+  },
+  {
+    "bodyText": 83,
+    "busy": 0,
+    "heading": "رزروهای شما",
+    "screen": "bookings",
+    "scrollWidth": 360,
+    "state": "error",
+    "width": 360
+  },
+  {
+    "bodyText": 313,
+    "busy": 0,
+    "heading": "تنظیمات",
+    "screen": "settings",
+    "scrollWidth": 360,
+    "state": "guest",
+    "width": 360
+  },
+  {
+    "bodyText": 1044,
+    "busy": 0,
+    "heading": "پلن، شعب و تسویه",
+    "screen": "business-shell",
+    "scrollWidth": 1440,
+    "state": "filled",
+    "width": 1440
+  },
+  {
+    "bodyText": 260,
+    "busy": 0,
+    "heading": "تنظیمات",
+    "screen": "settings",
+    "scrollWidth": 390,
+    "state": "filled",
+    "width": 390
+  },
+  {
+    "bodyText": 279,
+    "busy": 0,
+    "heading": "Settings",
+    "screen": "settings",
+    "scrollWidth": 390,
+    "state": "filled",
+    "width": 390
+  },
+  {
+    "bodyText": 663,
+    "busy": 0,
+    "heading": "A space to become stronger.",
+    "screen": "discovery",
+    "scrollWidth": 360,
+    "state": "filled",
+    "width": 360
+  },
+  {
+    "bodyText": 344,
+    "busy": 0,
+    "heading": "Booking details",
+    "screen": "booking",
+    "scrollWidth": 390,
+    "state": "filled",
+    "width": 390
+  },
+  {
+    "bodyText": 465,
+    "busy": 0,
+    "heading": "Review & checkout",
+    "screen": "checkout",
+    "scrollWidth": 390,
+    "state": "filled",
+    "width": 390
+  },
+  {
+    "bodyText": 817,
+    "busy": 0,
+    "heading": "Plans, branches & payouts",
+    "screen": "business-shell",
+    "scrollWidth": 768,
+    "state": "filled",
+    "width": 768
+  },
+  {
+    "bodyText": 823,
+    "busy": 0,
+    "heading": "Plans, branches & payouts",
+    "screen": "admin-shell",
+    "scrollWidth": 1440,
+    "state": "filled",
+    "width": 1440
+  },
+  {
+    "bodyText": 339,
+    "busy": 0,
+    "heading": "A space to become stronger.",
+    "screen": "discovery",
+    "scrollWidth": 390,
+    "state": "empty",
+    "width": 390
+  },
+  {
+    "bodyText": 817,
+    "busy": 0,
+    "heading": "Plans, branches & payouts",
+    "screen": "business-shell",
+    "scrollWidth": 390,
+    "state": "filled",
+    "width": 390
+  },
+  {
+    "bodyText": 279,
+    "busy": 0,
+    "heading": "Settings",
+    "screen": "settings",
+    "scrollWidth": 390,
+    "state": "filled",
+    "width": 390
+  },
+  {
+    "bodyText": 260,
+    "busy": 0,
+    "heading": "تنظیمات",
+    "screen": "settings",
+    "scrollWidth": 390,
+    "state": "filled",
+    "width": 390
+  }
+]

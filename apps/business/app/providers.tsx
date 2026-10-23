@@ -7,6 +7,7 @@ import { ThemeProvider } from "@repo/theme/provider";
 import { DirectionProvider } from "@repo/ui/kit/Direction";
 import { TooltipProvider } from "@repo/ui/kit/Tooltip";
 import { Toaster } from "@repo/ui/kit/Sonner";
+import { WorkspaceShell } from "@repo/ui/account";
 import { PageTransitions } from "@repo/ui/page-transitions";
 
 export function BusinessProviders({ children }: { children: ReactNode }) {
@@ -18,9 +19,11 @@ export function BusinessProviders({ children }: { children: ReactNode }) {
       <ThemeProvider>
         <DirectionProvider dir={direction}>
           <TooltipProvider>
-            <PageTransitions surface="business" routeId={pathname}>
-              {children}
-            </PageTransitions>
+            <WorkspaceShell client="business">
+              <PageTransitions surface="business" routeId={pathname}>
+                {children}
+              </PageTransitions>
+            </WorkspaceShell>
             <Toaster dir={direction} />
           </TooltipProvider>
         </DirectionProvider>

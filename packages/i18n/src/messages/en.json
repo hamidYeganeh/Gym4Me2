@@ -11,7 +11,8 @@
     "noResults": "No matching options. Try another search.",
     "filters": "Filters",
     "filterHint": "Refine your results in one place.",
-    "done": "Show results"
+    "done": "Show results",
+    "clearFilters": "Clear filters"
   },
   "Home": {
     "brand": "Gym4Me",
@@ -61,7 +62,12 @@
     "locationCount": "{count} club",
     "allClubs": "All clubs",
     "images": "Club images",
-    "view": "View"
+    "view": "View",
+    "emptyTitle": "No clubs here yet",
+    "emptyDescription": "Approved clubs will appear here. You can also explore classes and calendars.",
+    "noResultsTitle": "No matching clubs",
+    "noResultsDescription": "Try a different search or clear your filters to see more options.",
+    "resetFilters": "Clear filters"
   },
   "DiscoveryMap": {
     "allClubs": "All clubs",
@@ -2482,7 +2488,7 @@
     "basic": "Basic",
     "pro": "Advanced",
     "monthly": "per 30 days",
-    "branchAllowance": "Up to {count} active branches",
+    "branchAllowance": "Up to {count, number} active branches",
     "proFeatures": "Advanced settlements, shared memberships and branch pricing",
     "basicFeatures": "One branch and preserved historical records",
     "terms": "Terms and limits",
@@ -2496,7 +2502,7 @@
     "acceptTerms": "I accept this plan’s amount, terms and limits.",
     "ruleHint": "Percentage comes from the contract. Saved rules are immutable; changed terms require a new contract version. Fixed amounts cover 30 days and are prorated for the closed period.",
     "newContract": "Create contract version in coach management",
-    "version": "Version {n}",
+    "version": "Version {n, number}",
     "ongoing": "Open-ended",
     "ruleSaved": "Rule recorded",
     "calculation": "Calculation method",
@@ -2512,7 +2518,7 @@
     "saveRule": "Save contract rule",
     "active": "Active",
     "inactive": "Inactive",
-    "futureBookings": "{count} future bookings",
+    "futureBookings": "{count, number} future bookings",
     "deactivate": "Stop new sales",
     "reactivate": "Reactivate",
     "branchObligations": "Existing bookings and obligations are preserved. I reviewed future bookings.",
@@ -2536,7 +2542,7 @@
     "draft": "Awaiting approval",
     "approved": "Ready for payment",
     "adjustments": "Adjustments",
-    "lineItems": "{count} line items",
+    "lineItems": "{count, number} line items",
     "source": "Source service",
     "contract": "Source contract",
     "open": "Under review",
@@ -2588,7 +2594,7 @@
     "legacyBalance": "This contract has confirmed manual ledger entries. Start advanced calculations with a new contract version.",
     "advancedLedger": "This contract uses advanced statements. Record payouts and adjustments in settlements.",
     "allocated": "Net shared-membership allocation",
-    "membersCount": "{count} distinct branch members",
+    "membersCount": "{count, number} distinct branch members",
     "currentPlan": "Current plan",
     "expiresOn": "Valid until {date}",
     "totalDue": "Total for this renewal",
@@ -2596,7 +2602,22 @@
     "pagination": "Financial record pages",
     "previous": "Previous",
     "next": "Next",
-    "page": "Page {n}",
+    "page": "Page {n, number}",
     "unlimitedBasis": "An unlimited membership has no per-session percentage basis. Agree a per-session or fixed contract amount instead."
+  },
+  "WorkspaceNav": {
+    "work": "Daily work",
+    "management": "Management",
+    "finance": "Finance",
+    "account": "Account & tools",
+    "openMenu": "Open navigation",
+    "navigation": "Your workspace",
+    "menuHint": "Choose where to go. Your current page is highlighted.",
+    "resources": "Spaces & resources",
+    "imports": "Import members",
+    "payments": "Payments",
+    "reports": "Reports",
+    "advanced": "Plans & settlements",
+    "workspace": "Workspace"
   }
 }

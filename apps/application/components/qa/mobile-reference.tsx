@@ -1,4 +1,5 @@
 "use client";
+import "./qa-canvas.css";
 import { AdvancedBusinessPanel } from "@repo/ui/advanced-business";
 import { SelectOptionsReference } from "./select-options-reference";
 import { NativeSelect } from "@repo/ui/kit/NativeSelect";
@@ -14,7 +15,11 @@ import {
 import { AnalyticsPanel } from "@repo/ui/analytics";
 import { DiscoveryMap } from "../discovery/discovery-map";
 import { NotificationPreferences } from "../luma/notification-preferences";
-import { MobileAccount, CoachingWorkspace } from "@repo/ui/account";
+import {
+  MobileAccount,
+  CoachingWorkspace,
+  WorkspaceShell,
+} from "@repo/ui/account";
 import { ClubPage } from "../discovery/club-page";
 import { ClubGallery } from "../discovery/club-gallery";
 import { Discovery } from "../discovery/discovery";
@@ -39,6 +44,8 @@ import {
 import { createMobileFixtureFetch } from "../../test/fixtures/mobile-visual";
 
 const screens = [
+  "business-shell",
+  "admin-shell",
   "ph5-business",
   "ph5-coach",
   "ph5-admin",
@@ -88,7 +95,18 @@ export function MobileReference() {
     () => createMobileFixtureFetch(catalog, services, state),
     [catalog, services, state],
   );
-  const content = screen.startsWith("ph5-") ? (
+  const content = ["business-shell", "admin-shell"].includes(screen) ? (
+    <div data-qa-workspace>
+      <WorkspaceShell
+        client={screen === "business-shell" ? "business" : "admin"}
+        currentPath="/advanced"
+      >
+        <AdvancedBusinessPanel
+          surface={screen === "business-shell" ? "business" : "admin"}
+        />
+      </WorkspaceShell>
+    </div>
+  ) : screen.startsWith("ph5-") ? (
     <AdvancedBusinessPanel
       surface={
         screen === "ph5-business"
@@ -216,6 +234,10 @@ export function MobileReference() {
         {content}
       </ApiProvider>
       {![
+        "business-shell",
+        "admin-shell",
+        "ph5-business",
+        "ph5-admin",
         "cards",
         "club",
         "gallery",

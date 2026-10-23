@@ -1,0 +1,189 @@
+/* Persistent chrome is shared by every business/admin route, including PH5. */
+.workspace-shell {
+  min-height: 100dvh;
+  background: var(--background);
+  color: var(--foreground);
+}
+.workspace-body {
+  min-width: 0;
+  flex: 1;
+}
+.workspace-sidebar {
+  display: none;
+}
+.workspace-mobile-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: calc(0.75rem + var(--app-safe-top, 0px)) 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--background);
+}
+.workspace-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 2.75rem;
+  text-decoration: none;
+}
+.workspace-brand > span {
+  display: grid;
+  gap: 0.15rem;
+}
+.workspace-brand strong {
+  font-size: 1rem;
+  letter-spacing: -0.035em;
+}
+.workspace-brand small {
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+}
+.workspace-menu {
+  display: grid;
+  gap: 1.5rem;
+  min-width: 0;
+  padding-block: 0.5rem 1rem;
+}
+.workspace-menu section {
+  min-width: 0;
+}
+.workspace-menu h2 {
+  margin: 0 0 0.5rem;
+  padding-inline: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+.workspace-menu section > div {
+  display: grid;
+  gap: 0.2rem;
+}
+.workspace-menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.8rem;
+  font-size: 0.825rem;
+  line-height: 1.6;
+  text-decoration: none;
+  color: var(--muted-foreground);
+}
+.workspace-menu a > svg {
+  flex: none;
+}
+.workspace-menu a > span:first-of-type {
+  flex: 1;
+  min-width: 0;
+}
+.workspace-menu a[aria-current="page"] {
+  color: var(--foreground);
+  background: color-mix(in oklch, var(--primary) 12%, var(--background));
+  font-weight: 600;
+}
+.workspace-menu-dot {
+  flex: none;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: var(--primary);
+}
+.workspace-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.workspace-person {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex: 1;
+  min-width: 0;
+  min-height: 3.25rem;
+  text-decoration: none;
+}
+.workspace-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--muted);
+}
+.workspace-person > span:last-child {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.workspace-person strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.workspace-person small {
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+}
+.workspace-body main.gym-workspace {
+  min-height: calc(100dvh - 5rem);
+  padding-top: 1.5rem;
+}
+@media (hover: hover) {
+  .workspace-menu a:hover {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+}
+@media (min-width: 1024px) {
+  .workspace-shell {
+    display: flex;
+    align-items: start;
+  }
+  .workspace-sidebar {
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    width: 15rem;
+    flex: none;
+    border-inline-end: 1px solid var(--border);
+    padding: 1.5rem 1rem 1rem;
+  }
+  .workspace-sidebar > .workspace-brand {
+    padding-inline: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .workspace-sidebar > .workspace-menu {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    flex: 1;
+    min-height: 0;
+  }
+  .workspace-sidebar > footer {
+    padding-top: 0.85rem;
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+  .workspace-mobile-bar {
+    display: none;
+  }
+  .workspace-body main.gym-workspace {
+    min-height: 100dvh;
+    padding-top: 2rem;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .workspace-menu a {
+    transition:
+      background-color 120ms ease-out,
+      color 120ms ease-out;
+  }
+}
