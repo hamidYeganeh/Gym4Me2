@@ -19,7 +19,10 @@ import type { ReactNode } from "react";
 import type { ApiError } from "@repo/api";
 import { useQueryRetry } from "@repo/ui/hooks/use-query-retry";
 import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
-import { accountRecovery } from "@repo/ui/lib/account-recovery";
+import {
+  accountRecovery,
+  accountReadDenied,
+} from "@repo/ui/lib/account-recovery";
 import { AuthRequired } from "@repo/ui/account";
 import { useAccount } from "@repo/api/profile";
 import "./luma.css";
@@ -117,6 +120,7 @@ export function LumaPage({
   const t = useLuma();
   const router = useRouter();
   const account = useAccount();
+  const identity = accountReadDenied(account.error) ? undefined : account.data;
   return (
     <main className={`luma-page${className ? ` ${className}` : ""}`}>
       <header className="luma-header">
@@ -144,7 +148,7 @@ export function LumaPage({
         ) : (
           <Link href="/profile" className="luma-icon" aria-label={t("account")}>
             <span className="luma-avatar" aria-hidden="true">
-              {account.data?.displayName?.trim().slice(0, 2) || (
+              {identity?.displayName?.trim().slice(0, 2) || (
                 <CircleUserRound size={23} />
               )}
             </span>

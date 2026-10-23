@@ -44,3 +44,15 @@ The 59-file design guard remains enabled. Its intentional updates reflect the us
 Local browser evidence (not committed/generated product assets): `.artifacts/luma-redesign-qa/`, including `layout-matrix.json`, settings, discovery and session-sheet captures.
 
 Physical-device camera, native background gesture physics, real payment and real SMS are not claimed by these browser checks. Provider configuration remains unchanged. Publication/CI and Android delivery are recorded in the release addendum after their exact source revision is verified.
+
+## Independent review and corrections
+
+Three independent read-only reviews compared the implementation with `5f6942a`: standards/maintainability, approved scope, and security. The first two found the same preference-key collision and discovery deep-link precedence issue; the scope review also identified missing final host/admin session cancellation confirmation. All three were corrected and re-reviewed. Security review found no actionable issue in either the implementation commit or the final corrective delta.
+
+Management preferences now require a distinct list identity as well as account/route/organization scope. Explicit discovery categories receive separate category/page preference contexts. Host/admin cancellation reviews a snapshot of the reason and revision in a final Sheet, then calls the original server command; failures stay visible and retries preserve server protection. Authoritative account denial also retires a stale avatar and preference owner while transient outages retain recoverable state.
+
+Each of the 112 route inventory entries now maps to a source pattern, required state contract, and representative verification family. These state contracts are requirements, not a claim that each route/state was independently interacted with. The layout matrix records geometry only; ten 390-pixel records were subsequently refreshed in English/dark/reduced motion, with the other retained records in Persian/light. Persian/light was restored after these checks. Reservation cancellation was opened and its preview, accessible alternative and close action inspected without issuing a mutation from the read-only fixture.
+
+The 12ui branch used the existing Codex sign-in and incurred no new API purchase. Its separate automatic alignment operation requires a hosted API operation; that paid path was not run. Source-to-rendered alignment was reviewed locally instead. Static reference images do not establish exact native motion physics.
+
+After corrections, UI/application TypeScript and ESLint, presentation copy, workspace dependencies, the 59-file guard and 12 focused regression checks passed again. Full database/native acceptance and final publication are reported against the release revision below.

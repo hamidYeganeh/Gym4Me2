@@ -24,7 +24,7 @@ import { TicketScanner } from "./ticket-scanner";
 export function Reception({ org, branch }: { org: string; branch: string }) {
   const t = useTranslations("Luma");
   const locale = useLocale();
-  const list = useManagementFilters(`${org}:${branch}`);
+  const list = useManagementFilters("reception", `${org}:${branch}`);
   const query = useSportsQuery<
     (BookingDto & { displayName: string; paymentStatus: string })[]
   >(

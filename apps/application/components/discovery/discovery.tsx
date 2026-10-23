@@ -91,6 +91,7 @@ export function Discovery() {
     "category",
     null,
     (v): v is string | null => v === null || typeof v === "string",
+    queryCategory,
   );
   const [place, setPlace] = useListState<LocationValue>(
     "place",
@@ -109,6 +110,7 @@ export function Discovery() {
     "page",
     1,
     (v): v is number => Number.isInteger(v) && Number(v) > 0,
+    queryCategory,
   );
 
   const [filters, setFilters] = useListState<PriceFilters>(

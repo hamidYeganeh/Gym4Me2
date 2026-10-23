@@ -1,6 +1,7 @@
 "use client";
 import { useSyncExternalStore, type SetStateAction } from "react";
 import { usePathname } from "next/navigation";
+import { accountReadDenied } from "../lib/account-recovery";
 import { useAccount } from "@repo/api/profile";
 import { useApiContext } from "@repo/api/provider";
 import {
@@ -18,10 +19,11 @@ export function useListState<T>(
   const { api } = useApiContext();
   const account = useAccount();
   const path = usePathname();
+  const owner = accountReadDenied(account.error) ? undefined : account.data;
   const key = JSON.stringify([
     api.scope[1],
     api.scope[2],
-    account.data?.id ?? "guest",
+    owner?.id ?? "guest",
     path,
     scope,
     name,

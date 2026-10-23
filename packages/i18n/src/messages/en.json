@@ -1804,7 +1804,8 @@
     "editSession": "Edit session",
     "createSession": "Create session",
     "sessionEditHint": "Capacity cannot be lower than existing bookings. Sessions with bookings, invitations or conversations cannot be moved silently; use cancellation or booking rescheduling.",
-    "refunds": "Refunds"
+    "refunds": "Refunds",
+    "occurrenceCancelHint": "Cancels this session and its bookings. Any refunds remain tracked against their orders."
   },
   "AuthValidation": {
     "phoneRequired": "Enter your mobile number.",

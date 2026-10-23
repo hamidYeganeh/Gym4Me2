@@ -29,9 +29,9 @@ function isManagementFilters(value: unknown): value is ManagementFilters {
     )
   );
 }
-export function useManagementFilters(scope = "") {
+export function useManagementFilters(listId: string, scope = "") {
   const [filters, set] = useListState(
-    "management",
+    `management:${listId}`,
     initial,
     isManagementFilters,
     scope,

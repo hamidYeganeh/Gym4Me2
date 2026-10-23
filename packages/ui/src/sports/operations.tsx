@@ -21,7 +21,7 @@ import { Status, Blank, FormField } from "./shared";
 import { QueryError } from "./query-error";
 export function Members({ org, branch }: { org: string; branch: string }) {
   const t = useTranslations("Luma");
-  const list = useManagementFilters(`${org}:${branch}`);
+  const list = useManagementFilters("members", `${org}:${branch}`);
   const query = useSportsQuery<
     {
       id: string;
@@ -76,7 +76,7 @@ export function Members({ org, branch }: { org: string; branch: string }) {
   );
 }
 export function Payments({ org, branch }: { org: string; branch: string }) {
-  const list = useManagementFilters(`${org}:${branch}`);
+  const list = useManagementFilters("payments", `${org}:${branch}`);
   const query = useSportsQuery<OrderDto[]>(
     "business/sports-operations/orders",
     { organizationId: org, branchId: branch, ...list.filters },

@@ -72,7 +72,7 @@ export function CoachingPracticePanel() {
   );
   const a = usePracticeAction();
   const [tab, setTab] = useState("profile");
-  const sessionList = useManagementFilters();
+  const sessionList = useManagementFilters("practice-sessions");
   const sessions = usePracticeQuery<PracticeSessionDto[]>(
     "profile/coaching-practice/sessions",
     sessionList.filters,

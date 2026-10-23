@@ -13,6 +13,8 @@ import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { Card, CardHeader, CardTitle, CardContent } from "../kit/Card";
 import { Loading } from "../account/common";
 import { QueryError } from "./query-error";
+import { BottomSheet } from "../kit/BottomSheet";
+import { ConfirmAction } from "../confirm-action";
 
 type Session = {
   id: string;
@@ -165,6 +167,11 @@ export function SessionManager({
     `admin/sports/occurrences/${selected ?? ""}/cancel`,
   );
   const [reason, setReason] = useState("");
+  const [confirmation, setConfirmation] = useState<{
+    revision: number;
+    reason: string;
+    startAt: string;
+  } | null>(null);
   if (query.isPending) return <Loading />;
   return (
     <section className="mt-5 grid gap-4" aria-label={t("manageSessions")}>
@@ -218,10 +225,11 @@ export function SessionManager({
                     variant="outline"
                     disabled={reason.trim().length < 5 || cancel.isPending}
                     onClick={() =>
-                      cancel.mutate(
-                        { revision: item.revision, reason },
-                        { onSuccess: () => setSelected(null) },
-                      )
+                      setConfirmation({
+                        revision: item.revision,
+                        reason: reason.trim(),
+                        startAt: item.startAt,
+                      })
                     }
                   >
                     {t("cancel")}
@@ -232,13 +240,52 @@ export function SessionManager({
           )}
         </div>
       ))}
+      <BottomSheet
+        open={confirmation !== null}
+        onOpenChange={(open) => {
+          if (!open && !cancel.isPending) setConfirmation(null);
+        }}
+        title={t("confirmCancel")}
+        description={t("occurrenceCancelHint")}
+      >
+        {confirmation && (
+          <p className="mb-3 font-semibold">
+            {new Intl.DateTimeFormat(locale, {
+              dateStyle: "medium",
+              timeStyle: "short",
+              timeZone: "Asia/Tehran",
+            }).format(new Date(confirmation.startAt))}
+          </p>
+        )}
+        <p className="mb-5 text-sm">{confirmation?.reason}</p>
+        <ConfirmAction
+          label={t("confirmCancel")}
+          disabled={cancel.isPending}
+          onConfirm={() => {
+            if (confirmation && !cancel.isPending)
+              cancel.mutate(
+                {
+                  revision: confirmation.revision,
+                  reason: confirmation.reason,
+                },
+                {
+                  onSuccess: () => {
+                    setConfirmation(null);
+                    setSelected(null);
+                  },
+                },
+              );
+          }}
+        />
+        <QueryError error={cancel.error} />
+      </BottomSheet>
       <QueryError error={cancel.error} />
     </section>
   );
 }
 export function AdminSchedulePanel() {
   const t = useTranslations("Luma");
-  const list = useManagementFilters();
+  const list = useManagementFilters("admin-schedule");
   const query = useSportsQuery<ScheduleService[]>(
     "admin/sports/scheduling",
     list.filters,

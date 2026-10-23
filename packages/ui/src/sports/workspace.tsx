@@ -1,5 +1,6 @@
 "use client";
-import { FilterSheet } from "../kit/BottomSheet";
+import { BottomSheet, FilterSheet } from "../kit/BottomSheet";
+import { ConfirmAction } from "../confirm-action";
 import {
   useManagementFilters,
   ManagementFilterBar,
@@ -326,7 +327,7 @@ function Services({
   loading: boolean;
 }) {
   const t = useTranslations("Luma");
-  const list = useManagementFilters(`${org}:${branch}`);
+  const list = useManagementFilters("services", `${org}:${branch}`);
   const query = useSportsQuery<ServiceDto[]>("business/sports/services", {
     organizationId: org,
     branchId: branch,
@@ -1271,6 +1272,10 @@ function OccurrenceActions({
     "sports/community/host/conversations",
   );
   const [reason, setReason] = useState("");
+  const [confirmation, setConfirmation] = useState<{
+    revision: number;
+    reason: string;
+  } | null>(null);
   return (
     <div className="py-4 border-b border-border">
       <p>
@@ -1291,8 +1296,10 @@ function OccurrenceActions({
           />
           <Button
             variant="outline"
-            disabled={reason.length < 3 || command.isPending}
-            onClick={() => command.mutate({ revision: o.revision, reason })}
+            disabled={reason.trim().length < 3 || command.isPending}
+            onClick={() =>
+              setConfirmation({ revision: o.revision, reason: reason.trim() })
+            }
           >
             {t("cancel")}
           </Button>
@@ -1312,6 +1319,28 @@ function OccurrenceActions({
           </Button>
         </div>
       )}
+      <BottomSheet
+        open={confirmation !== null}
+        onOpenChange={(open) => {
+          if (!open && !command.isPending) setConfirmation(null);
+        }}
+        title={t("confirmCancel")}
+        description={t("occurrenceCancelHint")}
+      >
+        <p className="mb-3 font-semibold">{title}</p>
+        <p className="mb-5 text-sm">{confirmation?.reason}</p>
+        <ConfirmAction
+          label={t("confirmCancel")}
+          disabled={command.isPending}
+          onConfirm={() => {
+            if (confirmation && !command.isPending)
+              command.mutate(confirmation, {
+                onSuccess: () => setConfirmation(null),
+              });
+          }}
+        />
+        <QueryError error={command.error} />
+      </BottomSheet>
       <QueryError error={command.error ?? chat.error} />
       {chat.isSuccess && (
         <p role="status" className="mt-3 text-sm">
@@ -1323,7 +1352,7 @@ function OccurrenceActions({
 }
 export function SportsAdmin() {
   const t = useTranslations("Luma");
-  const list = useManagementFilters();
+  const list = useManagementFilters("admin-operations");
   const query = useSportsQuery<{
     refunds: {
       id: string;
