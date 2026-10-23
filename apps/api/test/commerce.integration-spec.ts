@@ -1,4 +1,5 @@
 import { AnalyticsService } from '../src/modules/analytics/analytics.service';
+import { ConflictException } from '@nestjs/common';
 import { analyticsFilters } from '../src/modules/analytics/analytics.contracts';
 import { managementFilters } from '../src/modules/commerce/management-filters';
 import { Test } from '@nestjs/testing';
@@ -919,6 +920,40 @@ test('checkout retries return the same order and reject changed payloads', async
     commerce.checkout(athlete, { ...input, serviceId: randomUUID() }),
   ).rejects.toThrow();
 });
+test.each(['0', '1000000'])(
+  'a second checkout for the same active session returns a conflict without an orphan order (%s)',
+  async (amount) => {
+    const service = await create('class', amount);
+    const slot = await occurrence(service.id, 4);
+    const results = await Promise.allSettled(
+      [1, 2].map(() =>
+        commerce.checkout(athlete, {
+          serviceId: service.id,
+          occurrenceId: slot.id,
+          idempotencyKey: randomUUID(),
+        }),
+      ),
+    );
+    expect(
+      results.filter((result) => result.status === 'fulfilled'),
+    ).toHaveLength(1);
+    const rejected = results.find(
+      (result) => result.status === 'rejected',
+    ) as PromiseRejectedResult;
+    const failure: unknown = rejected.reason;
+    if (!(failure instanceof ConflictException)) throw failure;
+    expect(failure.getStatus()).toBe(409);
+    expect(failure.message).toBe('Backend.sessionAlreadyReserved');
+    expect(
+      (
+        await rows<{ count: number }>(
+          db,
+          sql`SELECT count(*)::int AS count FROM sport_orders WHERE service_id=${service.id} AND user_id=${athlete}`,
+        )
+      )[0].count,
+    ).toBe(1);
+  },
+);
 test('host discount codes are scoped, revocable and leave old order prices intact', async () => {
   const service = await create('class', '1000000');
   const slot = await occurrence(service.id, 2);

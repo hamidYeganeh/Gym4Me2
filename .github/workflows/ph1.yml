@@ -47,6 +47,8 @@ jobs:
         run: docker compose --profile test up -d --wait postgres-test storage
       - name: Unit and integration acceptance
         run: bash scripts/verify-ph1.sh
+      - name: Verify clean and reset demo provisioning
+        run: node --test scripts/demo-provisioning.test.mjs
       - name: Verify commerce capacity, money, queues and repeated commands
         run: pnpm --filter api exec jest --config test/jest.commerce.json --runInBand
       - name: Verify coaching permissions, calendar, sessions and contracts

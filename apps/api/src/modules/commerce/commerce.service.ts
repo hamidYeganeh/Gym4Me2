@@ -1260,6 +1260,14 @@ export class CommerceService {
         )
           throw new ConflictException('Quote changed; review the price again');
       }
+      for (const occurrence of occurrences) {
+        const [reserved] = await rows<{ id: string }>(
+          tx,
+          sql`SELECT id FROM sport_reservations WHERE user_id=${userId} AND occurrence_id=${occurrence.id} AND status IN ${active} LIMIT 1`,
+        );
+        if (reserved)
+          throw new ConflictException('Backend.sessionAlreadyReserved');
+      }
       const [coaching] = await rows(
         tx,
         sql`SELECT coach_id,mode,entry_amount_minor::text FROM coaching_services WHERE service_id=${service.id}`,

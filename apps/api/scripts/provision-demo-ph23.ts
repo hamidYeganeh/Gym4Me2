@@ -58,15 +58,15 @@ export async function provisionDemoPh23() {
         }),
       );
       await practice.credential(coach, {
-        title: 'مدرک مربی آزمایشی؛ صرفاً دمو',
-        issuer: 'دادهٔ ساختگی Gym4Me',
+        title: 'گواهی آمادگی جسمانی',
+        issuer: 'پروندهٔ مربی',
         expiresAt: at(90),
       });
       const current = (await practice.workspace(coach)).practice;
       await practice.review(admin, coach, {
         approved: true,
         expiresAt: at(60),
-        reason: 'تأیید ساختگی حساب رزروشدهٔ دمو؛ مدرک واقعی نیست',
+        reason: 'بررسی پرونده و تأیید ارائهٔ خدمات مربیگری در مجموعه',
         revision: Number(current.revision),
       });
     }
@@ -95,7 +95,7 @@ export async function provisionDemoPh23() {
       guestAllowance: 0,
       transferable: false,
       terms:
-        'داده و پرداخت صرفاً آزمایشی‌اند. لغو تا ۱۲ ساعت قبل، استرداد کامل دارد. غیبت طبق همین نسخه باعث مصرف جلسه می‌شود.',
+        'در این پرداخت پولی از حساب بانکی کسر نمی‌شود. لغو تا ۱۲ ساعت قبل، استرداد کامل دارد. غیبت طبق همین نسخه باعث مصرف جلسه می‌شود.',
     } as const;
     for (const [index, phone] of ['+989000000001', '+989000000002'].entries()) {
       const owner = user(phone);
@@ -113,10 +113,10 @@ export async function provisionDemoPh23() {
         ['private', 'semi_private', 'online', 'introduction'] as const
       ).entries()) {
         const title = {
-          private: 'جلسهٔ خصوصی مربی آزمایشی',
-          semi_private: 'تمرین نیمه‌خصوصی مربی آزمایشی',
-          online: 'جلسهٔ آنلاین مربی آزمایشی',
-          introduction: 'آشنایی و ارزیابی مربی آزمایشی',
+          private: 'جلسهٔ خصوصی نیلوفر رضایی',
+          semi_private: 'تمرین نیمه‌خصوصی نیلوفر رضایی',
+          online: 'جلسهٔ آنلاین نیلوفر رضایی',
+          introduction: 'آشنایی و ارزیابی نیلوفر رضایی',
         }[mode];
         let [service] = await rows<{ id: string }>(
           db,
@@ -133,7 +133,7 @@ export async function provisionDemoPh23() {
                 kind: 'class',
                 amountMinor: mode === 'introduction' ? '500000' : '2000000',
                 coachUserId: coach,
-                coachName: 'مربی آزمایشی',
+                coachName: 'نیلوفر رضایی',
                 policy,
                 approvalRequired: true,
               },
@@ -168,13 +168,13 @@ export async function provisionDemoPh23() {
             service: {
               organizationId: club.organization_id,
               branchId: club.branch_id,
-              title: 'بستهٔ چهار جلسه مربی آزمایشی',
+              title: 'بستهٔ چهار جلسه نیلوفر رضایی',
               kind: 'membership',
               amountMinor: '6000000',
               durationDays: 30,
               sessionCount: 4,
               coachUserId: coach,
-              coachName: 'مربی آزمایشی',
+              coachName: 'نیلوفر رضایی',
               policy,
             },
             mode: 'private',
@@ -202,14 +202,19 @@ export async function provisionDemoPh23() {
             basis: 'gross',
             costsMinor: '0',
             terms:
-              'قرارداد ساختگی دمو: سهم ثبت‌شده پس از جلسه و تأیید مالی، به‌صورت دستی ثبت می‌شود.',
+              'سهم ثبت‌شده پس از جلسه و تأیید مالی، در صورت‌حساب مربی منظور می‌شود.',
           }),
         );
       // PH2 court and course use the same organization, capacities and mock checkout.
       for (const kind of ['court', 'course'] as const) {
-        let [existing] = await rows<{ id: string }>(
+        let [existing] = await rows<{
+          id: string;
+          status?: string;
+          revision?: number;
+          published_version_id?: string | null;
+        }>(
           db,
-          sql`SELECT id FROM sport_services WHERE organization_id=${club.organization_id} AND branch_id=${club.branch_id} AND kind=${kind} AND title=${kind === 'court' ? 'زمین آزمایشی قابل رزرو' : 'دورهٔ دو جلسه‌ای آزمایشی'} ORDER BY created_at LIMIT 1`,
+          sql`SELECT id,status,revision,published_version_id FROM sport_services WHERE organization_id=${club.organization_id} AND branch_id=${club.branch_id} AND kind=${kind} AND title=${kind === 'court' ? 'زمین چندمنظوره' : 'دورهٔ آمادگی جسمانی'} ORDER BY created_at LIMIT 1`,
         );
         if (!existing) {
           const resourceIds: string[] = [];
@@ -218,7 +223,7 @@ export async function provisionDemoPh23() {
               owner,
               club.organization_id,
               club.branch_id,
-              'زمین دموی PH2',
+              'سالن چندمنظوره',
               [],
               `demo-court-${index}`,
             );
@@ -230,9 +235,7 @@ export async function provisionDemoPh23() {
               organizationId: club.organization_id,
               branchId: club.branch_id,
               title:
-                kind === 'court'
-                  ? 'زمین آزمایشی قابل رزرو'
-                  : 'دورهٔ دو جلسه‌ای آزمایشی',
+                kind === 'court' ? 'زمین چندمنظوره' : 'دورهٔ آمادگی جسمانی',
               kind,
               amountMinor: '1500000',
               resourceIds,
@@ -240,6 +243,19 @@ export async function provisionDemoPh23() {
             }),
           );
           await commerce.publish(owner, existing.id, 1);
+        } else if (
+          existing.status === 'draft' &&
+          existing.revision === 1 &&
+          !existing.published_version_id
+        ) {
+          // Resume an interrupted first publication, never publish later edits.
+          await commerce.publish(owner, existing.id, 1);
+        }
+        const [schedule] = await rows<{ count: number; published: boolean }>(
+          db,
+          sql`SELECT (SELECT count(*)::int FROM sport_occurrences WHERE service_id=${existing.id}) AS count, status='published' AS published FROM sport_services WHERE id=${existing.id}`,
+        );
+        if (schedule.published && schedule.count === 0) {
           for (const day of [1, 2])
             await commerce.schedule(owner, existing.id, {
               startAt: at(day, 10 + index * 3),

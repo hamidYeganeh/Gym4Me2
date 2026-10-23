@@ -23,6 +23,7 @@ export async function seedUiSports(
     conversations,
     communicationPages = false,
     calendars,
+    presentation,
   }: {
     bookingCount?: number;
     resources?: SportsResourceService;
@@ -30,6 +31,7 @@ export async function seedUiSports(
     conversations?: SportsConversationService;
     communicationPages?: boolean;
     calendars?: SportsCalendarService;
+    presentation?: { coachName: string; terms: string };
   } = {},
 ) {
   const ids: string[] = [];
@@ -46,6 +48,7 @@ export async function seedUiSports(
     guestAllowance: 0,
     transferable: false,
     terms:
+      presentation?.terms ??
       'لغو تا ۱۲ ساعت پیش از شروع بدون هزینه است. پس از آن مبلغ مسترد نمی‌شود. همراه داشتن لباس ورزشی مناسب ضروری است. این خدمت صرفاً برای بررسی رابط ساخته شده است.',
   };
   for (let index = 0; index < clubs.length; index++)
@@ -67,7 +70,7 @@ export async function seedUiSports(
           policy,
           description:
             'فرصتی برای تمرین منظم در کنار گروهی همراه. سطح و شرایط پیش از ثبت‌نام مشخص است.',
-          coachName: 'مربی آزمایشی',
+          coachName: presentation?.coachName ?? 'مربی آزمایشی',
           level: 'همه سطوح',
         }),
       );

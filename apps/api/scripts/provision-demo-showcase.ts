@@ -39,7 +39,7 @@ const policy = {
   guestAllowance: 0,
   transferable: false,
   terms:
-    'نمونهٔ دمو؛ پرداخت واقعی نیست. لغو تا ۱۲ ساعت پیش از شروع با استرداد کامل انجام می‌شود.',
+    'در این پرداخت پولی از حساب بانکی کسر نمی‌شود. لغو تا ۱۲ ساعت پیش از شروع با استرداد کامل انجام می‌شود.',
 } as const;
 type Branch = {
   id: string;
@@ -163,7 +163,7 @@ export async function provisionDemoShowcase() {
           sql`INSERT INTO organization_members(organization_id,user_id,role) VALUES(${clubId},${owner},'owner') ON CONFLICT DO NOTHING`,
         );
         await tx.execute(
-          sql`INSERT INTO clubs(id,owner_id,description,short_description,publication_status,last_verified_at) VALUES(${clubId},${owner},${club.description + ' این مجموعه و تصاویر آن نمونهٔ دمو هستند.'},${club.description},'published',now()) ON CONFLICT DO NOTHING`,
+          sql`INSERT INTO clubs(id,owner_id,description,short_description,publication_status,last_verified_at) VALUES(${clubId},${owner},${club.description},${club.description},'published',now()) ON CONFLICT DO NOTHING`,
         );
         await tx.execute(
           sql`INSERT INTO club_category_links(club_id,category_id) VALUES(${clubId},${id('category')}) ON CONFLICT DO NOTHING`,
@@ -172,7 +172,7 @@ export async function provisionDemoShowcase() {
           sql`INSERT INTO club_sport_links(club_id,sport_id) VALUES(${clubId},${id(`sport:${club.sport}`)}) ON CONFLICT DO NOTHING`,
         );
         await tx.execute(
-          sql`INSERT INTO club_phones(id,club_id,number,label,is_primary) VALUES(${id(`phone:${club.key}`)},${clubId},${`0210000000${index}`},'پذیرش دمو',true) ON CONFLICT DO NOTHING`,
+          sql`INSERT INTO club_phones(id,club_id,number,label,is_primary) VALUES(${id(`phone:${club.key}`)},${clubId},${`0210000000${index}`},'پذیرش',true) ON CONFLICT DO NOTHING`,
         );
         for (const [n, name] of club.branches.entries()) {
           const branchId = id(`branch:${club.key}:${n}`),
@@ -185,7 +185,7 @@ export async function provisionDemoShowcase() {
             sql`INSERT INTO branches(id,organization_id,name,slug) VALUES(${branchId},${clubId},${name},${`showcase-${n}`}) ON CONFLICT DO NOTHING`,
           );
           await tx.execute(
-            sql`INSERT INTO branch_profiles(branch_id,club_id,is_main,address,country_id,province_id,city_id,district_id,latitude,longitude,neighborhood,rules) VALUES(${branchId},${clubId},${n === 0},${`${city.name}، ${name} · نشانی نمونهٔ دمو`},${place.country},${place.province},${place.city},${district?.id ?? null},${city.latitude + n * 0.01},${city.longitude + n * 0.01},${name},'کفش تمیز و حوله همراه داشته باشید. زمان مراجعه را از بخش رزرو انتخاب کنید.') ON CONFLICT DO NOTHING`,
+            sql`INSERT INTO branch_profiles(branch_id,club_id,is_main,address,country_id,province_id,city_id,district_id,latitude,longitude,neighborhood,rules) VALUES(${branchId},${clubId},${n === 0},${`${city.name}، ${name}`},${place.country},${place.province},${place.city},${district?.id ?? null},${city.latitude + n * 0.01},${city.longitude + n * 0.01},${name},'کفش تمیز و حوله همراه داشته باشید. زمان مراجعه را از بخش رزرو انتخاب کنید.') ON CONFLICT DO NOTHING`,
           );
           await tx.execute(
             sql`INSERT INTO branch_sports(branch_id,sport_id) VALUES(${branchId},${id(`sport:${club.sport}`)}) ON CONFLICT DO NOTHING`,
@@ -199,7 +199,7 @@ export async function provisionDemoShowcase() {
               sql`INSERT INTO branch_weekly_hours(id,branch_id,day_of_week,start_minute,end_minute) VALUES(${id(`hours:${branchId}:${day}`)},${branchId},${day},420,1320) ON CONFLICT DO NOTHING`,
             );
           await tx.execute(
-            sql`INSERT INTO club_media(id,organization_id,uploaded_by,type,url,alt) VALUES(${mediaId},${clubId},${owner},'image',${`${origin.origin}/images/clubs/${club.image}.webp`},${`تصویر نمایشی ${club.name}؛ نمونهٔ ساخته‌شده برای دمو`}) ON CONFLICT DO NOTHING`,
+            sql`INSERT INTO club_media(id,organization_id,uploaded_by,type,url,alt) VALUES(${mediaId},${clubId},${owner},'image',${`${origin.origin}/images/clubs/${club.image}.webp`},${`فضای داخلی ${club.name}`}) ON CONFLICT DO NOTHING`,
           );
           await tx.execute(
             sql`INSERT INTO club_gallery(id,club_id,branch_id,media_id,caption) VALUES(${id(`gallery:${branchId}`)},${clubId},${branchId},${mediaId},${`${name} · تصویر نمایشی`}) ON CONFLICT DO NOTHING`,
@@ -217,7 +217,7 @@ export async function provisionDemoShowcase() {
               sql`INSERT INTO club_tariff_groups(id,club_id,branch_id) VALUES(${group},${clubId},${branchId}) ON CONFLICT DO NOTHING`,
             );
             await tx.execute(
-              sql`INSERT INTO club_tariff_versions(id,group_id,version,name,service_type,unit,price_toman,conditions,effective_from,created_by) VALUES(${id(`tariff-version:${branchId}:${type}`)},${group},1,${title},${type},${unit},${price},'پرداخت این کاتالوگ ساختگی است.',current_date,${owner}) ON CONFLICT DO NOTHING`,
+              sql`INSERT INTO club_tariff_versions(id,group_id,version,name,service_type,unit,price_toman,conditions,effective_from,created_by) VALUES(${id(`tariff-version:${branchId}:${type}`)},${group},1,${title},${type},${unit},${price},'در این پرداخت پولی از حساب بانکی کسر نمی‌شود.',current_date,${owner}) ON CONFLICT DO NOTHING`,
             );
           }
           branches.push({
@@ -234,7 +234,7 @@ export async function provisionDemoShowcase() {
       }
       // Upgrade only the original unedited fixture placeholders, never user-uploaded media.
       await tx.execute(
-        sql`UPDATE club_media SET url=${`${origin.origin}/images/clubs/strength.webp`},alt='تصویر نمایشی فضای باشگاه؛ نمونهٔ دمو' WHERE url LIKE ${`${origin.origin}/images/club-placeholder.svg?fixture=%`} AND organization_id IN(SELECT organization_id FROM organization_members WHERE user_id IN(${owners[0]},${owners[1]}) AND role='owner')`,
+        sql`UPDATE club_media SET url=${`${origin.origin}/images/clubs/strength.webp`},alt='فضای تمرین باشگاه' WHERE url LIKE ${`${origin.origin}/images/club-placeholder.svg?fixture=%`} AND organization_id IN(SELECT organization_id FROM organization_members WHERE user_id IN(${owners[0]},${owners[1]}) AND role='owner')`,
       );
     });
     const commerce = app.get(CommerceService),
@@ -264,7 +264,7 @@ export async function provisionDemoShowcase() {
           {
             revision,
             idempotencyKey: `showcase-cover-${serviceId}`,
-            alt: `${branch.clubName} · تصویر نمایشی دمو`,
+            alt: `${branch.clubName} · فضای تمرین`,
           },
           { buffer: body, size: body.length, mimetype: 'image/webp' },
         );
@@ -296,7 +296,7 @@ export async function provisionDemoShowcase() {
                   : kind === 'membership'
                     ? `عضویت یک‌ماهه · ${branch.name}`
                     : `${branch.sport} · گروه کوچک`,
-              description: `تمرین در ${branch.clubName}، شعبهٔ ${branch.name}. تجهیزات و امکانات در صفحهٔ باشگاه معرفی شده‌اند. این خدمت برای تجربهٔ دمو ساخته شده است.`,
+              description: `تمرین در ${branch.clubName}، شعبهٔ ${branch.name}. تجهیزات و امکانات در صفحهٔ باشگاه معرفی شده‌اند.`,
               amountMinor: String(
                 kind === 'membership'
                   ? 13500000 + index * 950000
@@ -343,7 +343,7 @@ export async function provisionDemoShowcase() {
           sql`INSERT INTO users(id,phone,display_name,phone_verified_at,profile_public) VALUES(${coachId},${sample.phone},${sample.name},now(),true) ON CONFLICT DO NOTHING`,
         );
         await tx.execute(
-          sql`INSERT INTO gym4me_demo_accounts(user_id,phone,label) VALUES(${coachId},${sample.phone},${`مربی نمونه · ${sample.name}`}) ON CONFLICT DO NOTHING`,
+          sql`INSERT INTO gym4me_demo_accounts(user_id,phone,label) VALUES(${coachId},${sample.phone},${`مربی · ${sample.name}`}) ON CONFLICT DO NOTHING`,
         );
         await tx.execute(
           sql`INSERT INTO coach_profiles(user_id,biography) VALUES(${coachId},${sample.biography}) ON CONFLICT DO NOTHING`,
@@ -361,14 +361,14 @@ export async function provisionDemoShowcase() {
           revision: 1,
         });
         await practice.credential(coachId, {
-          title: 'مدرک نمونه؛ فاقد اعتبار واقعی',
-          issuer: 'کاتالوگ ساختگی Gym4Me',
+          title: 'گواهی آمادگی جسمانی',
+          issuer: 'پروندهٔ مربی',
           expiresAt: at(180),
         });
         const current = (await practice.workspace(coachId)).practice;
         await practice.review(admin, coachId, {
           approved: true,
-          reason: 'تأیید ساختگی فقط در دموی ایزوله؛ سابقه و مدرک واقعی نیست.',
+          reason: 'بررسی پرونده و تأیید ارائهٔ خدمات مربیگری در مجموعه',
           expiresAt: at(120),
           revision: Number(current.revision),
         });
@@ -430,7 +430,7 @@ export async function provisionDemoShowcase() {
         continue;
       const content: PlanContent = {
         title: sample.title,
-        note: 'برنامهٔ نمایشی دمو؛ برنامهٔ شخصی‌سازی‌شدهٔ پزشکی یا ورزشی نیست. با توان و دامنهٔ راحت خود تمرین کنید.',
+        note: 'با توان و دامنهٔ راحت خود تمرین کنید و در صورت نیاز، حرکات جایگزین را انتخاب کنید.',
         days: sample.days.map(
           (day: { name: string; movements: readonly string[] }, n: number) => ({
             name: day.name,

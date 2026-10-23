@@ -46,8 +46,8 @@ export async function provisionDemoPh4() {
     const training = app.get(TrainingService),
       collaboration = app.get(CollaborationService);
     const content: PlanContent = {
-      title: 'شروع ساده · برنامهٔ نمونه',
-      note: 'دادهٔ ساختگی دمو؛ متناسب با توان خود تمرین کنید.',
+      title: 'شروع یک عادت تازه',
+      note: 'متناسب با توان خود تمرین کنید و به‌تدریج تعداد تکرارها را افزایش دهید.',
       days: [
         {
           name: 'روز اول · تمام بدن',
@@ -92,7 +92,7 @@ export async function provisionDemoPh4() {
         actor: athlete,
         relationshipId: null,
         isTemplate: false,
-        title: 'برنامهٔ شخصی نمونه',
+        title: 'برنامهٔ شروع من',
       },
       {
         id: 'c4100000-0000-4000-8000-000000000011',
@@ -108,7 +108,7 @@ export async function provisionDemoPh4() {
               actor: coach,
               relationshipId: relation.id,
               isTemplate: false,
-              title: 'برنامهٔ نمونهٔ مربی برای شما',
+              title: 'برنامهٔ اختصاصی شما',
             },
           ]
         : []),
@@ -143,7 +143,7 @@ export async function provisionDemoPh4() {
       ).length
     )
       await collaboration.send(coach, relation.id, {
-        body: 'سلام! برنامهٔ نمونه آماده است. از «تمرین امروز» شروع کنید و پایان هفته گزارش کوتاهتان را بفرستید. این گفت‌وگو فقط برای شما و مربی است.',
+        body: 'سلام! برنامهٔ شما آماده است. از «تمرین امروز» شروع کنید و پایان هفته گزارش کوتاهتان را بفرستید. این گفت‌وگو فقط برای شما و مربی است.',
         workoutId: null,
         operationId: randomUUID(),
       });
