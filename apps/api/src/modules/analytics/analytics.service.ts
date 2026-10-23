@@ -121,6 +121,7 @@ export class AnalyticsService {
           UNION ALL SELECT o.start_at,'cancelled',1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN eligible e ON e.id=o.service_id WHERE r.status='cancelled'
           UNION ALL SELECT o.start_at,'noShows',1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN eligible e ON e.id=o.service_id WHERE r.status='no_show'
           UNION ALL SELECT a.created_at,'attendance',1 FROM sport_attendance a JOIN sport_reservations r ON r.id=a.reservation_id JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN eligible e ON e.id=o.service_id WHERE a.status='present'
+          UNION ALL SELECT v.created_at,'attendance',1 FROM sport_visits v JOIN sport_access_tokens t ON t.id=v.token_id JOIN sport_memberships m ON m.id=t.membership_id JOIN eligible e ON e.id=m.service_id WHERE t.reservation_id IS NULL
           UNION ALL SELECT o.start_at,'sessions',1 FROM sport_occurrences o JOIN eligible e ON e.id=o.service_id WHERE o.status<>'cancelled'
           UNION ALL SELECT o.start_at,'capacity',o.capacity FROM sport_occurrences o JOIN eligible e ON e.id=o.service_id WHERE o.status<>'cancelled'
           UNION ALL SELECT o.start_at,'occupied',1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN eligible e ON e.id=o.service_id WHERE o.status<>'cancelled' AND r.status IN ('confirmed','completed','no_show')

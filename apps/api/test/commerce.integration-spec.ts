@@ -2405,7 +2405,7 @@ test('QR replay returns the same visit and consumes a session once', async () =>
     'completed',
   );
 });
-test('direct membership QR consumes one session and replay keeps one visit and entitlement event', async () => {
+test('direct membership QR consumes once and dated analytics counts the replayed visit once', async () => {
   const service = await create('membership', '0', [], 2);
   const order = await commerce.checkout(other, {
     serviceId: service.id,
@@ -2431,6 +2431,35 @@ test('direct membership QR consumes one session and replay keeps one visit and e
       )
     )[0].count,
   ).toBe(1);
+  await rows(
+    db,
+    sql`UPDATE sport_visits SET created_at='2026-05-01T20:29:59Z' WHERE id=${visit.id}`,
+  );
+  const analytics = testingModule.get(AnalyticsService);
+  const business = {
+    user: { id: owner },
+    session: { client: 'business' },
+  } as Principal;
+  const filters = analyticsFilters.parse({
+    from: '2026-05-01',
+    to: '2026-05-01',
+    serviceId: service.id,
+    kind: 'membership',
+  });
+  expect(
+    (await analytics.report(business, 'business', filters)).data.find(
+      (row) => row.metric === 'attendance',
+    )?.value,
+  ).toBe('1');
+  expect(
+    (
+      await analytics.report(business, 'business', {
+        ...filters,
+        from: '2026-05-02',
+        to: '2026-05-02',
+      })
+    ).data.some((row) => row.metric === 'attendance'),
+  ).toBe(false);
 });
 test('two direct membership tokens cannot consume the final session twice and an exhausted membership cannot mint a ticket', async () => {
   const service = await create('membership', '0', [], 1);
