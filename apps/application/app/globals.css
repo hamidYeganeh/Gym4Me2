@@ -1,5 +1,6 @@
 @import "@repo/theme/globals.css";
 @import "@repo/theme/icons.css";
+@import "@repo/ui/luma-system.css";
 @source "../../../packages/ui/src";
 
 input,
@@ -71,54 +72,10 @@ textarea,
   }
 }
 
-/* Mobile visual system: quiet canvas, editorial media and a single green action. */
-.application-frame {
-  --mobile-line: color-mix(in oklch, var(--border) 75%, transparent);
-}
-.application-frame
-  :is(.mobile-page, .account-design, .luma-page, .discovery-page) {
-  background: var(--background);
-}
+/* Form text avoids iOS zoom and remains selectable in all themes. */
 .application-frame :is(input, textarea, select) {
   font-size: max(1rem, 16px);
 }
 .application-frame :is(h1, h2, h3) {
   text-wrap: pretty;
-}
-.application-frame :is(.luma-row, .luma-shortcut, .coach-directory-card) {
-  border-color: var(--mobile-line);
-}
-.application-frame .luma-navigation {
-  border-color: var(--mobile-line);
-}
-.application-frame .luma-navigation a {
-  transition:
-    background-color 120ms ease,
-    color 120ms ease;
-}
-.application-frame .luma-navigation a[aria-current="page"] {
-  background: var(--foreground);
-  color: var(--background);
-}
-.application-frame .luma-shortcut {
-  border: 1px solid var(--mobile-line);
-  background: var(--card);
-  font-size: 0.8rem;
-}
-.application-frame .luma-pill {
-  font-size: 0.7rem;
-  line-height: 1.6;
-}
-.application-frame .luma-row {
-  border-color: var(--mobile-line);
-}
-.application-frame .luma-page > .luma-field:first-of-type input {
-  background: var(--muted);
-  border-color: transparent;
-  border-radius: 1rem;
-}
-@media (prefers-reduced-motion: reduce) {
-  .application-frame .luma-navigation a {
-    transition: none;
-  }
 }

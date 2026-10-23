@@ -7,8 +7,7 @@ import {
   ChevronLeft,
   CircleUserRound,
   Compass,
-  Dumbbell,
-  Home,
+  House,
   MessageCircle,
   Plus,
   RefreshCw,
@@ -22,6 +21,7 @@ import { useQueryRetry } from "@repo/ui/hooks/use-query-retry";
 import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
 import { accountRecovery } from "@repo/ui/lib/account-recovery";
 import { AuthRequired } from "@repo/ui/account";
+import { useAccount } from "@repo/api/profile";
 import "./luma.css";
 import { SlidingSegments } from "@repo/ui/motion-controls";
 export function useLuma() {
@@ -54,14 +54,23 @@ export function LumaNavigation({
   const pathname = usePathname();
   const path = pathOverride ?? pathname;
   const t = useLuma();
+  const design = useTranslations("LumaDesign");
   return (
     <nav className="luma-navigation" aria-label={t("navigation")}>
       {[
         {
           href: "/",
-          label: t("home"),
-          Icon: Home,
-          active: path === "/",
+          label: design("schedule"),
+          Icon: House,
+          active:
+            path === "/" ||
+            [
+              "/bookings",
+              "/memberships",
+              "/orders",
+              "/training",
+              "/coaching",
+            ].some((prefix) => path.startsWith(prefix)),
         },
         {
           href: "/discovery",
@@ -73,22 +82,10 @@ export function LumaNavigation({
             path.startsWith("/calendars"),
         },
         {
-          href: "/training",
-          label: t("training"),
-          Icon: Dumbbell,
-          active: path.startsWith("/training"),
-        },
-        {
           href: "/messages",
           label: t("messages"),
           Icon: MessageCircle,
           active: path.startsWith("/messages"),
-        },
-        {
-          href: "/profile",
-          label: t("account"),
-          Icon: CircleUserRound,
-          active: path.startsWith("/profile") || path.startsWith("/coaching"),
         },
       ].map(({ href, label, Icon, active }) => (
         <Link
@@ -119,6 +116,7 @@ export function LumaPage({
 }) {
   const t = useLuma();
   const router = useRouter();
+  const account = useAccount();
   return (
     <main className={`luma-page${className ? ` ${className}` : ""}`}>
       <header className="luma-header">
@@ -145,7 +143,11 @@ export function LumaPage({
           </Link>
         ) : (
           <Link href="/profile" className="luma-icon" aria-label={t("account")}>
-            <CircleUserRound size={25} />
+            <span className="luma-avatar" aria-hidden="true">
+              {account.data?.displayName?.trim().slice(0, 2) || (
+                <CircleUserRound size={23} />
+              )}
+            </span>
           </Link>
         )}
         <h1 className="flex-1">{title}</h1>

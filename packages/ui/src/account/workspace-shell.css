@@ -1,7 +1,7 @@
 /* Persistent chrome is shared by every business/admin route, including PH5. */
 .workspace-shell {
   min-height: 100dvh;
-  background: var(--background);
+  background: var(--canvas-grouped);
   color: var(--foreground);
 }
 .workspace-body {
@@ -17,8 +17,11 @@
   justify-content: space-between;
   gap: 1rem;
   padding: calc(0.75rem + var(--app-safe-top, 0px)) 1.25rem 0.75rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--background);
+  position: sticky;
+  top: 0;
+  z-index: 35;
+  border: 0;
+  background: var(--surface-glass);
 }
 .workspace-brand {
   display: flex;
@@ -80,7 +83,7 @@
 }
 .workspace-menu a[aria-current="page"] {
   color: var(--foreground);
-  background: color-mix(in oklch, var(--primary) 12%, var(--background));
+  background: var(--muted);
   font-weight: 600;
 }
 .workspace-menu-dot {
@@ -153,7 +156,7 @@
     height: 100dvh;
     width: 15rem;
     flex: none;
-    border-inline-end: 1px solid var(--border);
+    border-inline-end: 0;
     padding: 1.5rem 1rem 1rem;
   }
   .workspace-sidebar > .workspace-brand {

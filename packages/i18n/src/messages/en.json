@@ -2621,5 +2621,31 @@
     "reports": "Reports",
     "advanced": "Plans & settlements",
     "workspace": "Workspace"
+  },
+  "LumaDesign": {
+    "schedule": "My schedule",
+    "today": "Today",
+    "week": "Next 7 days",
+    "allDates": "All dates",
+    "yourDay": "Make room for movement",
+    "agendaHint": "Your bookings and workouts, together",
+    "startWorkout": "Start workout",
+    "ongoing": "In progress",
+    "nextWorkout": "Next workout",
+    "openTraining": "Training plans",
+    "noAgenda": "Nothing scheduled for this day yet",
+    "planSomething": "Find an activity",
+    "scanTicket": "Scan ticket",
+    "scanHint": "Hold the ticket QR code inside the frame. Confirm attendance after reading the code.",
+    "cameraUnavailable": "Camera unavailable. Enter the ticket code manually.",
+    "cameraUnsupported": "This browser does not support scanning. Enter the ticket code manually.",
+    "cameraDenied": "Camera permission was denied. Enable it in browser settings or enter the code.",
+    "cameraStarting": "Opening camera…",
+    "codeReady": "Code read. Confirm attendance to continue.",
+    "scanAgain": "Scan again",
+    "manualEntry": "Enter code manually",
+    "scheduleView": "Schedule view",
+    "quickActions": "Quick access",
+    "slideConfirm": "Slide to {action}"
   }
 }

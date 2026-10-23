@@ -36,11 +36,21 @@ function SettingsRow({
   children: ReactNode;
 }) {
   return (
-    <Link
-      href={href}
-      className="flex min-h-16 items-center gap-4 px-5 py-4 transition-colors hover:bg-muted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring"
-    >
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted text-foreground">
+    <Link href={href} className="settings-row">
+      <span
+        className="settings-icon"
+        data-tone={
+          href.includes("privacy")
+            ? "green"
+            : href.includes("notifications")
+              ? "red"
+              : href.includes("support")
+                ? "blue"
+                : href.includes("password")
+                  ? "purple"
+                  : "gray"
+        }
+      >
         {icon}
       </span>
       <span className="min-w-0 flex-1 text-sm">{children}</span>
@@ -56,15 +66,13 @@ function SettingsGroup({
   children: ReactNode;
 }) {
   return (
-    <section className="flex flex-col gap-3">
+    <section className="settings-group">
       {title && (
         <h2 className="px-4 text-sm font-semibold text-muted-foreground">
           {title}
         </h2>
       )}
-      <div className="overflow-hidden rounded-3xl border border-border bg-card">
-        {children}
-      </div>
+      <div className="settings-group-surface">{children}</div>
     </section>
   );
 }
@@ -138,8 +146,8 @@ export function MobileSettings({
           {t("Privacy.title")}
         </SettingsRow>
         <Separator />
-        <div className="flex min-h-16 items-center gap-4 px-5 py-4">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted">
+        <div className="settings-row">
+          <span className="settings-icon" data-tone="pink">
             <Palette className="size-5" />
           </span>
           <span className="flex-1 text-sm">
@@ -151,8 +159,8 @@ export function MobileSettings({
           />
         </div>
         <Separator />
-        <div className="flex min-h-16 items-center gap-4 px-5 py-4">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted">
+        <div className="settings-row">
+          <span className="settings-icon" data-tone="blue">
             <Languages className="size-5" />
           </span>
           <span className="min-w-0 flex-1 text-sm">{t("Luma.language")}</span>

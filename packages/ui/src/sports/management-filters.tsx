@@ -4,6 +4,7 @@ import { useTranslations } from "@repo/i18n";
 import { FilterSheet } from "../kit/BottomSheet";
 import { Button } from "../kit/Button";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
+import { useListState } from "../hooks/use-list-state";
 import { TextField } from "../account/common";
 
 export type ManagementFilters = {
@@ -16,8 +17,25 @@ export type ManagementFilters = {
   page: number;
 };
 const initial: ManagementFilters = { sort: "newest", page: 1 };
-export function useManagementFilters() {
-  const [filters, set] = useState<ManagementFilters>(initial);
+function isManagementFilters(value: unknown): value is ManagementFilters {
+  if (!value || typeof value !== "object") return false;
+  const f = value as Record<string, unknown>;
+  return (
+    (f.sort === "newest" || f.sort === "oldest") &&
+    Number.isInteger(f.page) &&
+    Number(f.page) > 0 &&
+    ["search", "status", "kind", "from", "to"].every(
+      (key) => f[key] === undefined || typeof f[key] === "string",
+    )
+  );
+}
+export function useManagementFilters(scope = "") {
+  const [filters, set] = useListState(
+    "management",
+    initial,
+    isManagementFilters,
+    scope,
+  );
   return {
     filters,
     apply: (f: ManagementFilters) => set({ ...f, page: 1 }),

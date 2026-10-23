@@ -1,4 +1,6 @@
 "use client";
+import { useListState } from "@repo/ui/hooks/use-list-state";
+import { ConfirmAction } from "@repo/ui/confirm-action";
 import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
@@ -36,7 +38,11 @@ import { LumaSheet } from "./sheet";
 export function BookingsPage() {
   const t = useLuma();
   const locale = useLocale();
-  const [tab, setTab] = useState<BookingTab>("upcoming");
+  const [tab, setTab] = useListState<BookingTab>(
+    "tab",
+    "upcoming",
+    (value): value is BookingTab => value === "upcoming" || value === "past",
+  );
   const results = useRef<HTMLDivElement>(null);
   const nextFocus = useRef<number | null>(null);
   const query = useSportsBookings(tab);
@@ -210,10 +216,10 @@ export function BookingDetail() {
                             <Price value={preview.data.refundMinor} />
                           </Row>
                           <p className="luma-meta">{preview.data.terms}</p>
-                          <button
-                            className="luma-cta mb-4"
+                          <ConfirmAction
+                            label={t("confirmCancel")}
                             disabled={cancel.isPending}
-                            onClick={() =>
+                            onConfirm={() =>
                               cancel.mutate(
                                 {
                                   revision: preview.data!.revision,
@@ -224,9 +230,7 @@ export function BookingDetail() {
                                 { onSuccess: () => setShowCancel(false) },
                               )
                             }
-                          >
-                            {t("confirmCancel")}
-                          </button>
+                          />
                         </>
                       )}
                     </QueryState>

@@ -8,6 +8,7 @@ import { QueryError, Loading } from "./common";
 import type { Account } from "@repo/api/auth";
 import {
   Dumbbell,
+  ChevronLeft,
   ArrowUpLeft,
   CalendarDays,
   MoreHorizontal,
@@ -42,6 +43,7 @@ export function ProfileOverview({
   children: ReactNode;
 }) {
   const t = useTranslations("ProfileOverview");
+  const back = useTranslations("Privacy");
   const dateLabel = useDateLabel();
   const locale = useLocale();
   const visual = useTranslations("Visual");
@@ -60,7 +62,14 @@ export function ProfileOverview({
   return (
     <main className="profile-overview relative flex min-h-dvh flex-col gap-6 px-5 pb-[calc(8rem+var(--app-safe-bottom,0px))] pt-[calc(1.25rem+var(--app-safe-top,0px))] sm:px-6">
       <header className="relative flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
+        <Button variant="secondary" size="icon-lg" asChild>
+          <Link href="/" aria-label={back("back")}>
+            <ChevronLeft className="rtl:rotate-180" />
+          </Link>
+        </Button>
+        <h1 className="flex-1 text-xl font-semibold tracking-tight">
+          {t("title")}
+        </h1>
         <Button variant="outline" size="icon-lg" asChild>
           <Link href="/profile/settings" aria-label={t("settings")}>
             <MoreHorizontal />

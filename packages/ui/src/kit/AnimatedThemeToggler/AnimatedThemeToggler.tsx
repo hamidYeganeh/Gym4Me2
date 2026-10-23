@@ -11,7 +11,7 @@ const subscribe = () => () => {};
 export function AnimatedThemeToggler({
   label,
   variant = "circle",
-  duration = 400,
+  duration = 120,
   fromCenter,
   className,
   disabled,

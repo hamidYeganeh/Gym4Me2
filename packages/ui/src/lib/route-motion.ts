@@ -53,6 +53,8 @@ export const surfaceTabs: Record<AppSurface, string[]> = {
 };
 
 export const detailRoutes = [
+  "/training",
+  "/training/**",
   "/coaching/**",
   "/coaches/*",
   "/services/*",

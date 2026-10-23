@@ -116,7 +116,7 @@ function WorkspaceChrome({
   }
   const brand = (
     <Link href="/" prefetch={false} className="workspace-brand">
-      <Logo size={32} className="shrink-0 text-primary" />
+      <Logo size={32} className="shrink-0 text-[var(--brand)]" />
       <span>
         <strong dir="ltr">{t("Copy.brand")}</strong>
         <small>
@@ -125,6 +125,10 @@ function WorkspaceChrome({
       </span>
     </Link>
   );
+  const dockKeys =
+    client === "business"
+      ? ["overview", "sports-calendar", "sports-messages"]
+      : ["overview", "analytics", "users"];
   const identity = (
     <div className="workspace-identity">
       <Link
@@ -188,6 +192,23 @@ function WorkspaceChrome({
           </Button>
         </header>
         {children}
+        <nav className="workspace-dock" aria-label={t("Copy.panelNavigation")}>
+          {nav
+            .filter((item) => dockKeys.includes(item.key))
+            .map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                prefetch={false}
+                aria-current={
+                  isWorkspaceRouteActive(path, item.href) ? "page" : undefined
+                }
+              >
+                <item.icon size={21} />
+                <span>{t(item.title)}</span>
+              </Link>
+            ))}
+        </nav>
       </div>
       <BottomSheet
         open={open}

@@ -141,7 +141,7 @@ export async function transitionTheme(
   origin: HTMLElement,
   applyTheme: () => void,
   {
-    duration = 400,
+    duration = 120,
     variant = "circle",
     fromCenter = false,
   }: {

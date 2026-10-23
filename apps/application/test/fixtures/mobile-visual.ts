@@ -317,6 +317,13 @@ export function createMobileFixtureFetch(
       return reply(services.find((s) => path.endsWith(s.id)) ?? services[0]);
     if (path === "sports/account/bookings/page")
       return reply({ items: empty ? [] : [booking], nextCursor: null });
+    if (path === `sports/account/bookings/${booking.id}/cancellation`)
+      return reply({
+        revision: booking.revision,
+        refundMinor: booking.amountMinor,
+        restoreSession: false,
+        terms: booking.snapshot.policy.terms,
+      });
     if (path === `sports/account/bookings/${booking.id}`) return reply(booking);
     if (path === "sports/community/conversations/page")
       return reply({

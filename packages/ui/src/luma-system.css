@@ -1,0 +1,472 @@
+/* Luma Sep 2026: one material vocabulary, shared by the three product surfaces.
+   Page layouts own their geometry; these are reusable controls and grouped surfaces. */
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+:is(button, a, input, select, textarea) {
+  touch-action: manipulation;
+}
+[data-slot="button"] {
+  font-weight: 600;
+}
+[data-slot="button"]:focus-visible {
+  background-image: linear-gradient(#8882, #8882);
+}
+[data-slot="input"],
+[data-slot="textarea"],
+[data-slot="input-group"] {
+  box-shadow: none;
+  background: var(--muted);
+  border-color: transparent;
+  border-radius: 0.9rem;
+}
+[data-slot="input"][aria-invalid="true"],
+[data-slot="textarea"][aria-invalid="true"] {
+  border-color: var(--destructive);
+}
+[data-slot="sheet-content"][data-side="bottom"] {
+  border: 0;
+  border-radius: 1.65rem 1.65rem 0 0;
+  box-shadow: 0 -12px 80px #0002;
+}
+[data-slot="sheet-title"] {
+  font-size: 1rem;
+  font-weight: 650;
+}
+[data-slot="sheet-content"] [data-sheet-scroll] {
+  scrollbar-width: thin;
+}
+:is(.mobile-page, .account-design, .profile-overview, .gym-workspace) {
+  letter-spacing: -0.012em;
+}
+:is(.mobile-page, .account-design, .profile-overview) h1 {
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+.account-design {
+  background: var(--canvas-grouped) !important;
+}
+.account-design-header {
+  background: var(--canvas-grouped) !important;
+}
+.account-design-header [data-slot="button"] {
+  background: var(--card);
+  border: 0;
+}
+.settings-group {
+  display: grid;
+  gap: 0.65rem;
+}
+.settings-group > h2 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding-inline: 0.9rem;
+}
+.settings-group-surface {
+  overflow: hidden;
+  border-radius: 1.45rem;
+  background: var(--card);
+}
+.settings-row {
+  display: flex;
+  min-height: 3.9rem;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  transition: background-color var(--motion-quick) ease;
+}
+.settings-row:hover {
+  background: var(--muted);
+}
+.settings-icon {
+  display: grid;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  flex: none;
+  border-radius: 0.55rem;
+  color: #fff;
+  background: linear-gradient(#a7aaae, #777b80);
+  box-shadow: inset 0 1px 1px #fff4;
+}
+.settings-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.settings-icon[data-tone="red"] {
+  background: linear-gradient(#ff8173, #f04b3a);
+}
+.settings-icon[data-tone="green"] {
+  background: linear-gradient(#8bda90, #45b45a);
+}
+.settings-icon[data-tone="pink"] {
+  background: linear-gradient(#ee78b1, #da3f90);
+}
+.settings-icon[data-tone="blue"] {
+  background: linear-gradient(#72a6fa, #3279ef);
+}
+.settings-icon[data-tone="purple"] {
+  background: linear-gradient(#a282ff, #6844e8);
+}
+.settings-group-surface [data-slot="separator"] {
+  margin-inline-start: 3.8rem;
+  width: auto;
+  opacity: 0.6;
+}
+.profile-overview > section[aria-label] {
+  flex-direction: column;
+  align-items: start;
+  gap: 1rem;
+}
+.profile-overview > section[aria-label] > [data-slot="avatar"] {
+  width: 5.5rem;
+  height: 5.5rem;
+}
+.profile-overview .profile-progress {
+  border: 0;
+  background: var(--canvas-grouped);
+}
+.profile-activity > div {
+  background: var(--card);
+  border-radius: 1rem;
+}
+.profile-activity dd[data-metric="count"] {
+  font-size: 2rem;
+}
+.profile-training-link {
+  font-size: 0.875rem;
+}
+.profile-overview [data-slot="badge"] {
+  border: 0;
+  color: var(--muted-foreground);
+}
+.profile-overview [data-slot="avatar-fallback"] {
+  background: linear-gradient(140deg, #c9ddcb, #e6e9e7);
+  color: #304537;
+}
+.dark .profile-overview [data-slot="avatar-fallback"] {
+  background: #344039;
+  color: #d4e8dc;
+}
+.coach-directory-card {
+  border: 0;
+  background: var(--canvas-grouped);
+  border-radius: 1.3rem;
+  padding: 1.15rem;
+}
+.coach-directory-avatar {
+  border-radius: 50%;
+  background: var(--card);
+}
+.coach-directory-tags span {
+  background: var(--card);
+  border-radius: 999px;
+}
+.coach-directory-card h2 {
+  font-size: 1.1rem;
+}
+.training-card {
+  border: 0;
+  background: var(--canvas-grouped);
+  border-radius: 1.3rem;
+}
+.training-card .training-card {
+  background: var(--card);
+}
+.training-root .training-empty {
+  border: 0;
+  background: var(--canvas-grouped);
+  padding-block: 2rem;
+}
+.training-root :is(input:not([type="checkbox"]), select, textarea) {
+  border-color: transparent;
+  background: var(--card);
+  border-radius: 0.8rem;
+}
+.training-root .training-tabs {
+  background: var(--canvas-grouped);
+  padding: 0.25rem;
+}
+.training-root .training-tabs [aria-pressed="true"] {
+  box-shadow: none;
+}
+.training-root .training-hero {
+  border-radius: 1.35rem;
+  min-height: 15rem;
+}
+.training-root .training-hero [data-slot="button"] {
+  background: #fff;
+  color: #17181b;
+  align-self: start;
+}
+.training-root .training-set {
+  padding-block: 0.5rem;
+}
+.training-root .training-set[data-done="true"] {
+  background: color-mix(in srgb, var(--brand) 14%, var(--card));
+}
+.training-root .training-bubble {
+  border: 0;
+  border-radius: 1.1rem;
+}
+.training-root .training-bubble[data-own="true"] {
+  background: var(--foreground);
+  color: var(--background);
+}
+.training-root .training-bubble[data-own="true"] small {
+  color: inherit;
+  opacity: 0.7;
+}
+.gym-workspace {
+  background: var(--canvas-grouped);
+}
+.gym-workspace :is([data-slot="card"], article.rounded-3xl) {
+  border: 0;
+  border-radius: 1.25rem;
+  box-shadow: none;
+}
+.gym-workspace [data-slot="card-title"] {
+  font-size: 0.95rem;
+}
+.gym-workspace h1 {
+  letter-spacing: -0.03em;
+  font-size: 1.6rem;
+}
+.gym-workspace :is(td, th) {
+  border-color: var(--border);
+}
+.gym-workspace thead {
+  background: var(--canvas-grouped);
+}
+.workspace-shell {
+  background: var(--canvas-grouped);
+}
+.workspace-shell .sports-context-navigation {
+  display: none;
+}
+.workspace-sidebar {
+  background: var(--background);
+  border: 0;
+}
+.workspace-menu a[aria-current="page"] {
+  background: var(--muted);
+}
+.workspace-menu-dot {
+  background: var(--foreground);
+}
+.workspace-menu h2 {
+  font-size: 0.7rem;
+  margin-top: 0.25rem;
+}
+.workspace-menu a {
+  border-radius: 0.8rem;
+  color: var(--foreground);
+}
+.workspace-mobile-bar {
+  position: sticky;
+  top: 0;
+  z-index: 35;
+  background: var(--surface-glass);
+  border: 0;
+}
+.workspace-mobile-bar [data-slot="button"] {
+  background: var(--card);
+}
+.workspace-dock {
+  position: fixed;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  inset-inline: 1.25rem;
+  display: flex;
+  margin-inline: auto;
+  max-width: 25rem;
+  z-index: 40;
+  padding: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--background) 75%, var(--border));
+  background: var(--surface-glass);
+  box-shadow: 0 6px 30px #0001;
+}
+.workspace-dock a {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  min-width: 0;
+  min-height: 3.35rem;
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+}
+.workspace-dock a[aria-current="page"] {
+  background: var(--muted);
+  color: var(--foreground);
+  font-weight: 600;
+}
+.workspace-body {
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom, 0px));
+}
+.ticket-scanner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 1;
+  max-height: 52dvh;
+  border-radius: 1.25rem;
+  background: #111;
+}
+.ticket-scanner video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.ticket-scanner-frame {
+  position: absolute;
+  inset: 15%;
+  display: grid;
+  place-items: center;
+  border: 2px solid #fff9;
+  border-radius: 1rem;
+  color: #fff;
+  box-shadow: 0 0 0 100px #0004;
+}
+@supports (backdrop-filter: blur(16px)) {
+  .workspace-mobile-bar {
+    backdrop-filter: blur(16px);
+  }
+  .workspace-dock {
+    backdrop-filter: blur(12px);
+  }
+}
+@media (min-width: 1024px) {
+  .workspace-dock {
+    display: none;
+  }
+  .workspace-body {
+    padding-bottom: 0;
+  }
+  .workspace-sidebar {
+    width: 14.5rem;
+  }
+  .workspace-shell .gym-workspace {
+    padding-inline: clamp(1.5rem, 3vw, 3.5rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .settings-row {
+    transition: none;
+  }
+}
+.confirm-action {
+  display: grid;
+  gap: 0.15rem;
+  margin-block: 1.25rem 0.5rem;
+}
+.confirm-slide {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 3.35rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--destructive);
+  color: #fff;
+  font-size: 0.8rem;
+}
+.confirm-slide-copy {
+  padding-inline: 3.25rem;
+  text-align: center;
+}
+.confirm-slide input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+.confirm-slide-thumb {
+  position: absolute;
+  inset-inline-start: calc(
+    0.35rem + (100% - 3.35rem) * var(--confirm-progress, 0)
+  );
+  top: 0.35rem;
+  width: 2.65rem;
+  height: 2.65rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--destructive);
+  pointer-events: none;
+}
+.confirm-slide:focus-within {
+  filter: brightness(0.9);
+}
+.confirm-alternative {
+  min-height: 2.75rem;
+  color: var(--destructive);
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+  font-size: 0.75rem;
+}
+.confirm-alternative:disabled {
+  opacity: 0.45;
+}
+.host-guest-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.host-guest-avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--muted);
+}
+.host-guest-copy {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+.host-guest-copy > span {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+.host-guest-copy > span:last-child {
+  align-self: start;
+}
+/* An honest graphic cover when a service has no published photograph. */
+.service-cover-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  aspect-ratio: 1.3;
+  border-radius: 1rem;
+  color: #315442;
+  background-color: #e1ece3;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 39px, #3154420b 39px 40px),
+    repeating-linear-gradient(90deg, transparent 0 39px, #3154420b 39px 40px);
+}
+.service-cover-placeholder span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+.dark .service-cover-placeholder {
+  background-color: #253b30;
+  color: #cce1d2;
+}

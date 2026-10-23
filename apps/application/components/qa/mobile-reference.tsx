@@ -246,6 +246,7 @@ export function MobileReference() {
         "business-analytics",
         "coach-analytics",
         "checkout",
+        "service",
       ].includes(screen) && (
         <LumaNavigation
           pathOverride={

@@ -1,11 +1,14 @@
 "use client";
+import { useDeferredValue, useSyncExternalStore } from "react";
 import {
-  useDeferredValue,
-  useState,
-  useSyncExternalStore,
-  useTransition,
-} from "react";
-import { Map, Search, X, Building2, Bookmark } from "lucide-react";
+  Map,
+  Search,
+  X,
+  Building2,
+  Bookmark,
+  CircleUserRound,
+  Bell,
+} from "lucide-react";
 import {
   InputGroup,
   InputGroupInput,
@@ -20,12 +23,9 @@ import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { useTaxonomies, catalogSelectSource } from "@repo/api/catalog";
 import { useLocale, useTranslations } from "@repo/i18n";
-import { useChangeLocale } from "@repo/i18n/client-provider";
 import { ClubCard } from "@repo/ui/kit/ClubCard";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
-import { AnimatedThemeToggler } from "@repo/ui/kit/AnimatedThemeToggler";
 import { Button } from "@repo/ui/kit/Button";
-import { BarbellHorizontalIcon, GlobeIcon } from "@repo/ui/icons";
 import { useCatalogClubs } from "./use-catalog";
 import { CatalogState } from "./catalog-state";
 import { CatalogPagination } from "./catalog-pagination";
@@ -33,15 +33,18 @@ import { validCatalogPrices } from "@repo/api/catalog";
 import { LocationPicker, type LocationValue } from "./location-picker";
 import { CatalogFilters, type PriceFilters } from "./catalog-filters";
 import { useSavedClub } from "./use-saved-club";
+import { useListState } from "@repo/ui/hooks/use-list-state";
 import { catalogLocationFilters } from "../../lib/catalog-location";
 import "./discovery.css";
 
 function SavedClubCard({
   club,
   priority,
+  variant = "landscape",
 }: {
   club: ClubDetailData;
   priority: boolean;
+  variant?: "portrait" | "landscape";
 }) {
   const t = useTranslations("Clubs");
   const [saved, setSaved] = useSavedClub(club.id);
@@ -49,7 +52,7 @@ function SavedClubCard({
     <div className="discovery-result">
       <ClubCard
         club={club}
-        variant="portrait"
+        variant={variant}
         galleryLabel={t("gallery")}
         photoLabel={t("photo")}
         saved={saved}
@@ -70,14 +73,12 @@ function SavedClubCard({
 export function Discovery() {
   const categories = useTaxonomies("club-categories");
   const t = useTranslations("Discovery");
-  const home = useTranslations("Home");
+  const luma = useTranslations("Luma");
   const copy = useTranslations("Copy");
   const tabs = useTranslations("DiscoveryTabs");
   const catalog = useTranslations("Catalog");
   const locale = useLocale();
   const numbers = new Intl.NumberFormat(locale);
-  const changeLocale = useChangeLocale();
-  const [pending, startTransition] = useTransition();
   const queryCategory = useSyncExternalStore(
     (listener) => {
       window.addEventListener("popstate", listener);
@@ -86,12 +87,38 @@ export function Discovery() {
     () => new URLSearchParams(window.location.search).get("category") ?? "",
     () => "",
   );
-  const [category, setCategory] = useState<string | null>(null);
-  const [place, setPlace] = useState<LocationValue>({});
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
+  const [category, setCategory] = useListState<string | null>(
+    "category",
+    null,
+    (v): v is string | null => v === null || typeof v === "string",
+  );
+  const [place, setPlace] = useListState<LocationValue>(
+    "place",
+    {},
+    (v): v is LocationValue =>
+      !!v &&
+      typeof v === "object" &&
+      Object.values(v).every((x) => x === undefined || typeof x === "string"),
+  );
+  const [search, setSearch] = useListState(
+    "search",
+    "",
+    (v): v is string => typeof v === "string",
+  );
+  const [page, setPage] = useListState(
+    "page",
+    1,
+    (v): v is number => Number.isInteger(v) && Number(v) > 0,
+  );
 
-  const [filters, setFilters] = useState<PriceFilters>({});
+  const [filters, setFilters] = useListState<PriceFilters>(
+    "prices",
+    {},
+    (v): v is PriceFilters =>
+      !!v &&
+      typeof v === "object" &&
+      Object.values(v).every((x) => x === undefined || typeof x === "string"),
+  );
   const validPrices = validCatalogPrices(filters);
   const activeCategory = category ?? queryCategory;
   const deferredSearch = useDeferredValue(search);
@@ -165,39 +192,23 @@ export function Discovery() {
     <main className="discovery-page">
       <header className="discovery-header">
         <Link
-          href="/"
-          className="flex items-center gap-2.5 text-lg font-bold tracking-tight"
+          href="/profile"
+          className="discovery-account"
+          aria-label={luma("account")}
         >
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-xl text-primary-foreground">
-            <BarbellHorizontalIcon />
-          </span>
-          <span>{home("brand")}</span>
+          <CircleUserRound size={26} />
         </Link>
-        <div className="flex shrink-0 items-center gap-1.5">
-          <Button asChild variant="outline" size="icon-lg">
-            <Link href="/discovery/map" scroll={false} aria-label={t("map")}>
-              <Map />
-            </Link>
-          </Button>
-          <AnimatedThemeToggler size="icon-lg" label={home("theme")} />
-          <Button
-            variant="outline"
-            size="icon-lg"
-            className="size-11"
-            aria-label={home("language")}
-            disabled={pending}
-            onClick={() =>
-              startTransition(() => changeLocale(locale === "fa" ? "en" : "fa"))
-            }
-          >
-            <GlobeIcon data-icon="inline-start" />
-          </Button>
+        <h1>{luma("discover")}</h1>
+        <div className="discovery-header-actions">
+          <Link href="/discovery/map" scroll={false} aria-label={t("map")}>
+            <Map size={21} />
+          </Link>
+          <Link href="/notifications" aria-label={luma("notifications")}>
+            <Bell size={21} />
+          </Link>
         </div>
       </header>
-      <section className="discovery-intro">
-        <p className="discovery-eyebrow">{t("eyebrow")}</p>
-        <h1>{t("title")}</h1>
-        <p>{t("description")}</p>
+      <section className="discovery-intro" aria-label={t("search")}>
         <InputGroup className="discovery-search">
           <InputGroupAddon>
             <Search />
@@ -228,6 +239,21 @@ export function Discovery() {
         </InputGroup>
       </section>
 
+      {!hasFilters && clubs.length > 1 && (
+        <section className="discovery-featured" aria-label={luma("picked")}>
+          <h2>{luma("picked")}</h2>
+          <div>
+            {clubs.slice(0, 4).map((club) => (
+              <SavedClubCard
+                key={club.id}
+                club={club}
+                priority={false}
+                variant="portrait"
+              />
+            ))}
+          </div>
+        </section>
+      )}
       {!validPrices && (
         <p role="alert" className="text-sm text-destructive">
           {catalog("invalidPriceRange")}

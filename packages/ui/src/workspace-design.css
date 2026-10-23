@@ -1,7 +1,7 @@
 /* The same quiet material language for business and administration. */
 .gym-workspace {
   --workspace-line: color-mix(in oklch, var(--border) 70%, transparent);
-  background: color-mix(in oklch, var(--muted) 35%, var(--background));
+  background: var(--canvas-grouped);
   color: var(--foreground);
 }
 .gym-workspace h1 {
@@ -15,9 +15,9 @@
 }
 .gym-workspace [data-slot="card"],
 .gym-workspace article.rounded-3xl {
-  border: 1px solid var(--workspace-line);
-  border-radius: 1.5rem;
-  box-shadow: 0 4px 20px color-mix(in srgb, var(--foreground) 2%, transparent);
+  border: 0;
+  border-radius: 1.25rem;
+  box-shadow: none;
 }
 .gym-workspace [data-slot="card-description"] {
   line-height: 1.8;

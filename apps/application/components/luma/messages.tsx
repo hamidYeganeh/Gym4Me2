@@ -22,7 +22,7 @@ export function MessagesPage() {
     !!query.error &&
     (query.error.status === 0 || query.error.status >= 500);
   return (
-    <LumaPage title={t("messages")}>
+    <LumaPage title={t("messages")} className="luma-messages-page">
       <FilterSheet count={tab === "archived" ? 1 : 0}>
         <Segments
           value={tab}

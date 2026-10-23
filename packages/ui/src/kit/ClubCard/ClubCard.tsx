@@ -10,7 +10,6 @@ import {
   BarbellHorizontalIcon,
   UsersThreeIcon,
   Ruler1Icon,
-  ArrowUpRightIcon,
 } from "../../icons";
 import { cn } from "../../lib/utils";
 import { Badge } from "../Badge";
@@ -39,7 +38,13 @@ export function ClubCard({
       data-variant={variant}
       className={cn(s.root({ size, variant }), className)}
     >
-      <div className={s.cover({ size })} data-zoom-exit-key={`club-${club.id}`}>
+      <div
+        className={cn(
+          s.cover({ size }),
+          variant === "landscape" && "size-20 shrink-0 aspect-square",
+        )}
+        data-zoom-exit-key={`club-${club.id}`}
+      >
         <Image
           src={photo.src}
           alt={photo.alt}
@@ -56,7 +61,9 @@ export function ClubCard({
         className={s.link()}
         aria-label={`${labels.discover} · ${club.name}`}
       />
-      <div className={s.top({ variant })}>
+      <div
+        className={cn(s.top({ variant }), variant === "landscape" && "hidden")}
+      >
         {variant === "landscape" ? (
           featuredLabel ? (
             <Badge>{featuredLabel}</Badge>
@@ -88,13 +95,23 @@ export function ClubCard({
               <h2 className={s.landscapeTitle()}>{club.name}</h2>
               <p className={s.landscapeAddress()}>{club.address}</p>
             </div>
-            <p className={s.landscapePrice()}>
-              {club.price}{" "}
-              <span className="text-xs font-normal text-muted-foreground">
-                / {club.pricePeriod}
-              </span>
-            </p>
           </div>
+          <p className="text-xs text-muted-foreground">
+            {club.price} / {club.pricePeriod}
+          </p>
+          {onSavedChange && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-lg"
+              className="pointer-events-auto absolute end-0 bottom-0"
+              aria-label={saved ? labels.unsave : labels.save}
+              aria-pressed={saved}
+              onClick={() => onSavedChange(!saved)}
+            >
+              <BookmarkIcon />
+            </Button>
+          )}
           <ul className={s.facilities()}>
             {club.facilities.map((item, index) => {
               const Icon = icons[index % icons.length]!;
@@ -132,12 +149,6 @@ export function ClubCard({
               );
             })}
           </ul>
-          <Button asChild variant="default" size="lg" className={s.action()}>
-            <Link href={href} scroll={false}>
-              <ArrowUpRightIcon data-icon="inline-start" />
-              {labels.discover}
-            </Link>
-          </Button>
         </div>
       )}
     </article>

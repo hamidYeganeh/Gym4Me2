@@ -35,6 +35,7 @@ import {
   useTrainingEvent,
 } from "./common";
 import { TrainingProgressPanel } from "./progress";
+import { useListState } from "../hooks/use-list-state";
 import { SlidingSegments } from "../motion-controls";
 export function TrainingHome() {
   const t = useTranslations("Training");
@@ -89,8 +90,12 @@ function HomeContent() {
     online = useTrainingOnline(),
     fmt = useTrainingLocale();
   useTrainingEvent("workout_opened");
-  const [tab, setTab] = useState("today"),
-    [cached, setCached] = useState<TrainingWorkspace | null>(null);
+  const [tab, setTab] = useListState(
+    "tab",
+    "today",
+    (v): v is string => v === "today" || v === "plans" || v === "progress",
+  );
+  const [cached, setCached] = useState<TrainingWorkspace | null>(null);
   const [drafts, setDrafts] = useState<
     { workout: Workout; pending: unknown; dirty: boolean }[]
   >([]);

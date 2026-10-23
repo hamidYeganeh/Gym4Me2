@@ -1,0 +1,830 @@
+[
+  {
+    "surface": "application",
+    "route": "/auth/login",
+    "source": "apps/application/app/auth/login/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/auth/otp",
+    "source": "apps/application/app/auth/otp/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/bookings/detail",
+    "source": "apps/application/app/bookings/detail/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/bookings"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/bookings",
+    "source": "apps/application/app/bookings/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/bookings"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/calendars/detail",
+    "source": "apps/application/app/calendars/detail/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/calendars",
+    "source": "apps/application/app/calendars/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/checkout/mock-gateway",
+    "source": "apps/application/app/checkout/mock-gateway/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/mock-gateway"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/checkout",
+    "source": "apps/application/app/checkout/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/checkout"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/checkout/status",
+    "source": "apps/application/app/checkout/status/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/checkout"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/coaches/detail",
+    "source": "apps/application/app/coaches/detail/page.tsx",
+    "components": [
+      "react",
+      "@repo/ui/account",
+      "../../../components/luma/page-loading"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/coaches",
+    "source": "apps/application/app/coaches/page.tsx",
+    "components": [
+      "react",
+      "@repo/ui/account",
+      "../../components/luma/page-loading"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/coaching",
+    "source": "apps/application/app/coaching/page.tsx",
+    "components": [
+      "react",
+      "@repo/ui/account",
+      "../../components/luma/page-loading"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/coaching/session",
+    "source": "apps/application/app/coaching/session/page.tsx",
+    "components": [
+      "react",
+      "@repo/ui/account",
+      "../../../components/luma/page-loading"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/coaching/settlements",
+    "source": "apps/application/app/coaching/settlements/page.tsx",
+    "components": ["react", "@repo/ui/advanced-business"]
+  },
+  {
+    "surface": "application",
+    "route": "/coaching/student",
+    "source": "apps/application/app/coaching/student/page.tsx",
+    "components": [
+      "react",
+      "@repo/ui/account",
+      "../../../components/luma/page-loading"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/discovery/club",
+    "source": "apps/application/app/discovery/club/page.tsx",
+    "components": [
+      "react",
+      "../../../components/discovery/club-route",
+      "../../../components/discovery/catalog-state"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/discovery/clubs/[clubId]/gallery",
+    "source": "apps/application/app/discovery/clubs/[clubId]/gallery/page.tsx",
+    "components": [
+      "../../../../../components/discovery/club-gallery",
+      "../../../../../lib/public-catalog"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/discovery/clubs/[clubId]",
+    "source": "apps/application/app/discovery/clubs/[clubId]/page.tsx",
+    "components": [
+      "../../../../components/discovery/club-page",
+      "next",
+      "../../../../lib/public-catalog"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/discovery/clubs/[clubId]/reviews",
+    "source": "apps/application/app/discovery/clubs/[clubId]/reviews/page.tsx",
+    "components": [
+      "../../../../../components/discovery/club-reviews",
+      "../../../../../lib/public-catalog"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/discovery/clubs/[clubId]/slots",
+    "source": "apps/application/app/discovery/clubs/[clubId]/slots/page.tsx",
+    "components": [
+      "../../../../../components/luma/services",
+      "../../../../../lib/club-href",
+      "../../../../../lib/public-catalog"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/discovery/coaches/[coachId]",
+    "source": "apps/application/app/discovery/coaches/[coachId]/page.tsx",
+    "components": [
+      "next/navigation",
+      "../../../../lib/clubs",
+      "../../../../lib/coaches",
+      "../../../../components/discovery/coach-page"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/discovery/compare",
+    "source": "apps/application/app/discovery/compare/page.tsx",
+    "components": [
+      "react",
+      "../../../components/discovery/club-comparison",
+      "../../../components/discovery/catalog-state"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/discovery/map",
+    "source": "apps/application/app/discovery/map/page.tsx",
+    "components": ["../../../components/discovery/discovery-map"]
+  },
+  {
+    "surface": "application",
+    "route": "/discovery",
+    "source": "apps/application/app/discovery/page.tsx",
+    "components": ["../../components/discovery/discovery"]
+  },
+  {
+    "surface": "application",
+    "route": "/documents",
+    "source": "apps/application/app/documents/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/documents"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/host",
+    "source": "apps/application/app/host/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/invitations",
+    "source": "apps/application/app/invitations/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/invitations/sports",
+    "source": "apps/application/app/invitations/sports/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/login",
+    "source": "apps/application/app/login/page.tsx",
+    "components": [
+      "react",
+      "next/navigation",
+      "@repo/ui/lib/auth-routes",
+      "../auth/loading"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/membership-card",
+    "source": "apps/application/app/membership-card/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/ticket"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/memberships/detail",
+    "source": "apps/application/app/memberships/detail/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/bookings"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/memberships",
+    "source": "apps/application/app/memberships/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/bookings"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/messages/conversation",
+    "source": "apps/application/app/messages/conversation/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/messages/details",
+    "source": "apps/application/app/messages/details/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/messages",
+    "source": "apps/application/app/messages/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/notifications",
+    "source": "apps/application/app/notifications/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/notifications/preferences",
+    "source": "apps/application/app/notifications/preferences/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/orders/detail",
+    "source": "apps/application/app/orders/detail/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/bookings"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/orders",
+    "source": "apps/application/app/orders/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/bookings"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/",
+    "source": "apps/application/app/page.tsx",
+    "components": ["../components/luma/home"]
+  },
+  {
+    "surface": "application",
+    "route": "/privacy",
+    "source": "apps/application/app/privacy/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/profile/complete",
+    "source": "apps/application/app/profile/complete/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/profile/edit",
+    "source": "apps/application/app/profile/edit/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/profile",
+    "source": "apps/application/app/profile/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/profile/settings",
+    "source": "apps/application/app/profile/settings/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/profile/settings/privacy",
+    "source": "apps/application/app/profile/settings/privacy/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/reset-password",
+    "source": "apps/application/app/reset-password/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/saved/clubs",
+    "source": "apps/application/app/saved/clubs/page.tsx",
+    "components": ["../../../components/discovery/saved-pages"]
+  },
+  {
+    "surface": "application",
+    "route": "/saved/coaches",
+    "source": "apps/application/app/saved/coaches/page.tsx",
+    "components": ["../../../components/discovery/saved-pages"]
+  },
+  {
+    "surface": "application",
+    "route": "/saved",
+    "source": "apps/application/app/saved/page.tsx",
+    "components": ["../../components/discovery/saved-pages"]
+  },
+  {
+    "surface": "application",
+    "route": "/services/detail",
+    "source": "apps/application/app/services/detail/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/services"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/services",
+    "source": "apps/application/app/services/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/services"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/sessions",
+    "source": "apps/application/app/sessions/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/set-password",
+    "source": "apps/application/app/set-password/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "application",
+    "route": "/support/detail",
+    "source": "apps/application/app/support/detail/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/support",
+    "source": "apps/application/app/support/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/community"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/tickets/view",
+    "source": "apps/application/app/tickets/view/page.tsx",
+    "components": [
+      "../../../components/luma/page-loading",
+      "react",
+      "../../../components/luma/ticket"
+    ]
+  },
+  {
+    "surface": "application",
+    "route": "/training/conversation",
+    "source": "apps/application/app/training/conversation/page.tsx",
+    "components": ["react", "@repo/ui/training"]
+  },
+  {
+    "surface": "application",
+    "route": "/training",
+    "source": "apps/application/app/training/page.tsx",
+    "components": ["@repo/ui/training"]
+  },
+  {
+    "surface": "application",
+    "route": "/training/plan",
+    "source": "apps/application/app/training/plan/page.tsx",
+    "components": ["react", "@repo/ui/training"]
+  },
+  {
+    "surface": "application",
+    "route": "/training/workout",
+    "source": "apps/application/app/training/workout/page.tsx",
+    "components": ["react", "@repo/ui/training"]
+  },
+  {
+    "surface": "application",
+    "route": "/waitlist",
+    "source": "apps/application/app/waitlist/page.tsx",
+    "components": [
+      "../../components/luma/page-loading",
+      "react",
+      "../../components/luma/bookings"
+    ]
+  },
+  {
+    "surface": "business",
+    "route": "/advanced",
+    "source": "apps/business/app/advanced/page.tsx",
+    "components": ["react", "@repo/ui/advanced-business"]
+  },
+  {
+    "surface": "business",
+    "route": "/branches",
+    "source": "apps/business/app/branches/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/calendar",
+    "source": "apps/business/app/calendar/page.tsx",
+    "components": ["@repo/ui/sports"]
+  },
+  {
+    "surface": "business",
+    "route": "/coaching",
+    "source": "apps/business/app/coaching/page.tsx",
+    "components": ["react", "@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/imports",
+    "source": "apps/business/app/imports/page.tsx",
+    "components": ["@repo/ui/sports"]
+  },
+  {
+    "surface": "business",
+    "route": "/invitations",
+    "source": "apps/business/app/invitations/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/login",
+    "source": "apps/business/app/login/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/members",
+    "source": "apps/business/app/members/page.tsx",
+    "components": ["@repo/ui/sports"]
+  },
+  {
+    "surface": "business",
+    "route": "/messages/[conversationId]",
+    "source": "apps/business/app/messages/[conversationId]/page.tsx",
+    "components": ["next/navigation", "@repo/ui/sports-host-conversation"]
+  },
+  {
+    "surface": "business",
+    "route": "/messages",
+    "source": "apps/business/app/messages/page.tsx",
+    "components": ["react", "@repo/ui/sports-messages", "@repo/i18n/server"]
+  },
+  {
+    "surface": "business",
+    "route": "/organizations/[organizationId]/branches/[branchId]",
+    "source": "apps/business/app/organizations/[organizationId]/branches/[branchId]/page.tsx",
+    "components": ["@repo/ui/account", "@repo/i18n/server"]
+  },
+  {
+    "surface": "business",
+    "route": "/organizations/[organizationId]",
+    "source": "apps/business/app/organizations/[organizationId]/page.tsx",
+    "components": ["@repo/ui/account", "@repo/i18n/server"]
+  },
+  {
+    "surface": "business",
+    "route": "/organizations",
+    "source": "apps/business/app/organizations/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/",
+    "source": "apps/business/app/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/payments",
+    "source": "apps/business/app/payments/page.tsx",
+    "components": ["@repo/ui/sports"]
+  },
+  {
+    "surface": "business",
+    "route": "/privacy",
+    "source": "apps/business/app/privacy/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/profile",
+    "source": "apps/business/app/profile/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/reception",
+    "source": "apps/business/app/reception/page.tsx",
+    "components": ["@repo/ui/sports"]
+  },
+  {
+    "surface": "business",
+    "route": "/reports",
+    "source": "apps/business/app/reports/page.tsx",
+    "components": ["@repo/ui/sports", "@repo/ui/analytics", "@repo/i18n/server"]
+  },
+  {
+    "surface": "business",
+    "route": "/reset-password",
+    "source": "apps/business/app/reset-password/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/resources",
+    "source": "apps/business/app/resources/page.tsx",
+    "components": ["@repo/ui/sports"]
+  },
+  {
+    "surface": "business",
+    "route": "/services",
+    "source": "apps/business/app/services/page.tsx",
+    "components": ["@repo/ui/sports"]
+  },
+  {
+    "surface": "business",
+    "route": "/sessions",
+    "source": "apps/business/app/sessions/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/set-password",
+    "source": "apps/business/app/set-password/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/team",
+    "source": "apps/business/app/team/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "business",
+    "route": "/training",
+    "source": "apps/business/app/training/page.tsx",
+    "components": ["@repo/i18n/server", "@repo/ui/training-page"]
+  },
+  {
+    "surface": "admin",
+    "route": "/advanced",
+    "source": "apps/admin/app/advanced/page.tsx",
+    "components": ["react", "@repo/ui/advanced-business"]
+  },
+  {
+    "surface": "admin",
+    "route": "/analytics",
+    "source": "apps/admin/app/analytics/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/audit",
+    "source": "apps/admin/app/audit/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/catalog-reviews",
+    "source": "apps/admin/app/catalog-reviews/page.tsx",
+    "components": ["@repo/i18n/server", "@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/coaching",
+    "source": "apps/admin/app/coaching/page.tsx",
+    "components": ["react", "@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/demo",
+    "source": "apps/admin/app/demo/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/invitations",
+    "source": "apps/admin/app/invitations/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/locations",
+    "source": "apps/admin/app/locations/page.tsx",
+    "components": ["@repo/i18n/server", "@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/login",
+    "source": "apps/admin/app/login/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/moderation",
+    "source": "apps/admin/app/moderation/page.tsx",
+    "components": ["@repo/i18n/server", "@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/operations",
+    "source": "apps/admin/app/operations/page.tsx",
+    "components": ["@repo/ui/sports"]
+  },
+  {
+    "surface": "admin",
+    "route": "/organizations/[organizationId]/branches/[branchId]",
+    "source": "apps/admin/app/organizations/[organizationId]/branches/[branchId]/page.tsx",
+    "components": ["@repo/i18n/server", "@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/organizations/[organizationId]",
+    "source": "apps/admin/app/organizations/[organizationId]/page.tsx",
+    "components": ["@repo/i18n/server", "@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/organizations",
+    "source": "apps/admin/app/organizations/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/",
+    "source": "apps/admin/app/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/privacy",
+    "source": "apps/admin/app/privacy/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/profile",
+    "source": "apps/admin/app/profile/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/reset-password",
+    "source": "apps/admin/app/reset-password/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/sessions",
+    "source": "apps/admin/app/sessions/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/set-password",
+    "source": "apps/admin/app/set-password/page.tsx",
+    "components": ["@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/taxonomies",
+    "source": "apps/admin/app/taxonomies/page.tsx",
+    "components": ["@repo/i18n/server", "@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/training",
+    "source": "apps/admin/app/training/page.tsx",
+    "components": ["@repo/i18n/server", "@repo/ui/training-page"]
+  },
+  {
+    "surface": "admin",
+    "route": "/users/[userId]",
+    "source": "apps/admin/app/users/[userId]/page.tsx",
+    "components": ["@repo/i18n/server", "@repo/ui/account"]
+  },
+  {
+    "surface": "admin",
+    "route": "/users",
+    "source": "apps/admin/app/users/page.tsx",
+    "components": ["@repo/ui/account"]
+  }
+]

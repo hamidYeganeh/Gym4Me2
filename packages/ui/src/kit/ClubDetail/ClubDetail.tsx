@@ -119,8 +119,9 @@ export function ClubDetail({
           />
         </div>
         <div className={s.overlay()} />
+      </section>
+      <div className={s.panel()}>
         <div className={s.heading()}>
-          <div aria-hidden="true" className={s.headingGradient()} />
           <div className={s.headingContent()}>
             <p className={s.category()}>{club.category}</p>
             <h1 className={s.title()}>{club.name}</h1>
@@ -141,8 +142,7 @@ export function ClubDetail({
             )}
           </p>
         </div>
-      </section>
-      <div className={s.panel()}>
+
         <div className={s.gallery()} role="group" aria-label={labels.gallery}>
           {club.photos.map((item, index) => (
             <button

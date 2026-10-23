@@ -17,6 +17,7 @@ import {
   type ApiClientOptions,
 } from "./transport";
 import { createQueryClient } from "./query-client";
+import { clearListMemory } from "./list-memory";
 import { clearPushLocal } from "./push-local";
 import { clearTrainingLocal } from "./profile/training-offline";
 import { connectSessionSync } from "./session-sync";
@@ -45,6 +46,7 @@ export function ApiProvider({
   const [session, setSession] = useState(0);
   const sync = useRef<ReturnType<typeof connectSessionSync> | null>(null);
   const resetLocalSession = useCallback(async () => {
+    clearListMemory();
     await queryClient.cancelQueries();
     if (options.application === "application" && !options.fetch)
       await clearPushLocal().catch(() => undefined);

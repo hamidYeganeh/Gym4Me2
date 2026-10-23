@@ -17,7 +17,8 @@
     "./sports": "./src/sports/index.ts",
     "./training-offline": "./src/profile/training-offline.ts",
     "./web-push": "./src/web-push.ts",
-    "./advanced-business": "./src/advanced-business.ts"
+    "./advanced-business": "./src/advanced-business.ts",
+    "./list-memory": "./src/list-memory.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

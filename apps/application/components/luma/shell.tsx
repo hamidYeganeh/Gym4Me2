@@ -19,7 +19,7 @@ function ResolvedShell({ children }: { children: ReactNode }) {
   ]);
   const path = usePathname().replace(/\/$/, "") || "/";
   const search = useSearchParams();
-  const { logical, protectedPage, navigationVisible } = applicationRouteLayout(
+  const { logical, navigationVisible } = applicationRouteLayout(
     path,
     search.toString(),
   );
@@ -27,7 +27,7 @@ function ResolvedShell({ children }: { children: ReactNode }) {
   useEffect(() => commitAppRoute(path, query), [path, query]);
   return (
     <div
-      className={protectedPage ? undefined : "luma-shell"}
+      className="luma-shell"
       data-luma-navigation={navigationVisible || undefined}
       onClickCapture={(event) => {
         const anchor =

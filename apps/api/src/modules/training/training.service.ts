@@ -95,9 +95,9 @@ export class TrainingService {
       this.db,
       sql`SELECT id,snapshot->>'title' title FROM training_sessions WHERE athlete_id=${actor} AND state='in_progress' ORDER BY started_at DESC LIMIT 1`,
     );
-    const [plan] = await rows<{ title: string }>(
+    const [plan] = await rows<{ id: string; title: string }>(
       this.db,
-      sql`SELECT v.content->>'title' title FROM training_assignments a JOIN training_versions v ON v.id=a.version_id WHERE a.athlete_id=${actor} AND v.effective_from<=(now() AT TIME ZONE 'Asia/Tehran')::date ORDER BY v.effective_from DESC,v.version DESC,a.id LIMIT 1`,
+      sql`SELECT a.id,v.content->>'title' title FROM training_assignments a JOIN training_versions v ON v.id=a.version_id WHERE a.athlete_id=${actor} AND v.effective_from<=(now() AT TIME ZONE 'Asia/Tehran')::date ORDER BY v.effective_from DESC,v.version DESC,a.id LIMIT 1`,
     );
     return { active: active ?? null, plan: plan ?? null };
   }

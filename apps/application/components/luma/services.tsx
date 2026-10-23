@@ -1,9 +1,11 @@
 "use client";
+import { useListState } from "@repo/ui/hooks/use-list-state";
 import { useTrainingEvent } from "@repo/ui/training";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
 import { ServiceCover, ServiceCoverThumbnail } from "@repo/ui/sports-cover";
 import Link from "next/link";
 import { useDeferredValue, useState } from "react";
+import { BottomSheet } from "@repo/ui/kit/BottomSheet";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "@repo/i18n";
 import {
@@ -30,7 +32,12 @@ export function ServicesPage({
 }: { organizationId?: string; branchId?: string; back?: string } = {}) {
   const t = useLuma();
   const locale = useLocale();
-  const [q, setQ] = useState("");
+  const [q, setQ] = useListState(
+    "search",
+    "",
+    (v): v is string => typeof v === "string",
+    `${organizationId ?? ""}:${branchId ?? ""}`,
+  );
   const search = useDeferredValue(q);
   useTrainingEvent("discovery_searched");
   const query = useSportsQuery<ServiceDto[]>("sports/services", {
@@ -80,6 +87,7 @@ export function ServiceDetail() {
     undefined,
     Boolean(id),
   );
+  const [sessionsOpen, setSessionsOpen] = useState(false);
   const waiting = useSportsCommand("sports/account/waitlist");
   if (!id)
     return (
@@ -88,20 +96,27 @@ export function ServiceDetail() {
       </LumaPage>
     );
   return (
-    <LumaPage title={query.data?.title ?? t("services")} back="/services">
+    <LumaPage
+      title={t("details")}
+      back="/services"
+      className="luma-service-detail"
+    >
       <QueryState query={query}>
         {query.data && (
           <>
-            <p className="luma-meta">
-              {[
-                query.data.clubName,
-                query.data.branchName,
-                query.data.coachName,
-              ]
-                .filter(Boolean)
-                .join(" · ")}
-            </p>
             <ServiceCover cover={query.data.cover} />
+            <div className="service-detail-heading">
+              <h2>{query.data.title}</h2>
+              <p className="luma-meta">
+                {[
+                  query.data.clubName,
+                  query.data.branchName,
+                  query.data.coachName,
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </p>
+            </div>
             <Section title={t("description")}>
               <p className="leading-8 whitespace-pre-wrap">
                 {query.data.description}
@@ -147,11 +162,12 @@ export function ServiceDetail() {
                   )}
               </dl>
             </Section>
-            <Section title={t("conditions")}>
+            <details className="service-conditions">
+              <summary>{t("conditions")}</summary>
               <p className="luma-meta whitespace-pre-wrap">
                 {query.data.policy.terms}
               </p>
-            </Section>
+            </details>
             <ServiceEligibilitySummary value={query.data.eligibility} />
             {query.data.requirements.length > 0 && (
               <Section title={t("requiredDocuments")}>
@@ -168,46 +184,68 @@ export function ServiceDetail() {
                 {t("continue")}
               </Link>
             ) : (
-              <Section
-                title={t(
-                  query.data.kind === "course"
-                    ? "courseSchedule"
-                    : "chooseSession",
-                )}
-              >
-                {query.data.kind === "course" && (
-                  <p className="luma-meta mb-4">
-                    {t("courseRegistrationHint")}
-                  </p>
-                )}
-                {query.data.occurrences.map((o) => (
-                  <div key={o.id} className="luma-group mb-3">
-                    <Row
-                      title={stamp(o.startAt, locale)}
-                      meta={
-                        o.resourceAvailable === false
-                          ? t("resourceUnavailableSlot")
-                          : `${t("capacity")}: ${new Intl.NumberFormat(locale).format(o.remaining)}`
-                      }
-                      href={
-                        o.remaining > 0 && o.resourceAvailable !== false
-                          ? `/checkout?service=${id}&occurrence=${o.id}`
-                          : undefined
-                      }
-                    />
-                    {o.remaining === 0 && o.resourceAvailable !== false && (
-                      <button
-                        className="luma-cta mb-3"
-                        disabled={waiting.isPending}
-                        onClick={() => waiting.mutate({ occurrenceId: o.id })}
-                      >
-                        {t("waitlist")}
-                      </button>
+              <>
+                <button
+                  className="luma-cta service-book-action"
+                  type="button"
+                  onClick={() => setSessionsOpen(true)}
+                >
+                  {t(
+                    query.data.kind === "course"
+                      ? "courseSchedule"
+                      : "chooseSession",
+                  )}
+                </button>
+                <BottomSheet
+                  open={sessionsOpen}
+                  onOpenChange={setSessionsOpen}
+                  title={t("chooseSession")}
+                  description={query.data.title}
+                >
+                  <div className="service-session-options">
+                    {query.data.kind === "course" && (
+                      <p className="luma-meta mb-4">
+                        {t("courseRegistrationHint")}
+                      </p>
                     )}
+                    {query.data.occurrences.map((o) => (
+                      <div key={o.id} className="luma-group mb-3">
+                        <Row
+                          title={stamp(o.startAt, locale)}
+                          meta={
+                            o.resourceAvailable === false
+                              ? t("resourceUnavailableSlot")
+                              : `${t("capacity")}: ${new Intl.NumberFormat(locale).format(o.remaining)}`
+                          }
+                          href={
+                            o.remaining > 0 && o.resourceAvailable !== false
+                              ? `/checkout?service=${id}&occurrence=${o.id}`
+                              : undefined
+                          }
+                        />
+                        {o.remaining === 0 && o.resourceAvailable !== false && (
+                          <button
+                            className="luma-cta mb-3"
+                            disabled={waiting.isPending}
+                            onClick={() =>
+                              waiting.mutate({ occurrenceId: o.id })
+                            }
+                          >
+                            {t("waitlist")}
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    {!query.data.occurrences.length && <Empty />}
                   </div>
-                ))}
-                {!query.data.occurrences.length && <Empty />}
-              </Section>
+                  <CommandError error={waiting.error} />
+                  {waiting.isSuccess && (
+                    <Link className="luma-cta" href="/waitlist">
+                      {t("waitlist")}
+                    </Link>
+                  )}
+                </BottomSheet>
+              </>
             )}
             <CommandError error={waiting.error} />
             {waiting.isSuccess && (

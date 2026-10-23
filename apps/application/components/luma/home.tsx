@@ -12,14 +12,14 @@ import {
   Ticket,
 } from "lucide-react";
 import { useLocale, useTranslations } from "@repo/i18n";
-import { useAccount, useTrainingQuery } from "@repo/api/profile";
+import { useAccount } from "@repo/api/profile";
 import { ServiceCoverThumbnail } from "@repo/ui/sports-cover";
+import { PersonalAgenda } from "./agenda";
 import { AuthWelcome } from "@repo/ui/account";
 import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
 import {
   useSportsQuery,
-  type BookingPageDto,
   type ServiceDto,
   type CalendarPageDto,
 } from "@repo/api/sports";
@@ -68,58 +68,16 @@ export function HomePage() {
 }
 function SignedInHome() {
   const t = useLuma();
-  const visual = useTranslations("Visual");
   const locale = useLocale();
-  const training = useTrainingQuery<{
-    active: { id: string; title: string } | null;
-    plan: { title: string } | null;
-  }>("profile/training/home-summary");
-  const active = training.data?.active;
-  const nextPlan = training.data?.plan;
-  const bookings = useSportsQuery<BookingPageDto>(
-    "sports/account/bookings/page",
-    { tab: "upcoming", limit: 3 },
-  );
+  const brand = useTranslations("Home");
   const calendars = useSportsQuery<CalendarPageDto>(
     "sports/community/calendars/page",
     { limit: 3 },
   );
   const services = useSportsQuery<ServiceDto[]>("sports/services");
   return (
-    <LumaPage title={t("home")} actions={<CreateAction />}>
-      <Link
-        className="luma-home-training"
-        href={active ? `/training/workout?id=${active.id}` : "/training"}
-      >
-        <span className="luma-home-eyebrow">
-          <Dumbbell size={15} />
-          {visual("yourNextMove")}
-        </span>
-        <h2>{active?.title ?? nextPlan?.title ?? visual("makeRoomForYou")}</h2>
-        <span className="luma-home-training-action">
-          {active ? visual("continueWorkout") : visual("viewTraining")}
-          <Dumbbell size={17} />
-        </span>
-      </Link>
-      <Section title={t("yourBookings")} href="/bookings">
-        <QueryState query={bookings} compact>
-          {bookings.data?.items.map((r) => (
-            <Row
-              key={r.id}
-              title={r.title}
-              date={r.startAt}
-              meta={`${stamp(r.startAt, locale)} · ${r.branchName}`}
-              state={r.status}
-              href={`/bookings/detail?id=${r.id}`}
-            />
-          ))}
-          {!bookings.data?.items.length && (
-            <Empty compact>
-              <Link href="/services">{t("services")}</Link>
-            </Empty>
-          )}
-        </QueryState>
-      </Section>
+    <LumaPage title={brand("brand")} actions={<CreateAction />}>
+      <PersonalAgenda />
       <div className="luma-shortcuts">
         {(
           [

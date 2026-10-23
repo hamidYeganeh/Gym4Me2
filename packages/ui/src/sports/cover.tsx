@@ -73,7 +73,7 @@ function CoverImage({
       height={cover.height}
       unoptimized
       loading="eager"
-      className="my-5 aspect-[16/10] w-full rounded-3xl object-cover"
+      className="service-cover my-5 aspect-square w-full rounded-2xl object-cover"
       onError={() => setFailed(true)}
     />
   );
@@ -85,7 +85,14 @@ export function ServiceCover({
   cover: ServiceCoverDto | null | undefined;
 }) {
   const { api } = useApiContext();
-  if (!cover) return null;
+  const t = useTranslations("Copy");
+  if (!cover)
+    return (
+      <div className="service-cover-placeholder" aria-hidden="true">
+        <Dumbbell size={76} strokeWidth={1.1} />
+        <span dir="ltr">{t("brand")}</span>
+      </div>
+    );
   return (
     <CoverImage
       key={cover.id}
