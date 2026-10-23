@@ -199,11 +199,11 @@
       "../../../components/luma/page-loading"
     ],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me messages"
+      "source": "Luma ios Sep 2026 264.png",
+      "adaptation": "Gym4Me coaching"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "messages",
+    "sharedVerificationFamily": "coaching",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -216,11 +216,11 @@
       "../../components/luma/page-loading"
     ],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me messages"
+      "source": "Luma ios Sep 2026 264.png",
+      "adaptation": "Gym4Me coaching"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "messages",
+    "sharedVerificationFamily": "coaching",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -413,11 +413,11 @@
       "../../../../components/discovery/coach-page"
     ],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me messages"
+      "source": "Luma ios Sep 2026 264.png",
+      "adaptation": "Gym4Me coaching"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "messages",
+    "sharedVerificationFamily": "coaching",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -503,8 +503,8 @@
     "source": "apps/application/app/invitations/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 72.png",
-      "adaptation": "Gym4Me services"
+      "source": "Luma ios Sep 2026 328.png",
+      "adaptation": "Gym4Me settings"
     },
     "stateContract": [
       "loading",
@@ -516,7 +516,7 @@
       "disabled",
       "expired"
     ],
-    "sharedVerificationFamily": "services",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -556,11 +556,11 @@
       "../auth/loading"
     ],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me home"
+      "source": "Luma ios Sep 2026 328.png",
+      "adaptation": "Gym4Me settings"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "home",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -573,8 +573,8 @@
       "../../components/luma/ticket"
     ],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me home"
+      "source": "Luma ios Sep 2026 72.png",
+      "adaptation": "Gym4Me bookings"
     },
     "stateContract": [
       "loading",
@@ -586,7 +586,7 @@
       "disabled",
       "expired"
     ],
-    "sharedVerificationFamily": "home",
+    "sharedVerificationFamily": "bookings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -803,11 +803,11 @@
     "source": "apps/application/app/privacy/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me home"
+      "source": "Luma ios Sep 2026 328.png",
+      "adaptation": "Gym4Me settings"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "home",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -881,11 +881,11 @@
     "source": "apps/application/app/reset-password/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me home"
+      "source": "Luma ios Sep 2026 328.png",
+      "adaptation": "Gym4Me settings"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "home",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -907,11 +907,11 @@
     "source": "apps/application/app/saved/coaches/page.tsx",
     "components": ["../../../components/discovery/saved-pages"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me messages"
+      "source": "Luma ios Sep 2026 264.png",
+      "adaptation": "Gym4Me coaching"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "messages",
+    "sharedVerificationFamily": "coaching",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -985,11 +985,11 @@
     "source": "apps/application/app/sessions/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me home"
+      "source": "Luma ios Sep 2026 328.png",
+      "adaptation": "Gym4Me settings"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "home",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -998,11 +998,11 @@
     "source": "apps/application/app/set-password/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me home"
+      "source": "Luma ios Sep 2026 328.png",
+      "adaptation": "Gym4Me settings"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "home",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1049,11 +1049,11 @@
       "../../../components/luma/ticket"
     ],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me home"
+      "source": "Luma ios Sep 2026 72.png",
+      "adaptation": "Gym4Me bookings"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "home",
+    "sharedVerificationFamily": "bookings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1150,11 +1150,11 @@
       "../../components/luma/bookings"
     ],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 24.png",
-      "adaptation": "Gym4Me home"
+      "source": "Luma ios Sep 2026 72.png",
+      "adaptation": "Gym4Me bookings"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "home",
+    "sharedVerificationFamily": "bookings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1202,7 +1202,7 @@
     "source": "apps/business/app/coaching/page.tsx",
     "components": ["react", "@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 24.png",
       "adaptation": "Gym4Me host management"
     },
     "stateContract": [
@@ -1214,7 +1214,7 @@
       "offline",
       "pending"
     ],
-    "sharedVerificationFamily": "business-shell",
+    "sharedVerificationFamily": "coaching",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1236,7 +1236,7 @@
     "source": "apps/business/app/invitations/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me host management"
     },
     "stateContract": [
@@ -1249,7 +1249,7 @@
       "disabled",
       "expired"
     ],
-    "sharedVerificationFamily": "business-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1258,11 +1258,11 @@
     "source": "apps/business/app/login/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me host management"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "business-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1284,7 +1284,7 @@
     "source": "apps/business/app/messages/[conversationId]/page.tsx",
     "components": ["next/navigation", "@repo/ui/sports-host-conversation"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 24.png",
       "adaptation": "Gym4Me host management"
     },
     "stateContract": [
@@ -1296,7 +1296,7 @@
       "offline",
       "pending"
     ],
-    "sharedVerificationFamily": "business-shell",
+    "sharedVerificationFamily": "messages",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1305,7 +1305,7 @@
     "source": "apps/business/app/messages/page.tsx",
     "components": ["react", "@repo/ui/sports-messages", "@repo/i18n/server"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 24.png",
       "adaptation": "Gym4Me host management"
     },
     "stateContract": [
@@ -1317,7 +1317,7 @@
       "offline",
       "pending"
     ],
-    "sharedVerificationFamily": "business-shell",
+    "sharedVerificationFamily": "messages",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1391,11 +1391,11 @@
     "source": "apps/business/app/privacy/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me host management"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "business-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1447,11 +1447,11 @@
     "source": "apps/business/app/reset-password/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me host management"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "business-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1495,11 +1495,11 @@
     "source": "apps/business/app/sessions/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me host management"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "business-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1508,11 +1508,11 @@
     "source": "apps/business/app/set-password/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me host management"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "business-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1534,7 +1534,7 @@
     "source": "apps/business/app/training/page.tsx",
     "components": ["@repo/i18n/server", "@repo/ui/training-page"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 24.png",
       "adaptation": "Gym4Me host management"
     },
     "stateContract": [
@@ -1546,7 +1546,7 @@
       "offline",
       "pending"
     ],
-    "sharedVerificationFamily": "business-shell",
+    "sharedVerificationFamily": "training",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1607,7 +1607,7 @@
     "source": "apps/admin/app/coaching/page.tsx",
     "components": ["react", "@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 24.png",
       "adaptation": "Gym4Me administration"
     },
     "stateContract": [
@@ -1619,7 +1619,7 @@
       "offline",
       "pending"
     ],
-    "sharedVerificationFamily": "admin-shell",
+    "sharedVerificationFamily": "coaching",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1641,7 +1641,7 @@
     "source": "apps/admin/app/invitations/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me administration"
     },
     "stateContract": [
@@ -1654,7 +1654,7 @@
       "disabled",
       "expired"
     ],
-    "sharedVerificationFamily": "admin-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1676,11 +1676,11 @@
     "source": "apps/admin/app/login/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me administration"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "admin-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1767,11 +1767,11 @@
     "source": "apps/admin/app/privacy/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me administration"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "admin-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1793,11 +1793,11 @@
     "source": "apps/admin/app/reset-password/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me administration"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "admin-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1806,11 +1806,11 @@
     "source": "apps/admin/app/sessions/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me administration"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "admin-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1819,11 +1819,11 @@
     "source": "apps/admin/app/set-password/page.tsx",
     "components": ["@repo/ui/account"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 328.png",
       "adaptation": "Gym4Me administration"
     },
     "stateContract": ["loading", "empty", "error", "success", "denied"],
-    "sharedVerificationFamily": "admin-shell",
+    "sharedVerificationFamily": "settings",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {
@@ -1845,7 +1845,7 @@
     "source": "apps/admin/app/training/page.tsx",
     "components": ["@repo/i18n/server", "@repo/ui/training-page"],
     "referencePattern": {
-      "source": "Luma ios Sep 2026 112.png",
+      "source": "Luma ios Sep 2026 24.png",
       "adaptation": "Gym4Me administration"
     },
     "stateContract": [
@@ -1857,7 +1857,7 @@
       "offline",
       "pending"
     ],
-    "sharedVerificationFamily": "admin-shell",
+    "sharedVerificationFamily": "training",
     "verificationLevel": "shared-family geometry; per-route interaction not independently asserted"
   },
   {

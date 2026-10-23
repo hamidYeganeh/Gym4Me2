@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-23",
+  "source": "2c263014be95a1ced2c110c7ae2356df1bda398a",
+  "comparisonBase": "5f6942a1ba4fcacb403e5901221d3d02ae37d517",
+  "ci": {
+    "run": 39985692371,
+    "url": "https://github.com/hamidYeganeh/Gym4Me2/actions/runs/39985692371",
+    "conclusion": "success",
+    "jobs": {
+      "verify": "success",
+      "ios-build": "success"
+    }
+  },
+  "deployments": [
+    {
+      "name": "api",
+      "id": "dpl_C2MVWkZZJ5LVqqCPVzXxogoXY44P",
+      "state": "READY",
+      "source": "2c263014be95a1ced2c110c7ae2356df1bda398a",
+      "url": "https://gym4me-demo-api.vercel.app",
+      "framework": "NestJS"
+    },
+    {
+      "name": "application",
+      "id": "dpl_CmfzUK5fxXYyWU4f413mAVTRF2ow",
+      "state": "READY",
+      "source": "2c263014be95a1ced2c110c7ae2356df1bda398a",
+      "url": "https://gym4me-demo-application.vercel.app",
+      "framework": "Next.js"
+    },
+    {
+      "name": "business",
+      "id": "dpl_EN3KZdajzqPW8uGabyB1DGdtFdvq",
+      "state": "READY",
+      "source": "2c263014be95a1ced2c110c7ae2356df1bda398a",
+      "url": "https://gym4me-demo-business.vercel.app",
+      "framework": "Next.js"
+    },
+    {
+      "name": "admin",
+      "id": "dpl_2ZbTRQHD5hugqRztHd9KvgHsTgvy",
+      "state": "READY",
+      "source": "2c263014be95a1ced2c110c7ae2356df1bda398a",
+      "url": "https://gym4me-demo-admin.vercel.app",
+      "framework": "Next.js"
+    }
+  ],
+  "verification": {
+    "localApplicationAndSharedApiTests": 250,
+    "representativeFamilies": 31,
+    "geometryCases": 124,
+    "sourceRoutes": 112,
+    "onlineRoles": 8,
+    "onlineRequests": 61,
+    "independentReviews": 3,
+    "materialFindingsFixed": 3,
+    "cameraPhysicalDeviceTest": false,
+    "nativeGesturePhysicsMeasured": false
+  },
+  "android": {
+    "path": ".artifacts/android/Gym4Me-1.2.0.apk",
+    "source": "2c263014be95a1ced2c110c7ae2356df1bda398a",
+    "versionName": "1.2.0",
+    "versionCode": 6,
+    "package": "com.gym4me.app",
+    "minSdk": 24,
+    "targetSdk": 36,
+    "bytes": 23171010,
+    "sha256": "42e3ad77ed3c6cb668022efba1894fcda5d9e27bc833824ff5fe38dea9281a4f",
+    "ciRun": 39985692371,
+    "artifactId": 12516236886,
+    "archiveSha256": "7e50d7c65f5318180adb202dd87982b8851a87e77d4ad3a11ca0129eb864aeee",
+    "certificateSha256": "29cfa3f6c1eb688e59d03f22a374af8d7ca21cf6d90e1425aa40202bab39b452",
+    "verifiedSignatures": ["v2", "v3"],
+    "sameCertificateAsPreviousDelivery": true,
+    "stableApiBundled": true,
+    "remoteServerUrlOverride": false,
+    "qaRoutesBundled": false,
+    "physicalDeviceTest": false
+  },
+  "providers": {
+    "configurationChanged": false,
+    "newPaidService": false
+  },
+  "dataReset": false,
+  "postDeployment": {
+    "frontendsHttp200": 3,
+    "nativeCorsOriginsChecked": ["https://localhost", "capacitor://localhost"],
+    "errorScan": {
+      "transport": "Vercel CLI request logs (connector scope unavailable)",
+      "window": "15m",
+      "level": "error",
+      "deploymentScoped": true,
+      "records": [
+        {
+          "name": "api",
+          "scanOk": true,
+          "requestsWithErrorLevel": 0
+        },
+        {
+          "name": "application",
+          "scanOk": true,
+          "requestsWithErrorLevel": 0
+        },
+        {
+          "name": "business",
+          "scanOk": true,
+          "requestsWithErrorLevel": 0
+        },
+        {
+          "name": "admin",
+          "scanOk": true,
+          "requestsWithErrorLevel": 0
+        }
+      ]
+    }
+  }
+}
