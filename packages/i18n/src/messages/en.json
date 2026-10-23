@@ -791,7 +791,8 @@
     "changeReasonRequired": "Enter a change reason between 3 and 500 characters.",
     "pushDeviceAlreadyRegistered": "This device is already registered. Sign out of its previous session and retry.",
     "pushTestWait": "Wait 30 seconds before sending another test.",
-    "sessionAlreadyReserved": "You already reserved this session. Open My bookings to see its details."
+    "sessionAlreadyReserved": "You already reserved this session. Open My bookings to see its details.",
+    "membershipExhausted": "No unreserved sessions remain on this membership. Check its balance and active bookings."
   },
   "Preview": {
     "atlasAthleticClub": "Atlas Athletic Club",

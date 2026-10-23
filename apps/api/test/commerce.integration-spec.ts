@@ -2405,6 +2405,84 @@ test('QR replay returns the same visit and consumes a session once', async () =>
     'completed',
   );
 });
+test('direct membership QR consumes one session and replay keeps one visit and entitlement event', async () => {
+  const service = await create('membership', '0', [], 2);
+  const order = await commerce.checkout(other, {
+    serviceId: service.id,
+    idempotencyKey: randomUUID(),
+  });
+  const membership = (await commerce.memberships(other)).find(
+    (m) => m.order_id === order.id,
+  )!;
+  const ticket = await commerce.ticket(other, String(membership.id), true);
+  const visit = await commerce.checkIn(owner, ticket.token, 'Member entry');
+  expect(
+    (await commerce.checkIn(owner, ticket.token, 'Repeated scan')).id,
+  ).toBe(visit.id);
+  expect(
+    (await commerce.memberships(other)).find((m) => m.id === membership.id)
+      ?.consumed,
+  ).toBe(1);
+  expect(
+    (
+      await rows<{ count: number }>(
+        db,
+        sql`SELECT count(*)::int count FROM sport_entitlement_events WHERE membership_id=${membership.id} AND kind='consume'`,
+      )
+    )[0].count,
+  ).toBe(1);
+});
+test('two direct membership tokens cannot consume the final session twice and an exhausted membership cannot mint a ticket', async () => {
+  const service = await create('membership', '0', [], 1);
+  const order = await commerce.checkout(other, {
+    serviceId: service.id,
+    idempotencyKey: randomUUID(),
+  });
+  const membership = (await commerce.memberships(other)).find(
+    (m) => m.order_id === order.id,
+  )!;
+  const tickets = await Promise.all(
+    [1, 2].map(() => commerce.ticket(other, String(membership.id), true)),
+  );
+  const results = await Promise.allSettled(
+    tickets.map((t) => commerce.checkIn(owner, t.token, 'Member entry')),
+  );
+  expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+  expect(results.filter((r) => r.status === 'rejected')).toHaveLength(1);
+  expect(
+    (await commerce.memberships(other)).find((m) => m.id === membership.id)
+      ?.consumed,
+  ).toBe(1);
+  await expect(
+    commerce.ticket(other, String(membership.id), true),
+  ).rejects.toThrow('Backend.membershipExhausted');
+});
+test('a direct membership token cannot spend a session reserved for a booking', async () => {
+  const service = await create('membership', '0', [], 1);
+  const order = await commerce.checkout(other, {
+    serviceId: service.id,
+    idempotencyKey: randomUUID(),
+  });
+  const membership = (await commerce.memberships(other)).find(
+    (m) => m.order_id === order.id,
+  )!;
+  const ticket = await commerce.ticket(other, String(membership.id), true);
+  const group = await create();
+  const slot = await occurrence(group.id, 4);
+  await commerce.checkout(other, {
+    serviceId: group.id,
+    occurrenceId: slot.id,
+    membershipId: String(membership.id),
+    idempotencyKey: randomUUID(),
+  });
+  await expect(
+    commerce.checkIn(owner, ticket.token, 'Walk-in entry'),
+  ).rejects.toThrow('Backend.membershipExhausted');
+  expect(
+    (await commerce.memberships(other)).find((m) => m.id === membership.id)
+      ?.consumed,
+  ).toBe(0);
+});
 test('future booking cannot mint an entry token before its entry window', async () => {
   const service = await create();
   const o = await occurrence(service.id);

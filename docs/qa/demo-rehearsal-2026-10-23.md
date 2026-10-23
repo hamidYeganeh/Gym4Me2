@@ -20,16 +20,22 @@ user-requested removal. These accounts never send live SMS or charge a bank card
   preparation no longer imports the UI fixture's fixed-date opening exceptions
   or Sunday-only hours. Payment copy still states that no bank funds are debited.
 - Android version is 1.1.1 / code 5, so the new APK can update the previous build.
+- Direct membership QR visits now consume one credit under a membership lock.
+  Replayed scans return the original visit; reserved credits are protected and
+  two tokens cannot spend the last remaining credit concurrently.
+- Secondary action buttons retain readable foreground colors on dark surfaces.
+- Interrupted showcase preparation skips its already committed catalog and
+  resumes initial unpublished programs without replacing later user edits.
 
 ## Local verification
 
-- All 75 commerce integration tests passed, including two new concurrent
+- All 78 commerce integration tests passed, including two new concurrent
   duplicate-checkout cases (held and paid reservations), quote changes, capacity,
   payments/refunds, resources, scheduling, private communications and analytics.
 - An isolated PostgreSQL provisioning regression passed: reset state, eight role
   accounts, rerun without losing an edit, interrupted publication, PH4 plans,
   expanded catalog, presentation copy, and rejection of a partial installation.
-- The real HTTP rehearsal passed 156 requests across eight account roles:
+- The real HTTP rehearsal passed 157 requests across eight account roles:
   discovery, sign-in, scoped dashboards, occurrence edit/replay/stale revision,
   failed/successful payment, repeated checkout/verification, membership QR
   attendance, cancellation/refund, personal/assigned training, replayed workout

@@ -1,12 +1,10 @@
 # Gym4Me demo on Vercel
 
-> **2026-10-22 reset:** At the user's explicit request, all created sample data
-> and all sample accounts were removed. The account numbers and seeded examples
-> documented below are historical and no longer sign in. Nothing is automatically
-> reseeded. Authentication must be configured before onboarding new accounts.
-> The schema, installation marker and base exercise library are retained.
-> Current scheduling/performance acceptance is in
-> [the latest report](qa/scheduling-performance-2026-10-22.md).
+> **2026-10-23 restoration:** After the earlier reset, the user explicitly
+> authorized a new fictional catalog and role accounts for the meeting. Accounts
+> below are active again. Product names/copy use natural presentation text.
+> Start with the [current role accounts and walkthrough](qa/meeting-guide-fa.md)
+> and [rehearsal evidence](qa/demo-rehearsal-2026-10-23.md). Nothing reseeds on login.
 
 This deployment uses four Hobby projects and one isolated Neon Free database.
 No live SMS or payment provider is configured. Use synthetic data only.

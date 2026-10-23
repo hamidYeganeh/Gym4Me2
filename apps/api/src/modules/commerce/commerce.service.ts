@@ -2239,13 +2239,32 @@ export class CommerceService {
       return this.order(tx, order.user_id, id);
     });
   }
+  private async assertDirectEntryBalance(
+    db: Db | Tx,
+    membership: { id: string; granted: number | null; consumed: number },
+  ) {
+    const [held] = await rows<{ count: number }>(
+      db,
+      sql`SELECT count(*)::int count FROM sport_reservations WHERE membership_id=${membership.id} AND consumed=false AND (status='confirmed' OR status IN('held','pending_approval') AND expires_at>now())`,
+    );
+    if (
+      membership.granted !== null &&
+      membership.consumed + held.count >= membership.granted
+    )
+      throw new ConflictException('Backend.membershipExhausted');
+  }
   async ticket(userId: string, reference: string, membership = false) {
-    if (membership)
-      await one(
+    if (membership) {
+      const balance = await one<{
+        id: string;
+        granted: number | null;
+        consumed: number;
+      }>(
         this.db,
-        sql`SELECT id FROM sport_memberships WHERE id=${reference} AND user_id=${userId} AND status='active' AND (ends_at IS NULL OR ends_at>now())`,
+        sql`SELECT id,granted,consumed FROM sport_memberships WHERE id=${reference} AND user_id=${userId} AND status='active' AND (ends_at IS NULL OR ends_at>now())`,
       );
-    else {
+      await this.assertDirectEntryBalance(this.db, balance);
+    } else {
       const booking = await one<{
         start_at: Date;
         end_at: Date;
@@ -2311,6 +2330,8 @@ export class CommerceService {
       if (t.expires_at <= new Date())
         throw new ConflictException('Ticket expired');
       let reservation: Reservation | undefined;
+      let directMembership:
+        { id: string; granted: number | null; consumed: number } | undefined;
       let org: string, branch: string;
       if (t.reservation_id) {
         reservation = await one<Reservation>(
@@ -2347,12 +2368,19 @@ export class CommerceService {
         )
           throw new ConflictException('Session entry window is closed');
       } else {
-        const m = await one<{ organization_id: string; branch_id: string }>(
+        const m = await one<{
+          id: string;
+          organization_id: string;
+          branch_id: string;
+          granted: number | null;
+          consumed: number;
+        }>(
           tx,
           sql`SELECT * FROM sport_memberships WHERE id=${t.membership_id} AND status='active' AND (ends_at IS NULL OR ends_at>now()) FOR UPDATE`,
         );
         org = m.organization_id;
         branch = m.branch_id;
+        directMembership = m;
       }
       await this.staff(tx, userId, org, branch, [
         'owner',
@@ -2361,6 +2389,8 @@ export class CommerceService {
       ]);
       if (t.consumed_at)
         return one(tx, sql`SELECT * FROM sport_visits WHERE token_id=${t.id}`);
+      if (directMembership)
+        await this.assertDirectEntryBalance(tx, directMembership);
       const visit = await one<{ id: string }>(
         tx,
         sql`INSERT INTO sport_visits(user_id,branch_id,token_id,actor_id,reason) VALUES(${t.user_id},${branch},${t.id},${userId},${reason}) RETURNING *`,
@@ -2369,6 +2399,16 @@ export class CommerceService {
         tx,
         sql`UPDATE sport_access_tokens SET consumed_at=now() WHERE id=${t.id}`,
       );
+      if (directMembership) {
+        await rows(
+          tx,
+          sql`UPDATE sport_memberships SET consumed=consumed+1,revision=revision+1 WHERE id=${directMembership.id}`,
+        );
+        await rows(
+          tx,
+          sql`INSERT INTO sport_entitlement_events(membership_id,kind,quantity,source_key,actor_id) VALUES(${directMembership.id},'consume',1,${`entry:${visit.id}`},${userId})`,
+        );
+      }
       if (reservation) {
         await this.consume(tx, reservation);
         await rows(

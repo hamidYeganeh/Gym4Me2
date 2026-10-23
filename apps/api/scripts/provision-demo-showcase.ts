@@ -93,150 +93,173 @@ export async function provisionDemoShowcase() {
     )
       throw new Error('Valid application origin required');
     const branches: Branch[] = [];
-    await db.transaction(async (tx) => {
-      await tx.execute(sql`SELECT pg_advisory_xact_lock(7088,10)`);
-      await tx.execute(
-        sql`CREATE TABLE IF NOT EXISTS gym4me_demo_showcase_objects(kind text NOT NULL,item_key text NOT NULL,entity_id uuid NOT NULL,PRIMARY KEY(kind,item_key))`,
-      );
-      const [location] = await rows<{
-        country_id: string;
-        province_id: string;
-      }>(
-        tx,
-        sql`SELECT bp.country_id,bp.province_id FROM branch_profiles bp JOIN clubs c ON c.id=bp.club_id WHERE c.owner_id=${owners[0]} AND bp.country_id IS NOT NULL ORDER BY bp.created_at LIMIT 1`,
-      );
-      if (!location) throw new Error('Demo catalog foundation missing');
-      await tx.execute(
-        sql`UPDATE countries SET name='ایران' WHERE id=${location.country_id} AND name='ایران آزمایشی'`,
-      );
-      await tx.execute(
-        sql`UPDATE provinces SET name='تهران' WHERE id=${location.province_id} AND name ~ '^تهران [0-9a-f]{8}$' AND NOT EXISTS(SELECT 1 FROM provinces WHERE country_id=${location.country_id} AND name='تهران')`,
-      );
-      const locations: { country: string; province: string; city: string }[] =
-        [];
-      for (const city of showcaseCities) {
+    const clubIds = sql.join(
+      showcaseClubs.map((club) => sql`${id(`club:${club.key}`)}`),
+      sql`, `,
+    );
+    const branchIds = showcaseClubs.flatMap((club) =>
+      club.branches.map((_, n) => id(`branch:${club.key}:${n}`)),
+    );
+    const branchList = sql.join(
+      branchIds.map((branch) => sql`${branch}`),
+      sql`, `,
+    );
+    const [prepared] = await rows<{ clubs: number; branches: number }>(
+      db,
+      sql`SELECT (SELECT count(*)::int FROM clubs WHERE id IN(${clubIds})) AS clubs,(SELECT count(*)::int FROM branch_profiles WHERE branch_id IN(${branchList})) AS branches`,
+    );
+    // Catalog creation commits atomically. On resume, avoid redoing hundreds of
+    // no-op queries over a remote connection before reaching unfinished work.
+    if (
+      prepared.clubs !== showcaseClubs.length ||
+      prepared.branches !== branchIds.length
+    )
+      await db.transaction(async (tx) => {
+        await tx.execute(sql`SELECT pg_advisory_xact_lock(7088,10)`);
         await tx.execute(
-          sql`INSERT INTO provinces(id,country_id,name) VALUES(${id(`province:${city.province}`)},${location.country_id},${city.province}) ON CONFLICT DO NOTHING`,
+          sql`CREATE TABLE IF NOT EXISTS gym4me_demo_showcase_objects(kind text NOT NULL,item_key text NOT NULL,entity_id uuid NOT NULL,PRIMARY KEY(kind,item_key))`,
         );
-        const [province] = await rows<{ id: string }>(
+        const [location] = await rows<{
+          country_id: string;
+          province_id: string;
+        }>(
           tx,
-          sql`SELECT id FROM provinces WHERE country_id=${location.country_id} AND name=${city.province}`,
+          sql`SELECT bp.country_id,bp.province_id FROM branch_profiles bp JOIN clubs c ON c.id=bp.club_id WHERE c.owner_id=${owners[0]} AND bp.country_id IS NOT NULL ORDER BY bp.created_at LIMIT 1`,
+        );
+        if (!location) throw new Error('Demo catalog foundation missing');
+        await tx.execute(
+          sql`UPDATE countries SET name='ایران' WHERE id=${location.country_id} AND name='ایران آزمایشی'`,
         );
         await tx.execute(
-          sql`INSERT INTO cities(id,province_id,name) VALUES(${id(`city:${city.name}`)},${province.id},${city.name}) ON CONFLICT DO NOTHING`,
+          sql`UPDATE provinces SET name='تهران' WHERE id=${location.province_id} AND name ~ '^تهران [0-9a-f]{8}$' AND NOT EXISTS(SELECT 1 FROM provinces WHERE country_id=${location.country_id} AND name='تهران')`,
         );
-        const [place] = await rows<{ id: string }>(
-          tx,
-          sql`SELECT id FROM cities WHERE province_id=${province.id} AND name=${city.name}`,
-        );
-        for (const neighborhood of city.neighborhoods)
+        const locations: { country: string; province: string; city: string }[] =
+          [];
+        for (const city of showcaseCities) {
           await tx.execute(
-            sql`INSERT INTO districts(id,city_id,name) VALUES(${id(`district:${city.name}:${neighborhood}`)},${place.id},${neighborhood}) ON CONFLICT DO NOTHING`,
+            sql`INSERT INTO provinces(id,country_id,name) VALUES(${id(`province:${city.province}`)},${location.country_id},${city.province}) ON CONFLICT DO NOTHING`,
           );
-        locations.push({
-          country: location.country_id,
-          province: province.id,
-          city: place.id,
-        });
-      }
-      const taxonomy = ['تمرین قدرتی', 'پیلاتس', 'یوگا', 'آمادگی جسمانی'];
-      for (const [index, name] of taxonomy.entries())
-        await tx.execute(
-          sql`INSERT INTO sports(id,name,slug) VALUES(${id(`sport:${name}`)},${name},${`showcase-sport-${index}`}) ON CONFLICT DO NOTHING`,
-        );
-      for (const [index, name] of ['دوش', 'کمد', 'رختکن', 'تهویه'].entries())
-        await tx.execute(
-          sql`INSERT INTO amenities(id,name,slug) VALUES(${id(`amenity:${name}`)},${name},${`showcase-amenity-${index}`}) ON CONFLICT DO NOTHING`,
-        );
-      await tx.execute(
-        sql`INSERT INTO club_categories(id,name,slug) VALUES(${id('category')},'باشگاه و استودیو','showcase-fitness-studio') ON CONFLICT DO NOTHING`,
-      );
-      for (const [index, club] of showcaseClubs.entries()) {
-        const clubId = id(`club:${club.key}`),
-          owner = owners[index % owners.length],
-          city = showcaseCities[club.city],
-          place = locations[club.city];
-        await tx.execute(
-          sql`INSERT INTO organizations(id,name,slug,status) VALUES(${clubId},${club.name},${`demo-showcase-${club.key}`},'approved') ON CONFLICT DO NOTHING`,
-        );
-        await tx.execute(
-          sql`INSERT INTO organization_members(organization_id,user_id,role) VALUES(${clubId},${owner},'owner') ON CONFLICT DO NOTHING`,
-        );
-        await tx.execute(
-          sql`INSERT INTO clubs(id,owner_id,description,short_description,publication_status,last_verified_at) VALUES(${clubId},${owner},${club.description},${club.description},'published',now()) ON CONFLICT DO NOTHING`,
-        );
-        await tx.execute(
-          sql`INSERT INTO club_category_links(club_id,category_id) VALUES(${clubId},${id('category')}) ON CONFLICT DO NOTHING`,
-        );
-        await tx.execute(
-          sql`INSERT INTO club_sport_links(club_id,sport_id) VALUES(${clubId},${id(`sport:${club.sport}`)}) ON CONFLICT DO NOTHING`,
-        );
-        await tx.execute(
-          sql`INSERT INTO club_phones(id,club_id,number,label,is_primary) VALUES(${id(`phone:${club.key}`)},${clubId},${`0210000000${index}`},'پذیرش',true) ON CONFLICT DO NOTHING`,
-        );
-        for (const [n, name] of club.branches.entries()) {
-          const branchId = id(`branch:${club.key}:${n}`),
-            mediaId = id(`image:${club.key}:${n}`);
-          const [district] = await rows<{ id: string }>(
+          const [province] = await rows<{ id: string }>(
             tx,
-            sql`SELECT id FROM districts WHERE city_id=${place.city} AND name=${name}`,
+            sql`SELECT id FROM provinces WHERE country_id=${location.country_id} AND name=${city.province}`,
           );
           await tx.execute(
-            sql`INSERT INTO branches(id,organization_id,name,slug) VALUES(${branchId},${clubId},${name},${`showcase-${n}`}) ON CONFLICT DO NOTHING`,
+            sql`INSERT INTO cities(id,province_id,name) VALUES(${id(`city:${city.name}`)},${province.id},${city.name}) ON CONFLICT DO NOTHING`,
           );
-          await tx.execute(
-            sql`INSERT INTO branch_profiles(branch_id,club_id,is_main,address,country_id,province_id,city_id,district_id,latitude,longitude,neighborhood,rules) VALUES(${branchId},${clubId},${n === 0},${`${city.name}، ${name}`},${place.country},${place.province},${place.city},${district?.id ?? null},${city.latitude + n * 0.01},${city.longitude + n * 0.01},${name},'کفش تمیز و حوله همراه داشته باشید. زمان مراجعه را از بخش رزرو انتخاب کنید.') ON CONFLICT DO NOTHING`,
+          const [place] = await rows<{ id: string }>(
+            tx,
+            sql`SELECT id FROM cities WHERE province_id=${province.id} AND name=${city.name}`,
           );
-          await tx.execute(
-            sql`INSERT INTO branch_sports(branch_id,sport_id) VALUES(${branchId},${id(`sport:${club.sport}`)}) ON CONFLICT DO NOTHING`,
-          );
-          for (const amenity of ['دوش', 'کمد', 'رختکن', 'تهویه'])
+          for (const neighborhood of city.neighborhoods)
             await tx.execute(
-              sql`INSERT INTO branch_amenities(branch_id,amenity_id,availability) VALUES(${branchId},${id(`amenity:${amenity}`)},'included') ON CONFLICT DO NOTHING`,
+              sql`INSERT INTO districts(id,city_id,name) VALUES(${id(`district:${city.name}:${neighborhood}`)},${place.id},${neighborhood}) ON CONFLICT DO NOTHING`,
             );
-          for (let day = 0; day < 7; day++)
-            await tx.execute(
-              sql`INSERT INTO branch_weekly_hours(id,branch_id,day_of_week,start_minute,end_minute) VALUES(${id(`hours:${branchId}:${day}`)},${branchId},${day},420,1320) ON CONFLICT DO NOTHING`,
-            );
-          await tx.execute(
-            sql`INSERT INTO club_media(id,organization_id,uploaded_by,type,url,alt) VALUES(${mediaId},${clubId},${owner},'image',${`${origin.origin}/images/clubs/${club.image}.webp`},${`فضای داخلی ${club.name}`}) ON CONFLICT DO NOTHING`,
-          );
-          await tx.execute(
-            sql`INSERT INTO club_gallery(id,club_id,branch_id,media_id,caption) VALUES(${id(`gallery:${branchId}`)},${clubId},${branchId},${mediaId},${`${name} · تصویر نمایشی`}) ON CONFLICT DO NOTHING`,
-          );
-          if (n === 0)
-            await tx.execute(
-              sql`UPDATE clubs SET cover_id=${mediaId} WHERE id=${clubId} AND cover_id IS NULL`,
-            );
-          for (const [type, title, unit, price] of [
-            ['visit', 'ورود روزانه', 'visit', 185000 + index * 15000],
-            ['membership', 'عضویت یک‌ماهه', 'month', 1350000 + index * 95000],
-          ] as const) {
-            const group = id(`tariff:${branchId}:${type}`);
-            await tx.execute(
-              sql`INSERT INTO club_tariff_groups(id,club_id,branch_id) VALUES(${group},${clubId},${branchId}) ON CONFLICT DO NOTHING`,
-            );
-            await tx.execute(
-              sql`INSERT INTO club_tariff_versions(id,group_id,version,name,service_type,unit,price_toman,conditions,effective_from,created_by) VALUES(${id(`tariff-version:${branchId}:${type}`)},${group},1,${title},${type},${unit},${price},'در این پرداخت پولی از حساب بانکی کسر نمی‌شود.',current_date,${owner}) ON CONFLICT DO NOTHING`,
-            );
-          }
-          branches.push({
-            id: branchId,
-            clubId,
-            owner,
-            key: club.key,
-            name,
-            image: club.image,
-            clubName: club.name,
-            sport: club.sport,
+          locations.push({
+            country: location.country_id,
+            province: province.id,
+            city: place.id,
           });
         }
-      }
-      // Upgrade only the original unedited fixture placeholders, never user-uploaded media.
-      await tx.execute(
-        sql`UPDATE club_media SET url=${`${origin.origin}/images/clubs/strength.webp`},alt='فضای تمرین باشگاه' WHERE url LIKE ${`${origin.origin}/images/club-placeholder.svg?fixture=%`} AND organization_id IN(SELECT organization_id FROM organization_members WHERE user_id IN(${owners[0]},${owners[1]}) AND role='owner')`,
-      );
-    });
+        const taxonomy = ['تمرین قدرتی', 'پیلاتس', 'یوگا', 'آمادگی جسمانی'];
+        for (const [index, name] of taxonomy.entries())
+          await tx.execute(
+            sql`INSERT INTO sports(id,name,slug) VALUES(${id(`sport:${name}`)},${name},${`showcase-sport-${index}`}) ON CONFLICT DO NOTHING`,
+          );
+        for (const [index, name] of ['دوش', 'کمد', 'رختکن', 'تهویه'].entries())
+          await tx.execute(
+            sql`INSERT INTO amenities(id,name,slug) VALUES(${id(`amenity:${name}`)},${name},${`showcase-amenity-${index}`}) ON CONFLICT DO NOTHING`,
+          );
+        await tx.execute(
+          sql`INSERT INTO club_categories(id,name,slug) VALUES(${id('category')},'باشگاه و استودیو','showcase-fitness-studio') ON CONFLICT DO NOTHING`,
+        );
+        for (const [index, club] of showcaseClubs.entries()) {
+          const clubId = id(`club:${club.key}`),
+            owner = owners[index % owners.length],
+            city = showcaseCities[club.city],
+            place = locations[club.city];
+          await tx.execute(
+            sql`INSERT INTO organizations(id,name,slug,status) VALUES(${clubId},${club.name},${`demo-showcase-${club.key}`},'approved') ON CONFLICT DO NOTHING`,
+          );
+          await tx.execute(
+            sql`INSERT INTO organization_members(organization_id,user_id,role) VALUES(${clubId},${owner},'owner') ON CONFLICT DO NOTHING`,
+          );
+          await tx.execute(
+            sql`INSERT INTO clubs(id,owner_id,description,short_description,publication_status,last_verified_at) VALUES(${clubId},${owner},${club.description},${club.description},'published',now()) ON CONFLICT DO NOTHING`,
+          );
+          await tx.execute(
+            sql`INSERT INTO club_category_links(club_id,category_id) VALUES(${clubId},${id('category')}) ON CONFLICT DO NOTHING`,
+          );
+          await tx.execute(
+            sql`INSERT INTO club_sport_links(club_id,sport_id) VALUES(${clubId},${id(`sport:${club.sport}`)}) ON CONFLICT DO NOTHING`,
+          );
+          await tx.execute(
+            sql`INSERT INTO club_phones(id,club_id,number,label,is_primary) VALUES(${id(`phone:${club.key}`)},${clubId},${`0210000000${index}`},'پذیرش',true) ON CONFLICT DO NOTHING`,
+          );
+          for (const [n, name] of club.branches.entries()) {
+            const branchId = id(`branch:${club.key}:${n}`),
+              mediaId = id(`image:${club.key}:${n}`);
+            const [district] = await rows<{ id: string }>(
+              tx,
+              sql`SELECT id FROM districts WHERE city_id=${place.city} AND name=${name}`,
+            );
+            await tx.execute(
+              sql`INSERT INTO branches(id,organization_id,name,slug) VALUES(${branchId},${clubId},${name},${`showcase-${n}`}) ON CONFLICT DO NOTHING`,
+            );
+            await tx.execute(
+              sql`INSERT INTO branch_profiles(branch_id,club_id,is_main,address,country_id,province_id,city_id,district_id,latitude,longitude,neighborhood,rules) VALUES(${branchId},${clubId},${n === 0},${`${city.name}، ${name}`},${place.country},${place.province},${place.city},${district?.id ?? null},${city.latitude + n * 0.01},${city.longitude + n * 0.01},${name},'کفش تمیز و حوله همراه داشته باشید. زمان مراجعه را از بخش رزرو انتخاب کنید.') ON CONFLICT DO NOTHING`,
+            );
+            await tx.execute(
+              sql`INSERT INTO branch_sports(branch_id,sport_id) VALUES(${branchId},${id(`sport:${club.sport}`)}) ON CONFLICT DO NOTHING`,
+            );
+            for (const amenity of ['دوش', 'کمد', 'رختکن', 'تهویه'])
+              await tx.execute(
+                sql`INSERT INTO branch_amenities(branch_id,amenity_id,availability) VALUES(${branchId},${id(`amenity:${amenity}`)},'included') ON CONFLICT DO NOTHING`,
+              );
+            for (let day = 0; day < 7; day++)
+              await tx.execute(
+                sql`INSERT INTO branch_weekly_hours(id,branch_id,day_of_week,start_minute,end_minute) VALUES(${id(`hours:${branchId}:${day}`)},${branchId},${day},420,1320) ON CONFLICT DO NOTHING`,
+              );
+            await tx.execute(
+              sql`INSERT INTO club_media(id,organization_id,uploaded_by,type,url,alt) VALUES(${mediaId},${clubId},${owner},'image',${`${origin.origin}/images/clubs/${club.image}.webp`},${`فضای داخلی ${club.name}`}) ON CONFLICT DO NOTHING`,
+            );
+            await tx.execute(
+              sql`INSERT INTO club_gallery(id,club_id,branch_id,media_id,caption) VALUES(${id(`gallery:${branchId}`)},${clubId},${branchId},${mediaId},${`${name} · فضای تمرین`}) ON CONFLICT DO NOTHING`,
+            );
+            if (n === 0)
+              await tx.execute(
+                sql`UPDATE clubs SET cover_id=${mediaId} WHERE id=${clubId} AND cover_id IS NULL`,
+              );
+            for (const [type, title, unit, price] of [
+              ['visit', 'ورود روزانه', 'visit', 185000 + index * 15000],
+              ['membership', 'عضویت یک‌ماهه', 'month', 1350000 + index * 95000],
+            ] as const) {
+              const group = id(`tariff:${branchId}:${type}`);
+              await tx.execute(
+                sql`INSERT INTO club_tariff_groups(id,club_id,branch_id) VALUES(${group},${clubId},${branchId}) ON CONFLICT DO NOTHING`,
+              );
+              await tx.execute(
+                sql`INSERT INTO club_tariff_versions(id,group_id,version,name,service_type,unit,price_toman,conditions,effective_from,created_by) VALUES(${id(`tariff-version:${branchId}:${type}`)},${group},1,${title},${type},${unit},${price},'در این پرداخت پولی از حساب بانکی کسر نمی‌شود.',current_date,${owner}) ON CONFLICT DO NOTHING`,
+              );
+            }
+          }
+        }
+        // Upgrade only the original unedited fixture placeholders, never user-uploaded media.
+        await tx.execute(
+          sql`UPDATE club_media SET url=${`${origin.origin}/images/clubs/strength.webp`},alt='فضای تمرین باشگاه' WHERE url LIKE ${`${origin.origin}/images/club-placeholder.svg?fixture=%`} AND organization_id IN(SELECT organization_id FROM organization_members WHERE user_id IN(${owners[0]},${owners[1]}) AND role='owner')`,
+        );
+      });
+    for (const [index, club] of showcaseClubs.entries())
+      for (const [n, name] of club.branches.entries())
+        branches.push({
+          id: id(`branch:${club.key}:${n}`),
+          clubId: id(`club:${club.key}`),
+          owner: owners[index % owners.length],
+          key: club.key,
+          name,
+          image: club.image,
+          clubName: club.name,
+          sport: club.sport,
+        });
     const commerce = app.get(CommerceService),
       media = app.get(SportsMediaService),
       practice = app.get(CoachingPracticeService);
@@ -423,11 +446,24 @@ export async function provisionDemoShowcase() {
     const training = app.get(TrainingService);
     for (const sample of showcasePlans) {
       const planId = id(`plan:${sample.key}`);
-      if (
-        (await rows(db, sql`SELECT id FROM training_plans WHERE id=${planId}`))
-          .length
-      )
+      const actor = sample.template ? coach : athlete;
+      const [existing] = await rows<{ revision: number; versions: number }>(
+        db,
+        sql`SELECT revision,(SELECT count(*)::int FROM training_versions WHERE plan_id=${planId}) AS versions FROM training_plans WHERE id=${planId}`,
+      );
+      if (existing) {
+        if (
+          !sample.template &&
+          existing.revision === 1 &&
+          existing.versions === 0
+        )
+          await training.publish(actor, planId, {
+            revision: 1,
+            effectiveFrom: new Date().toISOString().slice(0, 10),
+            operationId: randomUUID(),
+          });
         continue;
+      }
       const content: PlanContent = {
         title: sample.title,
         note: 'با توان و دامنهٔ راحت خود تمرین کنید و در صورت نیاز، حرکات جایگزین را انتخاب کنید.',
@@ -449,7 +485,6 @@ export async function provisionDemoShowcase() {
           }),
         ),
       };
-      const actor = sample.template ? coach : athlete;
       await training.save(actor, {
         id: planId,
         revision: 0,

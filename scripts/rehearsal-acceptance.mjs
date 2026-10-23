@@ -269,6 +269,12 @@ try {
     visit.id,
   );
   await post(reception, `business/sports/visits/${visit.id}/exit`, { reason });
+  assert.equal(
+    (await get(athlete, "sports/account/memberships")).find(
+      (m) => m.id === membership.id,
+    ).consumed,
+    membership.consumed + 1,
+  );
   pass(
     "membership checkout replay, failed payment retry, verified payment and QR attendance replay",
   );

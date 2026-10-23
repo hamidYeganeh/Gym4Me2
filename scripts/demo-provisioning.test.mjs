@@ -148,6 +148,30 @@ test(
       const complete = await snapshot();
       assert.equal(complete.users, 12);
       assert.equal(complete.organizations, 8);
+      const pendingPlan = (
+        await pool.query(
+          "SELECT id FROM training_plans WHERE title='۲۰ دقیقه برای خودم'",
+        )
+      ).rows[0];
+      await pool.query(
+        "UPDATE training_plans SET revision=1,draft=(SELECT content FROM training_versions WHERE plan_id=$1 ORDER BY version DESC LIMIT 1) WHERE id=$1",
+        [pendingPlan.id],
+      );
+      await pool.query("DELETE FROM training_versions WHERE plan_id=$1", [
+        pendingPlan.id,
+      ]);
+      const resumedCatalog = await seed("provision-demo-showcase");
+      assert.equal(resumedCatalog.code, 0, resumedCatalog.output);
+      assert.deepEqual(await snapshot(), complete);
+      assert.equal(
+        (
+          await pool.query(
+            "SELECT count(*)::int count FROM training_versions WHERE plan_id=$1",
+            [pendingPlan.id],
+          )
+        ).rows[0].count,
+        1,
+      );
       const visibleCopy = (
         await pool.query(
           `SELECT display_name AS text FROM users UNION ALL SELECT description FROM clubs UNION ALL SELECT jsonb_build_array(title,description,policy->>'terms',coach_name)::text FROM sport_service_versions`,
