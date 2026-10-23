@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-23T04:12:38.445988+00:00",
+  "source_commit": "884051a08c880b4062d33a20b3556a62830e7ec3",
+  "ci": {
+    "id": 39897982734,
+    "name": "PH0–PH5 technical verification",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/hamidYeganeh/Gym4Me2/actions/runs/39897982734",
+    "sha": "884051a08c880b4062d33a20b3556a62830e7ec3",
+    "jobs": [
+      {
+        "id": 120232731585,
+        "name": "ios-build",
+        "status": "completed",
+        "conclusion": "success",
+        "current": [],
+        "failed": []
+      },
+      {
+        "id": 120232731932,
+        "name": "verify",
+        "status": "completed",
+        "conclusion": "success",
+        "current": [],
+        "failed": []
+      }
+    ]
+  },
+  "deployments": [
+    {
+      "app": "application",
+      "id": "dpl_ArU3mKbWtJKEkDgKy56cSMqR5RSf",
+      "state": "READY",
+      "source_commit": "884051a08c880b4062d33a20b3556a62830e7ec3",
+      "url": "https://gym4me-demo-application.vercel.app",
+      "aliases": [
+        "gym4me-demo-application.vercel.app",
+        "gym4me-demo-application-hamidyeganehs-projects.vercel.app",
+        "gym4me-demo-application-git-main-hamidyeganehs-projects.vercel.app"
+      ]
+    },
+    {
+      "app": "business",
+      "id": "dpl_9xDq3VmDZdoVjWNzPLV8e5pDi6eN",
+      "state": "READY",
+      "source_commit": "884051a08c880b4062d33a20b3556a62830e7ec3",
+      "url": "https://gym4me-demo-business.vercel.app",
+      "aliases": [
+        "gym4me-demo-business.vercel.app",
+        "gym4me-demo-business-hamidyeganehs-projects.vercel.app",
+        "gym4me-demo-business-git-main-hamidyeganehs-projects.vercel.app"
+      ]
+    },
+    {
+      "app": "admin",
+      "id": "dpl_9UNQbCDGy32jFUk7fxWoLfV9DfWc",
+      "state": "READY",
+      "source_commit": "884051a08c880b4062d33a20b3556a62830e7ec3",
+      "url": "https://gym4me-demo-admin.vercel.app",
+      "aliases": [
+        "gym4me-demo-admin.vercel.app",
+        "gym4me-demo-admin-hamidyeganehs-projects.vercel.app",
+        "gym4me-demo-admin-git-main-hamidyeganehs-projects.vercel.app"
+      ]
+    }
+  ],
+  "checks": {
+    "client_tests": 246,
+    "locale_tests": 2,
+    "protected_design_files": 59,
+    "online_checks": 13,
+    "screen_families": 30,
+    "viewport_widths": [
+      360,
+      390,
+      768,
+      1440
+    ],
+    "physical_device_test": false
+  },
+  "api_changed": false,
+  "production_data_created": false,
+  "paid_resources_created": false,
+  "android": {
+    "file": "Gym4Me-UI.apk",
+    "bytes": 23162817,
+    "sha256": "4bb22b4e72766156a5016d11ed15e9d08659f4d56f7265a37a58cf49aa50ac74",
+    "source_commit": "884051a08c880b4062d33a20b3556a62830e7ec3",
+    "workflow_run_id": 39897982734,
+    "artifact_id": 12477937871,
+    "archive_sha256": "6e76bdad07395281abf031e7864ae0204de8fe76fb2e05435287654dcec60c11",
+    "signing": "local Android debug key; same certificate as previous APK",
+    "certificate_sha256": "29cfa3f6c1eb688e59d03f22a374af8d7ca21cf6d90e1425aa40202bab39b452",
+    "physical_device_test": false
+  }
+}
