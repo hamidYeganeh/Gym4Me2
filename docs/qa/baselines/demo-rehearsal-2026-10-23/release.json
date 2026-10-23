@@ -1,0 +1,98 @@
+{
+  "date": "2026-10-23",
+  "apiSource": "cbc69d0d51ba37cda4da7248ffcba1aed159b1a3",
+  "frontendAndAndroidSource": "29f42ca8466917592e32141848ba29df7f2e2fa4",
+  "frontendAndAndroidUnchangedInFinalApiCommit": true,
+  "ci": [
+    {
+      "run": 39914940700,
+      "source": "29f42ca8466917592e32141848ba29df7f2e2fa4",
+      "conclusion": "success",
+      "jobs": {
+        "verify": "success",
+        "ios-build": "success"
+      }
+    },
+    {
+      "run": 39965159362,
+      "source": "cbc69d0d51ba37cda4da7248ffcba1aed159b1a3",
+      "conclusion": "success",
+      "jobs": {
+        "verify": "success",
+        "ios-build": "success"
+      }
+    }
+  ],
+  "deployments": [
+    {
+      "name": "api",
+      "id": "dpl_Cw7HVMkYNhwxt9MdYEgRSTdR6qAx",
+      "state": "READY",
+      "source": "cbc69d0d51ba37cda4da7248ffcba1aed159b1a3",
+      "url": "https://gym4me-demo-api.vercel.app"
+    },
+    {
+      "name": "application",
+      "id": "dpl_GwGGq8Rt3yAV6kAhu6GpgGs4Asfn",
+      "state": "READY",
+      "source": "29f42ca8466917592e32141848ba29df7f2e2fa4",
+      "url": "https://gym4me-demo-application.vercel.app"
+    },
+    {
+      "name": "business",
+      "id": "dpl_5YFr7pEUPWFik18Hbm217Dfjskn8",
+      "state": "READY",
+      "source": "29f42ca8466917592e32141848ba29df7f2e2fa4",
+      "url": "https://gym4me-demo-business.vercel.app"
+    },
+    {
+      "name": "admin",
+      "id": "dpl_EDVkAr5iBTvaWmhCXL77FxezRAtZ",
+      "state": "READY",
+      "source": "29f42ca8466917592e32141848ba29df7f2e2fa4",
+      "url": "https://gym4me-demo-admin.vercel.app"
+    }
+  ],
+  "acceptance": {
+    "commerceTests": 78,
+    "localHttpRequests": 157,
+    "onlineHttpRequests": 157,
+    "nativeAuthRequests": 7,
+    "readOnlyReleaseChecks": 13,
+    "analyticsFinalAttendance": 2,
+    "onlineApiLatencyMs": {
+      "p50": 291,
+      "p95": 384,
+      "maximumWarm": 810
+    },
+    "protectedCatalogFiles": 59
+  },
+  "android": {
+    "path": ".artifacts/android/Gym4Me-1.1.1.apk",
+    "source": "29f42ca8466917592e32141848ba29df7f2e2fa4",
+    "ciRun": 39914940700,
+    "artifactId": 12484309600,
+    "archiveSha256": "677fd3edf78292a96e7cda2b7a530bdd4b41999267c100d7d5c7b8635982800f",
+    "bytes": 23162817,
+    "sha256": "469a21557be8fc212ea8c906dfeebdadfe2ad118c03e7076ffe756ef9e5f3884",
+    "package": "com.gym4me.app",
+    "versionName": "1.1.1",
+    "versionCode": 5,
+    "minSdk": 24,
+    "targetSdk": 36,
+    "certificateSha256": "29cfa3f6c1eb688e59d03f22a374af8d7ca21cf6d90e1425aa40202bab39b452",
+    "verifiedSignatures": [
+      "v2",
+      "v3"
+    ],
+    "sameCertificateAsPreviousDelivery": true,
+    "stableApiBundled": true,
+    "remoteServerUrlOverride": false
+  },
+  "limitations": [
+    "No physical-device acceptance",
+    "Live SMS/payments disabled",
+    "Native FCM/APNs not configured",
+    "Video deferred"
+  ]
+}

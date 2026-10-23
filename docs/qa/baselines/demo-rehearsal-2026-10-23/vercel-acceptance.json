@@ -1,0 +1,813 @@
+{
+  "target": "vercel",
+  "passed": true,
+  "cases": [
+    "guest catalog, services and approved coach discovery",
+    "all eight account logins, consent, sessions and role access",
+    "role dashboards, business scope and cross-account denial",
+    "business and admin occurrence edit, replay, stale revision and preserved time",
+    "membership checkout replay, failed payment retry, verified payment and QR attendance replay",
+    "class booking, cancellation and automatic refund",
+    "personal and assigned plans, publish, workout completion replay, progress, sharing revocation, private messages and export",
+    "dated analytics, mock Pro activation, coach settlements, admin controls and private finance scope"
+  ],
+  "requests": 157,
+  "timings": [
+    {
+      "path": "catalog/clubs",
+      "status": 200,
+      "ms": 810
+    },
+    {
+      "path": "sports/services",
+      "status": 200,
+      "ms": 302
+    },
+    {
+      "path": "coaching/directory",
+      "status": 200,
+      "ms": 275
+    },
+    {
+      "path": "auth/otp/request",
+      "status": 201,
+      "ms": 310
+    },
+    {
+      "path": "auth/otp/verify",
+      "status": 201,
+      "ms": 291
+    },
+    {
+      "path": "profile/account",
+      "status": 200,
+      "ms": 299
+    },
+    {
+      "path": "system/policy",
+      "status": 200,
+      "ms": 285
+    },
+    {
+      "path": "profile/account/privacy/preferences",
+      "status": 201,
+      "ms": 298
+    },
+    {
+      "path": "profile/access",
+      "status": 200,
+      "ms": 265
+    },
+    {
+      "path": "auth/sessions",
+      "status": 200,
+      "ms": 262
+    },
+    {
+      "path": "auth/otp/request",
+      "status": 201,
+      "ms": 278
+    },
+    {
+      "path": "auth/otp/verify",
+      "status": 201,
+      "ms": 274
+    },
+    {
+      "path": "profile/account",
+      "status": 200,
+      "ms": 253
+    },
+    {
+      "path": "system/policy",
+      "status": 200,
+      "ms": 254
+    },
+    {
+      "path": "profile/account/privacy/preferences",
+      "status": 201,
+      "ms": 279
+    },
+    {
+      "path": "profile/access",
+      "status": 200,
+      "ms": 291
+    },
+    {
+      "path": "auth/sessions",
+      "status": 200,
+      "ms": 284
+    },
+    {
+      "path": "auth/otp/request",
+      "status": 201,
+      "ms": 270
+    },
+    {
+      "path": "auth/otp/verify",
+      "status": 201,
+      "ms": 298
+    },
+    {
+      "path": "profile/account",
+      "status": 200,
+      "ms": 277
+    },
+    {
+      "path": "system/policy",
+      "status": 200,
+      "ms": 270
+    },
+    {
+      "path": "profile/account/privacy/preferences",
+      "status": 201,
+      "ms": 363
+    },
+    {
+      "path": "profile/access",
+      "status": 200,
+      "ms": 704
+    },
+    {
+      "path": "auth/sessions",
+      "status": 200,
+      "ms": 269
+    },
+    {
+      "path": "auth/otp/request",
+      "status": 201,
+      "ms": 299
+    },
+    {
+      "path": "auth/otp/verify",
+      "status": 201,
+      "ms": 313
+    },
+    {
+      "path": "profile/account",
+      "status": 200,
+      "ms": 282
+    },
+    {
+      "path": "system/policy",
+      "status": 200,
+      "ms": 281
+    },
+    {
+      "path": "profile/account/privacy/preferences",
+      "status": 201,
+      "ms": 291
+    },
+    {
+      "path": "profile/access",
+      "status": 200,
+      "ms": 257
+    },
+    {
+      "path": "auth/sessions",
+      "status": 200,
+      "ms": 256
+    },
+    {
+      "path": "auth/otp/request",
+      "status": 201,
+      "ms": 307
+    },
+    {
+      "path": "auth/otp/verify",
+      "status": 201,
+      "ms": 267
+    },
+    {
+      "path": "profile/account",
+      "status": 200,
+      "ms": 252
+    },
+    {
+      "path": "system/policy",
+      "status": 200,
+      "ms": 257
+    },
+    {
+      "path": "profile/account/privacy/preferences",
+      "status": 201,
+      "ms": 299
+    },
+    {
+      "path": "profile/access",
+      "status": 200,
+      "ms": 259
+    },
+    {
+      "path": "auth/sessions",
+      "status": 200,
+      "ms": 257
+    },
+    {
+      "path": "auth/otp/request",
+      "status": 201,
+      "ms": 564
+    },
+    {
+      "path": "auth/otp/verify",
+      "status": 201,
+      "ms": 313
+    },
+    {
+      "path": "profile/account",
+      "status": 200,
+      "ms": 284
+    },
+    {
+      "path": "system/policy",
+      "status": 200,
+      "ms": 264
+    },
+    {
+      "path": "profile/account/privacy/preferences",
+      "status": 201,
+      "ms": 298
+    },
+    {
+      "path": "profile/access",
+      "status": 200,
+      "ms": 273
+    },
+    {
+      "path": "auth/sessions",
+      "status": 200,
+      "ms": 260
+    },
+    {
+      "path": "auth/otp/request",
+      "status": 201,
+      "ms": 313
+    },
+    {
+      "path": "auth/otp/verify",
+      "status": 201,
+      "ms": 275
+    },
+    {
+      "path": "profile/account",
+      "status": 200,
+      "ms": 262
+    },
+    {
+      "path": "system/policy",
+      "status": 200,
+      "ms": 248
+    },
+    {
+      "path": "profile/account/privacy/preferences",
+      "status": 201,
+      "ms": 302
+    },
+    {
+      "path": "profile/access",
+      "status": 200,
+      "ms": 256
+    },
+    {
+      "path": "auth/sessions",
+      "status": 200,
+      "ms": 277
+    },
+    {
+      "path": "auth/otp/request",
+      "status": 201,
+      "ms": 280
+    },
+    {
+      "path": "auth/otp/verify",
+      "status": 201,
+      "ms": 299
+    },
+    {
+      "path": "profile/account",
+      "status": 200,
+      "ms": 279
+    },
+    {
+      "path": "system/policy",
+      "status": 200,
+      "ms": 311
+    },
+    {
+      "path": "profile/account/privacy/preferences",
+      "status": 201,
+      "ms": 296
+    },
+    {
+      "path": "profile/access",
+      "status": 200,
+      "ms": 296
+    },
+    {
+      "path": "auth/sessions",
+      "status": 200,
+      "ms": 309
+    },
+    {
+      "path": "business/organizations",
+      "status": 200,
+      "ms": 305
+    },
+    {
+      "path": "business/organizations",
+      "status": 200,
+      "ms": 277
+    },
+    {
+      "path": "business/organizations",
+      "status": 200,
+      "ms": 261
+    },
+    {
+      "path": "business/organizations",
+      "status": 200,
+      "ms": 242
+    },
+    {
+      "path": "business/organizations",
+      "status": 200,
+      "ms": 290
+    },
+    {
+      "path": "admin/overview",
+      "status": 200,
+      "ms": 262
+    },
+    {
+      "path": "admin/users",
+      "status": 200,
+      "ms": 302
+    },
+    {
+      "path": "admin/organizations",
+      "status": 200,
+      "ms": 260
+    },
+    {
+      "path": "admin/audit",
+      "status": 200,
+      "ms": 311
+    },
+    {
+      "path": "admin/sports",
+      "status": 200,
+      "ms": 279
+    },
+    {
+      "path": "admin/demo",
+      "status": 200,
+      "ms": 278
+    },
+    {
+      "path": "admin/advanced/options",
+      "status": 200,
+      "ms": 271
+    },
+    {
+      "path": "business/sports/services",
+      "status": 200,
+      "ms": 299
+    },
+    {
+      "path": "business/sports/services",
+      "status": 200,
+      "ms": 272
+    },
+    {
+      "path": "business/sports/reception",
+      "status": 200,
+      "ms": 338
+    },
+    {
+      "path": "business/sports/report",
+      "status": 200,
+      "ms": 285
+    },
+    {
+      "path": "business/sports/report",
+      "status": 403,
+      "ms": 268
+    },
+    {
+      "path": "admin/overview",
+      "status": 403,
+      "ms": 283
+    },
+    {
+      "path": "sports/services/4cc38559-0645-4dbe-a2f1-849a54f12514",
+      "status": 200,
+      "ms": 330
+    },
+    {
+      "path": "sports/account/bookings",
+      "status": 200,
+      "ms": 265
+    },
+    {
+      "path": "business/sports-operations/services/4cc38559-0645-4dbe-a2f1-849a54f12514/occurrences",
+      "status": 200,
+      "ms": 283
+    },
+    {
+      "path": "business/sports-operations/occurrences/fc237e05-737b-45f3-a4f3-92aa733854bf/edit",
+      "status": 201,
+      "ms": 352
+    },
+    {
+      "path": "business/sports-operations/occurrences/fc237e05-737b-45f3-a4f3-92aa733854bf/edit",
+      "status": 201,
+      "ms": 332
+    },
+    {
+      "path": "business/sports-operations/occurrences/fc237e05-737b-45f3-a4f3-92aa733854bf/edit",
+      "status": 409,
+      "ms": 288
+    },
+    {
+      "path": "admin/sports/services/4cc38559-0645-4dbe-a2f1-849a54f12514/occurrences",
+      "status": 200,
+      "ms": 259
+    },
+    {
+      "path": "admin/sports/occurrences/fc237e05-737b-45f3-a4f3-92aa733854bf/edit",
+      "status": 201,
+      "ms": 349
+    },
+    {
+      "path": "sports/account/quote",
+      "status": 201,
+      "ms": 323
+    },
+    {
+      "path": "sports/account/checkout",
+      "status": 201,
+      "ms": 362
+    },
+    {
+      "path": "sports/account/checkout",
+      "status": 201,
+      "ms": 328
+    },
+    {
+      "path": "sports/account/orders/4c307597-32ce-45f7-af15-9e1f9b862dff/payment",
+      "status": 201,
+      "ms": 386
+    },
+    {
+      "path": "sports/account/orders/4c307597-32ce-45f7-af15-9e1f9b862dff/verify",
+      "status": 201,
+      "ms": 342
+    },
+    {
+      "path": "sports/account/orders/4c307597-32ce-45f7-af15-9e1f9b862dff/payment",
+      "status": 201,
+      "ms": 427
+    },
+    {
+      "path": "sports/account/orders/4c307597-32ce-45f7-af15-9e1f9b862dff/verify",
+      "status": 201,
+      "ms": 351
+    },
+    {
+      "path": "sports/account/orders/4c307597-32ce-45f7-af15-9e1f9b862dff/verify",
+      "status": 201,
+      "ms": 339
+    },
+    {
+      "path": "sports/account/memberships",
+      "status": 200,
+      "ms": 255
+    },
+    {
+      "path": "sports/account/memberships/5d0975bf-504e-4e02-950c-0309f7223d02/ticket",
+      "status": 201,
+      "ms": 354
+    },
+    {
+      "path": "business/sports/check-in",
+      "status": 403,
+      "ms": 348
+    },
+    {
+      "path": "business/sports/check-in",
+      "status": 403,
+      "ms": 272
+    },
+    {
+      "path": "business/sports/check-in",
+      "status": 201,
+      "ms": 341
+    },
+    {
+      "path": "business/sports/check-in",
+      "status": 201,
+      "ms": 319
+    },
+    {
+      "path": "business/sports/visits/aac2ede3-aacc-4d57-8a12-0a906beb727d/exit",
+      "status": 201,
+      "ms": 348
+    },
+    {
+      "path": "sports/account/memberships",
+      "status": 200,
+      "ms": 261
+    },
+    {
+      "path": "sports/account/quote",
+      "status": 201,
+      "ms": 317
+    },
+    {
+      "path": "sports/account/checkout",
+      "status": 201,
+      "ms": 363
+    },
+    {
+      "path": "sports/account/checkout",
+      "status": 201,
+      "ms": 329
+    },
+    {
+      "path": "sports/account/orders/77f81d1d-b2c9-4ebc-aada-e44b920892c1/payment",
+      "status": 201,
+      "ms": 389
+    },
+    {
+      "path": "sports/account/orders/77f81d1d-b2c9-4ebc-aada-e44b920892c1/verify",
+      "status": 201,
+      "ms": 344
+    },
+    {
+      "path": "sports/account/quote",
+      "status": 201,
+      "ms": 363
+    },
+    {
+      "path": "sports/account/checkout",
+      "status": 409,
+      "ms": 325
+    },
+    {
+      "path": "sports/account/bookings",
+      "status": 200,
+      "ms": 272
+    },
+    {
+      "path": "sports/account/bookings/1c9b04c1-881b-44c6-8e03-3b6bc3f5fb8e/cancellation",
+      "status": 200,
+      "ms": 255
+    },
+    {
+      "path": "sports/account/bookings/1c9b04c1-881b-44c6-8e03-3b6bc3f5fb8e/cancel",
+      "status": 201,
+      "ms": 417
+    },
+    {
+      "path": "sports/account/orders/77f81d1d-b2c9-4ebc-aada-e44b920892c1",
+      "status": 200,
+      "ms": 265
+    },
+    {
+      "path": "profile/training",
+      "status": 200,
+      "ms": 291
+    },
+    {
+      "path": "profile/training/plans",
+      "status": 201,
+      "ms": 338
+    },
+    {
+      "path": "profile/training/plans",
+      "status": 201,
+      "ms": 315
+    },
+    {
+      "path": "profile/training/plans/15b8b093-dc8f-42fe-9342-5be0a9e98712/publish",
+      "status": 201,
+      "ms": 329
+    },
+    {
+      "path": "profile/training",
+      "status": 200,
+      "ms": 307
+    },
+    {
+      "path": "profile/training/sessions/sync",
+      "status": 201,
+      "ms": 309
+    },
+    {
+      "path": "profile/training/sessions/sync",
+      "status": 201,
+      "ms": 303
+    },
+    {
+      "path": "profile/training/progress",
+      "status": 200,
+      "ms": 279
+    },
+    {
+      "path": "profile/coaching-collaboration/9f8afaec-9d29-4d9f-8bb3-5d355d3757d8",
+      "status": 200,
+      "ms": 274
+    },
+    {
+      "path": "profile/coaching-collaboration/9f8afaec-9d29-4d9f-8bb3-5d355d3757d8/sharing",
+      "status": 201,
+      "ms": 300
+    },
+    {
+      "path": "profile/coaching-collaboration/9f8afaec-9d29-4d9f-8bb3-5d355d3757d8",
+      "status": 200,
+      "ms": 273
+    },
+    {
+      "path": "profile/coaching-collaboration/9f8afaec-9d29-4d9f-8bb3-5d355d3757d8/sharing",
+      "status": 201,
+      "ms": 300
+    },
+    {
+      "path": "profile/coaching-collaboration/9f8afaec-9d29-4d9f-8bb3-5d355d3757d8",
+      "status": 200,
+      "ms": 297
+    },
+    {
+      "path": "profile/coaching-collaboration/9f8afaec-9d29-4d9f-8bb3-5d355d3757d8/messages",
+      "status": 201,
+      "ms": 314
+    },
+    {
+      "path": "profile/coaching-collaboration/9f8afaec-9d29-4d9f-8bb3-5d355d3757d8/messages",
+      "status": 201,
+      "ms": 291
+    },
+    {
+      "path": "profile/coaching-collaboration/9f8afaec-9d29-4d9f-8bb3-5d355d3757d8/messages",
+      "status": 200,
+      "ms": 260
+    },
+    {
+      "path": "profile/coaching-collaboration/9f8afaec-9d29-4d9f-8bb3-5d355d3757d8",
+      "status": 403,
+      "ms": 250
+    },
+    {
+      "path": "profile/account/privacy/export",
+      "status": 200,
+      "ms": 374
+    },
+    {
+      "path": "admin/analytics",
+      "status": 200,
+      "ms": 313
+    },
+    {
+      "path": "business/analytics",
+      "status": 200,
+      "ms": 372
+    },
+    {
+      "path": "profile/coach-analytics",
+      "status": 200,
+      "ms": 275
+    },
+    {
+      "path": "business/advanced",
+      "status": 200,
+      "ms": 351
+    },
+    {
+      "path": "business/advanced/plan",
+      "status": 201,
+      "ms": 329
+    },
+    {
+      "path": "business/advanced",
+      "status": 200,
+      "ms": 296
+    },
+    {
+      "path": "profile/settlements",
+      "status": 200,
+      "ms": 275
+    },
+    {
+      "path": "admin/advanced",
+      "status": 200,
+      "ms": 336
+    },
+    {
+      "path": "business/advanced",
+      "status": 403,
+      "ms": 298
+    },
+    {
+      "path": "sports/community/notifications/page",
+      "status": 200,
+      "ms": 259
+    },
+    {
+      "path": "sports/community/preferences",
+      "status": 200,
+      "ms": 384
+    },
+    {
+      "path": "auth/sessions/logout",
+      "status": 201,
+      "ms": 355
+    },
+    {
+      "path": "profile/account",
+      "status": 401,
+      "ms": 354
+    },
+    {
+      "path": "auth/sessions/logout",
+      "status": 201,
+      "ms": 261
+    },
+    {
+      "path": "profile/account",
+      "status": 401,
+      "ms": 253
+    },
+    {
+      "path": "auth/sessions/logout",
+      "status": 201,
+      "ms": 256
+    },
+    {
+      "path": "profile/account",
+      "status": 401,
+      "ms": 249
+    },
+    {
+      "path": "auth/sessions/logout",
+      "status": 201,
+      "ms": 270
+    },
+    {
+      "path": "profile/account",
+      "status": 401,
+      "ms": 273
+    },
+    {
+      "path": "auth/sessions/logout",
+      "status": 201,
+      "ms": 254
+    },
+    {
+      "path": "profile/account",
+      "status": 401,
+      "ms": 352
+    },
+    {
+      "path": "auth/sessions/logout",
+      "status": 201,
+      "ms": 348
+    },
+    {
+      "path": "profile/account",
+      "status": 401,
+      "ms": 252
+    },
+    {
+      "path": "auth/sessions/logout",
+      "status": 201,
+      "ms": 270
+    },
+    {
+      "path": "profile/account",
+      "status": 401,
+      "ms": 266
+    },
+    {
+      "path": "auth/sessions/logout",
+      "status": 201,
+      "ms": 269
+    },
+    {
+      "path": "profile/account",
+      "status": 401,
+      "ms": 261
+    }
+  ],
+  "ids": {
+    "organizationId": "6f5f5f10-1895-4118-a2c4-0bec259a393a",
+    "branchId": "cf80daa1-f395-48ba-b33b-314c13ce9fb3",
+    "classServiceId": "4cc38559-0645-4dbe-a2f1-849a54f12514",
+    "occurrenceId": "fc237e05-737b-45f3-a4f3-92aa733854bf",
+    "membershipOrderId": "4c307597-32ce-45f7-af15-9e1f9b862dff",
+    "trainingPlanId": "15b8b093-dc8f-42fe-9342-5be0a9e98712",
+    "trainingSessionId": "67c94ae6-0e35-4e15-9f58-ad36f8304bf6",
+    "relationshipId": "9f8afaec-9d29-4d9f-8bb3-5d355d3757d8"
+  },
+  "logoutVerified": true
+}

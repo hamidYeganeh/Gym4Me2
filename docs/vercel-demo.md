@@ -33,10 +33,14 @@ isolated demo marker. It is not a production seed or a database reset.
 
 ## Android demo APK
 
-The manual `Android demo APK` workflow (`.github/workflows/android-demo.yml`)
-builds a debug-signed, bundled application with
-`NEXT_PUBLIC_API_URL=https://gym4me-demo-api.vercel.app/api/v1`. The general
-verification workflow's unconfigured shell is not the connected demo APK.
+**Current delivery (2026-10-23):** `.artifacts/android/Gym4Me-1.1.1.apk`,
+version 1.1.1 / code 5, connected to the stable HTTPS API and signed with the
+same local debug certificate as the previous APK. See the
+[current build/signature evidence](qa/demo-rehearsal-2026-10-23.md).
+The main PH0–PH5 verification workflow now builds the connected mobile bundle;
+the manual `Android demo APK` workflow also remains available.
+
+### First connected build (historical)
 
 The first connected demo build uses source `739c7c17655e6020c19382adffabd691cafa854a`:
 [successful build and native tests](https://github.com/hamidYeganeh/Gym4Me2/actions/runs/39741061825).

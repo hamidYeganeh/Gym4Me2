@@ -1,0 +1,73 @@
+[
+  {
+    "url": "https://gym4me-demo-api.vercel.app/api/v1/system/health",
+    "status": 200,
+    "pass": true
+  },
+  {
+    "url": "https://gym4me-demo-api.vercel.app/api/v1/system/health/ready",
+    "status": 200,
+    "pass": true,
+    "checks": {
+      "database": "up",
+      "storage": "up"
+    }
+  },
+  {
+    "url": "https://gym4me-demo-api.vercel.app/api/v1/system/push",
+    "status": 200,
+    "pass": true
+  },
+  {
+    "url": "https://gym4me-demo-api.vercel.app/api/v1/business/advanced",
+    "status": 401,
+    "pass": true
+  },
+  {
+    "url": "https://gym4me-demo-api.vercel.app/api/v1/profile/settlements",
+    "status": 401,
+    "pass": true
+  },
+  {
+    "url": "https://gym4me-demo-api.vercel.app/api/v1/admin/advanced",
+    "status": 401,
+    "pass": true
+  },
+  {
+    "url": "https://gym4me-demo-api.vercel.app/api/v1/system/push-jobs",
+    "status": 401,
+    "pass": true
+  },
+  {
+    "url": "https://gym4me-demo-application.vercel.app/discovery",
+    "status": 200,
+    "pass": true
+  },
+  {
+    "url": "https://gym4me-demo-application.vercel.app/coaching/settlements",
+    "status": 200,
+    "pass": true
+  },
+  {
+    "url": "https://gym4me-demo-business.vercel.app/advanced",
+    "status": 200,
+    "pass": true
+  },
+  {
+    "url": "https://gym4me-demo-admin.vercel.app/advanced",
+    "status": 200,
+    "pass": true
+  },
+  {
+    "origin": "https://localhost",
+    "status": 204,
+    "allowed": "https://localhost",
+    "pass": true
+  },
+  {
+    "origin": "capacitor://localhost",
+    "status": 204,
+    "allowed": "capacitor://localhost",
+    "pass": true
+  }
+]

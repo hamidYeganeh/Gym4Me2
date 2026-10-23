@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "transport": "native",
+  "results": [
+    {
+      "path": "/auth/otp/request",
+      "status": 201
+    },
+    {
+      "path": "/auth/otp/verify",
+      "status": 201
+    },
+    {
+      "path": "/profile/account",
+      "status": 200
+    },
+    {
+      "path": "/profile/training/exercises",
+      "status": 200
+    },
+    {
+      "path": "/profile/access",
+      "status": 200
+    },
+    {
+      "path": "/auth/sessions/logout",
+      "status": 201
+    },
+    {
+      "path": "/profile/account",
+      "status": 401
+    }
+  ]
+}

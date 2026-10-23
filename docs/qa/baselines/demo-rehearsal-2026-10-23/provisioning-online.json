@@ -1,0 +1,13 @@
+{
+  "before": {
+    "users": 12,
+    "organizations": 8,
+    "services": 48
+  },
+  "after": {
+    "users": 12,
+    "organizations": 8,
+    "services": 48
+  },
+  "restoredWithExplicitUserApproval": true
+}
