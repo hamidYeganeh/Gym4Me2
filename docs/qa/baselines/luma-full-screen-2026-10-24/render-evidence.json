@@ -4,7 +4,7 @@
   "interpretation": "A route render verifies layout and runtime for that captured fixture. It does not assert every state, live role permission or successful mutation. 'filled' is the requested fixture mode; some domains naturally contain empty subviews.",
   "results": {
     "routeRenders": 112,
-    "totalCaptures": 176,
+    "totalCaptures": 180,
     "runtimeErrors": 0,
     "horizontalOverflow": 0,
     "unresolvedLoading": 0,
@@ -1700,7 +1700,7 @@
       "surface": "application",
       "route": "/",
       "fixtureState": "filled",
-      "capturedAt": "2026-10-24T05:17:22.973Z",
+      "capturedAt": "2026-10-24T05:40:11.036Z",
       "locale": "fa",
       "theme": "light",
       "viewport": [
@@ -3454,11 +3454,59 @@
       "fullPage": true
     },
     {
+      "case": "087-business-filled-en-dark-390",
+      "surface": "business",
+      "route": "/training",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:49:05.669Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "Training and coaching"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/087-business-filled-en-dark-390.png",
+      "screenshotSha256": "de5bd1ec2c4d7de299c96feb2a10bd3097fea044a7285114b1c6c3abf80bad6d",
+      "fullPage": true
+    },
+    {
+      "case": "087-business-filled-fa-light-1440",
+      "surface": "business",
+      "route": "/training",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:48:19.427Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        900
+      ],
+      "headings": [
+        "تمرین و مربیگری"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/087-business-filled-fa-light-1440.png",
+      "screenshotSha256": "01c093ef8f150b708652a345b2f1a049b8b6bd5fbe82e4bbcc3eb706c5fba6af",
+      "fullPage": true
+    },
+    {
       "case": "087-business-filled-fa-light-390",
       "surface": "business",
       "route": "/training",
       "fixtureState": "filled",
-      "capturedAt": "2026-10-24T05:10:34.615Z",
+      "capturedAt": "2026-10-24T05:47:37.685Z",
       "locale": "fa",
       "theme": "light",
       "viewport": [
@@ -3470,11 +3518,11 @@
         928
       ],
       "headings": [
-        "کتابخانهٔ حرکات"
+        "تمرین و مربیگری"
       ],
       "alerts": [],
       "screenshot": ".artifacts/luma-final-pass/087-business-filled-fa-light-390.png",
-      "screenshotSha256": "c700ff64a82bd70ecc44a54cf451605948f908a6f0b2ebcc064a1d4d965008c1",
+      "screenshotSha256": "65e071eeed5ce28a5f34b43162f2330d2e680bf8c7cb3a1db2641de81b68d534",
       "fullPage": true
     },
     {
@@ -4174,11 +4222,59 @@
       "fullPage": true
     },
     {
+      "case": "109-admin-filled-en-dark-390",
+      "surface": "admin",
+      "route": "/training",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:49:08.116Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "Training and coaching"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/109-admin-filled-en-dark-390.png",
+      "screenshotSha256": "6974edd92e9413747f9349890f4bfae4bbf05c6201bb2e12b90db1441ba39477",
+      "fullPage": true
+    },
+    {
+      "case": "109-admin-filled-fa-light-1440",
+      "surface": "admin",
+      "route": "/training",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:48:20.127Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        900
+      ],
+      "headings": [
+        "تمرین و مربیگری"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/109-admin-filled-fa-light-1440.png",
+      "screenshotSha256": "7a9dc6553f124ccca0d24dee4da590cf05f2116c5c5052455975250f04088597",
+      "fullPage": true
+    },
+    {
       "case": "109-admin-filled-fa-light-390",
       "surface": "admin",
       "route": "/training",
       "fixtureState": "filled",
-      "capturedAt": "2026-10-24T05:12:25.684Z",
+      "capturedAt": "2026-10-24T05:47:39.717Z",
       "locale": "fa",
       "theme": "light",
       "viewport": [
@@ -4190,11 +4286,11 @@
         928
       ],
       "headings": [
-        "کتابخانهٔ حرکات"
+        "تمرین و مربیگری"
       ],
       "alerts": [],
       "screenshot": ".artifacts/luma-final-pass/109-admin-filled-fa-light-390.png",
-      "screenshotSha256": "283787801381ec0d53fb24731816320389b7348c538cfb10ebf83d4661aa51a4",
+      "screenshotSha256": "8c31666b35072b7e927560624126e4d0655ced2c3f3023756b81b8f6603afb07",
       "fullPage": true
     },
     {

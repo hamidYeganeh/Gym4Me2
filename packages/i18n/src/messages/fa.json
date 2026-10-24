@@ -2302,7 +2302,13 @@
     "performanceMetric": "معیار مقایسه",
     "noMetricData": "برای این حرکت و معیار هنوز مقداری ثبت نشده است.",
     "movement": "حرکت",
-    "planSummary": "{days} روز · {exercises} حرکت"
+    "planSummary": "{days} روز · {exercises} حرکت",
+    "managementTitle": "تمرین و مربیگری",
+    "managementHint": "ورزشکاران و مربیان، برنامه‌های شخصی، کتابخانهٔ حرکات و ثبت تمرین را در اپلیکیشن جیم‌فورمی مدیریت می‌کنند. از این پنل، مربیگری و فعالیت مجموعه را پیگیری کنید.",
+    "managementCoaching": "مدیریت مربیگری",
+    "managementCoachingHint": "مربیان، همکاری‌ها و فعالیت‌های مربیگری را بررسی کنید.",
+    "managementReports": "گزارش فعالیت",
+    "managementReportsHint": "حضور، سانس‌ها و فعالیت مجموعه را مرور کنید."
   },
   "Visual": {
     "yourNextMove": "قدم بعدی تو",

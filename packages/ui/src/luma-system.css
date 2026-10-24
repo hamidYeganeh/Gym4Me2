@@ -658,22 +658,33 @@ body {
   font-size: 1.25rem;
   font-weight: 650;
 }
-.movement-library-intro {
+.training-management-intro p {
   color: var(--muted-foreground);
   font-size: 0.85rem;
   line-height: 1.8;
   margin-block: 1rem;
 }
-.movement-library-search {
+.training-management-intro {
   display: flex;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 0.75rem;
   align-items: center;
-  padding-inline: 0.8rem;
-  border-radius: 999px;
+  padding: 2rem 1.25rem;
+  border-radius: 1.3rem;
   background: var(--card);
+  text-align: center;
 }
-.movement-library-search input[data-slot="input"] {
-  background: none;
+.training-management-intro h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.training-management-icon {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: var(--muted);
 }
 .movement-library-list {
   margin-block: 1.5rem;
@@ -681,7 +692,7 @@ body {
   overflow: hidden;
   background: var(--card);
 }
-.movement-library-list > button {
+.movement-library-list > a {
   display: flex;
   align-items: center;
   gap: 0.85rem;
@@ -690,14 +701,8 @@ body {
   padding: 0.9rem 1rem;
   border-bottom: 1px solid var(--border);
 }
-.movement-library-list > button:last-child {
+.movement-library-list > a:last-child {
   border: 0;
-}
-.movement-library-list img {
-  width: 3.25rem;
-  height: 3.5rem;
-  object-fit: cover;
-  border-radius: 0.65rem;
 }
 .movement-library-list span {
   flex: 1;
@@ -711,19 +716,6 @@ body {
 .movement-library-list small {
   color: var(--muted-foreground);
   font-size: 0.75rem;
-}
-.movement-library-detail {
-  display: grid;
-  gap: 1.25rem;
-  font-size: 0.9rem;
-  line-height: 1.8;
-}
-.movement-library-detail img {
-  width: 100%;
-  max-height: 18rem;
-  object-fit: contain;
-  border-radius: 1rem;
-  background: var(--muted);
 }
 .club-detail-actions {
   display: flex;

@@ -2302,7 +2302,13 @@
     "performanceMetric": "Compare by",
     "noMetricData": "No values recorded for this exercise and metric yet.",
     "movement": "Exercise",
-    "planSummary": "{days} days · {exercises} exercises"
+    "planSummary": "{days} days · {exercises} exercises",
+    "managementTitle": "Training and coaching",
+    "managementHint": "Athletes and coaches manage personal plans, the exercise library and workout logs in the Gym4Me app. Manage coaching and review activity from this panel.",
+    "managementCoaching": "Coaching workspace",
+    "managementCoachingHint": "Review coaches, affiliations and coaching operations.",
+    "managementReports": "Activity reports",
+    "managementReportsHint": "Review attendance, sessions and club activity."
   },
   "Visual": {
     "yourNextMove": "Your next move",

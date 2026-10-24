@@ -167,13 +167,7 @@ export function RouteReference() {
     else if (route === "/coaching")
       content = <CoachingOffice surface={surface} />;
     else if (route === "/training")
-      content = (
-        <TrainingPage
-          title={t("Training.library")}
-          description={t("Training.libraryHint")}
-          back={t("Privacy.back")}
-        />
-      );
+      content = <TrainingPage client={surface} back={t("Privacy.back")} />;
     else if (route === "/operations") content = <SportsAdmin />;
     else if (route === "/reports")
       content = (

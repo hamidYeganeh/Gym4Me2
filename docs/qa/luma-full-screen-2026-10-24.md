@@ -9,12 +9,12 @@ Every one of the 112 product page exports now has an explicit view in the local-
 - Bookings expose Upcoming/Past directly, group by Tehran calendar day, preserve cursor order and retain undated records. The two empty states explain what will appear there.
 - Athlete chat has compact identity, date groups, message receipts and an anchored composer. Conversation details separate information and members. Host chat reserves the viewport for the conversation and composer; the mobile workspace dock no longer covers Send.
 - Organization, branch, team, resource and service creation use focused sheets. Filters and destructive reviews retain their existing server commands, revisions and reasons. Support creation opens a focused form and routes to the created ticket after success.
-- Authentication uses the focused entry pattern across athlete, business and admin surfaces. Club and coach details use inset covers; club actions remain explicit. Training-library pages display the existing exercise catalogue and an instruction sheet.
+- Authentication uses the focused entry pattern across athlete, business and admin surfaces. Club and coach details use inset covers; club actions remain explicit. Training panels guide hosts and administrators to their existing coaching and activity-report routes. Private plans, exercises and workout logs remain in the athlete/coach application; the management panels do not call its restricted endpoints.
 - Sheets and mobile dialogs support grabber dismissal, keyboard focus restoration and overlay Back history. A controlled form that rejects dismissal while a command is pending now restores its owned history entry, so repeated Back stays in the form. Reduced-motion mode disables sheet and overlay animations as well as translation transitions.
 
 ## Local evidence
 
-176 independently retained captures: 112 Persian/light route renders; 12 representative families at each of 360, 768 and 1440 pixels; those 12 in English/dark at 390 pixels; 15 additional empty/error/guest fixture cases; and the payment result with reduced motion. No retained record has a runtime exception, horizontal document overflow, unresolved loading indicator or broken image. Expected error notices remain in error/guest records. The `filled` fixture mode does not imply that every nested domain contains populated data.
+180 independently retained captures: 112 Persian/light route renders; 12 representative families at each of 360, 768 and 1440 pixels; those 12 in English/dark at 390 pixels; two additional training-panel views at desktop width and in English/dark; 15 additional empty/error/guest fixture cases; and the payment result with reduced motion. No retained record has a runtime exception, horizontal document overflow, unresolved loading indicator or broken image. Expected error notices remain in error/guest records. The `filled` fixture mode does not imply that every nested domain contains populated data.
 
 All 112 phone views were visually reviewed in contact sheets. The additional responsive, dark and state captures were also reviewed. Contact sheets show the first viewport; full-page originals are retained locally. This is not a claim of separately exercising every below-fold control or every state in the route requirements.
 
@@ -23,6 +23,7 @@ Interactions exercised through CUA:
 - Upcoming/Past booking switch, past completed booking and Tehran date heading.
 - Session sheet with available, full/waitlist and resource-blocked sessions; grabber drag, Escape and browser Back; focus returns to Choose session.
 - Resource creation with a synthetic eight-second pending command: Escape and repeated Back retain the sheet; a rejected request retains the draft and exposes a retryable error; Escape works after pending ends and restores the trigger.
+- Nested discovery filters: Back closes only the option sheet, returns focus to its parent filter, and Escape then returns to the original filter trigger.
 - Language selection in its sheet and light/dark appearance. Persian/light was restored afterward.
 - Reduced-motion emulation: sheet/overlay computed animation and transition durations are `0s`; emulation was cleared afterward.
 
