@@ -1,0 +1,572 @@
+{
+  "checkedAt": "2026-10-24T06:04:59.243Z",
+  "teamId": "team_EAgoYfJERki013X5wNrXnxg6",
+  "deployments": [
+    {
+      "surface": "api",
+      "projectId": "prj_9mGYMALWOAcCG09YV0dbssKcaers",
+      "id": "dpl_39d4hka9A271cGDpXWVNsmnz42FQ",
+      "url": "https://gym4me-demo-5isdgne3a-hamidyeganehs-projects.vercel.app",
+      "stableUrl": "https://gym4me-demo-api.vercel.app",
+      "state": "READY",
+      "sourceCommit": "d3e236972a765be362b9b1db3c7bb42ab3b407bb",
+      "aliases": [
+        "gym4me-demo-api.vercel.app",
+        "gym4me-demo-api-hamidyeganehs-projects.vercel.app",
+        "gym4me-demo-api-git-main-hamidyeganehs-projects.vercel.app"
+      ]
+    },
+    {
+      "surface": "application",
+      "projectId": "prj_E1b7T39WkOXWg2oQKF5CSEjJWWbu",
+      "id": "dpl_FPmWPwiJiwNJnhysRefxVYzGA1LS",
+      "url": "https://gym4me-demo-application-nwtrc4gxl-hamidyeganehs-projects.vercel.app",
+      "stableUrl": "https://gym4me-demo-application.vercel.app",
+      "state": "READY",
+      "sourceCommit": "d3e236972a765be362b9b1db3c7bb42ab3b407bb",
+      "aliases": [
+        "gym4me-demo-application.vercel.app",
+        "gym4me-demo-application-hamidyeganehs-projects.vercel.app",
+        "gym4me-demo-application-git-main-hamidyeganehs-projects.vercel.app"
+      ]
+    },
+    {
+      "surface": "business",
+      "projectId": "prj_rs8Cfdx22otbP51d0EJOUt92GM9S",
+      "id": "dpl_9D7G6DCc6Fz2AHmcLTxgv8fS5HCF",
+      "url": "https://gym4me-demo-business-q6zvg4o58-hamidyeganehs-projects.vercel.app",
+      "stableUrl": "https://gym4me-demo-business.vercel.app",
+      "state": "READY",
+      "sourceCommit": "d3e236972a765be362b9b1db3c7bb42ab3b407bb",
+      "aliases": [
+        "gym4me-demo-business.vercel.app",
+        "gym4me-demo-business-hamidyeganehs-projects.vercel.app",
+        "gym4me-demo-business-git-main-hamidyeganehs-projects.vercel.app"
+      ]
+    },
+    {
+      "surface": "admin",
+      "projectId": "prj_hq8Ux5tPHvy4nNORIjQqBLNYxp3Y",
+      "id": "dpl_G8rVMmf9Y9L8jvLc5xwP47KZ74b2",
+      "url": "https://gym4me-demo-admin-hsupzuxqg-hamidyeganehs-projects.vercel.app",
+      "stableUrl": "https://gym4me-demo-admin.vercel.app",
+      "state": "READY",
+      "sourceCommit": "d3e236972a765be362b9b1db3c7bb42ab3b407bb",
+      "aliases": [
+        "gym4me-demo-admin.vercel.app",
+        "gym4me-demo-admin-hamidyeganehs-projects.vercel.app",
+        "gym4me-demo-admin-git-main-hamidyeganehs-projects.vercel.app"
+      ]
+    }
+  ],
+  "sourceCommit": "d3e236972a765be362b9b1db3c7bb42ab3b407bb",
+  "ci": {
+    "url": "https://github.com/hamidYeganeh/Gym4Me2/actions/runs/40067789069",
+    "runId": 40067789069,
+    "headSha": "d3e236972a765be362b9b1db3c7bb42ab3b407bb",
+    "verify": "success",
+    "iosBuild": "success",
+    "webApiBuilds": "success",
+    "nativeAndroidBuildAndUnitTests": "success"
+  },
+  "android": {
+    "version": "1.3.0",
+    "versionCode": 7,
+    "applicationId": "com.gym4me.app",
+    "type": "signed-debug",
+    "bytes": 23171009,
+    "sha256": "fc3063363cc1d1919d34d320d2aee0d924db0916b54ee9ed325dba120bb01359",
+    "sourceCommit": "d3e236972a765be362b9b1db3c7bb42ab3b407bb",
+    "ciRun": 40067789069,
+    "artifactId": 12549384604,
+    "archiveSha256": "6fb60e890bde9ea0a0d5d42c18da532eb9f6d123454f321437d8c93dc09a6f32",
+    "certificateSha256": "29cfa3f6c1eb688e59d03f22a374af8d7ca21cf6d90e1425aa40202bab39b452",
+    "api": "https://gym4me-demo-api.vercel.app/api/v1",
+    "bundledWeb": true,
+    "serverUrl": null,
+    "qaRoutesBundled": false,
+    "signatureV2": true,
+    "signatureV3": true,
+    "physicalDeviceTested": false
+  },
+  "apiSmoke": {
+    "source": "d3e236972a765be362b9b1db3c7bb42ab3b407bb",
+    "passed": true,
+    "requests": 69,
+    "checks": [
+      {
+        "role": "guest",
+        "path": "catalog/clubs",
+        "status": 200
+      },
+      {
+        "role": "guest",
+        "path": "sports/services",
+        "status": 200
+      },
+      {
+        "role": "owner",
+        "path": "auth/otp/request",
+        "status": 201
+      },
+      {
+        "role": "owner",
+        "path": "auth/otp/verify",
+        "status": 201
+      },
+      {
+        "role": "owner",
+        "path": "profile/account",
+        "status": 200
+      },
+      {
+        "role": "owner",
+        "path": "profile/access",
+        "status": 200
+      },
+      {
+        "role": "owner",
+        "path": "profile/training/exercises",
+        "status": 403
+      },
+      {
+        "role": "owner",
+        "path": "business/organizations",
+        "status": 200
+      },
+      {
+        "role": "owner",
+        "path": "auth/sessions/logout",
+        "status": 201
+      },
+      {
+        "role": "owner",
+        "path": "profile/account",
+        "status": 401
+      },
+      {
+        "role": "independent-owner",
+        "path": "auth/otp/request",
+        "status": 201
+      },
+      {
+        "role": "independent-owner",
+        "path": "auth/otp/verify",
+        "status": 201
+      },
+      {
+        "role": "independent-owner",
+        "path": "profile/account",
+        "status": 200
+      },
+      {
+        "role": "independent-owner",
+        "path": "profile/access",
+        "status": 200
+      },
+      {
+        "role": "independent-owner",
+        "path": "profile/training/exercises",
+        "status": 403
+      },
+      {
+        "role": "independent-owner",
+        "path": "business/organizations",
+        "status": 200
+      },
+      {
+        "role": "independent-owner",
+        "path": "auth/sessions/logout",
+        "status": 201
+      },
+      {
+        "role": "independent-owner",
+        "path": "profile/account",
+        "status": 401
+      },
+      {
+        "role": "athlete",
+        "path": "auth/otp/request",
+        "status": 201
+      },
+      {
+        "role": "athlete",
+        "path": "auth/otp/verify",
+        "status": 201
+      },
+      {
+        "role": "athlete",
+        "path": "profile/account",
+        "status": 200
+      },
+      {
+        "role": "athlete",
+        "path": "profile/access",
+        "status": 200
+      },
+      {
+        "role": "athlete",
+        "path": "profile/training/exercises",
+        "status": 200
+      },
+      {
+        "role": "athlete",
+        "path": "profile/training/home-summary",
+        "status": 200
+      },
+      {
+        "role": "athlete",
+        "path": "sports/account/bookings",
+        "status": 200
+      },
+      {
+        "role": "athlete",
+        "path": "admin/sports",
+        "status": 403
+      },
+      {
+        "role": "athlete",
+        "path": "auth/sessions/logout",
+        "status": 201
+      },
+      {
+        "role": "athlete",
+        "path": "profile/account",
+        "status": 401
+      },
+      {
+        "role": "admin",
+        "path": "auth/otp/request",
+        "status": 201
+      },
+      {
+        "role": "admin",
+        "path": "auth/otp/verify",
+        "status": 201
+      },
+      {
+        "role": "admin",
+        "path": "profile/account",
+        "status": 200
+      },
+      {
+        "role": "admin",
+        "path": "profile/access",
+        "status": 200
+      },
+      {
+        "role": "admin",
+        "path": "profile/training/exercises",
+        "status": 403
+      },
+      {
+        "role": "admin",
+        "path": "admin/sports",
+        "status": 200
+      },
+      {
+        "role": "admin",
+        "path": "admin/sports/scheduling",
+        "status": 200
+      },
+      {
+        "role": "admin",
+        "path": "auth/sessions/logout",
+        "status": 201
+      },
+      {
+        "role": "admin",
+        "path": "profile/account",
+        "status": 401
+      },
+      {
+        "role": "manager",
+        "path": "auth/otp/request",
+        "status": 201
+      },
+      {
+        "role": "manager",
+        "path": "auth/otp/verify",
+        "status": 201
+      },
+      {
+        "role": "manager",
+        "path": "profile/account",
+        "status": 200
+      },
+      {
+        "role": "manager",
+        "path": "profile/access",
+        "status": 200
+      },
+      {
+        "role": "manager",
+        "path": "profile/training/exercises",
+        "status": 403
+      },
+      {
+        "role": "manager",
+        "path": "business/organizations",
+        "status": 200
+      },
+      {
+        "role": "manager",
+        "path": "auth/sessions/logout",
+        "status": 201
+      },
+      {
+        "role": "manager",
+        "path": "profile/account",
+        "status": 401
+      },
+      {
+        "role": "reception",
+        "path": "auth/otp/request",
+        "status": 201
+      },
+      {
+        "role": "reception",
+        "path": "auth/otp/verify",
+        "status": 201
+      },
+      {
+        "role": "reception",
+        "path": "profile/account",
+        "status": 200
+      },
+      {
+        "role": "reception",
+        "path": "profile/access",
+        "status": 200
+      },
+      {
+        "role": "reception",
+        "path": "profile/training/exercises",
+        "status": 403
+      },
+      {
+        "role": "reception",
+        "path": "business/organizations",
+        "status": 200
+      },
+      {
+        "role": "reception",
+        "path": "auth/sessions/logout",
+        "status": 201
+      },
+      {
+        "role": "reception",
+        "path": "profile/account",
+        "status": 401
+      },
+      {
+        "role": "accountant",
+        "path": "auth/otp/request",
+        "status": 201
+      },
+      {
+        "role": "accountant",
+        "path": "auth/otp/verify",
+        "status": 201
+      },
+      {
+        "role": "accountant",
+        "path": "profile/account",
+        "status": 200
+      },
+      {
+        "role": "accountant",
+        "path": "profile/access",
+        "status": 200
+      },
+      {
+        "role": "accountant",
+        "path": "profile/training/exercises",
+        "status": 403
+      },
+      {
+        "role": "accountant",
+        "path": "business/organizations",
+        "status": 200
+      },
+      {
+        "role": "accountant",
+        "path": "auth/sessions/logout",
+        "status": 201
+      },
+      {
+        "role": "accountant",
+        "path": "profile/account",
+        "status": 401
+      },
+      {
+        "role": "coach",
+        "path": "auth/otp/request",
+        "status": 201
+      },
+      {
+        "role": "coach",
+        "path": "auth/otp/verify",
+        "status": 201
+      },
+      {
+        "role": "coach",
+        "path": "profile/account",
+        "status": 200
+      },
+      {
+        "role": "coach",
+        "path": "profile/access",
+        "status": 200
+      },
+      {
+        "role": "coach",
+        "path": "profile/training/exercises",
+        "status": 200
+      },
+      {
+        "role": "coach",
+        "path": "profile/coaching-practice",
+        "status": 200
+      },
+      {
+        "role": "coach",
+        "path": "auth/sessions/logout",
+        "status": 201
+      },
+      {
+        "role": "coach",
+        "path": "profile/account",
+        "status": 401
+      }
+    ]
+  },
+  "apiHealth": {
+    "checkedAt": "2026-10-24T05:59:28.091Z",
+    "checks": [
+      {
+        "path": "/system/health",
+        "status": 200,
+        "body": {
+          "status": "ok",
+          "service": "gym4me-api"
+        }
+      },
+      {
+        "path": "/system/health/ready",
+        "status": 200,
+        "body": {
+          "status": "ok",
+          "service": "gym4me-api",
+          "checks": {
+            "database": "up",
+            "storage": "up"
+          }
+        }
+      },
+      {
+        "origin": "https://localhost",
+        "status": 204,
+        "allowOrigin": "https://localhost"
+      },
+      {
+        "origin": "capacitor://localhost",
+        "status": 204,
+        "allowOrigin": "capacitor://localhost"
+      }
+    ]
+  },
+  "http": {
+    "checkedAt": "2026-10-24T06:04:24.968Z",
+    "checks": [
+      {
+        "surface": "application",
+        "url": "https://gym4me-demo-application.vercel.app",
+        "status": 200
+      },
+      {
+        "surface": "business",
+        "url": "https://gym4me-demo-business.vercel.app",
+        "status": 200
+      },
+      {
+        "surface": "admin",
+        "url": "https://gym4me-demo-admin.vercel.app",
+        "status": 200
+      }
+    ]
+  },
+  "browser": {
+    "checkedAt": "2026-10-24T06:03:37.303Z",
+    "checks": [
+      {
+        "surface": "application",
+        "url": "https://gym4me-demo-application.vercel.app/profile",
+        "brokenImages": 0,
+        "heading": "پروفایل",
+        "height": 844,
+        "lang": "fa",
+        "overflow": false,
+        "theme": "__variable_c8f663 dark",
+        "width": 390,
+        "errors": [
+          {
+            "level": "error",
+            "message": "Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received",
+            "timestamp": "2026-10-24T06:02:58.604Z",
+            "url": "https://gym4me-demo-application.vercel.app/profile"
+          }
+        ]
+      },
+      {
+        "surface": "business",
+        "url": "https://gym4me-demo-business.vercel.app/login?returnTo=%2F",
+        "brokenImages": 0,
+        "heading": "ورود به بیزینس",
+        "height": 844,
+        "lang": "fa",
+        "overflow": false,
+        "theme": "__variable_c8f663 light",
+        "width": 390,
+        "errors": [
+          {
+            "level": "error",
+            "message": "Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received",
+            "timestamp": "2026-10-24T06:02:58.604Z",
+            "url": "https://gym4me-demo-business.vercel.app/login?returnTo=%2F"
+          }
+        ]
+      },
+      {
+        "surface": "admin",
+        "url": "https://gym4me-demo-admin.vercel.app/login?returnTo=%2F",
+        "brokenImages": 0,
+        "heading": "ورود به پنل ادمین",
+        "height": 844,
+        "lang": "fa",
+        "overflow": false,
+        "theme": "__variable_c8f663 dark",
+        "width": 390,
+        "errors": []
+      }
+    ],
+    "note": "All three mobile views rendered at 390px without horizontal overflow or broken images. Chrome reported its asynchronous listener/message-channel diagnostic on application and business; the raw diagnostic is retained above. No application exception screen was visible. Focused entry screenshots were captured separately before the application tab was later on profile."
+  },
+  "runtimeLogs": {
+    "checkedAt": "2026-10-24T06:04:59.243Z",
+    "window": "15m",
+    "deploymentScoped": true,
+    "environment": "production",
+    "levels": [
+      "error",
+      "fatal"
+    ],
+    "groupBy": "level",
+    "result": "No groups returned for any of the four deployments. This is a bounded log query, not evidence against future failures."
+  },
+  "limitations": [
+    "No physical Android/iOS device, native keyboard or camera acceptance in this pass.",
+    "Payment/SMS flows were not executed against real external providers.",
+    "The 180 local renders include fixtures; retained route captures do not prove all nested states or commands."
+  ]
+}
