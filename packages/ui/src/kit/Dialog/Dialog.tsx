@@ -1,5 +1,7 @@
 "use client";
-import { createContext, useContext, useRef } from "react";
+import { createContext, useContext, useRef, useState } from "react";
+import { useOverlayHistory } from "../../hooks/use-overlay-history";
+import { useSheetDrag } from "../../hooks/use-sheet-drag";
 import { useTranslations } from "@repo/i18n";
 import { restoreDialogFocus } from "../../lib/dialog-focus";
 import type { ActionFocus } from "../../lib/action-focus";
@@ -24,11 +26,35 @@ import { Button } from "@repo/ui/kit/Button";
 import { XIcon } from "lucide-react";
 
 const ModalDialog = createContext(true);
+const DialogDismiss = createContext<() => void>(() => undefined);
 
-function Dialog({ modal = true, ...props }: DialogProps) {
+function Dialog({
+  modal = true,
+  open,
+  defaultOpen,
+  onOpenChange,
+  children,
+  ...props
+}: DialogProps) {
+  const [internal, setInternal] = useState(defaultOpen ?? false);
+  const change = (next: boolean) => {
+    if (open === undefined) setInternal(next);
+    onOpenChange?.(next);
+  };
+  useOverlayHistory(modal && (open ?? internal), change);
   return (
     <ModalDialog.Provider value={modal}>
-      <DialogPrimitive.Root data-slot="dialog" modal={modal} {...props} />
+      <DialogDismiss.Provider value={() => change(false)}>
+        <DialogPrimitive.Root
+          data-slot="dialog"
+          modal={modal}
+          {...props}
+          open={open ?? internal}
+          onOpenChange={change}
+        >
+          {children}
+        </DialogPrimitive.Root>
+      </DialogDismiss.Provider>
     </ModalDialog.Provider>
   );
 }
@@ -65,6 +91,8 @@ function DialogContent({
 }: DialogContentProps) {
   const t = useTranslations();
   const modal = useContext(ModalDialog);
+  const close = useContext(DialogDismiss);
+  const drag = useSheetDrag(close);
   const opener = useRef<ActionFocus | null>(null);
   return (
     <DialogPortal>
@@ -95,6 +123,19 @@ function DialogContent({
           requestAnimationFrame(() => restoreDialogFocus(action));
         }}
       >
+        {modal && (
+          <button
+            type="button"
+            className="sheet-grabber dialog-grabber"
+            aria-label={t("Kit.close")}
+            {...drag}
+            onClick={(event) => {
+              if (event.detail === 0) close();
+            }}
+          >
+            <span aria-hidden="true" />
+          </button>
+        )}
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close data-slot="dialog-close" asChild>

@@ -65,6 +65,8 @@ export function AuthScreen({
   );
 }
 export function MobileAuth({
+  client = "application",
+  onMethodChange,
   phone,
   setPhone,
   code,
@@ -86,6 +88,8 @@ export function MobileAuth({
   policy,
   cancelHref,
 }: {
+  client?: "application" | "business" | "admin";
+  onMethodChange?: (method: "otp" | "password") => void;
   phone: string;
   setPhone: (value: string) => void;
   code: string;
@@ -128,9 +132,15 @@ export function MobileAuth({
           ? t("Copy.enterVerificationCode")
           : recovery
             ? t("Password.resetTitle")
-            : method === "password"
-              ? t("AuthDesign.passwordTitle")
-              : t("AuthDesign.phoneTitle")
+            : client !== "application"
+              ? t(
+                  client === "admin"
+                    ? "Copy.signInToAdmin"
+                    : "Copy.signInToBusiness",
+                )
+              : method === "password"
+                ? t("AuthDesign.passwordTitle")
+                : t("AuthDesign.phoneTitle")
       }
       description={
         challenge ? (
@@ -175,7 +185,9 @@ export function MobileAuth({
             <Link
               href={
                 recovery
-                  ? applicationAuthHref("password", cancelHref)
+                  ? client === "application"
+                    ? applicationAuthHref("password", cancelHref)
+                    : `/login?${new URLSearchParams({ method: "password", returnTo: cancelHref })}`
                   : cancelHref
               }
               aria-label={t("Kit.close")}
@@ -186,7 +198,7 @@ export function MobileAuth({
         )
       }
       actions={
-        !challenge && !recovery ? (
+        client === "application" && !challenge && !recovery ? (
           <Button variant="ghost" asChild>
             <Link href="/discovery">{t("AuthDesign.browse")}</Link>
           </Button>
@@ -265,27 +277,44 @@ export function MobileAuth({
               autoFocus
             />
           )}
-          {!challenge && !recovery && (
-            <Button variant="ghost" asChild>
-              <Link
-                aria-disabled={busy || undefined}
-                tabIndex={busy ? -1 : undefined}
-                onClick={(event) => {
-                  if (busy) event.preventDefault();
-                }}
-                href={applicationAuthHref(
-                  method === "otp" ? "password" : "otp",
-                  cancelHref,
-                )}
+          {!challenge &&
+            !recovery &&
+            (client === "application" ? (
+              <Button variant="ghost" asChild>
+                <Link
+                  aria-disabled={busy || undefined}
+                  tabIndex={busy ? -1 : undefined}
+                  onClick={(event) => {
+                    if (busy) event.preventDefault();
+                  }}
+                  href={applicationAuthHref(
+                    method === "otp" ? "password" : "otp",
+                    cancelHref,
+                  )}
+                >
+                  {t(
+                    method === "otp"
+                      ? "Password.withPassword"
+                      : "Password.withOtp",
+                  )}
+                </Link>
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={busy}
+                onClick={() =>
+                  onMethodChange?.(method === "otp" ? "password" : "otp")
+                }
               >
                 {t(
                   method === "otp"
                     ? "Password.withPassword"
                     : "Password.withOtp",
                 )}
-              </Link>
-            </Button>
-          )}
+              </Button>
+            ))}
           {method === "password" && !challenge && (
             <LoginField
               field="password"
@@ -340,6 +369,15 @@ export function MobileAuth({
           </Button>
         )}
         <div className="mt-auto flex flex-col gap-4 pt-12">
+          {client !== "application" && !challenge && (
+            <p className="text-center text-sm leading-7 text-muted-foreground">
+              {t(
+                client === "admin"
+                  ? "Copy.onlyAccountsWithPlatformManagementAccessCan"
+                  : "Copy.coachesAndAthletesUseOneAccountClub",
+              )}
+            </p>
+          )}
           <Button
             type="submit"
             data-auth-action

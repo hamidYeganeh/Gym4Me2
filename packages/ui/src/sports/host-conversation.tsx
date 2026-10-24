@@ -118,6 +118,7 @@ export function SportsHostConversation({ id }: { id: string }) {
     <SportsFrame
       title={conversation?.title ?? t("messages")}
       className="sports-host-conversation-page"
+      focused
     >
       <div className="sports-host-conversations">
         <Button asChild variant="outline" className="mb-5">

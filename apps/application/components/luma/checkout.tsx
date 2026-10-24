@@ -3,6 +3,7 @@ import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { useTrainingEvent } from "@repo/ui/training";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
 import { ReservationSummary } from "./reservation-design";
+import { Check } from "lucide-react";
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -366,6 +367,15 @@ export function PaymentStatus() {
       <QueryState query={query}>
         {order && (
           <>
+            {order.status === "paid" && (
+              <section className="luma-success-state" role="status">
+                <span className="luma-success-mark">
+                  <Check aria-hidden="true" size={32} strokeWidth={2.5} />
+                </span>
+                <h2>{t("status.paid")}</h2>
+                <p className="luma-meta">{order.snapshot.title}</p>
+              </section>
+            )}
             <ReservationSummary
               title={order.snapshot.title}
               amountMinor={order.amountMinor}

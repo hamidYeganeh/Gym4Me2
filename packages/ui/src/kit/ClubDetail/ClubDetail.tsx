@@ -143,6 +143,26 @@ export function ClubDetail({
           </p>
         </div>
 
+        <div className="club-detail-actions">
+          {onPlanVisit && (
+            <button type="button" onClick={onPlanVisit}>
+              <CalendarPlusIcon />
+              <span>{labels.visit}</span>
+            </button>
+          )}
+          <button type="button" onClick={onShare}>
+            <Share1Icon />
+            <span>{labels.share}</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onSavedChange(!saved)}
+            aria-pressed={saved}
+          >
+            <BookmarkIcon />
+            <span>{saved ? labels.unsave : labels.save}</span>
+          </button>
+        </div>
         <div className={s.gallery()} role="group" aria-label={labels.gallery}>
           {club.photos.map((item, index) => (
             <button

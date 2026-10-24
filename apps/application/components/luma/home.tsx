@@ -2,6 +2,7 @@
 import Link from "next/link";
 import {
   Bookmark,
+  Bell,
   CalendarDays,
   CreditCard,
   Dumbbell,
@@ -76,7 +77,21 @@ function SignedInHome() {
   );
   const services = useSportsQuery<ServiceDto[]>("sports/services");
   return (
-    <LumaPage title={brand("brand")} actions={<CreateAction />}>
+    <LumaPage
+      title={brand("brand")}
+      actions={
+        <>
+          <CreateAction />
+          <Link
+            href="/notifications"
+            className="luma-icon"
+            aria-label={t("notifications")}
+          >
+            <Bell size={21} />
+          </Link>
+        </>
+      }
+    >
       <PersonalAgenda />
       <div className="luma-shortcuts">
         {(

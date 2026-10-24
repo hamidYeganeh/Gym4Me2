@@ -75,6 +75,23 @@
 .luma-section {
   margin-block: 1.75rem;
 }
+.booking-periods {
+  margin-inline: auto;
+  max-width: 22rem;
+}
+.booking-day {
+  margin-block: 1.75rem 2.25rem;
+}
+.booking-day > h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.8;
+  margin-bottom: 0.6rem;
+}
+.booking-day > h2 > span {
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
 .luma-section-title {
   display: flex;
   align-items: center;
@@ -785,4 +802,169 @@
   color: var(--background);
   min-width: 1.2rem;
   text-align: center;
+}
+
+/* Messages use identity, short previews and a compact, bottom-anchored thread. */
+.luma-conversation-avatar {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(145deg, #e2e9da, #b7c8ac);
+  color: #344834;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.luma-messages-page .luma-row {
+  min-height: 5rem;
+  padding-block: 0.75rem;
+}
+.luma-messages-page .luma-row-copy strong {
+  font-size: 0.9rem;
+}
+.luma-messages-page .luma-row-copy .luma-meta {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size: 0.8rem;
+}
+.luma-chat-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+}
+.luma-chat-heading .luma-conversation-avatar {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 0.45rem;
+  font-size: 0.6rem;
+}
+.luma-conversation-page {
+  padding-bottom: calc(0.75rem + var(--app-safe-bottom, 0px));
+}
+.luma-conversation-page > .luma-header {
+  margin-bottom: 0.5rem;
+}
+.luma-conversation-page .luma-chat {
+  min-height: 100%;
+  justify-content: end;
+  gap: 0.5rem;
+}
+.luma-chat-date {
+  align-self: center;
+  color: var(--muted-foreground);
+  font-size: 0.65rem;
+  margin-block: 0.75rem;
+}
+.luma-chat-author {
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: var(--muted-foreground);
+}
+.luma-bubble {
+  position: relative;
+  max-width: 82%;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.luma-bubble[data-own="true"] {
+  background: var(--brand);
+  color: #102511;
+}
+.luma-chat-receipt {
+  display: flex;
+  justify-content: end;
+  gap: 0.3rem;
+  font-size: 0.6rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+.luma-message-menu {
+  position: relative;
+  white-space: normal;
+}
+.luma-message-menu summary {
+  cursor: pointer;
+  font-size: 1.2rem;
+  min-height: 1.75rem;
+  min-width: 2.75rem;
+  list-style: none;
+  text-align: end;
+}
+.luma-message-menu[open] {
+  padding-top: 0.25rem;
+}
+.luma-message-menu .luma-shortcut {
+  display: block;
+  color: var(--destructive);
+}
+.luma-identity-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.5rem 0 2rem;
+  text-align: center;
+}
+.luma-identity-hero > .luma-conversation-avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 1.2rem;
+  font-size: 1.5rem;
+}
+.luma-identity-hero h2 {
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+.luma-conversation-details {
+  background: var(--canvas-grouped);
+}
+.luma-conversation-details .luma-group {
+  background: var(--card);
+}
+.luma-success-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem 0 1rem;
+  text-align: center;
+}
+.luma-success-state h2 {
+  font-size: 1.4rem;
+  font-weight: 650;
+}
+.luma-success-mark {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  color: #102511;
+  background: var(--brand);
+  box-shadow: 0 0 0 0.6rem color-mix(in srgb, var(--brand) 8%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .luma-success-mark {
+    animation: luma-success-pop var(--motion-sheet)
+      cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+}
+@keyframes luma-success-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

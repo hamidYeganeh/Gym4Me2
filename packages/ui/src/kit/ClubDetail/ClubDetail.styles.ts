@@ -3,7 +3,7 @@ import { cva } from "class-variance-authority";
 export const clubDetailStyles = {
   root: cva("mx-auto w-full max-w-xl bg-background"),
   hero: cva(
-    "relative isolate flex h-[38svh] min-h-64 max-h-96 flex-col overflow-hidden bg-image-surface text-image-foreground sm:rounded-t-3xl",
+    "relative isolate mx-5 mt-[calc(5.5rem+var(--app-safe-top,0px))] flex aspect-square flex-col overflow-hidden rounded-[1.25rem] bg-image-surface text-image-foreground",
   ),
   image: cva("object-cover"),
   overlay: cva(
@@ -31,14 +31,14 @@ export const clubDetailStyles = {
   headingContent: cva("relative z-10"),
   category: cva("mb-2 text-sm text-foreground/75"),
   title: cva(
-    "text-[1.7rem] leading-relaxed font-semibold tracking-tight sm:text-3xl",
+    "text-[1.7rem] leading-snug font-semibold tracking-tight sm:text-3xl",
   ),
   price: cva(
-    "relative z-10 shrink-0 text-start text-xl font-semibold text-foreground sm:text-2xl",
+    "relative z-10 shrink-0 text-start text-base font-medium text-foreground",
   ),
   period: cva("mt-1 block text-xs font-normal text-foreground/70"),
   panel: cva(
-    "relative -mt-5 flex flex-col gap-6 rounded-t-3xl bg-background px-5 pt-5 text-foreground sm:p-7",
+    "relative flex flex-col gap-6 bg-background px-5 pt-5 text-foreground sm:px-5 sm:py-6",
   ),
   gallery: cva("grid grid-cols-3 gap-3"),
   thumbnail: cva(

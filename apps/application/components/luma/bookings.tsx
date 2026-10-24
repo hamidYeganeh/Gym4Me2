@@ -1,7 +1,8 @@
 "use client";
 import { useListState } from "@repo/ui/hooks/use-list-state";
 import { ConfirmAction } from "@repo/ui/confirm-action";
-import { FilterSheet } from "@repo/ui/kit/BottomSheet";
+import { CalendarClock, History } from "lucide-react";
+import { agendaDay } from "@repo/ui/lib/agenda";
 import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
 import Link from "next/link";
@@ -53,6 +54,26 @@ export function BookingsPage() {
         .map((item) => [item.id, item]),
     ).values(),
   ];
+  // Keep the server's order (including descending history) across cursor pages.
+  const days = new Map<string | null, BookingDto[]>();
+  for (const booking of data) {
+    const day = agendaDay(booking.startAt);
+    days.set(day, [...(days.get(day) ?? []), booking]);
+  }
+  const dateLabel = new Intl.DateTimeFormat(locale, {
+    day: "numeric",
+    month: "long",
+    timeZone: "Asia/Tehran",
+  });
+  const weekdayLabel = new Intl.DateTimeFormat(locale, {
+    weekday: "long",
+    timeZone: "Asia/Tehran",
+  });
+  const timeLabel = new Intl.DateTimeFormat(locale, {
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "Asia/Tehran",
+  });
   useEffect(() => {
     if (query.isFetchingNextPage || nextFocus.current === null) return;
     if (data.length > nextFocus.current) {
@@ -66,7 +87,7 @@ export function BookingsPage() {
   }, [data.length, query.isFetchingNextPage, query.error]);
   return (
     <LumaPage title={t("yourBookings")} back="/" className="reservation-list">
-      <FilterSheet count={tab === "past" ? 1 : 0}>
+      <div className="booking-periods">
         <Segments
           value={tab}
           onChange={(value) => {
@@ -78,7 +99,7 @@ export function BookingsPage() {
             label: t(v),
           }))}
         />
-      </FilterSheet>
+      </div>
       <QueryState
         query={{
           isPending: query.isPending,
@@ -94,18 +115,44 @@ export function BookingsPage() {
           ref={results}
           aria-busy={query.isFetchingNextPage}
         >
-          {data.map((r) => (
-            <Row
-              key={r.id}
-              title={r.title}
-              date={r.startAt}
-              meta={`${stamp(r.startAt, locale)} · ${r.branchName}`}
-              state={r.status}
-              href={`/bookings/detail?id=${r.id}`}
-            />
+          {[...days].map(([day, bookings]) => (
+            <section className="booking-day" key={day ?? "undated"}>
+              {day && (
+                <h2>
+                  {dateLabel.format(new Date(`${day}T12:00:00Z`))}
+                  <span>
+                    {" "}
+                    / {weekdayLabel.format(new Date(`${day}T12:00:00Z`))}
+                  </span>
+                </h2>
+              )}
+              {bookings.map((r) => (
+                <Row
+                  key={r.id}
+                  title={r.title}
+                  date={r.startAt}
+                  meta={`${Number.isFinite(Date.parse(r.startAt)) ? timeLabel.format(new Date(r.startAt)) + " · " : ""}${r.branchName}`}
+                  state={r.status}
+                  href={`/bookings/detail?id=${r.id}`}
+                />
+              ))}
+            </section>
           ))}
         </div>
-        {!data.length && <Empty />}
+        {!data.length && (
+          <Empty icon={tab === "upcoming" ? <CalendarClock /> : <History />}>
+            <strong className="block text-lg font-semibold">
+              {t(tab === "upcoming" ? "noUpcomingBookings" : "noPastBookings")}
+            </strong>
+            <span className="mt-2 block">
+              {t(
+                tab === "upcoming"
+                  ? "noUpcomingBookingsHint"
+                  : "noPastBookingsHint",
+              )}
+            </span>
+          </Empty>
+        )}
         {query.data && query.error && <CommandError error={query.error} />}
         {query.hasNextPage && (
           <button

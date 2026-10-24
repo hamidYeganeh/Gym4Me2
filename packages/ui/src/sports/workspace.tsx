@@ -76,10 +76,12 @@ export function SportsFrame({
   children,
   title,
   className,
+  focused = false,
 }: {
   children: ReactNode;
   title: string;
   className?: string;
+  focused?: boolean;
 }) {
   const t = useTranslations("Luma");
   const account = useTranslations("AccountDesign");
@@ -107,82 +109,86 @@ export function SportsFrame({
       <div className="mx-auto max-w-6xl">
         <header className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <h1 className="text-2xl font-bold break-words min-w-0">{title}</h1>
-          <div className="flex flex-wrap items-center gap-3">
-            <NativeSelect
-              className="min-h-11 [&_select]:min-h-11"
-              aria-label={t("language")}
-              value={locale}
-              disabled={changingLocale}
-              onChange={(e) => {
-                const value = e.target.value === "en" ? "en" : "fa";
-                startLocaleChange(async () => {
-                  await changeLocale(value);
-                });
-              }}
-            >
-              <NativeSelectOption value="fa">
-                {t("languageNameFa")}
-              </NativeSelectOption>
-              <NativeSelectOption value="en">
-                {t("languageNameEn")}
-              </NativeSelectOption>
-            </NativeSelect>
-            <AnimatedThemeToggler
-              className="min-h-11 min-w-11"
-              label={account("toggleTheme")}
-              size="icon-lg"
-            />
-            <Link
-              className="inline-flex min-h-11 min-w-11 items-center justify-center"
-              href="/"
-            >
-              {t("home")}
-            </Link>
-          </div>
-        </header>
-        <nav
-          ref={navigation}
-          className="sports-context-navigation flex gap-2 overflow-x-auto pb-2 mb-6"
-          aria-label={t("navigation")}
-        >
-          {(
-            [
-              "services",
-              "resources",
-              "reception",
-              "members",
-              "payments",
-              "reports",
-              "imports",
-              "calendar",
-              "messages",
-            ] as const
-          ).map((key) => (
-            <Button
-              asChild
-              variant={
-                pathname === `/${key}` ||
-                (key === "messages" && pathname?.startsWith("/messages/"))
-                  ? "default"
-                  : "outline"
-              }
-              className="min-h-11 shrink-0"
-              key={key}
-            >
+          {!focused && (
+            <div className="flex flex-wrap items-center gap-3">
+              <NativeSelect
+                className="min-h-11 [&_select]:min-h-11"
+                aria-label={t("language")}
+                value={locale}
+                disabled={changingLocale}
+                onChange={(e) => {
+                  const value = e.target.value === "en" ? "en" : "fa";
+                  startLocaleChange(async () => {
+                    await changeLocale(value);
+                  });
+                }}
+              >
+                <NativeSelectOption value="fa">
+                  {t("languageNameFa")}
+                </NativeSelectOption>
+                <NativeSelectOption value="en">
+                  {t("languageNameEn")}
+                </NativeSelectOption>
+              </NativeSelect>
+              <AnimatedThemeToggler
+                className="min-h-11 min-w-11"
+                label={account("toggleTheme")}
+                size="icon-lg"
+              />
               <Link
-                href={`/${key}`}
-                aria-current={
+                className="inline-flex min-h-11 min-w-11 items-center justify-center"
+                href="/"
+              >
+                {t("home")}
+              </Link>
+            </div>
+          )}
+        </header>
+        {!focused && (
+          <nav
+            ref={navigation}
+            className="sports-context-navigation flex gap-2 overflow-x-auto pb-2 mb-6"
+            aria-label={t("navigation")}
+          >
+            {(
+              [
+                "services",
+                "resources",
+                "reception",
+                "members",
+                "payments",
+                "reports",
+                "imports",
+                "calendar",
+                "messages",
+              ] as const
+            ).map((key) => (
+              <Button
+                asChild
+                variant={
                   pathname === `/${key}` ||
                   (key === "messages" && pathname?.startsWith("/messages/"))
-                    ? "page"
-                    : undefined
+                    ? "default"
+                    : "outline"
                 }
+                className="min-h-11 shrink-0"
+                key={key}
               >
-                {t(key)}
-              </Link>
-            </Button>
-          ))}
-        </nav>
+                <Link
+                  href={`/${key}`}
+                  aria-current={
+                    pathname === `/${key}` ||
+                    (key === "messages" && pathname?.startsWith("/messages/"))
+                      ? "page"
+                      : undefined
+                  }
+                >
+                  {t(key)}
+                </Link>
+              </Button>
+            ))}
+          </nav>
+        )}
         {children}
       </div>
     </main>
@@ -351,219 +357,201 @@ function Services({
       />
       <QueryError error={query.error} retry={query.refetch} />
       <Button onClick={() => setFormOpen((v) => !v)}>{t("newService")}</Button>
-      {formOpen && (
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("newService")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form
-              className="grid gap-4 sm:grid-cols-2"
-              onSubmit={(e) => {
-                e.preventDefault();
-                const form = e.currentTarget;
-                const f = new FormData(form);
-                const price = String(f.get("price") ?? "0");
-                if (!/^\d+$/.test(price)) return;
-                create.mutate(
-                  {
-                    organizationId: org,
-                    branchId: branch,
-                    title: f.get("title"),
-                    description: f.get("description"),
-                    kind: f.get("kind"),
-                    amountMinor: (BigInt(price) * BigInt(10)).toString(),
-                    currency: "IRR",
-                    durationDays: f.get("duration")
-                      ? Number(f.get("duration"))
-                      : null,
-                    sessionCount: f.get("sessions")
-                      ? Number(f.get("sessions"))
-                      : null,
-                    resourceIds: f.getAll("resources"),
-                    requirements: String(f.get("requirements") ?? "")
-                      .split("\n")
-                      .map((v) => v.trim())
-                      .filter(Boolean),
-                    eligibility: readServiceEligibility(f),
-                    level: f.get("level"),
-                    coachName: f.get("coach"),
-                    visibility: f.get("visibility"),
-                    approvalRequired: f.has("approval"),
-                    showParticipants: f.has("participants"),
-                    policy: {
-                      cancellationHours: Number(f.get("cutoff")),
-                      lateRefundBasisPoints: Number(f.get("refund")) * 100,
-                      noShowConsumesSession: f.has("noShow"),
-                      consumeOn: f.get("consumeOn"),
-                      freezeDays: Number(f.get("freeze")),
-                      depositBasisPoints: Number(f.get("deposit")) * 100,
-                      guestAllowance: Number(f.get("guests")),
-                      transferable: f.has("transfer"),
-                      terms: f.get("terms"),
-                    },
-                  },
-                  {
-                    onSuccess: () => {
-                      form.reset();
-                      setFormOpen(false);
-                    },
-                  },
-                );
-              }}
-            >
-              <FormField label={t("title")}>
-                <Input name="title" minLength={2} maxLength={160} required />
-              </FormField>
-              <FormField label={t("kind")}>
-                <NativeSelect name="kind">
-                  {(
-                    [
-                      "class",
-                      "course",
-                      "court",
-                      "access",
-                      "membership",
-                    ] as const
-                  ).map((kind) => (
-                    <NativeSelectOption key={kind} value={kind}>
-                      {t(`kinds.${kind}`)}
-                    </NativeSelectOption>
-                  ))}
-                </NativeSelect>
-              </FormField>
-              <FormField label={t("description")}>
-                <Textarea name="description" maxLength={10000} />
-              </FormField>
-              <p className="sm:col-span-2 text-sm text-muted-foreground">
-                {t("serviceCoverAfterCreate")}
-              </p>
-              <FormField label={`${t("price")} (${t("toman")})`}>
-                <Input
-                  name="price"
-                  type="number"
-                  step="1"
-                  min="0"
-                  max="1000000000000"
-                  required
-                  defaultValue="0"
-                />
-              </FormField>
-              <FormField label={t("days")}>
-                <Input name="duration" type="number" min="1" max="3660" />
-              </FormField>
-              <FormField label={t("sessions")}>
-                <Input name="sessions" type="number" min="1" max="10000" />
-              </FormField>
-              <FormField label={t("level")}>
-                <Input name="level" maxLength={80} defaultValue="" />
-              </FormField>
-              <FormField label={t("coach")}>
-                <Input name="coach" maxLength={120} defaultValue="" />
-              </FormField>
-              <FormField label={t("requiredDocuments")}>
-                <Textarea name="requirements" placeholder={t("onePerLine")} />
-              </FormField>
-              <ServiceEligibilityFields />
-              <FormField label={t("conditions")}>
-                <Textarea
-                  name="terms"
-                  minLength={10}
-                  maxLength={10000}
-                  required
-                />
-              </FormField>
-              <FormField label={t("cancelHours")}>
-                <Input
-                  name="cutoff"
-                  type="number"
-                  min="0"
-                  max="8760"
-                  required
-                />
-              </FormField>
-              <FormField label={t("refundPercent")}>
-                <Input name="refund" type="number" min="0" max="100" required />
-              </FormField>
-              <FormField label={t("freezeDays")}>
-                <Input
-                  name="freeze"
-                  type="number"
-                  min="0"
-                  max="365"
-                  defaultValue="0"
-                  required
-                />
-              </FormField>
-              <FormField label={t("depositPercent")}>
-                <Input
-                  name="deposit"
-                  type="number"
-                  min="0"
-                  max="100"
-                  defaultValue="0"
-                  required
-                />
-              </FormField>
-              <FormField label={t("guestAllowance")}>
-                <Input
-                  name="guests"
-                  type="number"
-                  min="0"
-                  max="100"
-                  defaultValue="0"
-                  required
-                />
-              </FormField>
-              <FormField label={t("consumeOn")}>
-                <NativeSelect name="consumeOn">
-                  <NativeSelectOption value="attendance">
-                    {t("attendance")}
-                  </NativeSelectOption>
-                  <NativeSelectOption value="confirmation">
-                    {t("registration")}
-                  </NativeSelectOption>
-                </NativeSelect>
-              </FormField>
-              <FormField label={t("visibility")}>
-                <NativeSelect name="visibility">
-                  <NativeSelectOption value="public">
-                    {t("public")}
-                  </NativeSelectOption>
-                  <NativeSelectOption value="unlisted">
-                    {t("unlisted")}
-                  </NativeSelectOption>
-                </NativeSelect>
-              </FormField>
-              <fieldset className="flex flex-col gap-3">
-                <legend className="mb-3">{t("resources")}</legend>
-                {resources.data?.map((r) => (
-                  <label className="flex items-center gap-2" key={r.id}>
-                    <input name="resources" value={r.id} type="checkbox" />
-                    {r.name}
-                  </label>
-                ))}
-              </fieldset>
-              <div className="flex flex-col gap-3">
-                {(
-                  ["approval", "participants", "noShow", "transfer"] as const
-                ).map((key) => (
-                  <label key={key} className="flex items-center gap-2">
-                    <input name={key} type="checkbox" />
-                    {t(key)}
-                  </label>
-                ))}
-              </div>
-              <div className="sm:col-span-2">
-                <QueryError error={create.error} />
-                <Button type="submit" disabled={create.isPending}>
-                  {t("save")}
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
+      <BottomSheet
+        open={formOpen}
+        onOpenChange={(open) => {
+          if (!create.isPending) setFormOpen(open);
+        }}
+        title={t("newService")}
+      >
+        <form
+          className="grid gap-4 sm:grid-cols-2"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const f = new FormData(form);
+            const price = String(f.get("price") ?? "0");
+            if (!/^\d+$/.test(price)) return;
+            create.mutate(
+              {
+                organizationId: org,
+                branchId: branch,
+                title: f.get("title"),
+                description: f.get("description"),
+                kind: f.get("kind"),
+                amountMinor: (BigInt(price) * BigInt(10)).toString(),
+                currency: "IRR",
+                durationDays: f.get("duration")
+                  ? Number(f.get("duration"))
+                  : null,
+                sessionCount: f.get("sessions")
+                  ? Number(f.get("sessions"))
+                  : null,
+                resourceIds: f.getAll("resources"),
+                requirements: String(f.get("requirements") ?? "")
+                  .split("\n")
+                  .map((v) => v.trim())
+                  .filter(Boolean),
+                eligibility: readServiceEligibility(f),
+                level: f.get("level"),
+                coachName: f.get("coach"),
+                visibility: f.get("visibility"),
+                approvalRequired: f.has("approval"),
+                showParticipants: f.has("participants"),
+                policy: {
+                  cancellationHours: Number(f.get("cutoff")),
+                  lateRefundBasisPoints: Number(f.get("refund")) * 100,
+                  noShowConsumesSession: f.has("noShow"),
+                  consumeOn: f.get("consumeOn"),
+                  freezeDays: Number(f.get("freeze")),
+                  depositBasisPoints: Number(f.get("deposit")) * 100,
+                  guestAllowance: Number(f.get("guests")),
+                  transferable: f.has("transfer"),
+                  terms: f.get("terms"),
+                },
+              },
+              {
+                onSuccess: () => {
+                  form.reset();
+                  setFormOpen(false);
+                },
+              },
+            );
+          }}
+        >
+          <FormField label={t("title")}>
+            <Input name="title" minLength={2} maxLength={160} required />
+          </FormField>
+          <FormField label={t("kind")}>
+            <NativeSelect name="kind">
+              {(
+                ["class", "course", "court", "access", "membership"] as const
+              ).map((kind) => (
+                <NativeSelectOption key={kind} value={kind}>
+                  {t(`kinds.${kind}`)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormField>
+          <FormField label={t("description")}>
+            <Textarea name="description" maxLength={10000} />
+          </FormField>
+          <p className="sm:col-span-2 text-sm text-muted-foreground">
+            {t("serviceCoverAfterCreate")}
+          </p>
+          <FormField label={`${t("price")} (${t("toman")})`}>
+            <Input
+              name="price"
+              type="number"
+              step="1"
+              min="0"
+              max="1000000000000"
+              required
+              defaultValue="0"
+            />
+          </FormField>
+          <FormField label={t("days")}>
+            <Input name="duration" type="number" min="1" max="3660" />
+          </FormField>
+          <FormField label={t("sessions")}>
+            <Input name="sessions" type="number" min="1" max="10000" />
+          </FormField>
+          <FormField label={t("level")}>
+            <Input name="level" maxLength={80} defaultValue="" />
+          </FormField>
+          <FormField label={t("coach")}>
+            <Input name="coach" maxLength={120} defaultValue="" />
+          </FormField>
+          <FormField label={t("requiredDocuments")}>
+            <Textarea name="requirements" placeholder={t("onePerLine")} />
+          </FormField>
+          <ServiceEligibilityFields />
+          <FormField label={t("conditions")}>
+            <Textarea name="terms" minLength={10} maxLength={10000} required />
+          </FormField>
+          <FormField label={t("cancelHours")}>
+            <Input name="cutoff" type="number" min="0" max="8760" required />
+          </FormField>
+          <FormField label={t("refundPercent")}>
+            <Input name="refund" type="number" min="0" max="100" required />
+          </FormField>
+          <FormField label={t("freezeDays")}>
+            <Input
+              name="freeze"
+              type="number"
+              min="0"
+              max="365"
+              defaultValue="0"
+              required
+            />
+          </FormField>
+          <FormField label={t("depositPercent")}>
+            <Input
+              name="deposit"
+              type="number"
+              min="0"
+              max="100"
+              defaultValue="0"
+              required
+            />
+          </FormField>
+          <FormField label={t("guestAllowance")}>
+            <Input
+              name="guests"
+              type="number"
+              min="0"
+              max="100"
+              defaultValue="0"
+              required
+            />
+          </FormField>
+          <FormField label={t("consumeOn")}>
+            <NativeSelect name="consumeOn">
+              <NativeSelectOption value="attendance">
+                {t("attendance")}
+              </NativeSelectOption>
+              <NativeSelectOption value="confirmation">
+                {t("registration")}
+              </NativeSelectOption>
+            </NativeSelect>
+          </FormField>
+          <FormField label={t("visibility")}>
+            <NativeSelect name="visibility">
+              <NativeSelectOption value="public">
+                {t("public")}
+              </NativeSelectOption>
+              <NativeSelectOption value="unlisted">
+                {t("unlisted")}
+              </NativeSelectOption>
+            </NativeSelect>
+          </FormField>
+          <fieldset className="flex flex-col gap-3">
+            <legend className="mb-3">{t("resources")}</legend>
+            {resources.data?.map((r) => (
+              <label className="flex items-center gap-2" key={r.id}>
+                <input name="resources" value={r.id} type="checkbox" />
+                {r.name}
+              </label>
+            ))}
+          </fieldset>
+          <div className="flex flex-col gap-3">
+            {(["approval", "participants", "noShow", "transfer"] as const).map(
+              (key) => (
+                <label key={key} className="flex items-center gap-2">
+                  <input name={key} type="checkbox" />
+                  {t(key)}
+                </label>
+              ),
+            )}
+          </div>
+          <div className="sm:col-span-2">
+            <QueryError error={create.error} />
+            <Button type="submit" disabled={create.isPending}>
+              {t("save")}
+            </Button>
+          </div>
+        </form>
+      </BottomSheet>
       {loading ? (
         <Loading />
       ) : (

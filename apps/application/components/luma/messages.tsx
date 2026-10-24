@@ -55,7 +55,11 @@ export function MessagesPage() {
           >
             <Row
               title={c.title}
-              icon={<MessageCircle size={24} aria-hidden="true" />}
+              icon={
+                <span className="luma-conversation-avatar" aria-hidden="true">
+                  {c.title.trim().slice(0, 2)}
+                </span>
+              }
               href={`/messages/conversation?id=${c.id}`}
               meta={
                 c.lastMessage ||

@@ -133,6 +133,7 @@ export function Loading() {
     <div
       className="flex items-center justify-center gap-3 py-16 text-muted-foreground"
       role="status"
+      aria-busy="true"
     >
       <Spinner />
       {t("Copy.loadingInformation")}{" "}

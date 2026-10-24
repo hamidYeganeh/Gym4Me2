@@ -73,6 +73,7 @@ try {
     ...tsconfig.exclude,
     ".native-build-*",
     "components/qa/mobile-reference.tsx",
+    "components/qa/route-reference.tsx",
   ];
   writeFileSync(join(stage, "tsconfig.json"), JSON.stringify(tsconfig));
   result = spawnSync(

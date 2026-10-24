@@ -1,4 +1,5 @@
 "use client";
+import { ActionEditor } from "../account/action-editor";
 import { useId, useRef, useState, type ReactNode } from "react";
 import { useLocale, useTranslations } from "@repo/i18n";
 import {
@@ -152,89 +153,84 @@ export function ResourceManager({
   const current = query.data?.find((r) => r.id === selected) ?? query.data?.[0];
   return (
     <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle role="heading" aria-level={2}>
-            {t("newResource")}
-          </CardTitle>
-          <CardDescription>{t("resourceCreateHint")}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const form = e.currentTarget;
-              const data = new FormData(form);
-              const shared = query.data?.find(
-                (r) => r.id === data.get("shared"),
-              );
-              setCreated(false);
-              const input: Omit<ResourceCreateInput, "idempotencyKey"> = {
-                organizationId: org,
-                branchId: branch,
-                name: String(data.get("name")),
-                unitIds: shared?.unitIds ?? [],
-              };
-              create.mutate(
-                { ...input, idempotencyKey: createKey.getKey(input) },
-                {
-                  onSuccess: (resource) => {
-                    form.reset();
-                    setSelected(resource.id);
-                    setCreated(true);
-                    createKey.reset();
-                  },
+      <ActionEditor
+        title={t("newResource")}
+        description={t("resourceCreateHint")}
+        busy={create.isPending}
+        completed={create.isSuccess}
+      >
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const data = new FormData(form);
+            const shared = query.data?.find((r) => r.id === data.get("shared"));
+            setCreated(false);
+            const input: Omit<ResourceCreateInput, "idempotencyKey"> = {
+              organizationId: org,
+              branchId: branch,
+              name: String(data.get("name")),
+              unitIds: shared?.unitIds ?? [],
+            };
+            create.mutate(
+              { ...input, idempotencyKey: createKey.getKey(input) },
+              {
+                onSuccess: (resource) => {
+                  form.reset();
+                  setSelected(resource.id);
+                  setCreated(true);
+                  createKey.reset();
                 },
-              );
-            }}
-          >
-            <FieldGroup className="grid gap-4 sm:grid-cols-2">
-              <Field>
-                <FieldLabel htmlFor={`${id}-name`}>
-                  {t("resourceName")}
-                </FieldLabel>
-                <Input
-                  className="min-h-11"
-                  id={`${id}-name`}
-                  name="name"
-                  minLength={2}
-                  maxLength={120}
-                  required
-                />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor={`${id}-shared`}>
-                  {t("resourceSharesWith")}
-                </FieldLabel>
-                <NativeSelect
-                  className="min-h-11 w-full [&_select]:min-h-11"
-                  id={`${id}-shared`}
-                  name="shared"
-                >
-                  <NativeSelectOption value="">
-                    {t("resourceIndependent")}
+              },
+            );
+          }}
+        >
+          <FieldGroup className="grid gap-4 sm:grid-cols-2">
+            <Field>
+              <FieldLabel htmlFor={`${id}-name`}>
+                {t("resourceName")}
+              </FieldLabel>
+              <Input
+                className="min-h-11"
+                id={`${id}-name`}
+                name="name"
+                minLength={2}
+                maxLength={120}
+                required
+              />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor={`${id}-shared`}>
+                {t("resourceSharesWith")}
+              </FieldLabel>
+              <NativeSelect
+                className="min-h-11 w-full [&_select]:min-h-11"
+                id={`${id}-shared`}
+                name="shared"
+              >
+                <NativeSelectOption value="">
+                  {t("resourceIndependent")}
+                </NativeSelectOption>
+                {query.data?.map((r) => (
+                  <NativeSelectOption key={r.id} value={r.id}>
+                    {r.name}
                   </NativeSelectOption>
-                  {query.data?.map((r) => (
-                    <NativeSelectOption key={r.id} value={r.id}>
-                      {r.name}
-                    </NativeSelectOption>
-                  ))}
-                </NativeSelect>
-                <FieldDescription>{t("resourceSharedHint")}</FieldDescription>
-              </Field>
-            </FieldGroup>
-            <QueryError error={create.error} />
-            {created && (
-              <p role="status" className="mt-4 text-sm text-muted-foreground">
-                {t("resourceCreated")}
-              </p>
-            )}
-            <Button className="mt-4 min-h-11" disabled={create.isPending}>
-              {t("newResource")}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+                ))}
+              </NativeSelect>
+              <FieldDescription>{t("resourceSharedHint")}</FieldDescription>
+            </Field>
+          </FieldGroup>
+          <QueryError error={create.error} />
+          {created && (
+            <p role="status" className="mt-4 text-sm text-muted-foreground">
+              {t("resourceCreated")}
+            </p>
+          )}
+          <Button className="mt-4 min-h-11" disabled={create.isPending}>
+            {t("newResource")}
+          </Button>
+        </form>
+      </ActionEditor>
       {query.isPending ? (
         <Loading />
       ) : query.error ? (

@@ -1,5 +1,6 @@
 "use client";
 import { FilterSheet } from "../kit/BottomSheet";
+
 import type { TranslationKey } from "@repo/i18n/messages";
 import { useLabelMap } from "./common";
 import { useTranslations, useLocale } from "@repo/i18n";
@@ -195,46 +196,48 @@ export function AdminUsersContent() {
   }
   return (
     <>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          setPage(1);
-          setSearch(input);
-        }}
-        className="flex flex-wrap items-end gap-3"
-      >
-        <TextField
-          label={t("Copy.findUser")}
-          name="userSearch"
-          fieldClassName="w-full sm:w-64"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={t("Copy.nameOrMobileNumber")}
-          maxLength={100}
-        />
-        <Field className="w-44">
-          <FieldLabel htmlFor="userStatus">{t("Copy.status")}</FieldLabel>
-          <NativeSelect
-            id="userStatus"
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value);
-              setPage(1);
-            }}
-          >
-            <NativeSelectOption value="">
-              {t("Copy.allUsers")}
-            </NativeSelectOption>
-            <NativeSelectOption value="active">
-              {t("Copy.active")}
-            </NativeSelectOption>
-            <NativeSelectOption value="suspended">
-              {t("Copy.suspended")}
-            </NativeSelectOption>
-          </NativeSelect>
-        </Field>
-        <Button type="submit">{t("Copy.search")}</Button>
-      </form>
+      <FilterSheet>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setPage(1);
+            setSearch(input);
+          }}
+          className="flex flex-wrap items-end gap-3"
+        >
+          <TextField
+            label={t("Copy.findUser")}
+            name="userSearch"
+            fieldClassName="w-full sm:w-64"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder={t("Copy.nameOrMobileNumber")}
+            maxLength={100}
+          />
+          <Field className="w-44">
+            <FieldLabel htmlFor="userStatus">{t("Copy.status")}</FieldLabel>
+            <NativeSelect
+              id="userStatus"
+              value={status}
+              onChange={(e) => {
+                setStatus(e.target.value);
+                setPage(1);
+              }}
+            >
+              <NativeSelectOption value="">
+                {t("Copy.allUsers")}
+              </NativeSelectOption>
+              <NativeSelectOption value="active">
+                {t("Copy.active")}
+              </NativeSelectOption>
+              <NativeSelectOption value="suspended">
+                {t("Copy.suspended")}
+              </NativeSelectOption>
+            </NativeSelect>
+          </Field>
+          <Button type="submit">{t("Copy.search")}</Button>
+        </form>
+      </FilterSheet>
       <QueryError error={query.error} retry={query.refetch} />
       {query.isLoading ? (
         <Loading />
@@ -366,83 +369,85 @@ export function AdminOrganizationsContent({
   }
   return (
     <>
-      <form
-        className="flex flex-wrap items-end gap-3"
-        onSubmit={(e) => {
-          e.preventDefault();
-          setSearch(input);
-          setPage(1);
-        }}
-      >
-        <TextField
-          label={t("Copy.findOrganization")}
-          name="organizationSearch"
-          fieldClassName="w-full sm:w-64"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          maxLength={100}
-          placeholder={t("Copy.organizationName")}
-        />
-        <Field className="w-48">
-          <FieldLabel htmlFor="reviewStatus">
-            {t("Copy.organizationStatus")}
-          </FieldLabel>
-          <NativeSelect
-            id="reviewStatus"
-            value={status}
-            onChange={(e) => {
-              setStatus(e.target.value);
-              setPage(1);
-            }}
-          >
-            <NativeSelectOption value="">
-              {t("Copy.allOrganizations")}
-            </NativeSelectOption>
-            <NativeSelectOption value="pending">
-              {t("Copy.pendingReview")}{" "}
-            </NativeSelectOption>
-            <NativeSelectOption value="approved">
-              {t("Copy.approved")}
-            </NativeSelectOption>
-            <NativeSelectOption value="rejected">
-              {t("Copy.rejected")}
-            </NativeSelectOption>
-            <NativeSelectOption value="suspended">
-              {t("Copy.suspended")}
-            </NativeSelectOption>
-          </NativeSelect>
-        </Field>
-        <Field className="w-48">
-          <FieldLabel htmlFor="publicationStatus">
-            {t("Copy.publicationStatus")}
-          </FieldLabel>
-          <NativeSelect
-            id="publicationStatus"
-            value={publicationStatus}
-            onChange={(e) => {
-              setPublicationStatus(e.target.value);
-              setPage(1);
-            }}
-          >
-            <NativeSelectOption value="">
-              {t("Copy.allStatuses")}
-            </NativeSelectOption>
-            <NativeSelectOption value="draft">
-              {t("Copy.draft")}
-            </NativeSelectOption>
-            <NativeSelectOption value="pending_review">
-              {t("Copy.pendingPublication")}{" "}
-            </NativeSelectOption>
-            <NativeSelectOption value="published">
-              {t("Copy.published")}
-            </NativeSelectOption>
-            <NativeSelectOption value="hidden">
-              {t("Copy.hidden")}
-            </NativeSelectOption>
-          </NativeSelect>
-        </Field>
-        <Button type="submit">{t("Copy.search")}</Button>
-      </form>
+      <FilterSheet>
+        <form
+          className="flex flex-wrap items-end gap-3"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSearch(input);
+            setPage(1);
+          }}
+        >
+          <TextField
+            label={t("Copy.findOrganization")}
+            name="organizationSearch"
+            fieldClassName="w-full sm:w-64"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            maxLength={100}
+            placeholder={t("Copy.organizationName")}
+          />
+          <Field className="w-48">
+            <FieldLabel htmlFor="reviewStatus">
+              {t("Copy.organizationStatus")}
+            </FieldLabel>
+            <NativeSelect
+              id="reviewStatus"
+              value={status}
+              onChange={(e) => {
+                setStatus(e.target.value);
+                setPage(1);
+              }}
+            >
+              <NativeSelectOption value="">
+                {t("Copy.allOrganizations")}
+              </NativeSelectOption>
+              <NativeSelectOption value="pending">
+                {t("Copy.pendingReview")}{" "}
+              </NativeSelectOption>
+              <NativeSelectOption value="approved">
+                {t("Copy.approved")}
+              </NativeSelectOption>
+              <NativeSelectOption value="rejected">
+                {t("Copy.rejected")}
+              </NativeSelectOption>
+              <NativeSelectOption value="suspended">
+                {t("Copy.suspended")}
+              </NativeSelectOption>
+            </NativeSelect>
+          </Field>
+          <Field className="w-48">
+            <FieldLabel htmlFor="publicationStatus">
+              {t("Copy.publicationStatus")}
+            </FieldLabel>
+            <NativeSelect
+              id="publicationStatus"
+              value={publicationStatus}
+              onChange={(e) => {
+                setPublicationStatus(e.target.value);
+                setPage(1);
+              }}
+            >
+              <NativeSelectOption value="">
+                {t("Copy.allStatuses")}
+              </NativeSelectOption>
+              <NativeSelectOption value="draft">
+                {t("Copy.draft")}
+              </NativeSelectOption>
+              <NativeSelectOption value="pending_review">
+                {t("Copy.pendingPublication")}{" "}
+              </NativeSelectOption>
+              <NativeSelectOption value="published">
+                {t("Copy.published")}
+              </NativeSelectOption>
+              <NativeSelectOption value="hidden">
+                {t("Copy.hidden")}
+              </NativeSelectOption>
+            </NativeSelect>
+          </Field>
+          <Button type="submit">{t("Copy.search")}</Button>
+        </form>
+      </FilterSheet>
       {publicationQueue && (
         <p className="text-sm text-muted-foreground">
           {t("Copy.reviewTheOrganizationRecordAndPublicationReadiness")}{" "}

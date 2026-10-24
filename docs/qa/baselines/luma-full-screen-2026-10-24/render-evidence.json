@@ -1,0 +1,4249 @@
+{
+  "baseRevision": "821905d",
+  "transport": "CUA, local-only route canvas, synthetic fetch adapter",
+  "interpretation": "A route render verifies layout and runtime for that captured fixture. It does not assert every state, live role permission or successful mutation. 'filled' is the requested fixture mode; some domains naturally contain empty subviews.",
+  "results": {
+    "routeRenders": 112,
+    "totalCaptures": 176,
+    "runtimeErrors": 0,
+    "horizontalOverflow": 0,
+    "unresolvedLoading": 0,
+    "brokenImages": 0
+  },
+  "records": [
+    {
+      "case": "000-application-filled-en-dark-390",
+      "surface": "application",
+      "route": "/auth/login",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:35:46.810Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        895
+      ],
+      "headings": [
+        "Welcome back"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/000-application-filled-en-dark-390.png",
+      "screenshotSha256": "2bdffde0a03902828814737ca0e84e1d9fe4c69993901b0d422fa0bb2d285e7d",
+      "fullPage": true
+    },
+    {
+      "case": "000-application-filled-fa-light-1440",
+      "surface": "application",
+      "route": "/auth/login",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:36.776Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        900
+      ],
+      "headings": [
+        "خوش برگشتی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/000-application-filled-fa-light-1440.png",
+      "screenshotSha256": "38aa2d4339e1969402edf7c92d25994a8edcc4383c3f127015a97b7948b19240",
+      "fullPage": true
+    },
+    {
+      "case": "000-application-filled-fa-light-360",
+      "surface": "application",
+      "route": "/auth/login",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:24:46.877Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        892
+      ],
+      "headings": [
+        "خوش برگشتی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/000-application-filled-fa-light-360.png",
+      "screenshotSha256": "3ef616fb887371139a649d83ec34e9ac4d61d2043c5cdfdfb4384cee0d768f56",
+      "fullPage": true
+    },
+    {
+      "case": "000-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/auth/login",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:41.487Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        895
+      ],
+      "headings": [
+        "خوش برگشتی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/000-application-filled-fa-light-390.png",
+      "screenshotSha256": "58dff2d2fab3a8e5f9049c7165ee73c2f2c0335e06f801c6c2c851f55d4ab5e0",
+      "fullPage": true
+    },
+    {
+      "case": "000-application-filled-fa-light-768",
+      "surface": "application",
+      "route": "/auth/login",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:26.646Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        1024
+      ],
+      "headings": [
+        "خوش برگشتی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/000-application-filled-fa-light-768.png",
+      "screenshotSha256": "bdec22f2744a45ba5b1f952fdbd936ccf3119e032642a2e72fac80631dbf663d",
+      "fullPage": true
+    },
+    {
+      "case": "001-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/auth/otp",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:42.770Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "شماره همراهت را وارد کن"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/001-application-filled-fa-light-390.png",
+      "screenshotSha256": "eb7747d3e48f50a5221c440dd3bebb4b5c33de186bed2218f148737125d1481d",
+      "fullPage": true
+    },
+    {
+      "case": "002-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/bookings/detail",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:43.520Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        977
+      ],
+      "headings": [
+        "جزئیات رزرو"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/002-application-filled-fa-light-390.png",
+      "screenshotSha256": "fe60b7237b70996d595d7d1fdc51a19c6178a8b63b82e6e7e274660b3001c0d1",
+      "fullPage": true
+    },
+    {
+      "case": "003-application-empty-en-dark-390",
+      "surface": "application",
+      "route": "/bookings",
+      "fixtureState": "empty",
+      "capturedAt": "2026-10-24T05:32:01.884Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "Your bookings"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/003-application-empty-en-dark-390.png",
+      "screenshotSha256": "478eb38893f6f51765d111ce39d1ae7603dc22829dc7071f960227475a5a2953",
+      "fullPage": true
+    },
+    {
+      "case": "003-application-empty-fa-light-390",
+      "surface": "application",
+      "route": "/bookings",
+      "fixtureState": "empty",
+      "capturedAt": "2026-10-24T05:36:01.097Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "رزروهای شما"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/003-application-empty-fa-light-390.png",
+      "screenshotSha256": "e15b61075075c62715cb7dae874b67c845a3282a994f471655ed2f3b24260fd5",
+      "fullPage": true
+    },
+    {
+      "case": "003-application-error-en-dark-390",
+      "surface": "application",
+      "route": "/bookings",
+      "fixtureState": "error",
+      "capturedAt": "2026-10-24T05:32:04.664Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "Your bookings"
+      ],
+      "alerts": [
+        "Could not load this pageRetry"
+      ],
+      "screenshot": ".artifacts/luma-final-pass/003-application-error-en-dark-390.png",
+      "screenshotSha256": "2f06a431b588015a43e1cbcb4c4b9d9eede0a0b9037c82cb9dcd1b4f7966adba",
+      "fullPage": true
+    },
+    {
+      "case": "003-application-error-fa-light-390",
+      "surface": "application",
+      "route": "/bookings",
+      "fixtureState": "error",
+      "capturedAt": "2026-10-24T05:36:03.166Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "رزروهای شما"
+      ],
+      "alerts": [
+        "دریافت اطلاعات ممکن نشدتلاش دوباره"
+      ],
+      "screenshot": ".artifacts/luma-final-pass/003-application-error-fa-light-390.png",
+      "screenshotSha256": "27ae048dbc03c3e0ca3aeeec9280709ad89c7f3a1a94e7de1774038f06d037e6",
+      "fullPage": true
+    },
+    {
+      "case": "003-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/bookings",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:45.362Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "رزروهای شما"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/003-application-filled-fa-light-390.png",
+      "screenshotSha256": "e3575bd0b585a73fba6467465e949ea18897ab8c9f0fece4be4badc3cc330275",
+      "fullPage": true
+    },
+    {
+      "case": "003-application-guest-en-dark-390",
+      "surface": "application",
+      "route": "/bookings",
+      "fixtureState": "guest",
+      "capturedAt": "2026-10-24T05:32:06.273Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "Your bookings"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/003-application-guest-en-dark-390.png",
+      "screenshotSha256": "f806bab88c8c6932cd087b180412c79e22c27b95b55ea665db3b3c88b8ba79ee",
+      "fullPage": true
+    },
+    {
+      "case": "004-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/calendars/detail",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:46.268Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1034
+      ],
+      "headings": [
+        "تقویم باشگاه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/004-application-filled-fa-light-390.png",
+      "screenshotSha256": "f9c7af3c0cbf7e8459aeb3aba65fa5bb8457b6607d45bccbc0ac15adb155318a",
+      "fullPage": true
+    },
+    {
+      "case": "005-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/calendars",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:48.126Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "تقویم‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/005-application-filled-fa-light-390.png",
+      "screenshotSha256": "c9b13e2e0f7640693259ea90b5c013ea1c2ea560aaa2b3e4de0ed3b7959b1e08",
+      "fullPage": true
+    },
+    {
+      "case": "006-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/checkout/mock-gateway",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:48.877Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "درگاه پرداخت"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/006-application-filled-fa-light-390.png",
+      "screenshotSha256": "ca9ff6f29dcdbb596925987d3ee339208929e8e9c47f616d89f259f26ee80d51",
+      "fullPage": true
+    },
+    {
+      "case": "007-application-filled-en-dark-390",
+      "surface": "application",
+      "route": "/checkout",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:28:13.895Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        904
+      ],
+      "headings": [
+        "Review & checkout"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/007-application-filled-en-dark-390.png",
+      "screenshotSha256": "c73cbd34b5e25418c9c5c9371b45fda8ef614540e25191550f37bb960e4c0d74",
+      "fullPage": true
+    },
+    {
+      "case": "007-application-filled-fa-light-1440",
+      "surface": "application",
+      "route": "/checkout",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:38.199Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        900
+      ],
+      "headings": [
+        "مرور و پرداخت"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/007-application-filled-fa-light-1440.png",
+      "screenshotSha256": "d4b77c3c0137a6785d43d657e8c3b7c8b146feee1fb080fb1405927e21405a57",
+      "fullPage": true
+    },
+    {
+      "case": "007-application-filled-fa-light-360",
+      "surface": "application",
+      "route": "/checkout",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:24:50.208Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        909
+      ],
+      "headings": [
+        "مرور و پرداخت"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/007-application-filled-fa-light-360.png",
+      "screenshotSha256": "14e040bb643f7c25de1145a401a444b79ae313875382a12036bc742a32938703",
+      "fullPage": true
+    },
+    {
+      "case": "007-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/checkout",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:49.680Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        873
+      ],
+      "headings": [
+        "مرور و پرداخت"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/007-application-filled-fa-light-390.png",
+      "screenshotSha256": "935d6794b3c7be552287708ddb884d8c40326b1660ee10d5cd8013730ec8c671",
+      "fullPage": true
+    },
+    {
+      "case": "007-application-filled-fa-light-768",
+      "surface": "application",
+      "route": "/checkout",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:28.055Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        1024
+      ],
+      "headings": [
+        "مرور و پرداخت"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/007-application-filled-fa-light-768.png",
+      "screenshotSha256": "dd0db387f1717145760513c21c33ad6068937792949872b4d6455f4d6703116d",
+      "fullPage": true
+    },
+    {
+      "case": "008-application-filled-en-dark-reduced-390",
+      "surface": "application",
+      "route": "/checkout/status",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:33:21.427Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "Payment status"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/008-application-filled-en-dark-reduced-390.png",
+      "screenshotSha256": "13fe92a417c272cc976b2f7d2ece6f2bd2894fab6f579ef47fa01546a90b0fba",
+      "fullPage": true
+    },
+    {
+      "case": "008-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/checkout/status",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:51.436Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "نتیجه پرداخت"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/008-application-filled-fa-light-390.png",
+      "screenshotSha256": "4dca90a29d89c686edbb5635e45b9c9f8d264ab91559b812658545d22bc64560",
+      "fullPage": true
+    },
+    {
+      "case": "009-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/coaches/detail",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:52.249Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "پیداکردن مربی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/009-application-filled-fa-light-390.png",
+      "screenshotSha256": "5938b0d836812db732ea6bd3ffda27dd51fbf48a7f16135d462142e63ec498b8",
+      "fullPage": true
+    },
+    {
+      "case": "010-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/coaches",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:53.016Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "پیداکردن مربی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/010-application-filled-fa-light-390.png",
+      "screenshotSha256": "99ba8b594ff1a1276687ce6d519d6e30373fe61c9e6ba1d5e57035f2afb67fc0",
+      "fullPage": true
+    },
+    {
+      "case": "011-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/coaching",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:53.929Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1640
+      ],
+      "headings": [
+        "مربی و شاگرد"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/011-application-filled-fa-light-390.png",
+      "screenshotSha256": "79f60ce9ca4db266d78f55f597d7a6c3756e803dac09181c23d89aeff50ee3b0",
+      "fullPage": true
+    },
+    {
+      "case": "012-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/coaching/session",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:55.748Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "یادداشت و پیگیری جلسه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/012-application-filled-fa-light-390.png",
+      "screenshotSha256": "f3562bd49654cea74dae8a15e3f2d060e525befb12d963fc733dc3db8dde50bb",
+      "fullPage": true
+    },
+    {
+      "case": "013-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/coaching/settlements",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:56.525Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1117
+      ],
+      "headings": [
+        "پلن، شعب و تسویه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/013-application-filled-fa-light-390.png",
+      "screenshotSha256": "e9c2e5e52a9c4895cca2b905c3cf9a8ac1cd2db40bf3b8a44f1255250277104c",
+      "fullPage": true
+    },
+    {
+      "case": "014-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/coaching/student",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:58.375Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        982
+      ],
+      "headings": [
+        "پروندهٔ مجاز شاگرد"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/014-application-filled-fa-light-390.png",
+      "screenshotSha256": "0346f8e50681780d561a4e46fa54cb9fcec96ef82fee4a0ae1bb2becfdd846ba",
+      "fullPage": true
+    },
+    {
+      "case": "015-application-filled-en-dark-390",
+      "surface": "application",
+      "route": "/discovery/club",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:28:16.162Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        4274
+      ],
+      "headings": [
+        "باشگاه نمایشی آفتاب"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/015-application-filled-en-dark-390.png",
+      "screenshotSha256": "7778084a5553a85e2c36b7715f4e7e25ed8da103d5b6d2d609628f781fd1b35d",
+      "fullPage": true
+    },
+    {
+      "case": "015-application-filled-fa-light-1440",
+      "surface": "application",
+      "route": "/discovery/club",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:39.665Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        4596
+      ],
+      "headings": [
+        "باشگاه نمایشی آفتاب"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/015-application-filled-fa-light-1440.png",
+      "screenshotSha256": "48c765125b6ee9abead88e5dcc9bfc78e201b22274a800dc955abc98672db8dc",
+      "fullPage": true
+    },
+    {
+      "case": "015-application-filled-fa-light-360",
+      "surface": "application",
+      "route": "/discovery/club",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:24:53.415Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        4227
+      ],
+      "headings": [
+        "باشگاه نمایشی آفتاب"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/015-application-filled-fa-light-360.png",
+      "screenshotSha256": "6cd58d7624ce84c0e36b9e249ca6a5ab9fb38cb8829f2ac86a3818cad7ac32e3",
+      "fullPage": true
+    },
+    {
+      "case": "015-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/discovery/club",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:13:00.512Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        4274
+      ],
+      "headings": [
+        "باشگاه نمایشی آفتاب"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/015-application-filled-fa-light-390.png",
+      "screenshotSha256": "d0cce2442deaa71151d1e51ba8e86933b402f4ec14abcba1023e3ecf8cc78635",
+      "fullPage": true
+    },
+    {
+      "case": "015-application-filled-fa-light-768",
+      "surface": "application",
+      "route": "/discovery/club",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:29.346Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        4596
+      ],
+      "headings": [
+        "باشگاه نمایشی آفتاب"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/015-application-filled-fa-light-768.png",
+      "screenshotSha256": "6520a7e4204405fba39cd74c0d1bb9867614d6b75921eb70e9e8505f3bc572f0",
+      "fullPage": true
+    },
+    {
+      "case": "016-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/discovery/clubs/[clubId]/gallery",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:13:02.575Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        860
+      ],
+      "headings": [
+        "گالری (۲)"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/016-application-filled-fa-light-390.png",
+      "screenshotSha256": "62571b5f9ca67704bb0e704740fba03994346860ee86e595a48e2f2f6736d055",
+      "fullPage": true
+    },
+    {
+      "case": "017-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/discovery/clubs/[clubId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:13:04.692Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        4274
+      ],
+      "headings": [
+        "باشگاه نمایشی آفتاب"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/017-application-filled-fa-light-390.png",
+      "screenshotSha256": "d0cce2442deaa71151d1e51ba8e86933b402f4ec14abcba1023e3ecf8cc78635",
+      "fullPage": true
+    },
+    {
+      "case": "018-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/discovery/clubs/[clubId]/reviews",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:13:06.709Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "دیدگاه‌های باشگاه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/018-application-filled-fa-light-390.png",
+      "screenshotSha256": "8f463ca93366f8b069830df31ea8d18c63a8023331b145f6d53e91d30ce45184",
+      "fullPage": true
+    },
+    {
+      "case": "019-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/discovery/clubs/[clubId]/slots",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:13:07.444Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        889
+      ],
+      "headings": [
+        "کلاس‌ها و سانس‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/019-application-filled-fa-light-390.png",
+      "screenshotSha256": "fd2855eac00b06715677b1c6c2b38a5108b2f097a45caa933232c7dc807ecbed",
+      "fullPage": true
+    },
+    {
+      "case": "020-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/discovery/coaches/[coachId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:13:08.910Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "آرمان رضایی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/020-application-filled-fa-light-390.png",
+      "screenshotSha256": "2f3907c6f25ab687dedde80df622fd401f37b6580a932d83900e4f431e1be622",
+      "fullPage": true
+    },
+    {
+      "case": "021-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/discovery/compare",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:13:09.911Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "مقایسهٔ باشگاه‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/021-application-filled-fa-light-390.png",
+      "screenshotSha256": "ed4a57fa6a667f6fb75e13c018398156c8adb8f68436f098be1701bfc927c030",
+      "fullPage": true
+    },
+    {
+      "case": "022-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/discovery/map",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:17:25.934Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "کشف باشگاه‌ها روی نقشه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/022-application-filled-fa-light-390.png",
+      "screenshotSha256": "e93a594854b9e4fb6cbb4e48ba6e59fbf54da6d2b426bee19dc85697cc6d7225",
+      "fullPage": true
+    },
+    {
+      "case": "023-application-empty-en-dark-390",
+      "surface": "application",
+      "route": "/discovery",
+      "fixtureState": "empty",
+      "capturedAt": "2026-10-24T05:32:08.823Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        866
+      ],
+      "headings": [
+        "Discover"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/023-application-empty-en-dark-390.png",
+      "screenshotSha256": "21d91038e0d5add5940889078c7a1d6c8a08fe4d62620be30bb667d8ffde3e0d",
+      "fullPage": true
+    },
+    {
+      "case": "023-application-empty-fa-light-390",
+      "surface": "application",
+      "route": "/discovery",
+      "fixtureState": "empty",
+      "capturedAt": "2026-10-24T05:36:04.163Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        866
+      ],
+      "headings": [
+        "کشف"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/023-application-empty-fa-light-390.png",
+      "screenshotSha256": "ff34653731669c512d03a460cd432f95db32d40ca78b499a275d357f5548a700",
+      "fullPage": true
+    },
+    {
+      "case": "023-application-error-en-dark-390",
+      "surface": "application",
+      "route": "/discovery",
+      "fixtureState": "error",
+      "capturedAt": "2026-10-24T05:32:11.916Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        917
+      ],
+      "headings": [
+        "Discover"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/023-application-error-en-dark-390.png",
+      "screenshotSha256": "13eb2c6fa9041382c71dc70023bc9dcca2db335ff40df3c515911430e3f4ecda",
+      "fullPage": true
+    },
+    {
+      "case": "023-application-error-fa-light-390",
+      "surface": "application",
+      "route": "/discovery",
+      "fixtureState": "error",
+      "capturedAt": "2026-10-24T05:36:07.331Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        917
+      ],
+      "headings": [
+        "کشف"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/023-application-error-fa-light-390.png",
+      "screenshotSha256": "2f598929ea2606b1074b6aa765d1b900ed27298822db1e491a65957009e7bd1e",
+      "fullPage": true
+    },
+    {
+      "case": "023-application-filled-en-dark-390",
+      "surface": "application",
+      "route": "/discovery",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:28:18.978Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1356
+      ],
+      "headings": [
+        "Discover"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/023-application-filled-en-dark-390.png",
+      "screenshotSha256": "55f30a88b42c2a77da71ce5e9d115442e913f46d4986c3489e5555d356bb51bc",
+      "fullPage": true
+    },
+    {
+      "case": "023-application-filled-fa-light-1440",
+      "surface": "application",
+      "route": "/discovery",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:42.380Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        1292
+      ],
+      "headings": [
+        "کشف"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/023-application-filled-fa-light-1440.png",
+      "screenshotSha256": "5ace0a483e0fb53e4f5e02fd02519407343c19b16513f5827ec112835fd6bf0a",
+      "fullPage": true
+    },
+    {
+      "case": "023-application-filled-fa-light-360",
+      "surface": "application",
+      "route": "/discovery",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:24:57.391Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        1341
+      ],
+      "headings": [
+        "کشف"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/023-application-filled-fa-light-360.png",
+      "screenshotSha256": "1ed176f95a16853afe79f6e41d6c726e1e166b3e4e4f632308cdea0581f6da0b",
+      "fullPage": true
+    },
+    {
+      "case": "023-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/discovery",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:13:11.510Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1356
+      ],
+      "headings": [
+        "کشف"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/023-application-filled-fa-light-390.png",
+      "screenshotSha256": "a45b00a65859e779a8463db668d7a722aae9ec8e9798ae8d03647a6d9548b483",
+      "fullPage": true
+    },
+    {
+      "case": "023-application-filled-fa-light-768",
+      "surface": "application",
+      "route": "/discovery",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:32.205Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        1292
+      ],
+      "headings": [
+        "کشف"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/023-application-filled-fa-light-768.png",
+      "screenshotSha256": "24b1197c9b68a35c61b2a66004c27441e4f55fd099b59dd0fdc94fdea6bdef55",
+      "fullPage": true
+    },
+    {
+      "case": "023-application-guest-en-dark-390",
+      "surface": "application",
+      "route": "/discovery",
+      "fixtureState": "guest",
+      "capturedAt": "2026-10-24T05:32:14.407Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1356
+      ],
+      "headings": [
+        "Discover"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/023-application-guest-en-dark-390.png",
+      "screenshotSha256": "55f30a88b42c2a77da71ce5e9d115442e913f46d4986c3489e5555d356bb51bc",
+      "fullPage": true
+    },
+    {
+      "case": "024-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/documents",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:00.417Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "مدارک"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/024-application-filled-fa-light-390.png",
+      "screenshotSha256": "016ed59ffc17260ad5d142fa8308920c7a71001b277f87473626b8a133e3ee57",
+      "fullPage": true
+    },
+    {
+      "case": "025-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/host",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:00.811Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "میزبانی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/025-application-filled-fa-light-390.png",
+      "screenshotSha256": "93297f7fafcdddceac0ff8e8fc1e7f21f85fbc14cd7830fa7278a927033da12e",
+      "fullPage": true
+    },
+    {
+      "case": "026-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/invitations",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:01.595Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "دعوت‌های همکاری"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/026-application-filled-fa-light-390.png",
+      "screenshotSha256": "69e98bb7a0f76fafcfa0ca88428d4df191306e3320804c8dc2e56470608b87b5",
+      "fullPage": true
+    },
+    {
+      "case": "027-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/invitations/sports",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:02.393Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "دعوت‌های ورزشی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/027-application-filled-fa-light-390.png",
+      "screenshotSha256": "ad7ef80c669d67a88bbb4ae7ed97dfc7bfae3fd06bb40f736ccd3d38368bdef5",
+      "fullPage": true
+    },
+    {
+      "case": "028-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/login",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:02.668Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "شماره همراهت را وارد کن"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/028-application-filled-fa-light-390.png",
+      "screenshotSha256": "eb7747d3e48f50a5221c440dd3bebb4b5c33de186bed2218f148737125d1481d",
+      "fullPage": true
+    },
+    {
+      "case": "029-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/membership-card",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:03.387Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "بلیت و ورود"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/029-application-filled-fa-light-390.png",
+      "screenshotSha256": "904d18188ecac79b2abf4cdea2b919f6a9bb30340bc1c8ca53cfc34115349dc1",
+      "fullPage": true
+    },
+    {
+      "case": "030-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/memberships/detail",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:04.092Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "عضویت ماهانه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/030-application-filled-fa-light-390.png",
+      "screenshotSha256": "ac57d5111f79c964096bad744ec1d5e06676290cf7fde56c4de370cc41019b84",
+      "fullPage": true
+    },
+    {
+      "case": "031-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/memberships",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:04.783Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "عضویت‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/031-application-filled-fa-light-390.png",
+      "screenshotSha256": "941cacfb2339b431e033aa347458c10c2ebede5c400deb7af10a48089ed3c404",
+      "fullPage": true
+    },
+    {
+      "case": "032-application-filled-en-dark-390",
+      "surface": "application",
+      "route": "/messages/conversation",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:28:20.999Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "تمتمرین گروهی صبح"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/032-application-filled-en-dark-390.png",
+      "screenshotSha256": "ea356ed8094d82278f58ec9c379e24046e03d31baa918fbad7d753a039dd29b6",
+      "fullPage": true
+    },
+    {
+      "case": "032-application-filled-fa-light-1440",
+      "surface": "application",
+      "route": "/messages/conversation",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:44.963Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        900
+      ],
+      "headings": [
+        "تمتمرین گروهی صبح"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/032-application-filled-fa-light-1440.png",
+      "screenshotSha256": "30f29d6075e7f773f4ed876561862d2c6afa71dedb47af2451329c9b24a9ded6",
+      "fullPage": true
+    },
+    {
+      "case": "032-application-filled-fa-light-360",
+      "surface": "application",
+      "route": "/messages/conversation",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:24:59.544Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        800
+      ],
+      "headings": [
+        "تمتمرین گروهی صبح"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/032-application-filled-fa-light-360.png",
+      "screenshotSha256": "fa96b98d6e684c01b93bcdec9d088f7dd1b12e00f368dd6079040ccedad7d8dc",
+      "fullPage": true
+    },
+    {
+      "case": "032-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/messages/conversation",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:05.762Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "تمتمرین گروهی صبح"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/032-application-filled-fa-light-390.png",
+      "screenshotSha256": "6505308d51afccd7e42bc68b47af1365440931a68ab0a7921c1c2578cd5c285b",
+      "fullPage": true
+    },
+    {
+      "case": "032-application-filled-fa-light-768",
+      "surface": "application",
+      "route": "/messages/conversation",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:34.279Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        1024
+      ],
+      "headings": [
+        "تمتمرین گروهی صبح"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/032-application-filled-fa-light-768.png",
+      "screenshotSha256": "7ad9f520232980d1436b5eb156e202b41acb8428f76b4f45d468343d06f79e6b",
+      "fullPage": true
+    },
+    {
+      "case": "033-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/messages/details",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:06.560Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "جزئیات"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/033-application-filled-fa-light-390.png",
+      "screenshotSha256": "216f88f46401b07b996b911746cc9eba39d3b4f97bfdedc2c5296cee527eb2fd",
+      "fullPage": true
+    },
+    {
+      "case": "034-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/messages",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:07.333Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "گفتگو"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/034-application-filled-fa-light-390.png",
+      "screenshotSha256": "a451f162980c8adba0fd006a35623f92b61f678e39a25919cf78e4ec47726128",
+      "fullPage": true
+    },
+    {
+      "case": "035-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/notifications",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:08.049Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "اعلان‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/035-application-filled-fa-light-390.png",
+      "screenshotSha256": "4f6b9f61469e5f40ed36d6eb0bdbfa6e7acba6fdf7ca95d3c463910130a7103d",
+      "fullPage": true
+    },
+    {
+      "case": "036-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/notifications/preferences",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:08.775Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        923
+      ],
+      "headings": [
+        "ترجیحات اعلان"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/036-application-filled-fa-light-390.png",
+      "screenshotSha256": "bffc2d3f28333be1d3f7bb00d6889620a50f912379b969ca134ad98e948be250",
+      "fullPage": true
+    },
+    {
+      "case": "037-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/orders/detail",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:10.712Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        859
+      ],
+      "headings": [
+        "خریدها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/037-application-filled-fa-light-390.png",
+      "screenshotSha256": "fe80b1908bb4025b720b77e92046f83f200cb5c306cd321b1ce3bf29d3a296ad",
+      "fullPage": true
+    },
+    {
+      "case": "038-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/orders",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:12.497Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "خریدها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/038-application-filled-fa-light-390.png",
+      "screenshotSha256": "736e41965f4f85c4d31b87550bda21867b89b05a5ff56151a8e1e65608edce2c",
+      "fullPage": true
+    },
+    {
+      "case": "039-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:17:22.973Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1500
+      ],
+      "headings": [
+        "جیم فور می"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/039-application-filled-fa-light-390.png",
+      "screenshotSha256": "9c8b3e1ff7917e1c394ade6c85f3880215b76bc1a4960407f51188576074828b",
+      "fullPage": true
+    },
+    {
+      "case": "040-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/privacy",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:15.128Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "حریم خصوصی و داده‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/040-application-filled-fa-light-390.png",
+      "screenshotSha256": "e22864a70b1041cda0a96e7499f36b13816c7c6af28cf2890cab8b78271599b1",
+      "fullPage": true
+    },
+    {
+      "case": "041-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/profile/complete",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:15.859Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "پروفایلت را کامل کن"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/041-application-filled-fa-light-390.png",
+      "screenshotSha256": "064242cd1c93e9ce6da5b9143d73a55f375c778c146b20c27eb8deb2f6478187",
+      "fullPage": true
+    },
+    {
+      "case": "042-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/profile/edit",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:16.611Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1303
+      ],
+      "headings": [
+        "ویرایش پروفایل"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/042-application-filled-fa-light-390.png",
+      "screenshotSha256": "79284d3817a3e4c86d2a628c5b3136520909a6aa27b1a1907db70234c424bd78",
+      "fullPage": true
+    },
+    {
+      "case": "043-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/profile",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:18.607Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1143
+      ],
+      "headings": [
+        "پروفایل"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/043-application-filled-fa-light-390.png",
+      "screenshotSha256": "2f7ea2f9188aa65280f92e43748ba5e5e1310c8ef014ce9f4be86cf386d0355f",
+      "fullPage": true
+    },
+    {
+      "case": "044-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/profile/settings",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:20.475Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1216
+      ],
+      "headings": [
+        "تنظیمات"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/044-application-filled-fa-light-390.png",
+      "screenshotSha256": "62a556e1de8b7e4830a1dd18a94f17b336c9f2801fae434bc6c23c94d1f6ceb5",
+      "fullPage": true
+    },
+    {
+      "case": "045-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/profile/settings/privacy",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:22.307Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        992
+      ],
+      "headings": [
+        "حریم خصوصی و داده‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/045-application-filled-fa-light-390.png",
+      "screenshotSha256": "67dc5a11ea68346eacca3de5208e3de685de7f6167dad56ab88624638e37880d",
+      "fullPage": true
+    },
+    {
+      "case": "046-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/reset-password",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:23.853Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "بازیابی رمز عبور"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/046-application-filled-fa-light-390.png",
+      "screenshotSha256": "915b8f0f7df5345d4d46fc4a92933cc5e6c0409146bdef910a8104720ce008ea",
+      "fullPage": true
+    },
+    {
+      "case": "047-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/saved/clubs",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:25.044Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "ذخیره‌شده‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/047-application-filled-fa-light-390.png",
+      "screenshotSha256": "094734d78a21e7798e9b6ad8b953d69f7b1626eca2d0d83472f9b0543d53fc6c",
+      "fullPage": true
+    },
+    {
+      "case": "048-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/saved/coaches",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:57.638Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "ذخیره‌شده‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/048-application-filled-fa-light-390.png",
+      "screenshotSha256": "b395426a68a06f7d7b83b3dfcf6a407fd9b042840405b8192bd357bd3e2d1a6f",
+      "fullPage": true
+    },
+    {
+      "case": "049-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/saved",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:14:59.381Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "ذخیره‌شده‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/049-application-filled-fa-light-390.png",
+      "screenshotSha256": "094734d78a21e7798e9b6ad8b953d69f7b1626eca2d0d83472f9b0543d53fc6c",
+      "fullPage": true
+    },
+    {
+      "case": "050-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/services/detail",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:01.210Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1199
+      ],
+      "headings": [
+        "جزئیات"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/050-application-filled-fa-light-390.png",
+      "screenshotSha256": "ccbb68a2e43b48a0882ade932896a3e9975eb46b0d2fa8f04bc19be4e68d5a09",
+      "fullPage": true
+    },
+    {
+      "case": "051-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/services",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:03.613Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        889
+      ],
+      "headings": [
+        "کلاس‌ها و سانس‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/051-application-filled-fa-light-390.png",
+      "screenshotSha256": "fd2855eac00b06715677b1c6c2b38a5108b2f097a45caa933232c7dc807ecbed",
+      "fullPage": true
+    },
+    {
+      "case": "052-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/sessions",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:06.317Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "نشست‌های فعال"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/052-application-filled-fa-light-390.png",
+      "screenshotSha256": "8122f7c8905c7ab80b568b32a335cddac1b154ec1a5e1fae107fcfa302f3c862",
+      "fullPage": true
+    },
+    {
+      "case": "053-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/set-password",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:07.464Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "تعیین رمز عبور"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/053-application-filled-fa-light-390.png",
+      "screenshotSha256": "0fdbccb7301be447d448773cdfc38f0539fc902a352f2529e1cbfe322d525576",
+      "fullPage": true
+    },
+    {
+      "case": "054-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/support/detail",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:08.717Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "زمان ورود به باشگاه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/054-application-filled-fa-light-390.png",
+      "screenshotSha256": "ab147419abde63754db60a9f8008a01390166237bcdef35a4e46f771caeed9e4",
+      "fullPage": true
+    },
+    {
+      "case": "055-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/support",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:10.269Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "پشتیبانی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/055-application-filled-fa-light-390.png",
+      "screenshotSha256": "9c9fe1a98f1a82ba67630633310e7275766135934b3cd38201e76bbf9dcee9a2",
+      "fullPage": true
+    },
+    {
+      "case": "056-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/tickets/view",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:11.031Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "بلیت و ورود"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/056-application-filled-fa-light-390.png",
+      "screenshotSha256": "a8b9d38eb2f493451e970c0c6af32c17657d1b3888cba0c408d6d5ec15fc6f62",
+      "fullPage": true
+    },
+    {
+      "case": "057-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/training/conversation",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:12.731Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        852
+      ],
+      "headings": [
+        "مربی و شاگرد"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/057-application-filled-fa-light-390.png",
+      "screenshotSha256": "10c832fe6a6aaad91afad55cee5c6ea865c0e88db8a1de55ccea35794f2a06ab",
+      "fullPage": true
+    },
+    {
+      "case": "058-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/training",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:15.330Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        847
+      ],
+      "headings": [
+        "تمرین"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/058-application-filled-fa-light-390.png",
+      "screenshotSha256": "8058e7090938df63bfa8b73d304e1ce57fb551986c503acad973ed2b68fbce63",
+      "fullPage": true
+    },
+    {
+      "case": "059-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/training/plan",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:17.578Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        847
+      ],
+      "headings": [
+        "ساخت برنامه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/059-application-filled-fa-light-390.png",
+      "screenshotSha256": "183c9db60387c37707087bd9c698fe1726dd25908b9832d2b6fb401eb0474237",
+      "fullPage": true
+    },
+    {
+      "case": "060-application-filled-en-dark-390",
+      "surface": "application",
+      "route": "/training/workout",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:28:22.380Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1122
+      ],
+      "headings": [
+        "Workout"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/060-application-filled-en-dark-390.png",
+      "screenshotSha256": "2cbeb191d521ca8a3b6f918eafb274ee63b5001da46326535180f6027ca398f6",
+      "fullPage": true
+    },
+    {
+      "case": "060-application-filled-fa-light-1440",
+      "surface": "application",
+      "route": "/training/workout",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:48.244Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        1130
+      ],
+      "headings": [
+        "اجرای تمرین"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/060-application-filled-fa-light-1440.png",
+      "screenshotSha256": "38644799b7be178c38f86820d99bc3f6e3ac9638da36135a8a270fbb2ffcef17",
+      "fullPage": true
+    },
+    {
+      "case": "060-application-filled-fa-light-360",
+      "surface": "application",
+      "route": "/training/workout",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:00.548Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        1122
+      ],
+      "headings": [
+        "اجرای تمرین"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/060-application-filled-fa-light-360.png",
+      "screenshotSha256": "3a6372d6fa06df8706ba0be9f352682ea890ee8d889cf3abaaef64c4b2535c45",
+      "fullPage": true
+    },
+    {
+      "case": "060-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/training/workout",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:20.441Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1122
+      ],
+      "headings": [
+        "اجرای تمرین"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/060-application-filled-fa-light-390.png",
+      "screenshotSha256": "3306266465261861b2dc0cdf2deb4e9150eeac1f6ee51f6f090a38f4132c7fe2",
+      "fullPage": true
+    },
+    {
+      "case": "060-application-filled-fa-light-768",
+      "surface": "application",
+      "route": "/training/workout",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:35.311Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        1130
+      ],
+      "headings": [
+        "اجرای تمرین"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/060-application-filled-fa-light-768.png",
+      "screenshotSha256": "0248d64813c05b89504cc43f46ed9c50a07db944ce61ea7f1c4045b5f25368d1",
+      "fullPage": true
+    },
+    {
+      "case": "061-application-filled-fa-light-390",
+      "surface": "application",
+      "route": "/waitlist",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:23.355Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "لیست انتظار"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/061-application-filled-fa-light-390.png",
+      "screenshotSha256": "2835fcb6ce5830008299041dd3d7d3c1aa1d090c4beed3543979805524afd6c9",
+      "fullPage": true
+    },
+    {
+      "case": "062-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/advanced",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:26.346Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1311
+      ],
+      "headings": [
+        "پلن، شعب و تسویه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/062-business-filled-fa-light-390.png",
+      "screenshotSha256": "e4b9e8b5822a85c9c24a1fd79dbfead4bbefa73b85d0e4e06f1a001b63cbe4d1",
+      "fullPage": true
+    },
+    {
+      "case": "063-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/branches",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:29.138Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "شعبه‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/063-business-filled-fa-light-390.png",
+      "screenshotSha256": "588abd310b6cdb3cd90a4366d7b67a2a04f97a77630aee02e685819e9e6451a8",
+      "fullPage": true
+    },
+    {
+      "case": "064-business-filled-en-dark-390",
+      "surface": "business",
+      "route": "/calendar",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:29:04.310Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        4037
+      ],
+      "headings": [
+        "Calendar"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/064-business-filled-en-dark-390.png",
+      "screenshotSha256": "8402498b30967456fd9226d2d5f4b7e5f656aaf6878b9aedb6d916e553b26a42",
+      "fullPage": true
+    },
+    {
+      "case": "064-business-filled-fa-light-1440",
+      "surface": "business",
+      "route": "/calendar",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:27:03.176Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        3136
+      ],
+      "headings": [
+        "تقویم"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/064-business-filled-fa-light-1440.png",
+      "screenshotSha256": "bd14eaed725e2b94b51c9dff58d0dc0d43f314406aca649a94846af90c47a39b",
+      "fullPage": true
+    },
+    {
+      "case": "064-business-filled-fa-light-360",
+      "surface": "business",
+      "route": "/calendar",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:12.305Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        4037
+      ],
+      "headings": [
+        "تقویم"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/064-business-filled-fa-light-360.png",
+      "screenshotSha256": "144b446d635924e51232268cd239a628bdd5f4a5128a3fa947bb22f27232d6d6",
+      "fullPage": true
+    },
+    {
+      "case": "064-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/calendar",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:45.463Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        3813
+      ],
+      "headings": [
+        "تقویم"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/064-business-filled-fa-light-390.png",
+      "screenshotSha256": "5477feb34d8e47017b0619208ab4c0c4552b2c121993003523a25db2001e4077",
+      "fullPage": true
+    },
+    {
+      "case": "064-business-filled-fa-light-768",
+      "surface": "business",
+      "route": "/calendar",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:23.391Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        3292
+      ],
+      "headings": [
+        "تقویم"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/064-business-filled-fa-light-768.png",
+      "screenshotSha256": "4f7d07f54246b6cc25ebe226875b602cb84ba7fce07164bb9804b46cad7fb7da",
+      "fullPage": true
+    },
+    {
+      "case": "065-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/coaching",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:50.307Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "خدمات و قرارداد مربیان"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/065-business-filled-fa-light-390.png",
+      "screenshotSha256": "f930edebed8df57b9437023ca5c2cbb093b78f870fa7c7602854fa8783e13115",
+      "fullPage": true
+    },
+    {
+      "case": "066-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/imports",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:54.965Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "ورود اطلاعات"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/066-business-filled-fa-light-390.png",
+      "screenshotSha256": "d0b4e410d3bbb800d2c233f4047876822b9df132bab00e30c5717774be6fd0b0",
+      "fullPage": true
+    },
+    {
+      "case": "067-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/invitations",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:56.935Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "دعوت‌های همکاری"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/067-business-filled-fa-light-390.png",
+      "screenshotSha256": "010879501f80f91dd3e7a54b2636ea476939f1620bee899f87660c5831f0fb06",
+      "fullPage": true
+    },
+    {
+      "case": "068-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/login",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:58.303Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "ورود به بیزینس"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/068-business-filled-fa-light-390.png",
+      "screenshotSha256": "e6be5071a6c272e6c52c725544476291ff99a0e0c7ce237332a0007cefd817fc",
+      "fullPage": true
+    },
+    {
+      "case": "069-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/members",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:15:59.443Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "اعضا"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/069-business-filled-fa-light-390.png",
+      "screenshotSha256": "ecf412e650140875da5a2f4b58dda1f97b1036c42a3616b4fdb0a6f08d255661",
+      "fullPage": true
+    },
+    {
+      "case": "070-business-filled-en-dark-390",
+      "surface": "business",
+      "route": "/messages/[conversationId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:29:06.547Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "تمرین گروهی صبح"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/070-business-filled-en-dark-390.png",
+      "screenshotSha256": "798972c88f3d6f152a6bcd9f05b67dbca317fe4f9e2bb70f33d38c57d602b7da",
+      "fullPage": true
+    },
+    {
+      "case": "070-business-filled-fa-light-1440",
+      "surface": "business",
+      "route": "/messages/[conversationId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:27:05.725Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        900
+      ],
+      "headings": [
+        "تمرین گروهی صبح"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/070-business-filled-fa-light-1440.png",
+      "screenshotSha256": "1468e1a45452e4b7d5d46fd17245a9ede54e4f1f2baa8ad379168a682d2ee162",
+      "fullPage": true
+    },
+    {
+      "case": "070-business-filled-fa-light-360",
+      "surface": "business",
+      "route": "/messages/[conversationId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:14.491Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        800
+      ],
+      "headings": [
+        "تمرین گروهی صبح"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/070-business-filled-fa-light-360.png",
+      "screenshotSha256": "a0b83fe34ae6b5693cce0d2360078359f99af164b4357732e1d35eef28047b94",
+      "fullPage": true
+    },
+    {
+      "case": "070-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/messages/[conversationId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:19:17.694Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "تمرین گروهی صبح"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/070-business-filled-fa-light-390.png",
+      "screenshotSha256": "efb9422d1d26c2973fda3e88a6f75a608e01b997b8e36e0fdb52c18f4c466d92",
+      "fullPage": true
+    },
+    {
+      "case": "070-business-filled-fa-light-768",
+      "surface": "business",
+      "route": "/messages/[conversationId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:25.712Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        1024
+      ],
+      "headings": [
+        "تمرین گروهی صبح"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/070-business-filled-fa-light-768.png",
+      "screenshotSha256": "6946a8c1bfe59c614c2abe4ad152427fe70cc16f55526e0af420a355288e93eb",
+      "fullPage": true
+    },
+    {
+      "case": "071-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/messages",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:16:03.531Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "گفتگو"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/071-business-filled-fa-light-390.png",
+      "screenshotSha256": "0b51568d777a16bbd8d4d995e1c4f256e42cf384ae4e45ec16008c3bbe5885d2",
+      "fullPage": true
+    },
+    {
+      "case": "072-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/organizations/[organizationId]/branches/[branchId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:16:05.820Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        3126
+      ],
+      "headings": [
+        "پرونده شعبه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/072-business-filled-fa-light-390.png",
+      "screenshotSha256": "53d19aeecc84327d25a00afacaa603e067b19c01db58f27bc7d1383c4b057ee6",
+      "fullPage": true
+    },
+    {
+      "case": "073-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/organizations/[organizationId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:16:08.042Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        3225
+      ],
+      "headings": [
+        "پرونده مجموعه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/073-business-filled-fa-light-390.png",
+      "screenshotSha256": "52e0d94c7bfef32dda8d049d4b31b12903c9039fe05b1e9b72b720f233a1dbb6",
+      "fullPage": true
+    },
+    {
+      "case": "074-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/organizations",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:16:10.202Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "مجموعه‌های من"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/074-business-filled-fa-light-390.png",
+      "screenshotSha256": "af2e45a2b0a45edc9f2cfff95f39f6aa74852108a1a09872701daa6231494194",
+      "fullPage": true
+    },
+    {
+      "case": "075-business-filled-en-dark-390",
+      "surface": "business",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:29:07.502Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1092
+      ],
+      "headings": [
+        "Overview"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/075-business-filled-en-dark-390.png",
+      "screenshotSha256": "a553ac02c8b149211ef310234b678df1ff12d13e2e8b1a7812eb4f0a251e115e",
+      "fullPage": true
+    },
+    {
+      "case": "075-business-filled-fa-light-1440",
+      "surface": "business",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:27:07.026Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        900
+      ],
+      "headings": [
+        "نمای کلی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/075-business-filled-fa-light-1440.png",
+      "screenshotSha256": "f0bfa690ce5ae37c5d154264eb45ca79fe5de13229afc7bc4b1e1f91601befb1",
+      "fullPage": true
+    },
+    {
+      "case": "075-business-filled-fa-light-360",
+      "surface": "business",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:15.671Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        1092
+      ],
+      "headings": [
+        "نمای کلی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/075-business-filled-fa-light-360.png",
+      "screenshotSha256": "a7e858cdf5372cf320703d4d90650ad5d7c0689860351dff1e8cc27c03e7cef7",
+      "fullPage": true
+    },
+    {
+      "case": "075-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:16:12.223Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1092
+      ],
+      "headings": [
+        "نمای کلی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/075-business-filled-fa-light-390.png",
+      "screenshotSha256": "d1f64892506c6d6584d98d48d31a352d220ce1d38708fb2834fe559b11c245d8",
+      "fullPage": true
+    },
+    {
+      "case": "075-business-filled-fa-light-768",
+      "surface": "business",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:26.592Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        1188
+      ],
+      "headings": [
+        "نمای کلی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/075-business-filled-fa-light-768.png",
+      "screenshotSha256": "7c27eb7ecf38aae9e8ed0e4b0c96b1224f241670817f3ea6c3991be2ad476574",
+      "fullPage": true
+    },
+    {
+      "case": "076-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/payments",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:16:14.248Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "پرداخت‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/076-business-filled-fa-light-390.png",
+      "screenshotSha256": "7a6346fb1a39b08513e6d986a566ed5561c8a750381220aebc7398237ff77393",
+      "fullPage": true
+    },
+    {
+      "case": "077-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/privacy",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:16:16.284Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1392
+      ],
+      "headings": [
+        "حریم خصوصی و داده‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/077-business-filled-fa-light-390.png",
+      "screenshotSha256": "fe9be0251daf7ee012f9e65b9bb033946c066e875f6e42f483a8b75ee9ea7c14",
+      "fullPage": true
+    },
+    {
+      "case": "078-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/profile",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:16:18.278Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1868
+      ],
+      "headings": [
+        "پروفایل من"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/078-business-filled-fa-light-390.png",
+      "screenshotSha256": "55e34a0ada8c0a862d3ad10482ed80d0e57f1c8f9a91a703416fec75a342a3cd",
+      "fullPage": true
+    },
+    {
+      "case": "079-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/reception",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:10:21.244Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1128
+      ],
+      "headings": [
+        "پذیرش"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/079-business-filled-fa-light-390.png",
+      "screenshotSha256": "9f0f019a8d25255a0c0d11061885d743014c163e0e0088cb1d06f06d484016b3",
+      "fullPage": true
+    },
+    {
+      "case": "080-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/reports",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:10:23.389Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        2123
+      ],
+      "headings": [
+        "آمار و کنترل‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/080-business-filled-fa-light-390.png",
+      "screenshotSha256": "211a016d34aacde7bcec5d5d7fa1ef639b75f4542f71ce2897dd5c308edcbdee",
+      "fullPage": true
+    },
+    {
+      "case": "081-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/reset-password",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:10:24.797Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "بازیابی رمز عبور"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/081-business-filled-fa-light-390.png",
+      "screenshotSha256": "c28bbfd629ae41f1d30fc9f20fe76403a7f6622597e025821ec89645ca27ce5d",
+      "fullPage": true
+    },
+    {
+      "case": "082-business-empty-en-dark-390",
+      "surface": "business",
+      "route": "/resources",
+      "fixtureState": "empty",
+      "capturedAt": "2026-10-24T05:32:16.742Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "Resources"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/082-business-empty-en-dark-390.png",
+      "screenshotSha256": "c9d0d77bf704168701fec57846a9d9d07e594691a3226f4c1b6749ea7cda3eb1",
+      "fullPage": true
+    },
+    {
+      "case": "082-business-empty-fa-light-390",
+      "surface": "business",
+      "route": "/resources",
+      "fixtureState": "empty",
+      "capturedAt": "2026-10-24T05:36:10.063Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "منابع"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/082-business-empty-fa-light-390.png",
+      "screenshotSha256": "157bc2877accd20ca0bdfa3ceb76eba7c37cca84794a38b7c05c2c7c06a10cd0",
+      "fullPage": true
+    },
+    {
+      "case": "082-business-error-en-dark-390",
+      "surface": "business",
+      "route": "/resources",
+      "fixtureState": "error",
+      "capturedAt": "2026-10-24T05:32:20.629Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "Resources"
+      ],
+      "alerts": [
+        "Request failed. Please try again."
+      ],
+      "screenshot": ".artifacts/luma-final-pass/082-business-error-en-dark-390.png",
+      "screenshotSha256": "aba7fed82c5c2c46d8aa486bbc32c5aef3a40d5feb37a712d70dc2184960ed08",
+      "fullPage": true
+    },
+    {
+      "case": "082-business-error-fa-light-390",
+      "surface": "business",
+      "route": "/resources",
+      "fixtureState": "error",
+      "capturedAt": "2026-10-24T05:36:14.382Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "منابع"
+      ],
+      "alerts": [
+        "درخواست انجام نشد. دوباره تلاش کنید."
+      ],
+      "screenshot": ".artifacts/luma-final-pass/082-business-error-fa-light-390.png",
+      "screenshotSha256": "8acdd973d8fbe7f8bd74bc5a13890d9a80c50197d3bf4ed4074922e782844a12",
+      "fullPage": true
+    },
+    {
+      "case": "082-business-filled-en-dark-390",
+      "surface": "business",
+      "route": "/resources",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:29:10.495Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        2506
+      ],
+      "headings": [
+        "Resources"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/082-business-filled-en-dark-390.png",
+      "screenshotSha256": "5768d1a30b3b7d169085983f37bbb958fd55da69799ad21824fb608b1bfce095",
+      "fullPage": true
+    },
+    {
+      "case": "082-business-filled-fa-light-1440",
+      "surface": "business",
+      "route": "/resources",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:27:08.930Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        1525
+      ],
+      "headings": [
+        "منابع"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/082-business-filled-fa-light-1440.png",
+      "screenshotSha256": "97c81d8b495daac422b67dc5069505752dae402ebaaca5004d3a956f5b61b6c3",
+      "fullPage": true
+    },
+    {
+      "case": "082-business-filled-fa-light-360",
+      "surface": "business",
+      "route": "/resources",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:18.657Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        2497
+      ],
+      "headings": [
+        "منابع"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/082-business-filled-fa-light-360.png",
+      "screenshotSha256": "003756548b50793f37d74df8f9bad7d7034ca9ab09c317bdbb8cbf9f8271c84a",
+      "fullPage": true
+    },
+    {
+      "case": "082-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/resources",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:10:25.796Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        2497
+      ],
+      "headings": [
+        "منابع"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/082-business-filled-fa-light-390.png",
+      "screenshotSha256": "0d953d890c5f658c032692b7b7861488a3fd479c6679394d4360601456213c46",
+      "fullPage": true
+    },
+    {
+      "case": "082-business-filled-fa-light-768",
+      "surface": "business",
+      "route": "/resources",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:30.088Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        2153
+      ],
+      "headings": [
+        "منابع"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/082-business-filled-fa-light-768.png",
+      "screenshotSha256": "dd74936252424054d646a47d8b87de4ab77805c0546585b80487d6d393927aa2",
+      "fullPage": true
+    },
+    {
+      "case": "082-business-guest-en-dark-390",
+      "surface": "business",
+      "route": "/resources",
+      "fixtureState": "guest",
+      "capturedAt": "2026-10-24T05:32:23.054Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "Resources"
+      ],
+      "alerts": [
+        "Request failed. Please try again."
+      ],
+      "screenshot": ".artifacts/luma-final-pass/082-business-guest-en-dark-390.png",
+      "screenshotSha256": "fef663c6ab906c93cb5d2d8e4fef99c910258d1538e33229faeebbb2bf684b43",
+      "fullPage": true
+    },
+    {
+      "case": "083-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/services",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:10:27.952Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1941
+      ],
+      "headings": [
+        "کلاس‌ها و سانس‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/083-business-filled-fa-light-390.png",
+      "screenshotSha256": "fe4edafec0f726dc8b03ecf2f2373a8157c69a9d0b812c0da9337f7c938d5ee1",
+      "fullPage": true
+    },
+    {
+      "case": "084-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/sessions",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:10:29.941Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "نشست‌های فعال"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/084-business-filled-fa-light-390.png",
+      "screenshotSha256": "baddccb38028c4aa677824b800a4e7028d5649792747798ebad64d9dc1c6f2ea",
+      "fullPage": true
+    },
+    {
+      "case": "085-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/set-password",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:10:31.794Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "تعیین رمز عبور"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/085-business-filled-fa-light-390.png",
+      "screenshotSha256": "0fdbccb7301be447d448773cdfc38f0539fc902a352f2529e1cbfe322d525576",
+      "fullPage": true
+    },
+    {
+      "case": "086-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/team",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:10:32.721Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "اعضای تیم"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/086-business-filled-fa-light-390.png",
+      "screenshotSha256": "4bb11a845da8dc0351e17cb8d7330ae07d90b32e865155a83892ef27dba4fde6",
+      "fullPage": true
+    },
+    {
+      "case": "087-business-filled-fa-light-390",
+      "surface": "business",
+      "route": "/training",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:10:34.615Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "کتابخانهٔ حرکات"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/087-business-filled-fa-light-390.png",
+      "screenshotSha256": "c700ff64a82bd70ecc44a54cf451605948f908a6f0b2ebcc064a1d4d965008c1",
+      "fullPage": true
+    },
+    {
+      "case": "088-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/advanced",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:12.307Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1197
+      ],
+      "headings": [
+        "پلن، شعب و تسویه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/088-admin-filled-fa-light-390.png",
+      "screenshotSha256": "be4124c90db932ecfd22f1aa26843460803a78dd519bd864cec074c3724f7461",
+      "fullPage": true
+    },
+    {
+      "case": "089-admin-filled-en-dark-390",
+      "surface": "admin",
+      "route": "/analytics",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:29:15.330Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        2112
+      ],
+      "headings": [
+        "Analytics & controls"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/089-admin-filled-en-dark-390.png",
+      "screenshotSha256": "68683a2f9492b144de7ac3100eb879f5a2be5de52105a89256bb06d2698cca2c",
+      "fullPage": true
+    },
+    {
+      "case": "089-admin-filled-fa-light-1440",
+      "surface": "admin",
+      "route": "/analytics",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:27:11.845Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        1316
+      ],
+      "headings": [
+        "آمار و کنترل‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/089-admin-filled-fa-light-1440.png",
+      "screenshotSha256": "8fc4e71e48f4da40716cf68629d26b0bcebe9b61bc51f4d51df53b1c043f097d",
+      "fullPage": true
+    },
+    {
+      "case": "089-admin-filled-fa-light-360",
+      "surface": "admin",
+      "route": "/analytics",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:21.611Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        2092
+      ],
+      "headings": [
+        "آمار و کنترل‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/089-admin-filled-fa-light-360.png",
+      "screenshotSha256": "549219d2e76f653d23ef4da5118052f611fddd77aa57570f52b4d74425142fe1",
+      "fullPage": true
+    },
+    {
+      "case": "089-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/analytics",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:14.502Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        2016
+      ],
+      "headings": [
+        "آمار و کنترل‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/089-admin-filled-fa-light-390.png",
+      "screenshotSha256": "333ec529590cd5d9c5b768e563482eff4edd25a46ef608c2b0b1002059a3657f",
+      "fullPage": true
+    },
+    {
+      "case": "089-admin-filled-fa-light-768",
+      "surface": "admin",
+      "route": "/analytics",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:32.970Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        1568
+      ],
+      "headings": [
+        "آمار و کنترل‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/089-admin-filled-fa-light-768.png",
+      "screenshotSha256": "c76b971bee3ebf4fe2ec2e68a280e12d8102bf8488338ec3adc70db4e9c2b2c5",
+      "fullPage": true
+    },
+    {
+      "case": "090-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/audit",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:16.679Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "رویدادهای مدیریتی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/090-admin-filled-fa-light-390.png",
+      "screenshotSha256": "ae2d9512343d38024992e48f24492f2ff8255e9c22a8dbede551624671dfed75",
+      "fullPage": true
+    },
+    {
+      "case": "091-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/catalog-reviews",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:18.805Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "صف انتشار"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/091-admin-filled-fa-light-390.png",
+      "screenshotSha256": "0dd296b2e80e3906ecee4ae60e66a0ffe42b85447cdd45005a4beee473581795",
+      "fullPage": true
+    },
+    {
+      "case": "092-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/coaching",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:21.209Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "بررسی مدارک مربیان"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/092-admin-filled-fa-light-390.png",
+      "screenshotSha256": "afc433dbba9faff534b414137d02ae3945ba087ed20bafbad1ba4c6bf56fa8da",
+      "fullPage": true
+    },
+    {
+      "case": "093-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/demo",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:23.443Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1050
+      ],
+      "headings": [
+        "کنترل ارسال‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/093-admin-filled-fa-light-390.png",
+      "screenshotSha256": "cabea1493797acaee2123913340d925ef4cff197718a7991efaef464c25bd11b",
+      "fullPage": true
+    },
+    {
+      "case": "094-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/invitations",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:26.116Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "دعوت‌های همکاری"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/094-admin-filled-fa-light-390.png",
+      "screenshotSha256": "1b8f6bd76cffff59af24b6b9be83fdad89b941bce596fd10fe0c80c6a711a4ed",
+      "fullPage": true
+    },
+    {
+      "case": "095-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/locations",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:28.238Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "جغرافیا"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/095-admin-filled-fa-light-390.png",
+      "screenshotSha256": "dc992e21d0a0250807269b644f3ea8d4f3b6bb51fa30f252c86c774af916801f",
+      "fullPage": true
+    },
+    {
+      "case": "096-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/login",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:29.639Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "ورود به پنل ادمین"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/096-admin-filled-fa-light-390.png",
+      "screenshotSha256": "2ca7c6db138418c50f7b3f0c63612c665fc32e9af0b80dcd0d02c37e3119be19",
+      "fullPage": true
+    },
+    {
+      "case": "097-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/moderation",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:30.514Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "بررسی نظرها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/097-admin-filled-fa-light-390.png",
+      "screenshotSha256": "99170b9c3fdea329a0960c57eab83c327f0457a9a3708a5ce1f16271b6bb90b6",
+      "fullPage": true
+    },
+    {
+      "case": "098-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/operations",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:32.551Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1437
+      ],
+      "headings": [
+        "عملیات"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/098-admin-filled-fa-light-390.png",
+      "screenshotSha256": "06be3fab747410c6d528fe75ac2f21c0fd54b29ee41752f05cd292070b469c26",
+      "fullPage": true
+    },
+    {
+      "case": "099-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/organizations/[organizationId]/branches/[branchId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:11:34.466Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        2303
+      ],
+      "headings": [
+        "پرونده شعبه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/099-admin-filled-fa-light-390.png",
+      "screenshotSha256": "c2f20ecd58e9dd7dda2bf024123e9bf29a6fe33427ffb13d9f74ae2b3782f9ec",
+      "fullPage": true
+    },
+    {
+      "case": "100-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/organizations/[organizationId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:11.062Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        3023
+      ],
+      "headings": [
+        "پرونده مجموعه"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/100-admin-filled-fa-light-390.png",
+      "screenshotSha256": "3b534c763a3bc8b9a502f78387a845c4505d133fdbd049934828260582057234",
+      "fullPage": true
+    },
+    {
+      "case": "101-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/organizations",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:13.103Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "بررسی مجموعه‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/101-admin-filled-fa-light-390.png",
+      "screenshotSha256": "294ceb754a4355606fef607d825f66a11d523f422076a3c7447f5474d024da48",
+      "fullPage": true
+    },
+    {
+      "case": "102-admin-filled-en-dark-390",
+      "surface": "admin",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:29:17.865Z",
+      "locale": "en",
+      "theme": "dark",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1690
+      ],
+      "headings": [
+        "Overview"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/102-admin-filled-en-dark-390.png",
+      "screenshotSha256": "72ee5457b132b544c3a6927cf62e72ef100d7930d53673e4d479353f0f288172",
+      "fullPage": true
+    },
+    {
+      "case": "102-admin-filled-fa-light-1440",
+      "surface": "admin",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:27:15.119Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        1440,
+        900
+      ],
+      "document": [
+        1440,
+        900
+      ],
+      "headings": [
+        "نمای کلی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/102-admin-filled-fa-light-1440.png",
+      "screenshotSha256": "e530b01bae43f25a9b1702743e7da4be62a5f88bb452f102a4b070616fe305b0",
+      "fullPage": true
+    },
+    {
+      "case": "102-admin-filled-fa-light-360",
+      "surface": "admin",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:25:24.407Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        360,
+        800
+      ],
+      "document": [
+        360,
+        1690
+      ],
+      "headings": [
+        "نمای کلی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/102-admin-filled-fa-light-360.png",
+      "screenshotSha256": "2ccac0dc027cc633bfb4db00286f063e83773c4bb8b52fdb51a880f1056015a9",
+      "fullPage": true
+    },
+    {
+      "case": "102-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:15.009Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1690
+      ],
+      "headings": [
+        "نمای کلی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/102-admin-filled-fa-light-390.png",
+      "screenshotSha256": "8f97f2c0d7d1474b4c5710a7fd5d0229c3c6db84b39e6eeb75c84f5a54a6568a",
+      "fullPage": true
+    },
+    {
+      "case": "102-admin-filled-fa-light-768",
+      "surface": "admin",
+      "route": "/",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:26:35.368Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        768,
+        1024
+      ],
+      "document": [
+        768,
+        1188
+      ],
+      "headings": [
+        "نمای کلی"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/102-admin-filled-fa-light-768.png",
+      "screenshotSha256": "25a4d04fb50960cbd8f0b38726d5b63ed4c4549fe5520fe9cd87f86587d221c4",
+      "fullPage": true
+    },
+    {
+      "case": "103-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/privacy",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:16.787Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1392
+      ],
+      "headings": [
+        "حریم خصوصی و داده‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/103-admin-filled-fa-light-390.png",
+      "screenshotSha256": "fe9be0251daf7ee012f9e65b9bb033946c066e875f6e42f483a8b75ee9ea7c14",
+      "fullPage": true
+    },
+    {
+      "case": "104-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/profile",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:18.664Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1868
+      ],
+      "headings": [
+        "پروفایل من"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/104-admin-filled-fa-light-390.png",
+      "screenshotSha256": "25c71fd7c6a3c447f0c9c69de6eed60547e0d068fe8bca5ffbe625ffc8f93c3c",
+      "fullPage": true
+    },
+    {
+      "case": "105-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/reset-password",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:20.196Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "بازیابی رمز عبور"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/105-admin-filled-fa-light-390.png",
+      "screenshotSha256": "136048b100e5d3eeb64588bd2b92b4ce20a597a7ddcae2c0ca97b7befb2beb84",
+      "fullPage": true
+    },
+    {
+      "case": "106-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/sessions",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:21.163Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "نشست‌های فعال"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/106-admin-filled-fa-light-390.png",
+      "screenshotSha256": "530c53699ca3f67037f52ca0e504a638072860f061fb45398b161bb7b2bf03f6",
+      "fullPage": true
+    },
+    {
+      "case": "107-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/set-password",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:22.994Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        844
+      ],
+      "headings": [
+        "تعیین رمز عبور"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/107-admin-filled-fa-light-390.png",
+      "screenshotSha256": "0fdbccb7301be447d448773cdfc38f0539fc902a352f2529e1cbfe322d525576",
+      "fullPage": true
+    },
+    {
+      "case": "108-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/taxonomies",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:23.803Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "دسته‌بندی‌ها"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/108-admin-filled-fa-light-390.png",
+      "screenshotSha256": "9ff966bffd8e4d2b8d70ad0e42fc3502ae65d48866dbe9c8f2eef556a1624962",
+      "fullPage": true
+    },
+    {
+      "case": "109-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/training",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:25.684Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        928
+      ],
+      "headings": [
+        "کتابخانهٔ حرکات"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/109-admin-filled-fa-light-390.png",
+      "screenshotSha256": "283787801381ec0d53fb24731816320389b7348c538cfb10ebf83d4661aa51a4",
+      "fullPage": true
+    },
+    {
+      "case": "110-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/users/[userId]",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:27.578Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1370
+      ],
+      "headings": [
+        "پرونده کاربر"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/110-admin-filled-fa-light-390.png",
+      "screenshotSha256": "e026fda676ebdcb19f5ff2a1c0e3fe340133c5e4cc6aa61eba869751b9429f5e",
+      "fullPage": true
+    },
+    {
+      "case": "111-admin-filled-fa-light-390",
+      "surface": "admin",
+      "route": "/users",
+      "fixtureState": "filled",
+      "capturedAt": "2026-10-24T05:12:29.524Z",
+      "locale": "fa",
+      "theme": "light",
+      "viewport": [
+        390,
+        844
+      ],
+      "document": [
+        390,
+        1008
+      ],
+      "headings": [
+        "کاربران"
+      ],
+      "alerts": [],
+      "screenshot": ".artifacts/luma-final-pass/111-admin-filled-fa-light-390.png",
+      "screenshotSha256": "5c88704bef6a6a198f4b2e354f9391dbc7f4d81f8d4b2673954102cd8d74ad2f",
+      "fullPage": true
+    }
+  ]
+}

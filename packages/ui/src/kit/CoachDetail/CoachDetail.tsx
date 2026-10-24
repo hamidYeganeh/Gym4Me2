@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../Button";
 import { ToggleGroup, ToggleGroupItem } from "../ToggleGroup";
-import { ProgressiveBlur } from "../ProgressiveBlur";
 import { Badge } from "../Badge";
 import {
   ChevronLeftIcon,
@@ -58,11 +57,6 @@ export function CoachDetail({
           </Button>
         </nav>
         <div className={s.heading()}>
-          <ProgressiveBlur
-            className="absolute inset-0 z-0"
-            blurLayers={16}
-            blurIntensity={0.25}
-          />
           <div className={s.gradient()} aria-hidden="true" />
           <div className={s.content()}>
             <p className="text-sm">{coach.specialty}</p>
@@ -133,7 +127,7 @@ export function CoachDetail({
           </Badge>
         )}
         <section className="flex flex-col gap-3">
-          <h2 className="text-2xl font-semibold">{labels.about}</h2>
+          <h2 className="text-base font-semibold">{labels.about}</h2>
           <p className="text-sm leading-8 text-muted-foreground">
             {coach.description}
           </p>

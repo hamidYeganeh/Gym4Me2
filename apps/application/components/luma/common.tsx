@@ -110,12 +110,14 @@ export function LumaPage({
   children,
   actions,
   className,
+  heading,
 }: {
   title: string;
   back?: string;
   children: ReactNode;
   actions?: ReactNode;
   className?: string;
+  heading?: ReactNode;
 }) {
   const t = useLuma();
   const router = useRouter();
@@ -154,7 +156,7 @@ export function LumaPage({
             </span>
           </Link>
         )}
-        <h1 className="flex-1">{title}</h1>
+        <h1 className="flex-1">{heading ?? title}</h1>
         <div className="luma-header-actions">
           {actions ?? (
             <Link

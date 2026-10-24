@@ -60,10 +60,6 @@ export function BottomSheet({
           restoreOverlayFocus(trigger.current);
         }}
       >
-        <div
-          aria-hidden="true"
-          className="mx-auto mt-3 h-1 w-10 shrink-0 rounded-full bg-muted-foreground/25"
-        />
         <SheetHeader className="shrink-0 pe-16 pt-4 pb-4">
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription className={description ? undefined : "sr-only"}>

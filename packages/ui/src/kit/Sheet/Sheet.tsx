@@ -1,5 +1,7 @@
 "use client";
 import { useTranslations } from "@repo/i18n";
+import { createContext, useContext, useState } from "react";
+import { useSheetDrag } from "../../hooks/use-sheet-drag";
 import { sheetStyles } from "./Sheet.styles";
 import type {
   SheetCloseProps,
@@ -20,8 +22,31 @@ import { Dialog as SheetPrimitive } from "radix-ui";
 import { Button } from "@repo/ui/kit/Button";
 import { XIcon } from "lucide-react";
 
-function Sheet({ ...props }: SheetProps) {
-  return <SheetPrimitive.Root data-slot="sheet" {...props} />;
+const SheetDismiss = createContext<() => void>(() => undefined);
+function Sheet({
+  open,
+  defaultOpen,
+  onOpenChange,
+  children,
+  ...props
+}: SheetProps) {
+  const [internal, setInternal] = useState(defaultOpen ?? false);
+  const change = (next: boolean) => {
+    if (open === undefined) setInternal(next);
+    onOpenChange?.(next);
+  };
+  return (
+    <SheetDismiss.Provider value={() => change(false)}>
+      <SheetPrimitive.Root
+        data-slot="sheet"
+        {...props}
+        open={open ?? internal}
+        onOpenChange={change}
+      >
+        {children}
+      </SheetPrimitive.Root>
+    </SheetDismiss.Provider>
+  );
 }
 
 function SheetTrigger({ ...props }: SheetTriggerProps) {
@@ -54,6 +79,8 @@ function SheetContent({
   ...props
 }: SheetContentProps) {
   const t = useTranslations();
+  const close = useContext(SheetDismiss);
+  const drag = useSheetDrag(close);
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -63,6 +90,19 @@ function SheetContent({
         className={cn(sheetStyles.sheetContent(), className)}
         {...props}
       >
+        {side === "bottom" && (
+          <button
+            type="button"
+            className="sheet-grabber"
+            aria-label={t("Kit.close")}
+            {...drag}
+            onClick={(event) => {
+              if (event.detail === 0) close();
+            }}
+          >
+            <span aria-hidden="true" />
+          </button>
+        )}
         {children}
         {showCloseButton && (
           <SheetPrimitive.Close data-slot="sheet-close" asChild>

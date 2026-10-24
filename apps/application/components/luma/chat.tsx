@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "@repo/i18n";
 import { MessageCircle, Paperclip, Send, UserRound } from "lucide-react";
@@ -26,7 +26,7 @@ import {
   QueryState,
   Row,
   Section,
-  stamp,
+  Segments,
   useLuma,
 } from "./common";
 import { LumaSheet } from "./sheet";
@@ -59,6 +59,13 @@ export function ConversationPage() {
   const acknowledged = useRef<string | null>(null);
   const foreground = useApiForeground();
   const fileInput = useRef<HTMLInputElement>(null);
+  const dayKey = (date: string) =>
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Asia/Tehran",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).format(new Date(date));
   const [fileError, setFileError] = useState("");
   const [reportTarget, setReportTarget] = useState<MessageDto | null>(null);
   const [reportStatus, setReportStatus] = useState("");
@@ -101,6 +108,16 @@ export function ConversationPage() {
     <LumaPage
       className="luma-conversation-page"
       title={data?.conversation.title ?? t("messages")}
+      heading={
+        <Link href={`/messages/details?id=${id}`} className="luma-chat-heading">
+          <span className="luma-conversation-avatar" aria-hidden="true">
+            {data?.conversation.title.trim().slice(0, 2) || (
+              <MessageCircle size={18} />
+            )}
+          </span>
+          <span>{data?.conversation.title ?? t("messages")}</span>
+        </Link>
+      }
       back="/messages"
       actions={
         <Link
@@ -142,48 +159,70 @@ export function ConversationPage() {
                 </button>
               )}
               <div className="luma-chat">
-                {(data?.messages ?? []).map((m) => (
-                  <article
-                    key={m.id}
-                    id={`message-${m.id}`}
-                    className="luma-bubble"
-                    data-own={m.senderId === me.data?.id}
-                  >
-                    <p className="text-xs mb-2">{m.displayName}</p>
-                    {m.imageUrl && (
-                      <Image
-                        unoptimized
-                        width={800}
-                        height={800}
-                        src={m.imageUrl}
-                        alt={t("image")}
-                        className="rounded-xl mb-3 max-h-80"
-                      />
+                {(data?.messages ?? []).map((m, index, messages) => (
+                  <Fragment key={m.id}>
+                    {(index === 0 ||
+                      dayKey(m.createdAt) !==
+                        dayKey(messages[index - 1]!.createdAt)) && (
+                      <time className="luma-chat-date" dateTime={m.createdAt}>
+                        {new Intl.DateTimeFormat(locale, {
+                          dateStyle: "medium",
+                          timeZone: "Asia/Tehran",
+                        }).format(new Date(m.createdAt))}
+                      </time>
                     )}
-                    <p>{m.body}</p>
-                    <p className="text-xs mt-2">
-                      {stamp(m.createdAt, locale)}
-                      {m.senderId === me.data?.id && (
-                        <span className="ms-2">
-                          {m.readByCount > 0
-                            ? t("messageRead")
-                            : t("messageSent")}
-                        </span>
+                    <article
+                      id={`message-${m.id}`}
+                      className="luma-bubble"
+                      data-own={m.senderId === me.data?.id}
+                    >
+                      {m.senderId !== me.data?.id && (
+                        <p className="luma-chat-author">{m.displayName}</p>
                       )}
-                    </p>
-                    {m.senderId !== me.data?.id && (
-                      <button
-                        type="button"
-                        className="luma-meta min-h-11 min-w-11 px-2"
-                        onClick={() => {
-                          setReportStatus("");
-                          setReportTarget(m);
-                        }}
-                      >
-                        {t("reportMessage")}
-                      </button>
-                    )}
-                  </article>
+                      {m.imageUrl && (
+                        <Image
+                          unoptimized
+                          width={800}
+                          height={800}
+                          src={m.imageUrl}
+                          alt={t("image")}
+                          className="rounded-xl mb-3 max-h-80"
+                        />
+                      )}
+                      <p>{m.body}</p>
+                      <p className="luma-chat-receipt">
+                        <time dateTime={m.createdAt}>
+                          {new Intl.DateTimeFormat(locale, {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            timeZone: "Asia/Tehran",
+                          }).format(new Date(m.createdAt))}
+                        </time>
+                        {m.senderId === me.data?.id && (
+                          <span className="ms-2">
+                            {m.readByCount > 0
+                              ? t("messageRead")
+                              : t("messageSent")}
+                          </span>
+                        )}
+                      </p>
+                      {m.senderId !== me.data?.id && (
+                        <details className="luma-message-menu">
+                          <summary aria-label={t("reportMessage")}>…</summary>
+                          <button
+                            type="button"
+                            className="luma-shortcut"
+                            onClick={() => {
+                              setReportStatus("");
+                              setReportTarget(m);
+                            }}
+                          >
+                            {t("reportMessage")}
+                          </button>
+                        </details>
+                      )}
+                    </article>
+                  </Fragment>
                 ))}
                 {!data?.messages.length && <Empty />}
                 <div ref={tail} className="h-px" aria-hidden="true" />
@@ -339,6 +378,7 @@ export function ConversationPage() {
 }
 export function ConversationDetails() {
   const t = useLuma();
+  const [tab, setTab] = useState("details");
   const id = useSearchParams().get("id");
   const query = useSportsQuery<ConversationDetailDto>(
     `sports/community/conversations/${id}`,
@@ -356,15 +396,32 @@ export function ConversationDetails() {
       </LumaPage>
     );
   return (
-    <LumaPage title={t("details")} back={`/messages/conversation?id=${id}`}>
+    <LumaPage
+      className="luma-conversation-details"
+      title={t("details")}
+      back={`/messages/conversation?id=${id}`}
+    >
       <QueryState query={query}>
         {query.data && (
           <>
-            <Row
-              title={query.data.conversation.title}
-              icon={<MessageCircle size={24} aria-hidden="true" />}
+            <section className="luma-identity-hero">
+              <span className="luma-conversation-avatar" aria-hidden="true">
+                {query.data.conversation.title.trim().slice(0, 2)}
+              </span>
+              <h2>{query.data.conversation.title}</h2>
+              <p className="luma-meta">
+                {t(query.data.conversation.closed ? "closedChat" : "messages")}
+              </p>
+            </section>
+            <Segments
+              value={tab}
+              onChange={setTab}
+              options={[
+                { value: "details", label: t("details") },
+                { value: "members", label: t("members") },
+              ]}
             />
-            {!!query.data.conversation.members?.length && (
+            {tab === "members" && !!query.data.conversation.members?.length && (
               <Section title={t("members")}>
                 {query.data.conversation.members.map((m) => (
                   <Row
@@ -375,7 +432,7 @@ export function ConversationDetails() {
                 ))}
               </Section>
             )}
-            {query.data.conversation.host && (
+            {tab === "details" && query.data.conversation.host && (
               <ConversationState
                 conversation={query.data.conversation}
                 reload={async () => {
@@ -386,15 +443,21 @@ export function ConversationDetails() {
                 }}
               />
             )}
-            <button
-              className="luma-cta bg-muted text-foreground"
-              disabled={archive.isPending}
-              onClick={() =>
-                archive.mutate({ archived: !query.data?.conversation.archived })
-              }
-            >
-              {query.data.conversation.archived ? t("unarchive") : t("archive")}
-            </button>
+            {tab === "details" && (
+              <button
+                className="luma-cta bg-muted text-foreground"
+                disabled={archive.isPending}
+                onClick={() =>
+                  archive.mutate({
+                    archived: !query.data?.conversation.archived,
+                  })
+                }
+              >
+                {query.data.conversation.archived
+                  ? t("unarchive")
+                  : t("archive")}
+              </button>
+            )}
             <CommandError error={archive.error} />
           </>
         )}

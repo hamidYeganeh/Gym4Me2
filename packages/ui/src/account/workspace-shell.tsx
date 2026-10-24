@@ -61,6 +61,7 @@ function WorkspaceChrome({
     logout = useLogout(),
     router = useRouter();
   const account = accountReadDenied(query.error) ? undefined : query.data;
+  const conversation = path.startsWith("/messages/");
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
   const mobileMenu = useRef<HTMLElement>(null);
@@ -166,7 +167,11 @@ function WorkspaceChrome({
     </div>
   );
   return (
-    <div className="workspace-shell" data-workspace={client}>
+    <div
+      className="workspace-shell"
+      data-workspace={client}
+      data-conversation={conversation || undefined}
+    >
       <aside className="workspace-sidebar">
         {brand}
         {navigation()}
@@ -176,39 +181,46 @@ function WorkspaceChrome({
         </footer>
       </aside>
       <div className="workspace-body">
-        <header className="workspace-mobile-bar">
-          {brand}
-          <Button
-            ref={trigger}
-            variant="outline"
-            size="icon-lg"
-            className="size-11"
-            aria-label={t("WorkspaceNav.openMenu")}
-            aria-haspopup="dialog"
-            aria-expanded={open}
-            onClick={() => setOpen(true)}
-          >
-            <Menu size={21} />
-          </Button>
-        </header>
+        {!conversation && (
+          <header className="workspace-mobile-bar">
+            {brand}
+            <Button
+              ref={trigger}
+              variant="outline"
+              size="icon-lg"
+              className="size-11"
+              aria-label={t("WorkspaceNav.openMenu")}
+              aria-haspopup="dialog"
+              aria-expanded={open}
+              onClick={() => setOpen(true)}
+            >
+              <Menu size={21} />
+            </Button>
+          </header>
+        )}
         {children}
-        <nav className="workspace-dock" aria-label={t("Copy.panelNavigation")}>
-          {nav
-            .filter((item) => dockKeys.includes(item.key))
-            .map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                prefetch={false}
-                aria-current={
-                  isWorkspaceRouteActive(path, item.href) ? "page" : undefined
-                }
-              >
-                <item.icon size={21} />
-                <span>{t(item.title)}</span>
-              </Link>
-            ))}
-        </nav>
+        {!conversation && (
+          <nav
+            className="workspace-dock"
+            aria-label={t("Copy.panelNavigation")}
+          >
+            {nav
+              .filter((item) => dockKeys.includes(item.key))
+              .map((item) => (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  prefetch={false}
+                  aria-current={
+                    isWorkspaceRouteActive(path, item.href) ? "page" : undefined
+                  }
+                >
+                  <item.icon size={21} />
+                  <span>{t(item.title)}</span>
+                </Link>
+              ))}
+          </nav>
+        )}
       </div>
       <BottomSheet
         open={open}

@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { useId, useRef, useState, type FormEvent } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { LumaSheet } from "./sheet";
 import { useLocale } from "@repo/i18n";
 import type { ApiError } from "@repo/api";
 import {
@@ -49,6 +50,8 @@ export function SupportPage() {
   const t = useLuma(),
     locale = useLocale();
   const order = useSearchParams().get("order") ?? undefined;
+  const router = useRouter();
+  const [creating, setCreating] = useState(Boolean(order));
   const query = useSportsQuery<TicketSummaryDto[]>("sports/community/support");
   const create = useSportsCommand<TicketSummaryDto, CreateTicketInput>(
     "sports/community/support",
@@ -63,7 +66,22 @@ export function SupportPage() {
       {readable ? (
         <>
           {query.error && <RefreshFailure refresh={() => query.refetch()} />}
-          <Section title={t("newTicket")}>
+          <button
+            type="button"
+            className="luma-cta"
+            onClick={() => setCreating(true)}
+            aria-haspopup="dialog"
+            aria-expanded={creating}
+          >
+            {t("newTicket")}
+          </button>
+          <LumaSheet
+            open={creating}
+            onOpenChange={(open) => {
+              if (!create.isPending) setCreating(open);
+            }}
+            title={t("newTicket")}
+          >
             {invalidOrder ? (
               <Alert variant="destructive">
                 <AlertDescription>
@@ -95,16 +113,18 @@ export function SupportPage() {
                   error={create.error}
                   onEdit={create.reset}
                   save={async (draft) => {
-                    await create.mutateAsync({
+                    const ticket = await create.mutateAsync({
                       title: draft.title.trim(),
                       body: draft.body.trim(),
                       orderId: order,
                     });
+                    setCreating(false);
+                    router.push(`/support/detail?id=${ticket.id}`);
                   }}
                 />
               </>
             )}
-          </Section>
+          </LumaSheet>
           <Section title={t("supportMyTickets")}>
             {query.data!.map((ticket) => (
               <Row

@@ -51,6 +51,14 @@ export function applicationRouteLayout(pathname: string, search: string) {
     logical.startsWith("/services/") ||
     logical.startsWith("/tickets/") ||
     logical.startsWith("/checkout/mock-gateway") ||
+    logical.startsWith("/messages/") ||
+    logical.startsWith("/training/") ||
+    logical.startsWith("/coaching/") ||
+    logical.startsWith("/profile/") ||
+    logical.startsWith("/support/") ||
+    logical.startsWith("/bookings/") ||
+    logical.startsWith("/orders/") ||
+    logical.startsWith("/memberships/") ||
     logical.endsWith("/gallery");
   return {
     logical,

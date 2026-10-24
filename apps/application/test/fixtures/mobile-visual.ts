@@ -1,3 +1,4 @@
+import { routeVisual } from "./route-visual";
 import { ph5Visual } from "./ph5-visual";
 import {
   filterSelectOptions,
@@ -18,6 +19,7 @@ export function createMobileFixtureFetch(
   catalog: ReturnType<typeof protectedCatalogFixtures>,
   services: ServiceDto[],
   state: string,
+  surface = "application",
 ): typeof fetch {
   const at = new Date().toISOString(),
     actorId = webFixtureId(9999);
@@ -183,6 +185,10 @@ export function createMobileFixtureFetch(
     )
       return reply({ code: "Errors.requestFailed" }, 401);
     if (init?.method && init.method !== "GET") {
+      if (path.endsWith("/preferences") && path.includes("conversations/"))
+        return reply({ ok: true });
+      if (path.endsWith("/read") || path.endsWith("/read-all"))
+        return reply({ ok: true });
       if (path === "sports/account/quote")
         return reply({
           id: webFixtureId(705),
@@ -200,9 +206,32 @@ export function createMobileFixtureFetch(
         return reply(workout);
       }
       // Visual-only controls never claim that a real mutation succeeded.
+      if (state === "command-pending")
+        await new Promise<void>((resolve, reject) => {
+          const timer = setTimeout(resolve, 8000);
+          init.signal?.addEventListener(
+            "abort",
+            () => {
+              clearTimeout(timer);
+              reject(new DOMException("Aborted", "AbortError"));
+            },
+            { once: true },
+          );
+        });
       return reply({ code: "Errors.requestFailed" }, 403);
     }
     const empty = state === "empty";
+    const extra = routeVisual(path, {
+      catalog,
+      services,
+      booking,
+      order,
+      at,
+      surface,
+      empty,
+    });
+    if (extra !== undefined) return reply(extra);
+    if (path.startsWith("profile/training/sessions/")) return reply(workout);
     if (path === "sports/account/orders") return reply(empty ? [] : [order]);
     if (path.startsWith("sports/account/orders/")) return reply(order);
     if (
@@ -303,8 +332,10 @@ export function createMobileFixtureFetch(
         deletion: null,
       });
     if (path === "profile/favorites") return reply([]);
-    if (path === "auth/password/status")
+    if (path === "auth/password/status" || path === "auth/password")
       return reply({ hasPassword: true, canSetPassword: false });
+    if (path === "catalog/clubs/saved")
+      return reply(empty ? [] : catalog.summaries);
     if (path === "catalog/clubs") return reply(empty ? [] : catalog.summaries);
     if (path.startsWith("catalog/clubs/") && path.includes("/branches/"))
       return reply(path.endsWith("/reviews") ? [] : catalog.branches[0]);
@@ -316,7 +347,21 @@ export function createMobileFixtureFetch(
     if (path.startsWith("sports/services/"))
       return reply(services.find((s) => path.endsWith(s.id)) ?? services[0]);
     if (path === "sports/account/bookings/page")
-      return reply({ items: empty ? [] : [booking], nextCursor: null });
+      return reply({
+        items: empty
+          ? []
+          : [
+              url.searchParams.get("tab") === "past"
+                ? {
+                    ...booking,
+                    status: "completed",
+                    startAt: new Date(Date.now() - 172800000).toISOString(),
+                    endAt: new Date(Date.now() - 169200000).toISOString(),
+                  }
+                : booking,
+            ],
+        nextCursor: null,
+      });
     if (path === `sports/account/bookings/${booking.id}/cancellation`)
       return reply({
         revision: booking.revision,
@@ -403,6 +448,7 @@ export function createMobileFixtureFetch(
         invitationRetentionDays: 30,
         auditRetentionDays: 90,
       });
-    return reply([]);
+    console.error(`[qa:unhandled] GET ${path}`);
+    return reply({ code: "Errors.requestFailed" }, 404);
   };
 }
