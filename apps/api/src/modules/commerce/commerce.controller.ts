@@ -48,6 +48,7 @@ export class SportsPaymentCallbacksController {
   async saman(
     @Query('res') res: string,
     @Query('proof') proof: string,
+    @Query('return') returnMode: string | undefined,
     @Body() body: unknown,
     @Res() response: Response,
   ) {
@@ -64,10 +65,13 @@ export class SportsPaymentCallbacksController {
       }),
       body,
     );
+    const nativeReturn =
+      parse(z.enum(['web', 'native']).default('web'), returnMode) === 'native';
     const orderId = await this.service.samanPaymentCallback(
       parse(z.string().regex(/^[a-f0-9]{40}$/), res),
       parse(z.string().regex(/^[a-f0-9]{64}$/), proof),
       input,
+      nativeReturn,
     );
     const destination = new URL(
       '/checkout/status',
@@ -76,7 +80,10 @@ export class SportsPaymentCallbacksController {
     destination.searchParams.set('order', orderId);
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('Referrer-Policy', 'no-referrer');
-    response.redirect(303, destination.href);
+    response.redirect(
+      303,
+      nativeReturn ? `gym4me://order/${orderId}` : destination.href,
+    );
   }
 
   @Post('saman-mock')
@@ -178,6 +185,7 @@ export class SportsAccountController {
         id(value),
         input.scenario,
         input.idempotencyKey,
+        req.principal.session.transport === 'native',
       ),
     );
   }

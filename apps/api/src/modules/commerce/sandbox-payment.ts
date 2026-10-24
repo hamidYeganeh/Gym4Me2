@@ -10,6 +10,7 @@ export interface PaymentAdapter {
     reference: string,
     amountMinor: string,
     scenario: PaymentScenario,
+    nativeReturn?: boolean,
   ): Promise<{ reference: string; state: 'pending'; gatewayUrl?: string }>;
   verify(
     reference: string,
@@ -33,7 +34,11 @@ export interface PaymentAdapter {
       bankReference: string | null;
     },
   ): Promise<{ reference: string; state: 'succeeded' }>;
-  authenticateCallback(reference: string, proof: string): boolean;
+  authenticateCallback(
+    reference: string,
+    proof: string,
+    nativeReturn?: boolean,
+  ): boolean;
 }
 
 export const PAYMENT_ADAPTER = Symbol('PAYMENT_ADAPTER');

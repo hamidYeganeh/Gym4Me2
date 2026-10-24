@@ -43,20 +43,20 @@ export class SamanSandboxPaymentAdapter implements PaymentAdapter {
       throw new ServiceUnavailableException('Payments.unavailable');
     return terminal;
   }
-  private proof(reference: string) {
+  private proof(reference: string, nativeReturn = false) {
     const secret = this.config.get('AUTH_SECRET', { infer: true });
     if (!secret) throw new ServiceUnavailableException('Payments.unavailable');
     return createHmac('sha256', secret)
-      .update(`banktest:${reference}`)
+      .update(`banktest:${reference}:${nativeReturn ? 'native' : 'web'}`)
       .digest('hex');
   }
-  authenticateCallback(reference: string, proof: string) {
+  authenticateCallback(reference: string, proof: string, nativeReturn = false) {
     return (
       /^saman-sandbox:[a-f0-9]{40}$/.test(reference) &&
       /^[a-f0-9]{64}$/.test(proof) &&
       timingSafeEqual(
         Buffer.from(proof, 'hex'),
-        Buffer.from(this.proof(reference), 'hex'),
+        Buffer.from(this.proof(reference, nativeReturn), 'hex'),
       )
     );
   }
@@ -86,6 +86,7 @@ export class SamanSandboxPaymentAdapter implements PaymentAdapter {
     reference: string,
     amountMinor: string,
     _scenario: PaymentScenario,
+    nativeReturn = false,
   ) {
     void _scenario;
     const amount = Number(amountMinor);
@@ -101,7 +102,11 @@ export class SamanSandboxPaymentAdapter implements PaymentAdapter {
       this.config.get('PUBLIC_API_ORIGIN', { infer: true }),
     );
     callback.searchParams.set('res', resNum);
-    callback.searchParams.set('proof', this.proof(paymentReference));
+    callback.searchParams.set(
+      'proof',
+      this.proof(paymentReference, nativeReturn),
+    );
+    callback.searchParams.set('return', nativeReturn ? 'native' : 'web');
     const result = await this.post('/OnlinePG/OnlinePG', {
       Action: 'token',
       TerminalId: this.terminal(),
@@ -201,12 +206,15 @@ export class ConfiguredPaymentAdapter implements PaymentAdapter {
   private forReference(reference: string) {
     return reference.startsWith('saman-sandbox:') ? this.bank : this.mock;
   }
-  create(reference: string, amount: string, scenario: PaymentScenario) {
-    return (this.provider === 'saman_sandbox' ? this.bank : this.mock).create(
-      reference,
-      amount,
-      scenario,
-    );
+  create(
+    reference: string,
+    amount: string,
+    scenario: PaymentScenario,
+    nativeReturn = false,
+  ) {
+    const adapter: PaymentAdapter =
+      this.provider === 'saman_sandbox' ? this.bank : this.mock;
+    return adapter.create(reference, amount, scenario, nativeReturn);
   }
   verify(
     reference: string,
@@ -226,8 +234,9 @@ export class ConfiguredPaymentAdapter implements PaymentAdapter {
     const adapter: PaymentAdapter = this.forReference(reference);
     return adapter.query(reference, amount, scenario, bankReference);
   }
-  authenticateCallback(reference: string, proof: string) {
-    return this.forReference(reference).authenticateCallback(reference, proof);
+  authenticateCallback(reference: string, proof: string, nativeReturn = false) {
+    const adapter: PaymentAdapter = this.forReference(reference);
+    return adapter.authenticateCallback(reference, proof, nativeReturn);
   }
   refund(reference: string, amount: string, context?: RefundContext) {
     return context?.provider === 'saman_sandbox'

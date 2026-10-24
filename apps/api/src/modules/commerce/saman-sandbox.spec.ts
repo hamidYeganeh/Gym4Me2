@@ -159,3 +159,34 @@ test('keeps older mock attempts routed to their original provider after cutover'
     await router.verify('saman-sandbox:new-order', '10000', 'success'),
   ).toBe('unknown');
 });
+
+test('binds the mobile return mode to its signed callback', async () => {
+  const fetcher = jest
+    .spyOn(global, 'fetch')
+    .mockResolvedValue(response({ status: 1, token: 'test-token' }));
+  const created = await bank.create(
+    'native-order:attempt',
+    '10000',
+    'success',
+    true,
+  );
+  const payload = JSON.parse(fetcher.mock.calls[0][1]!.body as string) as {
+    RedirectUrl: string;
+  };
+  const callback = new URL(payload.RedirectUrl);
+  expect(callback.searchParams.get('return')).toBe('native');
+  expect(
+    bank.authenticateCallback(
+      created.reference,
+      callback.searchParams.get('proof')!,
+      true,
+    ),
+  ).toBe(true);
+  expect(
+    bank.authenticateCallback(
+      created.reference,
+      callback.searchParams.get('proof')!,
+      false,
+    ),
+  ).toBe(false);
+});

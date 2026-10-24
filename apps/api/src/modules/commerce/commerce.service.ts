@@ -1361,6 +1361,7 @@ export class CommerceService {
     id: string,
     scenario: PaymentScenario,
     idempotencyKey: string,
+    nativeReturn = false,
   ) {
     return this.db.transaction(async (tx) => {
       await lockWritableAccount(tx, userId);
@@ -1430,6 +1431,7 @@ export class CommerceService {
         `${id}:${randomUUID()}`,
         due.toString(),
         scenario,
+        nativeReturn,
       );
       const payment = await one(
         tx,
@@ -1470,11 +1472,12 @@ export class CommerceService {
     res: string,
     proof: string,
     input: { ResNum: string; RefNum?: string },
+    nativeReturn = false,
   ) {
     const reference = `saman-sandbox:${res}`;
     if (
       input.ResNum !== res ||
-      !this.payments.authenticateCallback(reference, proof)
+      !this.payments.authenticateCallback(reference, proof, nativeReturn)
     )
       throw new ForbiddenException('Invalid payment callback');
     const payment = await this.db.transaction(async (tx) => {

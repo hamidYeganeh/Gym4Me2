@@ -52,10 +52,15 @@ test('accepts a bank form without app cookies, discards card data and returns to
   );
   expect(result.headers['cache-control']).toBe('no-store');
   expect(result.headers['referrer-policy']).toBe('no-referrer');
-  expect(callback).toHaveBeenCalledWith('a'.repeat(40), 'b'.repeat(64), {
-    ResNum: 'a'.repeat(40),
-    RefNum: 'receipt+/=',
-  });
+  expect(callback).toHaveBeenCalledWith(
+    'a'.repeat(40),
+    'b'.repeat(64),
+    {
+      ResNum: 'a'.repeat(40),
+      RefNum: 'receipt+/=',
+    },
+    false,
+  );
 });
 test('normalizes an empty cancelled receipt without trusting the client status', async () => {
   const result = await request(app.getHttpServer() as Server)
@@ -63,10 +68,15 @@ test('normalizes an empty cancelled receipt without trusting the client status',
     .type('form')
     .send({ ResNum: 'a'.repeat(40), RefNum: '', Status: '17' });
   expect(result.status).toBe(303);
-  expect(callback).toHaveBeenCalledWith('a'.repeat(40), 'b'.repeat(64), {
-    ResNum: 'a'.repeat(40),
-    RefNum: undefined,
-  });
+  expect(callback).toHaveBeenCalledWith(
+    'a'.repeat(40),
+    'b'.repeat(64),
+    {
+      ResNum: 'a'.repeat(40),
+      RefNum: undefined,
+    },
+    false,
+  );
 });
 test('rejects malformed attempt/proof before invoking payment service', async () => {
   const result = await request(app.getHttpServer() as Server)
@@ -75,4 +85,21 @@ test('rejects malformed attempt/proof before invoking payment service', async ()
     .send({ ResNum: 'a'.repeat(40) });
   expect(result.status).toBe(400);
   expect(callback).not.toHaveBeenCalled();
+});
+
+test('native returns only open the fixed registered order route', async () => {
+  const result = await request(app.getHttpServer() as Server)
+    .post(path + '&return=native')
+    .type('form')
+    .send({ ResNum: 'a'.repeat(40), RefNum: 'receipt' });
+  expect(result.status).toBe(303);
+  expect(result.headers.location).toBe(
+    'gym4me://order/e65f4488-eec9-4768-a30f-918ab23bc953',
+  );
+  expect(callback).toHaveBeenCalledWith(
+    'a'.repeat(40),
+    'b'.repeat(64),
+    { ResNum: 'a'.repeat(40), RefNum: 'receipt' },
+    true,
+  );
 });
