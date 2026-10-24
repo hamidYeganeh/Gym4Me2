@@ -33,8 +33,10 @@ export type Principal = {
   user: typeof users.$inferSelect;
   session: typeof authSessions.$inferSelect;
 };
-export const tokenHash = (token: string) =>
-  createHash('sha256').update(token).digest('hex');
+export const tokenHash = (token: string, liveSms = false) =>
+  createHash('sha256')
+    .update(liveSms ? `live-sms:${token}` : token)
+    .digest('hex');
 const invalidCode = () =>
   new UnauthorizedException('Backend.theCodeIsIncorrectOrExpired');
 
@@ -51,6 +53,17 @@ export class AuthService {
       throw new ServiceUnavailableException('Backend.signInIsNotConfiguredYet');
     return createHmac('sha256', secret).update(value).digest('hex');
   }
+  private demoOtpEnabled() {
+    return (
+      this.config.get('DEMO_MODE', { infer: true }) === true &&
+      this.config.get('SMS_PROVIDER', { infer: true }) === 'disabled'
+    );
+  }
+  private otpHash(id: string, code: string) {
+    // Bind challenges to delivery mode: a demo code cannot survive a live-SMS cutover.
+    const mode = this.demoOtpEnabled() ? 'demo' : 'kavenegar';
+    return this.hash(`otp:${mode}:${id}:${code}`);
+  }
   async requestOtp(
     phone: string,
     client: Client,
@@ -59,7 +72,7 @@ export class AuthService {
     requestedBy?: string,
     requestedSessionId?: string,
   ) {
-    const demo = this.config.get('DEMO_MODE', { infer: true }) === true;
+    const demo = this.demoOtpEnabled();
     if (demo) {
       const allowed = await this.database.db.execute(
         sql`select user_id from gym4me_demo_accounts where phone = ${phone}`,
@@ -69,7 +82,7 @@ export class AuthService {
     }
     const id = randomUUID();
     const code = demo ? '11111' : String(randomInt(10000, 100000));
-    const codeHash = this.hash(`${id}:${code}`);
+    const codeHash = this.otpHash(id, code);
     const now = new Date();
     await this.database.db.transaction(async (tx) => {
       // Serialize requests across API instances; IPs are hashed and are never trusted from forwarded headers.
@@ -185,7 +198,7 @@ export class AuthService {
         .set({ attempts: challenge.attempts + 1 })
         .where(eq(otpChallenges.id, id));
       const expected = Buffer.from(challenge.codeHash, 'hex');
-      const actual = Buffer.from(this.hash(`${id}:${code}`), 'hex');
+      const actual = Buffer.from(this.otpHash(id, code), 'hex');
       if (
         actual.length !== expected.length ||
         !timingSafeEqual(actual, expected)
@@ -214,7 +227,10 @@ export class AuthService {
           userId: user.id,
           client,
           transport,
-          tokenHash: tokenHash(token),
+          tokenHash: tokenHash(
+            token,
+            this.config.get('SMS_PROVIDER', { infer: true }) === 'kavenegar',
+          ),
           device: device.slice(0, 240),
           expiresAt,
         })
@@ -237,7 +253,13 @@ export class AuthService {
       .innerJoin(users, eq(users.id, authSessions.userId))
       .where(
         and(
-          eq(authSessions.tokenHash, tokenHash(token)),
+          eq(
+            authSessions.tokenHash,
+            tokenHash(
+              token,
+              this.config.get('SMS_PROVIDER', { infer: true }) === 'kavenegar',
+            ),
+          ),
           eq(authSessions.client, client),
           eq(authSessions.transport, transport),
           isNull(authSessions.revokedAt),
@@ -312,7 +334,7 @@ export class AuthService {
           .set({ attempts: challenge.attempts + 1 })
           .where(eq(otpChallenges.id, id));
         const expected = Buffer.from(challenge.codeHash, 'hex');
-        const actual = Buffer.from(this.hash(`${id}:${code}`), 'hex');
+        const actual = Buffer.from(this.otpHash(id, code), 'hex');
         if (
           actual.length !== expected.length ||
           !timingSafeEqual(actual, expected)

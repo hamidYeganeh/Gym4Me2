@@ -32,7 +32,7 @@ export class KavenegarService {
             }),
             type: 'sms',
           }),
-          signal: AbortSignal.timeout(10000),
+          signal: AbortSignal.timeout(30000),
           redirect: 'error',
         },
       );

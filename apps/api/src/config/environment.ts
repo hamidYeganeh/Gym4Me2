@@ -125,7 +125,11 @@ export function validateEnvironment(input: Record<string, unknown>) {
     !result.data.KAVENEGAR_API_KEY
   )
     throw new Error('Kavenegar provider requires its key');
-  if (result.data.DEMO_MODE && result.data.KAVENEGAR_API_KEY)
+  if (
+    result.data.DEMO_MODE &&
+    result.data.KAVENEGAR_API_KEY &&
+    result.data.SMS_PROVIDER !== 'kavenegar'
+  )
     throw new Error('Demo configuration must not include live SMS credentials');
 
   if (

@@ -3,7 +3,7 @@ import { validateEnvironment } from './environment';
 const DATABASE_URL = 'postgresql://test:example@localhost:55433/gym4me_test';
 
 describe('API environment', () => {
-  it('keeps demo mode opt-in and rejects live SMS credentials in a demo', () => {
+  it('keeps demo mode opt-in and requires explicit live SMS activation', () => {
     expect(validateEnvironment({ DATABASE_URL }).DEMO_MODE).toBe(false);
     expect(
       validateEnvironment({ DATABASE_URL, DEMO_MODE: 'true' }).DEMO_MODE,
@@ -15,6 +15,17 @@ describe('API environment', () => {
         KAVENEGAR_API_KEY: 'livekey',
       }),
     ).toThrow('live SMS');
+    const live = validateEnvironment({
+      DATABASE_URL,
+      DEMO_MODE: 'true',
+      SMS_PROVIDER: 'kavenegar',
+      KAVENEGAR_API_KEY: 'livekey',
+    });
+    expect(live.SMS_PROVIDER).toBe('kavenegar');
+    expect(live.DEMO_MODE).toBe(true);
+    expect(() =>
+      validateEnvironment({ DATABASE_URL, SMS_PROVIDER: 'kavenegar' }),
+    ).toThrow('requires its key');
   });
   it('keeps the local pilot data policy bounded and never starts retention implicitly in tests', () => {
     const env = validateEnvironment({ DATABASE_URL, NODE_ENV: 'test' });

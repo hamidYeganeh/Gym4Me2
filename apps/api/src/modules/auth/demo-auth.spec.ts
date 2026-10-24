@@ -11,7 +11,10 @@ describe('demo sign-in boundary', () => {
     const sendOtp = jest.fn();
     const auth = new AuthService(
       { db: { execute, transaction } } as unknown as DatabaseService,
-      new ConfigService<Environment, true>({ DEMO_MODE: true }),
+      new ConfigService<Environment, true>({
+        DEMO_MODE: true,
+        SMS_PROVIDER: 'disabled',
+      }),
       { sendOtp } as unknown as KavenegarService,
     );
     await expect(

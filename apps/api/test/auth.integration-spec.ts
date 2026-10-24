@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { and, eq, or, sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
-import { randomBytes, randomUUID } from 'node:crypto';
+import { createHmac, randomBytes, randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { userInfo } from 'node:os';
@@ -63,6 +63,69 @@ const delivered = new Map<string, string>();
 const sendOtp = jest.fn((number: string, code: string) => {
   delivered.set(number, code);
   return Promise.resolve();
+});
+
+test('live SMS cutover rejects demo sessions and codes while preserving OTP and password sign-in', async () => {
+  const config = app.get(ConfigService);
+  const beforeDemo = config.get<boolean>('DEMO_MODE');
+  const beforeProvider = config.get<string>('SMS_PROVIDER');
+  const number = phone();
+  try {
+    config.set('DEMO_MODE', true);
+    config.set('SMS_PROVIDER', 'kavenegar');
+    await call('get', 'profile/account', 'business', business.cookie).expect(
+      401,
+    );
+    const sent = await call('post', 'auth/otp/request')
+      .send({ phone: number })
+      .expect(201);
+    const id = payload(sent).challengeId!;
+    challengeIds.push(id);
+    const [challenge] = await db
+      .select()
+      .from(otpChallenges)
+      .where(eq(otpChallenges.id, id));
+    const correctHash = challenge.codeHash;
+    await db
+      .update(otpChallenges)
+      .set({
+        codeHash: createHmac('sha256', config.getOrThrow<string>('AUTH_SECRET'))
+          .update(`otp:demo:${id}:11111`)
+          .digest('hex'),
+      })
+      .where(eq(otpChallenges.id, id));
+    await call('post', 'auth/otp/verify')
+      .send({ challengeId: id, code: '11111' })
+      .expect(401);
+    await db
+      .update(otpChallenges)
+      .set({ codeHash: correctHash })
+      .where(eq(otpChallenges.id, id));
+    const verified = await call('post', 'auth/otp/verify')
+      .send({ challengeId: id, code: delivered.get(number) })
+      .expect(201);
+    const person = {
+      cookie: verified.headers['set-cookie'][0].split(';')[0],
+      userId: payload(verified).user!.id,
+    };
+    userIds.push(person.userId);
+    await call('get', 'profile/account', 'business', person.cookie).expect(200);
+    await call('post', 'auth/password', 'business', person.cookie)
+      .send({ password: 'SmsCutover26!' })
+      .expect(201);
+    const loggedIn = await call('post', 'auth/password/login')
+      .send({ phone: number, password: 'SmsCutover26!' })
+      .expect(201);
+    await call(
+      'get',
+      'profile/account',
+      'business',
+      loggedIn.headers['set-cookie'][0].split(';')[0],
+    ).expect(200);
+  } finally {
+    config.set('DEMO_MODE', beforeDemo);
+    config.set('SMS_PROVIDER', beforeProvider);
+  }
 });
 let app: INestApplication<App>;
 let db: DatabaseService['db'];

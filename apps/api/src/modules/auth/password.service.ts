@@ -106,7 +106,10 @@ export class PasswordService {
           client,
           transport,
           authMethod: 'password',
-          tokenHash: tokenHash(token),
+          tokenHash: tokenHash(
+            token,
+            this.config.get('SMS_PROVIDER', { infer: true }) === 'kavenegar',
+          ),
           device: device.slice(0, 240),
           expiresAt,
         })
