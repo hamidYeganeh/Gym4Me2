@@ -10,20 +10,28 @@ export interface PaymentAdapter {
     reference: string,
     amountMinor: string,
     scenario: PaymentScenario,
-  ): Promise<{ reference: string; state: 'pending' }>;
+  ): Promise<{ reference: string; state: 'pending'; gatewayUrl?: string }>;
   verify(
     reference: string,
     amountMinor: string,
     scenario: PaymentScenario,
+    bankReference?: string | null,
   ): Promise<'verified' | 'failed' | 'unknown'>;
   query(
     reference: string,
     amountMinor: string,
     scenario: PaymentScenario,
+    bankReference?: string | null,
   ): Promise<'verified' | 'failed' | 'unknown'>;
   refund(
     reference: string,
     amountMinor: string,
+    context?: {
+      provider: string;
+      reference: string;
+      amountMinor: string;
+      bankReference: string | null;
+    },
   ): Promise<{ reference: string; state: 'succeeded' }>;
   authenticateCallback(reference: string, proof: string): boolean;
 }

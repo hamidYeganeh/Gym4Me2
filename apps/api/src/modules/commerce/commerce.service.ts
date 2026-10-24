@@ -1328,7 +1328,7 @@ export class CommerceService {
       state: string;
     }>(
       db,
-      sql`SELECT id,provider,amount_minor::text,state FROM sport_payments WHERE order_id=${id} ORDER BY created_at,id`,
+      sql`SELECT id,provider,amount_minor::text,state,gateway_url FROM sport_payments WHERE order_id=${id} ORDER BY created_at,id`,
     );
     const refunds = await rows(
       db,
@@ -1342,6 +1342,7 @@ export class CommerceService {
       ...order,
       reservations,
       payments,
+      paymentProvider: this.payments.provider,
       refunds,
       balanceDueMinor: (balance > 0n ? balance : 0n).toString(),
     };
@@ -1381,7 +1382,7 @@ export class CommerceService {
           throw new ConflictException('Idempotency key reused');
         return one(
           tx,
-          sql`SELECT id,state,provider,scenario FROM sport_payments WHERE id=${receipt.result.paymentId} AND order_id=${id}`,
+          sql`SELECT id,state,provider,scenario,gateway_url FROM sport_payments WHERE id=${receipt.result.paymentId} AND order_id=${id}`,
         );
       }
       const remember = async (payment: Row) => {
@@ -1404,7 +1405,7 @@ export class CommerceService {
         scenario: PaymentScenario;
       }>(
         tx,
-        sql`SELECT id,state,provider,scenario FROM sport_payments WHERE order_id=${id} AND state IN ('pending','unknown') ORDER BY created_at DESC LIMIT 1`,
+        sql`SELECT id,state,provider,scenario,gateway_url FROM sport_payments WHERE order_id=${id} AND state IN ('pending','unknown') ORDER BY created_at DESC LIMIT 1`,
       );
       if (previous[0]) return remember(previous[0]);
       const [received] = await rows<{ amount: string }>(
@@ -1432,7 +1433,7 @@ export class CommerceService {
       );
       const payment = await one(
         tx,
-        sql`INSERT INTO sport_payments(order_id,provider,reference,amount_minor,scenario) VALUES(${id},${this.payments.provider},${created.reference},${due.toString()},${scenario}) RETURNING id,state,provider,scenario`,
+        sql`INSERT INTO sport_payments(order_id,provider,reference,amount_minor,scenario,gateway_url) VALUES(${id},${this.payments.provider},${created.reference},${due.toString()},${scenario},${created.gatewayUrl ?? null}) RETURNING id,state,provider,scenario,gateway_url`,
       );
       await this.event(
         tx,
@@ -1456,7 +1457,7 @@ export class CommerceService {
       user_id: string;
     }>(
       this.db,
-      sql`SELECT p.id,p.order_id,o.user_id FROM sport_payments p JOIN sport_orders o ON o.id=p.order_id WHERE p.reference=${reference} AND p.provider=${this.payments.provider}`,
+      sql`SELECT p.id,p.order_id,o.user_id FROM sport_payments p JOIN sport_orders o ON o.id=p.order_id WHERE p.reference=${reference} AND p.provider='saman_mock'`,
     );
     return this.verifyPayment(
       payment.user_id,
@@ -1464,6 +1465,59 @@ export class CommerceService {
       false,
       payment.id,
     );
+  }
+  async samanPaymentCallback(
+    res: string,
+    proof: string,
+    input: { ResNum: string; RefNum?: string },
+  ) {
+    const reference = `saman-sandbox:${res}`;
+    if (
+      input.ResNum !== res ||
+      !this.payments.authenticateCallback(reference, proof)
+    )
+      throw new ForbiddenException('Invalid payment callback');
+    const payment = await this.db.transaction(async (tx) => {
+      const payment = await one<{
+        id: string;
+        order_id: string;
+        user_id: string;
+        bank_reference: string | null;
+        state: string;
+      }>(
+        tx,
+        sql`SELECT p.id,p.order_id,o.user_id,p.bank_reference,p.state FROM sport_payments p JOIN sport_orders o ON o.id=p.order_id WHERE p.reference=${reference} AND p.provider='saman_sandbox' FOR UPDATE OF p`,
+      );
+      if (input.RefNum) {
+        if (payment.bank_reference && payment.bank_reference !== input.RefNum)
+          throw new ConflictException('Payments.mismatch');
+        const reused = await rows(
+          tx,
+          sql`SELECT id FROM sport_payments WHERE provider='saman_sandbox' AND bank_reference=${input.RefNum} AND id<>${payment.id}`,
+        );
+        if (reused.length) throw new ConflictException('Payments.mismatch');
+        // The unique index also protects concurrent callbacks for different orders.
+        await rows(
+          tx,
+          sql`UPDATE sport_payments SET bank_reference=${input.RefNum} WHERE id=${payment.id}`,
+        );
+      } else if (!payment.bank_reference && payment.state !== 'verified') {
+        // Cancellation can only release an attempt with no bank receipt attached.
+        await rows(
+          tx,
+          sql`UPDATE sport_payments SET state='failed' WHERE id=${payment.id}`,
+        );
+      }
+      return payment;
+    });
+    if (input.RefNum || payment.bank_reference)
+      await this.verifyPayment(
+        payment.user_id,
+        payment.order_id,
+        false,
+        payment.id,
+      );
+    return payment.order_id;
   }
   async verifyPayment(
     userId: string,
@@ -1480,6 +1534,7 @@ export class CommerceService {
       reference: string;
       amount_minor: string;
       scenario: PaymentScenario;
+      bank_reference: string | null;
       state: string;
     }>(
       this.db,
@@ -1487,11 +1542,16 @@ export class CommerceService {
         ? sql`SELECT * FROM sport_payments WHERE id=${paymentId} AND order_id=${id}`
         : sql`SELECT * FROM sport_payments WHERE order_id=${id} ORDER BY created_at DESC,id DESC LIMIT 1`,
     );
-    if (payment.state === 'verified') return this.order(this.db, userId, id);
+    if (
+      payment.state === 'verified' ||
+      (payment.state === 'failed' && !payment.bank_reference)
+    )
+      return this.order(this.db, userId, id);
     const state = await this.payments[query ? 'query' : 'verify'](
       payment.reference,
       payment.amount_minor,
       payment.scenario,
+      payment.bank_reference,
     );
     return this.db.transaction(async (tx) => {
       await lockWritableAccount(tx, userId);
@@ -2658,9 +2718,38 @@ export class CommerceService {
       sql`SELECT * FROM sport_refunds WHERE order_id=${orderId} AND state IN ('requested','unknown') ${refundId ? sql`AND id=${refundId}` : sql``}`,
     );
     for (const refund of refunds) {
+      const settled = await rows<{
+        provider: string;
+        reference: string;
+        amount_minor: string;
+        bank_reference: string | null;
+      }>(
+        this.db,
+        sql`SELECT provider,reference,amount_minor::text,bank_reference FROM sport_payments WHERE order_id=${orderId} AND state='verified' ORDER BY created_at`,
+      );
+      const bankPayments = settled.filter(
+        (p) => p.provider === 'saman_sandbox',
+      );
+      // Partial refunds and orders split across receipts require a reviewed transfer.
+      // They remain requested; never post a fictitious successful bank reversal.
+      if (
+        bankPayments.length &&
+        (settled.length !== 1 ||
+          bankPayments[0].amount_minor !== refund.amount_minor)
+      )
+        throw new ConflictException('Payments.refundReview');
+      const source = bankPayments[0];
       const result = await this.payments.refund(
         refund.source_key,
         refund.amount_minor,
+        source
+          ? {
+              provider: source.provider,
+              reference: source.reference,
+              amountMinor: source.amount_minor,
+              bankReference: source.bank_reference,
+            }
+          : undefined,
       );
       await this.db.transaction(async (tx) => {
         const order = await one<Order>(

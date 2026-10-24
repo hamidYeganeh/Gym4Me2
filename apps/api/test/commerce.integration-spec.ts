@@ -12,7 +12,7 @@ import sharp from 'sharp';
 import { StorageService } from '../src/modules/clubs/storage.service';
 import { MediaRetentionService } from '../src/modules/clubs/media-retention.service';
 import { SportsMediaService } from '../src/modules/commerce/media.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { sql } from 'drizzle-orm';
 import { randomInt, randomUUID } from 'node:crypto';
@@ -57,10 +57,7 @@ import {
   eligibilitySchema,
   serviceSchema,
 } from '../src/modules/commerce/commerce.contracts';
-import {
-  PAYMENT_ADAPTER,
-  SamanMockPaymentAdapter,
-} from '../src/modules/commerce/sandbox-payment';
+import { SamanMockPaymentAdapter } from '../src/modules/commerce/sandbox-payment';
 import type { TestingModule } from '@nestjs/testing';
 const databaseUrl =
   process.env.TEST_DATABASE_URL ??
@@ -1089,6 +1086,127 @@ test('payment confirmation is server verified and repeated confirmation posts on
   );
   expect(journals).toHaveLength(1);
 });
+test('BankTest callbacks require signed attempt, verified receipt and unique bank reference', async () => {
+  const config = testingModule.get(ConfigService);
+  const previousProvider = config.get<string>('PAYMENT_PROVIDER');
+  const previousTerminal = config.get<string>('SAMAN_SANDBOX_TERMINAL_ID');
+  config.set('PAYMENT_PROVIDER', 'saman_sandbox');
+  config.set('SAMAN_SANDBOX_TERMINAL_ID', '123456');
+  const fetcher = jest.spyOn(global, 'fetch');
+  const token = () =>
+    new Response(JSON.stringify({ status: 1, token: randomUUID() }));
+  const receipt = `receipt-${randomUUID()}`;
+  try {
+    const service = await create('class', '2500000');
+    const slot = await occurrence(service.id, 10);
+    const makeOrder = (userId: string) =>
+      commerce.checkout(userId, {
+        serviceId: service.id,
+        occurrenceId: slot.id,
+        idempotencyKey: randomUUID(),
+      });
+    const order = await makeOrder(athlete);
+    fetcher.mockResolvedValueOnce(token());
+    const key = randomUUID();
+    const started = await commerce.startPayment(
+      athlete,
+      order.id,
+      'success',
+      key,
+    );
+    const replay = await commerce.startPayment(
+      athlete,
+      order.id,
+      'success',
+      key,
+    );
+    expect(replay).toMatchObject({
+      id: started.id,
+      provider: 'saman_sandbox',
+      gateway_url: started.gateway_url,
+    });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    const payload = JSON.parse(fetcher.mock.calls[0][1]!.body as string) as {
+      RedirectUrl: string;
+      ResNum: string;
+    };
+    const proof = new URL(payload.RedirectUrl).searchParams.get('proof')!;
+    const waiting = await commerce.verifyPayment(athlete, order.id);
+    expect(waiting.status).toBe('awaiting_payment');
+    expect(waiting.payments[0].state).toBe('unknown');
+    await expect(
+      commerce.samanPaymentCallback(payload.ResNum, '0'.repeat(64), {
+        ResNum: payload.ResNum,
+        RefNum: receipt,
+      }),
+    ).rejects.toThrow('Invalid payment callback');
+    await expect(
+      commerce.samanPaymentCallback(payload.ResNum, proof, {
+        ResNum: '0'.repeat(40),
+        RefNum: receipt,
+      }),
+    ).rejects.toThrow('Invalid payment callback');
+    fetcher.mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          Success: true,
+          ResultCode: 0,
+          TransactionDetail: {
+            RefNum: receipt,
+            TerminalNumber: '123456',
+            OrginalAmount: 2500000,
+          },
+        }),
+      ),
+    );
+    expect(
+      await commerce.samanPaymentCallback(payload.ResNum, proof, {
+        ResNum: payload.ResNum,
+        RefNum: receipt,
+      }),
+    ).toBe(order.id);
+    await commerce.samanPaymentCallback(payload.ResNum, proof, {
+      ResNum: payload.ResNum,
+      RefNum: receipt,
+    });
+    const result = await commerce.myOrder(athlete, order.id);
+    expect(result.status).toBe('paid');
+    expect(result.reservations[0].status).toBe('confirmed');
+    expect(
+      await rows(
+        db,
+        sql`SELECT id FROM sport_journals WHERE order_id=${order.id} AND source_key LIKE 'payment:%'`,
+      ),
+    ).toHaveLength(1);
+    const second = await makeOrder(other);
+    fetcher.mockResolvedValueOnce(token());
+    await commerce.startPayment(other, second.id, 'success', randomUUID());
+    const last = fetcher.mock.calls.at(-1)!;
+    const secondPayload = JSON.parse(last[1]!.body as string) as {
+      RedirectUrl: string;
+      ResNum: string;
+    };
+    const secondProof = new URL(secondPayload.RedirectUrl).searchParams.get(
+      'proof',
+    )!;
+    await expect(
+      commerce.samanPaymentCallback(secondPayload.ResNum, secondProof, {
+        ResNum: secondPayload.ResNum,
+        RefNum: receipt,
+      }),
+    ).rejects.toThrow('Payments.mismatch');
+    await commerce.samanPaymentCallback(secondPayload.ResNum, secondProof, {
+      ResNum: secondPayload.ResNum,
+    });
+    const cancelled = await commerce.myOrder(other, second.id);
+    expect(cancelled.payments[0].state).toBe('failed');
+    expect(cancelled.status).toBe('awaiting_payment');
+  } finally {
+    fetcher.mockRestore();
+    config.set('PAYMENT_PROVIDER', previousProvider);
+    config.set('SAMAN_SANDBOX_TERMINAL_ID', previousTerminal);
+  }
+});
 test('authenticated mock callback targets its own attempt and is idempotent', async () => {
   const service = await create('class', '2500000');
   const slot = await occurrence(service.id);
@@ -1116,7 +1234,9 @@ test('authenticated mock callback targets its own attempt and is idempotent', as
   );
   const firstReference = payments.find((p) => p.id === first.id)!.reference;
   const secondReference = payments.find((p) => p.id === second.id)!.reference;
-  const adapter = testingModule.get<SamanMockPaymentAdapter>(PAYMENT_ADAPTER);
+  const adapter = testingModule.get<SamanMockPaymentAdapter>(
+    SamanMockPaymentAdapter,
+  );
   await expect(
     commerce.mockPaymentCallback(secondReference, '0'.repeat(64)),
   ).rejects.toThrow('Invalid payment callback');

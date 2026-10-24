@@ -27,6 +27,21 @@ describe('API environment', () => {
       validateEnvironment({ DATABASE_URL, SMS_PROVIDER: 'kavenegar' }),
     ).toThrow('requires its key');
   });
+  it('requires an explicit terminal for BankTest and keeps the mock default', () => {
+    expect(validateEnvironment({ DATABASE_URL }).PAYMENT_PROVIDER).toBe(
+      'saman_mock',
+    );
+    expect(() =>
+      validateEnvironment({ DATABASE_URL, PAYMENT_PROVIDER: 'saman_sandbox' }),
+    ).toThrow('SAMAN_SANDBOX_TERMINAL_ID');
+    expect(
+      validateEnvironment({
+        DATABASE_URL,
+        PAYMENT_PROVIDER: 'saman_sandbox',
+        SAMAN_SANDBOX_TERMINAL_ID: '123456',
+      }).PAYMENT_PROVIDER,
+    ).toBe('saman_sandbox');
+  });
   it('keeps the local pilot data policy bounded and never starts retention implicitly in tests', () => {
     const env = validateEnvironment({ DATABASE_URL, NODE_ENV: 'test' });
     expect(env.RETENTION_ENABLED).toBe(false);

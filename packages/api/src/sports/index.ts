@@ -251,7 +251,14 @@ export type OrderDto = {
     eligibility?: ServiceEligibilityDto;
   };
   reservations: BookingDto[];
-  payments: { id: string; state: string; provider: string }[];
+  paymentProvider?: string;
+  payments: {
+    id: string;
+    state: string;
+    provider: string;
+    gatewayUrl?: string | null;
+    amountMinor?: string;
+  }[];
   refunds: { id: string; state: string; amountMinor: string; reason: string }[];
 };
 export type CalendarSettingsDto = {

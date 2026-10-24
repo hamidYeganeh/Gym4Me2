@@ -60,6 +60,10 @@ import {
 } from './commerce/community.controller';
 import { CommerceService } from './commerce/commerce.service';
 import {
+  ConfiguredPaymentAdapter,
+  SamanSandboxPaymentAdapter,
+} from './commerce/saman-sandbox';
+import {
   PAYMENT_ADAPTER,
   SamanMockPaymentAdapter,
 } from './commerce/sandbox-payment';
@@ -200,7 +204,9 @@ import {
     CoachingRecordsService,
     { provide: APP_INTERCEPTOR, useClass: DemoJobsInterceptor },
     CommerceService,
-    { provide: PAYMENT_ADAPTER, useClass: SamanMockPaymentAdapter },
+    SamanMockPaymentAdapter,
+    SamanSandboxPaymentAdapter,
+    { provide: PAYMENT_ADAPTER, useClass: ConfiguredPaymentAdapter },
     CommunityService,
     SportsCalendarService,
     SportsConversationService,

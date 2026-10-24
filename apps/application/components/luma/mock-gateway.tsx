@@ -17,7 +17,7 @@ import {
   useLuma,
 } from "./common";
 
-/** A local handoff only: the API performs the authoritative payment verification. */
+/** The API selects the provider and performs authoritative payment verification. */
 export function MockGateway() {
   const t = useLuma();
   const router = useRouter();
@@ -37,7 +37,15 @@ export function MockGateway() {
         <Empty />
       </LumaPage>
     );
-  const pending = order.data?.payments.some((p) => p.state === "pending");
+  const pending = order.data?.payments.find((p) =>
+    ["pending", "unknown"].includes(p.state),
+  );
+  const gatewayUrl =
+    pending?.provider === "saman_sandbox" &&
+    pending.gatewayUrl &&
+    isBankTestUrl(pending.gatewayUrl)
+      ? pending.gatewayUrl
+      : null;
   return (
     <LumaPage title={t("mockGateway")} back={returnUrl} actions={<span />}>
       <p className="luma-meta" role="note">
@@ -51,9 +59,16 @@ export function MockGateway() {
           <div className="luma-group mt-6">
             <Row title={order.data.snapshot.title} state={order.data.status} />
             <Row title={t("payNow")}>
-              <Price value={order.data.balanceDueMinor} />
+              <Price
+                value={pending?.amountMinor ?? order.data.balanceDueMinor}
+              />
             </Row>
-            {pending && (
+            {gatewayUrl && (
+              <a className="luma-cta" href={gatewayUrl} rel="noreferrer">
+                {t("openMockGateway")}
+              </a>
+            )}
+            {pending && pending.provider !== "saman_sandbox" && (
               <button
                 className="luma-cta"
                 disabled={verify.isPending}
@@ -73,4 +88,17 @@ export function MockGateway() {
       </QueryState>
     </LumaPage>
   );
+}
+
+function isBankTestUrl(value: string) {
+  try {
+    const url = new URL(value);
+    return (
+      url.origin === "https://sandbox.banktest.ir" &&
+      url.pathname === "/saman/sep.shaparak.ir/OnlinePG/SendToken" &&
+      Boolean(url.searchParams.get("token"))
+    );
+  } catch {
+    return false;
+  }
 }

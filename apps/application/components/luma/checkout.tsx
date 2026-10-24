@@ -391,23 +391,25 @@ export function PaymentStatus() {
                   ["pending", "unknown"].includes(p.state),
                 ) ? (
                   <>
-                    <Field label={t("pay")}>
-                      <NativeSelect
-                        value={scenario}
-                        onChange={(e) => {
-                          setScenario(e.target.value);
-                          paymentKey.current = null;
-                        }}
-                      >
-                        {(
-                          ["success", "failure", "timeout", "late"] as const
-                        ).map((v) => (
-                          <option value={v} key={v}>
-                            {t(v)}
-                          </option>
-                        ))}
-                      </NativeSelect>
-                    </Field>
+                    {order.paymentProvider !== "saman_sandbox" && (
+                      <Field label={t("pay")}>
+                        <NativeSelect
+                          value={scenario}
+                          onChange={(e) => {
+                            setScenario(e.target.value);
+                            paymentKey.current = null;
+                          }}
+                        >
+                          {(
+                            ["success", "failure", "timeout", "late"] as const
+                          ).map((v) => (
+                            <option value={v} key={v}>
+                              {t(v)}
+                            </option>
+                          ))}
+                        </NativeSelect>
+                      </Field>
+                    )}
                     <button
                       className="luma-cta"
                       disabled={payment.isPending}
@@ -430,7 +432,9 @@ export function PaymentStatus() {
                 ) : (
                   <>
                     <p className="luma-meta mt-6">{t("paymentPending")}</p>
-                    {order.payments.some((p) => p.state === "pending") && (
+                    {order.payments.some((p) =>
+                      ["pending", "unknown"].includes(p.state),
+                    ) && (
                       <Link
                         className="luma-cta"
                         href={`/checkout/mock-gateway?order=${id}`}

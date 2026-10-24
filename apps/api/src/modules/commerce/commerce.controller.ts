@@ -6,10 +6,14 @@ import {
   Post,
   Query,
   Req,
+  Res,
   UseGuards,
   ForbiddenException,
 } from '@nestjs/common';
 import { z } from 'zod';
+import { ConfigService } from '@nestjs/config';
+import type { Response } from 'express';
+import type { Environment } from '../../config/environment';
 import { ApiBody, ApiQuery } from '@nestjs/swagger';
 import { bookingPageSchema } from './booking-page';
 import {
@@ -35,7 +39,45 @@ const id = (value: string) => parse(z.uuid(), value);
 const dto = async (value: Promise<unknown>) => jsonDto(await value);
 @DomainController('sports', 'payment-callbacks')
 export class SportsPaymentCallbacksController {
-  constructor(private readonly service: CommerceService) {}
+  constructor(
+    private readonly service: CommerceService,
+    private readonly config: ConfigService<Environment, true>,
+  ) {}
+
+  @Post('saman')
+  async saman(
+    @Query('res') res: string,
+    @Query('proof') proof: string,
+    @Body() body: unknown,
+    @Res() response: Response,
+  ) {
+    const input = parse(
+      z.object({
+        ResNum: z.string().regex(/^[a-f0-9]{40}$/),
+        RefNum: z.preprocess(
+          (value) => (value === '' ? undefined : value),
+          z
+            .string()
+            .regex(/^[a-zA-Z0-9+/_=-]{1,200}$/)
+            .optional(),
+        ),
+      }),
+      body,
+    );
+    const orderId = await this.service.samanPaymentCallback(
+      parse(z.string().regex(/^[a-f0-9]{40}$/), res),
+      parse(z.string().regex(/^[a-f0-9]{64}$/), proof),
+      input,
+    );
+    const destination = new URL(
+      '/checkout/status',
+      this.config.get('AUTH_APPLICATION_ORIGIN', { infer: true }),
+    );
+    destination.searchParams.set('order', orderId);
+    response.setHeader('Cache-Control', 'no-store');
+    response.setHeader('Referrer-Policy', 'no-referrer');
+    response.redirect(303, destination.href);
+  }
 
   @Post('saman-mock')
   @JsonBody({ reference: { type: 'string' }, proof: { type: 'string' } })

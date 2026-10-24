@@ -2661,5 +2661,10 @@
     "scheduleView": "Schedule view",
     "quickActions": "Quick access",
     "slideConfirm": "Slide to {action}"
+  },
+  "Payments": {
+    "unavailable": "The test payment service is temporarily unavailable. Please try again.",
+    "mismatch": "The bank receipt does not match this payment.",
+    "refundReview": "This refund needs review; the test bank only supports reversing a whole transaction."
   }
 }

@@ -45,6 +45,13 @@ const environmentSchema = z.object({
     .optional(),
   WEB_PUSH_SUBJECT: z.url().default('https://gym4me.ir'),
   SMS_PROVIDER: z.enum(['disabled', 'kavenegar']).default('disabled'),
+  PAYMENT_PROVIDER: z
+    .enum(['saman_mock', 'saman_sandbox'])
+    .default('saman_mock'),
+  SAMAN_SANDBOX_TERMINAL_ID: z
+    .string()
+    .regex(/^\d{1,15}$/)
+    .optional(),
   KAVENEGAR_API_KEY: z.preprocess(
     (value) =>
       value === 'KAVEHNEGARD_API' || value === '' ? undefined : value,
@@ -125,6 +132,11 @@ export function validateEnvironment(input: Record<string, unknown>) {
     !result.data.KAVENEGAR_API_KEY
   )
     throw new Error('Kavenegar provider requires its key');
+  if (
+    result.data.PAYMENT_PROVIDER === 'saman_sandbox' &&
+    !result.data.SAMAN_SANDBOX_TERMINAL_ID
+  )
+    throw new Error('Saman sandbox requires SAMAN_SANDBOX_TERMINAL_ID');
   if (
     result.data.DEMO_MODE &&
     result.data.KAVENEGAR_API_KEY &&
