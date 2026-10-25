@@ -40,7 +40,9 @@ export async function clearExpiredNativeExports(
   });
   for (const file of files) {
     if (
-      /^account-[0-9a-f-]{36}\.json$/i.test(file.name) &&
+      /^(account-[0-9a-f-]{36}\.json|plan-[0-9a-f-]{36}\.pdf)$/i.test(
+        file.name,
+      ) &&
       adapter.now() - file.mtime > lifetime
     ) {
       await adapter.files.deleteFile({
@@ -48,6 +50,38 @@ export async function clearExpiredNativeExports(
         directory: Directory.Cache,
       });
     }
+  }
+}
+export async function exportNativePdf(
+  bytes: Uint8Array,
+  adapter: ExportPlatform = platform,
+) {
+  if (
+    !adapter.native() ||
+    !adapter.available("Filesystem") ||
+    !adapter.available("Share") ||
+    bytes.length > 8 * 1024 * 1024 ||
+    !(await adapter.share.canShare()).value
+  )
+    throw new Error("Training.pdfUnavailable");
+  const path = `${folder}/plan-${adapter.id()}.pdf`;
+  try {
+    await clearExpiredNativeExports(adapter);
+    let binary = "";
+    for (let i = 0; i < bytes.length; i += 8192)
+      binary += String.fromCharCode(...bytes.subarray(i, i + 8192));
+    const saved = await adapter.files.writeFile({
+      path,
+      data: btoa(binary),
+      directory: Directory.Cache,
+      recursive: true,
+    });
+    await adapter.share.share({ files: [saved.uri] });
+  } catch {
+    await adapter.files
+      .deleteFile({ path, directory: Directory.Cache })
+      .catch(() => undefined);
+    throw new Error("Training.pdfUnavailable");
   }
 }
 export async function exportNativeAccount(

@@ -15,6 +15,7 @@ const environmentSchema = z.object({
     .enum(['development', 'test', 'production'])
     .default('development'),
   API_HOST: z.string().min(1).default('0.0.0.0'),
+  AUTH_WEBSITE_ORIGIN: z.url().default('http://localhost:7084'),
   PORT: z.coerce.number().int().min(1).max(65535).default(7088),
   DATABASE_URL: databaseUrl,
   DEMO_MODE: z
@@ -33,6 +34,20 @@ const environmentSchema = z.object({
     .pipe(z.array(z.url()).min(1)),
   API_DOCS_ENABLED: z.enum(['true', 'false']).optional(),
   AUTH_SECRET: z.string().min(32).optional(),
+  FCM_SERVICE_ACCOUNT_JSON: z.string().max(20000).optional(),
+  APNS_PRIVATE_KEY: z.string().max(10000).optional(),
+  APNS_KEY_ID: z
+    .string()
+    .regex(/^[A-Z0-9]{10}$/)
+    .optional(),
+  APNS_TEAM_ID: z
+    .string()
+    .regex(/^[A-Z0-9]{10}$/)
+    .optional(),
+  APNS_SANDBOX: z
+    .enum(['true', 'false'])
+    .default('true')
+    .transform((v) => v === 'true'),
   PUSH_JOBS_SECRET: z.string().min(32).max(256).optional(),
   PUSH_PROVIDER: z.enum(['disabled', 'web-push']).default('disabled'),
   WEB_PUSH_PUBLIC_KEY: z

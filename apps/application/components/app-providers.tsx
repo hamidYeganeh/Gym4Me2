@@ -8,7 +8,9 @@ import { ThemeProvider, useTheme } from "@repo/theme/provider";
 import { DirectionProvider } from "@repo/ui/kit/Direction";
 import { TooltipProvider } from "@repo/ui/kit/Tooltip";
 import { Toaster } from "@repo/ui/kit/Sonner";
+import { TrainingPdfProvider } from "@repo/ui/training";
 import { LumaShell } from "./luma/shell";
+import { NativePushRuntime } from "./luma/native-device-notifications";
 import { createNativeFetch } from "../lib/native-fetch";
 import { nativeVault } from "../lib/native-vault";
 import { FavoritesSync } from "./discovery/use-saved-club";
@@ -146,28 +148,41 @@ function DirectionAndMotion({ children }: { children: ReactNode }) {
               : undefined
           }
         >
-          <DirectionProvider dir={direction}>
-            <TooltipProvider>
-              <NativeRuntime />
-              {!qa && <FavoritesSync />}
-              <LumaShell>{children}</LumaShell>
-              <Toaster
-                dir={direction}
-                offset={{
-                  top: "calc(1rem + var(--app-safe-top))",
-                  bottom: "calc(1rem + var(--app-safe-bottom))",
-                  left: "calc(1rem + var(--app-safe-left))",
-                  right: "calc(1rem + var(--app-safe-right))",
-                }}
-                mobileOffset={{
-                  top: "calc(1rem + var(--app-safe-top))",
-                  bottom: "calc(1rem + var(--app-safe-bottom))",
-                  left: "calc(1rem + var(--app-safe-left))",
-                  right: "calc(1rem + var(--app-safe-right))",
-                }}
-              />
-            </TooltipProvider>
-          </DirectionProvider>
+          <TrainingPdfProvider
+            sharePdf={
+              process.env.NEXT_PUBLIC_NATIVE_EXPORT === "true"
+                ? async (bytes) => {
+                    const { exportNativePdf } =
+                      await import("../lib/native-export");
+                    await exportNativePdf(bytes);
+                  }
+                : undefined
+            }
+          >
+            <DirectionProvider dir={direction}>
+              <TooltipProvider>
+                <NativeRuntime />
+                <NativePushRuntime />
+                {!qa && <FavoritesSync />}
+                <LumaShell>{children}</LumaShell>
+                <Toaster
+                  dir={direction}
+                  offset={{
+                    top: "calc(1rem + var(--app-safe-top))",
+                    bottom: "calc(1rem + var(--app-safe-bottom))",
+                    left: "calc(1rem + var(--app-safe-left))",
+                    right: "calc(1rem + var(--app-safe-right))",
+                  }}
+                  mobileOffset={{
+                    top: "calc(1rem + var(--app-safe-top))",
+                    bottom: "calc(1rem + var(--app-safe-bottom))",
+                    left: "calc(1rem + var(--app-safe-left))",
+                    right: "calc(1rem + var(--app-safe-right))",
+                  }}
+                />
+              </TooltipProvider>
+            </DirectionProvider>
+          </TrainingPdfProvider>
         </AccountExportProvider>
       </OtpAutofillProvider>
     </ApiProvider>

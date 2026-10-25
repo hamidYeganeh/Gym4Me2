@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Flame, Clock, Plus } from "lucide-react";
+import { ArrowUpRight, Flame, Clock, Plus } from "lucide-react";
 import { BookmarkIcon } from "../../icons";
 import { cn } from "../../lib/utils";
 import { Button } from "../Button";
@@ -36,7 +36,7 @@ export function ClassCard({
           aria-label={classItem.title}
         />
       )}
-      <div className={s.hero()}>
+      <div data-slot="class-card-media" className={s.hero()}>
         {photo && photo.src !== failedPhoto && (
           <Image
             src={photo.src}
@@ -49,56 +49,66 @@ export function ClassCard({
             onError={() => setFailedPhoto(photo.src)}
           />
         )}
-        <div className={s.top()}>
-          <Badge variant="secondary">{classItem.level}</Badge>
+        <div className={s.gradient()} />
+      </div>
+      <div className={s.top()}>
+        <Badge variant="outline" className={s.level()}>
+          {classItem.level}
+        </Badge>
+        <p className={s.duration()}>
+          <Clock aria-hidden="true" />
+          <span>
+            {number.format(classItem.minutes)} {labels.minutes}
+          </span>
+        </p>
+      </div>
+      <div data-slot="class-card-content" className={s.content()}>
+        <div className={s.details()}>
+          <dl className={s.metrics()}>
+            {[
+              {
+                Icon: Flame,
+                value: number.format(classItem.calories),
+                label: labels.calories,
+              },
+              {
+                Icon: Plus,
+                value: new Intl.NumberFormat(locale, {
+                  signDisplay: "always",
+                }).format(classItem.score),
+                label: labels.score,
+              },
+            ].map(({ Icon, value, label }) => (
+              <div key={label}>
+                <dt className="sr-only">{label}</dt>
+                <dd className={s.value()}>
+                  <Icon aria-hidden="true" />
+                  <bdi>{value}</bdi>
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <h2 className={s.title()}>{classItem.title}</h2>
+          <p className={s.coach()}>{classItem.coachName}</p>
+        </div>
+        <div className={s.actions()}>
           {onSavedChange && (
             <Button
+              type="button"
               variant="image"
               size="icon-lg"
+              className={s.save()}
               aria-label={saved ? labels.unsave : labels.save}
               aria-pressed={saved}
               onClick={() => onSavedChange(!saved)}
             >
-              <BookmarkIcon />
+              <BookmarkIcon aria-hidden="true" />
             </Button>
           )}
+          <span aria-hidden="true" className={s.arrow()}>
+            <ArrowUpRight className="[&:dir(rtl)]:-rotate-90" />
+          </span>
         </div>
-      </div>
-      <div className={s.content()}>
-        <h2 className={s.title()}>{classItem.title}</h2>
-        <p className={s.coach()}>{classItem.coachName}</p>
-        <dl className={s.metrics()}>
-          {[
-            {
-              Icon: Flame,
-              value: number.format(classItem.calories),
-              label: labels.calories,
-              color: s.energy(),
-            },
-            {
-              Icon: Clock,
-              value: number.format(classItem.minutes),
-              label: labels.minutes,
-              color: "",
-            },
-            {
-              Icon: Plus,
-              value: new Intl.NumberFormat(locale, {
-                signDisplay: "always",
-              }).format(classItem.score),
-              label: labels.score,
-              color: s.score(),
-            },
-          ].map(({ Icon, value, label, color }) => (
-            <div key={label}>
-              <dd className={s.value()}>
-                <Icon aria-hidden="true" className={color} />
-                {value}
-              </dd>
-              <dt className={s.label()}>{label}</dt>
-            </div>
-          ))}
-        </dl>
       </div>
     </article>
   );

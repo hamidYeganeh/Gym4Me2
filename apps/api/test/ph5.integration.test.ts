@@ -630,7 +630,7 @@ void test('PH5 repeated changes to session outcome remain compensating, never lo
 void test('PH5 financial totals remain complete when statement lists are paginated', async () => {
   const f = await fixture();
   await db.execute(
-    sql`WITH made AS(INSERT INTO business_statements(organization_id,branch_id,coach_id,from_on,to_on,created_by) SELECT ${f.org},${f.branch},${f.coach},d::date,d::date,${f.owner} FROM generate_series('2021-01-01'::date,'2021-04-11'::date,interval '1 day') d RETURNING id) INSERT INTO business_earnings(statement_id,contract_id,source_key,amount_minor,basis_snapshot) SELECT id,${f.contract},'page-test:'||id::text,1,'{}'::jsonb FROM made`,
+    sql`WITH made AS(INSERT INTO business_statements(organization_id,branch_id,coach_id,from_on,to_on,created_by) SELECT ${f.org},${f.branch},${f.coach},'2021-01-01'::date+d,'2021-01-01'::date+d,${f.owner} FROM generate_series(0,100) d RETURNING id) INSERT INTO business_earnings(statement_id,contract_id,source_key,amount_minor,basis_snapshot) SELECT id,${f.contract},'page-test:'||id::text,1,'{}'::jsonb FROM made`,
   );
   const first = await service.overview(f.owner, 'business', {
     organizationId: f.org,

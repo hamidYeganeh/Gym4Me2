@@ -42,11 +42,17 @@ export class ClientGuard implements CanActivate {
     // Bind cookies to a surface even when apps share a hostname on different ports.
     // Browsers may omit Origin for GET; a same-surface Referer is required then.
     const native = sessionTransport(request) === 'native';
+    // The public website may read/update only the current account's discovery location.
+    const websiteLocation =
+      client === 'application' &&
+      /\/profile\/account\/location\/?$/.test(request.path) &&
+      ['GET', 'PATCH'].includes(request.method) &&
+      origin === this.config.get('AUTH_WEBSITE_ORIGIN', { infer: true });
     if (
       native
         ? client !== 'application' ||
           !['capacitor://localhost', 'https://localhost'].includes(origin ?? '')
-        : origin !== origins[client]
+        : origin !== origins[client] && !websiteLocation
     )
       throw new ForbiddenException('Backend.requestOriginIsNotAllowed');
     return true;

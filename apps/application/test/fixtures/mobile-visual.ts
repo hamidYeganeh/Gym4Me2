@@ -131,6 +131,7 @@ export function createMobileFixtureFetch(
       headers: { "Content-Type": "application/json" },
     });
   const order: OrderDto = {
+    organizationId: "00000000-0000-4000-8000-000000000001",
     id: booking.orderId,
     amountMinor: booking.amountMinor,
     refundedMinor: "0",

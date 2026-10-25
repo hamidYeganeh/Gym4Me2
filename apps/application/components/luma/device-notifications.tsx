@@ -9,6 +9,7 @@ import {
 } from "@repo/api/web-push";
 import { Button } from "@repo/ui/kit/Button";
 import { Card, CardContent } from "@repo/ui/kit/Card";
+import { NativeDeviceNotifications } from "./native-device-notifications";
 
 async function worker() {
   const registration = await navigator.serviceWorker.register("/push-sw.js", {
@@ -47,6 +48,13 @@ function applicationKey(value: string) {
   return Uint8Array.from(raw, (char) => char.charCodeAt(0));
 }
 export function DeviceNotifications() {
+  return process.env.NEXT_PUBLIC_NATIVE_EXPORT === "true" ? (
+    <NativeDeviceNotifications />
+  ) : (
+    <WebDeviceNotifications />
+  );
+}
+function WebDeviceNotifications() {
   const t = useTranslations("DeviceNotifications"),
     locale = useLocale();
   const { api } = useApiContext(),

@@ -6,6 +6,7 @@ export type CatalogSelectOption = {
   label: string;
   subtitle?: string;
   keywords?: string;
+  clubCount?: number;
 };
 /** Catalog endpoints honor a bounded limit, page, and global search. */
 export function catalogSelectSource(
@@ -31,6 +32,7 @@ export function catalogSelectSource(
                 name: string;
                 description?: string | null;
                 code?: string;
+                clubCount?: number;
               }[]
             >(
               {
@@ -42,13 +44,12 @@ export function catalogSelectSource(
             ),
           ),
       );
-      return rows
-        .flat()
-        .map((row) => ({
-          value: row.id,
-          label: row.name,
-          subtitle: row.description ?? row.code ?? undefined,
-        }));
+      return rows.flat().map((row) => ({
+        value: row.id,
+        label: row.name,
+        subtitle: row.description ?? row.code ?? undefined,
+        clubCount: row.clubCount,
+      }));
     },
     async loadPage(api, { search, page, pageSize, signal }) {
       const rows = await api.request<
@@ -57,6 +58,7 @@ export function catalogSelectSource(
           name: string;
           description?: string | null;
           code?: string;
+          clubCount?: number;
         }[]
       >(
         {
@@ -71,6 +73,7 @@ export function catalogSelectSource(
           value: row.id,
           label: row.name,
           subtitle: row.description ?? row.code ?? undefined,
+          clubCount: row.clubCount,
         })),
         nextPage: rows.length === pageSize ? page + 1 : undefined,
       };

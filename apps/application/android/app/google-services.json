@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "524516834933",
+    "project_id": "gym4me-4b7d8",
+    "storage_bucket": "gym4me-4b7d8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524516834933:android:d9c0cab8e431c2bbb2c23c",
+        "android_client_info": {
+          "package_name": "com.gym4me.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiqSzP8XsTaD__-41GF8GNR7AZCOT_04U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

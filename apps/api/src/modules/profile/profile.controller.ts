@@ -3,11 +3,12 @@ import { Body, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { DatabaseService } from '../../database/database.service';
-import { users } from '../../database/schema';
+import { users, accountLocations } from '../../database/schema';
 import { DomainController } from '../../platform/http/domain-controller.decorator';
 import { AdminService } from '../admin/admin.service';
 import { ClientHeader, parse } from '../auth/auth.contracts';
-import { SchemaBody } from '../clubs/club.contracts';
+import { SchemaBody, accountLocationSchema } from '../clubs/club.contracts';
+import { resolveLocation } from '../clubs/location-discovery';
 import { AuthGuard, ClientGuard, type AuthRequest } from '../auth/auth.guard';
 import { BusinessService } from '../business/business.service';
 import { lockWritableAccount } from '../auth/account-lock';
@@ -25,6 +26,46 @@ export class ProfileController {
   constructor(private readonly database: DatabaseService) {}
   @Get() get(@Req() req: AuthRequest) {
     return req.principal.user;
+  }
+  @Get('location') async location(@Req() req: AuthRequest) {
+    const [row] = await this.database.db
+      .select()
+      .from(accountLocations)
+      .where(eq(accountLocations.userId, req.principal.user.id));
+    return {
+      userId: req.principal.user.id,
+      location: row
+        ? await resolveLocation(this.database.db, {
+            provinceId: row.provinceId,
+            cityId: row.cityId ?? undefined,
+            districtId: row.districtId ?? undefined,
+          })
+        : null,
+    };
+  }
+  @Patch('location')
+  @SchemaBody(accountLocationSchema)
+  async updateLocation(@Req() req: AuthRequest, @Body() body: unknown) {
+    const input = parse(accountLocationSchema, body);
+    return this.database.db.transaction(async (tx) => {
+      await lockWritableAccount(tx, req.principal.user.id, 'update');
+      const location = await resolveLocation(tx, {
+        ...input,
+        cityId: input.cityId ?? undefined,
+        districtId: input.districtId ?? undefined,
+      });
+      const values = {
+        provinceId: input.provinceId,
+        cityId: location.cityId ?? null,
+        districtId: location.districtId ?? null,
+        updatedAt: new Date(),
+      };
+      await tx
+        .insert(accountLocations)
+        .values({ userId: req.principal.user.id, ...values })
+        .onConflictDoUpdate({ target: accountLocations.userId, set: values });
+      return { userId: req.principal.user.id, location };
+    });
   }
   @Patch()
   @SchemaBody(accountPatchSchema)

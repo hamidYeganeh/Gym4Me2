@@ -18,7 +18,8 @@
     "./training-offline": "./src/profile/training-offline.ts",
     "./web-push": "./src/web-push.ts",
     "./advanced-business": "./src/advanced-business.ts",
-    "./list-memory": "./src/list-memory.ts"
+    "./list-memory": "./src/list-memory.ts",
+    "./growth": "./src/growth.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

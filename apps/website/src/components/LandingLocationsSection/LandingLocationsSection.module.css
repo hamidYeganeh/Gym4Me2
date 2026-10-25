@@ -1,0 +1,41 @@
+.section {
+  padding: clamp(64px, 8vw, 112px) var(--landing-gutter);
+  background: var(--background);
+  color: var(--foreground);
+}
+.inner {
+  max-width: var(--landing-page-width);
+  margin-inline: auto;
+}
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.eyebrow svg {
+  width: 18px;
+  height: 18px;
+}
+.header h2 {
+  margin: 0;
+  font-size: clamp(26px, 3vw, 40px);
+  line-height: 1.4;
+  font-weight: var(--landing-heading-weight);
+  letter-spacing: -0.03em;
+}
+.description {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+}

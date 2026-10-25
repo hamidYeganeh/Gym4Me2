@@ -475,7 +475,7 @@ export class SportsOperationsService {
     await this.admin.requireAdmin(principal);
     return rows(
       this.db,
-      sql`SELECT o.*,(SELECT count(*)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status='confirmed' OR r.status IN ('held','pending_approval') AND r.expires_at>now())) reserved FROM sport_occurrences o WHERE o.service_id=${serviceId} ORDER BY start_at DESC,o.id LIMIT 100`,
+      sql`SELECT o.*,(SELECT count(*)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status IN ('confirmed','pending_approval') OR r.status='held' AND r.expires_at>now())) reserved FROM sport_occurrences o WHERE o.service_id=${serviceId} ORDER BY start_at DESC,o.id LIMIT 100`,
     );
   }
   async adminOverview(principal: Principal, filters?: ManagementFilters) {

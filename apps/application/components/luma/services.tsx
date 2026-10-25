@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useDeferredValue, useState } from "react";
 import { BottomSheet } from "@repo/ui/kit/BottomSheet";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "@repo/i18n";
 import { useLocale } from "@repo/i18n";
 import {
   useSportsQuery,
@@ -30,6 +31,7 @@ export function ServicesPage({
   branchId,
   back = "/discovery",
 }: { organizationId?: string; branchId?: string; back?: string } = {}) {
+  const growth = useTranslations("Growth");
   const t = useLuma();
   const locale = useLocale();
   const [q, setQ] = useListState(
@@ -47,6 +49,9 @@ export function ServicesPage({
   });
   return (
     <LumaPage title={t("services")} back={back}>
+      <Link className="luma-row" href="/explore">
+        {growth("explore")}
+      </Link>
       <Field label={t("search")}>
         <input
           value={q}
@@ -55,6 +60,9 @@ export function ServicesPage({
           maxLength={160}
         />
       </Field>
+      <Link className="luma-row" href="/games">
+        {growth("games")}
+      </Link>
       <QueryState query={query}>
         {query.data?.map((s) => (
           <Row
@@ -71,12 +79,13 @@ export function ServicesPage({
             </span>
           </Row>
         ))}
-        {!query.data?.length && <Empty />}
+        {!query.data?.length && <Empty illustration="punchingBag" />}
       </QueryState>
     </LumaPage>
   );
 }
 export function ServiceDetail() {
+  const growth = useTranslations("Growth");
   const params = useSearchParams();
   const id = params.get("id");
   useTrainingEvent("service_selected", id);
@@ -102,6 +111,18 @@ export function ServiceDetail() {
       className="luma-service-detail"
     >
       <QueryState query={query}>
+        {query.data?.kind === "court" &&
+          query.data.occurrences
+            ?.filter((o) => o.status === "scheduled" && o.remaining > 0)
+            .map((o) => (
+              <Link
+                className="luma-row"
+                key={`game-${o.id}`}
+                href={`/games/new?service=${id}&occurrence=${o.id}`}
+              >
+                {growth("createGame")} · {stamp(o.startAt, locale)}
+              </Link>
+            ))}
         {query.data && (
           <>
             <ServiceCover cover={query.data.cover} />

@@ -11,12 +11,33 @@ export type SelectOption = {
   subtitle?: string;
   keywords?: string;
   group?: string;
+  clubCount?: number;
 };
 export type NativeSelectProps = Omit<React.ComponentProps<"select">, "size"> & {
   size?: "sm" | "default";
   sheetTitle?: string;
   optionsSource?: SelectOptionsSource<SelectOption>;
   pageSize?: number;
+  optionsClassName?: string;
+  optionsFooter?: React.ReactNode;
+  renderOption?: (
+    choice: SelectOption,
+    state: {
+      selected: boolean;
+      active: boolean;
+      select: () => void;
+      buttonProps: Pick<
+        React.ComponentProps<"button">,
+        | "id"
+        | "role"
+        | "tabIndex"
+        | "disabled"
+        | "aria-selected"
+        | "aria-disabled"
+        | "aria-posinset"
+      >;
+    },
+  ) => React.ReactNode;
 };
 export type NativeSelectOptionProps = React.ComponentProps<"option"> & {
   icon?: React.ReactNode;

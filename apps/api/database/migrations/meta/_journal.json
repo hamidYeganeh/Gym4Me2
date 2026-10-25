@@ -281,6 +281,83 @@
       "when": 1792828800000,
       "tag": "0039_saman_sandbox",
       "breakpoints": false
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1792828800001,
+      "tag": "0040_account_locations",
+      "breakpoints": false
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1792828800002,
+      "tag": "0041_adaptive_training",
+      "breakpoints": false
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1792828800003,
+      "tag": "0042_nutrition_entries",
+      "breakpoints": false
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1792828800004,
+      "tag": "0043_exercise_videos",
+      "breakpoints": false
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1792828800005,
+      "tag": "0044_growth_crm",
+      "breakpoints": false
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1792828800006,
+      "tag": "0045_growth_offers",
+      "breakpoints": false
+    },
+    {
+      "idx": 46,
+      "version": "7",
+      "when": 1792828800007,
+      "tag": "0046_network_credit",
+      "breakpoints": false
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1792828800008,
+      "tag": "0047_open_games",
+      "breakpoints": false
+    },
+    {
+      "idx": 48,
+      "version": "7",
+      "when": 1792828800009,
+      "tag": "0048_native_push",
+      "breakpoints": false
+    },
+    {
+      "idx": 49,
+      "version": "7",
+      "when": 1792828800010,
+      "tag": "0049_nutrition_food_source",
+      "breakpoints": false
+    },
+    {
+      "idx": 50,
+      "version": "7",
+      "when": 1792828800011,
+      "tag": "0050_home_training_content",
+      "breakpoints": false
     }
   ]
 }

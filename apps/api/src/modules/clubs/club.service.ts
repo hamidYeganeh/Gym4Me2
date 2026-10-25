@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { and, desc, eq, ilike, inArray, isNull, sql } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
+import { discoverLocations, withLocationCounts } from './location-discovery';
 import { z } from 'zod';
 import { DatabaseService } from '../../database/database.service';
 import * as s from '../../database/schema';
@@ -515,6 +516,22 @@ export class ClubService {
         details: { kind },
       });
       return row;
+    });
+  }
+  async publicGeography(...args: Parameters<ClubService['geography']>) {
+    return withLocationCounts<{
+      id: string;
+      name: string;
+      code?: string;
+      countryId?: string;
+      provinceId?: string;
+      cityId?: string;
+    }>(this.database.db, args[0], await this.geography(...args));
+  }
+  async discoverLocations(input: Parameters<typeof discoverLocations>[1]) {
+    return this.database.db.transaction((tx) => discoverLocations(tx, input), {
+      isolationLevel: 'repeatable read',
+      accessMode: 'read only',
     });
   }
   async geography(

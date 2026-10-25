@@ -9,3 +9,4 @@ export {
   DemoPanel,
 } from "./service-reviews";
 export { useTrainingEvent } from "./common";
+export { TrainingPdfProvider } from './pdf-export';

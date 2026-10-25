@@ -114,9 +114,9 @@ export class AnalyticsService {
         sql`
         WITH eligible AS (SELECT s.id FROM sport_services s JOIN branches b ON b.id=s.branch_id WHERE ${selected}),
         events AS (
-          SELECT o.created_at at,'orders' metric,1::bigint value FROM sport_orders o JOIN eligible e ON e.id=o.service_id
-          UNION ALL SELECT p.verified_at,'collectedMinor',p.amount_minor FROM sport_payments p JOIN sport_orders o ON o.id=p.order_id JOIN eligible e ON e.id=o.service_id WHERE p.state='verified'
-          UNION ALL SELECT j.created_at,'refundedMinor',r.amount_minor FROM sport_refunds r JOIN sport_journals j ON j.source_key='refund:'||r.id::text JOIN sport_orders o ON o.id=r.order_id JOIN eligible e ON e.id=o.service_id WHERE r.state='succeeded'
+          SELECT o.created_at at,'orders' metric,1::bigint value FROM sport_orders o JOIN eligible e ON e.id=o.service_id WHERE coalesce(o.snapshot->>'kind','')<>'split_share'
+          UNION ALL SELECT p.verified_at,'collectedMinor',p.amount_minor FROM sport_payments p JOIN sport_orders o ON o.id=p.order_id JOIN eligible e ON e.id=o.service_id WHERE p.state='verified' AND p.provider<>'team_split'
+          UNION ALL SELECT j.created_at,'refundedMinor',r.amount_minor FROM sport_refunds r JOIN sport_journals j ON j.source_key='refund:'||r.id::text JOIN sport_orders o ON o.id=r.order_id JOIN eligible e ON e.id=o.service_id WHERE r.state='succeeded' AND NOT EXISTS(SELECT 1 FROM sport_payments gp WHERE gp.order_id=o.id AND gp.provider='team_split')
           UNION ALL SELECT r.created_at,'bookings',1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN eligible e ON e.id=o.service_id
           UNION ALL SELECT o.start_at,'cancelled',1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN eligible e ON e.id=o.service_id WHERE r.status='cancelled'
           UNION ALL SELECT o.start_at,'noShows',1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN eligible e ON e.id=o.service_id WHERE r.status='no_show'

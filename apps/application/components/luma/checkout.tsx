@@ -1,4 +1,5 @@
 "use client";
+import { CreditPayment } from "@repo/ui/growth-credits";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { useTrainingEvent } from "@repo/ui/training";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
@@ -9,6 +10,7 @@ import { useId, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "@repo/i18n";
 import { checkoutIssue } from "../../lib/checkout-availability";
+import { paymentGatewayDestination } from "../../lib/payment-gateway";
 import {
   remainingMembershipSessions,
   usableCheckoutMemberships,
@@ -20,6 +22,7 @@ import {
   type MembershipDto,
   type OrderDto,
   type QuoteDto,
+  type PaymentAttemptDto,
 } from "@repo/api/sports";
 import {
   CommandError,
@@ -342,10 +345,14 @@ export function PaymentStatus() {
     Boolean(id),
     true,
   );
-  const payment = useSportsCommand(`sports/account/orders/${id}/payment`);
+  const payment = useSportsCommand<PaymentAttemptDto>(
+    `sports/account/orders/${id}/payment`,
+  );
   const verify = useSportsCommand(`sports/account/orders/${id}/verify`);
   const reconcile = useSportsCommand(`sports/account/orders/${id}/query`);
+  const growth = useTranslations("Growth");
   const [scenario, setScenario] = useState("success");
+  const [gatewayError, setGatewayError] = useState(false);
   const paymentKey = useRef<string | null>(null);
   if (!id)
     return (
@@ -358,6 +365,9 @@ export function PaymentStatus() {
       </LumaPage>
     );
   const order = query.data;
+  const hasPendingPayment = order?.payments.some((p) =>
+    ["pending", "unknown"].includes(p.state),
+  );
   return (
     <LumaPage
       title={t("paymentStatus")}
@@ -381,17 +391,33 @@ export function PaymentStatus() {
               amountMinor={order.amountMinor}
               state={order.status}
             />
-            {["awaiting_payment", "partially_paid"].includes(order.status) && (
-              <>
-                <p className="luma-meta mt-6">{t("sandbox")}</p>
-                <Row title={t("balance")}>
-                  <Price value={order.balanceDueMinor} />
-                </Row>
-                {!order.payments.some((p) =>
-                  ["pending", "unknown"].includes(p.state),
-                ) ? (
-                  <>
-                    {order.paymentProvider !== "saman_sandbox" && (
+            {order.snapshot.groupId && (
+              <Link
+                className="luma-row"
+                href={`/games/detail?id=${order.snapshot.groupId}`}
+              >
+                {growth("viewGame")}
+              </Link>
+            )}
+            {["awaiting_payment", "partially_paid"].includes(order.status) &&
+              !(
+                order.snapshot.groupId && order.snapshot.kind !== "split_share"
+              ) && (
+                <>
+                  {!hasPendingPayment &&
+                    order.status === "awaiting_payment" && (
+                      <CreditPayment
+                        orderId={id}
+                        organizationId={order.organizationId}
+                        amount={order.amountMinor}
+                      />
+                    )}
+                  <p className="luma-meta mt-6">{t("sandbox")}</p>
+                  <Row title={t("balance")}>
+                    <Price value={order.balanceDueMinor} />
+                  </Row>
+                  {!hasPendingPayment &&
+                    order.paymentProvider !== "saman_sandbox" && (
                       <Field label={t("pay")}>
                         <NativeSelect
                           value={scenario}
@@ -410,58 +436,62 @@ export function PaymentStatus() {
                         </NativeSelect>
                       </Field>
                     )}
-                    <button
-                      className="luma-cta"
-                      disabled={payment.isPending}
-                      onClick={() => {
-                        paymentKey.current ??= crypto.randomUUID();
-                        payment.mutate(
-                          { scenario, idempotencyKey: paymentKey.current },
-                          {
-                            onSuccess: () => {
+                  <button
+                    className="luma-cta"
+                    disabled={payment.isPending}
+                    onClick={() => {
+                      setGatewayError(false);
+                      paymentKey.current ??= crypto.randomUUID();
+                      payment.mutate(
+                        { scenario, idempotencyKey: paymentKey.current },
+                        {
+                          onSuccess: (attempt) => {
+                            const destination = paymentGatewayDestination(
+                              attempt,
+                              id,
+                            );
+                            if (!destination) {
+                              setGatewayError(true);
+                              return;
+                            }
+                            try {
+                              if (attempt.provider === "saman_sandbox")
+                                window.location.assign(destination);
+                              else router.push(destination);
                               paymentKey.current = null;
-                              router.push(`/checkout/mock-gateway?order=${id}`);
-                            },
+                            } catch {
+                              setGatewayError(true);
+                            }
                           },
-                        );
-                      }}
-                    >
-                      {t("pay")}
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <p className="luma-meta mt-6">{t("paymentPending")}</p>
-                    {order.payments.some((p) =>
-                      ["pending", "unknown"].includes(p.state),
-                    ) && (
-                      <Link
-                        className="luma-cta"
-                        href={`/checkout/mock-gateway?order=${id}`}
-                      >
-                        {t("openMockGateway")}
-                      </Link>
-                    )}
-                    <button
-                      className="luma-cta"
-                      disabled={verify.isPending}
-                      onClick={() => verify.mutate({})}
-                    >
-                      {t("verify")}
-                    </button>
-                    {order.payments.some((p) => p.state === "unknown") && (
+                        },
+                      );
+                    }}
+                  >
+                    {payment.isPending ? t("paymentPending") : t("pay")}
+                  </button>
+                  {hasPendingPayment && (
+                    <>
+                      <p className="luma-meta mt-6">{t("paymentPending")}</p>
                       <button
                         className="luma-cta"
-                        disabled={reconcile.isPending}
-                        onClick={() => reconcile.mutate({})}
+                        disabled={verify.isPending}
+                        onClick={() => verify.mutate({})}
                       >
-                        {t("retry")}
+                        {t("verify")}
                       </button>
-                    )}
-                  </>
-                )}
-              </>
-            )}
+                      {order.payments.some((p) => p.state === "unknown") && (
+                        <button
+                          className="luma-cta"
+                          disabled={reconcile.isPending}
+                          onClick={() => reconcile.mutate({})}
+                        >
+                          {t("retry")}
+                        </button>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
             {order.reservations
               .filter(
                 (r) =>
@@ -495,6 +525,11 @@ export function PaymentStatus() {
             <CommandError
               error={payment.error ?? verify.error ?? reconcile.error}
             />
+            {gatewayError && (
+              <p role="alert" className="luma-error">
+                {t("actionError")}
+              </p>
+            )}
           </>
         )}
       </QueryState>

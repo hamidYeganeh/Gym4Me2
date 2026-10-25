@@ -104,6 +104,28 @@ export type PlaceDto = {
   countryId?: string;
   provinceId?: string;
   cityId?: string;
+  clubCount?: number;
+};
+export type DiscoveryLocationDto = {
+  countryId?: string;
+  provinceId?: string;
+  cityId?: string;
+  districtId?: string;
+};
+export type LocationDiscoveryFiltersDto = DiscoveryLocationDto & {
+  randomize?: boolean;
+  seed?: string;
+};
+export type DiscoveryPlaceDto = PlaceDto & {
+  parentName: string;
+  clubCount: number;
+};
+export type LocationDiscoveryDto = {
+  provinces: DiscoveryPlaceDto[];
+  cities: DiscoveryPlaceDto[];
+  districts: DiscoveryPlaceDto[];
+  location: DiscoveryLocationDto;
+  seed: string;
 };
 export type CreatePlaceDto = {
   kind: GeographyKind;

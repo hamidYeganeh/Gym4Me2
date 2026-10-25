@@ -46,6 +46,8 @@ export function ApiProvider({
   const [session, setSession] = useState(0);
   const sync = useRef<ReturnType<typeof connectSessionSync> | null>(null);
   const resetLocalSession = useCallback(async () => {
+    if (options.application === "application" && typeof window !== "undefined")
+      window.dispatchEvent(new Event("gym4me:clear-native-push"));
     clearListMemory();
     await queryClient.cancelQueries();
     if (options.application === "application" && !options.fetch)

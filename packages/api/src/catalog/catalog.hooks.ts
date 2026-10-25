@@ -4,6 +4,16 @@ import type * as dto from "./catalog.dto";
 import { catalogClients } from "./catalog.clients";
 import { catalogKeys } from "./catalog.keys";
 import { useApiQuery, useApiMutation } from "../query";
+export function useLocationDiscovery(
+  filters: dto.LocationDiscoveryFiltersDto = {},
+  enabled = true,
+) {
+  return useApiQuery(
+    (scope) => [...catalogKeys(scope).all, "location-discovery", filters],
+    (api, signal) => catalogClients.locationDiscovery(api, filters, { signal }),
+    enabled,
+  );
+}
 
 export function useClubs(
   filters: dto.ClubFiltersDto = {},

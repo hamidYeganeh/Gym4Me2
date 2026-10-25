@@ -67,9 +67,17 @@ export class DatabaseService implements OnModuleInit, OnApplicationShutdown {
     await this.pool.query(
       `SELECT users.deleted_at, auth_sessions.transport, otp_challenges.requested_session_id,
        account_preferences.confirmed_minimum_age, club_media.object_key
-       FROM users, auth_sessions, otp_challenges, account_preferences,
+       FROM users, auth_sessions, otp_challenges, account_preferences, account_locations,
        account_deletion_requests, favorite_clubs, club_media, club_tariff_groups,
        club_tariff_versions, organization_member_branches, organization_invitation_branches LIMIT 0`,
+    );
+    await this.pool.query(
+      `SELECT growth_offers.revision, native_push_devices.session_id,
+       nutrition_entries.food_id
+       FROM growth_leads, growth_lead_events, growth_campaigns, growth_campaign_deliveries,
+       growth_offers, credit_networks, credit_network_members, credit_accounts,
+       credit_entries, credit_settlements, growth_games, growth_game_shares,
+       native_push_devices, native_push_deliveries, nutrition_entries LIMIT 0`,
     );
   }
 

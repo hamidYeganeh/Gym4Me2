@@ -3,6 +3,21 @@ import type * as dto from "./profile.dto";
 import { profileClients } from "./profile.clients";
 import { profileKeys } from "./profile.keys";
 import { useApiQuery, useApiMutation } from "../query";
+export function useAccountLocation() {
+  return useApiQuery(
+    (scope) => [...profileKeys(scope).all, "location"],
+    (api, signal) => profileClients.location(api, { signal }),
+    true,
+    0,
+  );
+}
+export function useUpdateAccountLocation() {
+  return useApiMutation(
+    (api, input: dto.UpdateAccountLocationDto) =>
+      profileClients.updateLocation(api, input),
+    [["profile", "location"]],
+  );
+}
 
 export function useAccount() {
   return useApiQuery(

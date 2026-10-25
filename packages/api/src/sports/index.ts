@@ -237,7 +237,14 @@ export type MembershipDto = {
   policy: PolicyDto;
   events: { id: string; kind: string; quantity: number; createdAt: string }[];
 };
+export type PaymentAttemptDto = {
+  id: string;
+  state: string;
+  provider: string;
+  gatewayUrl?: string | null;
+};
 export type OrderDto = {
+  organizationId: string;
   id: string;
   amountMinor: string;
   refundedMinor: string;
@@ -246,19 +253,15 @@ export type OrderDto = {
   balanceDueMinor: string;
   createdAt: string;
   snapshot: {
+    groupId?: string;
+    kind?: string;
     title: string;
     policy: PolicyDto;
     eligibility?: ServiceEligibilityDto;
   };
   reservations: BookingDto[];
   paymentProvider?: string;
-  payments: {
-    id: string;
-    state: string;
-    provider: string;
-    gatewayUrl?: string | null;
-    amountMinor?: string;
-  }[];
+  payments: (PaymentAttemptDto & { amountMinor?: string })[];
   refunds: { id: string; state: string; amountMinor: string; reason: string }[];
 };
 export type CalendarSettingsDto = {
@@ -524,7 +527,7 @@ export function useSportsCommand<T = unknown, TInput = unknown>(path: string) {
   );
 }
 
-export function useSportsBookings(tab: BookingTab) {
+export function useSportsBookings(tab: BookingTab, day?: string) {
   const { api } = useApiContext();
   return useInfiniteQuery<
     BookingPageDto,
@@ -533,14 +536,14 @@ export function useSportsBookings(tab: BookingTab) {
     QueryKey,
     string
   >({
-    queryKey: [...api.scope, "sports", "bookings/page", tab],
+    queryKey: [...api.scope, "sports", "bookings/page", tab, day],
     initialPageParam: "",
     queryFn: ({ pageParam, signal }) =>
       api.request<BookingPageDto>(
         {
           method: "GET",
           path: "sports/account/bookings/page",
-          query: { tab, limit: 20, cursor: pageParam || undefined },
+          query: { tab, day, limit: 20, cursor: pageParam || undefined },
         },
         { signal },
       ),

@@ -1,4 +1,6 @@
+import { NativePushService } from '../push/native-push.service';
 import { AdvancedBusinessService } from '../advanced-business/ph5.service';
+import { GamesService } from '../growth/games.service';
 import { Optional } from '@nestjs/common';
 import { Get, Headers, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -24,6 +26,8 @@ export class PushJobsController {
     private readonly commerce: CommerceService,
     private readonly push: WebPushService,
     @Optional() private readonly advanced?: AdvancedBusinessService,
+    @Optional() private readonly games?: GamesService,
+    @Optional() private readonly nativePush?: NativePushService,
   ) {}
   @Get() async run(
     @Headers('authorization') authorization: string | undefined,
@@ -37,9 +41,11 @@ export class PushJobsController {
       throw new UnauthorizedException();
     await this.commerce.runJobs();
     await this.advanced?.reconcileDue();
+    await this.games?.runDue();
     let processed = 0;
     for (let i = 0; i < 3; i++) {
       const result = await this.push.drain();
+      await this.nativePush?.drain();
       processed += result.processed;
       if (result.processed < 6) break;
     }

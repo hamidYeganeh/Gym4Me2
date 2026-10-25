@@ -81,3 +81,27 @@ pnpm db:test:down
 ```
 
 Database tests target `127.0.0.1:55433/gym4me_test` by default and never use `DATABASE_URL`. Override with `TEST_DATABASE_URL` pointing to a dedicated database whose name ends in `_test`. Tests apply migrations twice, verify transaction rollback, scoped uniqueness and foreign keys, and remove only their own fixture rows.
+
+## Location discovery
+
+`GET /api/v1/catalog/locations/discovery` returns linked `provinces`, `cities`, and `districts` arrays (up to 12 cards each), the resolved hierarchy, and a browsing seed. Optional UUID filters constrain that hierarchy; conflicting ancestors return 400 and unknown locations return 404. Selected cards are included first. Guests pass `randomize=true` and reuse the returned seed while browsing.
+
+Each public geography record includes `clubCount`: distinct clubs with an approved organization, published club and complete, unarchived public branch in that location. Multiple branches of a club do not inflate its count. Administrative geography endpoints retain their existing shape.
+
+Authenticated application sessions read or update their saved preference with `GET` / `PATCH /api/v1/profile/account/location`. PATCH requires `provinceId`, accepts optional `countryId` and nullable `cityId` / `districtId`, validates their relationships and clears omitted descendants. The user ID comes from the session. Migration `0040_account_locations.sql` adds storage and database hierarchy constraints; privacy exports and account erasure include the preference.
+
+`AUTH_WEBSITE_ORIGIN` (default `http://localhost:7084`) allows the website to use the shared application session for only those two location operations. Other authenticated routes keep their original surface restrictions. The current web session cookie is host scoped: both surfaces must use the same hostname to share sign-in. Separate hostnames require a session-sharing configuration.
+
+Run the integration suite against a dedicated PostgreSQL database:
+
+```sh
+TEST_DATABASE_URL=postgresql://localhost/gym4me_locations_test pnpm --filter api test:locations
+```
+
+The suite applies migrations twice, exercises club visibility/deduplication, guest ordering, hierarchy changes, account isolation and website origin restrictions, and removes only its own fixture rows.
+
+## Booking calendar dates
+
+`GET /api/v1/sports/account/bookings/page?tab=upcoming|past&day=YYYY-MM-DD` optionally filters the signed-in account's bookings to a Gregorian ISO day in `Asia/Tehran`. Filtering happens before pagination. Cursors retain the account, tab, date filter and original time boundary; changing a filter requires a fresh cursor. Omitting `day` preserves the existing full-list contract. No database migration is required for this filter.
+
+The calendar unit suite is `src/modules/commerce/booking-calendar.spec.ts`. Run the read-only PostgreSQL boundary checks with `TEST_DATABASE_URL=postgresql://localhost/gym4me_locations_test node --import tsx --test test/booking-calendar.integration.test.ts` from this workspace. They cover Tehran midnight and historical daylight-saving dates.

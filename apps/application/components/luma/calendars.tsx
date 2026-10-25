@@ -4,7 +4,8 @@ import { AuthEntryButton } from "@repo/ui/account";
 import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
 import { useDeferredValue, useId, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale } from "@repo/i18n";
+import { useLocale, useTranslations } from "@repo/i18n";
+import { BookingCalendar } from "./booking-calendar";
 import { useAccount } from "@repo/api/profile";
 import {
   useSportsCalendars,
@@ -34,6 +35,7 @@ export function CalendarsPage() {
   const t = useLuma(),
     params = useSearchParams(),
     router = useRouter();
+  const dates = useTranslations("ScheduleCalendar");
   const view = params.get("view") === "following" ? "following" : "all";
   const [search, setSearch] = useState("");
   const query = useSportsCalendars(view, useDeferredValue(search));
@@ -45,79 +47,82 @@ export function CalendarsPage() {
     ![401, 403].includes(query.error?.status ?? 0);
   return (
     <LumaPage title={t("calendars")} back="/">
-      <FilterSheet count={view === "all" ? 0 : 1}>
-        <Segments
-          value={view}
-          options={[
-            { value: "all", label: t("all") },
-            { value: "following", label: t("yourCalendars") },
-          ]}
-          onChange={(value) =>
-            router.replace(
-              value === "following"
-                ? "/calendars?view=following"
-                : "/calendars",
-              { scroll: false },
-            )
-          }
-        />
-      </FilterSheet>
-      <Field label={t("search")}>
-        <input
-          type="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          maxLength={100}
-        />
-      </Field>
-      <QueryState
-        query={{
-          isPending: query.isPending,
-          error: nextPageFailed ? null : query.error,
-          refetch: query.refetch,
-        }}
-      >
-        {items.map((c) => (
-          <article tabIndex={-1} id={`calendar-${c.id}`} key={c.id}>
-            <Row
-              title={c.title}
-              meta={`${c.clubName} · ${c.branchName}`}
-              href={`/calendars/detail?id=${c.id}`}
-            />
-          </article>
-        ))}
-        {!items.length && <Empty />}
-        {nextPageFailed && (
-          <p role="alert" className="luma-error">
-            {t("loadError")}
-          </p>
-        )}
-        {query.hasNextPage && (
-          <LumaLoadMore
-            loading={query.isFetchingNextPage}
-            onLoad={async () => {
-              const result = await query.fetchNextPage();
-              const next = result.isSuccess
-                ? result.data?.pages.flatMap((p) => p.items)[items.length]
-                : undefined;
-              return next
-                ? `calendar-${next.id}`
-                : result.isSuccess
-                  ? countId
+      <BookingCalendar />
+      <Section title={dates("browseCalendars")}>
+        <FilterSheet count={view === "all" ? 0 : 1}>
+          <Segments
+            value={view}
+            options={[
+              { value: "all", label: t("all") },
+              { value: "following", label: t("yourCalendars") },
+            ]}
+            onChange={(value) =>
+              router.replace(
+                value === "following"
+                  ? "/calendars?view=following"
+                  : "/calendars",
+                { scroll: false },
+              )
+            }
+          />
+        </FilterSheet>
+        <Field label={t("search")}>
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            maxLength={100}
+          />
+        </Field>
+        <QueryState
+          query={{
+            isPending: query.isPending,
+            error: nextPageFailed ? null : query.error,
+            refetch: query.refetch,
+          }}
+        >
+          {items.map((c) => (
+            <article tabIndex={-1} id={`calendar-${c.id}`} key={c.id}>
+              <Row
+                title={c.title}
+                meta={`${c.clubName} · ${c.branchName}`}
+                href={`/calendars/detail?id=${c.id}`}
+              />
+            </article>
+          ))}
+          {!items.length && <Empty illustration="watch" />}
+          {nextPageFailed && (
+            <p role="alert" className="luma-error">
+              {t("loadError")}
+            </p>
+          )}
+          {query.hasNextPage && (
+            <LumaLoadMore
+              loading={query.isFetchingNextPage}
+              onLoad={async () => {
+                const result = await query.fetchNextPage();
+                const next = result.isSuccess
+                  ? result.data?.pages.flatMap((p) => p.items)[items.length]
                   : undefined;
-            }}
-          >
-            {query.isFetchingNextPage
-              ? t("loading")
-              : nextPageFailed
-                ? t("retry")
-                : t("loadMoreCalendars")}
-          </LumaLoadMore>
-        )}
-        <p id={countId} tabIndex={-1} className="luma-meta" role="status">
-          {t("calendarCount", { count: items.length })}
-        </p>
-      </QueryState>
+                return next
+                  ? `calendar-${next.id}`
+                  : result.isSuccess
+                    ? countId
+                    : undefined;
+              }}
+            >
+              {query.isFetchingNextPage
+                ? t("loading")
+                : nextPageFailed
+                  ? t("retry")
+                  : t("loadMoreCalendars")}
+            </LumaLoadMore>
+          )}
+          <p id={countId} tabIndex={-1} className="luma-meta" role="status">
+            {t("calendarCount", { count: items.length })}
+          </p>
+        </QueryState>
+      </Section>
     </LumaPage>
   );
 }

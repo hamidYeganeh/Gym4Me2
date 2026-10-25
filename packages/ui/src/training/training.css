@@ -6,6 +6,43 @@
   max-width: 100%;
   padding-bottom: 1.5rem;
 }
+.training-print {
+  display: none;
+}
+@media print {
+  body:has(> .training-print) > :not(.training-print) {
+    display: none !important;
+  }
+  .training-print {
+    display: block;
+    background: #fff;
+    color: #111;
+    font-family: inherit;
+    padding: 16pt;
+    font-size: 11pt;
+    line-height: 1.8;
+  }
+  .training-print section {
+    break-inside: avoid;
+  }
+  .training-print table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20pt;
+  }
+  .training-print th,
+  .training-print td {
+    border: 1pt solid #999;
+    padding: 7pt;
+    text-align: start;
+    color: #111;
+  }
+  .training-print h1,
+  .training-print h2,
+  .training-print p {
+    color: #111;
+  }
+}
 .training-root h2 {
   font-size: 1.05rem;
   font-weight: 650;

@@ -3,6 +3,25 @@ import type { ApiClient, RequestOptions } from "../transport";
 import { catalogEndpoints } from "./catalog.endpoints";
 import { readLocationPages } from "./location-pages";
 export const catalogClients = {
+  locationDiscovery: (
+    api: ApiClient,
+    filters: dto.LocationDiscoveryFiltersDto = {},
+    options: RequestOptions = {},
+  ) =>
+    api.request<dto.LocationDiscoveryDto>(
+      {
+        method: "GET",
+        path: "catalog/locations/discovery",
+        query: {
+          ...filters,
+          countryId: filters.countryId || undefined,
+          provinceId: filters.provinceId || undefined,
+          cityId: filters.cityId || undefined,
+          districtId: filters.districtId || undefined,
+        },
+      },
+      options,
+    ),
   guestSavedClubs: (
     api: ApiClient,
     ids: string[],

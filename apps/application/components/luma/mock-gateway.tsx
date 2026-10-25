@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { paymentGatewayDestination } from "../../lib/payment-gateway";
 import {
   useSportsCommand,
   useSportsQuery,
@@ -31,21 +33,24 @@ export function MockGateway() {
   const verify = useSportsCommand<OrderDto>(
     `sports/account/orders/${orderId}/verify`,
   );
+  const pending = order.data?.payments.find((p) =>
+    ["pending", "unknown"].includes(p.state),
+  );
+  const destination =
+    pending && orderId ? paymentGatewayDestination(pending, orderId) : null;
+  const gatewayUrl = pending?.provider === "saman_sandbox" ? destination : null;
+  const redirected = useRef<string | null>(null);
+  useEffect(() => {
+    if (!gatewayUrl || redirected.current === gatewayUrl) return;
+    redirected.current = gatewayUrl;
+    window.location.replace(gatewayUrl);
+  }, [gatewayUrl]);
   if (!orderId)
     return (
       <LumaPage title={t("mockGateway")} back="/orders">
         <Empty />
       </LumaPage>
     );
-  const pending = order.data?.payments.find((p) =>
-    ["pending", "unknown"].includes(p.state),
-  );
-  const gatewayUrl =
-    pending?.provider === "saman_sandbox" &&
-    pending.gatewayUrl &&
-    isBankTestUrl(pending.gatewayUrl)
-      ? pending.gatewayUrl
-      : null;
   return (
     <LumaPage title={t("mockGateway")} back={returnUrl} actions={<span />}>
       <p className="luma-meta" role="note">
@@ -64,11 +69,16 @@ export function MockGateway() {
               />
             </Row>
             {gatewayUrl && (
-              <a className="luma-cta" href={gatewayUrl} rel="noreferrer">
-                {t("openMockGateway")}
-              </a>
+              <p role="status" className="luma-meta">
+                {t("paymentPending")}
+              </p>
             )}
-            {pending && pending.provider !== "saman_sandbox" && (
+            {pending && !destination && (
+              <p role="alert" className="luma-error">
+                {t("actionError")}
+              </p>
+            )}
+            {pending && destination && pending.provider !== "saman_sandbox" && (
               <button
                 className="luma-cta"
                 disabled={verify.isPending}
@@ -88,17 +98,4 @@ export function MockGateway() {
       </QueryState>
     </LumaPage>
   );
-}
-
-function isBankTestUrl(value: string) {
-  try {
-    const url = new URL(value);
-    return (
-      url.origin === "https://sandbox.banktest.ir" &&
-      url.pathname === "/saman/sep.shaparak.ir/OnlinePG/SendToken" &&
-      Boolean(url.searchParams.get("token"))
-    );
-  } catch {
-    return false;
-  }
 }
