@@ -1,0 +1,233 @@
+{
+  "runtimeCommit": "fc3e06a2829efa8d1f96eb9f2902f4088fd18b89",
+  "verifiedCodeCommit": "28f4b6997febe7339650117075e4610668438042",
+  "ciRuns": [
+    40148111958,
+    40148749136
+  ],
+  "monitor": {
+    "started": "2026-10-25T01:01:47.048Z",
+    "ended": "2026-10-25T01:17:00.746Z",
+    "elapsedSeconds": 913.7,
+    "samples": 21,
+    "requests": 173,
+    "allExpectedResults": true,
+    "scope": "API readiness, public recommendations/games, authorization guard and catalog/proxy; final sample covers all 13 web/API paths"
+  },
+  "migration": {
+    "at": "2026-10-25T00:58:51.912Z",
+    "migrations": 51,
+    "dataUnchanged": true,
+    "counts": {
+      "users": 14,
+      "organizations": 8,
+      "services": 49,
+      "orders": 7,
+      "media": 24,
+      "media_bytes": "4020570"
+    }
+  },
+  "postMigrationBackup": {
+    "run": 40148754241,
+    "artifactId": 12581965750,
+    "authenticated": true,
+    "capturedAt": "2026-10-25T00:58:55.424Z",
+    "migrations": 51,
+    "media": {
+      "count": 24,
+      "bytes": "4020570"
+    },
+    "deletionEntries": 0
+  },
+  "android": {
+    "run": 40148111958,
+    "artifactId": 12582485553,
+    "bytes": 27043611,
+    "sha256": "90d61551831c533878862d72d022de2525d2e8f6720895dee91a4984b4b60db0"
+  },
+  "nativePackageCheck": {
+    "clientAssetsChecked": 219,
+    "correctApi": true,
+    "correctSite": true,
+    "serverPrivateKeyMarkersFound": 0,
+    "sha256": "90d61551831c533878862d72d022de2525d2e8f6720895dee91a4984b4b60db0"
+  },
+  "media": [
+    {
+      "file": "glute-bridge.en.vtt",
+      "status": 200,
+      "mime": "text/vtt; charset=utf-8",
+      "bytes": "102"
+    },
+    {
+      "file": "glute-bridge.fa.vtt",
+      "status": 200,
+      "mime": "text/vtt; charset=utf-8",
+      "bytes": "130"
+    },
+    {
+      "file": "glute-bridge.mp4",
+      "status": 200,
+      "mime": "video/mp4",
+      "bytes": "45369"
+    },
+    {
+      "file": "march.en.vtt",
+      "status": 200,
+      "mime": "text/vtt; charset=utf-8",
+      "bytes": "102"
+    },
+    {
+      "file": "march.fa.vtt",
+      "status": 200,
+      "mime": "text/vtt; charset=utf-8",
+      "bytes": "130"
+    },
+    {
+      "file": "march.mp4",
+      "status": 200,
+      "mime": "video/mp4",
+      "bytes": "32469"
+    },
+    {
+      "file": "squat.en.vtt",
+      "status": 200,
+      "mime": "text/vtt; charset=utf-8",
+      "bytes": "102"
+    },
+    {
+      "file": "squat.fa.vtt",
+      "status": 200,
+      "mime": "text/vtt; charset=utf-8",
+      "bytes": "130"
+    },
+    {
+      "file": "squat.mp4",
+      "status": 200,
+      "mime": "video/mp4",
+      "bytes": "67087"
+    },
+    {
+      "file": "wall-push-up.en.vtt",
+      "status": 200,
+      "mime": "text/vtt; charset=utf-8",
+      "bytes": "102"
+    },
+    {
+      "file": "wall-push-up.fa.vtt",
+      "status": 200,
+      "mime": "text/vtt; charset=utf-8",
+      "bytes": "130"
+    },
+    {
+      "file": "wall-push-up.mp4",
+      "status": 200,
+      "mime": "video/mp4",
+      "bytes": "28489"
+    }
+  ],
+  "finalSmoke": {
+    "at": "2026-10-25T01:17:00.746Z",
+    "results": [
+      {
+        "name": "api-ready",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 567,
+        "ready": {
+          "status": "ok",
+          "service": "gym4me-api",
+          "checks": {
+            "database": "up",
+            "storage": "up"
+          }
+        }
+      },
+      {
+        "name": "recommendations",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 631
+      },
+      {
+        "name": "public-games",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 588
+      },
+      {
+        "name": "private-credit",
+        "status": 401,
+        "expected": 401,
+        "ok": true,
+        "elapsedMs": 473
+      },
+      {
+        "name": "app",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 664
+      },
+      {
+        "name": "games",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 535
+      },
+      {
+        "name": "app-api",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 693
+      },
+      {
+        "name": "business-crm",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 879
+      },
+      {
+        "name": "business-network",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 705
+      },
+      {
+        "name": "admin",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 1031
+      },
+      {
+        "name": "website",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 698
+      },
+      {
+        "name": "website-catalog",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 697
+      },
+      {
+        "name": "website-api",
+        "status": 200,
+        "expected": 200,
+        "ok": true,
+        "elapsedMs": 729
+      }
+    ]
+  }
+}
