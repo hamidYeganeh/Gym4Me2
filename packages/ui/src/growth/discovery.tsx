@@ -107,9 +107,7 @@ export function DiscoverOffers() {
               <h2 className="text-lg font-semibold">{o.title}</h2>
               <p>
                 {o.branch_name} ·{" "}
-                {["beginner", "مبتدی", "تازه‌کار"].includes(
-                  o.level.toLowerCase(),
-                )
+                {o.level.toLowerCase() === "beginner"
                   ? t("beginner")
                   : o.level}
               </p>

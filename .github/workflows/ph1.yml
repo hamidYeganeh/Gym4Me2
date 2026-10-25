@@ -83,6 +83,7 @@ jobs:
           pnpm --filter application exec next build --webpack
           pnpm --filter business exec next build --webpack
           pnpm --filter admin exec next build --webpack
+          pnpm --filter website build
       - name: Build bundled mobile shell
         env:
           NEXT_PUBLIC_API_URL: https://gym4me-demo-api.vercel.app/api/v1
