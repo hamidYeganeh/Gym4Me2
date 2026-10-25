@@ -1083,7 +1083,7 @@ void test('a partial bank refund enters the accountant queue and settles without
     o = await session(f, s.id),
     order = await buy(f, s.id, o.id);
   await db.execute(
-    sql`UPDATE sport_payments SET provider='saman_sandbox',bank_reference='SYNTHETIC-BANK-REF' WHERE order_id=${order.id}`,
+    sql`UPDATE sport_payments SET provider='saman_sandbox',bank_reference=${`SYNTHETIC-${randomUUID()}`} WHERE order_id=${order.id}`,
   );
   const r = order.reservations[0];
   const preview = await commerce.cancelPreview(f.athlete.id, String(r.id));
