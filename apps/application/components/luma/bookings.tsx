@@ -1,4 +1,6 @@
 "use client";
+import { TuitionPlan } from "@repo/ui/sports-tuition";
+import { ReceiptForm } from "@repo/ui/sports-receipts";
 import { ConfirmAction } from "@repo/ui/confirm-action";
 import { BookingCalendar } from "./booking-calendar";
 import { NativeSelect } from "@repo/ui/kit/NativeSelect";
@@ -225,7 +227,9 @@ export function MembershipsPage() {
         {query.data?.map((m) => (
           <Row
             key={m.id}
-            title={m.title}
+            title={
+              m.dependentName ? `${m.dependentName} · ${m.title}` : m.title
+            }
             meta={m.endsAt ? stamp(m.endsAt, locale) : ""}
             state={m.status}
             href={`/memberships/detail?id=${m.id}`}
@@ -246,6 +250,7 @@ export function MembershipsPage() {
   );
 }
 export function MembershipDetail() {
+  const [clock] = useState(() => Date.now());
   const id = useSearchParams().get("id");
   const t = useLuma();
   const query = useSportsQuery<MembershipDto>(
@@ -266,6 +271,7 @@ export function MembershipDetail() {
       <QueryState query={query}>
         {query.data && (
           <>
+            <p className="luma-meta">{query.data.dependentName}</p>
             <Row
               title={query.data.title}
               state={query.data.status}
@@ -274,17 +280,21 @@ export function MembershipDetail() {
             <Section title={t("conditions")}>
               <p className="luma-meta">{query.data.policy.terms}</p>
             </Section>
-            {query.data.status === "active" && (
-              <Link
-                className="luma-cta"
-                href={`/tickets/view?id=${id}&membership=true`}
-              >
-                {t("ticket")}
-              </Link>
-            )}
+            {query.data.status === "active" &&
+              query.data.offering?.entryAllowed !== false &&
+              !query.data.paymentOverdue &&
+              (!query.data.startsAt ||
+                Date.parse(query.data.startsAt) <= clock) && (
+                <Link
+                  className="luma-cta"
+                  href={`/tickets/view?id=${id}&membership=true`}
+                >
+                  {t("ticket")}
+                </Link>
+              )}
             <Link
               className="luma-cta bg-muted text-foreground"
-              href={`/checkout?service=${query.data.serviceId}`}
+              href={`/checkout?service=${query.data.serviceId}&renew=${id}${query.data.dependentId ? `&dependent=${query.data.dependentId}` : ""}`}
             >
               {t("renew")}
             </Link>
@@ -379,6 +389,12 @@ export function OrderDetail() {
               <Link className="luma-cta" href={`/checkout/status?order=${id}`}>
                 {t("continue")}
               </Link>
+            )}
+            {["awaiting_payment", "partially_paid"].includes(
+              query.data.status,
+            ) && <ReceiptForm orderId={id} />}
+            {query.data.snapshot.kind === "membership" && (
+              <TuitionPlan orderId={id} />
             )}
             {query.data.reservations.map((r) => (
               <Row

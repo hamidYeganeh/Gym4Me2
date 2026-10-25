@@ -420,6 +420,7 @@ it('paid private request stays pending until the assigned coach approves; attend
     true,
     'Coach accepted request',
   );
+  const before = (await practice.workspace(coach, false)).sessionSummary;
   await operations.manualAttendance(
     coach,
     reservation,
@@ -428,6 +429,13 @@ it('paid private request stays pending until the assigned coach approves; attend
   );
   expect((await commerce.booking(student, reservation)).status).toBe(
     'completed',
+  );
+  const after = (await practice.workspace(coach, false)).sessionSummary;
+  expect(after.total).toBe(before.total);
+  expect(after.completed).toBe(Number(before.completed) + 1);
+  expect(after.upcoming).toBe(Number(before.upcoming) - 1);
+  expect((await practice.workspace(stranger, false)).sessionSummary.total).toBe(
+    0,
   );
 });
 it('session notes and revocable progress examples stay attached to a verified session', async () => {
@@ -613,6 +621,7 @@ it('semi-private capacity and coach-specific packages reuse the commerce entitle
         organizationId: org,
         branchId: branch,
         title: 'Single-right coach package',
+        offering: { includedServiceIds: [semi.id], entryAllowed: false },
         kind: 'membership',
         sessionCount: 1,
         durationDays: 30,
@@ -650,6 +659,10 @@ it('semi-private capacity and coach-specific packages reuse the commerce entitle
   const booking = (await commerce.bookings(student)).find(
     (r) => r.order_id === winner.value.id,
   )!;
+  const reservedPackage = (
+    await practice.workspace(student, false)
+  ).studentMemberships.find((item) => item.id === membership.id);
+  expect(reservedPackage).toMatchObject({ granted: 1, consumed: 0, held: 1 });
   await operations.manualAttendance(
     coach,
     String(booking.id),
@@ -667,6 +680,11 @@ it('semi-private capacity and coach-specific packages reuse the commerce entitle
       (item) => item.id === membership.id,
     )?.consumed,
   ).toBe(1);
+  expect(
+    (await practice.workspace(student, false)).studentMemberships.find(
+      (item) => item.id === membership.id,
+    ),
+  ).toMatchObject({ granted: 1, consumed: 1, held: 0 });
 });
 it('simultaneous schedule writes across branches permit exactly one coach claim', async () => {
   const results = await Promise.allSettled([

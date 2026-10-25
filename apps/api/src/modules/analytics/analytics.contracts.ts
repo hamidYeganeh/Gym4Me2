@@ -10,7 +10,7 @@ export const analyticsFilters = z
     branchId: z.uuid().optional(),
     serviceId: z.uuid().optional(),
     kind: z
-      .enum(['class', 'course', 'court', 'access', 'membership'])
+      .enum(['class', 'course', 'court', 'access', 'membership', 'program'])
       .optional(),
   })
   .strict()

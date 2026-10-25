@@ -1,4 +1,5 @@
 "use client";
+import { IranianDateInput } from "../kit/IranianDateInput";
 import { useId, useState } from "react";
 import { useTranslations } from "@repo/i18n";
 import { FilterSheet } from "../kit/BottomSheet";
@@ -125,7 +126,14 @@ export function ManagementFilterBar({
             >
               <NativeSelectOption value="">{t("all")}</NativeSelectOption>
               {(
-                ["class", "course", "court", "access", "membership"] as const
+                [
+                  "class",
+                  "course",
+                  "court",
+                  "access",
+                  "membership",
+                  "program",
+                ] as const
               ).map((k) => (
                 <NativeSelectOption key={k} value={k}>
                   {luma(`kinds.${k}`)}
@@ -134,28 +142,28 @@ export function ManagementFilterBar({
             </NativeSelect>
           </label>
         )}
-        <TextField
-          name={`${id}-from`}
-          label={t("from")}
-          type="date"
-          dir="ltr"
-          value={draft.from ?? ""}
-          max={draft.to}
-          onChange={(e) =>
-            set((d) => ({ ...d, from: e.target.value || undefined }))
-          }
-        />
-        <TextField
-          name={`${id}-to`}
-          label={t("to")}
-          type="date"
-          dir="ltr"
-          value={draft.to ?? ""}
-          min={draft.from}
-          onChange={(e) =>
-            set((d) => ({ ...d, to: e.target.value || undefined }))
-          }
-        />
+        <label className="grid gap-2 text-sm">
+          {t("from")}
+          <IranianDateInput
+            name={`${id}-from`}
+            value={draft.from ?? ""}
+            max={draft.to}
+            onValueChange={(iso) =>
+              set((d) => ({ ...d, from: iso || undefined }))
+            }
+          />
+        </label>
+        <label className="grid gap-2 text-sm">
+          {t("to")}
+          <IranianDateInput
+            name={`${id}-to`}
+            value={draft.to ?? ""}
+            min={draft.from}
+            onValueChange={(iso) =>
+              set((d) => ({ ...d, to: iso || undefined }))
+            }
+          />
+        </label>
         <label className="grid gap-2 text-sm">
           {t("sort")}
           <NativeSelect

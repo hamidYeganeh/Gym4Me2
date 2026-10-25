@@ -31,6 +31,13 @@ export function ServicesPage({
   branchId,
   back = "/discovery",
 }: { organizationId?: string; branchId?: string; back?: string } = {}) {
+  const w = useTranslations("Workflow");
+  const [sport, setSport] = useState("");
+  const [kind, setKind] = useState("");
+  const sports =
+    useSportsQuery<{ id: string; name: string; formats: string[] }[]>(
+      "sports/formats",
+    );
   const growth = useTranslations("Growth");
   const t = useLuma();
   const locale = useLocale();
@@ -44,11 +51,17 @@ export function ServicesPage({
   useTrainingEvent("discovery_searched");
   const query = useSportsQuery<ServiceDto[]>("sports/services", {
     q: search,
+    sportId: sport || undefined,
+    kind: kind || undefined,
     organizationId,
     branchId,
   });
+  const availableFormats = sports.data?.find((s) => s.id === sport)?.formats;
   return (
     <LumaPage title={t("services")} back={back}>
+      <Link className="luma-row" href="/household">
+        {w("household")}
+      </Link>
       <Link className="luma-row" href="/explore">
         {growth("explore")}
       </Link>
@@ -60,6 +73,51 @@ export function ServicesPage({
           maxLength={160}
         />
       </Field>
+      <div className="grid grid-cols-2 gap-3">
+        <Field label={w("sport")}>
+          <select
+            value={sport}
+            onChange={(e) => {
+              setSport(e.target.value);
+              setKind("");
+            }}
+          >
+            <option value="">{w("allSports")}</option>
+            {sports.data?.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label={w("format")}>
+          <select value={kind} onChange={(e) => setKind(e.target.value)}>
+            <option value="">{w("allFormats")}</option>
+            {(
+              [
+                "class",
+                "course",
+                "court",
+                "access",
+                "membership",
+                "program",
+              ] as const
+            )
+              .filter(
+                (k) =>
+                  !sport || !availableFormats || availableFormats.includes(k),
+              )
+              .map((k) => (
+                <option key={k} value={k}>
+                  {w(`actions.${k}`)}
+                </option>
+              ))}
+          </select>
+        </Field>
+      </div>
+      <Link className="luma-row" href="/programs">
+        {w("programs")}
+      </Link>
       <Link className="luma-row" href="/games">
         {growth("games")}
       </Link>
@@ -69,7 +127,12 @@ export function ServicesPage({
             key={s.id}
             title={s.title}
             icon={<ServiceCoverThumbnail cover={s.cover} />}
-            meta={[s.clubName, stamp(s.nextStartAt, locale)]
+            meta={[
+              s.sportName,
+              w(`actions.${s.kind}`),
+              s.clubName,
+              stamp(s.nextStartAt, locale),
+            ]
               .filter(Boolean)
               .join(" · ")}
             href={`/services/detail?id=${s.id}`}
@@ -85,6 +148,7 @@ export function ServicesPage({
   );
 }
 export function ServiceDetail() {
+  const w = useTranslations("Workflow");
   const growth = useTranslations("Growth");
   const params = useSearchParams();
   const id = params.get("id");
@@ -200,9 +264,9 @@ export function ServiceDetail() {
                 </Link>
               </Section>
             )}
-            {query.data.kind === "membership" ? (
+            {["membership", "program"].includes(query.data.kind) ? (
               <Link className="luma-cta" href={`/checkout?service=${id}`}>
-                {t("continue")}
+                {w(`actions.${query.data.kind}`)}
               </Link>
             ) : (
               <>

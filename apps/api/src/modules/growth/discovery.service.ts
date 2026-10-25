@@ -48,7 +48,7 @@ export class GrowthDiscoveryService {
     }>(
       this.database.db,
       sql`SELECT o.id,s.id service_id,v.title,v.description,v.level,v.amount_minor::text,b.name branch_name,o.start_at,o.end_at,
-   o.capacity-(SELECT count(*)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status IN ('confirmed','pending_approval') OR r.status='held' AND r.expires_at>now())) remaining
+   o.capacity-(SELECT coalesce(sum(r.quantity),0)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status IN ('confirmed','pending_approval','completed','no_show') OR r.status='held' AND r.expires_at>now())) remaining
    FROM sport_occurrences o JOIN sport_services s ON s.id=o.service_id JOIN sport_service_versions v ON v.id=s.published_version_id JOIN sport_service_versions ov ON ov.id=o.version_id JOIN branches b ON b.id=s.branch_id
    WHERE ${publicServiceVisible} AND o.status='scheduled' AND o.start_at>now() AND (${resourceAvailable})
    ${input.branchId ? sql`AND s.branch_id=${input.branchId}` : sql``} ${input.from ? sql`AND o.start_at>=${input.from}` : sql``} ${input.to ? sql`AND o.end_at<=${input.to}` : sql``}

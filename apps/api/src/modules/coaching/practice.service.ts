@@ -112,12 +112,41 @@ export class CoachingPracticeService {
       this.db,
       sql`SELECT r.id,o.id AS occurrence_id,o.revision AS occurrence_revision,o.start_at,o.end_at,o.status AS occurrence_status,s.title,r.status,r.revision,u.display_name FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN sport_services s ON s.id=o.service_id JOIN coaching_services cs ON cs.service_id=s.id JOIN users u ON u.id=cs.coach_id WHERE r.user_id=${actor} ORDER BY o.start_at DESC LIMIT 100`,
     );
+    const [sessionSummary] = await rows(
+      this.db,
+      sql`WITH sessions AS (
+        SELECT o.id,o.start_at,o.status,
+          count(r.id) FILTER (WHERE r.status IN ('confirmed','pending_approval','completed','no_show')) AS booked,
+          count(r.id) FILTER (WHERE r.status IN ('confirmed','pending_approval')) AS awaiting,
+          count(r.id) FILTER (WHERE r.status='completed') AS completed
+        FROM sport_occurrences o
+        JOIN sport_service_versions v ON v.id=o.version_id
+        LEFT JOIN sport_reservations r ON r.occurrence_id=o.id
+        WHERE v.coach_user_id=${actor}
+        GROUP BY o.id
+      ) SELECT count(*)::int AS total,
+        count(*) FILTER (WHERE status='scheduled' AND start_at>now() AND (booked=0 OR awaiting>0))::int AS upcoming,
+        count(*) FILTER (WHERE status<>'cancelled' AND completed>0 AND awaiting=0)::int AS completed
+      FROM sessions`,
+    );
+    const studentMemberships = await rows(
+      this.db,
+      sql`SELECT m.id,v.title,m.granted,m.consumed,m.ends_at,m.status,
+        (SELECT count(*)::int FROM sport_reservations r WHERE r.membership_id=m.id AND NOT r.consumed AND (r.status IN ('pending_approval','confirmed') OR (r.status='held' AND r.expires_at>now()))) AS held
+      FROM sport_memberships m
+      JOIN sport_service_versions v ON v.id=m.version_id
+      JOIN coaching_services cs ON cs.service_id=m.service_id
+      WHERE m.user_id=${actor} AND m.status IN ('active','frozen') AND (m.ends_at IS NULL OR m.ends_at>now())
+      ORDER BY m.created_at DESC LIMIT 100`,
+    );
     return {
       practice: practice ?? null,
       credentials,
       availability,
       services,
       sessions,
+      sessionSummary,
+      studentMemberships,
       notes,
       studentSessions,
     };
@@ -125,7 +154,25 @@ export class CoachingPracticeService {
   async sessions(actor: string, filters?: ManagementFilters) {
     return rows(
       this.db,
-      sql`SELECT o.id AS occurrence_id,o.revision AS occurrence_revision,o.start_at,o.end_at,o.status AS occurrence_status,s.title,s.branch_id,b.name AS branch_name,org.name AS club_name,r.id,r.user_id,r.status,r.revision,u.display_name FROM sport_occurrences o JOIN sport_service_versions v ON v.id=o.version_id JOIN sport_services s ON s.id=o.service_id JOIN branches b ON b.id=s.branch_id JOIN organizations org ON org.id=s.organization_id LEFT JOIN sport_reservations r ON r.occurrence_id=o.id AND r.status IN('pending_approval','confirmed','completed','no_show') LEFT JOIN users u ON u.id=r.user_id WHERE v.coach_user_id=${actor} AND ${filters?.from || filters?.to ? sql`true` : sql`o.end_at>now()-interval '30 days'`} AND ${managementWhere(filters, sql`o.start_at`, sql`coalesce(r.status,o.status)`, [sql`s.title`, sql`b.name`, sql`org.name`, sql`u.display_name`])} ORDER BY o.start_at ${managementDirection(filters)},o.id,r.id ${managementPage(filters)}`,
+      sql`WITH page AS (
+        SELECT DISTINCT o.id,o.start_at
+        FROM sport_occurrences o JOIN sport_service_versions v ON v.id=o.version_id
+        JOIN sport_services s ON s.id=o.service_id
+        JOIN branches b ON b.id=s.branch_id JOIN organizations org ON org.id=s.organization_id
+        LEFT JOIN sport_reservations r ON r.occurrence_id=o.id AND r.status IN('pending_approval','confirmed','completed','no_show')
+        LEFT JOIN users u ON u.id=r.user_id
+        WHERE v.coach_user_id=${actor}
+          AND ${filters?.from || filters?.to ? sql`true` : sql`o.end_at>now()-interval '30 days'`}
+          AND ${managementWhere(filters, sql`o.start_at`, sql`coalesce(r.status,o.status)`, [sql`s.title`, sql`b.name`, sql`org.name`, sql`u.display_name`])}
+        ORDER BY o.start_at ${managementDirection(filters)},o.id ${managementPage(filters)}
+      )
+      SELECT o.id AS occurrence_id,o.revision AS occurrence_revision,o.start_at,o.end_at,o.status AS occurrence_status,s.title,s.branch_id,b.name AS branch_name,org.name AS club_name,r.id,r.user_id,r.status,r.revision,coalesce((SELECT name FROM sport_dependents WHERE id=r.dependent_id),u.display_name) display_name
+      FROM page JOIN sport_occurrences o ON o.id=page.id
+      JOIN sport_services s ON s.id=o.service_id
+      JOIN branches b ON b.id=s.branch_id JOIN organizations org ON org.id=s.organization_id
+      LEFT JOIN sport_reservations r ON r.occurrence_id=o.id AND r.status IN('pending_approval','confirmed','completed','no_show')
+      LEFT JOIN users u ON u.id=r.user_id
+      ORDER BY o.start_at ${managementDirection(filters)},o.id,r.id`,
     );
   }
   async save(actor: string, input: z.infer<typeof c.practiceSchema>) {
@@ -420,7 +467,10 @@ export class CoachingPracticeService {
       );
       if (!s) throw new NotFoundException();
       await this.commerce.staff(tx, actor, s.organization_id, s.branch_id);
-      if (!s.coach_user_id || !['class', 'membership'].includes(s.kind))
+      if (
+        !s.coach_user_id ||
+        !['class', 'membership', 'program'].includes(s.kind)
+      )
         throw new BadRequestException('Practice.invalidService');
       await approvedCoach(tx, s.coach_user_id);
       const assigned = await rows<{ coach_id: string }>(

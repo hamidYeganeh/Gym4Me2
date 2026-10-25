@@ -1,4 +1,7 @@
 "use client";
+import { IranianDateTimeInput } from "../kit/IranianDateInput";
+import { LegacyReadiness } from "./legacy-readiness";
+import { OfferingFields, readOffering } from "./offering-fields";
 import { BottomSheet, FilterSheet } from "../kit/BottomSheet";
 import { ConfirmAction } from "../confirm-action";
 import {
@@ -278,6 +281,9 @@ export function SportsWorkspace({ page }: { page: Page }) {
       ) : (
         <>
           {page === "services" && (
+            <LegacyReadiness org={org!} branch={branch!} />
+          )}
+          {page === "services" && (
             <Services
               org={org!}
               branch={branch!}
@@ -346,6 +352,10 @@ function Services({
     "business/sports/resources",
     { organizationId: org, branchId: branch },
   );
+  const [kind, setKind] = useState<ServiceDto["kind"]>("class");
+  const coaches = useSportsQuery<
+    { userId: string; displayName: string | null }[]
+  >("business/coaching/candidates", { organizationId: org, branchId: branch });
   const [formOpen, setFormOpen] = useState(false);
   return (
     <div className="grid gap-6">
@@ -379,6 +389,9 @@ function Services({
                 title: f.get("title"),
                 description: f.get("description"),
                 kind: f.get("kind"),
+                sportId: f.get("sportId") || null,
+                offering: readOffering(f),
+                coachUserId: f.get("coachUserId") || null,
                 amountMinor: (BigInt(price) * BigInt(10)).toString(),
                 currency: "IRR",
                 durationDays: f.get("duration")
@@ -423,12 +436,36 @@ function Services({
             <Input name="title" minLength={2} maxLength={160} required />
           </FormField>
           <FormField label={t("kind")}>
-            <NativeSelect name="kind">
+            <NativeSelect
+              name="kind"
+              value={kind}
+              onChange={(e) => setKind(e.target.value as ServiceDto["kind"])}
+            >
               {(
-                ["class", "course", "court", "access", "membership"] as const
+                [
+                  "class",
+                  "course",
+                  "court",
+                  "access",
+                  "membership",
+                  "program",
+                ] as const
               ).map((kind) => (
                 <NativeSelectOption key={kind} value={kind}>
                   {t(`kinds.${kind}`)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormField>
+          <OfferingFields kind={kind} services={services} />
+          <FormField label={t("coach")}>
+            <NativeSelect name="coachUserId" required={kind === "program"}>
+              <NativeSelectOption value="">
+                {t("chooseSession")}
+              </NativeSelectOption>
+              {coaches.data?.map((c) => (
+                <NativeSelectOption key={c.userId} value={c.userId}>
+                  {c.displayName ?? c.userId}
                 </NativeSelectOption>
               ))}
             </NativeSelect>
@@ -570,6 +607,10 @@ function Services({
 }
 function ServiceActions({ service: s }: { service: ServiceDto }) {
   const t = useTranslations("Luma");
+  const benefits = useSportsQuery<ServiceDto[]>("business/sports/services", {
+    organizationId: s.organizationId,
+    branchId: s.branchId,
+  });
   const publish = useSportsCommand(`business/sports/services/${s.id}/publish`);
   const update = useSportsCommand(
     `business/sports-operations/services/${s.id}/version`,
@@ -593,6 +634,9 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
     <Card>
       <CardHeader>
         <CardTitle>{s.title}</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          {s.sportName} · {t(`kinds.${s.kind}`)}
+        </p>
       </CardHeader>
       <CardContent>
         <div className="flex gap-3 items-center flex-wrap">
@@ -617,7 +661,7 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
           >
             {t("serviceCover")}
           </Button>
-          {s.kind !== "membership" && (
+          {!["membership", "program"].includes(s.kind) && (
             <Button
               variant="outline"
               aria-expanded={open}
@@ -679,6 +723,8 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
                     title: fields.get("title"),
                     description: fields.get("description"),
                     kind: s.kind,
+                    sportId: fields.get("sportId") || null,
+                    offering: readOffering(fields),
                     amountMinor: price,
                     currency: "IRR",
                     durationDays: s.durationDays,
@@ -766,6 +812,11 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
             <FormField label={t("level")}>
               <Input name="level" maxLength={80} defaultValue={s.level} />
             </FormField>
+            <OfferingFields
+              kind={s.kind}
+              service={s}
+              services={benefits.data ?? []}
+            />
             <ServiceEligibilityFields value={s.eligibility} />
             <FormField label={t("coach")}>
               <Input name="coach" maxLength={120} defaultValue={s.coachName} />
@@ -856,10 +907,10 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
               {t("scheduleSeriesHint")}
             </p>
             <FormField label={t("startAt")}>
-              <Input type="datetime-local" name="start" required />
+              <IranianDateTimeInput name="start" required />
             </FormField>
             <FormField label={t("endAt")}>
-              <Input type="datetime-local" name="end" required />
+              <IranianDateTimeInput name="end" required />
             </FormField>
             <FormField label={t("capacityTotal")}>
               <Input
@@ -967,7 +1018,7 @@ function CouponManager({ serviceId }: { serviceId: string }) {
           <Input name="maxUses" type="number" min="1" max="100000" required />
         </FormField>
         <FormField label={t("expires")}>
-          <Input name="expiresAt" type="datetime-local" required />
+          <IranianDateTimeInput name="expiresAt" required />
         </FormField>
         <Button type="submit" disabled={create.isPending}>
           {t("createCoupon")}
@@ -1182,7 +1233,7 @@ function Calendar({
   return (
     <div className="grid gap-4">
       {services
-        .filter((s) => s.kind !== "membership")
+        .filter((s) => !["membership", "program"].includes(s.kind))
         .map((s) => (
           <OccurrenceList
             key={s.id}

@@ -1,4 +1,5 @@
 "use client";
+import { IranianDateTimeInput } from "../kit/IranianDateInput";
 import { useRef, useState } from "react";
 import { useLocale, useTranslations } from "@repo/i18n";
 import {
@@ -184,11 +185,11 @@ function OccurrenceSeriesEditor({
             <FieldLabel htmlFor={`${series.id}-start`}>
               {t("startAt")}
             </FieldLabel>
-            <Input
+            <IranianDateTimeInput
               id={`${series.id}-start`}
               className="min-h-11"
               name="start"
-              type="datetime-local"
+
               defaultValue={localDateTime(series.startAt)}
               aria-invalid={Boolean(validationError)}
               aria-describedby={
@@ -199,11 +200,11 @@ function OccurrenceSeriesEditor({
           </Field>
           <Field data-invalid={Boolean(validationError)}>
             <FieldLabel htmlFor={`${series.id}-end`}>{t("endAt")}</FieldLabel>
-            <Input
+            <IranianDateTimeInput
               id={`${series.id}-end`}
               className="min-h-11"
               name="end"
-              type="datetime-local"
+
               defaultValue={localDateTime(series.endAt)}
               aria-invalid={Boolean(validationError)}
               aria-describedby={

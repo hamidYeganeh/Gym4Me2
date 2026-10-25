@@ -68,7 +68,14 @@ export function PriceSettings({
           <Field name="kind" label={t("serviceKind")}>
             <Select name="kind">
               {(
-                ["class", "course", "court", "access", "membership"] as const
+                [
+                  "class",
+                  "course",
+                  "court",
+                  "access",
+                  "membership",
+                  "program",
+                ] as const
               ).map((k) => (
                 <NativeSelectOption key={k} value={k}>
                   {t(k)}
@@ -148,7 +155,9 @@ export function SharedMemberships({
                 >
                   <div className="grid gap-3">
                     {data.services
-                      ?.filter((s) => s.kind !== "membership")
+                      ?.filter(
+                        (s) => !["membership", "program"].includes(s.kind),
+                      )
                       .map((s) => (
                         <label
                           key={s.id}

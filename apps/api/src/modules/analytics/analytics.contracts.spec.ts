@@ -1,5 +1,13 @@
 import { analyticsFilters, analyticsWindow } from './analytics.contracts';
 describe('analytics calendar boundaries', () => {
+  it('accepts a program sales filter', () =>
+    expect(
+      analyticsFilters.parse({
+        from: '2026-10-01',
+        to: '2026-10-25',
+        kind: 'program',
+      }).kind,
+    ).toBe('program'));
   it('includes the whole final Tehran day, with an exclusive end', () => {
     const f = analyticsFilters.parse({ from: '2026-05-01', to: '2026-05-01' });
     expect(analyticsWindow(f)).toEqual({

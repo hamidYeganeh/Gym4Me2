@@ -20,6 +20,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../kit/Card";
 import { Loading } from "../account/common";
 import { QueryError } from "./query-error";
 import { Status, FormField } from "./shared";
+import { CustomerEntry, ReceptionSale } from "./reception-workflows";
 import { TicketScanner } from "./ticket-scanner";
 export function Reception({ org, branch }: { org: string; branch: string }) {
   const t = useTranslations("Luma");
@@ -43,6 +44,8 @@ export function Reception({ org, branch }: { org: string; branch: string }) {
   );
   return (
     <div className="grid gap-6">
+      <ReceptionSale org={org} branch={branch} />
+      <CustomerEntry org={org} branch={branch} />
       <ManagementFilterBar
         value={list.filters}
         onApply={list.apply}
@@ -62,7 +65,7 @@ export function Reception({ org, branch }: { org: string; branch: string }) {
           <TicketScanner
             onRead={(value) => {
               setToken(value);
-              check.reset();
+              check.mutate({ token: value });
             }}
           />
         </CardHeader>
@@ -72,7 +75,7 @@ export function Reception({ org, branch }: { org: string; branch: string }) {
             onSubmit={(e) => {
               e.preventDefault();
               const f = new FormData(e.currentTarget);
-              check.mutate({ token: f.get("token"), reason: f.get("reason") });
+              check.mutate({ token: f.get("token") });
             }}
           >
             <FormField label={t("manualCode")}>
@@ -85,9 +88,7 @@ export function Reception({ org, branch }: { org: string; branch: string }) {
                 dir="ltr"
               />
             </FormField>
-            <FormField label={t("reason")}>
-              <Input name="reason" minLength={3} maxLength={1000} required />
-            </FormField>
+
             <Button className="self-end" disabled={check.isPending}>
               {t("checkIn")}
             </Button>
@@ -111,7 +112,7 @@ export function Reception({ org, branch }: { org: string; branch: string }) {
       {query.isPending && <Loading />}
       <QueryError error={query.error} />
       {query.data?.map((r) => (
-        <ReservationActions key={r.id} item={r} />
+        <ReservationActions key={r.id} item={r} org={org} branch={branch} />
       ))}
       <Pager
         page={list.filters.page}
@@ -162,8 +163,12 @@ function VisitActions({ visit, locale }: { visit: VisitDto; locale: string }) {
 }
 function ReservationActions({
   item: r,
+  org,
+  branch,
 }: {
   item: BookingDto & { displayName: string; paymentStatus: string };
+  org: string;
+  branch: string;
 }) {
   const t = useTranslations("Luma");
   const attendance = useSportsCommand(
@@ -172,6 +177,8 @@ function ReservationActions({
   const approval = useSportsCommand(
     `business/sports-operations/reservations/${r.id}/approval`,
   );
+  const entry = useSportsCommand("business/sports-workflows/entry");
+  const w = useTranslations("Workflow");
   const [reason, setReason] = useState("");
   const [open, setOpen] = useState(false);
   return (
@@ -194,6 +201,25 @@ function ReservationActions({
         description={r.title}
       >
         <div className="grid gap-4">
+          {["confirmed", "completed"].includes(r.status) && (
+            <>
+              <Button
+                disabled={entry.isPending}
+                onClick={() =>
+                  entry.mutate({
+                    organizationId: org,
+                    branchId: branch,
+                    reservationId: r.id,
+                    idempotencyKey: crypto.randomUUID(),
+                  })
+                }
+              >
+                {w("recordEntry")}
+              </Button>
+              <QueryError error={entry.error} />
+              {entry.isSuccess && <p role="status">{w("entryRecorded")}</p>}
+            </>
+          )}
           <div className="flex gap-3 mb-4">
             <Status value={r.status} />
             <Status value={r.paymentStatus} />

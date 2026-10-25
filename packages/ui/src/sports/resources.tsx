@@ -1,4 +1,5 @@
 "use client";
+import { IranianDateTimeInput } from "../kit/IranianDateInput";
 import { ActionEditor } from "../account/action-editor";
 import { useId, useRef, useState, type ReactNode } from "react";
 import { useLocale, useTranslations } from "@repo/i18n";
@@ -74,15 +75,15 @@ function PeriodFields({
         <FieldLabel htmlFor={`${prefix}-start`}>
           {t("resourcePeriodStart")}
         </FieldLabel>
-        <Input
+        <IranianDateTimeInput
           className="min-h-11"
           id={`${prefix}-start`}
           name="start"
-          type="datetime-local"
+
           required
           defaultValue={from}
-          onChange={(e) => {
-            setStart(e.target.value);
+          onValueChange={(iso) => {
+            setStart(iso);
             onEdited?.();
           }}
         />
@@ -91,17 +92,17 @@ function PeriodFields({
         <FieldLabel htmlFor={`${prefix}-end`}>
           {t("resourcePeriodEnd")}
         </FieldLabel>
-        <Input
+        <IranianDateTimeInput
           className="min-h-11"
           id={`${prefix}-end`}
           name="end"
-          type="datetime-local"
+
           min={start || undefined}
           required
           defaultValue={to}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? `${prefix}-error` : undefined}
-          onChange={onEdited}
+          onValueChange={onEdited}
         />
         {error && (
           <FieldError role="alert" id={`${prefix}-error`}>

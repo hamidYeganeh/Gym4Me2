@@ -37,7 +37,8 @@
     "data:deletion-ledger": "ts-node scripts/deletion-ledger.ts",
     "test:training": "jest --config test/jest.training.json --runInBand",
     "test:ph5": "node --import tsx --test test/ph5.integration.test.ts",
-    "test:completion": "ts-node test/completion.integration.test.ts"
+    "test:completion": "ts-node test/completion.integration.test.ts",
+    "test:multisport": "ts-node test/multisport.integration.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1149.0",

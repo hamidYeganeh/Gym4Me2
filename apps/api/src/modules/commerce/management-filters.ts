@@ -10,7 +10,7 @@ const schema = z
       .regex(/^[a-z_]{1,32}$/)
       .optional(),
     kind: z
-      .enum(['class', 'course', 'court', 'access', 'membership'])
+      .enum(['class', 'course', 'court', 'access', 'membership', 'program'])
       .optional(),
     from: z.iso.date().optional(),
     to: z.iso.date().optional(),

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useLocale } from "@repo/i18n";
+import { useTranslations, useLocale } from "@repo/i18n";
 import {
   useSportsCommand,
   useSportsQuery,
@@ -19,10 +19,19 @@ import {
 } from "./common";
 export function TicketPage() {
   const t = useLuma();
+  const w = useTranslations("Workflow");
   const locale = useLocale();
   const params = useSearchParams();
   const id = params.get("id");
   const membership = params.get("membership") === "true";
+  const [pass, setPass] = useState("");
+  const passes = useSportsQuery<
+    { id: string; ordinal: number; name: string; admittedAt: string | null }[]
+  >(
+    `sports/account/bookings/${id}/passes`,
+    undefined,
+    Boolean(id) && !membership,
+  );
   const token = useSportsCommand<{ token: string; expiresAt: string }>(
     `sports/account/${membership ? "memberships" : "bookings"}/${id}/ticket`,
   );
@@ -70,6 +79,27 @@ export function TicketPage() {
           : `/bookings/detail?id=${id}`
       }
     >
+      {!!passes.data?.length && (
+        <fieldset className="grid gap-3 my-4">
+          <legend>{w("passes")}</legend>
+          {passes.data.map((p) => (
+            <label key={p.id} className="flex gap-3 items-center">
+              <input
+                type="radio"
+                name="pass"
+                value={p.id}
+                disabled={Boolean(p.admittedAt)}
+                checked={pass === p.id}
+                onChange={() => {
+                  setPass(p.id);
+                  token.reset();
+                }}
+              />
+              {p.name || String(p.ordinal)} {p.admittedAt && w("used")}
+            </label>
+          ))}
+        </fieldset>
+      )}
       <div className="luma-ticket">
         {token.data && !expired ? (
           <>
@@ -98,7 +128,7 @@ export function TicketPage() {
         disabled={token.isPending}
         onClick={() => {
           setQrError(false);
-          token.mutate({});
+          token.mutate({ entryPassId: pass || undefined });
         }}
       >
         {t("refreshTicket")}

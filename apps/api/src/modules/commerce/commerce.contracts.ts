@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { offeringSchema, participantSchema } from './offering';
 
 export const money = z.string().regex(/^(0|[1-9]\d{0,13})$/);
 export const revision = z.number().int().positive();
@@ -52,7 +53,16 @@ export const serviceSchema = z
     branchId: z.uuid(),
     title: z.string().trim().min(2).max(160),
     description: z.string().trim().max(10000).default(''),
-    kind: z.enum(['class', 'course', 'court', 'access', 'membership']),
+    kind: z.enum([
+      'class',
+      'course',
+      'court',
+      'access',
+      'membership',
+      'program',
+    ]),
+    sportId: z.uuid().nullable().default(null),
+    offering: offeringSchema.default(() => offeringSchema.parse({})),
     amountMinor: money,
     currency: z.literal('IRR').default('IRR'),
     durationDays: z.number().int().min(1).max(3660).nullable().default(null),
@@ -128,6 +138,11 @@ export const checkoutSchema = z
     serviceId: z.uuid(),
     occurrenceId: z.uuid().optional(),
     membershipId: z.uuid().optional(),
+    renewMembershipId: z.uuid().optional(),
+    dependentId: z.uuid().optional(),
+    startsOn: z.iso.date().optional(),
+    quantity: z.number().int().min(1).max(20).default(1),
+    participants: z.array(participantSchema).max(20).default([]),
     coupon: z
       .string()
       .trim()

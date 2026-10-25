@@ -30,7 +30,9 @@
     "./growth-crm": "./src/growth/crm.tsx",
     "./growth-discovery": "./src/growth/discovery.tsx",
     "./growth-credits": "./src/growth/credits.tsx",
-    "./growth-games": "./src/growth/games.tsx"
+    "./growth-games": "./src/growth/games.tsx",
+    "./sports-receipts": "./src/sports/payment-receipts.tsx",
+    "./sports-tuition": "./src/sports/tuition-plan.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

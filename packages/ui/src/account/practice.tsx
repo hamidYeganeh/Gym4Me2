@@ -14,11 +14,7 @@ import {
 import { Button } from "../kit/Button";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { AccountDesignPage } from "./account-design";
-import {
-  useManagementFilters,
-  ManagementFilterBar,
-} from "../sports/management-filters";
-import { Pager } from "./admin";
+import { CoachingSessions, StudentSessionJourney } from "./practice-sessions";
 import { AnalyticsPanel } from "../analytics/panel";
 import { Loading, QueryError } from "./common";
 import {
@@ -71,13 +67,7 @@ export function CoachingPracticePanel() {
     { view: "summary" },
   );
   const a = usePracticeAction();
-  const [tab, setTab] = useState("profile");
-  const sessionList = useManagementFilters("practice-sessions");
-  const sessions = usePracticeQuery<PracticeSessionDto[]>(
-    "profile/coaching-practice/sessions",
-    sessionList.filters,
-    tab === "sessions",
-  );
+  const [tab, setTab] = useState("sessions");
   if (q.isLoading) return <Loading />;
   if (q.error) return <QueryError error={q.error} retry={q.refetch} />;
   if (!q.data) return null;
@@ -91,26 +81,27 @@ export function CoachingPracticePanel() {
   return (
     <section className="space-y-5">
       <nav aria-label={t("workspace")} className="practice-navigation">
-        <Button variant="outline" asChild>
-          <Link href="/training">{t("trainingWorkspace")}</Link>
-        </Button>
         {(
-          ["profile", "calendar", "sessions", "finance", "analytics"] as const
+          ["sessions", "calendar", "profile", "finance", "analytics"] as const
         ).map((x) => (
           <Button
             key={x}
             variant={tab === x ? "secondary" : "outline"}
             type="button"
+            aria-pressed={tab === x}
             onClick={() => setTab(x)}
           >
             {t(x)}
           </Button>
         ))}
         <Button variant="outline" asChild>
+          <Link href="/training">{t("trainingWorkspace")}</Link>
+        </Button>
+        <Button variant="outline" asChild>
           <Link href="/coaches">{t("directory")}</Link>
         </Button>
       </nav>
-      <PracticeFeedback action={a} />
+      {(a.saved || Boolean(a.error)) && <PracticeFeedback action={a} />}
       {tab === "analytics" && <AnalyticsPanel surface="coach" />}
       {tab === "profile" && (
         <>
@@ -283,213 +274,27 @@ export function CoachingPracticePanel() {
           ))}
         </>
       )}
-      {tab === "sessions" && (
-        <>
-          <Form
-            title={t("schedule")}
-            pending={a.pending}
-            onSubmit={(f) =>
-              void a.run(
-                `profile/coaching-practice/services/${text(f, "service")}/sessions`,
-                {
-                  startAt: iso(f, "startAt"),
-                  endAt: iso(f, "endAt"),
-                  capacity: Number(text(f, "capacity")),
-                },
-              )
-            }
-          >
-            <Field name="service" label={t("service")}>
-              <NativeSelect name="service" required>
-                {d.services
-                  .filter((s) => s.kind !== "membership")
-                  .map((s) => (
-                    <NativeSelectOption key={s.id} value={s.id}>
-                      {s.title} · {s.clubName} · {s.branchName}
-                    </NativeSelectOption>
-                  ))}
-              </NativeSelect>
-            </Field>
-            <Field
-              name="startAt"
-              type="datetime-local"
-              label={t("startsAt")}
-              required
-            />
-            <Field
-              name="endAt"
-              type="datetime-local"
-              label={t("endsAt")}
-              required
-            />
-            <Field
-              name="capacity"
-              type="number"
-              label={t("capacity")}
-              value={1}
-              required
-            />
-          </Form>
-          <ManagementFilterBar
-            value={sessionList.filters}
-            onApply={sessionList.apply}
-            statuses={[
-              "scheduled",
-              "pending_approval",
-              "confirmed",
-              "completed",
-              "no_show",
-              "cancelled",
-            ]}
-          />
-          <QueryError error={sessions.error} retry={sessions.refetch} />
-          {sessions.isLoading && <Loading />}
-          {sessions.isSuccess && !sessions.data?.length && (
-            <p>{t("noSessions")}</p>
-          )}
-          <Pager
-            page={sessionList.filters.page}
-            setPage={sessionList.page}
-            count={sessions.data?.length ?? 0}
-          />
-          {sessions.data?.map((s, i) => (
-            <article
-              key={s.id ?? `${s.occurrenceId}-${i}`}
-              className="space-y-3 rounded-3xl border p-5"
-            >
-              <h3>{s.title}</h3>
-              <p>
-                {s.clubName} · {s.branchName}
-              </p>
-              <p>
-                {date(s.startAt)} · {s.displayName ?? t("noStudent")}
-              </p>
-              <p>
-                {t(
-                  s.status === "pending_approval"
-                    ? "pending"
-                    : s.status === "completed"
-                      ? "completed"
-                      : s.status === "no_show"
-                        ? "absent"
-                        : s.status === "confirmed"
-                          ? "confirmed"
-                          : "scheduled",
-                )}
-              </p>
-              {s.id && s.status === "pending_approval" && (
-                <Form
-                  title={t("decision")}
-                  pending={a.pending}
-                  onSubmit={(f) =>
-                    void a.run(
-                      `profile/coaching-practice/sessions/${s.id}/approval`,
-                      {
-                        revision: s.revision,
-                        approve: text(f, "decision") === "approve",
-                        reason: text(f, "reason"),
-                      },
-                    )
-                  }
-                >
-                  <Field name="decision" label={t("decision")}>
-                    <NativeSelect name="decision">
-                      <NativeSelectOption value="approve">
-                        {t("approve")}
-                      </NativeSelectOption>
-                      <NativeSelectOption value="reject">
-                        {t("reject")}
-                      </NativeSelectOption>
-                    </NativeSelect>
-                  </Field>
-                  <Field name="reason" label={t("reason")} required />
-                </Form>
-              )}
-              {s.id &&
-                ["confirmed", "completed", "no_show"].includes(
-                  s.status ?? "",
-                ) && (
-                  <Form
-                    title={t("attendance")}
-                    pending={a.pending}
-                    onSubmit={(f) =>
-                      void a.run(
-                        `profile/coaching-practice/sessions/${s.id}/attendance`,
-                        {
-                          present: checked(f, "present"),
-                          reason: text(f, "reason"),
-                        },
-                      )
-                    }
-                  >
-                    <Check
-                      name="present"
-                      label={t("present")}
-                      checked={s.status !== "no_show"}
-                    />
-                    <Field name="reason" label={t("reason")} required />
-                  </Form>
-                )}
-              {s.id && ["completed", "no_show"].includes(s.status ?? "") && (
-                <Button asChild variant="outline">
-                  <Link href={`/coaching/session?id=${s.id}`}>
-                    {t("sessionNote")}
-                  </Link>
-                </Button>
-              )}
-              {s.occurrenceStatus === "scheduled" &&
-                new Date(s.endAt) > new Date() && (
-                  <Form
-                    title={t("cancelSession")}
-                    pending={a.pending}
-                    onSubmit={(f) =>
-                      void a.run(
-                        `profile/coaching-practice/occurrences/${s.occurrenceId}/cancel`,
-                        {
-                          revision: s.occurrenceRevision,
-                          reason: text(f, "reason"),
-                        },
-                      )
-                    }
-                  >
-                    <Field name="reason" label={t("reason")} required />
-                    <p>{t("cancelHint")}</p>
-                  </Form>
-                )}
-            </article>
-          ))}
-        </>
-      )}
+      {tab === "sessions" && <CoachingSessions workspace={d} />}
+      <Link href="/programs" className="underline">
+        {t("programOrders")}
+      </Link>
       {tab === "finance" && <CoachFinance />}
-      {!!d.studentSessions.length && (
-        <details className="rounded-3xl border p-5">
-          <summary>{t("myCoachingSessions")}</summary>
-          <div className="space-y-3 pt-4">
-            {d.studentSessions.map((s) => (
-              <article key={s.id} className="space-y-2">
-                <p>
-                  {s.title} · {date(s.startAt)}
-                </p>
-                <Button asChild variant="outline">
-                  <Link href={`/bookings/detail?id=${s.id}`}>
-                    {t("booking")}
-                  </Link>
-                </Button>
-                {["completed", "no_show"].includes(s.status ?? "") && (
-                  <>
-                    <Button asChild variant="outline">
-                      <Link href={`/coaching/session?id=${s.id}`}>
-                        {t("sessionNote")}
-                      </Link>
-                    </Button>
-                    <StudentReview session={s} />
-                  </>
-                )}
-              </article>
-            ))}
-          </div>
-        </details>
-      )}
+      <StudentSessionJourney
+        sessions={d.studentSessions}
+        memberships={d.studentMemberships}
+        renderActions={(s) =>
+          ["completed", "no_show"].includes(s.status ?? "") && (
+            <>
+              <Button asChild variant="outline">
+                <Link href={`/coaching/session?id=${s.id}`}>
+                  {t("sessionNote")}
+                </Link>
+              </Button>
+              <StudentReview session={s} />
+            </>
+          )
+        }
+      />
     </section>
   );
 }

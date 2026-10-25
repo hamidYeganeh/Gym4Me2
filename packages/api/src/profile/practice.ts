@@ -30,6 +30,33 @@ export type PracticeSessionDto = {
   displayName: string | null;
   userId: string | null;
 };
+export type PracticeSessionSummaryDto = {
+  total: number;
+  upcoming: number;
+  completed: number;
+};
+export type CoachingMembershipDto = {
+  id: string;
+  title: string;
+  granted: number | null;
+  consumed: number;
+  held: number;
+  endsAt: string | null;
+  status: string;
+};
+export type PracticeParticipantDto = {
+  id: string;
+  revision: number;
+  displayName: string | null;
+  status: string;
+  checkedInAt: string | null;
+  attendance: string | null;
+  paymentStatus: string;
+  membershipId: string | null;
+  granted: number | null;
+  consumed: number | null;
+  held: number;
+};
 export type PracticeWorkspaceDto = {
   practice: PracticeDto | null;
   credentials: {
@@ -56,6 +83,8 @@ export type PracticeWorkspaceDto = {
     amountMinor: string;
   }[];
   sessions: PracticeSessionDto[];
+  sessionSummary?: PracticeSessionSummaryDto;
+  studentMemberships?: CoachingMembershipDto[];
   notes: { reservationId: string; note: string; followUp: string }[];
   studentSessions: PracticeSessionDto[];
 };

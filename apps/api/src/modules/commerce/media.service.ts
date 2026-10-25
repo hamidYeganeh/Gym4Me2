@@ -75,9 +75,9 @@ export class SportsMediaService {
       tx,
       sql`INSERT INTO sport_service_versions(
       service_id,version,title,amount_minor,currency,description,policy,eligibility,requirements,resource_ids,
-      duration_days,session_count,coach_name,coach_user_id,level,visibility,approval_required,show_participants,cover_image_id
+      duration_days,session_count,coach_name,coach_user_id,level,visibility,approval_required,show_participants,cover_image_id,sport_id,offering
     ) SELECT service_id,version+1,title,amount_minor,currency,description,policy,eligibility,requirements,resource_ids,
-      duration_days,session_count,coach_name,coach_user_id,level,visibility,approval_required,show_participants,${cover?.id ?? null}
+      duration_days,session_count,coach_name,coach_user_id,level,visibility,approval_required,show_participants,${cover?.id ?? null},sport_id,offering
       FROM sport_service_versions WHERE service_id=${service.id} ORDER BY version DESC LIMIT 1`,
     );
     const result: CoverResult = { revision: service.revision + 1, cover };

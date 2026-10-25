@@ -4,7 +4,7 @@ import {
   ForbiddenException,
   NotFoundException,
 } from '@nestjs/common';
-import { and, eq, inArray, isNull } from 'drizzle-orm';
+import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
 import type { DatabaseService } from '../../database/database.service';
 import * as s from '../../database/schema';
 import type { BranchPatch, ClubPatch } from './club.contracts';
@@ -269,6 +269,11 @@ export async function patchClub(tx: Tx, clubId: string, input: ClubPatch) {
   }
   if (sportIds !== undefined) {
     await activeTerms(tx, 'sports', sportIds);
+    const used = await tx.execute<{ sport_id: string }>(
+      sql`SELECT DISTINCT v.sport_id FROM sport_services s JOIN sport_service_versions v ON v.id=s.published_version_id WHERE s.organization_id=${clubId} AND s.status='published' AND v.sport_id IS NOT NULL`,
+    );
+    if (used.rows.some((r) => !sportIds.includes(r.sport_id)))
+      throw new BadRequestException('Closure.publishedSportRequired');
     await tx
       .delete(s.clubSportLinks)
       .where(eq(s.clubSportLinks.clubId, clubId));
@@ -344,6 +349,11 @@ export async function patchBranch(
     .where(eq(s.branchProfiles.branchId, branchId));
   if (sportIds !== undefined) {
     await activeTerms(tx, 'sports', sportIds);
+    const used = await tx.execute<{ sport_id: string }>(
+      sql`SELECT DISTINCT v.sport_id FROM sport_services s JOIN sport_service_versions v ON v.id=s.published_version_id WHERE s.branch_id=${branchId} AND s.status='published' AND v.sport_id IS NOT NULL`,
+    );
+    if (used.rows.some((r) => !sportIds.includes(r.sport_id)))
+      throw new BadRequestException('Closure.publishedSportRequired');
     await tx
       .delete(s.branchSports)
       .where(eq(s.branchSports.branchId, branchId));
