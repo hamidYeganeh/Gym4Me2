@@ -25,6 +25,19 @@ export function checkoutMembershipFixtures(
     endsAt: new Date(+now + 60 * 86_400_000).toISOString(),
     freezeUntil: null,
     policy: service.policy,
+    startsAt: new Date(+now - 86400000).toISOString(),
+    offering: {
+      includedServiceIds: services
+        .filter((s) => !["membership", "program"].includes(s.kind))
+        .map((s) => s.id),
+      entryAllowed: false,
+      entryLimitPerDay: null,
+      audience: "all",
+      maxTickets: 20,
+      deliveryDays: 3,
+      supportDays: 30,
+      confirmation: "instant",
+    },
     events: [],
     ...changes,
   });

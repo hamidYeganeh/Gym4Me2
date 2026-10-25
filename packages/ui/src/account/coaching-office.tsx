@@ -1,4 +1,6 @@
 "use client";
+import { OfferingFields, readOffering } from "../sports/offering-fields";
+import { useSportsQuery, type ServiceDto } from "@repo/api/sports";
 import { FilterSheet } from "../kit/BottomSheet";
 import "../workspace-design.css";
 import Link from "next/link";
@@ -141,6 +143,12 @@ function BusinessCoaching() {
   const manager = role === "owner" || role === "manager";
   const [commandKey, setCommandKey] = useState(() => crypto.randomUUID());
   const ledgerKeys = useRef(new Map<string, string>());
+  const [offeringKind, setOfferingKind] = useState<ServiceDto["kind"]>("class");
+  const branchServices = useSportsQuery<ServiceDto[]>(
+    "business/sports/services",
+    scope,
+    Boolean(org && branch),
+  );
   const coaches = candidates.data ?? [];
   if (orgs.isLoading || branches.isLoading) return <Loading />;
   if (orgs.error) return <QueryError error={orgs.error} retry={orgs.refetch} />;
@@ -201,6 +209,8 @@ function BusinessCoaching() {
                 ...scope,
                 title: text(f, "title"),
                 kind: text(f, "kind"),
+                sportId: text(f, "sportId") || null,
+                offering: readOffering(f),
                 coachUserId: text(f, "coach"),
                 coachName:
                   coaches.find((c) => c.userId === text(f, "coach"))
@@ -230,6 +240,10 @@ function BusinessCoaching() {
             });
           }}
         >
+          <OfferingFields
+            kind={offeringKind}
+            services={branchServices.data ?? []}
+          />
           <Field name="title" label={t("serviceTitle")} required />
           <Field name="coach" label={t("coach")}>
             <NativeSelect name="coach">
@@ -257,12 +271,21 @@ function BusinessCoaching() {
             </NativeSelect>
           </Field>
           <Field name="kind" label={t("kind")}>
-            <NativeSelect name="kind">
+            <NativeSelect
+              name="kind"
+              value={offeringKind}
+              onChange={(e) =>
+                setOfferingKind(e.target.value as ServiceDto["kind"])
+              }
+            >
               <NativeSelectOption value="class">
                 {t("singleSession")}
               </NativeSelectOption>
               <NativeSelectOption value="membership">
                 {t("package")}
+              </NativeSelectOption>
+              <NativeSelectOption value="program">
+                {t("programOrders")}
               </NativeSelectOption>
             </NativeSelect>
           </Field>

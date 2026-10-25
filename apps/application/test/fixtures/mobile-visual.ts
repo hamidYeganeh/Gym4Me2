@@ -1,4 +1,5 @@
 import { routeVisual } from "./route-visual";
+import { coachingSessionFixtures } from "./coaching-sessions";
 import { ph5Visual } from "./ph5-visual";
 import {
   filterSelectOptions,
@@ -23,6 +24,7 @@ export function createMobileFixtureFetch(
 ): typeof fetch {
   const at = new Date().toISOString(),
     actorId = webFixtureId(9999);
+  const coaching = coachingSessionFixtures(new Date(at));
   const content: PlanContent = {
     title: "قدرت و تعادل · Strength",
     note: "",
@@ -430,14 +432,30 @@ export function createMobileFixtureFetch(
       return reply({ profile: null, items: [], hasMore: false });
     if (path === "profile/coaching-practice")
       return reply({
+        ...coaching.workspace,
+        ...(empty
+          ? {
+              sessionSummary: { total: 0, completed: 0, upcoming: 0 },
+              studentMemberships: [],
+            }
+          : {}),
         practice: null,
         credentials: [],
         availability: [],
-        services: [],
+        services: empty ? [] : coaching.workspace.services,
         sessions: [],
         notes: [],
-        studentSessions: [],
+        studentSessions: empty ? [] : coaching.workspace.studentSessions,
       });
+    if (path === "profile/coaching-practice/sessions")
+      return reply(empty ? [] : coaching.sessions);
+    if (path === "profile/coaching-practice/reviews") return reply([]);
+    if (
+      /^profile\/sports-workflows\/coach\/occurrences\/[^/]+\/roster$/.test(
+        path,
+      )
+    )
+      return reply(empty ? [] : coaching.roster(path.split("/").at(-2)!));
     if (path === "system/policy")
       return reply({
         version: "1",

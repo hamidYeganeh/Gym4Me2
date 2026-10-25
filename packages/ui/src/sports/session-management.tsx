@@ -1,4 +1,6 @@
 "use client";
+import { IranianDateTimeInput } from "../kit/IranianDateInput";
+import { ClassRoster } from "./class-roster";
 import {
   useManagementFilters,
   ManagementFilterBar,
@@ -102,9 +104,9 @@ export function SessionEditor({
       </p>
       <label>
         {t("startAt")}
-        <Input
+        <IranianDateTimeInput
           name="start"
-          type="datetime-local"
+
           defaultValue={localTime(item.startAt)}
           required
           disabled={command.isPending}
@@ -112,9 +114,9 @@ export function SessionEditor({
       </label>
       <label>
         {t("endAt")}
-        <Input
+        <IranianDateTimeInput
           name="end"
-          type="datetime-local"
+
           defaultValue={localTime(item.endAt)}
           required
           disabled={command.isPending}
@@ -182,6 +184,7 @@ export function SessionManager({
       )}
       {query.data?.map((item) => (
         <div key={item.id} className="rounded-xl border border-border p-4">
+          {!administrator && <ClassRoster occurrenceId={item.id} business />}
           <p>
             {new Intl.DateTimeFormat(locale, {
               dateStyle: "medium",
@@ -385,11 +388,11 @@ function AdminSessionCreate({ service }: { service: ScheduleService }) {
       >
         <label>
           {t("startAt")}
-          <Input name="start" type="datetime-local" required />
+          <IranianDateTimeInput name="start" required />
         </label>
         <label>
           {t("endAt")}
-          <Input name="end" type="datetime-local" required />
+          <IranianDateTimeInput name="end" required />
         </label>
         <label>
           {t("capacityTotal")}

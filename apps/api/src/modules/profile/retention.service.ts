@@ -273,6 +273,18 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
     await tx.execute(
       sql`UPDATE sport_messages SET body='[deleted]',image_key=null,deleted_at=${now} WHERE sender_id=${userId}`,
     );
+    await tx.execute(
+      sql`UPDATE sport_program_requests SET intake='{}'::jsonb,status='cancelled' WHERE athlete_id=${userId} OR coach_id=${userId}`,
+    );
+    await tx.execute(
+      sql`UPDATE sport_entry_passes SET name='',birth_date=NULL,gender='unspecified' WHERE reservation_id IN(SELECT id FROM sport_reservations WHERE user_id=${userId})`,
+    );
+    await tx.execute(
+      sql`UPDATE sport_orders SET snapshot=snapshot-'participants'-'dependent' WHERE user_id=${userId}`,
+    );
+    await tx.execute(
+      sql`UPDATE sport_dependents SET name='[deleted]',birth_date='1900-01-01',gender='unspecified',status='archived' WHERE guardian_id=${userId}`,
+    );
     await tx.execute(sql`DELETE FROM sport_documents WHERE user_id=${userId}`);
     await tx.execute(
       sql`DELETE FROM sport_access_tokens WHERE user_id=${userId} AND NOT EXISTS(SELECT 1 FROM sport_visits WHERE token_id=sport_access_tokens.id)`,

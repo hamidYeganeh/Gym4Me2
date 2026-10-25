@@ -1,3 +1,15 @@
+import { HouseholdBillingService } from './commerce/household-billing.service';
+import {
+  HouseholdController,
+  TuitionController,
+  CollectionsController,
+} from './commerce/household-billing.controller';
+import { SportsWorkflowsService } from './commerce/workflows.service';
+import {
+  SportsFormatsController,
+  AthleteWorkflowsController,
+  BusinessWorkflowsController,
+} from './commerce/workflows.controller';
 import { NativePushController } from './push/native-push.controller';
 import { NativePushService } from './push/native-push.service';
 import { NativePushSender } from './push/native-push.sender';
@@ -160,6 +172,12 @@ import {
 @Module({
   imports: [DatabaseModule, AuthModule, StorageModule],
   controllers: [
+    HouseholdController,
+    TuitionController,
+    CollectionsController,
+    SportsFormatsController,
+    AthleteWorkflowsController,
+    BusinessWorkflowsController,
     NativePushController,
     CrmController,
     PublicGamesController,
@@ -228,6 +246,8 @@ import {
     AdminUsersController,
   ],
   providers: [
+    HouseholdBillingService,
+    SportsWorkflowsService,
     NativePushService,
     NativePushSender,
     CrmService,

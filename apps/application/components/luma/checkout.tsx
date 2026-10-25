@@ -1,4 +1,7 @@
 "use client";
+import { TuitionPlan } from "@repo/ui/sports-tuition";
+import { IranianDateInput } from "@repo/ui/kit/IranianDateInput";
+import { ReceiptForm } from "@repo/ui/sports-receipts";
 import { CreditPayment } from "@repo/ui/growth-credits";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { useTrainingEvent } from "@repo/ui/training";
@@ -23,6 +26,7 @@ import {
   type OrderDto,
   type QuoteDto,
   type PaymentAttemptDto,
+  type ParticipantDto,
 } from "@repo/api/sports";
 import {
   CommandError,
@@ -55,6 +59,21 @@ function CheckoutForm({
   service: string | null;
   occurrence: string | null;
 }) {
+  const w = useTranslations("Workflow");
+  const params = useSearchParams();
+  const [renewMembershipId, setRenewMembershipId] = useState(
+    params.get("renew") ?? "",
+  );
+  const [startsOn, setStartsOn] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const [dependentId, setDependentId] = useState(params.get("dependent") ?? "");
+  const dependents =
+    useSportsQuery<{ id: string; name: string; status: string }[]>(
+      "profile/household",
+    );
+  const [participants, setParticipants] = useState<ParticipantDto[]>([
+    { name: "", birthDate: null, gender: "unspecified" },
+  ]);
   const t = useLuma();
   const copy = useTranslations("ReservationUI");
   const practiceCopy = useTranslations("Practice");
@@ -69,6 +88,9 @@ function CheckoutForm({
   );
   const checkout = useSportsCommand<OrderDto>("sports/account/checkout");
   const quote = useSportsCommand<QuoteDto>("sports/account/quote");
+  const enrollSeries = useSportsCommand(
+    "profile/sports-workflows/series-enrollment",
+  );
   const [accepted, setAccepted] = useState(false);
   const [membership, setMembership] = useState("");
   const [coupon, setCoupon] = useState("");
@@ -83,13 +105,50 @@ function CheckoutForm({
     );
   const selected = query.data?.occurrences.find((o) => o.id === occurrence);
   const unavailable = query.data ? checkoutIssue(query.data, occurrence) : null;
-  const eligibleMemberships = query.data
-    ? usableCheckoutMemberships(query.data, memberships.data ?? [])
-    : [];
+  const eligibleMemberships =
+    query.data && quantity === 1
+      ? usableCheckoutMemberships(query.data, memberships.data ?? []).filter(
+          (m) => (m.dependentId ?? "") === dependentId && !m.paymentOverdue,
+        )
+      : [];
   const membershipUnavailable =
     Boolean(membership) &&
     !eligibleMemberships.some((item) => item.id === membership);
   const busy = quote.isPending || checkout.isPending;
+  const identityRequired =
+    quantity > 1 ||
+    (query.data?.offering?.audience &&
+      query.data.offering.audience !== "all") ||
+    query.data?.eligibility.minimumAge != null ||
+    query.data?.eligibility.maximumAge != null;
+  const purchaseDetails = {
+    dependentId: dependentId || undefined,
+    quantity,
+    participants:
+      !dependentId && (identityRequired || participants[0]?.name)
+        ? participants
+        : [],
+    renewMembershipId: renewMembershipId || undefined,
+    startsOn: startsOn || undefined,
+  };
+  const changeDetails = () => {
+    quote.reset();
+    checkout.reset();
+    key.current = null;
+    setAccepted(false);
+  };
+  const incomplete =
+    !dependentId &&
+    Boolean(identityRequired) &&
+    participants.some(
+      (p) =>
+        p.name.trim().length < 2 ||
+        ((query.data?.eligibility.minimumAge != null ||
+          query.data?.eligibility.maximumAge != null) &&
+          !p.birthDate) ||
+        (["men", "women"].includes(query.data?.offering?.audience ?? "") &&
+          p.gender === "unspecified"),
+    );
   return (
     <LumaPage
       title={copy("reviewCheckout")}
@@ -105,7 +164,10 @@ function CheckoutForm({
               venue={`${query.data.clubName} · ${query.data.branchName}`}
               startAt={selected?.startAt}
               endAt={selected?.endAt}
-              amountMinor={quote.data?.amountMinor ?? query.data.amountMinor}
+              amountMinor={
+                quote.data?.amountMinor ??
+                (BigInt(query.data.amountMinor) * BigInt(quantity)).toString()
+              }
               cover={quote.data ? quote.data.cover : query.data.cover}
             />
             {unavailable && (
@@ -118,6 +180,169 @@ function CheckoutForm({
                   {t("chooseSession")}
                 </Link>
               </p>
+            )}
+            {query.data.kind === "access" && (
+              <Field label={w("quantity")}>
+                <input
+                  type="number"
+                  min={1}
+                  max={query.data.offering?.maxTickets ?? 20}
+                  value={quantity}
+                  onChange={(e) => {
+                    const n = Math.min(
+                      query.data?.offering?.maxTickets ?? 20,
+                      Math.max(1, Number(e.target.value) || 1),
+                    );
+                    setQuantity(n);
+                    if (n > 1) setDependentId("");
+                    if (n > 1) setMembership("");
+                    setParticipants(
+                      Array.from(
+                        { length: n },
+                        (_, i) =>
+                          participants[i] ?? {
+                            name: "",
+                            birthDate: null,
+                            gender: "unspecified",
+                          },
+                      ),
+                    );
+                    changeDetails();
+                  }}
+                />
+              </Field>
+            )}
+            {quantity === 1 && (
+              <Field label={w("beneficiary")}>
+                <select
+                  value={dependentId}
+                  onChange={(e) => {
+                    setDependentId(e.target.value);
+                    setMembership("");
+                    setRenewMembershipId("");
+                    changeDetails();
+                  }}
+                >
+                  <option value="">{w("myself")}</option>
+                  {dependents.data
+                    ?.filter((d) => d.status === "active")
+                    .map((d) => (
+                      <option key={d.id} value={d.id}>
+                        {d.name}
+                      </option>
+                    ))}
+                </select>
+                <Link className="underline" href="/household">
+                  {w("household")}
+                </Link>
+              </Field>
+            )}
+            {!dependentId &&
+              (identityRequired ||
+                (query.data.kind !== "membership" &&
+                  query.data.kind !== "program")) &&
+              participants.map((person, i) => (
+                <fieldset className="luma-group my-3 p-4 grid gap-3" key={i}>
+                  <legend>{w("participant", { number: i + 1 })}</legend>
+                  <Field label={w("name")}>
+                    <input
+                      value={person.name}
+                      maxLength={120}
+                      onChange={(e) => {
+                        setParticipants(
+                          participants.map((p, j) =>
+                            j === i ? { ...p, name: e.target.value } : p,
+                          ),
+                        );
+                        changeDetails();
+                      }}
+                    />
+                  </Field>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Field label={w("birthDate")}>
+                      <IranianDateInput
+                        value={person.birthDate ?? ""}
+                        onValueChange={(iso) => {
+                          setParticipants(
+                            participants.map((p, j) =>
+                              j === i ? { ...p, birthDate: iso || null } : p,
+                            ),
+                          );
+                          changeDetails();
+                        }}
+                      />
+                    </Field>
+                    <Field label={w("gender")}>
+                      <select
+                        value={person.gender}
+                        onChange={(e) => {
+                          setParticipants(
+                            participants.map((p, j) =>
+                              j === i
+                                ? {
+                                    ...p,
+                                    gender: e.target
+                                      .value as ParticipantDto["gender"],
+                                  }
+                                : p,
+                            ),
+                          );
+                          changeDetails();
+                        }}
+                      >
+                        {(["unspecified", "male", "female"] as const).map(
+                          (g) => (
+                            <option key={g} value={g}>
+                              {w(g)}
+                            </option>
+                          ),
+                        )}
+                      </select>
+                    </Field>
+                  </div>
+                </fieldset>
+              ))}
+            {query.data.kind === "membership" && (
+              <>
+                <Field label={w("renew")}>
+                  <select
+                    value={renewMembershipId}
+                    onChange={(e) => {
+                      setRenewMembershipId(e.target.value);
+                      changeDetails();
+                    }}
+                  >
+                    <option value="">{w("newMembership")}</option>
+                    {memberships.data
+                      ?.filter(
+                        (m) =>
+                          m.serviceId === service &&
+                          (m.dependentId ?? "") === dependentId &&
+                          ["active", "expired", "frozen"].includes(m.status),
+                      )
+                      .map((m) => (
+                        <option key={m.id} value={m.id}>
+                          {m.title} · {m.endsAt ?? ""}
+                        </option>
+                      ))}
+                  </select>
+                </Field>
+                {renewMembershipId && (
+                  <p className="luma-meta">{w("renewHint")}</p>
+                )}
+                <Field label={w("startsOn")}>
+                  <IranianDateInput
+                    value={startsOn}
+                    onValueChange={(iso) => {
+                      setStartsOn(iso);
+                      changeDetails();
+                    }}
+                  />
+                </Field>
+              </>
+            )}
+            {query.data.offering?.confirmation === "before_payment" && (
+              <p className="luma-meta">{w("coordinationHint")}</p>
             )}
             <details className="reservation-policy">
               <summary>{t("conditions")}</summary>
@@ -147,7 +372,7 @@ function CheckoutForm({
             <QueryState query={memberships}>
               <details className="reservation-policy">
                 <summary>{copy("membershipOrCoupon")}</summary>
-                {query.data.kind !== "membership" && (
+                {!["membership", "program"].includes(query.data.kind) && (
                   <Field label={t("useMembership")}>
                     <NativeSelect
                       value={membership}
@@ -190,7 +415,7 @@ function CheckoutForm({
                     </NativeSelect>
                   </Field>
                 )}
-                {query.data.kind !== "membership" && (
+                {!["membership", "program"].includes(query.data.kind) && (
                   <p id={membershipHintId} className="luma-meta">
                     {t("checkoutMembershipHint")}{" "}
                     <Link className="underline" href="/memberships">
@@ -248,7 +473,31 @@ function CheckoutForm({
                 />
                 <span>{t("termsAccept")}</span>
               </label>
-              <CommandError error={checkout.error ?? quote.error} />
+              <CommandError
+                error={checkout.error ?? quote.error ?? enrollSeries.error}
+              />
+              {selected?.seriesId && membership && (
+                <button
+                  className="luma-cta my-3"
+                  disabled={!accepted || !quote.data || enrollSeries.isPending}
+                  onClick={() => {
+                    key.current ??= crypto.randomUUID();
+                    enrollSeries.mutate(
+                      {
+                        serviceId: service,
+                        seriesId: selected.seriesId,
+                        membershipId: membership,
+                        dependentId: dependentId || undefined,
+                        participants: purchaseDetails.participants,
+                        idempotencyKey: key.current,
+                      },
+                      { onSuccess: () => router.push("/bookings") },
+                    );
+                  }}
+                >
+                  {w("seriesEnroll")}
+                </button>
+              )}
               <div className="checkout-footer">
                 <div>
                   <p>{quote.data ? t("payNow") : copy("estimatedTotal")}</p>
@@ -256,7 +505,11 @@ function CheckoutForm({
                     {quote.data ? (
                       <Price value={quote.data.payNowMinor} />
                     ) : (
-                      <Price value={query.data.amountMinor} />
+                      <Price
+                        value={(
+                          BigInt(query.data.amountMinor) * BigInt(quantity)
+                        ).toString()}
+                      />
                     )}
                   </strong>
                 </div>
@@ -267,7 +520,9 @@ function CheckoutForm({
                     busy ||
                     membershipUnavailable ||
                     Boolean(unavailable) ||
-                    (!occurrence && query.data.kind !== "membership")
+                    incomplete ||
+                    (!occurrence &&
+                      !["membership", "program"].includes(query.data.kind))
                   }
                   onClick={() => {
                     if (!quote.data) {
@@ -277,10 +532,12 @@ function CheckoutForm({
                       quote.mutate(
                         {
                           serviceId: service,
-                          occurrenceId:
-                            query.data?.kind === "membership"
-                              ? undefined
-                              : (occurrence ?? undefined),
+                          ...purchaseDetails,
+                          occurrenceId: ["membership", "program"].includes(
+                            query.data?.kind ?? "",
+                          )
+                            ? undefined
+                            : (occurrence ?? undefined),
                           membershipId: membership || undefined,
                           coupon: coupon || undefined,
                         },
@@ -301,10 +558,12 @@ function CheckoutForm({
                     checkout.mutate(
                       {
                         serviceId: service,
-                        occurrenceId:
-                          query.data?.kind === "membership"
-                            ? undefined
-                            : (occurrence ?? undefined),
+                        ...purchaseDetails,
+                        occurrenceId: ["membership", "program"].includes(
+                          query.data?.kind ?? "",
+                        )
+                          ? undefined
+                          : (occurrence ?? undefined),
                         membershipId: membership || undefined,
                         coupon: coupon || undefined,
                         quoteId: quote.data!.id,
@@ -335,6 +594,7 @@ function CheckoutForm({
   );
 }
 export function PaymentStatus() {
+  const w = useTranslations("Workflow");
   const t = useLuma();
   const router = useRouter();
   const params = useSearchParams();
@@ -391,6 +651,9 @@ export function PaymentStatus() {
               amountMinor={order.amountMinor}
               state={order.status}
             />
+            {order.snapshot.kind === "membership" && (
+              <TuitionPlan orderId={id} />
+            )}
             {order.snapshot.groupId && (
               <Link
                 className="luma-row"
@@ -399,21 +662,39 @@ export function PaymentStatus() {
                 {growth("viewGame")}
               </Link>
             )}
-            {["awaiting_payment", "partially_paid"].includes(order.status) &&
+            {order.snapshot.offering?.confirmation === "before_payment" &&
+              !order.coordinationApproved && (
+                <p role="status" className="luma-meta">
+                  {w("coordinationHint")}
+                </p>
+              )}
+            {!(
+              order.snapshot.offering?.confirmation === "before_payment" &&
+              !order.coordinationApproved
+            ) &&
+              ["awaiting_payment", "partially_paid"].includes(order.status) &&
               !(
                 order.snapshot.groupId && order.snapshot.kind !== "split_share"
               ) && (
                 <>
                   {!hasPendingPayment &&
                     order.snapshot.kind !== "split_share" &&
-                    order.status === "awaiting_payment" && (
+                    order.status === "awaiting_payment" &&
+                    (order.nextPaymentMinor ?? order.balanceDueMinor) ===
+                      order.balanceDueMinor && (
                       <CreditPayment
                         orderId={id}
                         organizationId={order.organizationId}
                         amount={order.amountMinor}
                       />
                     )}
+                  <ReceiptForm orderId={id} />
                   <p className="luma-meta mt-6">{t("sandbox")}</p>
+                  <Row title={t("payNow")}>
+                    <Price
+                      value={order.nextPaymentMinor ?? order.balanceDueMinor}
+                    />
+                  </Row>
                   <Row title={t("balance")}>
                     <Price value={order.balanceDueMinor} />
                   </Row>

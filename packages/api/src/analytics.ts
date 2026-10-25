@@ -8,7 +8,7 @@ export type AnalyticsFilters = {
   organizationId?: string;
   branchId?: string;
   serviceId?: string;
-  kind?: "class" | "course" | "court" | "access" | "membership";
+  kind?: "class" | "course" | "court" | "access" | "membership" | "program";
 };
 export type AnalyticsMetric =
   | "orders"

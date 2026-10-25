@@ -1,3 +1,5 @@
+import type { Tx } from '../clubs/club.repository';
+import { validateOffering } from './offering';
 import {
   managementWhere,
   managementPage,
@@ -86,6 +88,7 @@ export class SportsOperationsService {
         current.organization_id,
         current.branch_id,
       );
+      await validateOffering(tx, input);
       for (const resource of input.resourceIds) {
         const valid = await rows(
           tx,
@@ -129,7 +132,7 @@ export class SportsOperationsService {
       );
       await rows(
         tx,
-        sql`INSERT INTO sport_service_versions(service_id,version,title,amount_minor,description,policy,eligibility,requirements,resource_ids,duration_days,session_count,level,coach_name,coach_user_id,visibility,approval_required,show_participants,cover_image_id) VALUES(${id},${version.version},${input.title},${input.amountMinor},${input.description},${JSON.stringify(input.policy)}::jsonb,${JSON.stringify(input.eligibility)}::jsonb,${JSON.stringify(input.requirements)}::jsonb,${`{${input.resourceIds.join(',')}}`}::uuid[],${input.durationDays},${input.sessionCount},${input.level},${input.coachName},${input.coachUserId},${input.visibility},${input.approvalRequired},${input.showParticipants},${version.cover_image_id})`,
+        sql`INSERT INTO sport_service_versions(service_id,version,title,amount_minor,description,policy,eligibility,requirements,resource_ids,duration_days,session_count,level,coach_name,coach_user_id,visibility,approval_required,show_participants,cover_image_id,sport_id,offering) VALUES(${id},${version.version},${input.title},${input.amountMinor},${input.description},${JSON.stringify(input.policy)}::jsonb,${JSON.stringify(input.eligibility)}::jsonb,${JSON.stringify(input.requirements)}::jsonb,${`{${input.resourceIds.join(',')}}`}::uuid[],${input.durationDays},${input.sessionCount},${input.level},${input.coachName},${input.coachUserId},${input.visibility},${input.approvalRequired},${input.showParticipants},${version.cover_image_id},${input.sportId},${JSON.stringify(input.offering)}::jsonb)`,
       );
       const [service] = await rows(
         tx,
@@ -349,7 +352,7 @@ export class SportsOperationsService {
     ]);
     return rows(
       this.db,
-      sql`SELECT m.id,m.user_id,m.status,m.granted,m.consumed,m.ends_at,u.display_name,u.phone,v.title FROM sport_memberships m JOIN users u ON u.id=m.user_id JOIN sport_service_versions v ON v.id=m.version_id WHERE m.organization_id=${org} AND m.branch_id=${branch} AND ${managementWhere(filters, sql`m.created_at`, sql`m.status`, [sql`u.display_name`, sql`u.phone`, sql`v.title`])} ORDER BY m.created_at ${managementDirection(filters)},m.id ${managementPage(filters)}`,
+      sql`SELECT m.id,m.user_id,m.service_id,m.revision,m.status,m.granted,m.consumed,m.ends_at,coalesce((SELECT name FROM sport_dependents WHERE id=m.dependent_id),u.display_name) display_name,u.phone,v.title,coalesce(m.benefit_service_ids,v.offering->'includedServiceIds') included_service_ids,coalesce(m.entry_allowed_override,(v.offering->>'entryAllowed')::boolean) entry_allowed FROM sport_memberships m JOIN users u ON u.id=m.user_id JOIN sport_service_versions v ON v.id=m.version_id WHERE m.organization_id=${org} AND m.branch_id=${branch} AND ${managementWhere(filters, sql`m.created_at`, sql`m.status`, [sql`u.display_name`, sql`u.phone`, sql`v.title`])} ORDER BY m.created_at ${managementDirection(filters)},m.id ${managementPage(filters)}`,
     );
   }
   async orders(
@@ -378,104 +381,111 @@ export class SportsOperationsService {
     present: boolean,
     reason: string,
   ) {
-    return this.db.transaction(async (tx) => {
-      const [r] = await rows<{
-        occurrence_id: string;
-        membership_id: string | null;
-        consumed: boolean;
-        status: string;
-        revision: number;
-      }>(tx, sql`SELECT * FROM sport_reservations WHERE id=${id} FOR UPDATE`);
-      if (!r) throw new NotFoundException();
-      const [service] = await rows<{
-        id: string;
-        organization_id: string;
-        branch_id: string;
-      }>(
-        tx,
-        sql`SELECT s.* FROM sport_services s JOIN sport_occurrences o ON o.service_id=s.id WHERE o.id=${r.occurrence_id}`,
-      );
-      await this.commerce.serviceActor(tx, userId, service.id, [
-        'owner',
-        'manager',
-        'receptionist',
-      ]);
-      if (!['confirmed', 'completed', 'no_show'].includes(r.status))
-        throw new ConflictException('Reservation unavailable');
-      const [v] = await rows<{ policy: ServicePolicy }>(
-        tx,
-        sql`SELECT ord.snapshot->'policy' policy FROM sport_orders ord JOIN sport_reservations r ON r.order_id=ord.id WHERE r.id=${id}`,
-      );
-      const [order] = await rows<{ status: string }>(
-        tx,
-        sql`SELECT ord.status FROM sport_orders ord JOIN sport_reservations r ON r.order_id=ord.id WHERE r.id=${id}`,
-      );
-      if (order.status !== 'paid')
-        throw new ConflictException(
-          'Pay outstanding balance before attendance',
-        );
-      if (r.status === (present ? 'completed' : 'no_show')) return { ok: true };
-      const consume = present || v.policy.noShowConsumesSession;
-      if (r.membership_id && consume && !r.consumed) {
-        await rows(
-          tx,
-          sql`UPDATE sport_memberships SET consumed=consumed+1,revision=revision+1 WHERE id=${r.membership_id}`,
-        );
-        await rows(
-          tx,
-          sql`UPDATE sport_reservations SET consumed=true WHERE id=${id}`,
-        );
-        await rows(
-          tx,
-          sql`INSERT INTO sport_entitlement_events(membership_id,reservation_id,kind,quantity,source_key,actor_id) VALUES(${r.membership_id},${id},'consume',1,${`attendance:${id}:${r.revision}`},${userId}) ON CONFLICT DO NOTHING`,
-        );
-      }
-      if (r.membership_id && !consume && r.consumed) {
-        await rows(
-          tx,
-          sql`UPDATE sport_memberships SET consumed=consumed-1,revision=revision+1 WHERE id=${r.membership_id} AND consumed>0`,
-        );
-        await rows(
-          tx,
-          sql`UPDATE sport_reservations SET consumed=false WHERE id=${id}`,
-        );
-        await rows(
-          tx,
-          sql`INSERT INTO sport_entitlement_events(membership_id,reservation_id,kind,quantity,source_key,actor_id) VALUES(${r.membership_id},${id},'restore',1,${`attendance:${id}:${r.revision}`},${userId}) ON CONFLICT DO NOTHING`,
-        );
-      }
+    return this.db.transaction((tx) =>
+      this.recordAttendance(tx, userId, id, present, reason),
+    );
+  }
+  async recordAttendance(
+    tx: Tx,
+    userId: string,
+    id: string,
+    present: boolean,
+    reason: string,
+  ) {
+    const [r] = await rows<{
+      occurrence_id: string;
+      membership_id: string | null;
+      consumed: boolean;
+      status: string;
+      revision: number;
+    }>(tx, sql`SELECT * FROM sport_reservations WHERE id=${id} FOR UPDATE`);
+    if (!r) throw new NotFoundException();
+    const [service] = await rows<{
+      id: string;
+      organization_id: string;
+      branch_id: string;
+    }>(
+      tx,
+      sql`SELECT s.* FROM sport_services s JOIN sport_occurrences o ON o.service_id=s.id WHERE o.id=${r.occurrence_id}`,
+    );
+    await this.commerce.serviceActor(tx, userId, service.id, [
+      'owner',
+      'manager',
+      'receptionist',
+    ]);
+    if (!['confirmed', 'completed', 'no_show'].includes(r.status))
+      throw new ConflictException('Reservation unavailable');
+    const [v] = await rows<{ policy: ServicePolicy }>(
+      tx,
+      sql`SELECT ord.snapshot->'policy' policy FROM sport_orders ord JOIN sport_reservations r ON r.order_id=ord.id WHERE r.id=${id}`,
+    );
+    const [order] = await rows<{ status: string }>(
+      tx,
+      sql`SELECT ord.status FROM sport_orders ord JOIN sport_reservations r ON r.order_id=ord.id WHERE r.id=${id}`,
+    );
+    if (order.status !== 'paid')
+      throw new ConflictException('Pay outstanding balance before attendance');
+    if (r.status === (present ? 'completed' : 'no_show')) return { ok: true };
+    const consume = present || v.policy.noShowConsumesSession;
+    if (r.membership_id && consume && !r.consumed) {
       await rows(
         tx,
-        sql`INSERT INTO sport_attendance(reservation_id,actor_id,status,reason) VALUES(${id},${userId},${present ? 'present' : 'absent'},${reason}) ON CONFLICT(reservation_id) DO UPDATE SET status=EXCLUDED.status,reason=EXCLUDED.reason,actor_id=EXCLUDED.actor_id,revision=sport_attendance.revision+1`,
+        sql`UPDATE sport_memberships SET consumed=consumed+1,revision=revision+1 WHERE id=${r.membership_id}`,
       );
       await rows(
         tx,
-        sql`UPDATE sport_reservations SET status=${present ? 'completed' : 'no_show'},revision=revision+1 WHERE id=${id}`,
+        sql`UPDATE sport_reservations SET consumed=true WHERE id=${id}`,
       );
-      await retireReservationReminders(tx, id);
-      await this.audit(
+      await rows(
         tx,
-        userId,
-        service.organization_id,
-        'sports.attendance.recorded',
-        id,
-        reason,
+        sql`INSERT INTO sport_entitlement_events(membership_id,reservation_id,kind,quantity,source_key,actor_id) VALUES(${r.membership_id},${id},'consume',1,${`attendance:${id}:${r.revision}`},${userId}) ON CONFLICT DO NOTHING`,
       );
-      return { ok: true };
-    });
+    }
+    if (r.membership_id && !consume && r.consumed) {
+      await rows(
+        tx,
+        sql`UPDATE sport_memberships SET consumed=consumed-1,revision=revision+1 WHERE id=${r.membership_id} AND consumed>0`,
+      );
+      await rows(
+        tx,
+        sql`UPDATE sport_reservations SET consumed=false WHERE id=${id}`,
+      );
+      await rows(
+        tx,
+        sql`INSERT INTO sport_entitlement_events(membership_id,reservation_id,kind,quantity,source_key,actor_id) VALUES(${r.membership_id},${id},'restore',1,${`attendance:${id}:${r.revision}`},${userId}) ON CONFLICT DO NOTHING`,
+      );
+    }
+    await rows(
+      tx,
+      sql`INSERT INTO sport_attendance(reservation_id,actor_id,status,reason) VALUES(${id},${userId},${present ? 'present' : 'absent'},${reason}) ON CONFLICT(reservation_id) DO UPDATE SET status=EXCLUDED.status,reason=EXCLUDED.reason,actor_id=EXCLUDED.actor_id,revision=sport_attendance.revision+1`,
+    );
+    await rows(
+      tx,
+      sql`UPDATE sport_reservations SET status=${present ? 'completed' : 'no_show'},revision=revision+1 WHERE id=${id}`,
+    );
+    await retireReservationReminders(tx, id);
+    await this.audit(
+      tx,
+      userId,
+      service.organization_id,
+      'sports.attendance.recorded',
+      id,
+      reason,
+    );
+    return { ok: true };
   }
   async adminSchedule(principal: Principal, filters?: ManagementFilters) {
     await this.admin.requireAdmin(principal);
     return rows(
       this.db,
-      sql`SELECT s.id,s.title,s.organization_id,s.branch_id,s.revision,s.kind,s.status,b.name branch_name,g.name organization_name FROM sport_services s JOIN branches b ON b.id=s.branch_id JOIN organizations g ON g.id=s.organization_id WHERE s.kind<>'membership' AND ${managementWhere(filters, sql`s.created_at`, sql`s.status`, [sql`s.title`, sql`b.name`, sql`g.name`], sql`s.kind`)} ORDER BY s.created_at ${managementDirection(filters)},s.id ${managementPage(filters)}`,
+      sql`SELECT s.id,s.title,s.organization_id,s.branch_id,s.revision,s.kind,s.status,b.name branch_name,g.name organization_name FROM sport_services s JOIN branches b ON b.id=s.branch_id JOIN organizations g ON g.id=s.organization_id WHERE s.kind NOT IN ('membership','program') AND ${managementWhere(filters, sql`s.created_at`, sql`s.status`, [sql`s.title`, sql`b.name`, sql`g.name`], sql`s.kind`)} ORDER BY s.created_at ${managementDirection(filters)},s.id ${managementPage(filters)}`,
     );
   }
   async adminOccurrences(principal: Principal, serviceId: string) {
     await this.admin.requireAdmin(principal);
     return rows(
       this.db,
-      sql`SELECT o.*,(SELECT count(*)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status IN ('confirmed','pending_approval') OR r.status='held' AND r.expires_at>now())) reserved FROM sport_occurrences o WHERE o.service_id=${serviceId} ORDER BY start_at DESC,o.id LIMIT 100`,
+      sql`SELECT o.*,(SELECT coalesce(sum(r.quantity),0)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status IN ('confirmed','pending_approval','completed','no_show') OR r.status='held' AND r.expires_at>now())) reserved FROM sport_occurrences o WHERE o.service_id=${serviceId} ORDER BY start_at DESC,o.id LIMIT 100`,
     );
   }
   async adminOverview(principal: Principal, filters?: ManagementFilters) {

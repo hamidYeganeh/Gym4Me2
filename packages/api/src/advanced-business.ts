@@ -135,7 +135,7 @@ export type AdvancedData = {
     capacity: string;
   };
   prices?: {
-    kind: "class" | "course" | "court" | "access" | "membership";
+    kind: "class" | "course" | "court" | "access" | "membership" | "program";
     amount_minor: string;
     revision: number;
     branch_id: string | null;

@@ -75,7 +75,7 @@ export function sharedMembershipCondition(
   serviceId: string,
   branchId: string,
 ) {
-  return sql`((branch_id=${branchId} AND NOT EXISTS(SELECT 1 FROM business_membership_scope ms WHERE ms.membership_id=${membershipId})) OR EXISTS(SELECT 1 FROM business_membership_scope ms WHERE ms.membership_id=${membershipId} AND ms.service_id=${serviceId} AND ms.branch_id=${branchId}))`;
+  return sql`((branch_id=${branchId} AND EXISTS(SELECT 1 FROM sport_service_versions mv WHERE mv.id=version_id AND coalesce(benefit_service_ids,mv.offering->'includedServiceIds') ? ${serviceId}) AND NOT EXISTS(SELECT 1 FROM business_membership_scope ms WHERE ms.membership_id=${membershipId})) OR EXISTS(SELECT 1 FROM business_membership_scope ms WHERE ms.membership_id=${membershipId} AND ms.service_id=${serviceId} AND ms.branch_id=${branchId}))`;
 }
 
 export async function assertBranchWrite(tx: Tx, org: string, branch: string) {

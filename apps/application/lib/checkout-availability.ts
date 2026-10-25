@@ -25,7 +25,7 @@ export function checkoutIssue(
   occurrenceId: string | null,
   now = Date.now(),
 ): CheckoutIssue | null {
-  if (service.kind === "membership") return null;
+  if (["membership", "program"].includes(service.kind)) return null;
   const selected = service.occurrences.find((item) => item.id === occurrenceId);
   if (!selected) return "checkoutChooseSession";
   const issue = sessionIssue(selected, now);

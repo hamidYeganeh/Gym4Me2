@@ -1,4 +1,6 @@
 "use client";
+import { useOrganizations } from "@repo/api/business";
+import { MemberBenefits } from "./member-benefits";
 import { useRef, useState } from "react";
 import { useLocale, useTranslations } from "@repo/i18n";
 import {
@@ -17,10 +19,18 @@ import { Input } from "../kit/Input";
 import { Textarea } from "../kit/Textarea";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { Card, CardContent, CardHeader, CardTitle } from "../kit/Card";
+import { ReceiptForm, ReceiptQueue } from "./payment-receipts";
+import { TuitionPlan } from "./tuition-plan";
+import { LegacyReadiness } from "./legacy-readiness";
+import { RefundReview } from "./refund-review";
 import { Status, Blank, FormField } from "./shared";
 import { QueryError } from "./query-error";
 export function Members({ org, branch }: { org: string; branch: string }) {
   const t = useTranslations("Luma");
+  const organizations = useOrganizations();
+  const canEdit = ["owner", "manager"].includes(
+    organizations.data?.find((o) => o.id === org)?.role ?? "",
+  );
   const list = useManagementFilters("members", `${org}:${branch}`);
   const query = useSportsQuery<
     {
@@ -28,6 +38,9 @@ export function Members({ org, branch }: { org: string; branch: string }) {
       displayName: string;
       phone: string;
       title: string;
+      revision: number;
+      includedServiceIds: string[];
+      entryAllowed: boolean;
       granted: number | null;
       consumed: number;
       status: string;
@@ -43,6 +56,7 @@ export function Members({ org, branch }: { org: string; branch: string }) {
         <CardTitle>{t("members")}</CardTitle>
       </CardHeader>
       <CardContent>
+        <LegacyReadiness org={org} branch={branch} />
         <ManagementFilterBar
           value={list.filters}
           onApply={list.apply}
@@ -62,6 +76,17 @@ export function Members({ org, branch }: { org: string; branch: string }) {
               {m.granted === null ? "∞" : m.granted - m.consumed}
             </span>
             <Status value={m.status} />
+            {canEdit && (
+              <MemberBenefits
+                key={`${m.id}:${m.revision}`}
+                id={m.id}
+                revision={m.revision}
+                serviceIds={m.includedServiceIds ?? []}
+                entryAllowed={m.entryAllowed}
+                org={org}
+                branch={branch}
+              />
+            )}
           </div>
         ))}
         <Pager
@@ -88,6 +113,7 @@ export function Payments({ org, branch }: { org: string; branch: string }) {
         onApply={list.apply}
         statuses={[
           "awaiting_payment",
+          "partially_paid",
           "paid",
           "partially_refunded",
           "refunded",
@@ -95,9 +121,11 @@ export function Payments({ org, branch }: { org: string; branch: string }) {
           "review",
         ]}
       />
+      <ReceiptQueue org={org} branch={branch} />
+      <RefundReview org={org} branch={branch} />
       <QueryError error={query.error} />
       {query.data?.map((o) => (
-        <CashOrder key={o.id} order={o} />
+        <CashOrder key={o.id} order={o} org={org} />
       ))}
       <Pager
         page={list.filters.page}
@@ -107,7 +135,7 @@ export function Payments({ org, branch }: { org: string; branch: string }) {
     </div>
   );
 }
-function CashOrder({ order: o }: { order: OrderDto }) {
+function CashOrder({ order: o, org }: { order: OrderDto; org: string }) {
   const t = useTranslations("Luma");
   const locale = useLocale();
   const command = useSportsCommand(
@@ -129,6 +157,18 @@ function CashOrder({ order: o }: { order: OrderDto }) {
             {t("toman")}
           </span>
         </div>
+        {o.snapshot.kind === "membership" && (
+          <TuitionPlan
+            orderId={o.id}
+            business
+            organizationId={org}
+            amountMinor={o.amountMinor}
+            status={o.status}
+          />
+        )}
+        {["awaiting_payment", "partially_paid"].includes(o.status) && (
+          <ReceiptForm orderId={o.id} business />
+        )}
         {o.status === "awaiting_payment" && (
           <>
             <FormField label={t("reason")}>

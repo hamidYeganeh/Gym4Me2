@@ -112,3 +112,30 @@ test("shared memberships allow only explicitly granted services across branches"
     0,
   );
 });
+
+test("an unscoped same-branch membership does not unlock unrelated services", () => {
+  assert.equal(
+    usableCheckoutMemberships(
+      service,
+      [{ ...valid, offering: undefined }],
+      +now,
+    ).length,
+    0,
+  );
+  assert.equal(
+    usableCheckoutMemberships(
+      service,
+      [{ ...valid, offering: { ...valid.offering!, includedServiceIds: [] } }],
+      +now,
+    ).length,
+    0,
+  );
+  assert.equal(
+    usableCheckoutMemberships(
+      service,
+      [{ ...valid, startsAt: new Date(+now + 1).toISOString() }],
+      +now,
+    ).length,
+    0,
+  );
+});

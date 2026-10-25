@@ -120,6 +120,7 @@ async function create(
   amount = '0',
   resourceIds: string[] = [],
   sessionCount: number | null = null,
+  includedServiceIds: string[] = [],
 ) {
   const service = await commerce.createService(
     owner,
@@ -132,6 +133,7 @@ async function create(
       policy,
       resourceIds,
       sessionCount,
+      offering: { includedServiceIds },
     }),
   );
   await commerce.publish(owner, service.id, 1);
@@ -784,11 +786,25 @@ test('eligibility follows publication and is snapshotted without changing past o
   const quote = await commerce.quote(athlete, {
     serviceId: service.id,
     occurrenceId: slot.id,
+    participants: [
+      {
+        name: 'Synthetic eligible athlete',
+        birthDate: '1990-01-01',
+        gender: 'unspecified',
+      },
+    ],
   });
   expect(quote.eligibility).toEqual(eligibility);
   const oldOrder = await commerce.checkout(athlete, {
     serviceId: service.id,
     occurrenceId: slot.id,
+    participants: [
+      {
+        name: 'Synthetic eligible athlete',
+        birthDate: '1990-01-01',
+        gender: 'unspecified',
+      },
+    ],
     quoteId: quote.id,
     idempotencyKey: randomUUID(),
   });
@@ -818,10 +834,24 @@ test('eligibility follows publication and is snapshotted without changing past o
     commerce.checkout(other, {
       serviceId: service.id,
       occurrenceId: slot.id,
+      participants: [
+        {
+          name: 'Synthetic eligible athlete',
+          birthDate: '1990-01-01',
+          gender: 'unspecified',
+        },
+      ],
       quoteId: (
         await commerce.quote(other, {
           serviceId: service.id,
           occurrenceId: slot.id,
+          participants: [
+            {
+              name: 'Synthetic eligible athlete',
+              birthDate: '1990-01-01',
+              gender: 'unspecified',
+            },
+          ],
         })
       ).id,
       idempotencyKey: randomUUID(),
@@ -831,6 +861,13 @@ test('eligibility follows publication and is snapshotted without changing past o
     commerce.checkout(athlete, {
       serviceId: service.id,
       occurrenceId: slot.id,
+      participants: [
+        {
+          name: 'Synthetic eligible athlete',
+          birthDate: '1990-01-01',
+          gender: 'unspecified',
+        },
+      ],
       quoteId: quote.id,
       idempotencyKey: randomUUID(),
     }),
@@ -1636,13 +1673,13 @@ test('revoking a branch grant also prevents invitation receipt replay', async ()
   await expect(invitations.host(manager.id, service.id)).rejects.toThrow();
 });
 test('last session in a membership cannot be held twice', async () => {
-  const plan = await create('membership', '0', [], 1);
+  const service = await create();
+  const plan = await create('membership', '0', [], 1, [service.id]);
   await commerce.checkout(athlete, {
     serviceId: plan.id,
     idempotencyKey: randomUUID(),
   });
   const [membership] = await commerce.memberships(athlete);
-  const service = await create();
   const a = await occurrence(service.id, 3);
   const b = await occurrence(service.id, 3, Date.now() + 2 * 86400000);
   const results = await Promise.allSettled(
@@ -1658,13 +1695,13 @@ test('last session in a membership cannot be held twice', async () => {
   expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
 });
 test('correcting attendance restores and then consumes one membership session', async () => {
-  const plan = await create('membership', '0', [], 1);
+  const service = await create();
+  const plan = await create('membership', '0', [], 1, [service.id]);
   await commerce.checkout(athlete, {
     serviceId: plan.id,
     idempotencyKey: randomUUID(),
   });
   const [membership] = await commerce.memberships(athlete);
-  const service = await create();
   const slot = await occurrence(service.id);
   const order = await commerce.checkout(athlete, {
     serviceId: service.id,
@@ -1905,7 +1942,7 @@ test('maintenance blocks shared units, changes public availability, and releases
       occurrenceId: slot.id,
       idempotencyKey: randomUUID(),
     }),
-  ).rejects.toThrow('Backend.resourceConflict');
+  ).rejects.toThrow('Backend.resourceUnavailable');
   await expect(occurrence(service.id, 1, start + 60000)).rejects.toThrow(
     'Backend.resourceUnavailable',
   );
@@ -2497,7 +2534,7 @@ test('admin can remove a reported message with revision control and an audit tra
   );
   expect(audit).toHaveLength(1);
 });
-test('QR replay returns the same visit and consumes a session once', async () => {
+test('QR replay records one entry without completing class attendance', async () => {
   const service = await create();
   const o = await occurrence(service.id, 1, Date.now() + 30 * 60 * 1000);
   const order = await commerce.checkout(other, {
@@ -2522,7 +2559,7 @@ test('QR replay returns the same visit and consumes a session once', async () =>
   expect(exited.exited_at).toBeTruthy();
   expect(replayedExit.exited_at).toEqual(exited.exited_at);
   expect((await commerce.booking(other, String(r.id)))?.status).toBe(
-    'completed',
+    'confirmed',
   );
 });
 test('direct membership QR consumes once and dated analytics counts the replayed visit once', async () => {
@@ -2582,6 +2619,9 @@ test('direct membership QR consumes once and dated analytics counts the replayed
   ).toBe(false);
 });
 test('two direct membership tokens cannot consume the final session twice and an exhausted membership cannot mint a ticket', async () => {
+  await db.execute(
+    sql`UPDATE sport_visits SET exited_at=now() WHERE user_id=${other} AND exited_at IS NULL`,
+  );
   const service = await create('membership', '0', [], 1);
   const order = await commerce.checkout(other, {
     serviceId: service.id,
@@ -2596,8 +2636,13 @@ test('two direct membership tokens cannot consume the final session twice and an
   const results = await Promise.allSettled(
     tickets.map((t) => commerce.checkIn(owner, t.token, 'Member entry')),
   );
-  expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
-  expect(results.filter((r) => r.status === 'rejected')).toHaveLength(1);
+  const succeeded = results.filter((r) => r.status === 'fulfilled');
+  expect(succeeded).toHaveLength(2);
+  if (
+    succeeded[0].status === 'fulfilled' &&
+    succeeded[1].status === 'fulfilled'
+  )
+    expect(succeeded[0].value.id).toBe(succeeded[1].value.id);
   expect(
     (await commerce.memberships(other)).find((m) => m.id === membership.id)
       ?.consumed,
@@ -2607,7 +2652,11 @@ test('two direct membership tokens cannot consume the final session twice and an
   ).rejects.toThrow('Backend.membershipExhausted');
 });
 test('a direct membership token cannot spend a session reserved for a booking', async () => {
-  const service = await create('membership', '0', [], 1);
+  await db.execute(
+    sql`UPDATE sport_visits SET exited_at=now() WHERE user_id=${other} AND exited_at IS NULL`,
+  );
+  const group = await create();
+  const service = await create('membership', '0', [], 1, [group.id]);
   const order = await commerce.checkout(other, {
     serviceId: service.id,
     idempotencyKey: randomUUID(),
@@ -2616,7 +2665,6 @@ test('a direct membership token cannot spend a session reserved for a booking', 
     (m) => m.order_id === order.id,
   )!;
   const ticket = await commerce.ticket(other, String(membership.id), true);
-  const group = await create();
   const slot = await occurrence(group.id, 4);
   await commerce.checkout(other, {
     serviceId: group.id,
@@ -4103,15 +4151,6 @@ test('audit: paid bookings awaiting approval keep their seat after the payment h
 });
 
 test('audit: an approval-pending booking protects the final membership session from direct entry', async () => {
-  const plan = await create('membership', '0', [], 1);
-  const purchase = await commerce.checkout(athlete, {
-    serviceId: plan.id,
-    idempotencyKey: randomUUID(),
-  });
-  const membership = (await commerce.memberships(athlete)).find(
-    (m) => m.order_id === purchase.id,
-  )!;
-  const token = await commerce.ticket(athlete, String(membership.id), true);
   const service = await commerce.createService(
     owner,
     serviceSchema.parse({
@@ -4125,6 +4164,15 @@ test('audit: an approval-pending booking protects the final membership session f
     }),
   );
   await commerce.publish(owner, service.id, 1);
+  const plan = await create('membership', '0', [], 1, [service.id]);
+  const purchase = await commerce.checkout(athlete, {
+    serviceId: plan.id,
+    idempotencyKey: randomUUID(),
+  });
+  const membership = (await commerce.memberships(athlete)).find(
+    (m) => m.order_id === purchase.id,
+  )!;
+  const token = await commerce.ticket(athlete, String(membership.id), true);
   const slot = await occurrence(service.id);
   const order = await commerce.checkout(athlete, {
     serviceId: service.id,

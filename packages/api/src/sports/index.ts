@@ -45,6 +45,7 @@ export type OccurrenceDto = {
   endAt: string;
   capacity: number;
   remaining: number;
+  seriesId?: string | null;
   resourceAvailable?: boolean;
   status: string;
 };
@@ -126,10 +127,28 @@ export type OccurrenceSeriesEditDto = {
   revision: number;
   occurrences: Pick<OccurrenceDto, "id" | "startAt" | "endAt" | "capacity">[];
 };
+export type OfferingDto = {
+  includedServiceIds: string[];
+  entryAllowed: boolean;
+  entryLimitPerDay: number | null;
+  audience: "all" | "men" | "women" | "family";
+  maxTickets: number;
+  deliveryDays: number;
+  supportDays: number;
+  confirmation: "instant" | "before_payment";
+};
+export type ParticipantDto = {
+  name: string;
+  birthDate: string | null;
+  gender: "male" | "female" | "unspecified";
+};
 export type ServiceDto = {
   id: string;
   title: string;
-  kind: "class" | "course" | "court" | "access" | "membership";
+  kind: "class" | "course" | "court" | "access" | "membership" | "program";
+  sportId?: string | null;
+  sportName?: string | null;
+  offering?: OfferingDto;
   branchId: string;
   branchName: string;
   clubName: string;
@@ -221,6 +240,12 @@ export type CreateCouponInput = Pick<
   "code" | "basisPoints" | "maxUses" | "expiresAt"
 >;
 export type MembershipDto = {
+  dependentId?: string | null;
+  dependentName?: string | null;
+  paymentOverdue?: boolean;
+  offering?: OfferingDto;
+  startsAt?: string;
+  renewedFromId?: string | null;
   sharedServiceIds?: string[];
   id: string;
   title: string;
@@ -244,6 +269,8 @@ export type PaymentAttemptDto = {
   gatewayUrl?: string | null;
 };
 export type OrderDto = {
+  nextPaymentMinor?: string;
+  coordinationApproved?: boolean;
   organizationId: string;
   id: string;
   amountMinor: string;
@@ -253,6 +280,9 @@ export type OrderDto = {
   balanceDueMinor: string;
   createdAt: string;
   snapshot: {
+    offering?: OfferingDto;
+    quantity?: number;
+    participants?: ParticipantDto[];
     groupId?: string;
     kind?: string;
     title: string;
@@ -449,6 +479,11 @@ export type CreateTicketInput = {
 };
 export type ReplyTicketInput = { body: string };
 export type SportsCheckoutInput = {
+  dependentId?: string;
+  quantity?: number;
+  participants?: ParticipantDto[];
+  renewMembershipId?: string;
+  startsOn?: string;
   serviceId: string;
   occurrenceId?: string;
   membershipId?: string;

@@ -89,7 +89,7 @@ export class PrivacyService {
       .where(eq(s.platformAdmins.userId, userId))
       .limit(1);
     const obligations = await db.execute(
-      sql`SELECT 1 FROM sport_orders WHERE user_id=${userId} AND status IN ('partially_paid','review') UNION ALL SELECT 1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id WHERE r.user_id=${userId} AND r.status IN ('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM sport_occurrences o JOIN sport_service_versions v ON v.id=o.version_id JOIN sport_reservations r ON r.occurrence_id=o.id WHERE v.coach_user_id=${userId} AND r.status IN('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM credit_accounts WHERE user_id=${userId} AND balance_minor>0 UNION ALL SELECT 1 FROM growth_game_shares gs JOIN growth_games gg ON gg.id=gs.game_id WHERE gs.user_id=${userId} AND gg.status='recruiting' UNION ALL SELECT 1 FROM sport_refunds f JOIN sport_orders o ON o.id=f.order_id WHERE o.user_id=${userId} AND f.state IN ('requested','unknown') LIMIT 1`,
+      sql`SELECT 1 FROM sport_orders WHERE user_id=${userId} AND status IN ('partially_paid','review') UNION ALL SELECT 1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id WHERE r.user_id=${userId} AND r.status IN ('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM sport_occurrences o JOIN sport_service_versions v ON v.id=o.version_id JOIN sport_reservations r ON r.occurrence_id=o.id WHERE v.coach_user_id=${userId} AND r.status IN('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM sport_program_requests WHERE (athlete_id=${userId} OR coach_id=${userId}) AND status IN ('intake','queued','preparing','revision_requested') UNION ALL SELECT 1 FROM credit_accounts WHERE user_id=${userId} AND balance_minor>0 UNION ALL SELECT 1 FROM growth_game_shares gs JOIN growth_games gg ON gg.id=gs.game_id WHERE gs.user_id=${userId} AND gg.status='recruiting' UNION ALL SELECT 1 FROM sport_refunds f JOIN sport_orders o ON o.id=f.order_id WHERE o.user_id=${userId} AND f.state IN ('requested','unknown') LIMIT 1`,
     );
     return (
       owners.length > 0 || admins.length > 0 || obligations.rows.length > 0
@@ -548,6 +548,16 @@ export class PrivacyService {
           pushDevices: (
             await tx.execute(
               sql`SELECT id,session_id,locale,created_at,updated_at FROM web_push_subscriptions WHERE user_id=${userId}`,
+            )
+          ).rows,
+          household: (
+            await tx.execute(
+              sql`SELECT * FROM sport_dependents WHERE guardian_id=${userId}`,
+            )
+          ).rows,
+          tuition: (
+            await tx.execute(
+              sql`SELECT p.*,d.id installment_id,d.due_on,d.amount_minor FROM sport_installment_plans p JOIN sport_installments d ON d.plan_id=p.id JOIN sport_orders o ON o.id=p.order_id WHERE o.user_id=${userId}`,
             )
           ).rows,
           sports: {

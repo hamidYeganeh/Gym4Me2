@@ -13,6 +13,7 @@ import { rows } from '../commerce/commerce.service';
 import { coachingWrite, approvedCoach } from '../coaching/practice.service';
 import { deliverSportsNotification } from '../commerce/notification-delivery';
 import * as c from './training.contracts';
+import { openProgramContract } from '../commerce/program-contract';
 
 type PlanRow = {
   id: string;
@@ -36,12 +37,25 @@ export async function trainingRelationship(
   actor: string,
   id: string,
   write = false,
+  purchasedPlan = false,
 ) {
   const [r] = await rows<Relationship>(
     db,
     sql`SELECT r.* FROM coaching_relationships r JOIN users c ON c.id=r.coach_id JOIN users u ON u.id=r.student_id WHERE r.id=${id} AND (r.coach_id=${actor} OR r.student_id=${actor}) AND c.status='active' AND u.status='active' AND NOT c.deletion_pending AND NOT u.deletion_pending AND c.deleted_at IS NULL AND u.deleted_at IS NULL FOR SHARE OF r`,
   );
-  if (!r || (r.status !== 'active' && (write || r.coach_id === actor)))
+  const contract =
+    r && purchasedPlan && r.coach_id === actor
+      ? await rows(
+          db,
+          sql`SELECT r.id FROM coaching_relationships r WHERE r.id=${id} AND ${openProgramContract}`,
+        )
+      : [];
+  if (
+    !r ||
+    (r.status !== 'active' &&
+      (write || r.coach_id === actor) &&
+      !contract.length)
+  )
     throw new NotFoundException('Coaching.notFound');
   return r;
 }
@@ -104,7 +118,7 @@ export class TrainingService {
   async workspace(actor: string) {
     const plans = await rows(
       this.db,
-      sql`SELECT p.id,p.title,p.revision,p.is_template,p.archived,p.owner_id,p.relationship_id,p.updated_at FROM training_plans p WHERE p.owner_id=${actor} AND NOT p.archived AND (p.relationship_id IS NULL OR EXISTS(SELECT 1 FROM coaching_relationships r WHERE r.id=p.relationship_id AND r.status='active')) ORDER BY updated_at DESC LIMIT 100`,
+      sql`SELECT p.id,p.title,p.revision,p.is_template,p.archived,p.owner_id,p.relationship_id,p.updated_at FROM training_plans p WHERE p.owner_id=${actor} AND NOT p.archived AND (p.relationship_id IS NULL OR EXISTS(SELECT 1 FROM coaching_relationships r WHERE r.id=p.relationship_id AND (r.status='active' OR ${openProgramContract}))) ORDER BY updated_at DESC LIMIT 100`,
     );
     const assignments = await rows(
       this.db,
@@ -116,7 +130,7 @@ export class TrainingService {
     );
     const relationships = await rows(
       this.db,
-      sql`SELECT r.id,r.coach_id,r.student_id,r.status,CASE WHEN r.coach_id=${actor} THEN u.display_name ELSE c.display_name END AS display_name,coalesce(s.personal_plans,false) AS personal_plans,coalesce(s.measurements,false) AS measurements FROM coaching_relationships r JOIN users u ON u.id=r.student_id JOIN users c ON c.id=r.coach_id LEFT JOIN training_sharing s ON s.relationship_id=r.id WHERE (r.student_id=${actor} OR r.coach_id=${actor}) AND r.status='active' AND u.status='active' AND c.status='active' AND NOT u.deletion_pending AND NOT c.deletion_pending ORDER BY r.created_at DESC LIMIT 100`,
+      sql`SELECT r.id,r.coach_id,r.student_id,r.status,CASE WHEN r.coach_id=${actor} THEN u.display_name ELSE c.display_name END AS display_name,coalesce(s.personal_plans,false) AS personal_plans,coalesce(s.measurements,false) AS measurements FROM coaching_relationships r JOIN users u ON u.id=r.student_id JOIN users c ON c.id=r.coach_id LEFT JOIN training_sharing s ON s.relationship_id=r.id WHERE (r.student_id=${actor} OR r.coach_id=${actor}) AND (r.status='active' OR ${openProgramContract}) AND u.status='active' AND c.status='active' AND NOT u.deletion_pending AND NOT c.deletion_pending ORDER BY r.created_at DESC LIMIT 100`,
     );
     const tasks = await rows(
       this.db,
@@ -165,7 +179,13 @@ export class TrainingService {
     );
     if (!p) throw new NotFoundException('Training.notFound');
     if (p.owner_id === actor && p.relationship_id)
-      await trainingRelationship(this.db, actor, p.relationship_id);
+      await trainingRelationship(
+        this.db,
+        actor,
+        p.relationship_id,
+        false,
+        true,
+      );
     const versions = await rows(
       this.db,
       sql`SELECT * FROM training_versions WHERE plan_id=${id} ORDER BY version DESC LIMIT 50`,
@@ -197,6 +217,7 @@ export class TrainingService {
             tx,
             actor,
             input.relationshipId,
+            true,
             true,
           );
           if (r.coach_id !== actor)
@@ -239,7 +260,8 @@ export class TrainingService {
         return p;
       },
       input.relationshipId
-        ? (tx) => trainingRelationship(tx, actor, input.relationshipId!, true)
+        ? (tx) =>
+            trainingRelationship(tx, actor, input.relationshipId!, true, true)
         : undefined,
     );
   }
@@ -255,7 +277,7 @@ export class TrainingService {
       );
       if (!p) throw new NotFoundException('Training.notFound');
       if (p.relationship_id)
-        await trainingRelationship(tx, actor, p.relationship_id, true);
+        await trainingRelationship(tx, actor, p.relationship_id, true, true);
     };
     return trainingCommand(
       this.db,
@@ -273,7 +295,7 @@ export class TrainingService {
         if (p.is_template)
           throw new BadRequestException('Training.copyTemplateFirst');
         if (p.relationship_id) {
-          await trainingRelationship(tx, actor, p.relationship_id, true);
+          await trainingRelationship(tx, actor, p.relationship_id, true, true);
           await approvedCoach(tx, actor);
         }
         if (!p.athlete_id) throw new NotFoundException('Training.notFound');

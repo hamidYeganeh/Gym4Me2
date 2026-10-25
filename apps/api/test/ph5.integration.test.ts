@@ -448,6 +448,20 @@ void test('PH5 price exceptions affect new versions without changing the previou
   await service.price(f.owner, {
     idempotencyKey: key(),
     organizationId: f.org,
+    kind: 'program',
+    amountMinor: '4500',
+    revision: 0,
+    reason,
+  });
+  assert.equal(
+    await db.transaction((tx) =>
+      effectivePrice(tx, f.org, f.branch, 'program', '1'),
+    ),
+    '4500',
+  );
+  await service.price(f.owner, {
+    idempotencyKey: key(),
+    organizationId: f.org,
     kind: 'class',
     amountMinor: '2000',
     revision: 0,

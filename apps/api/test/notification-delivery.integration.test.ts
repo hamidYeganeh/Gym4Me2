@@ -638,7 +638,7 @@ void test('cancelled bookings cannot receive an already dispatched reminder', as
   await drain(job);
 });
 
-void test('attendance retires unread reminders and repeated QR does not recreate them', async () => {
+void test('admission retires unread reminders without marking class attendance, and repeated QR does not recreate them', async () => {
   const reserved = await booking(true),
     job = await reminder(reserved.reservationId);
   await drain(job);
@@ -646,6 +646,10 @@ void test('attendance retires unread reminders and repeated QR does not recreate
   const ticket = await commerce.ticket(reserved.userId, reserved.reservationId);
   await commerce.checkIn(owner, ticket.token, 'Notification attendance test');
   await commerce.checkIn(owner, ticket.token, 'Repeated QR');
+  const attendance = await db.execute<{ count: number }>(
+    sql`SELECT count(*)::int count FROM sport_attendance WHERE reservation_id=${reserved.reservationId}`,
+  );
+  assert.equal(attendance.rows[0].count, 0);
   assert.equal((await jobNotices(job)).length, 0);
   await deliverTimeSensitiveNotification(db, job);
   assert.equal((await jobNotices(job)).length, 0);

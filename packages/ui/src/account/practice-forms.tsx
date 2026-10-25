@@ -1,4 +1,8 @@
 "use client";
+import {
+  IranianDateInput,
+  IranianDateTimeInput,
+} from "../kit/IranianDateInput";
 import { useRef, useState, useEffect, type ReactNode } from "react";
 import { useTranslations, useLocale } from "@repo/i18n";
 import { usePracticeCommand } from "@repo/api/profile";
@@ -70,7 +74,19 @@ export function PracticeField({
     <label className="grid gap-2 text-sm">
       {label}
       {children ??
-        (type === "textarea" ? (
+        (type === "date" ? (
+          <IranianDateInput
+            name={name}
+            defaultValue={String(value)}
+            required={required}
+          />
+        ) : type === "datetime-local" ? (
+          <IranianDateTimeInput
+            name={name}
+            defaultValue={String(value)}
+            required={required}
+          />
+        ) : type === "textarea" ? (
           <Textarea
             name={name}
             defaultValue={value}

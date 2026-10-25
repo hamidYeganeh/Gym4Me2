@@ -110,12 +110,30 @@ export class SportsCatalogController {
     @Query('q') q?: string,
     @Query('branchId') branch?: string,
     @Query('organizationId') organization?: string,
+    @Query('sportId') sport?: string,
+    @Query('kind') kind?: string,
   ) {
     return dto(
       this.service.catalog(
         parse(z.string().max(160), q ?? ''),
         branch ? id(branch) : undefined,
         organization ? id(organization) : undefined,
+        {
+          sportId: sport ? id(sport) : undefined,
+          kind: kind
+            ? parse(
+                z.enum([
+                  'class',
+                  'course',
+                  'court',
+                  'access',
+                  'membership',
+                  'program',
+                ]),
+                kind,
+              )
+            : undefined,
+        },
       ),
     );
   }
@@ -285,11 +303,29 @@ export class SportsAccountController {
       ),
     );
   }
-  @Post('bookings/:id/ticket') ticket(
+  @Get('bookings/:id/passes') passes(
     @Req() req: AuthRequest,
     @Param('id') value: string,
   ) {
-    return dto(this.service.ticket(req.principal.user.id, id(value)));
+    return dto(this.service.entryPasses(req.principal.user.id, id(value)));
+  }
+  @Post('bookings/:id/ticket') ticket(
+    @Req() req: AuthRequest,
+    @Param('id') value: string,
+    @Body() body: unknown,
+  ) {
+    const input = parse(
+      z.object({ entryPassId: z.uuid().optional() }).strict(),
+      body ?? {},
+    );
+    return dto(
+      this.service.ticket(
+        req.principal.user.id,
+        id(value),
+        false,
+        input.entryPassId,
+      ),
+    );
   }
   @Get('memberships') memberships(@Req() req: AuthRequest) {
     return dto(this.service.memberships(req.principal.user.id));
@@ -548,7 +584,7 @@ export class BusinessSportsController {
       z
         .object({
           token: z.string().regex(/^[\w-]{43}$/),
-          reason: z.string().trim().min(2).max(500),
+          reason: z.string().trim().min(2).max(500).default('routine'),
         })
         .strict(),
       body,

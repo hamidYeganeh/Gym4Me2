@@ -24,9 +24,12 @@ export function usableCheckoutMemberships(
       membership.organizationId !== service.organizationId ||
       (membership.sharedServiceIds?.length
         ? !membership.sharedServiceIds.includes(service.id)
-        : membership.branchId !== service.branchId) ||
+        : membership.branchId !== service.branchId ||
+          !membership.offering?.includedServiceIds.includes(service.id)) ||
       membership.status !== "active"
     )
+      return false;
+    if (membership.startsAt && !(Date.parse(membership.startsAt) <= now))
       return false;
     if (membership.endsAt !== null && !(Date.parse(membership.endsAt) > now))
       return false;

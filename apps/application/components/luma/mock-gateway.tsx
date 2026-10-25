@@ -65,7 +65,11 @@ export function MockGateway() {
             <Row title={order.data.snapshot.title} state={order.data.status} />
             <Row title={t("payNow")}>
               <Price
-                value={pending?.amountMinor ?? order.data.balanceDueMinor}
+                value={
+                  pending?.amountMinor ??
+                  order.data.nextPaymentMinor ??
+                  order.data.balanceDueMinor
+                }
               />
             </Row>
             {gatewayUrl && (

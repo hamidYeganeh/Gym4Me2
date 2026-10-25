@@ -881,7 +881,7 @@ export class AdvancedBusinessService {
         throw new ConflictException('PH5.immutable');
       const services = await rows<{ id: string; branch_id: string }>(
         tx,
-        sql`SELECT s.id,s.branch_id FROM sport_services s WHERE s.id=ANY(${`{${i.services.join(',')}}`}::uuid[]) AND s.organization_id=${m.organization_id} AND s.kind<>'membership' AND s.status='published' AND NOT EXISTS(SELECT 1 FROM business_branch_state b WHERE b.branch_id=s.branch_id AND NOT b.active)`,
+        sql`SELECT s.id,s.branch_id FROM sport_services s WHERE s.id=ANY(${`{${i.services.join(',')}}`}::uuid[]) AND s.organization_id=${m.organization_id} AND s.kind NOT IN ('membership','program') AND s.status='published' AND NOT EXISTS(SELECT 1 FROM business_branch_state b WHERE b.branch_id=s.branch_id AND NOT b.active)`,
       );
       if (services.length !== i.services.length)
         throw new ForbiddenException('PH5.denied');

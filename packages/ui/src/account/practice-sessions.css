@@ -1,0 +1,259 @@
+.coaching-sessions {
+  min-width: 0;
+}
+.coaching-session-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 1.25rem 0.5rem;
+  border-radius: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+.coaching-session-summary > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding-inline: 0.25rem;
+}
+.coaching-session-summary > div + div {
+  border-inline-start: 1px solid var(--border);
+}
+.coaching-session-summary strong {
+  font-size: 1.65rem;
+  line-height: 1.25;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.coaching-session-summary span {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+.coaching-session-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.coaching-session-stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  column-gap: 1rem;
+  padding-block-end: 1.5rem;
+}
+.coaching-session-stop:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 1.5rem;
+  top: 3.5rem;
+  bottom: 0;
+  border-inline-start: 1px dashed var(--border);
+}
+.coaching-session-marker {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--card);
+  color: var(--muted-foreground);
+}
+.coaching-session-marker[data-status="completed"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.coaching-session-stop[data-current] .coaching-session-marker {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: color-mix(in oklch, var(--primary) 7%, var(--card));
+}
+.coaching-session-row {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  background: var(--card);
+  overflow: hidden;
+}
+.coaching-session-stop[data-current] .coaching-session-row {
+  border-color: color-mix(in oklch, var(--primary) 45%, var(--border));
+}
+.coaching-session-row-link {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.35rem;
+  padding: 1rem;
+  text-align: start;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.coaching-session-row-link:hover {
+  background: var(--muted);
+}
+.coaching-session-row-link:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -3px;
+  border-radius: 1.25rem;
+}
+.coaching-session-row-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.coaching-session-row-actions {
+  padding: 0 1rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.coaching-session-row-actions:empty {
+  display: none;
+}
+.coaching-session-status {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 1.6rem;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+.coaching-session-status[data-status="completed"],
+.coaching-session-status[data-status="confirmed"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.coaching-session-status[data-status="pending_approval"] {
+  background: color-mix(in oklch, var(--primary) 10%, var(--card));
+  color: var(--foreground);
+}
+.coaching-session-status[data-status="cancelled"] {
+  background: color-mix(in oklch, var(--destructive) 8%, var(--card));
+  color: var(--destructive);
+}
+.coaching-sessions-empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: 1.5rem;
+}
+.coaching-schedule > summary {
+  list-style: none;
+}
+.coaching-schedule > summary::-webkit-details-marker {
+  display: none;
+}
+.coaching-schedule > summary::after {
+  content: "+";
+  margin-inline-start: auto;
+  color: var(--muted-foreground);
+}
+.coaching-schedule[open] > summary::after {
+  content: "−";
+}
+.coaching-schedule form,
+.coaching-session-secondary form {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.coaching-session-facts {
+  display: grid;
+  gap: 1rem;
+}
+.coaching-session-facts > div {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  column-gap: 0.75rem;
+  row-gap: 0.25rem;
+}
+.coaching-session-facts svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  grid-row: span 2;
+  margin-top: 0.2rem;
+  color: var(--muted-foreground);
+}
+.coaching-session-facts dt {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+.coaching-session-facts dd {
+  font-size: 0.875rem;
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+.coaching-participant {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+}
+.coaching-session-detail {
+  min-width: 0;
+  padding-bottom: 0;
+}
+.coaching-session-footer {
+  min-width: 0;
+}
+.coaching-session-footer [role="status"]:empty {
+  display: none;
+}
+.coaching-session-footer [role="status"]:not(:empty) {
+  margin-block-end: 0.75rem;
+  font-size: 0.875rem;
+}
+.coaching-membership-balance {
+  display: grid;
+  gap: 0.75rem;
+}
+.coaching-membership-balance-compact {
+  background: var(--muted);
+  border-radius: 1rem;
+  padding: 0.875rem;
+  font-size: 0.875rem;
+}
+.coaching-membership-track {
+  height: 0.4rem;
+  display: flex;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--muted);
+}
+.coaching-membership-used {
+  background: var(--primary);
+}
+.coaching-membership-held {
+  background: color-mix(in oklch, var(--primary) 35%, var(--muted));
+}
+@media (min-width: 640px) {
+  .coaching-session-row-link {
+    padding: 1.25rem;
+  }
+  .coaching-session-facts {
+    grid-template-columns: 1fr 1fr;
+  }
+  .coaching-session-facts > div:last-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .coaching-session-row-link {
+    transition: none;
+  }
+}
