@@ -29,7 +29,7 @@ textarea,
 }
 
 /* Portaled dialogs live outside the app frame. Keep them inside the safe viewport. */
-[data-slot="dialog-content"] {
+[data-slot="dialog-content"]:not([data-side="bottom"]) {
   max-width: min(
     28rem,
     calc(100vw - var(--app-safe-left) - var(--app-safe-right) - 2rem)

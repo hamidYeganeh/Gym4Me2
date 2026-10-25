@@ -14,7 +14,7 @@ import { iranSansX } from "@repo/theme/fonts";
 import { ThemeProvider } from "@repo/theme/provider";
 import { DirectionProvider } from "@repo/ui/kit/Direction";
 import { TooltipProvider } from "@repo/ui/kit/Tooltip";
-import { Toaster } from "@repo/ui/kit/Sonner";
+import { Toaster } from "@repo/ui/kit/Sileo";
 import "./globals.css";
 import "@repo/ui/focus.css";
 

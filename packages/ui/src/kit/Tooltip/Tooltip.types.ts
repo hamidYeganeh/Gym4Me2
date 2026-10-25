@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { Tooltip as TooltipPrimitive } from "radix-ui";
+import { Tooltip as TooltipPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { tooltipVariants } from "./Tooltip.styles";
 export type TooltipProviderProps = React.ComponentProps<

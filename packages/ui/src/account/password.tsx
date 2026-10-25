@@ -10,7 +10,7 @@ import { ChevronLeft, KeyRound } from "lucide-react";
 import { FieldGroup } from "../kit/Field";
 import { Button } from "../kit/Button";
 import { TextField, ErrorNotice, QueryError, Loading, Submit } from "./common";
-import { toast } from "../kit/Sonner";
+import { toast } from "../kit/Sileo";
 import { safeReturnPath } from "./safe-return-path";
 import { applicationAuthHref } from "../lib/auth-routes";
 import { useApiContext } from "@repo/api/provider";

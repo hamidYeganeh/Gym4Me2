@@ -33,6 +33,8 @@
    canvas's grab halo does not paint over the field — see the
    note on .gen. */
 .one-time-code {
+  /* Bencho's font-ui maps to font-sans; fill-slab/card to muted;
+     fill-on/ink to foreground. No Bencho globals are introduced. */
   inline-size: fit-content;
   margin-inline: auto;
   direction: ltr;
@@ -140,6 +142,11 @@
   cursor: default;
 }
 
+.one-time-code[data-reduced-motion="true"] .otp-digit,
+.one-time-code[data-reduced-motion="true"] .otp-caret[data-on="true"] {
+  animation: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .one-time-code .otp-digit {
     animation: none;
@@ -156,10 +163,12 @@
   from {
     transform: translateY(45%) scale(0.86);
     opacity: 0;
+    filter: blur(3px);
   }
   to {
     transform: none;
     opacity: 1;
+    filter: none;
   }
 }
 
@@ -179,7 +188,8 @@
 .one-time-code[aria-busy="true"] .otp-field {
   cursor: wait;
 }
-.one-time-code:has([aria-invalid="true"]) {
-  outline: 2px solid var(--destructive);
-  outline-offset: 4px;
+.one-time-code[data-phase="no"] .otp-slot,
+.one-time-code:has([aria-invalid="true"]) .otp-slot {
+  /* Keep each error border crisp, outside the cells' goo filter. */
+  box-shadow: inset 0 0 0 2px var(--destructive);
 }

@@ -3,7 +3,7 @@ import { useFormatter } from "@repo/i18n";
 import { isTranslationKey, type TranslationKey } from "@repo/i18n/messages";
 import { useTranslations } from "@repo/i18n";
 
-import { useId, type ReactNode, type RefObject } from "react";
+import { type ReactNode, type RefObject } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { accountRecovery } from "../lib/account-recovery";
@@ -18,8 +18,10 @@ import {
   EmptyTitle,
   EmptyDescription,
 } from "@repo/ui/kit/Empty";
-import { Field, FieldLabel } from "@repo/ui/kit/Field";
-import { Input } from "@repo/ui/kit/Input";
+import {
+  TextField as KitTextField,
+  type TextFieldProps,
+} from "@repo/ui/kit/TextField";
 import { Spinner } from "@repo/ui/kit/Spinner";
 import { Badge } from "@repo/ui/kit/Badge";
 import { Inbox } from "lucide-react";
@@ -153,31 +155,10 @@ export function Loading() {
     </div>
   );
 }
-export function TextField({
-  label,
-  name,
-  fieldClassName,
-  className,
-  id,
-  ...props
-}: {
-  label: string;
-  name: string;
-  fieldClassName?: string;
-} & React.ComponentProps<typeof Input>) {
-  const generatedId = useId();
-  const inputId = id ?? generatedId;
-  return (
-    <Field className={fieldClassName}>
-      <FieldLabel htmlFor={inputId}>{label}</FieldLabel>
-      <Input
-        {...props}
-        id={inputId}
-        name={name}
-        className={cn("min-h-11", className)}
-      />
-    </Field>
-  );
+export function TextField(
+  props: TextFieldProps & { label: string; name: string },
+) {
+  return <KitTextField {...props} />;
 }
 export function Submit({
   busy,

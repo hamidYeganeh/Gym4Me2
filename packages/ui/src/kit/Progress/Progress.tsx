@@ -3,7 +3,7 @@ import { progressStyles } from "./Progress.styles";
 import type { ProgressProps } from "./Progress.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { Progress as ProgressPrimitive } from "radix-ui";
+import { Progress as ProgressPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 function Progress({ className, value, ...props }: ProgressProps) {
   return (

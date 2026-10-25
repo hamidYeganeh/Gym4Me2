@@ -8,6 +8,7 @@ import {
   useId,
   useRef,
   useState,
+  useSyncExternalStore,
   type ComponentProps,
 } from "react";
 import { Check } from "lucide-react";
@@ -126,6 +127,14 @@ const stillness = () =>
   typeof window !== "undefined" &&
   !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
+/* Production integration subscribes after hydration so this preference also
+   follows a system setting changed while the field is already mounted. */
+function subscribeStillness(onChange: () => void) {
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  media.addEventListener("change", onChange);
+  return () => media.removeEventListener("change", onChange);
+}
+
 /* how long a cell takes to swell and settle when a digit lands */
 const POP_MS = 260;
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
@@ -163,34 +172,68 @@ export type OneTimeCodeProps = Omit<
 > & {
   value: string;
   onValueChange: (value: string) => void;
+  /** Reports a complete normalized code; never submits or changes status. */
+  onComplete?: (code: string) => void;
   length?: 4 | 5 | 6;
   status?: "idle" | "verifying" | "success" | "error";
   verifiedLabel?: string;
   corner?: number;
+  /** Reduce motion in-app as well as respecting the system preference. */
+  reducedMotion?: boolean;
 };
 
 export function OneTimeCode({
   value: code,
   onValueChange,
+  onComplete,
   length = 5,
   status = "idle",
   verifiedLabel = "Verified",
   corner = 12,
+  reducedMotion = false,
   disabled,
+  readOnly = false,
   className,
   onFocus,
   onBlur,
   onPaste,
+  ref: forwardedRef,
   ...inputProps
 }: OneTimeCodeProps) {
   const n = Math.round(clamp(length, 4, 6));
   const r = clamp(corner, 0, H / 2);
   const rowW = n * W + (n - 1) * G;
-  const [still] = useState(stillness);
+  const completedCode = useRef<string | null>(null);
+  useEffect(() => {
+    const normalized = normalizeOneTimeCode(code, n);
+    if (normalized.length !== n) {
+      completedCode.current = null;
+      return;
+    }
+    if (completedCode.current === normalized) return;
+    // Track before notifying, so parent renders and new callback identities do
+    // not repeat completion. Watching the value also covers SMS autofill.
+    completedCode.current = normalized;
+    onComplete?.(normalized);
+  }, [code, n, onComplete]);
+  const systemStill = useSyncExternalStore(
+    subscribeStillness,
+    stillness,
+    () => false,
+  );
+  const still = systemStill || reducedMotion;
 
   const [phase, setPhase] = useState<Phase>("type");
   const [focus, setFocus] = useState(false);
   const input = useRef<HTMLInputElement | null>(null);
+  const setInputRef = useCallback(
+    (node: HTMLInputElement | null) => {
+      input.current = node;
+      if (typeof forwardedRef === "function") return forwardedRef(node);
+      if (forwardedRef) forwardedRef.current = node;
+    },
+    [forwardedRef],
+  );
 
   /* moving parts, read by the loop */
   const caret = useRef({ x: W / 2, v: 0 });
@@ -275,6 +318,9 @@ export function OneTimeCode({
     [],
   );
   useEffect(() => {
+    // A new reduced-motion preference must replace an already-running loop.
+    cancelAnimationFrame(raf.current);
+    raf.current = 0;
     wake();
   }, [code, n, phase, wake]);
 
@@ -310,7 +356,7 @@ export function OneTimeCode({
   }, [status, n, onValueChange, still, wake, later]);
 
   const onChange = (raw: string) => {
-    if (phase !== "type" || disabled) return;
+    if (phase !== "type" || disabled || readOnly) return;
     const next = normalizeOneTimeCode(raw, n);
     /* each new digit swells its cell — a paste runs along the row */
     if (!still && next.length > code.length) {
@@ -376,6 +422,7 @@ export function OneTimeCode({
     <div
       className="one-time-code"
       data-phase={phase}
+      data-reduced-motion={still || undefined}
       dir="ltr"
       data-gym-focus-proxy
       aria-busy={status === "verifying" || undefined}
@@ -429,6 +476,7 @@ export function OneTimeCode({
               className="otp-slot"
               style={{
                 width: W,
+                borderRadius: cellR,
                 transform: `translateX(${x.toFixed(2)}px)`,
                 opacity: 1 - smooth(0, 0.45, m),
               }}
@@ -477,7 +525,7 @@ export function OneTimeCode({
         </span>
 
         <input
-          ref={input}
+          ref={setInputRef}
           className={["otp-field", className].filter(Boolean).join(" ")}
           value={code}
           onChange={(e) => onChange(e.target.value)}
@@ -497,13 +545,15 @@ export function OneTimeCode({
           }}
           inputMode="numeric"
           autoComplete="one-time-code"
+          /* a code box is not a login: keep the password managers'
+             badges out of it, the way each of them asks */
+          data-1p-ignore
+          data-lpignore="true"
+          data-bwignore
+          data-form-type="other"
           maxLength={n}
-          disabled={
-            disabled ||
-            status === "success" ||
-            status === "verifying" ||
-            phase === "no"
-          }
+          disabled={disabled || status === "success" || status === "verifying"}
+          readOnly={readOnly || phase === "no"}
           type="text"
           {...inputProps}
           spellCheck={false}

@@ -7,9 +7,9 @@ export const slidingNumberStyles = {
   ),
   number: cva("absolute inset-0 flex items-center justify-center"),
 };
+// Match Animate UI's digit roller, rather than its slower whole-number counter.
 export const slidingNumberTransition = {
-  type: "spring" as const,
-  stiffness: 280,
-  damping: 18,
-  mass: 0.3,
+  stiffness: 200,
+  damping: 20,
+  mass: 0.4,
 };

@@ -42,7 +42,6 @@ try {
   cpSync(join(appDirectory, "app"), join(stage, "app"), {
     recursive: true,
     filter: (source) =>
-      source !== join(appDirectory, "app/qa") &&
       source !== join(appDirectory, "app/.well-known") &&
       !["clubs", "coaches"].some(
         (name) => source === join(appDirectory, "app/discovery", name),
@@ -67,14 +66,7 @@ try {
   const tsconfig = JSON.parse(
     readFileSync(join(appDirectory, "tsconfig.json"), "utf8"),
   );
-  // QA routes are not staged. Their visual harness imports disposable test fixtures
-  // that are absent from a native export; keep the harness out of native typegen too.
-  tsconfig.exclude = [
-    ...tsconfig.exclude,
-    ".native-build-*",
-    "components/qa/mobile-reference.tsx",
-    "components/qa/route-reference.tsx",
-  ];
+  tsconfig.exclude = [...tsconfig.exclude, ".native-build-*"];
   writeFileSync(join(stage, "tsconfig.json"), JSON.stringify(tsconfig));
   result = spawnSync(
     process.execPath,

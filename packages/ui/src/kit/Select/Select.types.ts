@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { Select as SelectPrimitive } from "radix-ui";
+import { Select as SelectPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { selectVariants } from "./Select.styles";
 export type SelectProps = React.ComponentProps<typeof SelectPrimitive.Root>;

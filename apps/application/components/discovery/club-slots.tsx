@@ -15,7 +15,7 @@ import { ChoiceOptionCard } from "@repo/ui/kit/ChoiceOptionCard";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@repo/ui/kit/Tabs";
 import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { SlidingNumber } from "@repo/ui/kit/SlidingNumber";
-import { toast } from "@repo/ui/kit/Sonner";
+import { toast } from "@repo/ui/kit/Sileo";
 import { getClubs } from "../../lib/clubs";
 
 import { clubSlots as times, getSlotDates } from "../../lib/club-schedule";

@@ -25,7 +25,7 @@ import type {
 import type { TranslationKey } from "@repo/i18n/messages";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import { toast } from "sonner";
+import { toast } from "../kit/Sileo";
 import { Button } from "@repo/ui/kit/Button";
 import { Card, CardContent } from "@repo/ui/kit/Card";
 import {

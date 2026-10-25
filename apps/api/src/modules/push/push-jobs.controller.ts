@@ -9,6 +9,7 @@ import type { Environment } from '../../config/environment';
 import { DomainController } from '../../platform/http/domain-controller.decorator';
 import { CommerceService } from '../commerce/commerce.service';
 import { WebPushService } from './push.service';
+import { RetentionService } from '../profile/retention.service';
 
 export function authorizedPushJob(
   header: string | undefined,
@@ -28,7 +29,21 @@ export class PushJobsController {
     @Optional() private readonly advanced?: AdvancedBusinessService,
     @Optional() private readonly games?: GamesService,
     @Optional() private readonly nativePush?: NativePushService,
+    @Optional() private readonly retention?: RetentionService,
   ) {}
+  @Get('retention') async retain(
+    @Headers('authorization') authorization: string | undefined,
+  ) {
+    if (
+      !authorizedPushJob(
+        authorization,
+        this.config.get('PUSH_JOBS_SECRET', { infer: true }),
+      )
+    )
+      throw new UnauthorizedException();
+    if (!this.retention) throw new Error('Retention service is unavailable.');
+    return this.retention.run(true);
+  }
   @Get() async run(
     @Headers('authorization') authorization: string | undefined,
   ) {

@@ -7,7 +7,7 @@ import type {
 } from "./HoverCard.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { HoverCard as HoverCardPrimitive } from "radix-ui";
+import { HoverCard as HoverCardPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 function HoverCard({ ...props }: HoverCardProps) {
   return <HoverCardPrimitive.Root data-slot="hover-card" {...props} />;

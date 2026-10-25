@@ -1,6 +1,13 @@
 "use client";
 import { useApiContext } from "@repo/api/provider";
-import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRequestPhoneChange, useVerifyPhoneChange } from "@repo/api/profile";
@@ -13,6 +20,8 @@ import {
   CardContent,
 } from "@repo/ui/kit/Card";
 import { Button } from "@repo/ui/kit/Button";
+import { OneTimeCode } from "@repo/ui/kit/OneTimeCode";
+import { Field, FieldLabel } from "@repo/ui/kit/Field";
 import { useOtpAutofill } from "./otp-autofill";
 import { TextField, Submit, QueryError } from "./common";
 import { sessionSignInHref } from "../lib/session-navigation";
@@ -27,11 +36,20 @@ export function PhoneChange() {
   const codeInput = useRef<HTMLInputElement>(null);
   const id = useId();
   const t = useTranslations("PhoneChange");
+  const statusCopy = useTranslations("Luma.status");
   const router = useRouter();
   const request = useRequestPhoneChange();
   const verify = useVerifyPhoneChange();
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
+  const changeCode = useCallback(
+    (value: string) => {
+      verify.reset();
+      request.reset();
+      setCode(value);
+    },
+    [verify.reset, request.reset],
+  );
   const autofill = useOtpAutofill(setCode);
   const [challengeId, setChallengeId] = useState<string>();
   const [deadline, setDeadline] = useState(0);
@@ -102,7 +120,7 @@ export function PhoneChange() {
       autofill.stop();
       if (current === generation.current) router.replace(loginHref);
     } catch {
-      /* Keep entered fields on failure. */
+      /* Invalid codes use the field's rejection animation; other failures keep it. */
     } finally {
       pending.current = false;
       if (current === generation.current) finishFocus();
@@ -145,32 +163,46 @@ export function PhoneChange() {
             maxLength={20}
           />
           {challengeId && (
-            <TextField
-              ref={codeInput}
-              id={`${id}-code`}
-              name="phoneCode"
-              className="min-h-11"
-              label={t("code")}
-              value={code}
-              onChange={(event) => {
-                if (verify.error) verify.reset();
-                if (request.error) request.reset();
-                setCode(digits(event.target.value));
-              }}
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              dir="ltr"
-              required
-              minLength={5}
-              maxLength={5}
-              pattern="[0-9]{5}"
-              disabled={busy}
-              aria-invalid={
+            <Field
+              data-invalid={
                 verify.error?.code === "Backend.theCodeIsIncorrectOrExpired" ||
                 undefined
               }
-              aria-describedby={error ? `${id}-error` : undefined}
-            />
+              data-disabled={busy || undefined}
+            >
+              <FieldLabel htmlFor={`${id}-code`}>{t("code")}</FieldLabel>
+              <OneTimeCode
+                ref={codeInput}
+                id={`${id}-code`}
+                name="phoneCode"
+                value={code}
+                onValueChange={changeCode}
+                length={5}
+                status={
+                  verify.isSuccess
+                    ? "success"
+                    : verify.isPending
+                      ? "verifying"
+                      : verify.error?.code ===
+                          "Backend.theCodeIsIncorrectOrExpired"
+                        ? "error"
+                        : "idle"
+                }
+                verifiedLabel={statusCopy("verified")}
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                dir="ltr"
+                required
+                minLength={5}
+                pattern="[0-9]{5}"
+                disabled={busy}
+                aria-invalid={
+                  verify.error?.code ===
+                    "Backend.theCodeIsIncorrectOrExpired" || undefined
+                }
+                aria-describedby={error ? `${id}-error` : undefined}
+              />
+            </Field>
           )}
           <div id={`${id}-error`}>
             <QueryError error={error} />

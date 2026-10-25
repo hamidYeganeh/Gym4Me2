@@ -586,7 +586,7 @@ body {
   font-weight: 500;
 }
 @media (max-width: 639px) {
-  [data-slot="dialog-content"] {
+  [data-slot="dialog-content"][data-side="bottom"] {
     top: auto;
     inset-inline: 0;
     bottom: 0;
@@ -599,33 +599,9 @@ body {
     overscroll-behavior: contain;
     border-radius: 1.65rem 1.65rem 0 0;
     padding-bottom: calc(1.5rem + var(--app-safe-bottom, 0px));
-    animation-duration: var(--motion-sheet);
-  }
-  [data-slot="dialog-content"][data-state="open"] {
-    animation: luma-dialog-enter var(--motion-sheet)
-      cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-  [data-slot="dialog-content"][data-state="closed"] {
-    animation: luma-dialog-exit var(--motion-sheet) ease-in;
   }
   .gym-workspace [data-slot="card-content"]:has(table) {
     overflow-x: auto;
-  }
-}
-@keyframes luma-dialog-enter {
-  from {
-    transform: translateY(100%);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-@keyframes luma-dialog-exit {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(100%);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -745,7 +721,7 @@ body {
   display: none;
 }
 @media (max-width: 639px) {
-  [data-slot="dialog-content"] {
+  [data-slot="dialog-content"][data-side="bottom"] {
     translate: 0 var(--sheet-drag, 0px);
     transition: translate var(--motion-sheet) cubic-bezier(0.2, 0.8, 0.2, 1);
   }

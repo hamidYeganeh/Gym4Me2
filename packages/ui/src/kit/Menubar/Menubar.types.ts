@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { Menubar as MenubarPrimitive } from "radix-ui";
+import { Menubar as MenubarPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { menubarVariants } from "./Menubar.styles";
 export type MenubarProps = React.ComponentProps<typeof MenubarPrimitive.Root>;

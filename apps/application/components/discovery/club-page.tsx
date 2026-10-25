@@ -12,7 +12,7 @@ import { ClubAvailability } from "./club-availability";
 import { ClubReviews } from "./club-reviews";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { ClubDetail } from "@repo/ui/kit/ClubDetail";
-import { toast } from "@repo/ui/kit/Sonner";
+import { toast } from "@repo/ui/kit/Sileo";
 import { useCatalogClub, useCatalogClubs } from "./use-catalog";
 import { CatalogState } from "./catalog-state";
 import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";

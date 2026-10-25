@@ -47,7 +47,6 @@ export function applicationRouteLayout(pathname: string, search: string) {
       "/profile/complete",
       "/checkout",
     ].includes(logical) ||
-    logical.startsWith("/qa/") ||
     logical.startsWith("/services/") ||
     logical.startsWith("/tickets/") ||
     logical.startsWith("/checkout/mock-gateway") ||

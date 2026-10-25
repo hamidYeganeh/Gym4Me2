@@ -1,10 +1,15 @@
 "use client";
 import { useEffect } from "react";
+import { SlidingNumber as AnimateSlidingNumber } from "@animate-ui/react/primitives/texts/sliding-number";
+import {
+  ReducedMotionConfig,
+  useShouldReduceMotion,
+  useTempoTransition,
+} from "@animate-ui/react/utils/motion";
 import {
   motion,
   useSpring,
   useTransform,
-  useReducedMotion,
   type MotionValue,
 } from "motion/react";
 import useMeasure from "react-use-measure";
@@ -42,7 +47,9 @@ function NumberGlyph({
 
 function Digit({ digit, glyphs }: { digit: number; glyphs: string[] }) {
   const [ref, bounds] = useMeasure();
-  const animated = useSpring(0, slidingNumberTransition);
+  const transition = useTempoTransition(slidingNumberTransition);
+  // Match initiallyStable on the Latin renderer: new digits start at their value.
+  const animated = useSpring(digit, transition);
   useEffect(() => {
     animated.set(digit);
   }, [animated, digit]);
@@ -65,7 +72,59 @@ function Digit({ digit, glyphs }: { digit: number; glyphs: string[] }) {
   );
 }
 
-export function SlidingNumber({
+export function SlidingNumber(props: SlidingNumberProps) {
+  const {
+    value,
+    locale = "en",
+    padStart = false,
+    useGrouping = false,
+    decimalSeparator,
+    className,
+    ...spanProps
+  } = props;
+  const formatter = new Intl.NumberFormat(locale, {
+    useGrouping: false,
+    maximumFractionDigits: 20,
+  });
+  // The upstream roller renders Latin glyphs. Keep Persian/Arabic glyphs and
+  // the kit's minimum-two-digit padding in the localized adapter.
+  if (
+    formatter.format(1234567890) === "1234567890" &&
+    !padStart &&
+    !useGrouping &&
+    Number.isFinite(value)
+  ) {
+    const parts = formatter.formatToParts(value);
+    return (
+      <span
+        {...spanProps}
+        data-slot="sliding-number"
+        className={cn(s.root(), className)}
+        dir="ltr"
+      >
+        <AnimateSlidingNumber
+          number={value}
+          decimalPlaces={
+            parts.find((part) => part.type === "fraction")?.value.length ?? 0
+          }
+          decimalSeparator={
+            decimalSeparator ??
+            parts.find((part) => part.type === "decimal")?.value ??
+            "."
+          }
+          initiallyStable
+        />
+      </span>
+    );
+  }
+  return (
+    <ReducedMotionConfig>
+      <LocalizedSlidingNumber {...props} />
+    </ReducedMotionConfig>
+  );
+}
+
+function LocalizedSlidingNumber({
   value,
   padStart = false,
   decimalSeparator,
@@ -74,21 +133,19 @@ export function SlidingNumber({
   className,
   ...props
 }: SlidingNumberProps) {
-  const reduce = useReducedMotion();
+  const reduce = useShouldReduceMotion();
   const formatter = new Intl.NumberFormat(locale, {
     useGrouping,
     minimumIntegerDigits: padStart ? 2 : 1,
     maximumFractionDigits: 20,
   });
-  const parts = formatter
-    .formatToParts(value)
-    .map((part) => ({
-      ...part,
-      value:
-        part.type === "decimal" && decimalSeparator !== undefined
-          ? decimalSeparator
-          : part.value,
-    }));
+  const parts = formatter.formatToParts(value).map((part) => ({
+    ...part,
+    value:
+      part.type === "decimal" && decimalSeparator !== undefined
+        ? decimalSeparator
+        : part.value,
+  }));
   const text = parts.map((part) => part.value).join("");
   const glyphFormatter = new Intl.NumberFormat(locale, { useGrouping: false });
   const glyphs = Array.from({ length: 10 }, (_, index) =>

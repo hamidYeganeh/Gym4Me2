@@ -25,7 +25,7 @@ import {
   isActiveSurfaceElement,
   restoreOverlayFocus,
 } from "../lib/active-surface";
-import { toast } from "sonner";
+import { toast } from "../kit/Sileo";
 import { Plus } from "lucide-react";
 import { Button } from "@repo/ui/kit/Button";
 import {

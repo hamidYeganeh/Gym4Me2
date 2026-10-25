@@ -1,7 +1,7 @@
 "use client";
 import { useId, type ComponentProps, type ReactNode } from "react";
 import { Field, FieldLabel } from "../kit/Field";
-import { Input } from "../kit/Input";
+import { SmoothInput } from "../kit/SmoothInput";
 
 export function LoginFieldError({
   id,
@@ -28,7 +28,7 @@ export function LoginField({
   error,
   hiddenLabel = false,
   ...props
-}: Omit<ComponentProps<typeof Input>, "id" | "name"> & {
+}: Omit<ComponentProps<typeof SmoothInput>, "id" | "name"> & {
   field: "phone" | "password";
   label: string;
   error?: string;
@@ -47,7 +47,7 @@ export function LoginField({
       <FieldLabel htmlFor={id} className={hiddenLabel ? "sr-only" : undefined}>
         {label}
       </FieldLabel>
-      <Input
+      <SmoothInput
         {...props}
         id={id}
         name={field}

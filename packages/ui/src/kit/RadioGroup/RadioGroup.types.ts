@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { RadioGroup as RadioGroupPrimitive } from "radix-ui";
+import { RadioGroup as RadioGroupPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { radioGroupVariants } from "./RadioGroup.styles";
 export type RadioGroupProps = React.ComponentProps<

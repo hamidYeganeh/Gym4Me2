@@ -1,6 +1,6 @@
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
-import { Drawer as DrawerPrimitive } from "vaul";
+import { Drawer as DrawerPrimitive } from "@animate-ui/react/primitives/radix-ui/drawer";
 import type { drawerVariants } from "./Drawer.styles";
 export type DrawerProps = React.ComponentProps<typeof DrawerPrimitive.Root>;
 

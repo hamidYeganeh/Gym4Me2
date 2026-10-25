@@ -20,7 +20,7 @@ import type {
 
 import { cn } from "@repo/ui/lib/utils";
 import { CheckIcon, ChevronRightIcon } from "lucide-react";
-import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
+import { DropdownMenu as DropdownMenuPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 function DropdownMenu({ ...props }: DropdownMenuProps) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;

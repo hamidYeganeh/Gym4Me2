@@ -16,7 +16,7 @@ import type {
 } from "./AlertDialog.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { AlertDialog as AlertDialogPrimitive } from "radix-ui";
+import { AlertDialog as AlertDialogPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 import { Button } from "@repo/ui/kit/Button";
 
