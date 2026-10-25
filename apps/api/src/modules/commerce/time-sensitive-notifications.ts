@@ -24,7 +24,7 @@ export function deliverTimeSensitiveNotification(db: Db, job: Job) {
       if (!occurrence.rows.length) return;
       const reservation = await tx.execute<{ user_id: string }>(sql`
         SELECT user_id FROM sport_reservations WHERE id=${job.aggregateId}
-          AND occurrence_id=${job.payload.occurrenceId} AND status='confirmed' FOR SHARE
+          AND occurrence_id=${job.payload.occurrenceId} AND status='confirmed' AND checked_in_at IS NULL FOR SHARE
       `);
       if (!reservation.rows[0]) return;
       userId = reservation.rows[0].user_id;

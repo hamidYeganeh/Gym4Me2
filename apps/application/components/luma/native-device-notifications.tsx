@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { useApiContext } from "@repo/api/provider";
+import { ApiError } from "@repo/api";
 import { useGrowthQuery } from "@repo/api/growth";
 import { Button } from "@repo/ui/kit/Button";
 const bindingKey = "gym4me.native-push.binding",
@@ -85,6 +86,7 @@ export function NativePushRuntime() {
 }
 export function NativeDeviceNotifications() {
   const t = useTranslations("Growth"),
+    backend = useTranslations("Backend"),
     { api } = useApiContext(),
     q = useGrowthQuery<{
       android: boolean;
@@ -92,9 +94,15 @@ export function NativeDeviceNotifications() {
       device: { id: string; platform: string } | null;
     }>("profile/native-push");
   const [busy, setBusy] = useState(false),
+    [testCooldown, setTestCooldown] = useState(false),
     [message, setMessage] = useState(""),
     [platform, setPlatform] = useState("");
   const refetch = q.refetch;
+  useEffect(() => {
+    if (!testCooldown) return;
+    const timer = setTimeout(() => setTestCooldown(false), 30000);
+    return () => clearTimeout(timer);
+  }, [testCooldown]);
   useEffect(() => {
     void import("@capacitor/core").then(({ Capacitor }) =>
       setPlatform(Capacitor.getPlatform()),
@@ -154,6 +162,8 @@ export function NativeDeviceNotifications() {
     }
   }
   async function test() {
+    if (testCooldown) return;
+    setTestCooldown(true);
     setBusy(true);
     try {
       const result = await api.request<{ result: string }>({
@@ -167,8 +177,12 @@ export function NativeDeviceNotifications() {
             ? t("nativeQueued")
             : t("failed"),
       );
-    } catch {
-      setMessage(t("failed"));
+    } catch (error) {
+      setMessage(
+        error instanceof ApiError && error.code === "Backend.pushTestWait"
+          ? backend("pushTestWait")
+          : t("failed"),
+      );
     } finally {
       setBusy(false);
     }
@@ -200,7 +214,7 @@ export function NativeDeviceNotifications() {
         </Button>
         <Button
           variant="outline"
-          disabled={busy || !q.data?.device}
+          disabled={busy || testCooldown || !q.data?.device}
           onClick={() => void test()}
         >
           {t("nativeTest")}

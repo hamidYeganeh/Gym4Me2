@@ -29,7 +29,7 @@ export async function scheduleReservationReminders(tx: Tx, orderId: string) {
   }>(sql`
     SELECT r.id,r.occurrence_id,r.revision FROM sport_reservations r
     JOIN sport_occurrences o ON o.id=r.occurrence_id
-    WHERE r.order_id=${orderId} AND r.status='confirmed'
+    WHERE r.order_id=${orderId} AND r.status='confirmed' AND r.checked_in_at IS NULL
       AND o.status='scheduled' AND o.start_at>now() ORDER BY r.id FOR UPDATE OF r
   `);
   for (const reservation of rows) {

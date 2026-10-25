@@ -3151,6 +3151,7 @@ export class CommerceService {
       tx,
       sql`UPDATE sport_reservations SET checked_in_at=coalesce(checked_in_at,now()),admitted_count=least(quantity,admitted_count+1),revision=revision+1 WHERE id=${r.id}`,
     );
+    await retireReservationReminders(tx, r.id);
     if (detail.kind === 'access') {
       await this.consume(tx, r);
       if (r.admitted_count + 1 >= r.quantity) {
@@ -3162,7 +3163,6 @@ export class CommerceService {
           tx,
           sql`UPDATE sport_reservations SET status='completed' WHERE id=${r.id}`,
         );
-        await retireReservationReminders(tx, r.id);
       }
     }
     return visit;
