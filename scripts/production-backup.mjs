@@ -48,8 +48,17 @@ async function run(command, args, env = {}) {
       stdio: ["ignore", "ignore", "pipe"],
     });
     let failed = false;
+    let failureKind = "subprocess";
     child.stderr.on("data", (data) => {
       failed = true;
+      const diagnostic = String(data);
+      if (
+        /root certificate|certificate verify failed|SSL error/i.test(diagnostic)
+      )
+        failureKind = "TLS trust";
+      else if (/permission denied/i.test(diagnostic))
+        failureKind = "reader permissions";
+      else if (/snapshot/i.test(diagnostic)) failureKind = "snapshot import";
       if (process.env.GYM_BACKUP_DIAGNOSTICS)
         void import("node:fs").then(({ appendFileSync }) =>
           appendFileSync(
@@ -71,7 +80,9 @@ async function run(command, args, env = {}) {
         ? resolve()
         : reject(
             new Error(
-              "Backup subprocess failed" +
+              "Backup " +
+                failureKind +
+                " failed" +
                 (failed ? " (diagnostics withheld)" : ""),
             ),
           ),
@@ -116,13 +127,22 @@ try {
   );
   if (full) {
     const pg = process.env.GYM_PG_DUMP ?? "pg_dump";
-    if (pg === "docker")
+    if (pg === "docker") {
+      const caFile = process.env.GYM_BACKUP_CA_FILE;
+      if (!caFile || !(await stat(caFile)).isFile())
+        throw new Error(
+          "Docker backup requires an explicit trusted CA bundle.",
+        );
       await run(
         "docker",
         [
           "run",
           "--rm",
           ...Object.keys(pgEnvironment).flatMap((key) => ["--env", key]),
+          "--mount",
+          `type=bind,source=${resolve(caFile)},target=/trusted-ca.crt,readonly`,
+          "--env",
+          "SSL_CERT_FILE=/trusted-ca.crt",
           "-v",
           `${directory}:/capture`,
           "postgres:18",
@@ -135,7 +155,7 @@ try {
         ],
         pgEnvironment,
       );
-    else
+    } else
       await run(
         pg,
         [

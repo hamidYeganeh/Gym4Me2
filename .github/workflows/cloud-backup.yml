@@ -35,6 +35,7 @@ jobs:
         env:
           GYM_BACKUP_DATABASE_URL: ${{ secrets.GYM_BACKUP_DATABASE_URL }}
           GYM_PG_DUMP: docker
+          GYM_BACKUP_CA_FILE: /etc/ssl/certs/ca-certificates.crt
         run: node scripts/production-backup.mjs --full
       - name: Capture encrypted deletion ledger
         if: github.event_name != 'workflow_dispatch' && github.event.schedule != '13 */6 * * *'
