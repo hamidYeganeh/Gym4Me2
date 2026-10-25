@@ -264,9 +264,11 @@ test(
       let fixtureError = "";
       await writeFile(
         fixture,
-        `import {writeFile} from 'node:fs/promises';
+        `import {writeFile,rename} from 'node:fs/promises';
       process.on('SIGTERM',()=>process.exit(0));
-      await writeFile(process.env.FIXTURE_READY,process.env.PGAPPNAME);setInterval(()=>{},1000);`,
+      const pending=process.env.FIXTURE_READY+'.pending';
+      await writeFile(pending,process.env.PGAPPNAME);
+      await rename(pending,process.env.FIXTURE_READY);setInterval(()=>{},1000);`,
       );
       Pool.prototype.connect = async function () {
         return {
