@@ -699,7 +699,7 @@ void test('background reconciliation skips unfunded holds instead of starving fu
     public: false,
     acceptedTerms: true,
   });
-  const own = (await games.detail(a.id, g.id)).ownShare!,
+  const own = (await games.detail(a.id, g.id)).ownShare,
     second = await games.join(b.id, g.id, {
       operationId: randomUUID(),
       acceptedTerms: true,
