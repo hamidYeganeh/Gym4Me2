@@ -4,6 +4,10 @@ on:
     - cron: "13 */6 * * *"
     - cron: "13,28,43,58 * * * *"
   workflow_dispatch:
+  workflow_call:
+    secrets:
+      GYM_BACKUP_DATABASE_URL:
+        required: true
 permissions:
   contents: read
 concurrency:

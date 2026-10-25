@@ -4,6 +4,11 @@ on:
   push:
     branches: [main, master]
   workflow_dispatch:
+    inputs:
+      backupOnly:
+        description: Capture and verify an encrypted cloud backup only
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -14,6 +19,7 @@ concurrency:
 
 jobs:
   verify:
+    if: inputs.backupOnly != true
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -112,6 +118,7 @@ jobs:
         run: docker compose --profile test down --volumes
 
   ios-build:
+    if: inputs.backupOnly != true
     runs-on: macos-latest
     timeout-minutes: 35
     env:
@@ -137,3 +144,9 @@ jobs:
           pnpm --filter application exec cap sync ios
       - name: Build iOS simulator without signing
         run: xcodebuild -project apps/application/ios/App/App.xcodeproj -scheme App -configuration Debug -destination 'generic/platform=iOS Simulator' -derivedDataPath .artifacts/ios-ci CODE_SIGNING_ALLOWED=NO build
+
+  cloud-backup-proof:
+    if: github.event_name == 'workflow_dispatch' && inputs.backupOnly == true && github.repository == 'hamidYeganeh/Gym4Me2'
+    uses: ./.github/workflows/cloud-backup.yml
+    secrets:
+      GYM_BACKUP_DATABASE_URL: ${{ secrets.GYM_BACKUP_DATABASE_URL }}
