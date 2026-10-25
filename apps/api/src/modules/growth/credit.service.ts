@@ -7,6 +7,7 @@ import {
 import { sql } from 'drizzle-orm';
 import { z } from 'zod';
 import { DatabaseService } from '../../database/database.service';
+import { phoneSchema } from '../auth/auth.contracts';
 import { trainingCommand } from '../training/training.service';
 import { CommerceService, rows } from '../commerce/commerce.service';
 import { businessAccess } from '../advanced-business/ph5.access';
@@ -33,10 +34,7 @@ export const creditGrant = z
   .object({
     ...cmd,
     userId: z.uuid().optional(),
-    phone: z
-      .string()
-      .regex(/^\+989[0-9]{9}$/)
-      .optional(),
+    phone: phoneSchema.optional(),
     amountMinor: amount,
     receipt: text,
     reason: text,

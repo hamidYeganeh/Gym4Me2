@@ -54,7 +54,7 @@ export class GrowthDiscoveryService {
    ${input.branchId ? sql`AND s.branch_id=${input.branchId}` : sql``} ${input.from ? sql`AND o.start_at>=${input.from}` : sql``} ${input.to ? sql`AND o.end_at<=${input.to}` : sql``}
    AND (${input.q}='' OR v.title ILIKE ${term} OR v.description ILIKE ${term})
    AND (${input.level}='any' OR lower(v.level) IN ('beginner','مبتدی','تازه‌کار'))
-   ${input.offersOnly === 'true' ? sql`AND EXISTS(SELECT 1 FROM growth_offers g WHERE g.occurrence_id=o.id AND g.active AND g.ends_at>now() AND (SELECT count(*) FROM sport_orders ord WHERE ord.snapshot->>'offerId'=g.id::text AND ord.status NOT IN ('cancelled','refunded'))<g.max_uses)` : sql``}
+   ${input.offersOnly === 'true' ? sql`AND EXISTS(SELECT 1 FROM growth_offers g WHERE g.occurrence_id=o.id AND g.active AND g.ends_at>now() AND (SELECT count(*) FROM sport_orders ord WHERE coalesce(ord.snapshot->>'kind','')<>'split_share' AND ord.snapshot->>'offerId'=g.id::text AND ord.status NOT IN ('cancelled','refunded'))<g.max_uses)` : sql``}
    ORDER BY o.start_at,o.id LIMIT 100`,
     );
     const result: Array<
@@ -125,7 +125,7 @@ export class GrowthDiscoveryService {
         if (old) {
           const [used] = await rows<{ count: number }>(
             tx,
-            sql`SELECT count(*)::int count FROM sport_orders WHERE snapshot->>'offerId'=${old.id} AND status NOT IN ('cancelled','refunded')`,
+            sql`SELECT count(*)::int count FROM sport_orders WHERE coalesce(snapshot->>'kind','')<>'split_share' AND snapshot->>'offerId'=${old.id} AND status NOT IN ('cancelled','refunded')`,
           );
           if (input.maxUses < used.count)
             throw new ConflictException('Growth.invalidOffer');

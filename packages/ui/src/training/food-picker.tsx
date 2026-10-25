@@ -25,6 +25,7 @@ export function FoodPicker({
   online: boolean;
 }) {
   const t = useTranslations("Growth"),
+    training = useTranslations("Training"),
     locale = useLocale(),
     [search, setSearch] = useState(""),
     [page, setPage] = useState(1),
@@ -39,6 +40,7 @@ export function FoodPicker({
   return (
     <TrainingCard title={t("foodCatalog")}>
       <p>{t("foodSourceHint")}</p>
+      {!online && <p role="status">{training("nutritionOnline")}</p>}
       <Field name="foodSearch" label={t("foodSearch")}>
         <input
           className="min-h-11 rounded-xl border bg-background px-3"
@@ -89,19 +91,32 @@ export function FoodPicker({
           </a>
           <GrowthForm
             key={food.id + date + meal}
+            disabled={!online}
             path={`profile/nutrition/foods/${food.id}/entries`}
             label={t("logFood")}
             build={(f) => ({
               eatenOn: date,
-              meal,
+              meal: String(f.get("meal")),
               grams: Number(f.get("grams")),
               locale,
             })}
           >
+            <Field name="meal" label={training("nutritionMeal")}>
+              <NativeSelect name="meal" defaultValue={meal}>
+                {(["breakfast", "lunch", "dinner", "snack"] as const).map(
+                  (value) => (
+                    <NativeSelectOption key={value} value={value}>
+                      {training(`nutritionMeal_${value}`)}
+                    </NativeSelectOption>
+                  ),
+                )}
+              </NativeSelect>
+            </Field>
             <Field
               name="grams"
               type="number"
-              min="1"
+              min="0.01"
+              step="0.01"
               max="20000"
               label={t("foodGrams")}
               defaultValue="100"

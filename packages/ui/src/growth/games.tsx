@@ -22,6 +22,9 @@ type GameSummary = {
 };
 type GameDetail = {
   id: string;
+  serviceId: string;
+  serviceTitle: string;
+  branchName: string;
   title: string;
   status: "recruiting" | "confirmed" | "cancelled";
   deadline: string;
@@ -37,11 +40,13 @@ type GameDetail = {
     status: string;
   }[];
 };
-function SignIn() {
+function SignIn({ returnTo = "/games" }: { returnTo?: string }) {
   const t = useTranslations("Growth");
   return (
     <Button asChild>
-      <Link href="/login">{t("gameSignIn")}</Link>
+      <Link href={`/login?returnTo=${encodeURIComponent(returnTo)}`}>
+        {t("gameSignIn")}
+      </Link>
     </Button>
   );
 }
@@ -112,7 +117,9 @@ export function GameCreate() {
       <h1 className="text-2xl font-semibold">{t("createGame")}</h1>
       <Link href="/games">{t("games")}</Link>
       {!account.data ? (
-        <SignIn />
+        <SignIn
+          returnTo={`/games/new?${new URLSearchParams({ service: service ?? "", occurrence: occurrence ?? "" })}`}
+        />
       ) : q.error ? (
         <QueryError error={q.error} retry={() => void q.refetch()} />
       ) : q.isLoading ? (
@@ -181,7 +188,9 @@ export function GameDetails() {
         <Link href="/games">{t("back")}</Link>
       </header>
       {!account.data ? (
-        <SignIn />
+        <SignIn
+          returnTo={`/games/detail?${new URLSearchParams({ id: id ?? "" })}`}
+        />
       ) : q.error ? (
         <QueryError error={q.error} retry={() => void q.refetch()} />
       ) : q.isLoading ? (
@@ -189,6 +198,19 @@ export function GameDetails() {
       ) : (
         g && (
           <>
+            <p>
+              {g.serviceTitle} · {g.branchName}
+            </p>
+            <time dateTime={g.startAt}>
+              {new Intl.DateTimeFormat(locale === "fa" ? "fa-IR" : "en", {
+                dateStyle: "medium",
+                timeStyle: "short",
+                timeZone: "Asia/Tehran",
+              }).format(new Date(g.startAt))}
+            </time>
+            <Link href={`/services/detail?id=${g.serviceId}`}>
+              {t("gameServiceDetails")}
+            </Link>
             <p role="status">{t(g.status)}</p>
             {g.status === "confirmed" &&
               g.bookingState === "pending_approval" && (
@@ -202,10 +224,11 @@ export function GameDetails() {
               {new Intl.DateTimeFormat(locale === "fa" ? "fa-IR" : "en", {
                 dateStyle: "medium",
                 timeStyle: "short",
+                timeZone: "Asia/Tehran",
               }).format(new Date(g.deadline))}
             </p>
             <p>{g.policy.terms}</p>
-            <p>{t("gameDeadlineHint")}</p>
+            {g.status === "recruiting" && <p>{t("gameDeadlineHint")}</p>}
             <div className="grid gap-3">
               {g.shares.map((s) => (
                 <p key={s.slot} className="rounded-xl border p-3">
@@ -216,9 +239,17 @@ export function GameDetails() {
                   {t("toman")} ·{" "}
                   {s.status === "paid"
                     ? t("sharePaid")
-                    : s.joined
-                      ? t("shareJoined")
-                      : t("shareOpen")}
+                    : s.status === "refunded"
+                      ? t("shareRefunded")
+                      : s.status === "partially_refunded"
+                        ? t("sharePartialRefund")
+                        : s.status === "cancelled"
+                          ? t("shareCancelled")
+                          : s.status === "review"
+                            ? t("shareReview")
+                            : s.joined
+                              ? t("shareJoined")
+                              : t("shareOpen")}
                 </p>
               ))}
             </div>
@@ -237,7 +268,7 @@ export function GameDetails() {
             {g.ownShare && (
               <Button asChild>
                 <Link href={`/checkout/status?order=${g.ownShare.order_id}`}>
-                  {t("payMyShare")}
+                  {t(g.status === "recruiting" ? "payMyShare" : "viewShare")}
                 </Link>
               </Button>
             )}

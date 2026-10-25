@@ -3254,6 +3254,14 @@
     "pdfFailed": "Could not create or share the PDF. Please retry.",
     "brand": "Gym4Me",
     "gameHostPending": "The reservation is awaiting host approval.",
-    "gameReservationConfirmed": "The reservation is confirmed."
+    "gameReservationConfirmed": "The reservation is confirmed.",
+    "networkInvited": "Network invitation awaiting owner acceptance.",
+    "networkRemoved": "This organization has been removed from the network.",
+    "gameServiceDetails": "Service details and required documents",
+    "shareRefunded": "Fully refunded",
+    "sharePartialRefund": "Partially refunded",
+    "shareCancelled": "Cancelled",
+    "shareReview": "Payment under review",
+    "viewShare": "View share receipt"
   }
 }

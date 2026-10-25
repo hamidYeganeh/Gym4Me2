@@ -3254,6 +3254,14 @@
     "pdfFailed": "ساخت یا اشتراک PDF انجام نشد؛ دوباره تلاش کن.",
     "brand": "Gym4Me",
     "gameHostPending": "رزرو منتظر تأیید میزبان است.",
-    "gameReservationConfirmed": "رزرو تأیید شده است."
+    "gameReservationConfirmed": "رزرو تأیید شده است.",
+    "networkInvited": "دعوت شبکه منتظر پذیرش مالک است.",
+    "networkRemoved": "عضویت این مجموعه در شبکه لغو شده است.",
+    "gameServiceDetails": "جزئیات خدمت و مدارک لازم",
+    "shareRefunded": "بازپرداخت کامل",
+    "sharePartialRefund": "بازپرداخت بخشی از مبلغ",
+    "shareCancelled": "لغو شده",
+    "shareReview": "پرداخت در حال بررسی",
+    "viewShare": "مشاهده رسید سهم"
   }
 }

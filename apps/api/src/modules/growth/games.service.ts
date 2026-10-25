@@ -61,7 +61,7 @@ export class GamesService {
   async detail(actor: string, id: string) {
     const [g] = await rows<Game>(
       this.db,
-      sql`SELECT g.*,o.start_at,o.end_at,ord.snapshot->'policy' policy,(SELECT status FROM sport_reservations r WHERE r.order_id=ord.id ORDER BY r.created_at DESC LIMIT 1) booking_state FROM growth_games g JOIN sport_occurrences o ON o.id=g.occurrence_id JOIN sport_orders ord ON ord.id=g.order_id WHERE g.id=${id}`,
+      sql`SELECT g.*,o.start_at,o.end_at,ord.snapshot->>'title' service_title,s.id service_id,b.name branch_name,ord.snapshot->'policy' policy,(SELECT status FROM sport_reservations r WHERE r.order_id=ord.id ORDER BY r.created_at DESC LIMIT 1) booking_state FROM growth_games g JOIN sport_occurrences o ON o.id=g.occurrence_id JOIN sport_orders ord ON ord.id=g.order_id JOIN sport_services s ON s.id=ord.service_id JOIN branches b ON b.id=s.branch_id WHERE g.id=${id}`,
     );
     if (!g) throw new NotFoundException('Growth.notFound');
     const own = await rows<{
@@ -79,6 +79,9 @@ export class GamesService {
     return {
       id: g.id,
       title: g.title,
+      serviceId: (g as Game & { service_id: string }).service_id,
+      serviceTitle: (g as Game & { service_title: string }).service_title,
+      branchName: (g as Game & { branch_name: string }).branch_name,
       status: g.status,
       deadline: g.deadline,
       playerCount: g.player_count,
@@ -146,9 +149,13 @@ export class GamesService {
       sql`SELECT order_id FROM growth_game_shares WHERE game_id=${id} AND user_id=${actor}`,
     );
     if (old) return { orderId: old.order_id };
-    const [valid] = await rows(
+    const [valid] = await rows<{
+      id: string;
+      service_id: string;
+      version_id: string;
+    }>(
       tx,
-      sql`SELECT ord.id FROM sport_orders ord JOIN sport_occurrences o ON o.id=${game.occurrence_id} WHERE ord.id=${game.order_id} AND ord.status='awaiting_payment' AND ord.expires_at>clock_timestamp() AND o.status='scheduled' AND o.start_at>clock_timestamp()`,
+      sql`SELECT ord.id,ord.service_id,ord.version_id FROM sport_orders ord JOIN sport_occurrences o ON o.id=${game.occurrence_id} WHERE ord.id=${game.order_id} AND ord.status='awaiting_payment' AND ord.expires_at>clock_timestamp() AND o.status='scheduled' AND o.start_at>clock_timestamp()`,
     );
     if (
       !valid ||
@@ -156,6 +163,12 @@ export class GamesService {
       new Date(game.deadline) <= new Date()
     )
       throw new ConflictException('Growth.gameUnavailable');
+    await this.commerce.checkParticipant(
+      tx,
+      actor,
+      valid.service_id,
+      valid.version_id,
+    );
     const [share] = await rows<{ id: string; amount_minor: string }>(
       tx,
       sql`SELECT id,amount_minor::text FROM growth_game_shares WHERE game_id=${id} AND user_id IS NULL ORDER BY slot LIMIT 1 FOR UPDATE`,

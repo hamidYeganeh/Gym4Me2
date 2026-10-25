@@ -18,9 +18,11 @@ import {
 } from '../src/modules/commerce/commerce.service';
 import { SamanMockPaymentAdapter } from '../src/modules/commerce/sandbox-payment';
 import { serviceSchema } from '../src/modules/commerce/commerce.contracts';
+import { offerPrice } from '../src/modules/growth/offers';
 import { GrowthDiscoveryService } from '../src/modules/growth/discovery.service';
 import { NetworkCreditService } from '../src/modules/growth/credit.service';
 import * as c from '../src/modules/growth/growth.contracts';
+import { AdvancedBusinessService } from '../src/modules/advanced-business/ph5.service';
 import { GamesService } from '../src/modules/growth/games.service';
 import { NativePushService } from '../src/modules/push/native-push.service';
 import {
@@ -66,7 +68,10 @@ const policy = {
   transferable: false,
   terms: 'Synthetic test service conditions.',
 };
-async function sale(kind: 'class' | 'court' = 'class') {
+async function sale(
+  kind: 'class' | 'court' = 'class',
+  requirements: string[] = [],
+) {
   const f = await fixture();
   await db.execute(
     sql`UPDATE organizations SET status='approved' WHERE id=${f.org.id}`,
@@ -99,6 +104,7 @@ async function sale(kind: 'class' | 'court' = 'class') {
       branchId: f.branch.id,
       title: 'Synthetic beginner class',
       kind,
+      requirements,
       resourceIds,
       level: 'beginner',
       amountMinor: '100000',
@@ -521,6 +527,15 @@ void test('open game claims one court reservation, caps players and confirms onl
   const report = await commerce.report(f.owner.id, f.org.id, f.branch.id);
   assert.equal(report.sales_minor, '100000');
   assert.equal(report.collected_minor, '100000');
+  const advanced = await new AdvancedBusinessService(database, config).overview(
+    f.owner.id,
+    'business',
+    { organizationId: f.org.id, branchId: f.branch.id },
+  );
+  assert.equal(advanced.report?.sold_minor, '100000');
+  assert.equal(advanced.report?.collected_minor, '100000');
+  assert.equal(advanced.comparison?.[0]?.sold_minor, '100000');
+
   await games.cancel(organizer.id, created.id, {
     operationId: randomUUID(),
     acceptedTerms: true,
@@ -544,6 +559,77 @@ void test('open game claims one court reservation, caps players and confirms onl
     sql`SELECT r.state FROM sport_refunds r JOIN growth_games g ON g.order_id=r.order_id WHERE g.id=${created.id}`,
   );
   assert.equal(parent[0].state, 'succeeded');
+});
+void test('group shares consume only one offer use and preserve remaining offer budget', async () => {
+  const f = await sale('court'),
+    games = new GamesService(database, commerce),
+    actor = await person();
+  const offer = {
+    operationId: randomUUID(),
+    occurrenceId: f.occurrence.id,
+    discountBasisPoints: 1000,
+    maxUses: 2,
+    endsAt: new Date(Date.now() + 3600000).toISOString(),
+    revision: 0,
+    active: true,
+  };
+  await discovery.saveOffer(f.owner.id, offer);
+  const created = await games.create(actor.id, {
+    operationId: randomUUID(),
+    serviceId: f.service.id,
+    occurrenceId: f.occurrence.id,
+    title: 'Synthetic discounted group',
+    playerCount: 2,
+    public: false,
+    acceptedTerms: true,
+  });
+  assert.equal(
+    (await games.detail(actor.id, created.id)).ownShare?.amount_minor,
+    '45000',
+  );
+  assert.equal(
+    (await offerPrice(db, f.occurrence.id, '100000')).amount,
+    '90000',
+  );
+  await discovery.saveOffer(f.owner.id, {
+    ...offer,
+    operationId: randomUUID(),
+    revision: 1,
+    maxUses: 1,
+  });
+});
+void test('every group participant needs the service documents, including expiry checks', async () => {
+  const requirement = 'Synthetic clearance',
+    f = await sale('court', [requirement]),
+    organizer = await person(),
+    player = await person(),
+    games = new GamesService(database, commerce);
+  await db.execute(
+    sql`INSERT INTO sport_documents(user_id,service_id,name,object_key,status) VALUES(${organizer.id},${f.service.id},${requirement},'synthetic-only/organizer.pdf','approved')`,
+  );
+  const g = await games.create(organizer.id, {
+    operationId: randomUUID(),
+    serviceId: f.service.id,
+    occurrenceId: f.occurrence.id,
+    title: 'Synthetic restricted court',
+    playerCount: 2,
+    public: true,
+    acceptedTerms: true,
+  });
+  const join = () =>
+    games.join(player.id, g.id, {
+      operationId: randomUUID(),
+      acceptedTerms: true,
+    });
+  await assert.rejects(join);
+  await db.execute(
+    sql`INSERT INTO sport_documents(user_id,service_id,name,object_key,status,expires_at) VALUES(${player.id},${f.service.id},${requirement},'synthetic-only/player.pdf','approved',now()-interval '1 day')`,
+  );
+  await assert.rejects(join);
+  await db.execute(
+    sql`UPDATE sport_documents SET expires_at=now()+interval '1 day' WHERE user_id=${player.id} AND service_id=${f.service.id}`,
+  );
+  assert.ok((await join()).orderId);
 });
 void test('an incomplete group expires and refunds a paid share exactly once', async () => {
   const f = await sale('court'),

@@ -1130,6 +1130,26 @@ export class CommerceService {
       cover: service.cover,
     };
   }
+  async checkParticipant(
+    db: Db | Tx,
+    userId: string,
+    serviceId: string,
+    versionId: string,
+  ) {
+    await this.coachingSale(db, userId, serviceId);
+    const version = await one<{ requirements: string[] }>(
+      db,
+      sql`SELECT requirements FROM sport_service_versions WHERE id=${versionId} AND service_id=${serviceId}`,
+    );
+    for (const requirement of version.requirements) {
+      const docs = await rows(
+        db,
+        sql`SELECT id FROM sport_documents WHERE user_id=${userId} AND service_id=${serviceId} AND name=${requirement} AND status='approved' AND (expires_at IS NULL OR expires_at>now())`,
+      );
+      if (!docs.length)
+        throw new ConflictException(`Required document: ${requirement}`);
+    }
+  }
   async checkout(
     userId: string,
     input: z.infer<typeof checkoutSchema>,
@@ -1160,7 +1180,7 @@ export class CommerceService {
       }
       await this.expire(tx);
       const service = await this.service(tx, input.serviceId, true);
-      await this.coachingSale(tx, userId, service.id);
+      await this.checkParticipant(tx, userId, service.id, service.version_id);
       if (service.kind === 'course')
         await rows(
           tx,
@@ -1173,14 +1193,6 @@ export class CommerceService {
         (input.occurrenceId || input.membershipId)
       )
         throw new BadRequestException('Invalid membership purchase');
-      for (const requirement of service.requirements) {
-        const docs = await rows(
-          tx,
-          sql`SELECT id FROM sport_documents WHERE user_id=${userId} AND service_id=${service.id} AND name=${requirement} AND status='approved' AND (expires_at IS NULL OR expires_at>now())`,
-        );
-        if (!docs.length)
-          throw new ConflictException(`Required document: ${requirement}`);
-      }
       let occurrences: Occurrence[] = [];
       if (input.occurrenceId) {
         const selected = await one<Occurrence>(

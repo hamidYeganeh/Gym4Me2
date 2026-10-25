@@ -22,23 +22,25 @@ if (
 )
   throw new Error("Explicit backup database required.");
 const connection = new URL(database);
+connection.searchParams.set("sslmode", "verify-full");
 const pgEnvironment = {
   PGHOST: connection.hostname,
   PGPORT: connection.port || "5432",
   PGDATABASE: decodeURIComponent(connection.pathname.slice(1)),
   PGUSER: decodeURIComponent(connection.username),
   PGPASSWORD: decodeURIComponent(connection.password),
-  PGSSLMODE: connection.searchParams.get("sslmode") || "verify-full",
+  PGSSLMODE: "verify-full",
+  PGSSLROOTCERT: "system",
   PGCONNECT_TIMEOUT: "10",
 };
 const full = process.argv.includes("--full"),
   directory = await mkdtemp(join(tmpdir(), "gym4me-production-capture-"));
 const pool = new Pool({
-    connectionString: database,
-    max: 1,
-    connectionTimeoutMillis: 10000,
-  }),
-  client = await pool.connect();
+  connectionString: connection.href,
+  max: 1,
+  connectionTimeoutMillis: 10000,
+});
+let client;
 async function run(command, args, env = {}) {
   await new Promise((resolve, reject) => {
     const child = spawn(command, args, {
@@ -77,6 +79,7 @@ async function run(command, args, env = {}) {
   });
 }
 try {
+  client = await pool.connect();
   await client.query("BEGIN ISOLATION LEVEL REPEATABLE READ READ ONLY");
   const marker = await client.query(
     "SELECT id FROM gym4me_demo_installation WHERE id='isolated-demo-v1'",
@@ -91,8 +94,11 @@ try {
     "SELECT pg_export_snapshot() id,transaction_timestamp() at",
   );
   const { rows: ledger } = await client.query(
-    "SELECT id,deleted_at FROM users WHERE deleted_at IS NOT NULL ORDER BY id",
+    "SELECT id,deleted_at FROM users WHERE deleted_at IS NOT NULL AND deleted_at <= $1 ORDER BY id LIMIT 100001",
+    [snapshot.at],
   );
+  if (ledger.length > 100000)
+    throw new Error("Deletion ledger exceeds the replay limit.");
   const { rows: media } = await client.query(
     "SELECT count(*)::int count,coalesce(sum(octet_length(body)),0)::text bytes FROM gym4me_demo_media",
   );
@@ -188,8 +194,10 @@ try {
     }),
   );
 } finally {
-  await client.query("ROLLBACK").catch(() => undefined);
-  client.release();
+  if (client) {
+    await client.query("ROLLBACK").catch(() => undefined);
+    client.release();
+  }
   await pool.end();
   await rm(directory, { recursive: true, force: true });
 }

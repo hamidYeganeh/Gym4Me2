@@ -98,7 +98,7 @@ export function AccountCredits() {
     <main className="mx-auto grid min-h-dvh max-w-3xl gap-5 px-4 pt-7 pb-[calc(8rem+var(--app-safe-bottom,0px))]">
       <header className="flex justify-between gap-4">
         <h1 className="text-2xl font-semibold">{t("credits")}</h1>
-        <Link href="/settings">{t("back")}</Link>
+        <Link href="/profile/settings">{t("back")}</Link>
       </header>
       {q.error ? (
         <QueryError error={q.error} retry={() => void q.refetch()} />
@@ -138,7 +138,22 @@ export function NetworkCreditPanel() {
     money = useMoney(),
     options = useAdvancedOptions("business"),
     [org, setOrg] = useState("");
-  const selected = org || options.data?.organizations[0]?.id || "";
+  const organizations =
+    options.data?.organizations.filter(
+      (o) => o.role === "owner" || (o.role === "accountant" && o.all_branches),
+    ) ?? [];
+  const organization =
+    organizations.find((o) => o.id === org) ?? organizations[0];
+  const selected = organization?.id ?? "";
+  const isOwner = organization?.role === "owner";
+  const memberLabel = (status: string) =>
+    t(
+      status === "accepted"
+        ? "networkActive"
+        : status === "invited"
+          ? "networkInvited"
+          : "networkRemoved",
+    );
   const q = useGrowthQuery<Networks>(
       "business/credit-networks",
       { organizationId: selected },
@@ -150,14 +165,21 @@ export function NetworkCreditPanel() {
       <h1 className="text-2xl font-semibold">{t("networks")}</h1>
       <Field name="organization" label={t("organization")}>
         <NativeSelect value={selected} onChange={(e) => setOrg(e.target.value)}>
-          {options.data?.organizations.map((o) => (
+          {organizations.map((o) => (
             <NativeSelectOption key={o.id} value={o.id}>
               {o.name}
             </NativeSelectOption>
           ))}
         </NativeSelect>
       </Field>
-      {q.error ? (
+      {options.isLoading ? (
+        <Loading />
+      ) : options.error ? (
+        <QueryError
+          error={options.error}
+          retry={() => void options.refetch()}
+        />
+      ) : q.error ? (
         <QueryError error={q.error} retry={() => void q.refetch()} />
       ) : !selected ? (
         <p>{t("noScope")}</p>
@@ -165,27 +187,29 @@ export function NetworkCreditPanel() {
         <Loading />
       ) : (
         <>
-          <section className="grid gap-4 rounded-2xl border p-4">
-            <h2 className="text-xl font-semibold">{t("createNetwork")}</h2>
-            <GrowthForm
-              key={selected}
-              path="business/credit-networks"
-              label={t("save")}
-              build={(f) => ({
-                organizationId: selected,
-                name: value(f, "name"),
-                terms: value(f, "terms"),
-              })}
-            >
-              <Field name="name" label={t("name")} />
-              <Field name="terms" label={t("networkTerms")} />
-            </GrowthForm>
-          </section>
+          {isOwner && (
+            <section className="grid gap-4 rounded-2xl border p-4">
+              <h2 className="text-xl font-semibold">{t("createNetwork")}</h2>
+              <GrowthForm
+                key={selected}
+                path="business/credit-networks"
+                label={t("save")}
+                build={(f) => ({
+                  organizationId: selected,
+                  name: value(f, "name"),
+                  terms: value(f, "terms"),
+                })}
+              >
+                <Field name="name" label={t("name")} />
+                <Field name="terms" label={t("networkTerms")} />
+              </GrowthForm>
+            </section>
+          )}
           {q.data?.networks.map((n) => (
             <article key={n.id} className="grid gap-5 rounded-2xl border p-4">
               <h2 className="text-xl font-semibold">{n.name}</h2>
               <p>{n.terms}</p>
-              {n.status === "invited" ? (
+              {n.status === "invited" && isOwner ? (
                 <GrowthForm
                   path={`business/credit-networks/${n.id}/members`}
                   label={t("acceptNetwork")}
@@ -197,7 +221,7 @@ export function NetworkCreditPanel() {
                   </label>
                 </GrowthForm>
               ) : (
-                <p>{t("networkActive")}</p>
+                <p>{memberLabel(n.status)}</p>
               )}
               {q.data?.balances
                 .filter((b) => b.network_id === n.id)
@@ -209,35 +233,42 @@ export function NetworkCreditPanel() {
                 ))}
               {n.issuer_organization_id === selected && (
                 <>
-                  <GrowthForm
-                    path={`business/credit-networks/${n.id}/members`}
-                    label={t("inviteOrganization")}
-                    build={(f) => ({
-                      organizationId: value(f, "organizationId"),
-                      action: "invite",
-                    })}
-                  >
-                    <Field name="organizationId" label={t("organization")}>
-                      <NativeSelect name="organizationId" required>
-                        <NativeSelectOption value="">
-                          {t("choose")}
-                        </NativeSelectOption>
-                        {catalog.data
-                          ?.filter((o) => o.id !== selected)
-                          .map((o) => (
-                            <NativeSelectOption value={o.id} key={o.id}>
-                              {o.name}
-                            </NativeSelectOption>
-                          ))}
-                      </NativeSelect>
-                    </Field>
-                  </GrowthForm>
+                  {isOwner && (
+                    <GrowthForm
+                      path={`business/credit-networks/${n.id}/members`}
+                      label={t("inviteOrganization")}
+                      build={(f) => ({
+                        organizationId: value(f, "organizationId"),
+                        action: "invite",
+                      })}
+                    >
+                      {catalog.error && (
+                        <QueryError
+                          error={catalog.error}
+                          retry={() => void catalog.refetch()}
+                        />
+                      )}
+                      <Field name="organizationId" label={t("organization")}>
+                        <NativeSelect name="organizationId" required>
+                          <NativeSelectOption value="">
+                            {t("choose")}
+                          </NativeSelectOption>
+                          {catalog.data
+                            ?.filter((o) => o.id !== selected)
+                            .map((o) => (
+                              <NativeSelectOption value={o.id} key={o.id}>
+                                {o.name}
+                              </NativeSelectOption>
+                            ))}
+                        </NativeSelect>
+                      </Field>
+                    </GrowthForm>
+                  )}
                   <GrowthForm
                     path={`business/credit-networks/${n.id}/grants`}
                     label={t("grantCredit")}
                     build={(f) => ({
-                      phone:
-                        "+98" + value(f, "phone").replace(/^(?:\+98|0)/, ""),
+                      phone: value(f, "phone"),
                       amountMinor: (
                         BigInt(value(f, "amount")) * BigInt(10)
                       ).toString(),
@@ -301,9 +332,10 @@ export function NetworkCreditPanel() {
                           className="grid gap-2 border-t py-3"
                         >
                           <p>
-                            {m.name} · {m.status}
+                            {m.name} · {memberLabel(m.status)}
                           </p>
-                          {m.organization_id !== selected &&
+                          {isOwner &&
+                            m.organization_id !== selected &&
                             m.status !== "removed" && (
                               <GrowthForm
                                 path={`business/credit-networks/${n.id}/members`}

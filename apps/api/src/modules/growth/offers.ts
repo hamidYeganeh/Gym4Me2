@@ -20,7 +20,7 @@ export async function offerPrice(
   if (!offer) return { amount, offerId: null };
   const [usage] = await rows<{ count: number }>(
     db,
-    sql`SELECT count(*)::int count FROM sport_orders WHERE snapshot->>'offerId'=${offer.id} AND status NOT IN ('cancelled','refunded')`,
+    sql`SELECT count(*)::int count FROM sport_orders WHERE coalesce(snapshot->>'kind','')<>'split_share' AND snapshot->>'offerId'=${offer.id} AND status NOT IN ('cancelled','refunded')`,
   );
   if (usage.count >= offer.max_uses) return { amount, offerId: null };
   const discounted =

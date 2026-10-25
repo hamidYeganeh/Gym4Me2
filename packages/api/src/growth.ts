@@ -53,6 +53,12 @@ export function useGrowthQuery<T>(
 export function useGrowthCommand<T = unknown>() {
   return useApiMutation<T, { path: string; body: Record<string, unknown> }>(
     (api, v) => api.request({ method: "POST", path: v.path, body: v.body }),
-    [["growth"], ["sports"]],
+    [
+      ["growth"],
+      ["sports"],
+      ["training"],
+      ["advanced-business"],
+      ["analytics"],
+    ],
   );
 }
