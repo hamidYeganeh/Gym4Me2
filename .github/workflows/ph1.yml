@@ -4,6 +4,11 @@ on:
   push:
     branches: [main, master]
   workflow_dispatch:
+    inputs:
+      backupOnly:
+        description: Capture and verify an encrypted cloud backup only
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -14,6 +19,7 @@ concurrency:
 
 jobs:
   verify:
+    if: inputs.backupOnly != true
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -63,6 +69,12 @@ jobs:
         run: |
           docker compose exec -T postgres-test psql -U gym4me -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE gym4me_ph5_test'
           pnpm --filter api test:ph5
+      - name: Verify CRM, offers, network credit, split games, food sources and native push
+        env:
+          COMPLETION_TEST_DATABASE_URL: postgresql://gym4me:gym4me_local@127.0.0.1:55433/gym4me_completion_test
+        run: |
+          docker compose exec -T postgres-test psql -U gym4me -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE gym4me_completion_test'
+          pnpm --filter api test:completion
       - name: Verify notification privacy, scheduling and obsolete work
         env:
           TEST_DATABASE_URL: postgresql://gym4me:gym4me_local@127.0.0.1:55433/gym4me_notification_guard_test
@@ -77,6 +89,7 @@ jobs:
           pnpm --filter application exec next build --webpack
           pnpm --filter business exec next build --webpack
           pnpm --filter admin exec next build --webpack
+          pnpm --filter website build
       - name: Build bundled mobile shell
         env:
           NEXT_PUBLIC_API_URL: https://gym4me-demo-api.vercel.app/api/v1
@@ -105,6 +118,7 @@ jobs:
         run: docker compose --profile test down --volumes
 
   ios-build:
+    if: inputs.backupOnly != true
     runs-on: macos-latest
     timeout-minutes: 35
     env:
@@ -130,3 +144,9 @@ jobs:
           pnpm --filter application exec cap sync ios
       - name: Build iOS simulator without signing
         run: xcodebuild -project apps/application/ios/App/App.xcodeproj -scheme App -configuration Debug -destination 'generic/platform=iOS Simulator' -derivedDataPath .artifacts/ios-ci CODE_SIGNING_ALLOWED=NO build
+
+  cloud-backup-proof:
+    if: github.event_name == 'workflow_dispatch' && inputs.backupOnly == true && github.repository == 'hamidYeganeh/Gym4Me2'
+    uses: ./.github/workflows/cloud-backup.yml
+    secrets:
+      GYM_BACKUP_DATABASE_URL: ${{ secrets.GYM_BACKUP_DATABASE_URL }}

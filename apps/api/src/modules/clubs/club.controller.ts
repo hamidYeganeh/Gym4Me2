@@ -257,6 +257,13 @@ export class AdminTaxonomiesController {
 @DomainController('catalog', 'locations')
 export class PublicLocationsController {
   constructor(private readonly service: ClubService) {}
+  @Get('discovery') @c.DiscoveryLocationQuery() discovery(
+    @Query() query: unknown,
+  ) {
+    return this.service.discoverLocations(
+      c.validate(c.locationDiscoverySchema, query),
+    );
+  }
   @Get(':kind') @c.LocationQuery() list(
     @Param('kind') kind: string,
     @Query('parentId') parentId: unknown,
@@ -265,7 +272,7 @@ export class PublicLocationsController {
     @Query('limit') limit: unknown,
     @Query('id') selectedId: unknown,
   ) {
-    return this.service.geography(
+    return this.service.publicGeography(
       c.validate(c.geographyKindSchema, kind),
       c.validate(c.id.optional(), parentId),
       c.validate(c.pageSchema, page),

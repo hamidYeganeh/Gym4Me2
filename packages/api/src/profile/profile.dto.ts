@@ -4,6 +4,16 @@ import type {
   OrganizationRole,
 } from "../business/business.dto";
 export type { Account };
+export type AccountLocationDto = {
+  userId: string;
+  location: import("../catalog/catalog.dto").DiscoveryLocationDto | null;
+};
+export type UpdateAccountLocationDto = {
+  countryId?: string;
+  provinceId: string;
+  cityId?: string | null;
+  districtId?: string | null;
+};
 export type UpdateAccountDto = {
   displayName?: string | null;
   profilePublic?: boolean;

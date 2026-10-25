@@ -5,6 +5,7 @@ const ts = require("typescript");
 const root = path.resolve(__dirname, "../../..");
 const failures = [];
 const inputs = [
+  "apps/website/src",
   "apps/application/app",
   "apps/application/components",
   "apps/application/lib",

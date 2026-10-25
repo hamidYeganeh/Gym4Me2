@@ -23,6 +23,10 @@ import { Input } from "@repo/ui/kit/Input";
 import { Spinner } from "@repo/ui/kit/Spinner";
 import { Badge } from "@repo/ui/kit/Badge";
 import { Inbox } from "lucide-react";
+import {
+  FitnessIllustration,
+  type FitnessIllustrationKind,
+} from "../kit/FitnessIllustration";
 import { cn } from "../lib/utils";
 
 const roleKeys = {
@@ -107,17 +111,26 @@ export function Blank({
   description,
   icon,
   action,
+  illustration,
 }: {
   title: string;
   description: string;
   icon?: ReactNode;
   action?: ReactNode;
+  illustration?: FitnessIllustrationKind;
 }) {
   return (
     <Empty className="rounded-3xl border bg-card px-6 py-8 md:p-10">
       <EmptyHeader>
-        <EmptyMedia variant="icon" aria-hidden="true">
-          {icon ?? <Inbox />}
+        <EmptyMedia
+          variant={illustration ? "default" : "icon"}
+          aria-hidden="true"
+        >
+          {illustration ? (
+            <FitnessIllustration kind={illustration} />
+          ) : (
+            (icon ?? <Inbox />)
+          )}
         </EmptyMedia>
         <EmptyTitle>{title}</EmptyTitle>
         <EmptyDescription>{description}</EmptyDescription>

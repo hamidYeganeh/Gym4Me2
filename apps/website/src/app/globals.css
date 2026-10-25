@@ -1,0 +1,69 @@
+@import "@repo/theme/globals.css";
+@import "@repo/theme/icons.css";
+@import "@repo/ui/luma-system.css";
+@source "../../../../packages/ui/src";
+
+:root {
+  --landing-accent: var(--brand);
+}
+html,
+body {
+  min-width: 320px;
+}
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+::selection {
+  background: var(--brand);
+  color: var(--spring-green-950);
+}
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 12px;
+  inset-inline-start: 24px;
+  padding: 12px 18px;
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--card-foreground);
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* The application material vocabulary, scaled for the public landing page. */
+:root {
+  --landing-page-width: 1200px;
+  --landing-gutter: clamp(24px, 5vw, 72px);
+  --landing-heading-weight: 650;
+  --landing-control-size: 44px;
+  --landing-surface-radius: 1.45rem;
+}
+#main-content > section {
+  scroll-margin-top: 24px;
+}
+#main-content :is(h1, h2, h3) {
+  text-wrap: pretty;
+}
+@media (max-width: 600px) {
+  #main-content {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  }
+  #main-content > section {
+    scroll-margin-top: 0;
+  }
+}

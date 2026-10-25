@@ -13,7 +13,7 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 import { branches, users } from './core';
-import { clubs } from './catalog';
+import { clubs, provinces, cities, districts } from './catalog';
 export const tariffGroups = pgTable(
   'club_tariff_groups',
   {
@@ -110,6 +110,38 @@ export const accountPreferences = pgTable('account_preferences', {
     .defaultNow()
     .notNull(),
 });
+export const accountLocations = pgTable(
+  'account_locations',
+  {
+    userId: uuid('user_id')
+      .primaryKey()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    provinceId: uuid('province_id')
+      .notNull()
+      .references(() => provinces.id),
+    cityId: uuid('city_id'),
+    districtId: uuid('district_id'),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (t) => [
+    foreignKey({
+      columns: [t.provinceId, t.cityId],
+      foreignColumns: [cities.provinceId, cities.id],
+      name: 'account_location_city_fk',
+    }),
+    foreignKey({
+      columns: [t.cityId, t.districtId],
+      foreignColumns: [districts.cityId, districts.id],
+      name: 'account_location_district_fk',
+    }),
+    check(
+      'account_location_chain',
+      sql`${t.districtId} IS NULL OR ${t.cityId} IS NOT NULL`,
+    ),
+  ],
+);
 export const accountDeletionRequests = pgTable('account_deletion_requests', {
   userId: uuid('user_id')
     .primaryKey()

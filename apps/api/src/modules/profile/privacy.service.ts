@@ -89,7 +89,7 @@ export class PrivacyService {
       .where(eq(s.platformAdmins.userId, userId))
       .limit(1);
     const obligations = await db.execute(
-      sql`SELECT 1 FROM sport_orders WHERE user_id=${userId} AND status IN ('partially_paid','review') UNION ALL SELECT 1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id WHERE r.user_id=${userId} AND r.status IN ('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM sport_occurrences o JOIN sport_service_versions v ON v.id=o.version_id JOIN sport_reservations r ON r.occurrence_id=o.id WHERE v.coach_user_id=${userId} AND r.status IN('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM sport_refunds f JOIN sport_orders o ON o.id=f.order_id WHERE o.user_id=${userId} AND f.state IN ('requested','unknown') LIMIT 1`,
+      sql`SELECT 1 FROM sport_orders WHERE user_id=${userId} AND status IN ('partially_paid','review') UNION ALL SELECT 1 FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id WHERE r.user_id=${userId} AND r.status IN ('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM sport_occurrences o JOIN sport_service_versions v ON v.id=o.version_id JOIN sport_reservations r ON r.occurrence_id=o.id WHERE v.coach_user_id=${userId} AND r.status IN('held','confirmed','pending_approval') AND o.end_at>now() UNION ALL SELECT 1 FROM credit_accounts WHERE user_id=${userId} AND balance_minor>0 UNION ALL SELECT 1 FROM growth_game_shares gs JOIN growth_games gg ON gg.id=gs.game_id WHERE gs.user_id=${userId} AND gg.status='recruiting' UNION ALL SELECT 1 FROM sport_refunds f JOIN sport_orders o ON o.id=f.order_id WHERE o.user_id=${userId} AND f.state IN ('requested','unknown') LIMIT 1`,
     );
     return (
       owners.length > 0 || admins.length > 0 || obligations.rows.length > 0
@@ -400,6 +400,38 @@ export class PrivacyService {
         return {
           formatVersion: 2,
           exportedAt: new Date(),
+          marketing: {
+            nativeDevices: (
+              await tx.execute(
+                sql`SELECT id,session_id,platform,locale,created_at,updated_at FROM native_push_devices WHERE user_id=${userId}`,
+              )
+            ).rows,
+            games: (
+              await tx.execute(
+                sql`SELECT g.id,g.title,g.status,g.deadline,sh.amount_minor::text,sh.order_id FROM growth_game_shares sh JOIN growth_games g ON g.id=sh.game_id WHERE sh.user_id=${userId}`,
+              )
+            ).rows,
+            creditAccounts: (
+              await tx.execute(
+                sql`SELECT a.network_id,a.balance_minor::text,n.name,n.terms FROM credit_accounts a JOIN credit_networks n ON n.id=a.network_id WHERE a.user_id=${userId}`,
+              )
+            ).rows,
+            creditEntries: (
+              await tx.execute(
+                sql`SELECT id,network_id,organization_id,delta_minor::text,kind,order_id,created_at FROM credit_entries WHERE user_id=${userId}`,
+              )
+            ).rows,
+            leads: (
+              await tx.execute(
+                sql`SELECT name,phone,stage,note,follow_up_at,created_at FROM growth_leads WHERE contact_id=${userId} OR phone=(SELECT phone FROM users WHERE id=${userId})`,
+              )
+            ).rows,
+            campaigns: (
+              await tx.execute(
+                sql`SELECT campaign_id,notification_id FROM growth_campaign_deliveries WHERE user_id=${userId}`,
+              )
+            ).rows,
+          },
           coachingPractice: (
             await tx.execute(
               sql`SELECT * FROM coaching_practices WHERE user_id=${userId}`,
@@ -456,6 +488,16 @@ export class PrivacyService {
             )
           ).rows,
           training: {
+            nutrition: (
+              await tx.execute(
+                sql`SELECT id,eaten_on,meal,name,grams,per_100g,calories,protein,carbs,fat,archived,created_at FROM nutrition_entries WHERE athlete_id=${userId}`,
+              )
+            ).rows,
+            recommendations: (
+              await tx.execute(
+                sql`SELECT id,preferences,result,content,accepted_plan_id,created_at,expires_at FROM training_recommendations WHERE athlete_id=${userId}`,
+              )
+            ).rows,
             plans: (
               await tx.execute(
                 sql`SELECT p.id,CASE WHEN p.owner_id=${userId} THEN p.title ELSE (SELECT content->>'title' FROM training_versions WHERE plan_id=p.id ORDER BY version DESC LIMIT 1) END AS title,CASE WHEN p.owner_id=${userId} THEN p.draft ELSE NULL END AS draft,p.is_template,p.created_at FROM training_plans p WHERE (p.athlete_id=${userId} AND EXISTS(SELECT 1 FROM training_assignments a JOIN training_versions v ON v.id=a.version_id WHERE v.plan_id=p.id AND a.athlete_id=${userId})) OR (p.owner_id=${userId} AND p.relationship_id IS NULL)`,
@@ -557,6 +599,13 @@ export class PrivacyService {
           },
           account,
           preferences: preferences[0] ?? null,
+          location:
+            (
+              await tx
+                .select()
+                .from(s.accountLocations)
+                .where(eq(s.accountLocations.userId, userId))
+            )[0] ?? null,
           favorites,
           memberships,
           memberBranches,

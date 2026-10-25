@@ -52,6 +52,20 @@ export const commonNav: WorkspaceNavItem[] = [
 ];
 export const businessNav: WorkspaceNavItem[] = [
   {
+    key: "networks",
+    href: "/networks",
+    title: "Growth.networks",
+    icon: Users,
+    group: "finance",
+  },
+  {
+    key: "crm",
+    href: "/crm",
+    title: "Growth.title",
+    icon: Users,
+    group: "management",
+  },
+  {
     key: "overview",
     href: "/",
     title: "Copy.overview",

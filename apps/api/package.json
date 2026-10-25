@@ -29,13 +29,15 @@
     "test:commerce": "node ../../scripts/check-ui-fixture.mjs && jest --config ./test/jest.commerce.json --runInBand",
     "test:notifications": "node --import tsx --test test/notification-delivery.integration.test.ts",
     "test:clubs": "node ../../scripts/check-ui-fixture.mjs && jest --config ./test/jest.clubs.json --runInBand",
+    "test:locations": "node ../../scripts/check-ui-fixture.mjs && jest --config ./test/jest.locations.json --runInBand",
     "data:retention": "ts-node scripts/retain-data.ts",
     "test:ui": "ts-node test/ui.fixture.ts",
     "media:retention": "ts-node scripts/retain-media.ts",
     "backup:drill": "node --import tsx scripts/backup-drill.ts",
     "data:deletion-ledger": "ts-node scripts/deletion-ledger.ts",
     "test:training": "jest --config test/jest.training.json --runInBand",
-    "test:ph5": "node --import tsx --test test/ph5.integration.test.ts"
+    "test:ph5": "node --import tsx --test test/ph5.integration.test.ts",
+    "test:completion": "ts-node test/completion.integration.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1149.0",
@@ -48,6 +50,7 @@
     "@repo/i18n": "workspace:*",
     "dotenv": "^18.0.7",
     "drizzle-orm": "^0.45.4",
+    "google-auth-library": "^11.3.1",
     "pg": "^8.23.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",

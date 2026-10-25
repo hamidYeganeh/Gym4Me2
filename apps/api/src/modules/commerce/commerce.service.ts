@@ -1,3 +1,5 @@
+import { offerPrice } from '../growth/offers';
+import { lockRefundCredit, refundCredit } from '../growth/credit-ledger';
 import {
   sharedMembershipCondition,
   assertBranchWrite,
@@ -11,7 +13,7 @@ import {
 } from './management-filters';
 import type { Principal } from '../auth/auth.service';
 import { assertSchedulingAdmin } from './scheduling-authority';
-import { coachingVisible, publicServiceVisible } from './public-service';
+import { bookableService, publicServiceVisible } from './public-service';
 import { serviceCoverProjection, type ServiceCover } from './service-cover';
 import {
   resourceClaims,
@@ -22,6 +24,7 @@ import {
 import {
   decodeBookingCursor,
   encodeBookingCursor,
+  bookingDayFilter,
   type BookingPageInput,
 } from './booking-page';
 import {
@@ -147,6 +150,7 @@ type Order = Row & {
   status: string;
   expires_at: Date;
   snapshot: {
+    groupId?: string;
     title: string;
     policy: ServicePolicy;
     eligibility?: ServiceEligibility;
@@ -181,6 +185,13 @@ const entryWindow = (start: Date, end: Date) => {
   return now >= start.getTime() - ENTRY_EARLY_MS && now <= end.getTime();
 };
 const active = sql`('held','pending_approval','confirmed')`;
+function initialPaymentMinor(amount: string, kind: string, deposit: number) {
+  const initial =
+    kind !== 'membership' && kind !== 'split_share' && deposit > 0
+      ? basisPoints(amount, deposit)
+      : amount;
+  return BigInt(initial) > 0n ? initial : amount;
+}
 export function jsonDto(value: unknown): unknown {
   if (value instanceof Date) return value.toISOString();
   if (typeof value === 'bigint') return value.toString();
@@ -273,7 +284,7 @@ export class CommerceService {
       b.name branch_name,o.name club_name FROM sport_services s
       JOIN LATERAL(SELECT * FROM sport_service_versions WHERE service_id=s.id ${published ? sql`AND id=s.published_version_id` : sql``} ORDER BY version DESC LIMIT 1) v ON true
       JOIN branches b ON b.id=s.branch_id JOIN clubs c ON c.id=s.organization_id JOIN organizations o ON o.id=s.organization_id
-      WHERE s.id=${id} ${published ? sql`AND s.status='published' AND c.publication_status='published' AND o.status='approved' AND c.archived_at IS NULL AND ${coachingVisible}` : sql``}`,
+      WHERE s.id=${id} ${published ? sql`AND ${bookableService}` : sql``}`,
     );
   }
   async catalog(search = '', branchId?: string, organizationId?: string) {
@@ -320,7 +331,7 @@ export class CommerceService {
     const occurrences = await rows(
       this.db,
       sql`SELECT o.*,(${resourceAvailable}) resource_available,
-      o.capacity-(SELECT count(*)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status='confirmed' OR r.status IN ('held','pending_approval') AND r.expires_at>now())) remaining
+      o.capacity-(SELECT count(*)::int FROM sport_reservations r WHERE r.occurrence_id=o.id AND (r.status IN ('confirmed','pending_approval') OR r.status='held' AND r.expires_at>now())) remaining
       FROM sport_occurrences o JOIN sport_service_versions ov ON ov.id=o.version_id WHERE o.service_id=${id} AND o.status='scheduled' AND o.end_at>now() ORDER BY o.start_at LIMIT 100`,
     );
     return { ...service, occurrences };
@@ -868,7 +879,7 @@ export class CommerceService {
         const [usage] = await rows<{ reserved: number; locked: boolean }>(
           tx,
           sql`SELECT
-        (SELECT count(*)::int FROM sport_reservations WHERE occurrence_id=${id} AND (status='confirmed' OR status IN ('held','pending_approval') AND expires_at>now())) reserved,
+        (SELECT count(*)::int FROM sport_reservations WHERE occurrence_id=${id} AND (status IN ('confirmed','pending_approval') OR status='held' AND expires_at>now())) reserved,
         (EXISTS(SELECT 1 FROM sport_reservations WHERE occurrence_id=${id}) OR EXISTS(SELECT 1 FROM sport_waitlist WHERE occurrence_id=${id}) OR EXISTS(SELECT 1 FROM sport_conversations WHERE occurrence_id=${id}) OR EXISTS(SELECT 1 FROM sport_invitations WHERE service_id=${service.id})) locked`,
         );
         if (
@@ -1069,6 +1080,11 @@ export class CommerceService {
         BigInt(amount) - BigInt(basisPoints(amount, coupon.basis_points))
       ).toString();
     }
+    const offer =
+      !input.coupon && !input.membershipId
+        ? await offerPrice(this.db, input.occurrenceId, amount)
+        : { amount, offerId: null };
+    amount = offer.amount;
     const fingerprint = hash(
       JSON.stringify({
         serviceId: input.serviceId,
@@ -1082,10 +1098,11 @@ export class CommerceService {
       this.db,
       sql`INSERT INTO sport_quotes(user_id,service_id,version_id,input_hash,amount_minor,expires_at) VALUES(${userId},${service.id},${service.version_id},${fingerprint},${amount},${expiresAt}) RETURNING id`,
     );
-    const due =
-      service.kind !== 'membership' && service.policy.depositBasisPoints > 0
-        ? basisPoints(amount, service.policy.depositBasisPoints)
-        : amount;
+    const due = initialPaymentMinor(
+      amount,
+      service.kind,
+      service.policy.depositBasisPoints,
+    );
     const [coaching] = await rows<{
       coach_id: string;
       mode: string;
@@ -1112,6 +1129,26 @@ export class CommerceService {
       eligibility: service.eligibility,
       cover: service.cover,
     };
+  }
+  async checkParticipant(
+    db: Db | Tx,
+    userId: string,
+    serviceId: string,
+    versionId: string,
+  ) {
+    await this.coachingSale(db, userId, serviceId);
+    const version = await one<{ requirements: string[] }>(
+      db,
+      sql`SELECT requirements FROM sport_service_versions WHERE id=${versionId} AND service_id=${serviceId}`,
+    );
+    for (const requirement of version.requirements) {
+      const docs = await rows(
+        db,
+        sql`SELECT id FROM sport_documents WHERE user_id=${userId} AND service_id=${serviceId} AND name=${requirement} AND status='approved' AND (expires_at IS NULL OR expires_at>now())`,
+      );
+      if (!docs.length)
+        throw new ConflictException(`Required document: ${requirement}`);
+    }
   }
   async checkout(
     userId: string,
@@ -1143,7 +1180,7 @@ export class CommerceService {
       }
       await this.expire(tx);
       const service = await this.service(tx, input.serviceId, true);
-      await this.coachingSale(tx, userId, service.id);
+      await this.checkParticipant(tx, userId, service.id, service.version_id);
       if (service.kind === 'course')
         await rows(
           tx,
@@ -1156,14 +1193,6 @@ export class CommerceService {
         (input.occurrenceId || input.membershipId)
       )
         throw new BadRequestException('Invalid membership purchase');
-      for (const requirement of service.requirements) {
-        const docs = await rows(
-          tx,
-          sql`SELECT id FROM sport_documents WHERE user_id=${userId} AND service_id=${service.id} AND name=${requirement} AND status='approved' AND (expires_at IS NULL OR expires_at>now())`,
-        );
-        if (!docs.length)
-          throw new ConflictException(`Required document: ${requirement}`);
-      }
       let occurrences: Occurrence[] = [];
       if (input.occurrenceId) {
         const selected = await one<Occurrence>(
@@ -1182,6 +1211,8 @@ export class CommerceService {
                   sql`SELECT * FROM sport_occurrences WHERE id=${selected.id} FOR UPDATE`,
                 ),
               ];
+        if (!occurrences.some((o) => o.id === selected.id))
+          throw new ConflictException('Session is unavailable');
         for (const o of occurrences) {
           if (o.status !== 'scheduled' || o.start_at <= new Date())
             throw new ConflictException('Session is unavailable');
@@ -1234,6 +1265,11 @@ export class CommerceService {
           BigInt(amount) - BigInt(basisPoints(amount, coupon.basis_points))
         ).toString();
       }
+      const offer =
+        !input.coupon && !input.membershipId
+          ? await offerPrice(tx, input.occurrenceId, amount, true)
+          : { amount, offerId: null };
+      amount = offer.amount;
       if (input.quoteId) {
         const quote = await one<{
           version_id: string;
@@ -1273,6 +1309,7 @@ export class CommerceService {
         sql`SELECT coach_id,mode,entry_amount_minor::text FROM coaching_services WHERE service_id=${service.id}`,
       );
       const snapshot = {
+        offerId: offer.offerId,
         coaching: coaching ?? null,
         title: service.title,
         policy: service.policy,
@@ -1399,6 +1436,8 @@ export class CommerceService {
           order.expires_at <= (await databaseNow(tx)))
       )
         throw new ConflictException('Order is unavailable');
+      if (order.snapshot.groupId && order.snapshot.kind !== 'split_share')
+        throw new ConflictException('Growth.useSharePayment');
       const previous = await rows<{
         id: string;
         state: string;
@@ -1415,16 +1454,13 @@ export class CommerceService {
       );
       const total = BigInt(order.amount_minor),
         paid = BigInt(received.amount);
-      const initial =
-        order.snapshot.kind !== 'membership' &&
-        order.snapshot.policy.depositBasisPoints > 0
-          ? BigInt(
-              basisPoints(
-                order.amount_minor,
-                order.snapshot.policy.depositBasisPoints,
-              ),
-            )
-          : total;
+      const initial = BigInt(
+        initialPaymentMinor(
+          order.amount_minor,
+          order.snapshot.kind,
+          order.snapshot.policy.depositBasisPoints,
+        ),
+      );
       const due = paid === 0n && initial > 0n ? initial : total - paid;
       if (due <= 0n) throw new ConflictException('Nothing remains to pay');
       const created = await this.payments.create(
@@ -1448,6 +1484,177 @@ export class CommerceService {
         },
       );
       return remember(payment);
+    });
+  }
+  /** Internal funding is committed atomically with its source ledger. */
+  async settleInternalPayment(
+    tx: Tx,
+    userId: string,
+    id: string,
+    provider: 'network_credit' | 'team_split',
+    reference: string,
+  ) {
+    const occurrences = await this.lockOrderOccurrences(tx, id);
+    const order = await one<Order>(
+      tx,
+      sql`SELECT * FROM sport_orders WHERE id=${id} AND user_id=${userId} FOR UPDATE`,
+    );
+    const [prior] = await rows(
+      tx,
+      sql`SELECT id FROM sport_payments WHERE order_id=${id} AND reference=${reference} AND state='verified'`,
+    );
+    if (prior) return this.order(tx, userId, id);
+    const now = await databaseNow(tx);
+    if (
+      order.status !== 'awaiting_payment' ||
+      order.expires_at <= now ||
+      BigInt(order.amount_minor) <= 0n
+    )
+      throw new ConflictException('Growth.orderUnavailable');
+    const existing = await rows(
+      tx,
+      sql`SELECT id FROM sport_payments WHERE order_id=${id} AND state IN ('pending','unknown','verified')`,
+    );
+    if (existing.length) throw new ConflictException('Growth.orderUnavailable');
+    const reservations = await rows<Reservation>(
+      tx,
+      sql`SELECT * FROM sport_reservations WHERE order_id=${id} ORDER BY occurrence_id FOR UPDATE`,
+    );
+    if (
+      reservations.some(
+        (r) =>
+          r.status !== 'held' ||
+          !occurrences.some(
+            (o) =>
+              o.id === r.occurrence_id &&
+              o.status === 'scheduled' &&
+              o.start_at > now,
+          ),
+      )
+    )
+      throw new ConflictException('Growth.orderUnavailable');
+    const [payment] = await rows(
+      tx,
+      sql`INSERT INTO sport_payments(order_id,provider,reference,amount_minor,scenario,state,verified_at) VALUES(${id},${provider},${reference},${order.amount_minor},'success','verified',clock_timestamp()) RETURNING id`,
+    );
+    await this.journal(
+      tx,
+      order,
+      `payment:${String(payment.id)}`,
+      order.amount_minor,
+      provider === 'network_credit' ? 'network-clearing' : 'group-clearing',
+      'service-liability',
+    );
+    await this.fulfil(tx, order);
+    return this.order(tx, userId, id);
+  }
+  async cancelInternalParent(
+    tx: Tx,
+    id: string,
+    reason: string,
+    fullRefund = true,
+  ) {
+    await this.lockOrderOccurrences(tx, id);
+    const order = await one<Order>(
+      tx,
+      sql`SELECT * FROM sport_orders WHERE id=${id} FOR UPDATE`,
+    );
+    if (fullRefund) return this.cancelHostedOrder(tx, id, reason);
+    const [reservation] = await rows<{ id: string }>(
+      tx,
+      sql`SELECT id FROM sport_reservations WHERE order_id=${id} ORDER BY id LIMIT 1`,
+    );
+    if (!reservation) throw new ConflictException('Growth.orderUnavailable');
+    const preview = await this.cancellation(tx, order.user_id, reservation.id);
+    await this.releaseOrder(tx, order);
+    await this.requestRefund(
+      tx,
+      id,
+      String(preview.refundMinor),
+      reason,
+      `group-cancel:${id}`,
+    );
+    await tx.execute(
+      sql`UPDATE sport_orders SET status='cancelled',revision=revision+1 WHERE id=${id} AND status NOT IN ('refunded','partially_refunded')`,
+    );
+  }
+  async refundInternalShare(tx: Tx, id: string, key: string) {
+    const order = await one<Order>(
+      tx,
+      sql`SELECT * FROM sport_orders WHERE id=${id} FOR UPDATE`,
+    );
+    if (order.snapshot.kind !== 'split_share')
+      throw new ConflictException('Growth.orderUnavailable');
+    const [funds] = await rows<{ amount: string }>(
+      tx,
+      sql`SELECT (SELECT coalesce(sum(amount_minor),0) FROM sport_payments WHERE order_id=${id} AND state='verified')-(SELECT coalesce(sum(amount_minor),0) FROM sport_refunds WHERE order_id=${id} AND state<>'failed') amount`,
+    );
+    if (BigInt(funds.amount) > 0n)
+      await this.requestRefund(
+        tx,
+        id,
+        funds.amount,
+        'Group payment cancelled',
+        key,
+      );
+    await tx.execute(
+      sql`UPDATE sport_orders SET status='cancelled',revision=revision+1 WHERE id=${id} AND status NOT IN ('refunded','partially_refunded')`,
+    );
+  }
+  private async distributeGroupRefund(
+    orderId: string,
+    refund: { id: string; amount_minor: string },
+  ) {
+    return this.db.transaction(async (tx) => {
+      const parent = await one<Order>(
+        tx,
+        sql`SELECT * FROM sport_orders WHERE id=${orderId} FOR UPDATE`,
+      );
+      const [current] = await rows<{ state: string }>(
+        tx,
+        sql`SELECT state FROM sport_refunds WHERE id=${refund.id}`,
+      );
+      if (current?.state === 'succeeded') return true;
+      const shares = await rows<{
+        id: string;
+        order_id: string;
+        amount_minor: string;
+      }>(
+        tx,
+        sql`SELECT sh.id,sh.order_id,sh.amount_minor::text FROM growth_game_shares sh JOIN growth_games g ON g.id=sh.game_id WHERE g.order_id=${orderId} ORDER BY sh.slot`,
+      );
+      const total = BigInt(parent.amount_minor),
+        target = BigInt(parent.refunded_minor) + BigInt(refund.amount_minor);
+      if (total <= 0n || target > total)
+        throw new ConflictException('Payments.refundReview');
+      let prefix = 0n,
+        allocated = 0n,
+        ready = true;
+      for (const sh of shares) {
+        prefix += BigInt(sh.amount_minor);
+        const cumulative = (target * prefix) / total,
+          portion = cumulative - allocated;
+        allocated = cumulative;
+        const child = await one<Order>(
+          tx,
+          sql`SELECT * FROM sport_orders WHERE id=${sh.order_id} FOR UPDATE`,
+        );
+        const [reserved] = await rows<{ amount: string }>(
+          tx,
+          sql`SELECT coalesce(sum(amount_minor),0)::text amount FROM sport_refunds WHERE order_id=${sh.order_id} AND state<>'failed'`,
+        );
+        const needed = portion - BigInt(reserved.amount);
+        if (needed > 0n)
+          await this.requestRefund(
+            tx,
+            sh.order_id,
+            needed.toString(),
+            'Group refund allocation',
+            `game-refund:${refund.id}:${sh.id}`,
+          );
+        if (BigInt(child.refunded_minor) < portion) ready = false;
+      }
+      return ready;
     });
   }
   async mockPaymentCallback(reference: string, proof: string) {
@@ -1558,6 +1765,9 @@ export class CommerceService {
     );
     return this.db.transaction(async (tx) => {
       await lockWritableAccount(tx, userId);
+      // Host cancellation and rescheduling lock occurrences before orders.
+      const occurrences =
+        state === 'verified' ? await this.lockOrderOccurrences(tx, id) : [];
       const order = await one<Order>(
         tx,
         sql`SELECT * FROM sport_orders WHERE id=${id} AND user_id=${userId} FOR UPDATE`,
@@ -1575,33 +1785,32 @@ export class CommerceService {
         await this.journal(
           tx,
           order,
-          `payment:${payment.id}`,
+          `payment:${String(payment.id)}`,
           payment.amount_minor,
           'cash',
-          'service-liability',
+          order.snapshot.kind === 'split_share'
+            ? 'group-clearing'
+            : 'service-liability',
         );
         const reservations = await rows<Reservation>(
           tx,
           sql`SELECT * FROM sport_reservations WHERE order_id=${id} ORDER BY occurrence_id FOR UPDATE`,
         );
-        const occurrences: Occurrence[] = [];
-        for (const r of reservations)
-          occurrences.push(
-            await one<Occurrence>(
-              tx,
-              sql`SELECT * FROM sport_occurrences WHERE id=${r.occurrence_id} FOR UPDATE`,
-            ),
-          );
         const now = await databaseNow(tx);
         const unavailable =
           !['awaiting_payment', 'partially_paid'].includes(order.status) ||
           (order.status === 'awaiting_payment' && order.expires_at <= now) ||
-          reservations.some(
-            (r, index) =>
-              occurrences[index].status !== 'scheduled' ||
-              occurrences[index].start_at <= now ||
-              ['cancelled', 'expired'].includes(r.status),
-          );
+          reservations.some((r) => {
+            const occurrence = occurrences.find(
+              (o) => o.id === r.occurrence_id,
+            );
+            return (
+              !occurrence ||
+              occurrence.status !== 'scheduled' ||
+              occurrence.start_at <= now ||
+              ['cancelled', 'expired'].includes(r.status)
+            );
+          });
         if (unavailable) {
           await rows(
             tx,
@@ -1630,6 +1839,14 @@ export class CommerceService {
       }
       return this.order(tx, userId, id);
     });
+  }
+  private lockOrderOccurrences(tx: Tx, orderId: string) {
+    return rows<Occurrence>(
+      tx,
+      sql`SELECT o.* FROM sport_occurrences o
+      WHERE o.id IN(SELECT occurrence_id FROM sport_reservations WHERE order_id=${orderId})
+      ORDER BY o.id FOR UPDATE`,
+    );
   }
   private async fulfil(tx: Tx, order: Order) {
     const [received] = await rows<{ amount: string }>(
@@ -1748,7 +1965,7 @@ export class CommerceService {
   }
   async bookingPage(userId: string, input: BookingPageInput) {
     const cursor = input.cursor
-      ? decodeBookingCursor(input.cursor, userId, input.tab)
+      ? decodeBookingCursor(input.cursor, userId, input.tab, input.day)
       : null;
     const asOf = cursor?.asOf ?? new Date().toISOString();
     const upcoming = sql`q.status IN ('held','pending_approval','confirmed') AND q.end_at>${asOf}::timestamptz`;
@@ -1763,7 +1980,7 @@ export class CommerceService {
     const result = await rows<Row & { id: string; cursor_start: string }>(
       this.db,
       sql`SELECT q.*,to_char(q.start_at AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') cursor_start
-        FROM (${this.bookingSelection(userId)}) q WHERE (${membership}) AND (${after})
+        FROM (${this.bookingSelection(userId)}) q WHERE (${membership}) AND (${after}) AND (${bookingDayFilter(input.day)})
         ORDER BY q.start_at ${direction},q.id ${direction} LIMIT ${input.limit + 1}`,
     );
     const page = result.slice(0, input.limit);
@@ -1781,6 +1998,7 @@ export class CommerceService {
               asOf,
               startAt: last.cursor_start,
               id: last.id,
+              day: input.day,
             })
           : null,
     };
@@ -1998,6 +2216,12 @@ export class CommerceService {
       );
       if (used.count >= target.capacity)
         throw new ConflictException('Session is full');
+      const duplicate = await rows(
+        tx,
+        sql`SELECT id FROM sport_reservations WHERE user_id=${userId} AND occurrence_id=${targetId} AND id<>${id} AND status IN ${active} LIMIT 1`,
+      );
+      if (duplicate.length)
+        throw new ConflictException('Backend.sessionAlreadyReserved');
       await rows(
         tx,
         sql`UPDATE sport_occupancies SET active=false WHERE reservation_id=${id}`,
@@ -2116,14 +2340,21 @@ export class CommerceService {
   }
   async waitlist(userId: string, occurrenceId?: string) {
     if (occurrenceId) {
-      await one(
-        this.db,
-        sql`SELECT o.id FROM sport_occurrences o JOIN sport_services s ON s.id=o.service_id WHERE o.id=${occurrenceId} AND s.status='published' AND s.kind IN ('class','course') AND o.start_at>now()`,
-      );
-      await rows(
-        this.db,
-        sql`INSERT INTO sport_waitlist(user_id,occurrence_id) VALUES(${userId},${occurrenceId}) ON CONFLICT(user_id,occurrence_id) DO UPDATE SET status=CASE WHEN sport_waitlist.status IN ('withdrawn','expired') THEN 'waiting' ELSE sport_waitlist.status END`,
-      );
+      await this.db.transaction(async (tx) => {
+        await lockWritableAccount(tx, userId);
+        const occurrence = await one<{ service_id: string }>(
+          tx,
+          sql`SELECT o.service_id FROM sport_occurrences o JOIN sport_services s ON s.id=o.service_id WHERE o.id=${occurrenceId} AND s.kind IN ('class','course') AND o.status='scheduled' AND o.start_at>now() FOR SHARE OF o`,
+        );
+        await this.service(tx, occurrence.service_id, true);
+        await rows(
+          tx,
+          sql`INSERT INTO sport_waitlist(user_id,occurrence_id) VALUES(${userId},${occurrenceId}) ON CONFLICT(user_id,occurrence_id) DO UPDATE SET
+            status=CASE WHEN sport_waitlist.status IN ('withdrawn','expired') THEN 'waiting' ELSE sport_waitlist.status END,
+            created_at=CASE WHEN sport_waitlist.status IN ('withdrawn','expired') THEN clock_timestamp() ELSE sport_waitlist.created_at END,
+            offer_expires_at=CASE WHEN sport_waitlist.status IN ('withdrawn','expired') THEN NULL ELSE sport_waitlist.offer_expires_at END`,
+        );
+      });
     }
     return rows(
       this.db,
@@ -2211,9 +2442,12 @@ export class CommerceService {
       try {
         await this.db.transaction(async (tx) => {
           await lockWritableAccount(tx, w.user_id);
-          const current = await one<{ status: string }>(
+          const current = await one<{
+            status: string;
+            order_id: string | null;
+          }>(
             tx,
-            sql`SELECT status FROM sport_waitlist WHERE id=${w.id} FOR UPDATE SKIP LOCKED`,
+            sql`SELECT status,order_id FROM sport_waitlist WHERE id=${w.id} FOR UPDATE SKIP LOCKED`,
           );
           if (current.status !== 'waiting') return;
           const earlier = await rows(
@@ -2226,7 +2460,7 @@ export class CommerceService {
             {
               serviceId: w.service_id,
               occurrenceId: w.occurrence_id,
-              idempotencyKey: `waitlist:${w.id}`,
+              idempotencyKey: `waitlist:${w.id}:${current.order_id ?? 'initial'}`,
             },
             'waitlist',
             true,
@@ -2236,7 +2470,12 @@ export class CommerceService {
             tx,
             sql`UPDATE sport_waitlist SET status='offered',order_id=${order.id},offer_expires_at=${order.expires_at} WHERE id=${w.id}`,
           );
-          await this.event(tx, 'waitlist.offered', w.id, `offer:${w.id}`);
+          await this.event(
+            tx,
+            'waitlist.offered',
+            w.id,
+            `offer:${w.id}:${order.id}`,
+          );
         });
       } catch (error) {
         if (!(
@@ -2249,6 +2488,7 @@ export class CommerceService {
   }
   async captureCash(userId: string, id: string, reason: string) {
     return this.db.transaction(async (tx) => {
+      await this.lockOrderOccurrences(tx, id);
       const order = await one<Order>(
         tx,
         sql`SELECT * FROM sport_orders WHERE id=${id} FOR UPDATE`,
@@ -2275,6 +2515,30 @@ export class CommerceService {
         throw new ConflictException(
           'Reconcile the pending gateway attempt first',
         );
+      if (order.status === 'awaiting_payment') {
+        const reservations = await rows<{
+          status: string;
+          occurrence_status: string;
+          start_at: Date;
+          expires_at: Date;
+        }>(
+          tx,
+          sql`SELECT r.status,r.expires_at,o.status occurrence_status,o.start_at
+            FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id
+            WHERE r.order_id=${id} ORDER BY o.id FOR UPDATE OF r,o`,
+        );
+        const now = await databaseNow(tx);
+        if (
+          reservations.some(
+            (r) =>
+              r.status !== 'held' ||
+              r.expires_at <= now ||
+              r.occurrence_status !== 'scheduled' ||
+              r.start_at <= now,
+          )
+        )
+          throw new ConflictException('Session is unavailable');
+      }
       const [received] = await rows<{ amount: string }>(
         tx,
         sql`SELECT coalesce(sum(amount_minor),0)::text amount FROM sport_payments WHERE order_id=${id} AND state='verified'`,
@@ -2289,7 +2553,7 @@ export class CommerceService {
       await this.journal(
         tx,
         order,
-        `payment:${payment.id}`,
+        `payment:${String(payment.id)}`,
         amount,
         'cash',
         'service-liability',
@@ -2308,7 +2572,7 @@ export class CommerceService {
   ) {
     const [held] = await rows<{ count: number }>(
       db,
-      sql`SELECT count(*)::int count FROM sport_reservations WHERE membership_id=${membership.id} AND consumed=false AND (status='confirmed' OR status IN('held','pending_approval') AND expires_at>now())`,
+      sql`SELECT count(*)::int count FROM sport_reservations WHERE membership_id=${membership.id} AND consumed=false AND (status IN ('confirmed','pending_approval') OR status='held' AND expires_at>now())`,
     );
     if (
       membership.granted !== null &&
@@ -2519,15 +2783,15 @@ export class CommerceService {
     return one(
       this.db,
       sql`SELECT
-    (SELECT coalesce(sum(amount_minor),0)::text FROM sport_orders WHERE organization_id=${org} AND snapshot->>'branchId'=${branch} AND status IN ('paid','partially_refunded','refunded','review')) sales_minor,
-    (SELECT coalesce(sum(p.amount_minor),0)::text FROM sport_payments p JOIN sport_orders o ON o.id=p.order_id WHERE o.organization_id=${org} AND o.snapshot->>'branchId'=${branch} AND p.state='verified') collected_minor,
+    (SELECT coalesce(sum(amount_minor),0)::text FROM sport_orders WHERE organization_id=${org} AND snapshot->>'branchId'=${branch} AND coalesce(snapshot->>'kind','')<>'split_share' AND status IN ('paid','partially_refunded','refunded','review')) sales_minor,
+    (SELECT coalesce(sum(p.amount_minor),0)::text FROM sport_payments p JOIN sport_orders o ON o.id=p.order_id WHERE o.organization_id=${org} AND o.snapshot->>'branchId'=${branch} AND p.state='verified' AND p.provider<>'team_split') collected_minor,
     (SELECT count(*)::int FROM sport_attendance a JOIN sport_reservations r ON r.id=a.reservation_id JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN sport_services s ON s.id=o.service_id WHERE s.organization_id=${org} AND s.branch_id=${branch} AND a.status='present') attendance_count`,
     );
   }
   private async closeMissedSessions(tx: Tx) {
     const missed = await rows<Reservation & { policy: ServicePolicy }>(
       tx,
-      sql`SELECT r.*,ord.snapshot->'policy' policy FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN sport_orders ord ON ord.id=r.order_id WHERE r.status='confirmed' AND o.end_at<now() AND ord.status='paid' ORDER BY o.end_at,r.id FOR UPDATE OF r SKIP LOCKED LIMIT 50`,
+      sql`SELECT r.*,ord.snapshot->'policy' policy FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN sport_orders ord ON ord.id=r.order_id WHERE r.status='confirmed' AND o.end_at<now() AND ord.status IN ('paid','partially_paid') ORDER BY o.end_at,r.id FOR UPDATE OF r SKIP LOCKED LIMIT 50`,
     );
     for (const r of missed) {
       if (r.membership_id && r.policy.noShowConsumesSession && !r.consumed)
@@ -2742,19 +3006,32 @@ export class CommerceService {
       )
         throw new ConflictException('Payments.refundReview');
       const source = bankPayments[0];
-      const result = await this.payments.refund(
-        refund.source_key,
-        refund.amount_minor,
-        source
-          ? {
-              provider: source.provider,
-              reference: source.reference,
-              amountMinor: source.amount_minor,
-              bankReference: source.bank_reference,
-            }
-          : undefined,
-      );
+      const creditSource = settled.find((p) => p.provider === 'network_credit');
+      const groupSource = settled.find((p) => p.provider === 'team_split');
+      if (groupSource && !(await this.distributeGroupRefund(orderId, refund)))
+        throw new ConflictException('Growth.refundPending');
+      if (creditSource && settled.length !== 1)
+        throw new ConflictException('Payments.refundReview');
+      const result = groupSource
+        ? { reference: `game-refund:${refund.id}` }
+        : creditSource
+          ? { reference: `credit-refund:${refund.id}` }
+          : await this.payments.refund(
+              refund.source_key,
+              refund.amount_minor,
+              source
+                ? {
+                    provider: source.provider,
+                    reference: source.reference,
+                    amountMinor: source.amount_minor,
+                    bankReference: source.bank_reference,
+                  }
+                : undefined,
+            );
       await this.db.transaction(async (tx) => {
+        const credit = creditSource
+          ? await lockRefundCredit(tx, orderId)
+          : null;
         const order = await one<Order>(
           tx,
           sql`SELECT * FROM sport_orders WHERE id=${orderId} FOR UPDATE`,
@@ -2764,6 +3041,14 @@ export class CommerceService {
           sql`SELECT state FROM sport_refunds WHERE id=${refund.id} FOR UPDATE`,
         );
         if (current.state === 'succeeded') return;
+        if (credit)
+          await refundCredit(
+            tx,
+            credit,
+            orderId,
+            refund.id,
+            refund.amount_minor,
+          );
         await rows(
           tx,
           sql`UPDATE sport_refunds SET state='succeeded',provider_reference=${result.reference} WHERE id=${refund.id}`,
@@ -2778,8 +3063,14 @@ export class CommerceService {
           order,
           `refund:${refund.id}`,
           refund.amount_minor,
-          'service-liability',
-          'cash',
+          order.snapshot.kind === 'split_share'
+            ? 'group-clearing'
+            : 'service-liability',
+          groupSource
+            ? 'group-clearing'
+            : creditSource
+              ? 'network-clearing'
+              : 'cash',
         );
       });
     }

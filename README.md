@@ -1,6 +1,6 @@
 # Gym4Me
 
-A pnpm/Turborepo workspace with three Next.js applications, a NestJS API, and shared Persian-first UI infrastructure.
+A pnpm/Turborepo workspace with four Next.js applications, a NestJS API, and shared Persian-first UI infrastructure.
 
 ## Product documentation
 
@@ -24,11 +24,14 @@ pnpm dev
 | application | http://localhost:7081 |
 | admin       | http://localhost:7082 |
 | business    | http://localhost:7083 |
+| website     | http://localhost:7084 |
 | api         | http://localhost:7088 |
 
-`pnpm dev` starts all four services. To start one, use `pnpm --filter application dev` (or `admin`, `business`, `api`). Production uses `pnpm build` followed by `pnpm start`.
+`pnpm dev` starts all five services. To start one, use `pnpm --filter application dev` (or `admin`, `business`, `website`, `api`). Production uses `pnpm build` followed by `pnpm start`.
 
-The frontends forward `/api/*` to the API while preserving the prefix, defaulting to `http://localhost:7088`. Set `API_URL` to a different API origin at frontend build/dev time. All endpoints follow `/api/v1/{domain}/{feature}` with optional actions or related resources. `/api/v1/system/health` checks liveness; `/api/v1/system/health/ready` verifies PostgreSQL and migrations. Swagger is at `/api/v1/system/docs`. See [API setup](apps/api/README.md) and [route conventions](docs/api-conventions.md).
+`website` is the public landing site. Its three reference-based landing sections use shared Persian/English i18n, the app theme/font, and keyboard/touch navigation. The clubs rail renders two shared `ClubCard`s per view. See [website setup](apps/website/README.md).
+
+The application, admin, and business frontends forward `/api/*` to the API while preserving the prefix, defaulting to `http://localhost:7088`. Set `API_URL` to a different API origin at frontend build/dev time. All endpoints follow `/api/v1/{domain}/{feature}` with optional actions or related resources. `/api/v1/system/health` checks liveness; `/api/v1/system/health/ready` verifies PostgreSQL and migrations. Swagger is at `/api/v1/system/docs`. See [API setup](apps/api/README.md) and [route conventions](docs/api-conventions.md).
 
 ```sh
 pnpm check-types
@@ -65,7 +68,7 @@ Every kit folder contains `Name.tsx`, `Name.styles.ts`, `Name.types.ts`, and `in
 
 The shared `components.json` records the official registry and preset configuration. To update upstream components, use the shadcn CLI's `--dry-run` / `--diff` and merge into the existing folders. The CLI's default flat, kebab-case output needs to be adapted to this repository's PascalCase structure; do not overwrite the split modules blindly.
 
-App global CSS imports `@repo/theme/globals.css`, `@repo/theme/icons.css`, and explicitly scans `packages/ui/src` for Tailwind classes. Theme, locale, direction, tooltip, and toast providers are installed in each root layout. Request-based locale selection intentionally uses ordinary dynamic rendering rather than Cache Components.
+Product app global CSS imports `@repo/theme/globals.css`, `@repo/theme/icons.css`, and explicitly scans `packages/ui/src` for Tailwind classes. Theme, locale, direction, tooltip, and toast providers are installed in the application, admin, and business root layouts. Request-based locale selection intentionally uses ordinary dynamic rendering rather than Cache Components. The public website retains reference-based section layouts while sharing the app’s font, theme tokens, locale, and direction providers.
 
 ## Fonts
 
@@ -90,7 +93,7 @@ The exact spring-green 50–950 colors are exported as CSS variables and Tailwin
 
 `AnimatedThemeToggler` in `@repo/ui/kit/AnimatedThemeToggler` implements the supplied Magic UI circular reveal with the View Transition API and `next-themes` persistence. It also accepts `variant` (circle, square, triangle, diamond, hexagon, rectangle, star), `duration`, and `fromCenter`. Reduced motion and browsers without View Transitions switch immediately.
 
-All web apps use [SSGOI](https://ssgoi.dev/docs) through `@repo/ui/page-transitions`. The home training card and `/training` detail demonstrate the [Airbnb-style zoom](https://ssgoi.dev/showcase/air-bnb) in both directions; other routes use a fade. For additional shared elements, match `data-zoom-exit-key` on the source with `data-zoom-enter-key` on the destination and add the route pair to the shared config. Reduced motion disables these animations.
+The application, admin, and business apps use [SSGOI](https://ssgoi.dev/docs) through `@repo/ui/page-transitions`. The home training card and `/training` detail demonstrate the [Airbnb-style zoom](https://ssgoi.dev/showcase/air-bnb) in both directions; other routes use a fade. For additional shared elements, match `data-zoom-exit-key` on the source with `data-zoom-enter-key` on the destination and add the route pair to the shared config. Reduced motion disables these animations.
 
 ## Android and iOS
 

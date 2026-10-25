@@ -9,6 +9,54 @@ import { z } from 'zod';
 import { normalizeDigits } from '../auth/auth.contracts';
 
 export const id = z.uuid();
+export const locationDiscoverySchema = z
+  .object({
+    countryId: id.optional(),
+    provinceId: id.optional(),
+    cityId: id.optional(),
+    districtId: id.optional(),
+    seed: z
+      .string()
+      .regex(/^[a-zA-Z0-9_-]{1,100}$/)
+      .optional(),
+    randomize: z
+      .enum(['true', 'false'])
+      .default('false')
+      .transform((v) => v === 'true'),
+  })
+  .strict();
+export const accountLocationSchema = z
+  .object({
+    countryId: id.optional(),
+    provinceId: id,
+    cityId: id.nullish(),
+    districtId: id.nullish(),
+  })
+  .strict();
+export const DiscoveryLocationQuery = () =>
+  applyDecorators(
+    ...['countryId', 'provinceId', 'cityId', 'districtId'].map((name) =>
+      ApiQuery({
+        name,
+        required: false,
+        schema: { type: 'string', format: 'uuid' },
+      }),
+    ),
+    ApiQuery({
+      name: 'randomize',
+      required: false,
+      schema: { type: 'boolean', default: false },
+    }),
+    ApiQuery({
+      name: 'seed',
+      required: false,
+      schema: { type: 'string', pattern: '^[a-zA-Z0-9_-]{1,100}$' },
+    }),
+    ApiOkResponse({
+      description:
+        'Three related arrays (provinces, cities, districts), a resolved location, and a browsing seed. Each array has at most 12 records with id, name, ancestor IDs, parentName and distinct public clubCount. The selected place is first; descendants belong to its hierarchy. Reusing the seed keeps guest ordering stable.',
+    }),
+  );
 export const LocationQuery = () =>
   applyDecorators(
     ApiQuery({
@@ -53,6 +101,12 @@ export const LocationQuery = () =>
             countryId: { type: 'string', format: 'uuid' },
             provinceId: { type: 'string', format: 'uuid' },
             cityId: { type: 'string', format: 'uuid' },
+            clubCount: {
+              type: 'integer',
+              minimum: 0,
+              description:
+                'Distinct publicly discoverable clubs in this location.',
+            },
           },
         },
       },

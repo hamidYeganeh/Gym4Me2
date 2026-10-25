@@ -259,7 +259,16 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
     });
   }
   private async erase(tx: Tx, user: typeof s.users.$inferSelect, now: Date) {
+    await tx.execute(
+      sql`DELETE FROM growth_leads WHERE contact_id=${user.id} OR phone=${user.phone}`,
+    );
+    await tx.execute(
+      sql`DELETE FROM growth_campaign_deliveries WHERE user_id=${user.id}`,
+    );
     const userId = user.id;
+    await tx.execute(
+      sql`DELETE FROM native_push_devices WHERE user_id=${userId}`,
+    );
     // Financial identifiers remain opaque; remove communication content and private attachments.
     await tx.execute(
       sql`UPDATE sport_messages SET body='[deleted]',image_key=null,deleted_at=${now} WHERE sender_id=${userId}`,
@@ -315,6 +324,9 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
       );
     await tx.delete(s.favoriteClubs).where(eq(s.favoriteClubs.userId, userId));
     await tx
+      .delete(s.accountLocations)
+      .where(eq(s.accountLocations.userId, userId));
+    await tx
       .delete(s.accountPreferences)
       .where(eq(s.accountPreferences.userId, userId));
     await tx.delete(s.clubReviews).where(eq(s.clubReviews.authorId, userId));
@@ -323,6 +335,12 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
       .set({ reply: null, repliedBy: null, repliedAt: null, updatedAt: now })
       .where(eq(s.clubReviews.repliedBy, userId));
     await this.media.eraseCoaching(tx, userId);
+    await tx.execute(
+      sql`DELETE FROM nutrition_entries WHERE athlete_id=${userId}`,
+    );
+    await tx.execute(
+      sql`DELETE FROM training_recommendations WHERE athlete_id=${userId}`,
+    );
     await tx.execute(
       sql`DELETE FROM training_sessions WHERE athlete_id=${userId}`,
     );

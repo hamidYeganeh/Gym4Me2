@@ -67,3 +67,5 @@ yarn-error.log*
 
 # Private backup credentials and transient captures
 .ops-private/
+
+firebase-debug.log

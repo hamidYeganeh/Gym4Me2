@@ -1,8 +1,8 @@
 {
   "packages/ui/src/kit/ClubCard/ClubCard.types.ts": "3a613d8d66dfa891a661ad5e54afbcad4cd867f0908ff8713e17405c6b9b13cf",
-  "packages/ui/src/kit/ClubCard/ClubCard.styles.ts": "3db4a56250c9f283cf3b1d6e364893b4b77a7b2af79e69f056595f5e2061c4bb",
+  "packages/ui/src/kit/ClubCard/ClubCard.styles.ts": "b19b58b733e89ceb5638a521e1e6e1833820859b8dd0c8fbfeac94f7ee4535c0",
   "packages/ui/src/kit/ClubCard/index.ts": "a7068ac2e15af7b3262a153490889ede68a1c9cc8085f88dad87198f1aea1c37",
-  "packages/ui/src/kit/ClubCard/ClubCard.tsx": "14db97d59ded081b3cbf87d4898cc9787926bf2c87e046581541e5ede5fe61a1",
+  "packages/ui/src/kit/ClubCard/ClubCard.tsx": "4f6abcb3592c7d70625f733f4662a8e659128047cd923f547c4e97bfada53c14",
   "packages/ui/src/kit/CoachCard/CoachCard.tsx": "c1232c4c952537d9ea862d40dbb31d873caaabcce4f1ec7d0e715c0f03afda83",
   "packages/ui/src/kit/CoachCard/CoachCard.styles.ts": "4adf2b853e6b1ada7d7cc698f395727f675c548d578f8dd0a608cf4625432c69",
   "packages/ui/src/kit/CoachCard/README.md": "1e153e0d73b1d7282916d247465b01c8e72cc441dfe0b4db1ba0c12e3a859ce6",

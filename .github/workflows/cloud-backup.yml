@@ -1,0 +1,50 @@
+name: Encrypted cloud backup
+on:
+  schedule:
+    - cron: "13 */6 * * *"
+    - cron: "13,28,43,58 * * * *"
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      GYM_BACKUP_DATABASE_URL:
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: encrypted-cloud-backup
+  cancel-in-progress: false
+jobs:
+  capture:
+    if: github.repository == 'hamidYeganeh/Gym4Me2'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "26.8.0"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "11.25.0"
+      - run: pnpm install --frozen-lockfile --filter api...
+      - run: node --test scripts/encrypted-backup.test.mjs
+      - if: github.event_name == 'workflow_dispatch' || github.event.schedule == '13 */6 * * *'
+        run: docker pull postgres:18
+      - name: Capture encrypted full snapshot
+        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '13 */6 * * *'
+        env:
+          GYM_BACKUP_DATABASE_URL: ${{ secrets.GYM_BACKUP_DATABASE_URL }}
+          GYM_PG_DUMP: docker
+          GYM_BACKUP_CA_FILE: /etc/ssl/certs/ca-certificates.crt
+        run: node scripts/production-backup.mjs --full
+      - name: Capture encrypted deletion ledger
+        if: github.event_name != 'workflow_dispatch' && github.event.schedule != '13 */6 * * *'
+        env:
+          GYM_BACKUP_DATABASE_URL: ${{ secrets.GYM_BACKUP_DATABASE_URL }}
+        run: node scripts/production-backup.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: encrypted-backup-${{ github.run_id }}
+          path: .artifacts/cloud-backup/*.bin
+          if-no-files-found: error
+          retention-days: 30

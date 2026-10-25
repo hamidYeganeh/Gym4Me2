@@ -4068,3 +4068,406 @@ test('only the active coach can aggregate workouts the athlete still shares', as
     await rows(db, sql`DELETE FROM coach_profiles WHERE user_id=${coach.id}`);
   }
 });
+
+test('audit: paid bookings awaiting approval keep their seat after the payment hold expires', async () => {
+  const service = await commerce.createService(
+    owner,
+    serviceSchema.parse({
+      organizationId: org,
+      branchId: branch,
+      title: 'Approval capacity audit',
+      kind: 'class',
+      amountMinor: '0',
+      policy,
+      approvalRequired: true,
+    }),
+  );
+  await commerce.publish(owner, service.id, 1);
+  const slot = await occurrence(service.id);
+  const order = await commerce.checkout(athlete, {
+    serviceId: service.id,
+    occurrenceId: slot.id,
+    idempotencyKey: randomUUID(),
+  });
+  await db.execute(
+    sql`UPDATE sport_reservations SET expires_at=now()-interval '1 minute' WHERE order_id=${order.id}`,
+  );
+  expect((await commerce.detail(service.id)).occurrences[0].remaining).toBe(0);
+  await expect(
+    commerce.checkout(other, {
+      serviceId: service.id,
+      occurrenceId: slot.id,
+      idempotencyKey: randomUUID(),
+    }),
+  ).rejects.toBeInstanceOf(ConflictException);
+});
+
+test('audit: an approval-pending booking protects the final membership session from direct entry', async () => {
+  const plan = await create('membership', '0', [], 1);
+  const purchase = await commerce.checkout(athlete, {
+    serviceId: plan.id,
+    idempotencyKey: randomUUID(),
+  });
+  const membership = (await commerce.memberships(athlete)).find(
+    (m) => m.order_id === purchase.id,
+  )!;
+  const token = await commerce.ticket(athlete, String(membership.id), true);
+  const service = await commerce.createService(
+    owner,
+    serviceSchema.parse({
+      organizationId: org,
+      branchId: branch,
+      title: 'Approval entitlement audit',
+      kind: 'class',
+      amountMinor: '0',
+      policy,
+      approvalRequired: true,
+    }),
+  );
+  await commerce.publish(owner, service.id, 1);
+  const slot = await occurrence(service.id);
+  const order = await commerce.checkout(athlete, {
+    serviceId: service.id,
+    occurrenceId: slot.id,
+    membershipId: String(membership.id),
+    idempotencyKey: randomUUID(),
+  });
+  await db.execute(
+    sql`UPDATE sport_reservations SET expires_at=now()-interval '1 minute' WHERE order_id=${order.id}`,
+  );
+  await expect(
+    commerce.checkIn(owner, token.token, 'Approval balance audit'),
+  ).rejects.toThrow('Backend.membershipExhausted');
+});
+
+test('audit: capacity cannot be reduced below paid bookings awaiting approval', async () => {
+  const service = await commerce.createService(
+    owner,
+    serviceSchema.parse({
+      organizationId: org,
+      branchId: branch,
+      title: 'Approval capacity edit audit',
+      kind: 'class',
+      amountMinor: '0',
+      policy,
+      approvalRequired: true,
+    }),
+  );
+  await commerce.publish(owner, service.id, 1);
+  const slot = await occurrence(service.id, 2);
+  for (const userId of [athlete, other])
+    await commerce.checkout(userId, {
+      serviceId: service.id,
+      occurrenceId: slot.id,
+      idempotencyKey: randomUUID(),
+    });
+  await db.execute(
+    sql`UPDATE sport_reservations SET expires_at=now()-interval '1 minute' WHERE occurrence_id=${slot.id}`,
+  );
+  await expect(
+    commerce.editOccurrence(owner, slot.id, {
+      startAt: slot.start_at.toISOString(),
+      endAt: slot.end_at.toISOString(),
+      capacity: 1,
+      revision: 1,
+      idempotencyKey: randomUUID(),
+      reason: 'Approval capacity audit',
+    }),
+  ).rejects.toBeInstanceOf(ConflictException);
+});
+
+test('audit: a cancelled course session cannot create a purchase without reservations', async () => {
+  const service = await create('course', '10000');
+  const slot = await occurrence(service.id);
+  await testingModule
+    .get(SportsOperationsService)
+    .cancelOccurrence(owner, slot.id, 1, 'Cancelled course audit');
+  await expect(
+    commerce.checkout(athlete, {
+      serviceId: service.id,
+      occurrenceId: slot.id,
+      idempotencyKey: randomUUID(),
+    }),
+  ).rejects.toBeInstanceOf(ConflictException);
+  expect(
+    await rows(
+      db,
+      sql`SELECT id FROM sport_orders WHERE service_id=${service.id}`,
+    ),
+  ).toHaveLength(0);
+});
+
+test('audit: cash collection cannot confirm an unpaid session that has already started', async () => {
+  const service = await create('class', '10000');
+  const slot = await occurrence(service.id);
+  const order = await commerce.checkout(athlete, {
+    serviceId: service.id,
+    occurrenceId: slot.id,
+    idempotencyKey: randomUUID(),
+  });
+  await db.execute(
+    sql`UPDATE sport_occurrences SET start_at=now()-interval '1 minute',end_at=now()+interval '30 minutes' WHERE id=${slot.id}`,
+  );
+  await expect(
+    commerce.captureCash(owner, order.id, 'Started session audit'),
+  ).rejects.toBeInstanceOf(ConflictException);
+  expect((await commerce.myOrder(athlete, order.id)).payments).toHaveLength(0);
+});
+
+test('audit: withdrawing and rejoining the waitlist creates a fresh payable offer', async () => {
+  const service = await create();
+  const slot = await occurrence(service.id);
+  await commerce.waitlist(other, slot.id);
+  await commerce.runJobs();
+  const first = (await commerce.waitlist(other)).find(
+    (w) => w.occurrence_id === slot.id,
+  )!;
+  expect(first.status).toBe('offered');
+  await commerce.withdraw(other, String(first.id));
+  await commerce.waitlist(other, slot.id);
+  await commerce.runJobs();
+  const second = (await commerce.waitlist(other)).find(
+    (w) => w.occurrence_id === slot.id,
+  )!;
+  const accepted = await commerce.acceptOffer(other, String(second.id));
+  expect(accepted.status).toBe('paid');
+  expect(accepted.id).not.toBe(first.order_id);
+  expect(accepted.reservations[0].status).toBe('confirmed');
+});
+
+test('audit: the quoted small deposit matches the amount sent to the gateway', async () => {
+  const service = await commerce.createService(
+    owner,
+    serviceSchema.parse({
+      organizationId: org,
+      branchId: branch,
+      title: 'Small deposit audit',
+      kind: 'class',
+      amountMinor: '1',
+      policy: { ...policy, depositBasisPoints: 1 },
+    }),
+  );
+  await commerce.publish(owner, service.id, 1);
+  const slot = await occurrence(service.id);
+  const input = { serviceId: service.id, occurrenceId: slot.id };
+  const quote = await commerce.quote(athlete, input);
+  const order = await commerce.checkout(athlete, {
+    ...input,
+    quoteId: quote.id,
+    idempotencyKey: randomUUID(),
+  });
+  await commerce.startPayment(athlete, order.id, 'success', randomUUID());
+  const pending = await commerce.myOrder(athlete, order.id);
+  expect(pending.payments[0].amount_minor).toBe(quote.payNowMinor);
+});
+
+test('audit: rescheduling into an existing booking returns a conflict and preserves both bookings', async () => {
+  const service = await create();
+  const first = await occurrence(service.id, 3);
+  const second = await occurrence(service.id, 3, Date.now() + 2 * 86400000);
+  const order = await commerce.checkout(athlete, {
+    serviceId: service.id,
+    occurrenceId: first.id,
+    idempotencyKey: randomUUID(),
+  });
+  await commerce.checkout(athlete, {
+    serviceId: service.id,
+    occurrenceId: second.id,
+    idempotencyKey: randomUUID(),
+  });
+  await expect(
+    commerce.reschedule(
+      athlete,
+      String(order.reservations[0].id),
+      Number(order.reservations[0].revision),
+      second.id,
+    ),
+  ).rejects.toBeInstanceOf(ConflictException);
+  expect(
+    (await commerce.myOrder(athlete, order.id)).reservations[0].occurrence_id,
+  ).toBe(first.id);
+});
+
+test('audit: a deposit-paid missed session closes exactly once', async () => {
+  const service = await commerce.createService(
+    owner,
+    serviceSchema.parse({
+      organizationId: org,
+      branchId: branch,
+      title: 'Deposit no-show audit',
+      kind: 'class',
+      amountMinor: '10000',
+      policy: { ...policy, depositBasisPoints: 2500 },
+    }),
+  );
+  await commerce.publish(owner, service.id, 1);
+  const slot = await occurrence(service.id);
+  const order = await commerce.checkout(athlete, {
+    serviceId: service.id,
+    occurrenceId: slot.id,
+    idempotencyKey: randomUUID(),
+  });
+  await commerce.startPayment(athlete, order.id, 'success', randomUUID());
+  await commerce.verifyPayment(athlete, order.id);
+  await db.execute(
+    sql`UPDATE sport_occurrences SET start_at=now()-interval '2 hours',end_at=now()-interval '1 hour' WHERE id=${slot.id}`,
+  );
+  await commerce.runJobs();
+  await commerce.runJobs();
+  const result = await commerce.myOrder(athlete, order.id);
+  expect(result.status).toBe('partially_paid');
+  expect(result.reservations[0].status).toBe('no_show');
+  expect(
+    await rows(
+      db,
+      sql`SELECT id FROM sport_attendance WHERE reservation_id=${String(result.reservations[0].id)}`,
+    ),
+  ).toHaveLength(1);
+});
+
+test('audit: archived or inactive branches cannot sell memberships through a direct link', async () => {
+  const service = await create('membership', '10000', [], 4);
+  try {
+    await db.execute(
+      sql`UPDATE branch_profiles SET archived_at=now() WHERE branch_id=${branch}`,
+    );
+    await expect(commerce.detail(service.id)).rejects.toThrow();
+    await expect(
+      commerce.checkout(athlete, {
+        serviceId: service.id,
+        idempotencyKey: randomUUID(),
+      }),
+    ).rejects.toThrow();
+    await db.execute(
+      sql`UPDATE branch_profiles SET archived_at=NULL WHERE branch_id=${branch}`,
+    );
+    await db.execute(
+      sql`INSERT INTO business_branch_state(branch_id,active,reason) VALUES(${branch},false,'Inactive branch audit')`,
+    );
+    await expect(
+      commerce.quote(athlete, { serviceId: service.id }),
+    ).rejects.toThrow();
+    await expect(
+      commerce.checkout(athlete, {
+        serviceId: service.id,
+        idempotencyKey: randomUUID(),
+      }),
+    ).rejects.toThrow();
+  } finally {
+    await db.execute(
+      sql`UPDATE branch_profiles SET archived_at=NULL WHERE branch_id=${branch}`,
+    );
+    await db.execute(
+      sql`DELETE FROM business_branch_state WHERE branch_id=${branch}`,
+    );
+  }
+  expect(
+    await rows(
+      db,
+      sql`SELECT id FROM sport_orders WHERE service_id=${service.id}`,
+    ),
+  ).toHaveLength(0);
+});
+
+test('audit: rejoining after an expired waitlist offer receives a fresh hold and notification', async () => {
+  const service = await create();
+  const slot = await occurrence(service.id);
+  await commerce.waitlist(other, slot.id);
+  await commerce.runJobs();
+  const first = (await commerce.waitlist(other)).find(
+    (w) => w.occurrence_id === slot.id,
+  )!;
+  await db.execute(
+    sql`UPDATE sport_orders SET expires_at=now()-interval '1 minute' WHERE id=${String(first.order_id)}`,
+  );
+  await db.execute(
+    sql`UPDATE sport_reservations SET expires_at=now()-interval '1 minute' WHERE order_id=${String(first.order_id)}`,
+  );
+  await db.execute(
+    sql`UPDATE sport_waitlist SET offer_expires_at=now()-interval '1 minute' WHERE id=${String(first.id)}`,
+  );
+  await commerce.runJobs();
+  await commerce.waitlist(other, slot.id);
+  await commerce.runJobs();
+  const second = (await commerce.waitlist(other)).find(
+    (w) => w.occurrence_id === slot.id,
+  )!;
+  const accepted = await commerce.acceptOffer(other, String(second.id));
+  expect(accepted.id).not.toBe(first.order_id);
+  expect(accepted.reservations[0].status).toBe('confirmed');
+  const events = await rows(
+    db,
+    sql`SELECT source_key FROM sport_outbox WHERE kind='waitlist.offered' AND aggregate_id=${String(first.id)}`,
+  );
+  expect(events).toHaveLength(2);
+});
+
+test('audit: payment verification racing host cancellation does not deadlock or confirm cancelled capacity', async () => {
+  const service = await create('class', '10000');
+  const slot = await occurrence(service.id);
+  const order = await commerce.checkout(athlete, {
+    serviceId: service.id,
+    occurrenceId: slot.id,
+    idempotencyKey: randomUUID(),
+  });
+  await commerce.startPayment(athlete, order.id, 'success', randomUUID());
+  let verification: Promise<unknown> | undefined;
+  const cancellation = await db
+    .transaction(async (tx) => {
+      const [holder] = await rows<{ pid: number }>(
+        tx,
+        sql`SELECT pg_backend_pid() pid`,
+      );
+      await rows(
+        tx,
+        sql`SELECT id FROM sport_occurrences WHERE id=${slot.id} FOR UPDATE`,
+      );
+      verification = commerce
+        .verifyPayment(athlete, order.id)
+        .catch((error: unknown) => error);
+      let queued = false;
+      for (let attempt = 0; attempt < 100 && !queued; attempt++) {
+        queued =
+          (
+            await rows(
+              db,
+              sql`SELECT pid FROM pg_stat_activity WHERE ${holder.pid}=ANY(pg_blocking_pids(pid)) AND query LIKE '%sport_occurrences%'`,
+            )
+          ).length > 0;
+        if (!queued) await new Promise((resolve) => setTimeout(resolve, 10));
+      }
+      expect(queued).toBe(true);
+      await rows(
+        tx,
+        sql`UPDATE sport_occurrences SET status='cancelled',revision=revision+1 WHERE id=${slot.id}`,
+      );
+      await commerce.cancelHostedOrder(
+        tx,
+        order.id,
+        'Host cancellation payment race',
+      );
+    })
+    .catch((error: unknown) => error);
+  const result = await verification;
+  expect(cancellation).toBeUndefined();
+  expect(result).not.toBeInstanceOf(Error);
+  const cancelled = await commerce.myOrder(athlete, order.id);
+  expect(cancelled.status).toBe('review');
+  expect(cancelled.reservations[0].status).toBe('cancelled');
+  expect(cancelled.refunds).toHaveLength(1);
+});
+
+test('audit: a cancelled session cannot accept a new waitlist registration', async () => {
+  const service = await create();
+  const slot = await occurrence(service.id);
+  await testingModule
+    .get(SportsOperationsService)
+    .cancelOccurrence(owner, slot.id, 1, 'Cancelled waitlist audit');
+  await expect(commerce.waitlist(other, slot.id)).rejects.toThrow();
+  expect(
+    await rows(
+      db,
+      sql`SELECT id FROM sport_waitlist WHERE occurrence_id=${slot.id}`,
+    ),
+  ).toHaveLength(0);
+});

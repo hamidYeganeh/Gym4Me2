@@ -1,0 +1,30 @@
+Gym4Me location photography
+
+Photographs resized and center-cropped to 800 x 950 pixels, converted to WebP.
+
+tehran.webp — Azadi Tower at night in low angle
+Photographer: Bahador Hayzadeh (بهادر های زاده)
+Source: https://commons.wikimedia.org/wiki/File:Azadi_Tower_at_night_in_low_angle.jpg
+License: CC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0/
+
+shiraz.webp — Nasir al-Mulk Mosque - Shiraz
+Photographer: Faraz ahanin
+Source: https://commons.wikimedia.org/wiki/File:Nasir_al-Mulk_Mosque_-_Shiraz.jpg
+License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+
+isfahan.webp — Si-o-se-Pol
+Photographer: Reza Haji-pour
+Source: https://commons.wikimedia.org/wiki/File:Si-o-se-Pol.jpg
+License: CC BY 3.0 — https://creativecommons.org/licenses/by/3.0/
+
+niavaran.webp — Niavaran Palace Complex (33)
+Photographer: Fooroogh Taherkhani / Mehr News Agency
+Source: https://commons.wikimedia.org/wiki/File:Niavaran_Palace_Complex_(33).jpg
+License: CC BY 4.0 — https://creativecommons.org/licenses/by/4.0/
+
+tajrish.webp — Sadabad Complex entrance
+Photographer: Varkankashan
+Source: https://commons.wikimedia.org/wiki/File:Sadabad_Complex_entrance.jpg
+License: CC0 1.0 — https://creativecommons.org/publicdomain/zero/1.0/
+
+The ShareAlike photographs and their resized versions remain under their stated licenses.

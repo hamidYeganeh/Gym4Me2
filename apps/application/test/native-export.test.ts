@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   clearExpiredNativeExports,
   exportNativeAccount,
+  exportNativePdf,
   type ExportPlatform,
 } from "../lib/native-export";
 const id = "11111111-1111-4111-8111-111111111111";
@@ -101,4 +102,48 @@ test("cleanup only removes expired account exports", async () => {
   });
   await clearExpiredNativeExports(f.adapter);
   assert.deepEqual(f.removed, [`gym4me-exports/account-${id}.json`]);
+});
+
+test("plan PDF sharing preserves binary bytes in the private cache", async () => {
+  const f = fixture(),
+    bytes = Uint8Array.from([37, 80, 68, 70, 45, 49, 46, 51, 0, 255, 128]);
+  await exportNativePdf(bytes, f.adapter);
+  const file = f.writes[0] as {
+    path: string;
+    data: string;
+    directory: string;
+    encoding?: unknown;
+  };
+  assert.equal(file.path, `gym4me-exports/plan-${id}.pdf`);
+  assert.equal(file.directory, "CACHE");
+  assert.equal(file.encoding, undefined);
+  assert.deepEqual(Uint8Array.from(Buffer.from(file.data, "base64")), bytes);
+  assert.equal(f.shared.length, 1);
+});
+test("PDF export rejects unsupported platforms and oversized files before writing", async () => {
+  for (const variant of ["web", "missing-plugin", "oversized"]) {
+    const f = fixture();
+    if (variant === "web") f.adapter.native = () => false;
+    if (variant === "missing-plugin") f.adapter.available = () => false;
+    await assert.rejects(
+      exportNativePdf(
+        new Uint8Array(variant === "oversized" ? 8 * 1024 * 1024 + 1 : 10),
+        f.adapter,
+      ),
+      /Training.pdfUnavailable/,
+    );
+    assert.equal(f.writes.length, 0);
+    assert.equal(f.shared.length, 0);
+  }
+});
+test("cancelled PDF sharing removes its own cache file", async () => {
+  const f = fixture();
+  f.adapter.share.share = async () => {
+    throw new Error("cancelled");
+  };
+  await assert.rejects(
+    exportNativePdf(new Uint8Array([37, 80, 68, 70]), f.adapter),
+    /Training.pdfUnavailable/,
+  );
+  assert.deepEqual(f.removed, [`gym4me-exports/plan-${id}.pdf`]);
 });

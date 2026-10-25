@@ -26,7 +26,11 @@
     "./motion-controls": "./src/motion-controls.tsx",
     "./advanced-business": "./src/advanced-business/panel.tsx",
     "./luma-system.css": "./src/luma-system.css",
-    "./confirm-action": "./src/confirm-action.tsx"
+    "./confirm-action": "./src/confirm-action.tsx",
+    "./growth-crm": "./src/growth/crm.tsx",
+    "./growth-discovery": "./src/growth/discovery.tsx",
+    "./growth-credits": "./src/growth/credits.tsx",
+    "./growth-games": "./src/growth/games.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -63,6 +67,7 @@
     "date-fns": "^4.4.0",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.5.0",
+    "jspdf": "^4.2.1",
     "jsqr": "1.4.0",
     "lucide-react": "^1.55.0",
     "motion": "^14.1.0",

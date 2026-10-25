@@ -26,6 +26,7 @@ export function Field({
   defaultValue,
   min,
   max,
+  step,
 }: {
   label: string;
   name: string;
@@ -35,6 +36,7 @@ export function Field({
   defaultValue?: string;
   min?: string;
   max?: string;
+  step?: string;
 }) {
   return (
     <label className="grid min-w-0 gap-2 text-sm">
@@ -48,6 +50,7 @@ export function Field({
           defaultValue={defaultValue}
           min={min}
           max={max}
+          step={step}
         />
       )}
     </label>

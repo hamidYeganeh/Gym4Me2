@@ -452,6 +452,23 @@ function Builder() {
             />
           </label>
           {!d.relationshipId && (
+            <p className="training-muted">{t("nutritionPersonalHint")}</p>
+          )}
+          <label>
+            {t("nutritionPlan")}
+            <textarea
+              value={d.content.nutrition ?? ""}
+              maxLength={10000}
+              disabled={loadingTemplate}
+              onChange={(e) =>
+                change((v) => {
+                  v.content.nutrition = e.target.value;
+                  return v;
+                })
+              }
+            />
+          </label>
+          {!d.relationshipId && (
             <label className="training-check">
               <input
                 type="checkbox"
@@ -811,6 +828,12 @@ function Builder() {
       {step === 2 && (
         <TrainingCard title={d.content.title}>
           <p>{d.content.note}</p>
+          {d.content.nutrition && (
+            <section>
+              <h3>{t("nutritionPlan")}</h3>
+              <p className="whitespace-pre-wrap">{d.content.nutrition}</p>
+            </section>
+          )}
           {d.content.days.map((v, i) => (
             <div key={i}>
               <h3>{v.name}</h3>

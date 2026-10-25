@@ -31,6 +31,7 @@ export const planContent = z
       )
       .min(1)
       .max(14),
+    nutrition: z.string().trim().max(10000).optional(),
   })
   .strict()
   .refine((v) => {

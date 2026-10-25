@@ -1,3 +1,5 @@
+import { Optional } from '@nestjs/common';
+import { NativePushService } from '../push/native-push.service';
 import {
   CallHandler,
   ExecutionContext,
@@ -14,9 +16,13 @@ import { RequestDueWork } from '../commerce/request-due-work';
 export class WebPushInterceptor implements NestInterceptor {
   private readonly logger = new Logger(WebPushInterceptor.name);
   private readonly due: RequestDueWork;
-  constructor(service: WebPushService) {
+  constructor(
+    service: WebPushService,
+    @Optional() nativePush?: NativePushService,
+  ) {
     this.due = new RequestDueWork(async () => {
       await service.drain();
+      await nativePush?.drain();
     });
   }
   intercept(context: ExecutionContext, next: CallHandler) {

@@ -10,6 +10,20 @@ import type {
 } from "../auth/auth.dto";
 import { readNumberedPages } from "../paged-list";
 export const profileClients = {
+  location: (api: ApiClient, options: RequestOptions = {}) =>
+    api.request<dto.AccountLocationDto>(
+      { method: "GET", path: "profile/account/location" },
+      options,
+    ),
+  updateLocation: (
+    api: ApiClient,
+    input: dto.UpdateAccountLocationDto,
+    options: RequestOptions = {},
+  ) =>
+    api.request<dto.AccountLocationDto>(
+      { method: "PATCH", path: "profile/account/location", body: input },
+      options,
+    ),
   account: (api: ApiClient, options: RequestOptions = {}) =>
     api.request<dto.Account>(profileEndpoints.account(), options),
   updateAccount: (

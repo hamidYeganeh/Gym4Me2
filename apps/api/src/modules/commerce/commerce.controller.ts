@@ -209,6 +209,13 @@ export class SportsAccountController {
   @Get('bookings/page')
   @ApiQuery({ name: 'tab', enum: ['upcoming', 'past'], required: false })
   @ApiQuery({
+    name: 'day',
+    required: false,
+    schema: { type: 'string', format: 'date' },
+    description:
+      'Gregorian ISO day in Asia/Tehran, applied before cursor pagination.',
+  })
+  @ApiQuery({
     name: 'limit',
     type: Number,
     required: false,

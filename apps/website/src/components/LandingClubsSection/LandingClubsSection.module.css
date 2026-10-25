@@ -1,0 +1,327 @@
+.section {
+  --card-width: clamp(200px, 20.5vw, 300px);
+  position: relative;
+  height: 100svh;
+  min-height: 680px;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--image-surface);
+  color: var(--image-foreground);
+  outline-offset: -4px;
+  touch-action: pan-y;
+  user-select: none;
+  cursor: grab;
+}
+.section:active {
+  cursor: grabbing;
+}
+.background,
+.tile,
+.scrim {
+  position: absolute;
+  inset: 0;
+}
+.background {
+  z-index: 0;
+  overflow: hidden;
+}
+.background img,
+.tile img {
+  object-fit: cover;
+  transform: scale(1.04);
+}
+.tile {
+  z-index: 5;
+  overflow: hidden;
+  will-change: left, top, width, height;
+}
+.scrim {
+  z-index: 8;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      #101512e8 0%,
+      #101512ab 33%,
+      #10151242 67%,
+      #10151233
+    ),
+    linear-gradient(0deg, #10151294, transparent 30%);
+}
+.copy {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  inset-inline-start: var(--landing-gutter);
+  width: min(420px, 36vw);
+  transform: translateY(-50%);
+}
+.sectionIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ffffff14;
+  color: #ffffffe0;
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+.region {
+  margin-bottom: 8px;
+  color: #ffffffa6;
+  font-size: 14px;
+  font-weight: 450;
+  line-height: 1.7;
+}
+.title {
+  margin: 0;
+  color: var(--image-foreground);
+  font-family: var(--font-sans);
+  font-size: clamp(32px, 3.5vw, 48px);
+  font-weight: var(--landing-heading-weight);
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.title span {
+  display: block;
+}
+.description {
+  max-width: 390px;
+  margin: 20px 0 0;
+  color: #ffffffb3;
+  font-size: 14px;
+  line-height: 1.85;
+}
+.discover {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: var(--landing-control-size);
+  margin-top: 28px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--image-foreground);
+  color: var(--image-surface);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.6;
+  transition: opacity var(--motion-quick);
+}
+.discover:hover {
+  opacity: 0.9;
+}
+.discoverIcon {
+  order: 2;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+.coordinates {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 20px 0 0;
+  color: #ffffff8c;
+  font-size: 12px;
+  line-height: 1.75;
+}
+.coordinates > :first-child {
+  font-size: 16px;
+}
+.controls {
+  position: absolute;
+  z-index: 10;
+  bottom: 32px;
+  inset-inline: var(--landing-gutter);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.arrows {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid #ffffff12;
+  border-radius: 50%;
+  background: #ffffff12;
+  color: #ffffffe6;
+  font-size: 19px;
+  transition: background var(--motion-quick);
+}
+.arrow:hover {
+  background: #ffffff26;
+}
+.progress {
+  position: relative;
+  height: 2px;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #ffffff26;
+}
+.progress span {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  border-radius: inherit;
+  background: #ffffffbf;
+  transition: width 500ms var(--motion-ease);
+}
+.counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  flex-shrink: 0;
+  padding: 10px 16px;
+  border: 1px solid #ffffff12;
+  border-radius: 999px;
+  background: #ffffff12;
+  color: #ffffffe6;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.digits {
+  font-weight: 600;
+}
+.total {
+  color: #ffffff80;
+}
+.playbackIcon {
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  margin-inline-end: 3px;
+}
+.rail {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  inset-inline-end: var(--landing-gutter);
+  width: calc(var(--visible-cards) * (var(--card-width) + 16px) - 16px);
+  height: calc(var(--card-width) + 210px);
+  transform: translateY(-50%);
+}
+.card {
+  position: absolute;
+  top: 0;
+  inset-inline-start: 0;
+  width: var(--card-width);
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--landing-surface-radius);
+  background: var(--card);
+  color: var(--card-foreground);
+  text-align: start;
+  box-shadow: 0 8px 24px #0001;
+  transform: translateX(
+    calc(var(--slot) * (var(--card-width) + 16px) * var(--rail-direction, 1))
+  );
+  transition:
+    transform 600ms var(--motion-ease),
+    opacity 300ms;
+}
+.card[aria-hidden="true"] {
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+.card :global([data-slot="club-card"]) {
+  font-weight: 450;
+}
+.section:dir(rtl) {
+  --rail-direction: -1;
+}
+.section:dir(rtl) .scrim {
+  transform: scaleX(-1);
+}
+.section:dir(rtl) :is(.arrow, .discoverIcon) {
+  transform: scaleX(-1);
+}
+@supports (backdrop-filter: blur(16px)) {
+  .arrow,
+  .counter,
+  .sectionIcon {
+    backdrop-filter: blur(16px);
+  }
+}
+@media (max-width: 900px) {
+  .section {
+    --copy-offset: 0%;
+    min-height: 1100px;
+    height: auto;
+  }
+  .copy {
+    top: 120px;
+    width: calc(100% - 48px);
+    transform: none;
+  }
+  .sectionIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 21px;
+    margin-bottom: 18px;
+  }
+  .title {
+    font-size: clamp(30px, 5vw, 38px);
+  }
+  .description {
+    margin-top: 14px;
+    max-width: 520px;
+  }
+  .discover {
+    margin-top: 20px;
+  }
+  .coordinates {
+    margin-top: 16px;
+  }
+  .rail {
+    top: auto;
+    bottom: 140px;
+    inset-inline-end: 24px;
+    height: calc(var(--card-width) + 210px);
+    transform: none;
+  }
+  .card {
+    padding: 8px;
+    border-radius: 1.3rem;
+  }
+  .controls {
+    bottom: 100px;
+    gap: 16px;
+  }
+}
+@media (min-width: 600px) and (max-width: 900px) {
+  .section {
+    min-height: 1220px;
+  }
+  .controls {
+    bottom: 32px;
+  }
+}
+@media (pointer: coarse) {
+  .arrow,
+  .counter,
+  .sectionIcon {
+    backdrop-filter: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .section *,
+  .section *::before {
+    animation: none;
+    transition: none;
+  }
+}

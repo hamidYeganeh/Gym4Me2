@@ -35,6 +35,9 @@ import {
   useTrainingEvent,
 } from "./common";
 import { TrainingProgressPanel } from "./progress";
+import { TrainingAdaptive } from "./adaptive";
+import { TrainingNutrition } from "./nutrition";
+import { PrintTrainingPlan } from "./print-plan";
 import { useListState } from "../hooks/use-list-state";
 import { SlidingSegments } from "../motion-controls";
 export function TrainingHome() {
@@ -93,7 +96,8 @@ function HomeContent() {
   const [tab, setTab] = useListState(
     "tab",
     "today",
-    (v): v is string => v === "today" || v === "plans" || v === "progress",
+    (v): v is string =>
+      v === "today" || v === "plans" || v === "progress" || v === "nutrition",
   );
   const [cached, setCached] = useState<TrainingWorkspace | null>(null);
   const [drafts, setDrafts] = useState<
@@ -163,10 +167,12 @@ function HomeContent() {
       <SlidingSegments
         className="training-tabs"
         label={t("title")}
-        options={(["today", "plans", "progress"] as const).map((value) => ({
-          value,
-          label: t(value),
-        }))}
+        options={(["today", "plans", "progress", "nutrition"] as const).map(
+          (value) => ({
+            value,
+            label: t(value),
+          }),
+        )}
         value={tab}
         onChange={setTab}
       />
@@ -230,6 +236,11 @@ function HomeContent() {
                 {t("pendingSyncTitle")} · {item.workout.snapshot.title}
               </TrainingLink>
             ))}
+          <TrainingAdaptive
+            key={owner}
+            library={library.data ?? []}
+            online={online}
+          />
           {!!d.relationships.length && (
             <TrainingCard title={t("collaboration")}>
               {d.relationships.map((r) => (
@@ -251,6 +262,11 @@ function HomeContent() {
               className="training-plan-card"
             >
               <PlanPreview content={a.content} library={library.data ?? []} />
+              <PrintTrainingPlan
+                content={a.content}
+                version={a.version}
+                library={library.data ?? []}
+              />
               <p className="training-muted">
                 {t("version")} {fmt.number(a.version)} ·{" "}
                 {a.relationshipId ? t("coachPlan") : t("personalPlan")}
@@ -360,6 +376,9 @@ function HomeContent() {
         </>
       )}
       {tab === "progress" && <TrainingProgressPanel />}
+      {tab === "nutrition" && (
+        <TrainingNutrition key={owner} plans={d.assignments} />
+      )}
     </>
   );
 }

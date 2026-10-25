@@ -24,6 +24,7 @@ import {
   PracticeFeedback,
   text,
 } from "./practice-forms";
+import { CoachProfileLink } from "./coach-profile-link";
 export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
   const t = useTranslations("Practice"),
     params = useSearchParams(),
@@ -206,6 +207,7 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
               {p.city} · {p.specialties.join("، ")}
             </p>
             <p>{p.biography}</p>
+            <CoachProfileLink userId={p.userId} />
             <p>{t("credentialChecked")}</p>
             <p className="text-sm text-muted-foreground">
               {t("requestConsent")}

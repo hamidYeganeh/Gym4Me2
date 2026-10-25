@@ -1,14 +1,6 @@
 "use client";
 import { useDeferredValue, useSyncExternalStore } from "react";
-import {
-  Map,
-  Search,
-  X,
-  Building2,
-  Bookmark,
-  CircleUserRound,
-  Bell,
-} from "lucide-react";
+import { Map, Search, X, Bookmark, CircleUserRound, Bell } from "lucide-react";
 import {
   InputGroup,
   InputGroupInput,
@@ -35,6 +27,12 @@ import { CatalogFilters, type PriceFilters } from "./catalog-filters";
 import { useSavedClub } from "./use-saved-club";
 import { useListState } from "@repo/ui/hooks/use-list-state";
 import { catalogLocationFilters } from "../../lib/catalog-location";
+import {
+  useAccountLocation,
+  useUpdateAccountLocation,
+} from "@repo/api/profile";
+import { LocationExplorer } from "@repo/ui/kit/LocationExplorer";
+import { preferredDiscoveryLocation } from "@repo/ui/lib/discovery-location";
 import "./discovery.css";
 
 function SavedClubCard({
@@ -71,6 +69,9 @@ function SavedClubCard({
   );
 }
 export function Discovery() {
+  const accountArea = useAccountLocation();
+  const saveArea = useUpdateAccountLocation();
+  const locationsCopy = useTranslations("LocationDiscovery");
   const categories = useTaxonomies("club-categories");
   const t = useTranslations("Discovery");
   const luma = useTranslations("Luma");
@@ -123,25 +124,42 @@ export function Discovery() {
   );
   const validPrices = validCatalogPrices(filters);
   const activeCategory = category ?? queryCategory;
+  const guest =
+    accountArea.error?.status === 401 || accountArea.error?.status === 403;
+  const currentPlace = preferredDiscoveryLocation(
+    place,
+    guest ? null : accountArea.data?.location,
+  );
+  function changeLocation(next: LocationValue) {
+    setPlace(next);
+    setPage(1);
+    if (accountArea.data && !accountArea.error && next.provinceId)
+      saveArea.mutate({
+        countryId: next.countryId || undefined,
+        provinceId: next.provinceId,
+        cityId: next.cityId || null,
+        districtId: next.districtId || null,
+      });
+  }
   const deferredSearch = useDeferredValue(search);
   const query = useCatalogClubs({
     ...filters,
     search: deferredSearch,
     categoryId: activeCategory || undefined,
-    ...catalogLocationFilters(place),
+    ...catalogLocationFilters(currentPlace),
     page,
   });
   const allClubs = validPrices ? query.clubs : [];
   const clubs = allClubs;
   const filterCount = [
     activeCategory,
-    ...Object.values(place),
+    ...Object.values(currentPlace),
     ...Object.values(filters),
   ].filter(Boolean).length;
   const hasFilters = Boolean(search || filterCount);
   function resetFilters() {
     setCategory("");
-    setPlace({});
+    setPlace({ countryId: "" });
     setSearch("");
     setFilters({});
     setPage(1);
@@ -156,7 +174,7 @@ export function Discovery() {
           sheetTitle={copy("categories")}
           onChange={(event) => {
             setCategory(event.target.value);
-            setPlace({});
+            setPlace({ countryId: "" });
             setPage(1);
           }}
         >
@@ -174,11 +192,9 @@ export function Discovery() {
       </label>
       <div className="discovery-filter-fields">
         <LocationPicker
-          value={place}
-          onChange={(place) => {
-            setPlace(place);
-            setPage(1);
-          }}
+          value={currentPlace}
+          onChange={changeLocation}
+          disabled={saveArea.isPending}
         />
         <CatalogFilters
           value={filters}
@@ -241,6 +257,46 @@ export function Discovery() {
         </InputGroup>
       </section>
 
+      <section
+        className="grid min-w-0 gap-4"
+        aria-label={locationsCopy("title")}
+      >
+        <h2 className="text-lg font-semibold">{locationsCopy("title")}</h2>
+        {accountArea.isError && !guest ? (
+          <p role="alert" className="text-sm text-muted-foreground">
+            {locationsCopy("profileError")}{" "}
+            <button
+              type="button"
+              className="min-h-11 underline"
+              onClick={() => void accountArea.refetch()}
+            >
+              {locationsCopy("retry")}
+            </button>
+          </p>
+        ) : (
+          <LocationExplorer
+            key={guest ? "guest" : (accountArea.data?.userId ?? "pending")}
+            value={currentPlace}
+            randomize={guest}
+            ready={!accountArea.isPending}
+            saving={saveArea.isPending}
+            onChange={changeLocation}
+          />
+        )}
+        {saveArea.isError && (
+          <p role="alert" className="text-sm text-destructive">
+            {locationsCopy("saveError")}{" "}
+            <button
+              type="button"
+              className="min-h-11 underline"
+              onClick={() => changeLocation(currentPlace)}
+            >
+              {locationsCopy("retry")}
+            </button>
+          </p>
+        )}
+      </section>
+
       {!hasFilters && clubs.length > 1 && (
         <section className="discovery-featured" aria-label={luma("picked")}>
           <h2>{luma("picked")}</h2>
@@ -286,7 +342,7 @@ export function Discovery() {
               description={t(
                 hasFilters ? "noResultsDescription" : "emptyDescription",
               )}
-              icon={<Building2 />}
+              illustration="treadmill"
               action={
                 hasFilters ? (
                   <Button variant="outline" onClick={resetFilters}>

@@ -131,7 +131,9 @@ function SignedInHome() {
                   meta={c.description}
                 />
               ))}
-              {!calendars.data?.items.length && <Empty compact />}
+              {!calendars.data?.items.length && (
+                <Empty compact illustration="watch" />
+              )}
             </QueryState>
           </Section>
         )}
@@ -152,7 +154,9 @@ function SignedInHome() {
               </span>
             </Row>
           ))}
-          {!services.data?.length && <Empty compact />}
+          {!services.data?.length && (
+            <Empty compact illustration="kettlebell" />
+          )}
         </QueryState>
       </Section>
     </LumaPage>

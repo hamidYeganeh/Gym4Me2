@@ -140,6 +140,9 @@ export function NativeSelect({
   sheetTitle,
   optionsSource,
   pageSize = 25,
+  optionsClassName,
+  optionsFooter,
+  renderOption,
   ref,
   ...props
 }: NativeSelectProps) {
@@ -514,10 +517,29 @@ export function NativeSelect({
           aria-label={title}
           aria-multiselectable={props.multiple || undefined}
           aria-busy={optionQuery.isFetching || pendingSearch}
-          className="flex flex-col gap-1"
+          className={cn("flex flex-col gap-1", optionsClassName)}
         >
           {filtered.map((choice) => {
             const checked = selected.some((c) => c.value === choice.value);
+            if (renderOption)
+              return (
+                <Fragment key={`${choice.group ?? ""}-${choice.value}`}>
+                  {renderOption(choice, {
+                    selected: checked,
+                    active: current === choice,
+                    select: () => choose(choice),
+                    buttonProps: {
+                      id: `${uid}-option-${encodeURIComponent(choice.value)}`,
+                      "aria-posinset": filtered.indexOf(choice) + 1,
+                      role: "option",
+                      tabIndex: -1,
+                      "aria-selected": checked,
+                      "aria-disabled": choice.disabled,
+                      disabled: choice.disabled,
+                    },
+                  })}
+                </Fragment>
+              );
             return (
               <button
                 key={`${choice.group ?? ""}-${choice.value}`}
@@ -613,6 +635,7 @@ export function NativeSelect({
               {t("noResults")}
             </p>
           )}
+        {optionsFooter}
       </BottomSheet>
     </div>
   );

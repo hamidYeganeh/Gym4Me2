@@ -27,6 +27,7 @@ import {
   EmptyMedia,
 } from "@repo/ui/kit/Empty";
 import { Skeleton } from "@repo/ui/kit/Skeleton";
+import { FitnessIllustration } from "@repo/ui/kit/FitnessIllustration";
 import { Tabs, TabsList, TabsTrigger } from "@repo/ui/kit/Tabs";
 import { useCatalogClubs } from "./use-catalog";
 import { useSetSavedClub, useSavedClubIds } from "./use-saved-club";
@@ -130,8 +131,8 @@ function SavedEmpty() {
   return (
     <Empty className="min-h-80">
       <EmptyHeader>
-        <EmptyMedia variant="icon">
-          <Bookmark />
+        <EmptyMedia>
+          <FitnessIllustration kind="kettlebell" />
         </EmptyMedia>
         <EmptyTitle>{t("emptyTitle")}</EmptyTitle>
         <EmptyDescription>{t("emptyHint")}</EmptyDescription>

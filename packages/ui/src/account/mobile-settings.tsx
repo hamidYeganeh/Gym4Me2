@@ -18,6 +18,7 @@ import {
   Languages,
   Bell,
   LifeBuoy,
+  Wallet,
 } from "lucide-react";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { Separator } from "../kit/Separator";
@@ -132,6 +133,10 @@ export function MobileSettings({
         <Separator />
         <SettingsRow href="/sessions" icon={<Monitor className="size-5" />}>
           {t("Copy.activeSessions")}
+        </SettingsRow>
+        <Separator />
+        <SettingsRow href="/credits" icon={<Wallet className="size-5" />}>
+          {t("Growth.credits")}
         </SettingsRow>
         <Separator />
         <SettingsRow href="/invitations" icon={<Mail className="size-5" />}>

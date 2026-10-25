@@ -27,6 +27,10 @@ import { AuthRequired } from "@repo/ui/account";
 import { useAccount } from "@repo/api/profile";
 import "./luma.css";
 import { SlidingSegments } from "@repo/ui/motion-controls";
+import {
+  FitnessIllustration,
+  type FitnessIllustrationKind,
+} from "@repo/ui/kit/FitnessIllustration";
 export function useLuma() {
   return useTranslations("Luma");
 }
@@ -341,15 +345,21 @@ export function Empty({
   children,
   compact = false,
   icon,
+  illustration,
 }: {
   children?: ReactNode;
   compact?: boolean;
   icon?: ReactNode;
+  illustration?: FitnessIllustrationKind;
 }) {
   const t = useLuma();
   return (
     <div className={compact ? "luma-empty luma-empty--compact" : "luma-empty"}>
-      <span aria-hidden="true">{icon ?? <CalendarDays />}</span>
+      {illustration ? (
+        <FitnessIllustration kind={illustration} size={compact ? "sm" : "lg"} />
+      ) : (
+        <span aria-hidden="true">{icon ?? <CalendarDays />}</span>
+      )}
       <p>{children ?? t("empty")}</p>
     </div>
   );

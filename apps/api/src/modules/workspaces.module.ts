@@ -1,3 +1,24 @@
+import { NativePushController } from './push/native-push.controller';
+import { NativePushService } from './push/native-push.service';
+import { NativePushSender } from './push/native-push.sender';
+import { CrmService } from './growth/crm.service';
+import { GamesService } from './growth/games.service';
+import { GamesInterceptor } from './growth/games.interceptor';
+import {
+  PublicGamesController,
+  AccountGamesController,
+} from './growth/growth.controller';
+import { NetworkCreditService } from './growth/credit.service';
+import {
+  AccountCreditController,
+  BusinessCreditController,
+} from './growth/growth.controller';
+import {
+  CrmController,
+  GrowthRecommendationsController,
+  GrowthOffersController,
+} from './growth/growth.controller';
+import { GrowthDiscoveryService } from './growth/discovery.service';
 import { AdvancedBusinessService } from './advanced-business/ph5.service';
 import {
   AdvancedBusinessController,
@@ -24,6 +45,11 @@ import {
   CollaborationController,
 } from './training/training.controller';
 import { TrainingService } from './training/training.service';
+import { AdaptiveTrainingService } from './training/adaptive.service';
+import { NutritionService } from './training/nutrition.service';
+import { NutritionController } from './training/nutrition.controller';
+import { ExerciseVideoService } from './training/exercise-video.service';
+import { ExerciseVideoController } from './training/exercise-video.controller';
 import { CollaborationService } from './training/collaboration.service';
 import { CoachingPracticeService } from './coaching/practice.service';
 import { CoachingRecordsService } from './coaching/records.service';
@@ -134,6 +160,16 @@ import {
 @Module({
   imports: [DatabaseModule, AuthModule, StorageModule],
   controllers: [
+    NativePushController,
+    CrmController,
+    PublicGamesController,
+    AccountGamesController,
+    AccountCreditController,
+    BusinessCreditController,
+    GrowthRecommendationsController,
+    GrowthOffersController,
+    ExerciseVideoController,
+    NutritionController,
     AdvancedBusinessController,
     CoachSettlementsController,
     AdminAdvancedController,
@@ -192,17 +228,27 @@ import {
     AdminUsersController,
   ],
   providers: [
+    NativePushService,
+    NativePushSender,
+    CrmService,
+    GamesService,
+    NetworkCreditService,
+    GrowthDiscoveryService,
+    ExerciseVideoService,
+    NutritionService,
     AdvancedBusinessService,
     WebPushService,
     WebPushSender,
     { provide: APP_INTERCEPTOR, useClass: WebPushInterceptor },
     AnalyticsService,
     TrainingService,
+    AdaptiveTrainingService,
     CollaborationService,
     CoachingService,
     CoachingPracticeService,
     CoachingRecordsService,
     { provide: APP_INTERCEPTOR, useClass: DemoJobsInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: GamesInterceptor },
     CommerceService,
     SamanMockPaymentAdapter,
     SamanSandboxPaymentAdapter,

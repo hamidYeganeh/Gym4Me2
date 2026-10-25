@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { z } from 'zod';
+import { resolveLocale } from '@repo/i18n/backend';
 import { DomainController } from '../../platform/http/domain-controller.decorator';
 import { ClientHeader, parse } from '../auth/auth.contracts';
 import { AuthGuard, ClientGuard, type AuthRequest } from '../auth/auth.guard';
@@ -22,13 +23,45 @@ import { jsonDto } from '../commerce/commerce.service';
 import { TrainingService } from './training.service';
 import { CollaborationService } from './collaboration.service';
 import * as c from './training.contracts';
+import * as adaptive from './adaptive.contracts';
+import { AdaptiveTrainingService } from './adaptive.service';
 const uuid = (v: string) => parse(z.uuid(), v);
 const dto = async (p: Promise<unknown>) => jsonDto(await p);
 @DomainController('profile', 'training')
 @ClientHeader()
 @UseGuards(ClientGuard, AuthGuard, ConsentGuard)
 export class TrainingController {
-  constructor(private readonly training: TrainingService) {}
+  constructor(
+    private readonly training: TrainingService,
+    private readonly adaptive: AdaptiveTrainingService,
+  ) {}
+  @Post('recommendations') @SchemaBody(adaptive.generate) recommend(
+    @Req() req: AuthRequest,
+    @Body() body: unknown,
+  ) {
+    return dto(
+      this.adaptive.generate(
+        coachingActor(req),
+        parse(adaptive.generate, body),
+        resolveLocale(req.headers['accept-language']),
+      ),
+    );
+  }
+  @Post('recommendations/:id/accept')
+  @SchemaBody(adaptive.accept)
+  acceptRecommendation(
+    @Req() req: AuthRequest,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ) {
+    return dto(
+      this.adaptive.accept(
+        coachingActor(req),
+        uuid(id),
+        parse(adaptive.accept, body),
+      ),
+    );
+  }
   @Get() workspace(@Req() req: AuthRequest) {
     return dto(this.training.workspace(coachingActor(req)));
   }

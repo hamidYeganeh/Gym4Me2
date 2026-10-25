@@ -499,6 +499,46 @@ function WorkoutContent() {
               <p className="training-muted">
                 {locale === "fa" ? e?.instructionFa : e?.instructionEn}
               </p>
+              {e?.videoUrl &&
+                (e.videoUrl.startsWith("https://") ||
+                  /^\/videos\/exercises\/[a-z-]+\.mp4$/.test(e.videoUrl)) && (
+                  <figure>
+                    <video
+                      controls
+                      muted
+                      playsInline
+                      preload="none"
+                      crossOrigin="anonymous"
+                      src={e.videoUrl}
+                      aria-label={t("exerciseVideo")}
+                      className="w-full rounded-xl"
+                    >
+                      {e.videoCaptionFa && (
+                        <track
+                          kind="captions"
+                          src={e.videoCaptionFa}
+                          srcLang="fa"
+                          label={t("captionFa")}
+                          default={fmt.locale === "fa"}
+                        />
+                      )}
+                      {e.videoCaptionEn && (
+                        <track
+                          kind="captions"
+                          src={e.videoCaptionEn}
+                          srcLang="en"
+                          label={t("captionEn")}
+                          default={fmt.locale !== "fa"}
+                        />
+                      )}
+                    </video>
+                    {e.videoSource && (
+                      <figcaption className="training-muted">
+                        {e.videoSource}
+                      </figcaption>
+                    )}
+                  </figure>
+                )}
               {!finished && !!original?.alternatives.length && (
                 <label>
                   {t("alternative")}
