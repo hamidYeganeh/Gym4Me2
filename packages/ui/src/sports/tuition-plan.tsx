@@ -62,8 +62,14 @@ export function TuitionPlan({
       <QueryError error={query.error} />
       {query.data?.[0] && (
         <p>
-          {t("activation")}: {t(query.data[0].activation === "after_first" ? "afterFirst" : "afterFull")}
-          {" · "}{t("graceDays")}: {query.data[0].graceDays}
+          {t("activation")}:{" "}
+          {t(
+            query.data[0].activation === "after_first"
+              ? "afterFirst"
+              : "afterFull",
+          )}
+          {" · "}
+          {t("graceDays")}: {query.data[0].graceDays}
         </p>
       )}
       {query.data?.map((d) => (
