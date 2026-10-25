@@ -9,6 +9,10 @@ import {
   sealDeletionRecord,
 } from './deletion-journal.crypto';
 import { readIndependentDeletionLedger } from './deletion-journal.store';
+import {
+  journalAnchorPath,
+  journalRecipientFingerprint,
+} from './deletion-journal.anchor';
 jest.mock('@vercel/blob', () => ({
   put: jest.fn(),
   get: jest.fn(),
@@ -26,6 +30,24 @@ const record = {
   userId: randomUUID(),
   deletedAt: '2026-01-01T00:00:00.000Z',
 };
+const origin = 'https://journal.private.blob.vercel-storage.com';
+const anchor = Buffer.from(
+  JSON.stringify({
+    version: 1,
+    kind: 'gym4me-deletion-journal',
+    recipient: journalRecipientFingerprint(publicKey),
+  }),
+);
+const response = (bytes: Buffer) =>
+  ({
+    statusCode: 200,
+    stream: new ReadableStream({
+      start(controller) {
+        controller.enqueue(bytes);
+        controller.close();
+      },
+    }),
+  }) as Awaited<ReturnType<typeof get>>;
 const environment = (extra: Record<string, string> = {}) =>
   validateEnvironment({
     DATABASE_URL: 'postgresql://example:example@localhost/example_test',
@@ -33,7 +55,16 @@ const environment = (extra: Record<string, string> = {}) =>
     AUTH_SECRET: 'a'.repeat(32),
     ...extra,
   });
-beforeEach(() => jest.resetAllMocks());
+beforeEach(() => {
+  jest.resetAllMocks();
+  jest
+    .mocked(get)
+    .mockImplementation((path) =>
+      Promise.resolve(
+        String(path).endsWith(journalAnchorPath) ? response(anchor) : null,
+      ),
+    );
+});
 
 test('seals only the opaque deletion receipt and authenticates ciphertext, recipient and purpose', () => {
   const bytes = sealDeletionRecord(record, publicKey);
@@ -63,6 +94,7 @@ test('requires a private acknowledgement, appends retries and conceals provider 
         DELETION_JOURNAL_PROVIDER: 'vercel-blob',
         DELETION_JOURNAL_RECIPIENT_KEY: publicKey,
         BLOB_READ_WRITE_TOKEN: 'private-test-token',
+        DELETION_JOURNAL_ORIGIN: origin,
       }),
     ),
   );
@@ -70,7 +102,11 @@ test('requires a private acknowledgement, appends retries and conceals provider 
   await expect(
     service.record(record.userId, new Date(record.deletedAt)),
   ).rejects.toThrow('could not acknowledge');
-  jest.mocked(put).mockResolvedValue({} as Awaited<ReturnType<typeof put>>);
+  jest
+    .mocked(put)
+    .mockResolvedValue({ url: `${origin}/receipt.bin` } as Awaited<
+      ReturnType<typeof put>
+    >);
   await service.record(record.userId, new Date(record.deletedAt));
   const calls = jest.mocked(put).mock.calls;
   expect(calls[0][0]).not.toBe(calls[1][0]);
@@ -83,7 +119,12 @@ test('requires a private acknowledgement, appends retries and conceals provider 
 
 test('recovery independently reads every page, authenticates and deduplicates retried receipts', async () => {
   const pathname = `${deletionRecordPrefix(record.userId)}${randomUUID()}.bin`;
-  const item = { pathname, uploadedAt: new Date(record.deletedAt), size: 500 };
+  const item = {
+    pathname,
+    url: `${origin}/${pathname}`,
+    uploadedAt: new Date(record.deletedAt),
+    size: 500,
+  };
   jest
     .mocked(list)
     .mockResolvedValueOnce({
@@ -94,20 +135,21 @@ test('recovery independently reads every page, authenticates and deduplicates re
     .mockResolvedValueOnce({ blobs: [item], hasMore: false } as Awaited<
       ReturnType<typeof list>
     >);
-  jest.mocked(get).mockImplementation(() =>
-    Promise.resolve({
-      statusCode: 200,
-      stream: new ReadableStream({
-        start(controller) {
-          controller.enqueue(sealDeletionRecord(record, publicKey));
-          controller.close();
-        },
-      }),
-    } as Awaited<ReturnType<typeof get>>),
-  );
+  jest
+    .mocked(get)
+    .mockImplementation((path) =>
+      Promise.resolve(
+        response(
+          String(path).endsWith(journalAnchorPath)
+            ? anchor
+            : sealDeletionRecord(record, publicKey),
+        ),
+      ),
+    );
   const ledger = await readIndependentDeletionLedger(
     'private-test-token',
     privateKey,
+    origin,
     new Date('2026-01-02T00:00:00Z'),
   );
   expect(ledger.entries).toEqual([
@@ -124,23 +166,64 @@ test('recovery refuses missing receipts and active origin writes', async () => {
     blobs: [
       {
         pathname: 'missing',
+        url: `${origin}/missing`,
         size: 500,
         uploadedAt: new Date(record.deletedAt),
       },
     ],
     hasMore: false,
   } as Awaited<ReturnType<typeof list>>);
-  jest.mocked(get).mockResolvedValue(null);
   await expect(
-    readIndependentDeletionLedger('private-test-token', privateKey),
+    readIndependentDeletionLedger('private-test-token', privateKey, origin),
   ).rejects.toThrow('missing');
   jest.mocked(list).mockResolvedValue({
     blobs: [
-      { pathname: 'future', size: 500, uploadedAt: new Date('2999-01-01') },
+      {
+        pathname: 'future',
+        url: `${origin}/future`,
+        size: 500,
+        uploadedAt: new Date('2999-01-01'),
+      },
     ],
     hasMore: false,
   } as Awaited<ReturnType<typeof list>>);
   await expect(
-    readIndependentDeletionLedger('private-test-token', privateKey),
+    readIndependentDeletionLedger('private-test-token', privateKey, origin),
   ).rejects.toThrow('still active');
+});
+
+test('an empty or incorrect store cannot masquerade as an empty deletion ledger', async () => {
+  jest.mocked(list).mockResolvedValue({ blobs: [], hasMore: false });
+  jest.mocked(get).mockResolvedValueOnce(null);
+  await expect(
+    readIndependentDeletionLedger('wrong-store-token', privateKey, origin),
+  ).rejects.toThrow('missing');
+  expect(list).not.toHaveBeenCalled();
+  const wrongKey = generateKeyPairSync('x25519')
+    .privateKey.export({ format: 'pem', type: 'pkcs8' })
+    .toString();
+  await expect(
+    readIndependentDeletionLedger('private-test-token', wrongKey, origin),
+  ).rejects.toThrow('recipient');
+  expect(list).not.toHaveBeenCalled();
+});
+
+test('a valid empty journal is accepted only after origin and recipient checks', async () => {
+  jest.mocked(list).mockResolvedValue({ blobs: [], hasMore: false });
+  expect(
+    (
+      await readIndependentDeletionLedger(
+        'private-test-token',
+        privateKey,
+        origin,
+      )
+    ).entries,
+  ).toEqual([]);
+  await expect(
+    readIndependentDeletionLedger(
+      'private-test-token',
+      privateKey,
+      'https://public.blob.vercel-storage.com',
+    ),
+  ).rejects.toThrow('private journal origin');
 });

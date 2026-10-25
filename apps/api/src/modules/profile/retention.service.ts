@@ -15,6 +15,8 @@ import { MediaRetentionService } from '../clubs/media-retention.service';
 import { PrivacyService } from './privacy.service';
 import { deletionLedgerSchema, type DeletionLedger } from './deletion-ledger';
 import { DeletionJournalService } from './deletion-journal.service';
+// Two receipts keep origin verification + writes within the serverless job budget.
+const deletionBatchSize = 2;
 @Injectable()
 export class RetentionService implements OnModuleInit, OnModuleDestroy {
   private timer?: ReturnType<typeof setInterval>;
@@ -98,7 +100,7 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
       let deletedAccounts = 0;
       let blockedAccounts = 0;
       for (const { userId } of due) {
-        if (apply && deletedAccounts >= 5) break;
+        if (apply && deletedAccounts >= deletionBatchSize) break;
         const [user] = await tx
           .select()
           .from(s.users)
@@ -224,7 +226,7 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
       if (due.length) this.journal.assertConfigured();
       let claimed = 0;
       for (const { userId } of due) {
-        if (claimed >= 5) break;
+        if (claimed >= deletionBatchSize) break;
         const [user] = await tx
           .select()
           .from(s.users)

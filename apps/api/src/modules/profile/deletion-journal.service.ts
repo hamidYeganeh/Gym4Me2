@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { put } from '@vercel/blob';
 import { randomUUID } from 'node:crypto';
 import type { Environment } from '../../config/environment';
+import { verifyJournalAnchor } from './deletion-journal.anchor';
 import {
   deletionRecordPrefix,
   sealDeletionRecord,
@@ -39,6 +40,21 @@ export class DeletionJournalService {
     });
     if (!recipient)
       throw new Error('Independent deletion journal recipient is missing.');
+    const token = this.config.get('BLOB_READ_WRITE_TOKEN', { infer: true });
+    if (!token)
+      throw new Error('Independent deletion journal credential is missing.');
+    let origin: string;
+    try {
+      origin = await verifyJournalAnchor(
+        token,
+        recipient,
+        this.config.get('DELETION_JOURNAL_ORIGIN', { infer: true }) ?? '',
+      );
+    } catch {
+      throw new Error(
+        'Independent deletion journal anchor could not be verified.',
+      );
+    }
     const bytes = sealDeletionRecord(
       { version: 1, userId, deletedAt: deletedAt.toISOString() },
       recipient,
@@ -46,14 +62,20 @@ export class DeletionJournalService {
     // Append each attempt. A lost acknowledgement can create another encrypted
     // receipt, never overwrite an earlier one. Recovery deduplicates by identity.
     try {
-      await put(`${deletionRecordPrefix(userId)}${randomUUID()}.bin`, bytes, {
-        access: 'private',
-        token: this.config.get('BLOB_READ_WRITE_TOKEN', { infer: true }),
-        addRandomSuffix: false,
-        allowOverwrite: false,
-        contentType: 'application/octet-stream',
-        abortSignal: AbortSignal.timeout(8000),
-      });
+      const receipt = await put(
+        `${deletionRecordPrefix(userId)}${randomUUID()}.bin`,
+        bytes,
+        {
+          access: 'private',
+          token,
+          addRandomSuffix: false,
+          allowOverwrite: false,
+          contentType: 'application/octet-stream',
+          abortSignal: AbortSignal.timeout(8000),
+        },
+      );
+      if (new URL(receipt.url).origin !== origin)
+        throw new Error('Unexpected journal store.');
     } catch {
       // Do not include provider errors: they may contain private URLs or tokens.
       throw new Error(

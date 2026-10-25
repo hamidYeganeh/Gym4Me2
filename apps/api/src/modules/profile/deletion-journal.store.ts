@@ -1,4 +1,8 @@
-import { get, list } from '@vercel/blob';
+import { list } from '@vercel/blob';
+import {
+  readPrivateJournalObject,
+  verifyJournalAnchor,
+} from './deletion-journal.anchor';
 import { deletionLedgerSchema } from './deletion-ledger';
 import {
   deletionJournalPrefix,
@@ -10,8 +14,10 @@ import {
 export async function readIndependentDeletionLedger(
   token: string,
   privateKey: string,
+  expectedOrigin: string,
   capturedAt = new Date(),
 ) {
+  const origin = await verifyJournalAnchor(token, privateKey, expectedOrigin);
   const entries = new Map<string, string>();
   let cursor: string | undefined;
   let scanned = 0;
@@ -23,6 +29,8 @@ export async function readIndependentDeletionLedger(
       token,
     });
     for (const item of page.blobs) {
+      if (new URL(item.url).origin !== origin)
+        throw new Error('Unexpected journal store.');
       if (
         ++scanned > 100000 ||
         item.size > 16384 ||
@@ -31,30 +39,10 @@ export async function readIndependentDeletionLedger(
         throw new Error(
           'Journal exceeds limits or origin writes are still active.',
         );
-      const blob = await get(item.pathname, {
-        access: 'private',
-        useCache: false,
-        token,
-        abortSignal: AbortSignal.timeout(10000),
-      });
-      if (!blob || blob.statusCode !== 200)
-        throw new Error('An independent deletion receipt is missing.');
-      const reader = blob.stream.getReader();
-      const chunks: Buffer[] = [];
-      let size = 0;
-      try {
-        for (;;) {
-          const result = await reader.read();
-          if (result.done) break;
-          size += result.value.byteLength;
-          if (size > 16384) throw new Error('Oversized deletion receipt.');
-          chunks.push(Buffer.from(result.value));
-        }
-      } finally {
-        await reader.cancel();
-        reader.releaseLock();
-      }
-      const record = openDeletionRecord(Buffer.concat(chunks), privateKey);
+      const record = openDeletionRecord(
+        await readPrivateJournalObject(item.url, token),
+        privateKey,
+      );
       if (
         !item.pathname.startsWith(deletionRecordPrefix(record.userId)) ||
         Date.parse(record.deletedAt) > capturedAt.getTime()

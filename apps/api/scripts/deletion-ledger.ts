@@ -75,7 +75,30 @@ async function main() {
     await app.close();
   }
 }
-void main().catch(() => {
+void main().catch((error: unknown) => {
+  const target = process.env.DATABASE_URL;
+  if (
+    process.env.GYM_RECOVERY_DIAGNOSTICS === 'true' &&
+    process.env.NODE_ENV === 'test' &&
+    target &&
+    URL.canParse(target) &&
+    new URL(target).hostname === '127.0.0.1' &&
+    new URL(target).pathname.endsWith('_test')
+  ) {
+    const failure = error as { name?: string; code?: string; stack?: string };
+    console.error(
+      JSON.stringify({
+        name: failure.name,
+        code: failure.code,
+        frames: failure.stack
+          ?.split('\n')
+          .slice(1, 4)
+          .map((line) =>
+            line.replace(/https?:\/\/\S+/g, '[endpoint withheld]'),
+          ),
+      }),
+    );
+  }
   console.error(
     'Deletion ledger operation failed. Keep the restored API offline; check the trusted ledger, snapshot time and restored responsibilities.',
   );

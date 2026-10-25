@@ -20,7 +20,8 @@ async function main() {
       'Use OUTPUT PRIVATE_KEY --origin-offline after stopping origin writes.',
     );
   const token = process.env.BLOB_READ_WRITE_TOKEN;
-  if (!token)
+  const origin = process.env.DELETION_JOURNAL_ORIGIN;
+  if (!token || !origin)
     throw new Error('Independent deletion journal credential is required.');
   const handle = await open(
     resolve(keyFile),
@@ -40,7 +41,7 @@ async function main() {
   } finally {
     await handle.close();
   }
-  const ledger = await readIndependentDeletionLedger(token, privateKey);
+  const ledger = await readIndependentDeletionLedger(token, privateKey, origin);
   await writeFile(resolve(destination), JSON.stringify(ledger), {
     flag: 'wx',
     mode: 0o600,

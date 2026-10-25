@@ -94,14 +94,20 @@ async function main() {
               S3_ACCESS_KEY_ID: process.env.RESTORE_S3_ACCESS_KEY_ID,
               S3_SECRET_ACCESS_KEY: process.env.RESTORE_S3_SECRET_ACCESS_KEY,
             },
-            stdio: 'ignore',
+            stdio: ['ignore', 'ignore', 'pipe'],
             timeout: 120000,
           },
         );
-        if (replay.status !== 0)
+        if (replay.status !== 0) {
+          if (
+            process.env.GYM_RECOVERY_DIAGNOSTICS === 'true' &&
+            process.env.NODE_ENV === 'test'
+          )
+            console.error(String(replay.stderr).slice(-4000));
           return Promise.reject(
             new Error('Deletion replay failed; no media may be uploaded.'),
           );
+        }
         return Promise.resolve();
       },
       upload: async (object, stream) => {
@@ -130,7 +136,25 @@ async function main() {
     s3.destroy();
   }
 }
-void main().catch(() => {
+void main().catch((error: unknown) => {
+  if (
+    process.env.GYM_RECOVERY_DIAGNOSTICS === 'true' &&
+    process.env.NODE_ENV === 'test'
+  ) {
+    const failure = error as { name?: string; code?: string; stack?: string };
+    console.error(
+      JSON.stringify({
+        name: failure.name,
+        code: failure.code,
+        frames: failure.stack
+          ?.split('\n')
+          .slice(1, 4)
+          .map((line) =>
+            line.replace(/https?:\/\/\S+/g, '[endpoint withheld]'),
+          ),
+      }),
+    );
+  }
   console.error(
     'Offline media recovery failed. Keep destination offline; no release was authorized.',
   );

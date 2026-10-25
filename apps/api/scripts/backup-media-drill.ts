@@ -26,6 +26,7 @@ const targetDatabase = `gym4me_backup_restore_${token}_test`;
 const sourceBucket = `gym4me-backup-source-${token}`;
 const targetBucket = `gym4me-backup-restore-${token}`;
 const directory = resolve(root, '.artifacts/backup-drill', token);
+let stage = 'local-profile-validation';
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
 function postgres(command: string, args: string[], input?: Buffer) {
   const result = spawnSync(
@@ -81,6 +82,7 @@ async function main() {
     NODE_ENV: 'test',
     AUTH_SECRET: randomUUID() + randomUUID(),
     RETENTION_ENABLED: 'false',
+    GYM_RECOVERY_DIAGNOSTICS: 'true',
   };
   const ledgerCommand = (url: string, args: string[]) => {
     const result = spawnSync(
@@ -89,14 +91,16 @@ async function main() {
       {
         cwd: resolve(root, 'apps/api'),
         env: { ...env, DATABASE_URL: url },
-        stdio: 'ignore',
+        stdio: ['ignore', 'ignore', 'pipe'],
         timeout: 120000,
       },
     );
-    if (result.status !== 0)
+    if (result.status !== 0) {
+      if (result.stderr) console.error(String(result.stderr).slice(-4000));
       throw new Error(
         'Deletion replay failed; recovered API must remain offline.',
       );
+    }
   };
   const encryptedEnv = {
     ...process.env,
@@ -129,6 +133,7 @@ async function main() {
   const started = Date.now();
   try {
     await mkdir(directory, { recursive: true, mode: 0o700 });
+    stage = 'source-schema-and-fixtures';
     postgres('createdb', [sourceDatabase]);
     sourceCreated = true;
     source = new Pool({
@@ -226,6 +231,7 @@ async function main() {
       "INSERT INTO sport_messages(conversation_id,sender_id,body,image_key,idempotency_key,request_hash,deleted_at) VALUES($1,$2,'[deleted]',$3,$4,'fixture',now())",
       [conversation, athlete, keys.deletedMessage, randomUUID()],
     );
+    stage = 'capture-snapshot-and-media';
     const snapshot = await source.connect();
     let snapshotAt: string,
       counts: { table: string; count: number }[],
@@ -270,6 +276,7 @@ async function main() {
       await snapshot.query('ROLLBACK').catch(() => {});
       snapshot.release();
     }
+    stage = 'captured-media-count';
     assert.equal(media.objects.length, 4);
     assert.ok(
       !media.objects.some((object: { key: string }) =>
@@ -297,12 +304,14 @@ async function main() {
       JSON.stringify(manifest),
       { mode: 0o600 },
     );
+    stage = 'source-deletion-and-ledger-export';
     await source.query(
       "UPDATE users SET deleted_at=now(),status='suspended',display_name=null WHERE id=$1",
       [athlete],
     );
     const ledgerFile = resolve(directory, 'newer-deletion-ledger.json');
     ledgerCommand(sourceUrl.href, ['export', ledgerFile]);
+    stage = 'encrypted-backup-round-trip';
     restic(['init']);
     restic(['backup', 'database.dump', 'manifest.json', 'objects']);
     restic(['check', '--read-data']);
@@ -325,6 +334,7 @@ async function main() {
       ledgerRecovery = resolve(directory, 'recovered-ledger');
     restic(['restore', 'latest', '--target', recovery]);
     restic(['restore', 'latest', '--target', ledgerRecovery], true);
+    stage = 'restore-database-and-counts';
     const recoveredDump = await readFile(resolve(recovery, 'database.dump'));
     assert.equal(sha(recoveredDump), dumpFile.sha256);
     postgres('createdb', [targetDatabase]);
@@ -404,6 +414,7 @@ async function main() {
           maxBuffer: 1024 * 1024,
         },
       );
+    stage = 'connected-destination-guard';
     assert.equal(
       runRecovery().status,
       1,
@@ -425,12 +436,16 @@ async function main() {
     );
     await restored.end();
     restored = undefined;
+    stage = 'offline-operator-recovery';
     const recoveryCommand = runRecovery();
+    if (recoveryCommand.status !== 0)
+      console.error(String(recoveryCommand.stderr).slice(-4000));
     assert.equal(
       recoveryCommand.status,
       0,
       'Operator recovery command failed.',
     );
+    stage = 'restored-media-counts';
     const recovered: unknown = JSON.parse(recoveryCommand.stdout);
     assert.ok(
       recovered !== null &&
@@ -544,7 +559,23 @@ async function main() {
     s3.destroy();
   }
 }
-void main().catch(() => {
+void main().catch((error: unknown) => {
+  const failure = error as {
+    name?: string;
+    code?: string;
+    actual?: unknown;
+    expected?: unknown;
+  };
+  console.error(
+    JSON.stringify({
+      stage,
+      name: failure.name,
+      code: failure.code,
+      actual: typeof failure.actual === 'number' ? failure.actual : undefined,
+      expected:
+        typeof failure.expected === 'number' ? failure.expected : undefined,
+    }),
+  );
   console.error(
     'Isolated media recovery drill failed. No production or staging restore was attempted.',
   );
