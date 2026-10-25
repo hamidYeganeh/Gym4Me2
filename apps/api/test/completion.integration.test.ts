@@ -669,6 +669,51 @@ void test('an incomplete group expires and refunds a paid share exactly once', a
   assert.equal(refund.amount, '50000');
   assert.equal(refund.n, 1);
 });
+void test('background reconciliation skips unfunded holds instead of starving funded groups', async () => {
+  const games = new GamesService(database, commerce);
+  for (let i = 0; i < 25; i++) {
+    const f = await sale('court'),
+      actor = await person();
+    const g = await games.create(actor.id, {
+      operationId: randomUUID(),
+      serviceId: f.service.id,
+      occurrenceId: f.occurrence.id,
+      title: 'Synthetic unfunded group',
+      playerCount: 2,
+      public: false,
+      acceptedTerms: true,
+    });
+    await db.execute(
+      sql`UPDATE growth_games SET deadline=now()+interval '2 minutes' WHERE id=${g.id}`,
+    );
+  }
+  const f = await sale('court'),
+    a = await person(),
+    b = await person();
+  const g = await games.create(a.id, {
+    operationId: randomUUID(),
+    serviceId: f.service.id,
+    occurrenceId: f.occurrence.id,
+    title: 'Synthetic funded group',
+    playerCount: 2,
+    public: false,
+    acceptedTerms: true,
+  });
+  const own = (await games.detail(a.id, g.id)).ownShare!,
+    second = await games.join(b.id, g.id, {
+      operationId: randomUUID(),
+      acceptedTerms: true,
+    });
+  for (const [actor, order] of [
+    [a.id, own.order_id],
+    [b.id, second.orderId],
+  ]) {
+    await commerce.startPayment(actor, order, 'success', randomUUID());
+    await commerce.verifyPayment(actor, order);
+  }
+  await games.runDue();
+  assert.equal((await games.detail(a.id, g.id)).status, 'confirmed');
+});
 void test('food catalog has real composition data and logs canonical values with source ownership', async () => {
   const nutrition = new NutritionService(database),
     actor = await person(),

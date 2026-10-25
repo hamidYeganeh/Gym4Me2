@@ -2,6 +2,7 @@ import {
   ConflictException,
   ForbiddenException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { randomUUID, createHash } from 'node:crypto';
@@ -39,6 +40,7 @@ type Game = {
 };
 @Injectable()
 export class GamesService {
+  private readonly logger = new Logger(GamesService.name);
   constructor(
     private readonly database: DatabaseService,
     private readonly commerce: CommerceService,
@@ -307,8 +309,14 @@ export class GamesService {
   async runDue() {
     const due = await rows<{ id: string }>(
       this.db,
-      sql`SELECT g.id FROM growth_games g JOIN sport_orders o ON o.id=g.order_id WHERE g.status='recruiting' OR g.status='confirmed' AND o.status IN ('cancelled','refunded','partially_refunded','review') ORDER BY g.deadline,g.id LIMIT 25`,
+      sql`SELECT g.id FROM growth_games g JOIN sport_orders o ON o.id=g.order_id WHERE (g.status='recruiting' AND (g.deadline<=now() OR o.status<>'awaiting_payment' OR NOT EXISTS(SELECT 1 FROM growth_game_shares sh LEFT JOIN sport_orders child ON child.id=sh.order_id WHERE sh.game_id=g.id AND (sh.user_id IS NULL OR coalesce(child.status,'')<>'paid')))) OR (g.status='confirmed' AND o.status IN ('cancelled','refunded','partially_refunded','review')) ORDER BY g.deadline,g.id LIMIT 25`,
     );
-    for (const g of due) await this.reconcile(g.id);
+    for (const g of due) {
+      try {
+        await this.reconcile(g.id);
+      } catch {
+        this.logger.warn('Group reconciliation failed; it will be retried.');
+      }
+    }
   }
 }

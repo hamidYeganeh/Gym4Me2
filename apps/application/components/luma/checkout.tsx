@@ -405,6 +405,7 @@ export function PaymentStatus() {
               ) && (
                 <>
                   {!hasPendingPayment &&
+                    order.snapshot.kind !== "split_share" &&
                     order.status === "awaiting_payment" && (
                       <CreditPayment
                         orderId={id}
