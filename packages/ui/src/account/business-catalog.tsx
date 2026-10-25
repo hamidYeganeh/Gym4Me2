@@ -32,7 +32,7 @@ import type {
   PhoneDto,
 } from "@repo/api/catalog";
 import { ApiError } from "@repo/api";
-import { toast } from "sonner";
+import { toast } from "../kit/Sileo";
 import { Button } from "@repo/ui/kit/Button";
 import {
   Card,

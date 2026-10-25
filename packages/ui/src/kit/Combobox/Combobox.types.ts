@@ -1,4 +1,4 @@
-import { Combobox as ComboboxPrimitive } from "@base-ui/react";
+import { Combobox as ComboboxPrimitive } from "@animate-ui/react/primitives/base-ui";
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import type { comboboxVariants } from "./Combobox.styles";

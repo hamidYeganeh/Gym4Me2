@@ -55,7 +55,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@repo/ui/kit/Dialog";
-import { toast } from "@repo/ui/kit/Sonner";
+import { toast } from "@repo/ui/kit/Sileo";
 import {
   ErrorNotice,
   QueryError,
@@ -485,24 +485,29 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
                   {t("export")}
                 </Button>
               </div>
-              {value.deletion?.status === "pending" ? (
+              {value.deletion &&
+              ["pending", "processing"].includes(value.deletion.status) ? (
                 <Alert>
                   <AlertDescription className="grid gap-3">
                     <p>
-                      {t("pendingUntil", {
-                        date: dateLabel(value.deletion.eligibleAfter),
-                      })}
+                      {value.deletion.status === "processing"
+                        ? t("deletionProcessing")
+                        : t("pendingUntil", {
+                            date: dateLabel(value.deletion.eligibleAfter),
+                          })}
                     </p>
-                    <div>
-                      <Button
-                        ref={deletionAction}
-                        variant="outline"
-                        disabled={busy}
-                        onClick={() => void deletion(true)}
-                      >
-                        {t("cancelDeletion")}
-                      </Button>
-                    </div>
+                    {value.canCancelDeletion !== false ? (
+                      <div>
+                        <Button
+                          ref={deletionAction}
+                          variant="outline"
+                          disabled={busy}
+                          onClick={() => void deletion(true)}
+                        >
+                          {t("cancelDeletion")}
+                        </Button>
+                      </div>
+                    ) : null}
                   </AlertDescription>
                 </Alert>
               ) : (

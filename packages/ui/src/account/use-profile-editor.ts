@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import type { Account } from "@repo/api/auth";
 import { useUpdateAccount } from "@repo/api/profile";
 import { useTranslations } from "@repo/i18n";
-import { toast } from "sonner";
+import { toast } from "../kit/Sileo";
 import { isActiveSurfaceElement } from "../lib/active-surface";
 
 /** Both profile surfaces edit changed fields and reconcile confirmed server changes. */

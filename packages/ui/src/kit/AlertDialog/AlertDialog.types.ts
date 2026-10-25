@@ -1,6 +1,6 @@
 import { Button } from "@repo/ui/kit/Button";
 import type { VariantProps } from "class-variance-authority";
-import { AlertDialog as AlertDialogPrimitive } from "radix-ui";
+import { AlertDialog as AlertDialogPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { alertDialogVariants } from "./AlertDialog.styles";
 export type AlertDialogProps = React.ComponentProps<

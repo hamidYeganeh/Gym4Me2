@@ -14,6 +14,7 @@ import type { Tx } from '../clubs/club.repository';
 import { MediaRetentionService } from '../clubs/media-retention.service';
 import { PrivacyService } from './privacy.service';
 import { deletionLedgerSchema, type DeletionLedger } from './deletion-ledger';
+import { DeletionJournalService } from './deletion-journal.service';
 @Injectable()
 export class RetentionService implements OnModuleInit, OnModuleDestroy {
   private timer?: ReturnType<typeof setInterval>;
@@ -24,6 +25,7 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
     private readonly config: ConfigService<Environment, true>,
     private readonly privacy: PrivacyService,
     private readonly media: MediaRetentionService,
+    private readonly journal: DeletionJournalService,
   ) {}
   onModuleInit() {
     if (!this.config.get('RETENTION_ENABLED', { infer: true })) return;
@@ -57,6 +59,9 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
   }
   async run(apply = false, now = new Date()) {
     const policy = this.privacy.policy();
+    // Commit the irreversible processing intent separately. If the remote write
+    // succeeds but erasure rolls back, cancellation cannot undo that intent.
+    if (apply) await this.prepareDeletion(now);
     return this.database.db.transaction(async (tx) => {
       const lock = await tx.execute<{ locked: boolean }>(
         sql`SELECT pg_try_advisory_xact_lock(7088, 24) AS locked`,
@@ -79,7 +84,12 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
         .from(s.accountDeletionRequests)
         .where(
           and(
-            eq(s.accountDeletionRequests.status, 'pending'),
+            apply
+              ? eq(s.accountDeletionRequests.status, 'processing')
+              : or(
+                  eq(s.accountDeletionRequests.status, 'pending'),
+                  eq(s.accountDeletionRequests.status, 'processing'),
+                ),
             lte(s.accountDeletionRequests.eligibleAfter, now),
           ),
         )
@@ -88,6 +98,7 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
       let deletedAccounts = 0;
       let blockedAccounts = 0;
       for (const { userId } of due) {
+        if (apply && deletedAccounts >= 5) break;
         const [user] = await tx
           .select()
           .from(s.users)
@@ -101,7 +112,9 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
         if (
           !user ||
           user.deletedAt ||
-          request?.status !== 'pending' ||
+          !request ||
+          !['pending', 'processing'].includes(request.status) ||
+          (apply && request.status !== 'processing') ||
           request.eligibleAfter > now
         )
           continue;
@@ -109,7 +122,11 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
           blockedAccounts++;
           continue;
         }
-        if (apply) await this.erase(tx, user, now);
+        if (apply) {
+          // A failed or lost acknowledgement leaves the processing intent for retry.
+          await this.journal.record(userId, now);
+          await this.erase(tx, user, now);
+        }
         deletedAccounts++;
       }
       const cutoff = (days: number) =>
@@ -187,6 +204,66 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
       };
     });
   }
+  private async prepareDeletion(now: Date) {
+    await this.database.db.transaction(async (tx) => {
+      const lock = await tx.execute<{ locked: boolean }>(
+        sql`SELECT pg_try_advisory_xact_lock(7088, 24) AS locked`,
+      );
+      if (!lock.rows[0]?.locked) return;
+      const due = await tx
+        .select({ userId: s.accountDeletionRequests.userId })
+        .from(s.accountDeletionRequests)
+        .where(
+          and(
+            eq(s.accountDeletionRequests.status, 'pending'),
+            lte(s.accountDeletionRequests.eligibleAfter, now),
+          ),
+        )
+        .orderBy(s.accountDeletionRequests.eligibleAfter)
+        .limit(100);
+      if (due.length) this.journal.assertConfigured();
+      let claimed = 0;
+      for (const { userId } of due) {
+        if (claimed >= 5) break;
+        const [user] = await tx
+          .select()
+          .from(s.users)
+          .where(eq(s.users.id, userId))
+          .for('update');
+        const [request] = await tx
+          .select()
+          .from(s.accountDeletionRequests)
+          .where(eq(s.accountDeletionRequests.userId, userId))
+          .for('update');
+        if (
+          !user ||
+          user.deletedAt ||
+          request?.status !== 'pending' ||
+          request.eligibleAfter > now ||
+          (await this.privacy.responsibilities(tx, userId))
+        )
+          continue;
+        await tx
+          .update(s.accountDeletionRequests)
+          .set({ status: 'processing' })
+          .where(eq(s.accountDeletionRequests.userId, userId));
+        await tx
+          .update(s.users)
+          .set({ status: 'suspended', profilePublic: false, updatedAt: now })
+          .where(eq(s.users.id, userId));
+        await tx
+          .update(s.authSessions)
+          .set({ revokedAt: now })
+          .where(eq(s.authSessions.userId, userId));
+        await tx.insert(s.auditEvents).values({
+          actorId: null,
+          action: 'account.deletion_processing',
+          targetId: userId,
+        });
+        claimed++;
+      }
+    });
+  }
   async exportDeletionLedger(): Promise<DeletionLedger> {
     // The watermark precedes the query, so concurrent newer deletions cannot be
     // misrepresented as included. Export again after quiescing account writes.
@@ -259,6 +336,11 @@ export class RetentionService implements OnModuleInit, OnModuleDestroy {
     });
   }
   private async erase(tx: Tx, user: typeof s.users.$inferSelect, now: Date) {
+    // Called after a remote acknowledgement, or from authenticated offline replay.
+    // A transaction-local identity prevents older deployments bypassing the guard.
+    await tx.execute(
+      sql`SELECT set_config('gym4me.deletion_receipt_user', ${user.id}, true)`,
+    );
     await tx.execute(
       sql`DELETE FROM growth_leads WHERE contact_id=${user.id} OR phone=${user.phone}`,
     );

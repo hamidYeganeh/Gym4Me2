@@ -14,7 +14,7 @@ import type {
 } from "./Drawer.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { Drawer as DrawerPrimitive } from "vaul";
+import { Drawer as DrawerPrimitive } from "@animate-ui/react/primitives/radix-ui/drawer";
 
 function Drawer({ ...props }: DrawerProps) {
   return <DrawerPrimitive.Root data-slot="drawer" {...props} />;

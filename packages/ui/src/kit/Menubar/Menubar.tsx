@@ -21,7 +21,7 @@ import type {
 
 import { cn } from "@repo/ui/lib/utils";
 import { CheckIcon, ChevronRightIcon } from "lucide-react";
-import { Menubar as MenubarPrimitive } from "radix-ui";
+import { Menubar as MenubarPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 function Menubar({ className, ...props }: MenubarProps) {
   return (

@@ -8,7 +8,7 @@ import type {
 } from "./Tabs.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { Tabs as TabsPrimitive } from "radix-ui";
+import { Tabs as TabsPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 function Tabs({ className, orientation = "horizontal", ...props }: TabsProps) {
   return (

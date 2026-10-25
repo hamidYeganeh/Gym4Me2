@@ -1,5 +1,4 @@
 import { AppProviders } from "../components/app-providers";
-import { Ph0Trace } from "../components/qa/ph0-trace";
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { getDirection, isLocale, defaultLocale } from "@repo/i18n";
@@ -41,8 +40,6 @@ export default async function RootLayout({
       >
         <div className="application-frame mx-auto w-full max-w-xl">
           <AppProviders locale={locale}>{children}</AppProviders>
-          {process.env.GYM_QA_WEB === "true" &&
-            process.env.GYM_PH0_REFERENCE === "true" && <Ph0Trace />}
         </div>
       </body>
     </html>

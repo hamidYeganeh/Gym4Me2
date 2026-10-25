@@ -152,6 +152,7 @@ import { FavoritesController } from './profile/favorites.controller';
 import { FavoritesService } from './profile/favorites.service';
 import { PrivacyService } from './profile/privacy.service';
 import { RetentionService } from './profile/retention.service';
+import { DeletionJournalService } from './profile/deletion-journal.service';
 import { ConsentGuard } from './profile/consent.guard';
 import {
   AccountPrivacyController,
@@ -284,6 +285,7 @@ import {
     SportsMediaService,
     PrivacyService,
     RetentionService,
+    DeletionJournalService,
     ConsentGuard,
     BusinessService,
     AdminService,

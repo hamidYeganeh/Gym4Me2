@@ -4,7 +4,7 @@ import type { CheckboxProps } from "./Checkbox.types";
 
 import { cn } from "@repo/ui/lib/utils";
 import { CheckIcon } from "lucide-react";
-import { Checkbox as CheckboxPrimitive } from "radix-ui";
+import { Checkbox as CheckboxPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 function Checkbox({ className, ...props }: CheckboxProps) {
   return (

@@ -8,7 +8,10 @@ import type {
 } from "./InputOtp.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { OTPInput, OTPInputContext } from "input-otp";
+import {
+  OTPInput,
+  OTPInputContext,
+} from "@animate-ui/react/primitives/input-otp";
 import { MinusIcon } from "lucide-react";
 import * as React from "react";
 

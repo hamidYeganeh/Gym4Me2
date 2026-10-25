@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createPublicKey } from 'node:crypto';
 import { validVapidPair } from '../modules/push/push.contracts';
 
 const databaseUrl = z
@@ -114,6 +115,11 @@ const environmentSchema = z.object({
     .max(1440)
     .default(60),
   RETENTION_ENABLED: z.enum(['true', 'false']).optional(),
+  DELETION_JOURNAL_PROVIDER: z
+    .enum(['disabled', 'vercel-blob'])
+    .default('disabled'),
+  DELETION_JOURNAL_RECIPIENT_KEY: z.string().max(4096).optional(),
+  BLOB_READ_WRITE_TOKEN: z.string().min(16).optional(),
   BACKUP_RETENTION_DAYS: z.coerce.number().int().min(1).max(365).default(30),
   MEDIA_ORPHAN_GRACE_DAYS: z.coerce.number().int().min(1).max(90).default(7),
   S3_ENDPOINT: z.url().optional(),
@@ -141,6 +147,20 @@ export function validateEnvironment(input: Record<string, unknown>) {
   }
   if (result.data.NODE_ENV === 'production' && !result.data.AUTH_SECRET) {
     throw new Error('Invalid API configuration: AUTH_SECRET');
+  }
+  if (result.data.DELETION_JOURNAL_PROVIDER === 'vercel-blob') {
+    try {
+      if (
+        !result.data.BLOB_READ_WRITE_TOKEN ||
+        createPublicKey(result.data.DELETION_JOURNAL_RECIPIENT_KEY ?? '')
+          .asymmetricKeyType !== 'x25519'
+      )
+        throw new Error();
+    } catch {
+      throw new Error(
+        'Invalid API configuration: deletion journal credentials or recipient',
+      );
+    }
   }
   if (
     result.data.SMS_PROVIDER === 'kavenegar' &&

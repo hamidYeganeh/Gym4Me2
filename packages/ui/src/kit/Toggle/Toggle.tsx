@@ -3,7 +3,7 @@ import { toggleVariants } from "./Toggle.styles";
 import type { ToggleProps } from "./Toggle.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { Toggle as TogglePrimitive } from "radix-ui";
+import { Toggle as TogglePrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 function Toggle({
   className,

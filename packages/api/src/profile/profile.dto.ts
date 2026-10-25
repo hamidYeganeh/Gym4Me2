@@ -52,8 +52,9 @@ export type PrivacyDto = {
   acceptedAt: string | null;
   acceptanceRequired: boolean;
   canRequestDeletion: boolean;
+  canCancelDeletion?: boolean;
   deletion: {
-    status: "pending" | "cancelled" | "processed";
+    status: "pending" | "processing" | "cancelled" | "processed";
     requestedAt: string;
     eligibleAfter: string;
     processedAt: string | null;

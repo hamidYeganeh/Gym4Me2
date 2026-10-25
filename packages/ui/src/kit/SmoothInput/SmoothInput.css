@@ -1,0 +1,38 @@
+.smooth-input[data-smooth-caret] > input {
+  caret-color: transparent !important;
+}
+
+.smooth-input-measure {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: max-content;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: pre;
+}
+
+.smooth-input-caret-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.smooth-input-caret {
+  position: absolute;
+  left: 0;
+  width: 2px;
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce), (forced-colors: active) {
+  .smooth-input[data-smooth-caret] > input {
+    caret-color: auto !important;
+  }
+
+  .smooth-input-caret-layer {
+    display: none;
+  }
+}

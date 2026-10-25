@@ -2,6 +2,8 @@
 import { createContext, useContext, useRef, useState } from "react";
 import { useOverlayHistory } from "../../hooks/use-overlay-history";
 import { useSheetDrag } from "../../hooks/use-sheet-drag";
+import { useIsMobile } from "../../hooks/use-mobile";
+import { useOverlayReopenFocus } from "../../hooks/use-overlay-reopen-focus";
 import { useTranslations } from "@repo/i18n";
 import { restoreDialogFocus } from "../../lib/dialog-focus";
 import type { ActionFocus } from "../../lib/action-focus";
@@ -20,12 +22,13 @@ import type {
 } from "./Dialog.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { Dialog as DialogPrimitive } from "radix-ui";
+import { Dialog as DialogPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 import { Button } from "@repo/ui/kit/Button";
 import { XIcon } from "lucide-react";
 
 const ModalDialog = createContext(true);
+const DialogOpen = createContext(false);
 const DialogDismiss = createContext<() => void>(() => undefined);
 
 function Dialog({
@@ -44,17 +47,19 @@ function Dialog({
   useOverlayHistory(modal && (open ?? internal), change);
   return (
     <ModalDialog.Provider value={modal}>
-      <DialogDismiss.Provider value={() => change(false)}>
-        <DialogPrimitive.Root
-          data-slot="dialog"
-          modal={modal}
-          {...props}
-          open={open ?? internal}
-          onOpenChange={change}
-        >
-          {children}
-        </DialogPrimitive.Root>
-      </DialogDismiss.Provider>
+      <DialogOpen.Provider value={open ?? internal}>
+        <DialogDismiss.Provider value={() => change(false)}>
+          <DialogPrimitive.Root
+            data-slot="dialog"
+            modal={modal}
+            {...props}
+            open={open ?? internal}
+            onOpenChange={change}
+          >
+            {children}
+          </DialogPrimitive.Root>
+        </DialogDismiss.Provider>
+      </DialogOpen.Provider>
     </ModalDialog.Provider>
   );
 }
@@ -87,10 +92,15 @@ function DialogContent({
   showCloseButton = true,
   onOpenAutoFocus,
   onCloseAutoFocus,
+  ref,
   ...props
 }: DialogContentProps) {
   const t = useTranslations();
   const modal = useContext(ModalDialog);
+  const open = useContext(DialogOpen);
+  const content = useRef<HTMLDivElement | null>(null);
+  const openRef = useOverlayReopenFocus(open, content, onOpenAutoFocus);
+  const isMobile = useIsMobile(640);
   const close = useContext(DialogDismiss);
   const drag = useSheetDrag(close);
   const opener = useRef<ActionFocus | null>(null);
@@ -98,7 +108,13 @@ function DialogContent({
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Content
+        ref={(node) => {
+          content.current = node;
+          if (typeof ref === "function") return ref(node);
+          if (ref) ref.current = node;
+        }}
         data-slot="dialog-content"
+        data-side={modal && isMobile ? "bottom" : undefined}
         className={cn(dialogStyles.dialogContent(), className)}
         {...props}
         onOpenAutoFocus={(event) => {
@@ -117,6 +133,10 @@ function DialogContent({
           onOpenAutoFocus?.(event);
         }}
         onCloseAutoFocus={(event) => {
+          if (openRef.current) {
+            event.preventDefault();
+            return;
+          }
           onCloseAutoFocus?.(event);
           if (event.defaultPrevented || !modal) return;
           const action = opener.current;

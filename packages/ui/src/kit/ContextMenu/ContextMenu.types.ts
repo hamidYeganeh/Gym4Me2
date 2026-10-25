@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { ContextMenu as ContextMenuPrimitive } from "radix-ui";
+import { ContextMenu as ContextMenuPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { contextMenuVariants } from "./ContextMenu.styles";
 export type ContextMenuProps = React.ComponentProps<

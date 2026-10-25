@@ -1,0 +1,76 @@
+.gym-sileo [data-sileo-viewport] {
+  z-index: 1000;
+  padding: 0;
+  max-width: none;
+}
+
+.gym-sileo [data-sileo-viewport][data-theme="light"] {
+  --sileo-state-success: oklch(0.43 0.12 149);
+  --sileo-state-error: oklch(0.48 0.18 26);
+  --sileo-state-warning: oklch(0.45 0.1 74);
+  --sileo-state-info: oklch(0.46 0.15 252);
+  --sileo-state-action: oklch(0.46 0.15 259);
+}
+
+.gym-sileo [data-sileo-viewport][data-theme="dark"] {
+  --sileo-state-error: oklch(0.72 0.18 26);
+  --sileo-state-loading: oklch(0.74 0 0);
+  --sileo-state-action: oklch(0.74 0.15 259);
+}
+
+.gym-sileo [data-sileo-toast] {
+  zoom: var(--gym-sileo-scale, 1);
+  font-family: inherit;
+  min-height: calc(44px / var(--gym-sileo-scale, 1));
+  filter: drop-shadow(0 4px 14px rgb(0 0 0 / 0.12));
+}
+
+/* Sileo adds extra SVG pill width beyond the header's measured padding. */
+.gym-sileo [data-sileo-header] {
+  box-sizing: border-box;
+  width: var(--_pw);
+  justify-content: center;
+}
+
+.gym-sileo [data-sileo-title] {
+  font-family: inherit;
+  font-size: calc(0.875rem / var(--gym-sileo-scale, 1));
+  line-height: 1.4;
+  font-weight: 600;
+  text-transform: none;
+  max-width: 282px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gym-sileo [data-sileo-viewport][data-theme] [data-sileo-description] {
+  color: var(--popover-foreground);
+  font-size: calc(0.875rem / var(--gym-sileo-scale, 1));
+  line-height: 1.8;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+
+.gym-sileo [data-sileo-button] {
+  font: inherit;
+  font-size: calc(0.8125rem / var(--gym-sileo-scale, 1));
+  min-height: calc(44px / var(--gym-sileo-scale, 1));
+  text-decoration: none;
+}
+
+.gym-sileo [data-sileo-toast]:focus-visible,
+.gym-sileo [data-sileo-button]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gym-sileo [data-sileo-canvas] {
+    display: none;
+  }
+
+  .gym-sileo [data-sileo-toast] {
+    background: var(--popover);
+    border-radius: 16px;
+  }
+}

@@ -8,7 +8,7 @@ import {
   usePrivacy,
 } from "@repo/api/profile";
 import { useTranslations } from "@repo/i18n";
-import { toast } from "@repo/ui/kit/Sonner";
+import { toast } from "@repo/ui/kit/Sileo";
 const eventName = "gym4me:saved-clubs";
 const memory = new Map<string, boolean>();
 const realId = (id: string) =>
