@@ -60,6 +60,12 @@ export function TuitionPlan({
     <section className="rounded-2xl border my-4 p-4 grid gap-3">
       <h3>{t("installments")}</h3>
       <QueryError error={query.error} />
+      {query.data?.[0] && (
+        <p>
+          {t("activation")}: {t(query.data[0].activation === "after_first" ? "afterFirst" : "afterFull")}
+          {" · "}{t("graceDays")}: {query.data[0].graceDays}
+        </p>
+      )}
       {query.data?.map((d) => (
         <article className="border-b py-2" key={d.id}>
           <p>

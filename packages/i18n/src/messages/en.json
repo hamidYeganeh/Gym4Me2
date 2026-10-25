@@ -3357,7 +3357,7 @@
     "rejected": "Rejected",
     "approve": "Confirm payment received",
     "reject": "Reject receipt",
-    "receiptHint": "Submitting a receipt does not confirm payment. Membership is issued after full payment is verified.",
+    "receiptHint": "Submitting a receipt does not confirm payment. Access activates after verified collection according to the service terms and payment schedule.",
     "save": "Save",
     "receipts": "Payment receipts",
     "orderId": "Order ID",
