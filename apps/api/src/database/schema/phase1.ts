@@ -146,7 +146,9 @@ export const accountDeletionRequests = pgTable('account_deletion_requests', {
   userId: uuid('user_id')
     .primaryKey()
     .references(() => users.id, { onDelete: 'cascade' }),
-  status: text('status', { enum: ['pending', 'cancelled', 'processed'] })
+  status: text('status', {
+    enum: ['pending', 'processing', 'cancelled', 'processed'],
+  })
     .default('pending')
     .notNull(),
   requestedAt: timestamp('requested_at', { withTimezone: true })

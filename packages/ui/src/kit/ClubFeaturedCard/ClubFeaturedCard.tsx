@@ -2,12 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Star } from "lucide-react";
-import { Button } from "../Button";
 import { clubFeaturedCardStyles as s } from "./ClubFeaturedCard.styles";
 import type { ClubFeaturedCardProps } from "./ClubFeaturedCard.types";
 export function ClubFeaturedCard({ club, viewLabel }: ClubFeaturedCardProps) {
   return (
-    <article className={s.root()}>
+    <article data-slot="club-featured-card" className={s.root()}>
       <Image
         src={club.photos[0].src}
         alt={club.photos[0].alt}
@@ -16,7 +15,13 @@ export function ClubFeaturedCard({ club, viewLabel }: ClubFeaturedCardProps) {
         className="object-cover"
         unoptimized
       />
-      <div className={s.gradient()} />
+      <div className={s.gradient()} aria-hidden="true" />
+      <Link
+        href={club.href ?? `/discovery/clubs/${club.id}`}
+        scroll={false}
+        aria-label={`${viewLabel} · ${club.name}`}
+        className="absolute inset-0 z-10 rounded-[inherit] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ring"
+      />
       <div className={s.logo()}>
         <Image
           src={club.logo ?? club.photos[0].src}
@@ -35,14 +40,6 @@ export function ClubFeaturedCard({ club, viewLabel }: ClubFeaturedCardProps) {
             {club.rating} · {club.category}
           </p>
         </div>
-        <Button asChild variant="image" size="sm">
-          <Link
-            href={club.href ?? `/discovery/clubs/${club.id}`}
-            scroll={false}
-          >
-            {viewLabel}
-          </Link>
-        </Button>
       </div>
     </article>
   );

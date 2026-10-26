@@ -1,5 +1,5 @@
 import { type Button } from "@repo/ui/kit/Button";
-import { Questionnaire as QuestionnairePrimitive } from "@shadcn/react/questionnaire";
+import { Questionnaire as QuestionnairePrimitive } from "@animate-ui/react/primitives/questionnaire";
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import type { questionnaireVariants } from "./Questionnaire.styles";

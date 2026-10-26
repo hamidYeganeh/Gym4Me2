@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { Dialog as SheetPrimitive } from "radix-ui";
+import { Dialog as SheetPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { sheetVariants } from "./Sheet.styles";
 export type SheetProps = React.ComponentProps<typeof SheetPrimitive.Root>;

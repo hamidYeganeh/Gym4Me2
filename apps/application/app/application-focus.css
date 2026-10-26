@@ -24,7 +24,7 @@ body:is([data-gym-focus="application"], #gym-application)
     [role="tab"]
   ):focus-visible,
 body:is([data-gym-focus="application"], #gym-application)
-  [data-gym-focus-proxy]:focus-within {
+  [data-gym-focus-proxy]:not(.one-time-code):focus-within {
   /* Keep the control's semantic foreground/background pair intact. */
   background-image: linear-gradient(#8080802e, #8080802e) !important;
 }

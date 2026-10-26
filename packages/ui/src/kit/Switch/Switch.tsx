@@ -3,7 +3,7 @@ import { switchStyles } from "./Switch.styles";
 import type { SwitchProps } from "./Switch.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { Switch as SwitchPrimitive } from "radix-ui";
+import { Switch as SwitchPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 function Switch({ className, size = "default", ...props }: SwitchProps) {
   return (

@@ -1,5 +1,7 @@
 "use client";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Bookmark,
   Bell,
@@ -16,9 +18,8 @@ import { useLocale, useTranslations } from "@repo/i18n";
 import { useAccount } from "@repo/api/profile";
 import { ServiceCoverThumbnail } from "@repo/ui/sports-cover";
 import { PersonalAgenda } from "./agenda";
-import { AuthWelcome } from "@repo/ui/account";
-import { Skeleton } from "@repo/ui/kit/Skeleton";
-import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
+import { accountReadDenied } from "@repo/ui/lib/account-recovery";
+import { Discovery } from "../discovery/discovery";
 import {
   useSportsQuery,
   type ServiceDto,
@@ -37,35 +38,18 @@ import {
 } from "./common";
 export function HomePage() {
   const account = useAccount();
-  const t = useLuma();
-  const recovery = useAuthRecovery(account, "/");
-  if (recovery?.kind === "signIn")
-    return (
-      <LumaPage title={t("home")} className="luma-guest-home">
-        <AuthWelcome />
-      </LumaPage>
-    );
-  if (account.isPending)
-    return (
-      <LumaPage title={t("home")}>
-        <div
-          role="status"
-          aria-label={t("loading")}
-          className="flex flex-col items-center gap-6 py-24"
-        >
-          <Skeleton className="h-64 w-4/5 rounded-4xl" />
-          <Skeleton className="h-8 w-1/2" />
-          <Skeleton className="h-12 w-3/4 rounded-full" />
-        </div>
-      </LumaPage>
-    );
-  if (account.error)
-    return (
-      <LumaPage title={t("home")}>
-        <QueryState query={account}>{null}</QueryState>
-      </LumaPage>
-    );
-  return <SignedInHome />;
+  if (account.data && !accountReadDenied(account.error))
+    return <SignedInHome />;
+  return <GuestHome settled={account.error?.status === 401} />;
+}
+function GuestHome({ settled }: { settled: boolean }) {
+  const router = useRouter();
+  useEffect(() => {
+    if (settled && window.location.pathname === "/")
+      router.replace("/discovery");
+  }, [settled, router]);
+  // Public content is available even while the initial session check is pending.
+  return <Discovery />;
 }
 function SignedInHome() {
   const t = useLuma();

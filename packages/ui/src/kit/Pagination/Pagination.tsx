@@ -1,4 +1,5 @@
 "use client";
+import { Root as PaginationPrimitive } from "@animate-ui/react/primitives/pagination";
 import { useTranslations } from "@repo/i18n";
 import { cn } from "@repo/ui/lib/utils";
 import { paginationStyles } from "./Pagination.styles";
@@ -22,7 +23,7 @@ import {
 function Pagination({ className, ...props }: PaginationProps) {
   const t = useTranslations();
   return (
-    <nav
+    <PaginationPrimitive
       role="navigation"
       aria-label={t("Kit.pagination")}
       data-slot="pagination"

@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
+import { DropdownMenu as DropdownMenuPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { dropdownMenuVariants } from "./DropdownMenu.styles";
 export type DropdownMenuProps = React.ComponentProps<

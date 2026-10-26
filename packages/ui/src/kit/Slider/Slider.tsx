@@ -3,13 +3,14 @@ import { sliderStyles } from "./Slider.styles";
 import type { SliderProps } from "./Slider.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { Slider as SliderPrimitive } from "radix-ui";
+import { Slider as SliderPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import * as React from "react";
 
 function Slider({
   className,
   defaultValue,
   value,
+  thumbLabels,
   min = 0,
   max = 100,
   ...props
@@ -47,6 +48,7 @@ function Slider({
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={index}
+          aria-label={thumbLabels?.[index]}
           className={sliderStyles.slider4()}
         />
       ))}

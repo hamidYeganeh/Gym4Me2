@@ -8,6 +8,7 @@ import {
 } from "@repo/api/advanced-business";
 import { Button } from "../kit/Button";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
+import { useFeedbackToast } from "../hooks/use-feedback-toast";
 export const value = (f: FormData, k: string) => String(f.get(k) ?? "");
 export function useFinancialDate() {
   const locale = useLocale();
@@ -91,6 +92,8 @@ export function Form({
     m = useAdvancedCommand(surface),
     keys = useRef(new Map<string, string>());
   const [error, setError] = useState("");
+  useFeedbackToast("error", error, error);
+  useFeedbackToast("success", t("saved"), m.isSuccess && !error);
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (m.isPending) return;
@@ -120,16 +123,6 @@ export function Form({
           {m.isPending ? t("saving") : label}
         </Button>
       </fieldset>
-      {error && (
-        <p role="alert" className="text-sm text-destructive">
-          {error}
-        </p>
-      )}
-      {m.isSuccess && !error && (
-        <p role="status" className="text-sm text-primary">
-          {t("saved")}
-        </p>
-      )}
     </form>
   );
 }

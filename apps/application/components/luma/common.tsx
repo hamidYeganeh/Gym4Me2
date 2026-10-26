@@ -23,7 +23,7 @@ import {
   accountRecovery,
   accountReadDenied,
 } from "@repo/ui/lib/account-recovery";
-import { AuthRequired } from "@repo/ui/account";
+import { AuthRequired, ErrorNotice } from "@repo/ui/account";
 import { useAccount } from "@repo/api/profile";
 import "./luma.css";
 import { SlidingSegments } from "@repo/ui/motion-controls";
@@ -410,8 +410,8 @@ export function QueryState({
     );
   if (query.error)
     return (
-      <div role="alert" className="luma-empty">
-        <p>{t("loadError")}</p>
+      <div className="luma-empty">
+        <ErrorNotice error={query.error} />
         <button
           ref={button}
           type="button"
@@ -470,14 +470,12 @@ export function CommandError({ error }: { error: ApiError | null }) {
   return recovery?.kind === "signIn" ? (
     <AuthRequired compact returnTo={returnTo} />
   ) : recovery?.kind === "consent" ? (
-    <div role="alert" className="luma-error">
-      <p>{t("consentRequired")}</p>
+    <div>
+      <ErrorNotice error={error} />
       <Link href={recovery.href}>{t("completeProfile")}</Link>
     </div>
   ) : error ? (
-    <p role="alert" className="luma-error">
-      {error.status === 409 ? t("conflict") : t("actionError")}
-    </p>
+    <ErrorNotice error={error} />
   ) : null;
 }
 export function CreateAction() {

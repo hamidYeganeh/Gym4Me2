@@ -18,5 +18,6 @@ export type LocationCardProps = {
     ComponentProps<"button">,
     "children" | "onClick" | "className"
   >;
-  onSelect: () => void;
+  href?: string;
+  onSelect?: () => void;
 };

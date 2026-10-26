@@ -5,19 +5,18 @@ import { useTranslations } from "@repo/i18n";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  BookmarkIcon,
-  StarFullIcon,
-  MapPin1Icon,
-  BarbellHorizontalIcon,
-  UsersThreeIcon,
-  Ruler1Icon,
-} from "../../icons";
+  Bookmark,
+  GitCompareArrows,
+  MapPin,
+  Star,
+  Dumbbell,
+} from "lucide-react";
 import { cn } from "../../lib/utils";
-import { Badge } from "../Badge";
 import { Button } from "../Button";
-import { NotebookPen } from "lucide-react";
+import { ProgressiveBlur } from "../ProgressiveBlur";
 import { clubCardStyles as s } from "./ClubCard.styles";
 import type { ClubCardProps } from "./ClubCard.types";
+import "./ClubCard.css";
 
 export function ClubCard({
   club,
@@ -31,40 +30,48 @@ export function ClubCard({
   priority = false,
   galleryLabel,
   photoLabel,
+  compareHref,
+  compareLabel,
 }: ClubCardProps) {
   const [photoIndex, setPhotoIndex] = useClubPhoto(club.id);
   const t = useTranslations("Clubs");
   const photo = club.photos[photoIndex] ?? club.photos[0];
   const href = club.href ?? `/discovery/clubs/${encodeURIComponent(club.id)}`;
-  const icons = [BarbellHorizontalIcon, UsersThreeIcon, Ruler1Icon];
+  const landscape = variant === "landscape";
+  const imageVariant = variant === "portrait" || variant === "cinematic";
+  const rating = (
+    <p className="club-card-rating">
+      <Star size={13} />
+      <span>{club.rating}</span>
+      <span>({club.reviews})</span>
+    </p>
+  );
   return (
     <article
       data-slot="club-card"
       data-variant={variant}
-      className={cn(s.root({ size, variant }), className)}
+      className={cn(s.root({ size, variant }), "club-card", className)}
     >
-      <div
-        className={cn(
-          s.cover({ size, variant }),
-          variant === "landscape" && "size-20 shrink-0 aspect-square",
-        )}
-        data-zoom-exit-key={`club-${club.id}`}
-      >
+      <div className="club-card-cover" data-zoom-exit-key={`club-${club.id}`}>
         <Image
           src={photo.src}
           alt={photo.alt}
           fill
-          sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 380px"
-          className={s.image()}
+          sizes={landscape ? "120px" : "(max-width: 640px) 85vw, 560px"}
+          className="object-cover"
           priority={priority}
           unoptimized
         />
       </div>
-      {variant === "portrait" && (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-linear-to-t from-image-surface/95 via-image-surface/20 to-image-surface/10"
-        />
+      {!landscape && (
+        <>
+          <ProgressiveBlur
+            className="club-card-blur"
+            blurLayers={4}
+            blurIntensity={1.5}
+          />
+          <div className="club-card-shade" aria-hidden="true" />
+        </>
       )}
       <Link
         href={href}
@@ -72,143 +79,79 @@ export function ClubCard({
         className={s.link()}
         aria-label={`${labels.discover} · ${club.name}`}
       />
-      <div
-        className={cn(s.top({ variant }), variant === "landscape" && "hidden")}
-      >
-        {variant === "landscape" ? (
-          featuredLabel ? (
-            <Badge>{featuredLabel}</Badge>
-          ) : (
-            <span />
-          )
-        ) : (
-          <p className={s.price()}>
-            {club.price}
-            {club.pricePeriod && (
-              <span className={s.muted()}> / {club.pricePeriod}</span>
-            )}
-          </p>
-        )}
+      <div className="club-card-actions">
         {onSavedChange && (
           <Button
-            className="pointer-events-auto"
             size="icon-lg"
-            variant="image"
+            variant={imageVariant ? "image" : "secondary"}
             type="button"
             aria-label={saved ? labels.unsave : labels.save}
             aria-pressed={saved}
             onClick={() => onSavedChange(!saved)}
           >
-            <BookmarkIcon />
+            <Bookmark className={saved ? "fill-current" : undefined} />
+          </Button>
+        )}
+        {compareHref && (
+          <Button
+            asChild
+            size="icon-lg"
+            variant={imageVariant ? "image" : "secondary"}
+          >
+            <Link href={compareHref} aria-label={compareLabel ?? t("compare")}>
+              <GitCompareArrows />
+            </Link>
           </Button>
         )}
       </div>
-      {variant === "landscape" ? (
-        <div className={s.landscapeContent()}>
-          <div className={s.titleRow()}>
-            <div className="min-w-0">
-              <h2 className={s.landscapeTitle()}>{club.name}</h2>
-              <p className={s.landscapeAddress()}>{club.address}</p>
-            </div>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {club.price}
-            {club.pricePeriod && ` / ${club.pricePeriod}`}
-          </p>
-          {onSavedChange && (
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-lg"
-              className="pointer-events-auto absolute end-0 bottom-0"
-              aria-label={saved ? labels.unsave : labels.save}
-              aria-pressed={saved}
-              onClick={() => onSavedChange(!saved)}
-            >
-              <BookmarkIcon />
-            </Button>
-          )}
-          <ul className={s.facilities()}>
-            {club.facilities.map((item, index) => {
-              if (!item.trim()) return null;
-              const Icon = icons[index % icons.length]!;
-              return (
-                <li key={`${index}-${item}`} className={s.facility()}>
-                  <Icon />
-                  {item}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ) : (
-        <div className={s.content()}>
-          {club.photos.length > 1 && (
-            <div
-              className="pointer-events-auto mx-auto flex rounded-full border border-image-foreground/30 bg-image-surface/40 p-0.5 backdrop-blur-md"
-              role="group"
-              aria-label={galleryLabel ?? t("gallery")}
-            >
-              {club.photos.map((item, index) => (
-                <button
-                  type="button"
-                  key={`${item.src}-${index}`}
-                  className="grid size-7 place-items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-image-foreground"
-                  aria-label={`${photoLabel ?? t("photo")} ${index + 1}`}
-                  aria-pressed={index === photoIndex % club.photos.length}
-                  onClick={() => setPhotoIndex(index)}
-                >
-                  <span
-                    className={cn(
-                      "h-1.5 rounded-full bg-image-foreground/50 transition-[width] motion-reduce:transition-none",
-                      index === photoIndex % club.photos.length
-                        ? "w-4 bg-image-foreground"
-                        : "w-1.5",
-                    )}
-                  />
-                </button>
-              ))}
-            </div>
-          )}
-          <div className={s.titleRow()}>
-            <h2 className={s.title()}>{club.name}</h2>
-            <p className={s.rating()}>
-              <StarFullIcon className={s.star()} />
-              <span>{club.rating}</span>
-              <span className="text-image-foreground/65">({club.reviews})</span>
-            </p>
-          </div>
-          <p className={s.address()}>
-            <MapPin1Icon className="mt-0.5 shrink-0 text-lg" />
-            <span className="line-clamp-1 @[300px]/club:line-clamp-2">
-              {club.address}
-            </span>
-          </p>
-          <ul
-            className={cn(
-              s.facilities(),
-              "hidden text-image-foreground/75 @[260px]/club:flex",
-            )}
-          >
-            {club.facilities.map((item, index) => {
-              if (!item.trim()) return null;
-              const Icon = icons[index % icons.length]!;
-              return (
-                <li key={`${index}-${item}`} className={s.facility()}>
-                  <Icon />
-                  {item}
-                </li>
-              );
-            })}
-          </ul>
-          <Button asChild variant="imageSolid" className={s.action()}>
-            <Link href={href} scroll={false}>
-              <NotebookPen aria-hidden="true" />
-              {labels.discover}
-            </Link>
-          </Button>
-        </div>
+      {featuredLabel && (
+        <span className="club-card-featured">{featuredLabel}</span>
       )}
+      {!landscape && rating}
+      <div className="club-card-copy">
+        <div className="club-card-heading">
+          <h2>{club.name}</h2>
+        </div>
+        <p className="club-card-address">
+          <MapPin size={14} />
+          <span>{club.address}</span>
+        </p>
+        <p className="club-card-price">
+          {club.price}
+          {club.pricePeriod && <small> / {club.pricePeriod}</small>}
+        </p>
+        {landscape && rating}
+        <ul className="club-card-facilities">
+          {club.facilities
+            .slice(0, 2)
+            .filter(Boolean)
+            .map((item, index) => (
+              <li key={index}>
+                {index === 0 && <Dumbbell size={14} />}
+                <span>{item}</span>
+              </li>
+            ))}
+        </ul>
+        {!landscape && club.photos.length > 1 && (
+          <div
+            className="club-card-dots"
+            role="group"
+            aria-label={galleryLabel ?? t("gallery")}
+          >
+            {club.photos.map((item, index) => (
+              <button
+                key={`${item.src}-${index}`}
+                type="button"
+                aria-label={`${photoLabel ?? t("photo")} ${index + 1}`}
+                aria-pressed={index === photoIndex % club.photos.length}
+                onClick={() => setPhotoIndex(index)}
+              >
+                <span />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </article>
   );
 }

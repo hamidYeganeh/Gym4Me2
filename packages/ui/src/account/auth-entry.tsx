@@ -29,6 +29,7 @@ import { useOverlayHistory } from "../hooks/use-overlay-history";
 import { safeReturnPath } from "./safe-return-path";
 import { applicationAuthHref } from "../lib/auth-routes";
 import { isActiveSurfaceElement } from "../lib/active-surface";
+import { LoginPolicyNotice } from "./login-policy";
 import "./auth-controls.css";
 
 /** A single entry point for both new and returning athletes. */
@@ -103,14 +104,9 @@ export function AuthEntryButton({
             <ShieldCheck strokeWidth={1.5} aria-hidden="true" />
             {t("sharedAccount")}
           </p>
-          <p className="auth-policy">
-            {t("policyPrefix")}{" "}
-            <Link
-              href={`/privacy?${new URLSearchParams({ from: "login", returnTo: destination })}`}
-            >
-              {t("policyLink")}
-            </Link>
-          </p>
+          <div className="auth-policy">
+            <LoginPolicyNotice />
+          </div>
         </div>
       </SheetContent>
     </Sheet>

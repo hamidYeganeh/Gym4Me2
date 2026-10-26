@@ -8,8 +8,14 @@ import type {
 } from "./Accordion.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
-import { Accordion as AccordionPrimitive } from "radix-ui";
+import { ChevronDownIcon } from "lucide-react";
+import {
+  transition,
+  toCssTiming,
+  useShouldReduceMotion,
+  useTempoTransition,
+} from "@animate-ui/react/utils/motion";
+import { Accordion as AccordionPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 function Accordion({ className, ...props }: AccordionProps) {
   return (
@@ -36,6 +42,8 @@ function AccordionTrigger({
   children,
   ...props
 }: AccordionTriggerProps) {
+  const reduce = useShouldReduceMotion();
+  const timing = toCssTiming(useTempoTransition(transition.disclosure));
   return (
     <AccordionPrimitive.Header className={accordionStyles.accordionTrigger()}>
       <AccordionPrimitive.Trigger
@@ -47,10 +55,10 @@ function AccordionTrigger({
         <ChevronDownIcon
           data-slot="accordion-trigger-icon"
           className={accordionStyles.accordionTrigger3()}
-        />
-        <ChevronUpIcon
-          data-slot="accordion-trigger-icon"
-          className={accordionStyles.accordionTrigger4()}
+          style={{
+            transitionDuration: `${reduce ? 0 : timing.duration}ms`,
+            transitionTimingFunction: timing.easing,
+          }}
         />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

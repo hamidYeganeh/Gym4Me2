@@ -25,7 +25,7 @@ import type {
 import type { TranslationKey } from "@repo/i18n/messages";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import { toast } from "sonner";
+import { toast } from "../kit/Sileo";
 import { Button } from "@repo/ui/kit/Button";
 import { Card, CardContent } from "@repo/ui/kit/Card";
 import {
@@ -229,7 +229,7 @@ function TermDialog({
   const [description, setDescription] = useState(term?.description ?? "");
   const [active, setActive] = useState(term?.isActive ?? true);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<unknown>(null);
   async function submit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -260,7 +260,7 @@ function TermDialog({
       toast.success(t("Copy.categorySaved"));
       close();
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       setBusy(false);
     }
@@ -579,7 +579,7 @@ function PlaceDialog({
   const [name, setName] = useState(place?.name ?? "");
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<unknown>(null);
   async function submit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -601,7 +601,7 @@ function PlaceDialog({
       toast.success(t("Copy.locationSaved"));
       close();
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       setBusy(false);
     }

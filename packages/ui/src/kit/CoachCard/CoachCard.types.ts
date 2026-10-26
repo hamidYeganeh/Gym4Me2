@@ -16,7 +16,8 @@ export type CoachSummary = {
 };
 export type CoachCardVariants = VariantProps<typeof coachCardVariants>;
 export type CoachCardProps = CoachCardVariants & {
-  coach: CoachSummary;
+  coach: Omit<CoachSummary, "rating" | "reviews"> &
+    Partial<Pick<CoachSummary, "rating" | "reviews">>;
   labels: {
     new: string;
     save: string;
@@ -29,6 +30,8 @@ export type CoachCardProps = CoachCardVariants & {
   href?: string;
   saved?: boolean;
   onSavedChange?: (saved: boolean) => void;
+  badgeLabel?: string;
+  compact?: boolean;
   className?: string;
   priority?: boolean;
 };

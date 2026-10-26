@@ -1,4 +1,5 @@
 "use client";
+import { ErrorNotice } from "@repo/ui/account";
 import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import Link from "next/link";
 import { useId, useRef } from "react";
@@ -91,11 +92,7 @@ export function NotificationsPage() {
             />
           ))}
           {!items.length && <Empty />}
-          {nextPageFailed && (
-            <p role="alert" className="luma-error mt-4">
-              {t("loadMoreNotificationsError")}
-            </p>
-          )}
+          {nextPageFailed && <ErrorNotice error={query.error} />}
           {query.hasNextPage && (
             <LumaLoadMore
               loading={query.isFetchingNextPage}

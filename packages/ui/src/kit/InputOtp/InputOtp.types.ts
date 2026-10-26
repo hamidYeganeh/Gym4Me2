@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { OTPInput } from "input-otp";
+import { OTPInput } from "@animate-ui/react/primitives/input-otp";
 import type * as React from "react";
 import type { inputOtpVariants } from "./InputOtp.styles";
 export type InputOTPProps = React.ComponentProps<typeof OTPInput> & {

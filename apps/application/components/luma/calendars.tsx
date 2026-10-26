@@ -1,4 +1,5 @@
 "use client";
+import { ErrorNotice } from "@repo/ui/account";
 import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import { AuthEntryButton } from "@repo/ui/account";
 import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
@@ -32,6 +33,7 @@ import {
 import { LumaLoadMore } from "./load-more";
 
 export function CalendarsPage() {
+  const account = useAccount();
   const t = useLuma(),
     params = useSearchParams(),
     router = useRouter();
@@ -47,7 +49,7 @@ export function CalendarsPage() {
     ![401, 403].includes(query.error?.status ?? 0);
   return (
     <LumaPage title={t("calendars")} back="/">
-      <BookingCalendar />
+      {account.data && !account.error && <BookingCalendar />}
       <Section title={dates("browseCalendars")}>
         <FilterSheet count={view === "all" ? 0 : 1}>
           <Segments
@@ -91,11 +93,7 @@ export function CalendarsPage() {
             </article>
           ))}
           {!items.length && <Empty illustration="watch" />}
-          {nextPageFailed && (
-            <p role="alert" className="luma-error">
-              {t("loadError")}
-            </p>
-          )}
+          {nextPageFailed && <ErrorNotice error={query.error} />}
           {query.hasNextPage && (
             <LumaLoadMore
               loading={query.isFetchingNextPage}
@@ -247,11 +245,7 @@ function CalendarServices({ calendar }: { calendar: CalendarDetailDto }) {
           </article>
         ))}
         {!items.length && <Empty />}
-        {nextPageFailed && (
-          <p role="alert" className="luma-error">
-            {t("loadError")}
-          </p>
-        )}
+        {nextPageFailed && <ErrorNotice error={query.error} />}
         {query.hasNextPage && (
           <LumaLoadMore
             loading={query.isFetchingNextPage}

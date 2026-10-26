@@ -1,4 +1,5 @@
 "use client";
+import { ErrorNotice } from "@repo/ui/account";
 import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import { useId } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -82,11 +83,7 @@ export function MessagesPage() {
           </article>
         ))}
         {!items.length && <Empty icon={<MessageCircle />} />}
-        {nextPageFailed && (
-          <p role="alert" className="luma-error mt-4">
-            {t("loadMoreConversationsError")}
-          </p>
-        )}
+        {nextPageFailed && <ErrorNotice error={query.error} />}
         {query.hasNextPage && (
           <LumaLoadMore
             loading={query.isFetchingNextPage}

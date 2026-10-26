@@ -6,7 +6,7 @@ import { ApiProvider } from "@repo/api/provider";
 import { ThemeProvider } from "@repo/theme/provider";
 import { DirectionProvider } from "@repo/ui/kit/Direction";
 import { TooltipProvider } from "@repo/ui/kit/Tooltip";
-import { Toaster } from "@repo/ui/kit/Sonner";
+import { Toaster } from "@repo/ui/kit/Sileo";
 import { WorkspaceShell } from "@repo/ui/account";
 import { PageTransitions } from "@repo/ui/page-transitions";
 

@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "../account/common";
 import { IranianDateTimeInput } from "../kit/IranianDateInput";
 import { LegacyReadiness } from "./legacy-readiness";
 import { OfferingFields, readOffering } from "./offering-fields";
@@ -950,11 +951,10 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
             </Button>
           </form>
         )}
-        {scheduleResult !== null && (
-          <p role="status" className="mt-4 text-sm text-muted-foreground">
-            {t("seriesScheduled", { count: scheduleResult })}
-          </p>
-        )}
+        <SuccessNotice
+          success={scheduleResult !== null}
+          message={t("seriesScheduled", { count: scheduleResult ?? 0 })}
+        />
         {open && (
           <>
             <OccurrenceSeriesManager serviceId={s.id} />
@@ -1381,11 +1381,10 @@ function OccurrenceActions({
         <QueryError error={command.error} />
       </BottomSheet>
       <QueryError error={command.error ?? chat.error} />
-      {chat.isSuccess && (
-        <p role="status" className="mt-3 text-sm">
-          {t("conversationAvailable")}
-        </p>
-      )}
+      <SuccessNotice
+        success={chat.isSuccess}
+        message={t("conversationAvailable")}
+      />
     </div>
   );
 }

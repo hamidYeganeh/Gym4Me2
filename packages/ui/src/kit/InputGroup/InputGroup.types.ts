@@ -1,4 +1,5 @@
 import { Button } from "@repo/ui/kit/Button";
+import type { InputProps } from "@repo/ui/kit/Input";
 import type { VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import type {
@@ -18,7 +19,7 @@ export type InputGroupButtonProps = Omit<
 
 export type InputGroupTextProps = React.ComponentProps<"span">;
 
-export type InputGroupInputProps = React.ComponentProps<"input">;
+export type InputGroupInputProps = InputProps;
 
 export type InputGroupTextareaProps = React.ComponentProps<"textarea">;
 

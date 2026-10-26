@@ -18,7 +18,7 @@ import type {
   ComboboxValueProps,
 } from "./Combobox.types";
 
-import { Combobox as ComboboxPrimitive } from "@base-ui/react";
+import { Combobox as ComboboxPrimitive } from "@animate-ui/react/primitives/base-ui";
 import { cn } from "@repo/ui/lib/utils";
 import * as React from "react";
 

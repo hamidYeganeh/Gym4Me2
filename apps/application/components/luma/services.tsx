@@ -33,7 +33,20 @@ export function ServicesPage({
 }: { organizationId?: string; branchId?: string; back?: string } = {}) {
   const w = useTranslations("Workflow");
   const [sport, setSport] = useState("");
-  const [kind, setKind] = useState("");
+  const searchParams = useSearchParams();
+  const [kind, setKind] = useState(() => {
+    const requested = searchParams.get("kind") ?? "";
+    return [
+      "class",
+      "course",
+      "court",
+      "access",
+      "membership",
+      "program",
+    ].includes(requested)
+      ? requested
+      : "";
+  });
   const sports =
     useSportsQuery<{ id: string; name: string; formats: string[] }[]>(
       "sports/formats",

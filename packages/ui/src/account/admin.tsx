@@ -17,7 +17,7 @@ import type { OrganizationStatus } from "@repo/api/business";
 import type { PublicationStatus } from "@repo/api/catalog";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import { toast } from "sonner";
+import { toast } from "../kit/Sileo";
 import { Button } from "@repo/ui/kit/Button";
 import { Card, CardContent } from "@repo/ui/kit/Card";
 import {
@@ -66,7 +66,7 @@ export function DecisionDialog({
 
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<unknown>(null);
   async function submit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -77,7 +77,7 @@ export function DecisionDialog({
       close();
       toast.success(t("Copy.changesSaved"));
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       setBusy(false);
     }

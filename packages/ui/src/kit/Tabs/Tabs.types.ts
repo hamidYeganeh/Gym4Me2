@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { Tabs as TabsPrimitive } from "radix-ui";
+import { Tabs as TabsPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { tabsListVariants } from "./Tabs.styles";
 export type TabsProps = React.ComponentProps<typeof TabsPrimitive.Root>;

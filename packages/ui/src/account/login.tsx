@@ -1,9 +1,7 @@
 "use client";
-import { useTranslations } from "@repo/i18n";
 
 import { useRequestOtp, useVerifyOtp, usePasswordLogin } from "@repo/api/auth";
 import { ApiError, type ApiApplication as Client } from "@repo/api";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   useCallback,
@@ -22,6 +20,9 @@ import { MobileAuth } from "./mobile-auth";
 import { useOtpAutofill } from "./otp-autofill";
 import { safeReturnPath } from "./safe-return-path";
 import { loginDestination } from "./login-destination";
+import { LoginPolicyNotice } from "./login-policy";
+import { applicationAuthCancelHref } from "../lib/auth-routes";
+import { otpDeadlines, otpSecondsRemaining } from "./otp-timing";
 import "./auth-controls.css";
 function restoreFailedLoginFocus(origin: Element | null) {
   requestAnimationFrame(() => {
@@ -65,8 +66,6 @@ export function LoginPage({
   recovery?: boolean;
   initialMethod?: "otp" | "password";
 }) {
-  const t = useTranslations();
-
   const requestOtp = useRequestOtp();
   const verifyOtp = useVerifyOtp();
   const passwordLogin = usePasswordLogin();
@@ -80,7 +79,9 @@ export function LoginPage({
   const [challenge, setChallenge] = useState<string | null>(null);
   const [deadline, setDeadline] = useState(0);
   const [remaining, setRemaining] = useState(0);
-  const [error, setError] = useState<string | null>(null);
+  const [expiresAt, setExpiresAt] = useState(0);
+  const [expiresIn, setExpiresIn] = useState(0);
+  const [error, setError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
   const [verified, setVerified] = useState(false);
   const [codeRejected, setCodeRejected] = useState(false);
@@ -105,12 +106,19 @@ export function LoginPage({
     );
   }, [client, recovery]);
   useEffect(() => {
-    const tick = () =>
-      setRemaining(Math.max(0, Math.ceil((deadline - Date.now()) / 1000)));
+    const tick = () => {
+      const now = Date.now();
+      setRemaining(otpSecondsRemaining(deadline, now));
+      setExpiresIn(otpSecondsRemaining(expiresAt, now));
+    };
     tick();
     const timer = setInterval(tick, 1000);
-    return () => clearInterval(timer);
-  }, [deadline]);
+    document.addEventListener("visibilitychange", tick);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", tick);
+    };
+  }, [deadline, expiresAt]);
   async function requestCode() {
     if (pending.current) return;
     const origin = document.activeElement;
@@ -122,13 +130,18 @@ export function LoginPage({
     try {
       setCode("");
       await autofill.begin();
+      const requestedAt = Date.now();
       const result = await requestOtp.mutateAsync({ phone: digits(phone) });
+      const timing = otpDeadlines(result, requestedAt, Date.now());
       setChallenge(result.challengeId);
-      setDeadline(Date.now() + result.retryAfter * 1000);
+      setDeadline(timing.resendAt);
+      setExpiresAt(timing.expiresAt);
+      setRemaining(otpSecondsRemaining(timing.resendAt));
+      setExpiresIn(otpSecondsRemaining(timing.expiresAt));
     } catch (err) {
       autofill.stop();
       restoreFailedLoginFocus(origin);
-      setError(err instanceof Error ? err.message : "Copy.couldNotSendCode");
+      setError(err instanceof Error ? err : "Copy.couldNotSendCode");
       if (err instanceof ApiError && err.status === 429)
         setDeadline(Date.now() + 60000);
     } finally {
@@ -139,6 +152,10 @@ export function LoginPage({
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (pending.current) return;
+    if (challenge && otpSecondsRemaining(expiresAt) === 0) {
+      setExpiresIn(0);
+      return;
+    }
     const origin = document.activeElement;
     const errors = loginFieldErrors({
       phone,
@@ -186,7 +203,7 @@ export function LoginPage({
         );
       } catch (err) {
         restoreFailedLoginFocus(origin);
-        setError(err instanceof Error ? err.message : "Copy.couldNotSignIn");
+        setError(err instanceof Error ? err : "Copy.couldNotSignIn");
         pending.current = false;
         setBusy(false);
       }
@@ -213,7 +230,7 @@ export function LoginPage({
       );
     } catch (err) {
       restoreFailedLoginFocus(origin);
-      setError(err instanceof Error ? err.message : "Copy.couldNotSignIn");
+      setError(err instanceof Error ? err : "Copy.couldNotSignIn");
       setCodeRejected(
         err instanceof ApiError && (err.status === 400 || err.status === 401),
       );
@@ -221,17 +238,6 @@ export function LoginPage({
       setBusy(false);
     }
   }
-  const policyNotice = (
-    <p className="text-sm leading-7 text-muted-foreground">
-      {t("Privacy.loginNotice")}{" "}
-      <Link
-        href={`/privacy?${new URLSearchParams({ from: "login", method, returnTo: returnPath, ...(recovery ? { recovery: "true" } : {}) })}`}
-        className="inline-flex min-h-11 items-center justify-center underline underline-offset-4"
-      >
-        {t("Privacy.readPolicy")}
-      </Link>
-    </p>
-  );
   return (
     <MobileAuth
       client={client}
@@ -250,6 +256,7 @@ export function LoginPage({
       method={method}
       challenge={challenge}
       remaining={remaining}
+      expiresIn={expiresIn}
       busy={busy}
       verified={verified}
       codeRejected={codeRejected}
@@ -261,14 +268,21 @@ export function LoginPage({
       editPhone={() => {
         autofill.stop();
         setChallenge(null);
+        setExpiresAt(0);
+        setExpiresIn(0);
         setCodeRejected(false);
         setVerified(false);
         setAttempted(false);
         setCode("");
         setError(null);
       }}
-      policy={policyNotice}
-      cancelHref={returnPath}
+      policy={<LoginPolicyNotice />}
+      returnTo={returnPath}
+      cancelHref={
+        client === "application"
+          ? applicationAuthCancelHref(returnPath)
+          : returnPath
+      }
     />
   );
 }

@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "../account/common";
 import { IranianDateTimeInput } from "../kit/IranianDateInput";
 import { ClassRoster } from "./class-roster";
 import {
@@ -422,7 +423,7 @@ function AdminSessionCreate({ service }: { service: ScheduleService }) {
         </label>
         {invalid && <p role="alert">{t("endAfterStart")}</p>}
         <QueryError error={command.error} />
-        {command.isSuccess && <p role="status">{t("created")}</p>}
+        <SuccessNotice success={command.isSuccess} message={t("created")} />
         <Button type="submit" disabled={command.isPending}>
           {t("save")}
         </Button>

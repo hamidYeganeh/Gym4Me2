@@ -5,9 +5,11 @@ export type ClassSummary = {
   title: string;
   level: string;
   coachName: string;
-  calories: number;
-  minutes: number;
-  score: number;
+  calories?: number;
+  minutes?: number;
+  score?: number;
+  priceLabel?: string;
+  coachPhoto?: { src: string; alt: string };
   photo?: { src: string; alt: string };
 };
 export type ClassCardVariants = VariantProps<typeof classCardVariants>;
@@ -24,6 +26,7 @@ export type ClassCardProps = ClassCardVariants & {
   href?: string;
   saved?: boolean;
   onSavedChange?: (saved: boolean) => void;
+  compact?: boolean;
   className?: string;
   priority?: boolean;
 };

@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "../account/common";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "@repo/i18n";
@@ -268,12 +269,14 @@ export function ServiceCoverEditor({ service }: { service: ServiceDto }) {
         </fieldset>
       </form>
       <QueryError error={upload.error ?? remove.error} />
-      {(upload.isSuccess || remove.isSuccess) &&
-        (service.status === "draft" || service.hasUnpublishedChanges) && (
-          <p role="status" className="my-3 text-sm text-muted-foreground">
-            {t("serviceCoverSaved")}
-          </p>
-        )}
+      <SuccessNotice
+        success={upload.isSuccess}
+        message={t("serviceCoverSaved")}
+      />
+      <SuccessNotice
+        success={remove.isSuccess}
+        message={t("serviceCoverSaved")}
+      />
     </section>
   );
 }
