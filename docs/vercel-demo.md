@@ -6,8 +6,11 @@
 > Start with the [current role accounts and walkthrough](qa/meeting-guide-fa.md)
 > and [rehearsal evidence](qa/demo-rehearsal-2026-10-23.md). Nothing reseeds on login.
 
-This deployment uses four Hobby projects and one isolated Neon Free database.
-No live SMS or payment provider is configured. Use synthetic data only.
+This deployment uses five Hobby projects and one isolated Neon Free database.
+As of 2026-10-27, Kavenegar SMS is live and payments use the BankTest Saman
+sandbox. Use password login for the eight synthetic role accounts; their private
+credentials are delivered outside Git in `.ops-private/demo-release/demo-access.fa.md`.
+The old fixed OTP is no longer valid. Use synthetic data only.
 
 ## PH0–PH4 demo delivery
 
@@ -61,14 +64,16 @@ reads and logout of the temporary test session. No token/cookie is included
 in the artifact or committed evidence. The existing web origins were retained.
 
 Open the APK on an Android phone and approve installation from the app used to
-open this file. Athlete `09000000003` or coach `09000000008` uses demo OTP `11111`.
-The online demo API requires internet; real SMS and payments remain disabled.
+open this file. The APK above is historical; this release validates the web demo.
+For the current web app, use the private demo password for athlete `09000000003`
+or coach `09000000008`. The online API requires internet. SMS is live; the payment
+adapter is restricted to the BankTest sandbox.
 
 ## Configuration
 
 - Git branch: `main` (demo branch merged on 2026-10-20) in `hamidYeganeh/Gym4Me2`.
 - Projects: `gym4me-demo-api`, `gym4me-demo-application`,
-  `gym4me-demo-business`, `gym4me-demo-admin`.
+  `gym4me-demo-business`, `gym4me-demo-admin`, `gym4me-demo-website`.
 - Root directories: the matching directories under `apps/`.
 - Node: 24. Web build: `pnpm exec next build --webpack`.
 - API build: `pnpm build`; NestJS detects `src/main.ts`.
@@ -92,7 +97,8 @@ not silently reset or treated as complete.
 
 ## Test accounts
 
-Use **OTP 11111** with these synthetic numbers. No SMS is sent.
+Use **password login** with these synthetic numbers and the separately delivered
+private role passwords. Do not request SMS for these fictional numbers.
 
 | Role               | Phone       | Surface     |
 | ------------------ | ----------- | ----------- |
@@ -106,9 +112,10 @@ Use **OTP 11111** with these synthetic numbers. No SMS is sent.
 | Coach              | 09000000008 | Application |
 
 The normal session, authorization, consent and rate-limit checks still run.
-Only seeded numbers can request demo OTPs; changing phone numbers is disabled
-in the demo. The payment screen supports success, failure, timeout and late
-confirmation. An admin can reconcile pending payments.
+Fixed demo OTPs are disabled while Kavenegar is active. Password provisioning
+was restricted to the eight existing synthetic accounts, without changing their
+roles or any real account. Current checkout uses BankTest, while historical mock
+payment records remain readable. An admin can reconcile pending payments.
 
 ## PH2/PH3 demo flows
 
@@ -128,7 +135,7 @@ before a new route is considered available online.
 Coach `09000000008` and athlete `09000000003` use the same application. For
 sequential role testing, sign out before changing accounts. Existing sport
 services, memberships, court/course booking, QR reception, refunds and admin
-reconciliation use the same mock commerce engine.
+reconciliation use the shared commerce engine with the configured payment adapter.
 
 Invitees explicitly accept or decline; either participant may end collaboration.
 Pending phone invitations do not expose private recipient identity. Assessment
@@ -145,7 +152,7 @@ The standard S3 adapter remains the default outside demo mode.
 Demo accounts and data are shared between visitors. Do not enter real personal
 or financial information. Retention and background commerce timers are disabled
 for the serverless demo. Successful sports/coaching commands await the durable job runner,
-so mock refunds and notifications can complete without an always-running server.
+so eligible refunds and notifications can complete without an always-running server.
 Catalog refresh also processes due work before reading capacity. Time-based tasks are not continuously processed while the demo is idle.
 Sample class sessions are dated relative to the initial seed.
 

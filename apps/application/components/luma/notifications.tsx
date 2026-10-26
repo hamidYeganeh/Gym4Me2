@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useId, useRef } from "react";
 import { isActiveSurfaceElement } from "@repo/ui/lib/active-surface";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale } from "@repo/i18n";
+import { useLocale, useTranslations } from "@repo/i18n";
+import { isTranslationKey } from "@repo/i18n/messages";
 import { Bell } from "lucide-react";
 import {
   useSportsNotifications,
@@ -139,6 +140,9 @@ function Notification({
 }) {
   const t = useLuma(),
     locale = useLocale();
+  const translate = useTranslations();
+  const title = isTranslationKey(n.title) ? translate(n.title) : n.title;
+  const body = isTranslationKey(n.body) ? translate(n.body) : n.body;
   const mark = useSportsCommand<NotificationReadDto, Record<string, never>>(
     `sports/community/notifications/${n.id}/read`,
   );
@@ -147,13 +151,13 @@ function Notification({
     <article
       id={`notification-${n.id}`}
       tabIndex={-1}
-      aria-label={n.title}
+      aria-label={title}
       aria-busy={mark.isPending}
       className="pb-2 focus-visible:outline-2 focus-visible:outline-ring"
     >
       <Row
-        title={n.title}
-        meta={[n.body, stamp(n.createdAt, locale)].filter(Boolean).join(" · ")}
+        title={title}
+        meta={[body, stamp(n.createdAt, locale)].filter(Boolean).join(" · ")}
         href={n.href}
         icon={<Bell size={24} aria-hidden="true" />}
       >
@@ -168,7 +172,7 @@ function Notification({
           disabled={mark.isPending}
           aria-busy={mark.isPending}
           aria-label={t("markNotificationRead", {
-            title: [n.title, n.body].filter(Boolean).join(" · "),
+            title: [title, body].filter(Boolean).join(" · "),
           })}
           onClick={() => {
             if (pending.current) return;

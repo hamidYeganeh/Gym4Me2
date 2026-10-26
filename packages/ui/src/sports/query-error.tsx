@@ -5,7 +5,7 @@ import { useTranslations } from "@repo/i18n";
 import { Button } from "../kit/Button";
 import { ErrorNotice } from "../account/common";
 import { useQueryRetry } from "../hooks/use-query-retry";
-import { accountRecovery } from "../lib/account-recovery";
+import { accountReadDenied, accountRecovery } from "../lib/account-recovery";
 import { useApiContext } from "@repo/api/provider";
 import { AuthRequired } from "../account/auth-entry";
 export function QueryError({
@@ -39,7 +39,7 @@ export function QueryError({
     );
   return (
     <div className="text-destructive my-4">
-      <ErrorNotice error={error} />
+      <ErrorNotice error={error} persistent={accountReadDenied(error)} />
       {recovery ? (
         <Button asChild variant="outline" className="min-h-11">
           <Link href={recovery.href}>
@@ -47,7 +47,8 @@ export function QueryError({
           </Link>
         </Button>
       ) : (
-        retry && (
+        retry &&
+        !accountReadDenied(error) && (
           <Button
             ref={button}
             type="button"

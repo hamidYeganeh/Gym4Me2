@@ -6,7 +6,7 @@ import { useTranslations } from "@repo/i18n";
 import { type ReactNode, type RefObject } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { accountRecovery } from "../lib/account-recovery";
+import { accountReadDenied, accountRecovery } from "../lib/account-recovery";
 import { useQueryRetry } from "../hooks/use-query-retry";
 import { useFeedbackToast } from "../hooks/use-feedback-toast";
 import { Alert, AlertDescription } from "@repo/ui/kit/Alert";
@@ -76,10 +76,13 @@ export function Status({ value }: { value: string }) {
 export function ErrorNotice({
   error,
   validation = false,
+  persistent = false,
 }: {
   error: unknown;
   /** Only errors produced by local form validation belong inside the form. */
   validation?: boolean;
+  /** Keep blocking access errors visible after a toast would disappear. */
+  persistent?: boolean;
 }) {
   const t = useTranslations();
   const code =
@@ -112,8 +115,8 @@ export function ErrorNotice({
     isTranslationKey(code) ? code : "Errors.requestFailed",
     params,
   );
-  useFeedbackToast("error", message, validation ? null : error);
-  return error && validation ? (
+  useFeedbackToast("error", message, validation || persistent ? null : error);
+  return error && (validation || persistent) ? (
     <Alert variant="destructive" role="alert">
       <AlertDescription>{message}</AlertDescription>
     </Alert>
@@ -226,7 +229,7 @@ export function QueryError({
   if (!error) return null;
   return (
     <div className="grid gap-3">
-      <ErrorNotice error={error} />
+      <ErrorNotice error={error} persistent={accountReadDenied(error)} />
       {recovery ? (
         <Button asChild variant="outline" className="min-h-11 w-fit">
           <Link href={recovery.href}>
@@ -238,7 +241,8 @@ export function QueryError({
           </Link>
         </Button>
       ) : (
-        retry && (
+        retry &&
+        !accountReadDenied(error) && (
           <Button
             ref={button}
             type="button"

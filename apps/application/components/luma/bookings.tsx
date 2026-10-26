@@ -253,6 +253,14 @@ export function MembershipDetail() {
   const [clock] = useState(() => Date.now());
   const id = useSearchParams().get("id");
   const t = useLuma();
+  const locale = useLocale();
+  const eventLabels: Record<string, string> = {
+    grant: t("entitlement.grant"),
+    hold: t("entitlement.hold"),
+    consume: t("entitlement.consume"),
+    release: t("entitlement.release"),
+    restore: t("entitlement.restore"),
+  };
   const query = useSportsQuery<MembershipDto>(
     `sports/account/memberships/${id}`,
     undefined,
@@ -322,7 +330,11 @@ export function MembershipDetail() {
             <CommandError error={freeze.error} />
             <Section title={t("history")}>
               {query.data.events.map((e) => (
-                <Row key={e.id} title={`${e.kind} · ${e.quantity}`} />
+                <Row
+                  key={e.id}
+                  title={`${eventLabels[e.kind] ?? t("history")} · ${new Intl.NumberFormat(locale).format(e.quantity)}`}
+                  meta={stamp(e.createdAt, locale)}
+                />
               ))}
             </Section>
           </>

@@ -411,17 +411,22 @@ export function QueryState({
   if (query.error)
     return (
       <div className="luma-empty">
-        <ErrorNotice error={query.error} />
-        <button
-          ref={button}
-          type="button"
-          className="luma-cta"
-          disabled={retrying}
-          aria-busy={retrying}
-          onClick={run}
-        >
-          {t("retry")}
-        </button>
+        <ErrorNotice
+          error={query.error}
+          persistent={accountReadDenied(query.error)}
+        />
+        {!accountReadDenied(query.error) && (
+          <button
+            ref={button}
+            type="button"
+            className="luma-cta"
+            disabled={retrying}
+            aria-busy={retrying}
+            onClick={run}
+          >
+            {t("retry")}
+          </button>
+        )}
       </div>
     );
   return children;

@@ -11,7 +11,7 @@ import { Check } from "lucide-react";
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useTranslations } from "@repo/i18n";
+import { useLocale, useTranslations } from "@repo/i18n";
 import { checkoutIssue } from "../../lib/checkout-availability";
 import { paymentGatewayDestination } from "../../lib/payment-gateway";
 import {
@@ -36,6 +36,7 @@ import {
   Price,
   QueryState,
   Row,
+  stamp,
   useLuma,
 } from "./common";
 export function CheckoutPage() {
@@ -60,6 +61,7 @@ function CheckoutForm({
   occurrence: string | null;
 }) {
   const w = useTranslations("Workflow");
+  const locale = useLocale();
   const params = useSearchParams();
   const [renewMembershipId, setRenewMembershipId] = useState(
     params.get("renew") ?? "",
@@ -322,7 +324,8 @@ function CheckoutForm({
                       )
                       .map((m) => (
                         <option key={m.id} value={m.id}>
-                          {m.title} · {m.endsAt ?? ""}
+                          {m.title}
+                          {m.endsAt ? ` · ${stamp(m.endsAt, locale)}` : ""}
                         </option>
                       ))}
                   </select>
