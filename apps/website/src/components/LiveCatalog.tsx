@@ -22,6 +22,7 @@ type LiveSession = {
 export function LiveCatalog() {
   const locale = useLocale(),
     t = useTranslations("Growth"),
+    tariff = useTranslations("Tariffs"),
     clubs = useClubs(),
     sessions = useGrowthQuery<{ items: LiveSession[] }>(
       "sports/recommendations",
@@ -55,9 +56,14 @@ export function LiveCatalog() {
         category,
         address,
         price: c.startingTariff
-          ? number.format(c.startingTariff.priceToman)
+          ? tariff("fromPrice", {
+              amount: number.format(c.startingTariff.priceToman),
+            })
           : t("notAnnounced"),
-        pricePeriod: c.startingTariff?.unit ?? "",
+        pricePeriod: c.startingTariff
+          ? tariff(`unit_${c.startingTariff.unit}`)
+          : "",
+        priceCurrency: t("toman"),
         rating:
           c.rating.average === null
             ? t("notAnnounced")
@@ -133,7 +139,7 @@ export function LiveCatalog() {
                 <p>
                   {number.format(Number(s.amount_minor) / 10)} {t("toman")}
                 </p>
-                <p>{t("remaining", { count: s.remaining })}</p>
+                <p>{t("remaining", { count: number.format(s.remaining) })}</p>
                 <Button asChild>
                   <a
                     href={
