@@ -109,13 +109,13 @@ export function ServicePlayground() {
     const body = bodies.current[index]; const scene = world.current; if (!body || !scene) return;
     const rect = scene.getBoundingClientRect(); const x = event.clientX - rect.left; const y = event.clientY - rect.top;
     suppressClick.current = false;
-    drag.current = { index, offsetX: x - body.x, offsetY: y - body.y, startX: x, startY: y, lastX: x, lastY: y, time: performance.now(), moved: false };
+    drag.current = { index, offsetX: x - body.x, offsetY: y - body.y, startX: x, startY: y, lastX: x, lastY: y, time: event.timeStamp, moved: false };
     event.currentTarget.setPointerCapture(event.pointerId);
   }
   function pointerMove(event: PointerEvent<HTMLAnchorElement>) {
     const held = drag.current; const scene = world.current; if (!held || !scene) return;
     const body = bodies.current[held.index]!; const rect = scene.getBoundingClientRect(); const x = event.clientX - rect.left; const y = event.clientY - rect.top;
-    const now = performance.now(); const dt = Math.max(16, now - held.time) / 1000;
+    const now = event.timeStamp; const dt = Math.max(16, now - held.time) / 1000;
     body.vx = Math.max(-900, Math.min(900, (x - held.lastX) / dt)); body.vy = Math.max(-900, Math.min(900, (y - held.lastY) / dt));
     body.x = Math.max(body.w / 2, Math.min(rect.width - body.w / 2, x - held.offsetX)); body.y = Math.max(body.h / 2, Math.min(rect.height - body.h / 2, y - held.offsetY));
     if (Math.hypot(x - held.startX, y - held.startY) > 7) held.moved = true;

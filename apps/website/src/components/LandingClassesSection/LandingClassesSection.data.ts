@@ -22,7 +22,11 @@ const records = [
   },
 ] as const;
 
-export function getLandingClasses(locale: string): readonly LandingClass[] {
+export function getLandingClasses(locale: string): readonly (LandingClass & {
+  calories: number;
+  minutes: number;
+  score: number;
+})[] {
   const t = getTranslator(locale);
   return records.map((item) => ({
     ...item,

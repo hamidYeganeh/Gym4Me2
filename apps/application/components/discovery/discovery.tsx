@@ -234,7 +234,7 @@ export function Discovery() {
     <div key="cinematic" className="discovery-feed-group">
       {clubSection(
         "cinematic",
-        locale === "fa" ? "فضاهایی برای تمرین" : "Spaces to train",
+        t("spacesToTrain"),
       )}
       {featuredSection(3)}
       <DiscoveryCoaches />
@@ -454,14 +454,10 @@ export function Discovery() {
             onClick={() => void query.fetchNextPage()}
           >
             {query.isFetchingNextPage
-              ? locale === "fa"
-                ? "در حال دریافت…"
-                : "Loading…"
+              ? t("loadingMore")
               : query.isFetchNextPageError
                 ? locationsCopy("retry")
-                : locale === "fa"
-                  ? "باشگاه‌های بیشتر"
-                  : "More clubs"}
+                : t("moreClubs")}
           </Button>
         </div>
       )}

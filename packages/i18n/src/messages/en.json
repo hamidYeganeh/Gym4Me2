@@ -68,7 +68,14 @@
     "emptyDescription": "Approved clubs will appear here. You can also explore classes and calendars.",
     "noResultsTitle": "No matching clubs",
     "noResultsDescription": "Try a different search or clear your filters to see more options.",
-    "resetFilters": "Clear filters"
+    "resetFilters": "Clear filters",
+    "trainingClasses": "Training classes",
+    "spacesToTrain": "Spaces to train",
+    "loadingMore": "Loading…",
+    "moreClubs": "More clubs",
+    "locationEmpty": "No clubs in this location yet.",
+    "retry": "Retry",
+    "loadMore": "Load more"
   },
   "DiscoveryMap": {
     "allClubs": "All clubs",
@@ -109,7 +116,13 @@
     "copyright": "©",
     "provider": "OpenStreetMap",
     "zoomIn": "Zoom in",
-    "zoomOut": "Zoom out"
+    "zoomOut": "Zoom out",
+    "minimumPrice": "Minimum price",
+    "maximumPrice": "Maximum price",
+    "minimum": "Min",
+    "maximum": "Max",
+    "toman": "toman",
+    "anyPrice": "Any"
   },
   "Clubs": {
     "save": "Save club",
@@ -162,7 +175,8 @@
     "certified": "Certified",
     "experience": "years of experience",
     "rating": "Rating",
-    "sample": "Illustrative coach profiles"
+    "sample": "Illustrative coach profiles",
+    "fallbackName": "Coach"
   },
   "Gallery": {
     "sectionTitle": "Gallery",

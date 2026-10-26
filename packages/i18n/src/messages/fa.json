@@ -68,7 +68,14 @@
     "emptyDescription": "باشگاه‌ها پس از تأیید اینجا نمایش داده می‌شوند. کلاس‌ها و تقویم‌ها را هم می‌توانی بررسی کنی.",
     "noResultsTitle": "باشگاه مطابق جستجویت پیدا نشد",
     "noResultsDescription": "عبارت دیگری جستجو کن یا فیلترها را پاک کن تا گزینه‌های بیشتری ببینی.",
-    "resetFilters": "پاک کردن فیلترها"
+    "resetFilters": "پاک کردن فیلترها",
+    "trainingClasses": "کلاس‌های ورزشی",
+    "spacesToTrain": "فضاهایی برای تمرین",
+    "loadingMore": "در حال دریافت…",
+    "moreClubs": "باشگاه‌های بیشتر",
+    "locationEmpty": "هنوز باشگاهی در این مکان ثبت نشده است.",
+    "retry": "تلاش دوباره",
+    "loadMore": "نمایش بیشتر"
   },
   "DiscoveryMap": {
     "allClubs": "همه باشگاه‌ها",
@@ -109,7 +116,13 @@
     "copyright": "©",
     "provider": "OpenStreetMap",
     "zoomIn": "بزرگ‌نمایی",
-    "zoomOut": "کوچک‌نمایی"
+    "zoomOut": "کوچک‌نمایی",
+    "minimumPrice": "حداقل قیمت",
+    "maximumPrice": "حداکثر قیمت",
+    "minimum": "حداقل",
+    "maximum": "حداکثر",
+    "toman": "تومان",
+    "anyPrice": "بدون سقف"
   },
   "Clubs": {
     "save": "ذخیره باشگاه",
@@ -162,7 +175,8 @@
     "certified": "دارای گواهی",
     "experience": "سال تجربه",
     "rating": "امتیاز",
-    "sample": "پروفایل‌های نمایشی مربیان"
+    "sample": "پروفایل‌های نمایشی مربیان",
+    "fallbackName": "مربی"
   },
   "Gallery": {
     "sectionTitle": "گالری تصاویر",

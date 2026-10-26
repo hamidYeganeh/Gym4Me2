@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { useLocale, useTranslations } from "@repo/i18n";
+import { useTranslations } from "@repo/i18n";
 import { useLocationDiscovery } from "@repo/api/catalog";
 import { Button } from "@repo/ui/kit/Button";
 import { Skeleton } from "@repo/ui/kit/Skeleton";
@@ -17,7 +17,6 @@ export function LocationPage({
   kind: "provinces" | "cities" | "districts";
   locationId: string;
 }) {
-  const locale = useLocale();
   const t = useTranslations("Discovery");
   const mapCopy = useTranslations("DiscoveryMap");
   const places = useLocationDiscovery({
@@ -83,9 +82,7 @@ export function LocationPage({
       </section>
       {!query.isPending && !query.isError && !query.clubs.length && (
         <p className="py-12 text-center text-muted-foreground">
-          {locale === "fa"
-            ? "هنوز باشگاهی در این مکان ثبت نشده است."
-            : "No clubs in this location yet."}
+          {t("locationEmpty")}
         </p>
       )}
       <div ref={sentinel} className="py-6">
@@ -102,13 +99,7 @@ export function LocationPage({
                 : query.fetchNextPage()
             }
           >
-            {locale === "fa"
-              ? query.isError
-                ? "تلاش دوباره"
-                : "نمایش بیشتر"
-              : query.isError
-                ? "Retry"
-                : "Load more"}
+            {query.isError ? t("retry") : t("loadMore")}
           </Button>
         )}
       </div>

@@ -290,11 +290,7 @@ export function DiscoveryMap() {
             <Field>
               <FieldLabel id="map-price-label">{t("pricePerVisit")}</FieldLabel>
               <Slider
-                thumbLabels={
-                  fa
-                    ? ["حداقل قیمت", "حداکثر قیمت"]
-                    : ["Minimum price", "Maximum price"]
-                }
+                thumbLabels={[t("minimumPrice"), t("maximumPrice")]}
                 aria-labelledby="map-price-label"
                 min={0}
                 max={1000000}
@@ -308,18 +304,16 @@ export function DiscoveryMap() {
               />
               <div className="flex justify-between gap-4 text-sm text-muted-foreground">
                 <span>
-                  {fa ? "حداقل" : "Min"}:{" "}
+                  {t("minimum")}:{" "}
                   {new Intl.NumberFormat(locale).format(price[0])}{" "}
-                  {fa ? "تومان" : "toman"}
+                  {t("toman")}
                 </span>
                 <span>
-                  {fa ? "حداکثر" : "Max"}:{" "}
+                  {t("maximum")}:{" "}
                   {price[1] === 1000000
-                    ? fa
-                      ? "بدون سقف"
-                      : "Any"
+                    ? t("anyPrice")
                     : new Intl.NumberFormat(locale).format(price[1]) +
-                      (fa ? " تومان" : " toman")}
+                      ` ${t("toman")}`}
                 </span>
               </div>
             </Field>

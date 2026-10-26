@@ -103,7 +103,8 @@ export function DiscoveryClasses() {
   const query = useSportsQuery<ServiceDto[]>("sports/services", {
     kind: "class",
   });
-  const title = locale === "fa" ? "کلاس‌های ورزشی" : "Training classes";
+  const discovery = useTranslations("Discovery");
+  const title = discovery("trainingClasses");
   return (
     <Section title={title} href="/services?kind=class">
       <QueryState query={query}>
@@ -182,7 +183,7 @@ function DiscoveryCoach({ coach }: { coach: CoachDirectoryDto }) {
       }}
       coach={{
         id: coach.userId,
-        name: coach.displayName ?? (locale === "fa" ? "مربی" : "Coach"),
+        name: coach.displayName ?? t("fallbackName"),
         specialty: coach.specialties.filter(Boolean).join(" · "),
         certified: false,
         yearsOfExperience: coach.experienceYears,
