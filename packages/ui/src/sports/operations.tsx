@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "../account/common";
 import { useOrganizations } from "@repo/api/business";
 import { MemberBenefits } from "./member-benefits";
 import { useRef, useState } from "react";
@@ -327,7 +328,7 @@ export function Imports({ services }: { services: ServiceDto[] }) {
             </Button>
           )}
         <QueryError error={preview.error ?? apply.error} />
-        {apply.isSuccess && <p>{t("created")}</p>}
+        <SuccessNotice success={apply.isSuccess} message={t("created")} />
       </CardContent>
     </Card>
   );

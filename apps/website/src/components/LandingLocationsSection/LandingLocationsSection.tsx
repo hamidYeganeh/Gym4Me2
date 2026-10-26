@@ -1,4 +1,5 @@
 "use client";
+import { ErrorNotice, SuccessNotice } from "@repo/ui/account";
 
 import { useState } from "react";
 import { useTranslations } from "@repo/i18n";
@@ -15,6 +16,7 @@ import { preferredDiscoveryLocation } from "@repo/ui/lib/discovery-location";
 import styles from "./LandingLocationsSection.module.css";
 
 export function LandingLocationsSection() {
+  const savedCopy = useTranslations("Copy");
   const t = useTranslations("Website.locations");
   const copy = useTranslations("LocationDiscovery");
   const account = useAccountLocation();
@@ -57,8 +59,8 @@ export function LandingLocationsSection() {
           </div>
         </div>
         {account.isError && !guest ? (
-          <p role="alert">
-            {copy("profileError")}{" "}
+          <div>
+            <ErrorNotice error={account.error} />
             <button
               type="button"
               className="min-h-11 underline"
@@ -66,7 +68,7 @@ export function LandingLocationsSection() {
             >
               {copy("retry")}
             </button>
-          </p>
+          </div>
         ) : (
           <LocationExplorer
             key={owner ?? "pending"}
@@ -77,9 +79,13 @@ export function LandingLocationsSection() {
             saving={save.isPending}
           />
         )}
+        <SuccessNotice
+          success={save.isSuccess}
+          message={savedCopy("changesSaved")}
+        />
         {save.isError && (
-          <p role="alert" className="text-sm text-destructive">
-            {copy("saveError")}{" "}
+          <div>
+            <ErrorNotice error={save.error} />
             <button
               type="button"
               className="min-h-11 underline"
@@ -87,7 +93,7 @@ export function LandingLocationsSection() {
             >
               {copy("retry")}
             </button>
-          </p>
+          </div>
         )}
         <FitnessNote
           className="mt-8"

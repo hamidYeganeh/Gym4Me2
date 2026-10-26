@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { loadMapSdk } from "./map-sdk";
-import { LocateFixed, MapPin, RotateCcw } from "lucide-react";
+import { LocateFixed, MapPin, RotateCcw, Plus, Minus } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
+import { Skeleton } from "@repo/ui/kit/Skeleton";
+import { toast } from "@repo/ui/kit/Sonner";
 import { Button } from "@repo/ui/kit/Button";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 import "./discovery-map.css";
@@ -15,6 +17,8 @@ type Layer = {
 };
 type MapInstance = {
   remove(): void;
+  zoomIn(): void;
+  zoomOut(): void;
   invalidateSize(): void;
   setView(point: Point, zoom: number, options?: object): MapInstance;
   fitBounds(points: Point[], options: object): void;
@@ -133,13 +137,6 @@ export function CatalogMap({
         if (alive) setStatus(loadedTiles > 0 ? "ready" : "error");
       })
       .addTo(instance);
-    sdk.control
-      .zoom({
-        position: "topright",
-        zoomInTitle: t("zoomIn"),
-        zoomOutTitle: t("zoomOut"),
-      })
-      .addTo(instance);
     const observer = new ResizeObserver(() => instance.invalidateSize());
     observer.observe(container.current);
     setMapRevision((v) => v + 1);
@@ -230,6 +227,7 @@ export function CatalogMap({
   function locate() {
     if (!navigator.geolocation) {
       setLocation("error");
+      toast.error(t("locationDenied"));
       return;
     }
     setLocation("loading");
@@ -244,7 +242,10 @@ export function CatalogMap({
         );
       },
       () => {
-        if (active.current) setLocation("error");
+        if (active.current) {
+          setLocation("error");
+          toast.error(t("locationDenied"));
+        }
       },
       { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 },
     );
@@ -271,28 +272,53 @@ export function CatalogMap({
         >
           {t("provider")}
         </a>
-        {" · "}
-        <a
-          href="https://www.openstreetmap.org/fixthemap"
-          target="_blank"
-          rel="noreferrer"
+      </div>
+      <div className="discovery-map-zoom">
+        <Button
+          variant="secondary"
+          size="icon-lg"
+          aria-label={t("zoomIn")}
+          disabled={!sdkReady}
+          onClick={() => map.current?.zoomIn()}
         >
-          {t("reportMap")}
-        </a>
+          <Plus />
+        </Button>
+        <Button
+          variant="secondary"
+          size="icon-lg"
+          aria-label={t("zoomOut")}
+          disabled={!sdkReady}
+          onClick={() => map.current?.zoomOut()}
+        >
+          <Minus />
+        </Button>
       </div>
       <div className="discovery-map-locate">
         <Button
           variant="secondary"
           size="icon-lg"
           aria-label={t("myLocation")}
-          disabled={location === "loading"}
+          disabled={location === "loading" || !sdkReady}
           onClick={locate}
         >
           <LocateFixed />
         </Button>
-        {location === "error" && <p role="status">{t("locationDenied")}</p>}
       </div>
-      {status !== "ready" && (
+      {status === "loading" && (
+        <div
+          className="discovery-map-skeleton"
+          role="status"
+          aria-label={t("loading")}
+        >
+          <div className="grid size-full grid-cols-3 gap-3" aria-hidden="true">
+            {Array.from({ length: 12 }, (_, i) => (
+              <Skeleton key={i} className="size-full rounded-2xl" />
+            ))}
+          </div>
+          <span className="sr-only">{t("loadingDescription")}</span>
+        </div>
+      )}
+      {status === "error" && (
         <div className="discovery-map-mapState" role="status">
           <MapPin className="size-7" />
           <h2 className="text-lg font-semibold">

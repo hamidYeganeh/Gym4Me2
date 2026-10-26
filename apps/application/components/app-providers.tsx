@@ -35,6 +35,14 @@ function NativeRuntime() {
   const router = useRouter();
   const { resolvedTheme } = useTheme();
   useEffect(() => {
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute(
+        "content",
+        resolvedTheme === "light" ? "#ffffff" : "#101113",
+      );
+  }, [resolvedTheme]);
+  useEffect(() => {
     let disposed = false;
     const removers: (() => Promise<void>)[] = [];
     void (async () => {
@@ -190,7 +198,7 @@ export function AppProviders({
 }) {
   return (
     <ClientLocaleProvider initialLocale={locale}>
-      <ThemeProvider>
+      <ThemeProvider defaultTheme="dark" storageKey="gym4me-application-theme">
         <AppNavigationRuntime />
         <DirectionAndMotion>{children}</DirectionAndMotion>
       </ThemeProvider>

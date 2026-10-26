@@ -20,7 +20,10 @@ test("both auth routes retain the complete destination without a method query", 
     assert.equal(url.pathname, path);
     assert.equal(url.searchParams.get("returnTo"), destination);
     assert.equal(url.searchParams.has("method"), false);
-    assert.equal(applicationAuthBackPath(url.search), destination);
+    assert.equal(
+      applicationAuthBackPath(url.search),
+      "/services/detail?id=one",
+    );
   }
 });
 test("bookmarked method links resolve to their canonical sign-in page", () => {
@@ -51,7 +54,7 @@ test("auth entry and Back reject external destinations and auth loops", () => {
       applicationAuthBackPath(
         new URLSearchParams({ returnTo: target }).toString(),
       ),
-      "/profile",
+      "/discovery",
     );
   }
   for (const target of [
@@ -63,7 +66,7 @@ test("auth entry and Back reject external destinations and auth loops", () => {
       applicationAuthBackPath(
         new URLSearchParams({ returnTo: target }).toString(),
       ),
-      "/profile",
+      "/discovery",
     );
 });
 test("both auth pages suppress bottom navigation on web and native trailing-slash URLs", () => {

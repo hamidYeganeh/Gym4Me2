@@ -102,7 +102,10 @@ export function SetPasswordPage({
               maxLength={15}
               required
             />
-            <ErrorNotice error={error} />
+            <ErrorNotice
+              error={error}
+              validation={error === "Password.mismatch"}
+            />
           </FieldGroup>
           <div className="mt-auto">
             <Submit

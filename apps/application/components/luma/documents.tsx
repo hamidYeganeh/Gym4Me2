@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "@repo/ui/account";
 import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { useId, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -209,11 +210,10 @@ function DocumentUpload({
       >
         {t(upload.isPending ? "loading" : "send")}
       </button>
-      {upload.isSuccess && (
-        <p role="status" className="luma-meta mt-4">
-          {t("documentSubmitted")}
-        </p>
-      )}
+      <SuccessNotice
+        success={upload.isSuccess}
+        message={t("documentSubmitted")}
+      />
       <CommandError error={upload.error} />
     </form>
   );

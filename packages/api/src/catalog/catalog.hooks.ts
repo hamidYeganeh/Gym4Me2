@@ -1,4 +1,7 @@
 "use client";
+import { clubFeedOptions } from "./catalog-feed";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useApiContext } from "../provider";
 import { validCatalogPrices } from "./catalog.dto";
 import type * as dto from "./catalog.dto";
 import { catalogClients } from "./catalog.clients";
@@ -19,6 +22,7 @@ export function useClubs(
   filters: dto.ClubFiltersDto = {},
   savedOnly = false,
   guestIds?: string[],
+  enabled = true,
 ) {
   return useApiQuery(
     (scope) => [...catalogKeys(scope).clubs(filters), savedOnly, guestIds],
@@ -28,7 +32,7 @@ export function useClubs(
         : savedOnly
           ? catalogClients.savedClubs(api, filters, { signal })
           : catalogClients.clubs(api, filters, { signal }),
-    validCatalogPrices(filters),
+    enabled && validCatalogPrices(filters),
   );
 }
 export function useClub(id: string | undefined) {
@@ -96,4 +100,11 @@ export function useCreateReview() {
       catalogClients.createReview(api, input.id, input.branchId, input.input),
     [["catalog"], ["admin"]],
   );
+}
+
+export function useInfiniteClubs(
+  filters: Omit<dto.ClubFiltersDto, "page"> = {},
+) {
+  const { api } = useApiContext();
+  return useInfiniteQuery(clubFeedOptions(api, filters));
 }

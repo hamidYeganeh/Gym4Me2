@@ -380,13 +380,13 @@
   max-width: 25.5rem;
   margin-inline: auto;
   display: flex;
-  border: 1px solid color-mix(in srgb, var(--background) 80%, var(--border));
+  border: 1px solid var(--border);
   padding: 0.3rem;
   border-radius: 999px;
   background: var(--surface-glass);
   box-shadow:
-    0 5px 25px #0001,
-    inset 0 1px 1px #fff6;
+    0 8px 32px #0003,
+    inset 0 1px 0 color-mix(in srgb, var(--foreground) 5%, transparent);
 }
 .luma-navigation a {
   display: flex;
@@ -403,8 +403,8 @@
   text-align: center;
 }
 .application-frame .luma-navigation a[aria-current="page"] {
-  background: var(--muted);
-  color: var(--foreground);
+  background: color-mix(in srgb, var(--primary) 12%, var(--card));
+  color: var(--primary-ink);
   font-weight: 600;
 }
 .luma-navigation a[aria-current="page"] svg {

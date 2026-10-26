@@ -20,6 +20,8 @@ import {
   type CarouselApi,
 } from "@repo/ui/kit/Carousel";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
+import { Slider } from "@repo/ui/kit/Slider";
+import { Field, FieldLabel } from "@repo/ui/kit/Field";
 import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import {
   InputGroup,
@@ -124,8 +126,8 @@ function MapFilter({
   optionsSource?: React.ComponentProps<typeof NativeSelect>["optionsSource"];
 }) {
   return (
-    <label className="grid gap-2 text-sm">
-      {label}
+    <Field>
+      <FieldLabel>{label}</FieldLabel>
       <NativeSelect
         value={value}
         sheetTitle={label}
@@ -138,7 +140,7 @@ function MapFilter({
           </NativeSelectOption>
         ))}
       </NativeSelect>
-    </label>
+    </Field>
   );
 }
 
@@ -151,7 +153,9 @@ export function DiscoveryMap() {
   const categories = useTaxonomies("club-categories");
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
-  const [price, setPrice] = useState("all");
+  const [price, setPrice] = useState<number[]>([0, 1000000]);
+  const [appliedPrice, setAppliedPrice] = useState<number[]>([0, 1000000]);
+  const priceActive = appliedPrice[0] > 0 || appliedPrice[1] < 1000000;
   const [sort, setSort] = useState("recommended");
   const [selectedId, setSelectedId] = useState("");
   const [api, setApi] = useState<CarouselApi>();
@@ -160,8 +164,9 @@ export function DiscoveryMap() {
   const query = useCatalogClubs({
     search: useDeferredValue(search),
     categoryId: category === "all" ? undefined : category,
-    maxPrice: price === "all" ? undefined : Number(price),
-    unit: price !== "all" || sort !== "recommended" ? "visit" : undefined,
+    minPrice: priceActive ? appliedPrice[0] : undefined,
+    maxPrice: appliedPrice[1] < 1000000 ? appliedPrice[1] : undefined,
+    unit: priceActive || sort !== "recommended" ? "visit" : undefined,
     sort:
       sort === "priceLow"
         ? "priceLow"
@@ -217,8 +222,6 @@ export function DiscoveryMap() {
               <ChevronLeft className="rtl:rotate-180" />
             </Link>
           </Button>
-        </div>
-        <div className="mt-3 flex items-center gap-2">
           <InputGroup className="discovery-map-search">
             <InputGroupAddon>
               <Search />
@@ -263,11 +266,9 @@ export function DiscoveryMap() {
           </span>
           <FilterSheet
             count={
-              [
-                category !== "all",
-                price !== "all",
-                sort !== "recommended",
-              ].filter(Boolean).length
+              [category !== "all", priceActive, sort !== "recommended"].filter(
+                Boolean,
+              ).length
             }
           >
             <MapFilter
@@ -286,23 +287,42 @@ export function DiscoveryMap() {
                 ]),
               ]}
             />
-            <MapFilter
-              label={t("pricePerVisit")}
-              value={price}
-              onChange={(value) => {
-                setPrice(value);
-                setPage(1);
-              }}
-              options={[
-                ["all", t("pricePerVisit")],
-                ...[350000, 400000, 450000].map((value): [string, string] => [
-                  String(value),
-                  t("upTo", {
-                    price: new Intl.NumberFormat(locale).format(value),
-                  }),
-                ]),
-              ]}
-            />
+            <Field>
+              <FieldLabel id="map-price-label">{t("pricePerVisit")}</FieldLabel>
+              <Slider
+                thumbLabels={
+                  fa
+                    ? ["حداقل قیمت", "حداکثر قیمت"]
+                    : ["Minimum price", "Maximum price"]
+                }
+                aria-labelledby="map-price-label"
+                min={0}
+                max={1000000}
+                step={10000}
+                value={price}
+                onValueChange={setPrice}
+                onValueCommit={(value) => {
+                  setAppliedPrice(value);
+                  setPage(1);
+                }}
+              />
+              <div className="flex justify-between gap-4 text-sm text-muted-foreground">
+                <span>
+                  {fa ? "حداقل" : "Min"}:{" "}
+                  {new Intl.NumberFormat(locale).format(price[0])}{" "}
+                  {fa ? "تومان" : "toman"}
+                </span>
+                <span>
+                  {fa ? "حداکثر" : "Max"}:{" "}
+                  {price[1] === 1000000
+                    ? fa
+                      ? "بدون سقف"
+                      : "Any"
+                    : new Intl.NumberFormat(locale).format(price[1]) +
+                      (fa ? " تومان" : " toman")}
+                </span>
+              </div>
+            </Field>
             <MapFilter
               label={t("sort")}
               value={sort}

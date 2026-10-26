@@ -31,7 +31,6 @@ import type {
   OperatingStatus,
   PhoneDto,
 } from "@repo/api/catalog";
-import { ApiError } from "@repo/api";
 import { toast } from "../kit/Sileo";
 import { Button } from "@repo/ui/kit/Button";
 import {
@@ -103,35 +102,14 @@ function Multiline({
   );
 }
 function MutationNotice({ error }: { error: unknown }) {
-  const fields =
-    error instanceof ApiError &&
-    error.details &&
-    typeof error.details === "object" &&
-    "fields" in error.details &&
-    Array.isArray(error.details.fields)
-      ? error.details.fields
-      : [];
   return (
-    <>
-      <ErrorNotice error={error} />
-      {fields.length > 0 && (
-        <ul
-          className="list-inside list-disc text-sm text-destructive"
-          role="alert"
-        >
-          {fields.map((field: unknown, index: number) => (
-            <li key={index}>
-              {field &&
-              typeof field === "object" &&
-              "message" in field &&
-              typeof field.message === "string"
-                ? field.message
-                : null}
-            </li>
-          ))}
-        </ul>
-      )}
-    </>
+    <ErrorNotice
+      error={error}
+      validation={
+        error === "BusinessCatalog.invalidCoordinates" ||
+        error === "BusinessCatalog.invalidHours"
+      }
+    />
   );
 }
 function TaxonomyPicker({

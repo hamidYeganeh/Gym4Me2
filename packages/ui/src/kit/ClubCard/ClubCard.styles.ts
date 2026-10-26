@@ -5,9 +5,12 @@ export const clubCardStyles = {
     variants: {
       variant: {
         portrait:
-          "@container/club aspect-[9/13] overflow-hidden rounded-4xl bg-image-surface text-image-foreground shadow-xl shadow-image-surface/15",
-        landscape:
-          "flex-row items-start gap-3 border-b border-border py-4 text-card-foreground",
+          "@container/club overflow-hidden bg-image-surface text-image-foreground",
+        landscape: "text-card-foreground",
+        editorial:
+          "@container/club overflow-hidden bg-card text-card-foreground",
+        cinematic:
+          "@container/club overflow-hidden bg-image-surface text-image-foreground",
       },
       size: { default: "", compact: "" },
     },

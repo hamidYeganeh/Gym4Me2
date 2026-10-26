@@ -1,5 +1,12 @@
 "use client";
-import { useDeferredValue, useSyncExternalStore } from "react";
+import { ClubFeaturedCard } from "@repo/ui/kit/ClubFeaturedCard";
+import { ErrorNotice, SuccessNotice } from "@repo/ui/account";
+import {
+  useDeferredValue,
+  useSyncExternalStore,
+  useEffect,
+  useRef,
+} from "react";
 import { Map, Search, X, Bookmark, CircleUserRound, Bell } from "lucide-react";
 import {
   InputGroup,
@@ -8,7 +15,6 @@ import {
   InputGroupButton,
 } from "@repo/ui/kit/InputGroup";
 import { EmptyState } from "@repo/ui/account";
-import { ServicesLink } from "../luma/discovery-link";
 import { DiscoveryTabBar } from "./discovery-tab-bar";
 import Link from "next/link";
 import { FilterSheet } from "@repo/ui/kit/BottomSheet";
@@ -18,9 +24,14 @@ import { useLocale, useTranslations } from "@repo/i18n";
 import { ClubCard } from "@repo/ui/kit/ClubCard";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 import { Button } from "@repo/ui/kit/Button";
-import { useCatalogClubs } from "./use-catalog";
+import { useInfiniteCatalogClubs, useCatalogClubs } from "./use-catalog";
 import { CatalogState } from "./catalog-state";
-import { CatalogPagination } from "./catalog-pagination";
+import {
+  ClubGallerySection,
+  DiscoveryClasses,
+  DiscoveryCoaches,
+} from "./discovery-sections";
+import type { ClubCardProps } from "@repo/ui/kit/ClubCard";
 import { validCatalogPrices } from "@repo/api/catalog";
 import { LocationPicker, type LocationValue } from "./location-picker";
 import { CatalogFilters, type PriceFilters } from "./catalog-filters";
@@ -35,14 +46,14 @@ import { LocationExplorer } from "@repo/ui/kit/LocationExplorer";
 import { preferredDiscoveryLocation } from "@repo/ui/lib/discovery-location";
 import "./discovery.css";
 
-function SavedClubCard({
+export function SavedClubCard({
   club,
   priority,
   variant = "landscape",
 }: {
   club: ClubDetailData;
   priority: boolean;
-  variant?: "portrait" | "landscape";
+  variant?: ClubCardProps["variant"];
 }) {
   const t = useTranslations("Clubs");
   const [saved, setSaved] = useSavedClub(club.id);
@@ -56,18 +67,21 @@ function SavedClubCard({
         saved={saved}
         onSavedChange={setSaved}
         priority={priority}
+        compareHref={`/discovery/compare?club=${club.id}`}
+        compareLabel={t("compare")}
         labels={{
           save: t("save"),
           unsave: t("unsave"),
           discover: t("discover"),
         }}
       />
-      <Button asChild variant="ghost" className="discovery-compare">
-        <Link href={`/discovery/compare?club=${club.id}`}>{t("compare")}</Link>
-      </Button>
     </div>
   );
 }
+let feedSeed: number | undefined;
+const subscribeFeed = () => () => {};
+const readFeedSeed = () => (feedSeed ??= Math.floor(Math.random() * 3));
+
 export function Discovery() {
   const accountArea = useAccountLocation();
   const saveArea = useUpdateAccountLocation();
@@ -79,7 +93,6 @@ export function Discovery() {
   const tabs = useTranslations("DiscoveryTabs");
   const catalog = useTranslations("Catalog");
   const locale = useLocale();
-  const numbers = new Intl.NumberFormat(locale);
   const queryCategory = useSyncExternalStore(
     (listener) => {
       window.addEventListener("popstate", listener);
@@ -107,12 +120,6 @@ export function Discovery() {
     "",
     (v): v is string => typeof v === "string",
   );
-  const [page, setPage] = useListState(
-    "page",
-    1,
-    (v): v is number => Number.isInteger(v) && Number(v) > 0,
-    queryCategory,
-  );
 
   const [filters, setFilters] = useListState<PriceFilters>(
     "prices",
@@ -132,7 +139,6 @@ export function Discovery() {
   );
   function changeLocation(next: LocationValue) {
     setPlace(next);
-    setPage(1);
     if (accountArea.data && !accountArea.error && next.provinceId)
       saveArea.mutate({
         countryId: next.countryId || undefined,
@@ -142,13 +148,18 @@ export function Discovery() {
       });
   }
   const deferredSearch = useDeferredValue(search);
-  const query = useCatalogClubs({
+  const query = useInfiniteCatalogClubs({
     ...filters,
     search: deferredSearch,
     categoryId: activeCategory || undefined,
     ...catalogLocationFilters(currentPlace),
-    page,
   });
+  const recommendations = useCatalogClubs();
+  const recommendedClubs = recommendations.clubs;
+  const showFeed =
+    !search &&
+    !activeCategory &&
+    !Object.values(filters).some((value) => value !== undefined);
   const allClubs = validPrices ? query.clubs : [];
   const clubs = allClubs;
   const filterCount = [
@@ -157,12 +168,87 @@ export function Discovery() {
     ...Object.values(filters),
   ].filter(Boolean).length;
   const hasFilters = Boolean(search || filterCount);
+  const seed = useSyncExternalStore(subscribeFeed, readFeedSeed, () => 0);
+  const loadMore = useRef<HTMLDivElement>(null);
+  const { hasNextPage, isFetching, isFetchNextPageError, fetchNextPage } =
+    query;
+  useEffect(() => {
+    if (!loadMore.current || !hasNextPage || isFetching || isFetchNextPageError)
+      return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) void fetchNextPage();
+      },
+      { rootMargin: "300px" },
+    );
+    observer.observe(loadMore.current);
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetching, isFetchNextPageError, fetchNextPage]);
+  const clubSection = (variant: ClubCardProps["variant"], title: string) =>
+    recommendedClubs.length > 0 ? (
+      <section
+        className={`discovery-featured discovery-featured--${variant}`}
+        aria-label={title}
+      >
+        <h2>{title}</h2>
+        <div>
+          {[
+            ...recommendedClubs.slice(
+              variant === "cinematic" ? 4 : variant === "editorial" ? 2 : 0,
+            ),
+            ...recommendedClubs.slice(
+              0,
+              variant === "cinematic" ? 4 : variant === "editorial" ? 2 : 0,
+            ),
+          ]
+            .slice(0, 4)
+            .map((club) => (
+              <SavedClubCard
+                key={club.id}
+                club={club}
+                priority={false}
+                variant={variant}
+              />
+            ))}
+        </div>
+      </section>
+    ) : null;
+  const featuredSection = (offset: number) => {
+    const club = recommendedClubs[(seed + offset) % recommendedClubs.length];
+    return club ? (
+      <section className="min-w-0 w-full" aria-label={club.name}>
+        <ClubFeaturedCard club={club} viewLabel={t("clubs")} />
+      </section>
+    ) : null;
+  };
+  const sections = [
+    <div key="portrait" className="discovery-feed-group">
+      {clubSection("portrait", luma("picked"))}
+      <DiscoveryClasses />
+      {featuredSection(1)}
+    </div>,
+    <div key="editorial" className="discovery-feed-group">
+      {clubSection("editorial", t("clubs"))}
+      {recommendedClubs[0] && <ClubGallerySection club={recommendedClubs[0]} />}
+    </div>,
+    <div key="cinematic" className="discovery-feed-group">
+      {clubSection(
+        "cinematic",
+        locale === "fa" ? "فضاهایی برای تمرین" : "Spaces to train",
+      )}
+      {featuredSection(3)}
+      <DiscoveryCoaches />
+    </div>,
+  ];
+  const feed = sections.map(
+    (_, index) => sections[(index + seed) % sections.length],
+  );
+
   function resetFilters() {
     setCategory("");
     setPlace({ countryId: "" });
     setSearch("");
     setFilters({});
-    setPage(1);
   }
   const filterSheet = (
     <FilterSheet count={filterCount} onReset={resetFilters}>
@@ -175,7 +261,6 @@ export function Discovery() {
           onChange={(event) => {
             setCategory(event.target.value);
             setPlace({ countryId: "" });
-            setPage(1);
           }}
         >
           <NativeSelectOption value="">{t("allClubs")}</NativeSelectOption>
@@ -200,7 +285,6 @@ export function Discovery() {
           value={filters}
           onChange={(value) => {
             setFilters(value);
-            setPage(1);
           }}
         />
       </div>
@@ -235,7 +319,6 @@ export function Discovery() {
             value={search}
             onChange={(event) => {
               setSearch(event.target.value);
-              setPage(1);
             }}
             placeholder={t("search")}
             aria-label={t("search")}
@@ -247,7 +330,6 @@ export function Discovery() {
                 aria-label={t("clearSearch")}
                 onClick={() => {
                   setSearch("");
-                  setPage(1);
                 }}
               >
                 <X />
@@ -261,10 +343,9 @@ export function Discovery() {
         className="grid min-w-0 gap-4"
         aria-label={locationsCopy("title")}
       >
-        <h2 className="text-lg font-semibold">{locationsCopy("title")}</h2>
         {accountArea.isError && !guest ? (
-          <p role="alert" className="text-sm text-muted-foreground">
-            {locationsCopy("profileError")}{" "}
+          <div>
+            <ErrorNotice error={accountArea.error} />
             <button
               type="button"
               className="min-h-11 underline"
@@ -272,20 +353,32 @@ export function Discovery() {
             >
               {locationsCopy("retry")}
             </button>
-          </p>
+          </div>
         ) : (
           <LocationExplorer
+            linkToPlace={(kind, place) =>
+              `/discovery/location/${kind}/${encodeURIComponent(place.id)}`
+            }
             key={guest ? "guest" : (accountArea.data?.userId ?? "pending")}
             value={currentPlace}
             randomize={guest}
             ready={!accountArea.isPending}
             saving={saveArea.isPending}
             onChange={changeLocation}
+            afterRows={
+              showFeed
+                ? { provinces: feed[0], cities: feed[1], districts: feed[2] }
+                : undefined
+            }
           />
         )}
+        <SuccessNotice
+          success={saveArea.isSuccess}
+          message={copy("changesSaved")}
+        />
         {saveArea.isError && (
-          <p role="alert" className="text-sm text-destructive">
-            {locationsCopy("saveError")}{" "}
+          <div>
+            <ErrorNotice error={saveArea.error} />
             <button
               type="button"
               className="min-h-11 underline"
@@ -293,25 +386,10 @@ export function Discovery() {
             >
               {locationsCopy("retry")}
             </button>
-          </p>
+          </div>
         )}
       </section>
 
-      {!hasFilters && clubs.length > 1 && (
-        <section className="discovery-featured" aria-label={luma("picked")}>
-          <h2>{luma("picked")}</h2>
-          <div>
-            {clubs.slice(0, 4).map((club) => (
-              <SavedClubCard
-                key={club.id}
-                club={club}
-                priority={false}
-                variant="portrait"
-              />
-            ))}
-          </div>
-        </section>
-      )}
       {!validPrices && (
         <p role="alert" className="text-sm text-destructive">
           {catalog("invalidPriceRange")}
@@ -329,7 +407,7 @@ export function Discovery() {
         </div>
       </div>
       {validPrices && query.isPending && <CatalogState loading />}
-      {validPrices && query.isError && (
+      {validPrices && query.isError && !query.data && (
         <CatalogState retry={() => void query.refetch()} />
       )}
       {validPrices &&
@@ -359,21 +437,34 @@ export function Discovery() {
         className="discovery-results"
       >
         {clubs.map((club, index) => (
-          <SavedClubCard key={club.id} club={club} priority={index === 0} />
+          <SavedClubCard
+            key={club.id}
+            club={club}
+            priority={index === 0}
+            variant="cinematic"
+          />
         ))}
       </section>
-      <footer className="flex flex-wrap justify-between gap-3 border-t border-border pt-5 text-xs leading-6 text-muted-foreground">
-        <span>{t("count", { count: numbers.format(clubs.length) })}</span>
-      </footer>
-      {validPrices && (
-        <CatalogPagination
-          page={page}
-          onChange={setPage}
-          next={(query.data?.length ?? 0) === 25}
-          busy={query.isFetching}
-        />
+
+      {validPrices && query.hasNextPage && (
+        <div ref={loadMore} className="flex justify-center py-4">
+          <Button
+            variant="outline"
+            disabled={query.isFetchingNextPage}
+            onClick={() => void query.fetchNextPage()}
+          >
+            {query.isFetchingNextPage
+              ? locale === "fa"
+                ? "در حال دریافت…"
+                : "Loading…"
+              : query.isFetchNextPageError
+                ? locationsCopy("retry")
+                : locale === "fa"
+                  ? "باشگاه‌های بیشتر"
+                  : "More clubs"}
+          </Button>
+        </div>
       )}
-      <ServicesLink />
       <DiscoveryTabBar />
     </main>
   );

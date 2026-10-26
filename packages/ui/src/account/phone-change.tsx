@@ -153,11 +153,7 @@ export function PhoneChange() {
             readOnly={Boolean(challengeId)}
             disabled={busy}
             aria-describedby={
-              error && !challengeId
-                ? `${id}-error`
-                : remaining > 0 && !challengeId
-                  ? `${id}-cooldown`
-                  : undefined
+              remaining > 0 && !challengeId ? `${id}-cooldown` : undefined
             }
             required
             maxLength={20}
@@ -200,13 +196,10 @@ export function PhoneChange() {
                   verify.error?.code ===
                     "Backend.theCodeIsIncorrectOrExpired" || undefined
                 }
-                aria-describedby={error ? `${id}-error` : undefined}
               />
             </Field>
           )}
-          <div id={`${id}-error`}>
-            <QueryError error={error} />
-          </div>
+          <QueryError error={error} />
           <Submit
             busy={busy}
             disabled={challengeId ? code.length !== 5 : remaining > 0}

@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "@repo/ui/kit/Sileo";
 import Link from "next/link";
 import Image from "next/image";
 import { Fragment, useEffect, useRef, useState } from "react";
@@ -474,23 +475,18 @@ function ConversationState({
 }) {
   const t = useLuma(),
     key = useRef<string | null>(null);
-  const stateError = useRef<HTMLParagraphElement>(null),
-    reasonInput = useRef<HTMLTextAreaElement>(null);
+  const reasonInput = useRef<HTMLTextAreaElement>(null);
   const [open, setOpen] = useState(false),
     [draft, setDraft] = useState({
       closed: !conversation.closed,
       revision: conversation.revision,
     }),
     [reason, setReason] = useState(""),
-    [reloading, setReloading] = useState(false),
-    [notice, setNotice] = useState(false);
+    [reloading, setReloading] = useState(false);
   const command = useSportsCommand<
     ConversationStateDto,
     ConversationStateInput
   >(`sports/community/conversations/${conversation.id}/close`);
-  useEffect(() => {
-    if (command.error?.status === 409) stateError.current?.focus();
-  }, [command.error]);
   return (
     <>
       <button
@@ -504,16 +500,10 @@ function ConversationState({
           key.current = null;
           command.reset();
           setOpen(true);
-          setNotice(false);
         }}
       >
         {conversation.closed ? t("openChat") : t("closeChat")}
       </button>
-      {notice && (
-        <p className="luma-meta" role="status">
-          {t("conversationStateSaved")}
-        </p>
-      )}
       <LumaSheet
         open={open}
         onOpenChange={(value) => {
@@ -533,7 +523,7 @@ function ConversationState({
                   setOpen(false);
                   setReason("");
                   key.current = null;
-                  setNotice(true);
+                  toast.success(t("conversationStateSaved"));
                 },
               },
             );
@@ -561,18 +551,7 @@ function ConversationState({
               {command.isPending ? t("saving") : t("applyConversationState")}
             </button>
           </fieldset>
-          {command.error?.status === 409 ? (
-            <p
-              ref={stateError}
-              tabIndex={-1}
-              role="alert"
-              className="luma-error"
-            >
-              {t("conversationStateConflict")}
-            </p>
-          ) : (
-            <CommandError error={command.error} />
-          )}
+          <CommandError error={command.error} />
           {command.error?.status === 409 && (
             <button
               type="button"

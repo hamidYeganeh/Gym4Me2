@@ -26,8 +26,9 @@ import {
   FieldSet,
   FieldLegend,
 } from "@repo/ui/kit/Field";
+import { ErrorNotice } from "@repo/ui/account";
+import { toast } from "@repo/ui/kit/Sileo";
 import { Alert, AlertDescription } from "@repo/ui/kit/Alert";
-import { isActiveSurfaceElement } from "@repo/ui/lib/active-surface";
 import { useQueryRetry } from "@repo/ui/hooks/use-query-retry";
 import {
   isSupportReference,
@@ -65,7 +66,12 @@ export function SupportPage() {
     <LumaPage title={t("support")} back="/">
       {readable ? (
         <>
-          {query.error && <RefreshFailure refresh={() => query.refetch()} />}
+          {query.error && (
+            <RefreshFailure
+              error={query.error}
+              refresh={() => query.refetch()}
+            />
+          )}
           <button
             type="button"
             className="luma-cta"
@@ -174,7 +180,12 @@ export function SupportDetail() {
         <Empty />
       ) : readable ? (
         <>
-          {query.error && <RefreshFailure refresh={() => query.refetch()} />}
+          {query.error && (
+            <RefreshFailure
+              error={query.error}
+              refresh={() => query.refetch()}
+            />
+          )}
           <Row
             title={query.data!.title}
             state={query.data!.status}
@@ -217,12 +228,18 @@ export function SupportDetail() {
   );
 }
 
-function RefreshFailure({ refresh }: { refresh(): unknown }) {
+function RefreshFailure({
+  error,
+  refresh,
+}: {
+  error: ApiError;
+  refresh(): unknown;
+}) {
   const t = useLuma();
   const { button, retrying, run } = useQueryRetry(refresh);
   return (
-    <Alert variant="destructive">
-      <AlertDescription>{t("supportRefreshFailed")}</AlertDescription>
+    <div>
+      <ErrorNotice error={error} />
       <Button
         type="button"
         ref={button}
@@ -233,7 +250,7 @@ function RefreshFailure({ refresh }: { refresh(): unknown }) {
       >
         {t("retry")}
       </Button>
-    </Alert>
+    </div>
   );
 }
 
@@ -255,15 +272,12 @@ function SupportForm({
     id = useId();
   const [draft, setDraft] = useState<SupportDraft>({ title: "", body: "" });
   const [errors, setErrors] = useState<SupportErrors>({});
-  const [sent, setSent] = useState(false);
   const submitting = useRef(false),
     title = useRef<HTMLInputElement>(null),
-    body = useRef<HTMLTextAreaElement>(null),
-    status = useRef<HTMLParagraphElement>(null);
+    body = useRef<HTMLTextAreaElement>(null);
   function edit(key: keyof SupportDraft, value: string) {
     setDraft((current) => ({ ...current, [key]: value }));
     setErrors((current) => ({ ...current, [key]: undefined }));
-    setSent(false);
     onEdit();
   }
   async function submit(event: FormEvent) {
@@ -271,27 +285,17 @@ function SupportForm({
     if (submitting.current || pending) return;
     const invalid = validateSupportDraft(draft, reply);
     setErrors(invalid);
-    setSent(false);
     if (Object.keys(invalid).length) {
       (invalid.title ? title : body).current?.focus();
       return;
     }
-    const origin = document.activeElement;
     submitting.current = true;
     try {
       await save(draft);
       setDraft({ title: "", body: "" });
-      setSent(true);
-      requestAnimationFrame(() => {
-        if (
-          isActiveSurfaceElement(status.current) &&
-          (document.activeElement === document.body ||
-            document.activeElement === origin)
-        )
-          status.current?.focus();
-      });
+      toast.success(t(reply ? "supportReplySent" : "supportTicketSent"));
     } catch {
-      /* CommandError keeps the server response visible; retain the draft. */
+      /* CommandError toasts the server response; retain the draft. */
     } finally {
       submitting.current = false;
     }
@@ -377,14 +381,6 @@ function SupportForm({
         </Button>
       </FieldSet>
       <CommandError error={error} />
-      <p
-        ref={status}
-        role="status"
-        tabIndex={-1}
-        className="luma-meta focus-visible:outline-2 focus-visible:outline-ring"
-      >
-        {sent ? t(reply ? "supportReplySent" : "supportTicketSent") : ""}
-      </p>
     </form>
   );
 }

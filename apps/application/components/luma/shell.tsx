@@ -7,6 +7,8 @@ import { applicationRouteLayout } from "../../lib/navigation-route";
 import { commitAppRoute, performAppBack } from "../../lib/app-navigation";
 import { handlesBackLink } from "../../lib/back-link";
 import { LumaNavigation } from "./common";
+import { applicationRouteRequiresAccount } from "../../lib/route-access";
+import { AccountGate } from "./account-gate";
 function ResolvedShell({ children }: { children: ReactNode }) {
   const router = useRouter(),
     t = useTranslations();
@@ -52,7 +54,15 @@ function ResolvedShell({ children }: { children: ReactNode }) {
           event.preventDefault();
       }}
     >
-      <PageTransitions routeId={logical}>{children}</PageTransitions>
+      <PageTransitions routeId={logical}>
+        {applicationRouteRequiresAccount(path, query) ? (
+          <AccountGate destination={`${path}${query ? `?${query}` : ""}`}>
+            {children}
+          </AccountGate>
+        ) : (
+          children
+        )}
+      </PageTransitions>
       {navigationVisible && <LumaNavigation />}
     </div>
   );

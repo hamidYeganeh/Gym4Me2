@@ -24,6 +24,10 @@ const environmentSchema = z.object({
     .enum(['true', 'false'])
     .default('false')
     .transform((v) => v === 'true'),
+  DEMO_LOCAL_WEB_ENABLED: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((v) => v === 'true'),
   DB_POOL_MAX: z.coerce.number().int().min(1).max(100).default(10),
   DB_CONNECTION_TIMEOUT_MS: z.coerce.number().int().positive().default(5000),
   DB_STATEMENT_TIMEOUT_MS: z.coerce.number().int().positive().default(10000),
@@ -150,6 +154,8 @@ export function validateEnvironment(input: Record<string, unknown>) {
   if (result.data.NODE_ENV === 'production' && !result.data.AUTH_SECRET) {
     throw new Error('Invalid API configuration: AUTH_SECRET');
   }
+  if (result.data.DEMO_LOCAL_WEB_ENABLED && !result.data.DEMO_MODE)
+    throw new Error('DEMO_LOCAL_WEB_ENABLED requires DEMO_MODE');
   if (result.data.DELETION_JOURNAL_PROVIDER === 'vercel-blob') {
     try {
       journalOrigin(result.data.DELETION_JOURNAL_ORIGIN ?? '');

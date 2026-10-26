@@ -3,6 +3,8 @@ import { useRef, useState, type FormEvent, type ReactNode } from "react";
 import { useTranslations } from "@repo/i18n";
 import { useGrowthCommand } from "@repo/api/growth";
 import { Button } from "../kit/Button";
+import { ErrorNotice } from "../account/common";
+import { toast } from "../kit/Sileo";
 export function GrowthForm({
   path,
   build,
@@ -22,13 +24,11 @@ export function GrowthForm({
     m = useGrowthCommand(),
     keys = useRef(new Map<string, string>()),
     busy = useRef(false);
-  const [done, setDone] = useState(false);
   const [localError, setLocalError] = useState(false);
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (busy.current || disabled) return;
     busy.current = true;
-    setDone(false);
     setLocalError(false);
     try {
       const body = build(new FormData(e.currentTarget)),
@@ -42,7 +42,7 @@ export function GrowthForm({
         path,
         body: { ...body, operationId: key },
       });
-      setDone(true);
+      toast.success(t("saved"));
       onSaved?.(result);
     } catch {
       setLocalError(true);
@@ -62,8 +62,7 @@ export function GrowthForm({
         {children}
         <Button type="submit">{label}</Button>
       </fieldset>
-      {(m.error || localError) && <p role="alert">{t("failed")}</p>}
-      {done && <p role="status">{t("saved")}</p>}
+      <ErrorNotice error={m.error || (localError ? "Growth.failed" : null)} />
     </form>
   );
 }

@@ -1,8 +1,10 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
-import { Check, Heart, MapPin, Building2 } from "lucide-react";
-import { useTranslations } from "@repo/i18n";
+import { Heart, MapPin } from "lucide-react";
+import { useLocale, useTranslations } from "@repo/i18n";
+import { ProgressiveBlur } from "../ProgressiveBlur";
 import { cn } from "../../lib/utils";
 import { Avatar, AvatarImage, AvatarFallback, AvatarGroup } from "../Avatar";
 import { locationCardStyles as s } from "./LocationCard.styles";
@@ -14,7 +16,6 @@ export function LocationCard({
   clubs = [],
   clubCount,
   kindLabel,
-  tone = "green",
   className,
   selected,
   active,
@@ -23,9 +24,12 @@ export function LocationCard({
   saveLabel,
   selectionProps,
   onSelect,
+  href,
 }: LocationCardProps) {
   const [failedImage, setFailedImage] = useState<string>();
   const t = useTranslations("LocationDiscovery");
+  const locale = useLocale();
+  const remaining = Math.max(0, (clubCount ?? clubs.length) - 3);
   return (
     <article data-slot="location-card" className={cn(s.root(), className)}>
       <div
@@ -45,28 +49,39 @@ export function LocationCard({
           unoptimized
         />
       )}
+      <ProgressiveBlur
+        className="absolute! inset-x-0 bottom-0 h-2/3"
+        blurLayers={4}
+        blurIntensity={1.5}
+      />
       <div
         aria-hidden="true"
-        className={cn(
-          "pointer-events-none absolute inset-0 bg-linear-to-t via-40% to-transparent to-75%",
-          tone === "sky"
-            ? "from-sky-700/85 via-sky-700/10"
-            : tone === "amber"
-              ? "from-amber-900/85 via-amber-900/10"
-              : "from-emerald-800/85 via-emerald-800/10",
-        )}
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            selected || active
+              ? "linear-gradient(to top, color-mix(in srgb, var(--primary) 38%, #06140b) 0%, color-mix(in srgb, var(--primary) 18%, transparent) 45%, transparent 85%)"
+              : "linear-gradient(to top, #09120edb, transparent 85%)",
+        }}
       />
-      <div className={s.overlay()} />
-      <button
-        {...selectionProps}
-        type="button"
-        onClick={onSelect}
-        className={cn(
-          s.action(),
-          (selected || active) && "ring-2 ring-inset ring-white",
-        )}
-        aria-label={[name, parent].filter(Boolean).join(" · ")}
-      />
+      {href ? (
+        <Link
+          href={href}
+          className={s.action()}
+          aria-label={[name, parent].filter(Boolean).join(" · ")}
+        />
+      ) : (
+        <button
+          {...selectionProps}
+          type="button"
+          onClick={onSelect}
+          className={cn(
+            s.action(),
+            (selected || active) && "ring-2 ring-inset ring-primary",
+          )}
+          aria-label={[name, parent].filter(Boolean).join(" · ")}
+        />
+      )}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-2 p-[8%]">
         {kindLabel ? <span className={s.pill()}>{kindLabel}</span> : <span />}
         {onSavedChange ? (
@@ -83,10 +98,6 @@ export function LocationCard({
               className={saved ? "fill-current" : undefined}
             />
           </button>
-        ) : selected ? (
-          <span className="grid size-8 place-items-center rounded-full bg-white text-emerald-900">
-            <Check size={18} aria-hidden="true" />
-          </span>
         ) : null}
       </div>
       <div className={s.content()}>
@@ -100,13 +111,7 @@ export function LocationCard({
           </p>
         )}
         {(clubCount !== undefined || clubs.length > 0) && (
-          <div className="mt-3 flex min-w-0 items-center justify-between gap-2">
-            {clubCount !== undefined && (
-              <span className={cn(s.pill(), "min-w-0")}>
-                <Building2 size={13} aria-hidden="true" className="shrink-0" />
-                {t("clubCount", { count: clubCount })}
-              </span>
-            )}
+          <div className="mt-3 flex min-w-0 flex-wrap items-center justify-between gap-2">
             {clubs.length ? (
               <AvatarGroup className="shrink-0 gap-0 *:data-[slot=avatar]:ring-white/80 [&>[data-slot=avatar]+[data-slot=avatar]]:-ms-2">
                 {clubs.slice(0, 3).map((club) => (
@@ -115,6 +120,19 @@ export function LocationCard({
                     <AvatarFallback>{club.name.slice(0, 1)}</AvatarFallback>
                   </Avatar>
                 ))}
+                {remaining > 0 && (
+                  <Avatar
+                    size="sm"
+                    aria-label={t("clubCount", { count: remaining })}
+                  >
+                    <AvatarFallback
+                      className="bg-card text-foreground text-[10px]"
+                      dir="ltr"
+                    >
+                      +{new Intl.NumberFormat(locale).format(remaining)}
+                    </AvatarFallback>
+                  </Avatar>
+                )}
               </AvatarGroup>
             ) : null}
           </div>

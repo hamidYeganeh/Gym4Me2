@@ -14,7 +14,11 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t("brand"),
     description: t("description"),
     manifest: "/manifest.webmanifest",
-    appleWebApp: { capable: true, title: "Gym4Me", statusBarStyle: "default" },
+    appleWebApp: {
+      capable: true,
+      title: "Gym4Me",
+      statusBarStyle: "black-translucent",
+    },
     icons: { apple: "/icons/icon-180.png" },
   };
 }
@@ -31,7 +35,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={direction}
-      className={iranSansX.variable}
+      className={`${iranSansX.variable} dark`}
       suppressHydrationWarning
     >
       <body
@@ -50,4 +54,6 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#101113",
+  colorScheme: "dark light",
 };

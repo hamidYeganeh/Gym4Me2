@@ -20,4 +20,4 @@ export { CoachingDirectory } from "./coaching-directory";
 export { CoachingOffice } from "./coaching-office";
 
 export { WorkspaceShell } from "./workspace-shell";
-export { Blank as EmptyState } from "./common";
+export { Blank as EmptyState, ErrorNotice, SuccessNotice } from "./common";

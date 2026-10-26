@@ -1,5 +1,6 @@
 "use client";
 import { useSyncExternalStore } from "react";
+import { useRequireAccount } from "../use-require-account";
 const eventName = "gym4me:saved-coaches";
 const memory = new Map<string, boolean>();
 function subscribe(listener: () => void) {
@@ -11,6 +12,7 @@ function subscribe(listener: () => void) {
   };
 }
 export function useSavedCoach(id: string) {
+  const requireAccount = useRequireAccount();
   const key = `gym4me:coach:${id}:saved`;
   const saved = useSyncExternalStore(
     subscribe,
@@ -25,7 +27,8 @@ export function useSavedCoach(id: string) {
   );
   return [
     saved,
-    (value: boolean) => {
+    async (value: boolean) => {
+      if (!(await requireAccount())) return;
       memory.set(id, value);
       try {
         localStorage.setItem(key, String(value));

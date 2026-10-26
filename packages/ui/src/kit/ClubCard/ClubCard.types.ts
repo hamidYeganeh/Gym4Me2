@@ -24,6 +24,8 @@ export type ClubCardProps = ClubCardVariants & {
   className?: string;
   priority?: boolean;
   featuredLabel?: string;
+  compareHref?: string;
+  compareLabel?: string;
   galleryLabel?: string;
   photoLabel?: string;
 };

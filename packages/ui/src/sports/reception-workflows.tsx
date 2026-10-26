@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "../account/common";
 import {
   normalizeLoginDigits,
   normalizeLoginPhone,
@@ -69,7 +70,7 @@ export function CustomerEntry({
         <QueryError error={query.error} retry={query.refetch} />
       )}
       <QueryError error={entry.error} />
-      {entry.isSuccess && <p role="status">{t("entryRecorded")}</p>}
+      <SuccessNotice success={entry.isSuccess} message={t("entryRecorded")} />
       {query.data?.map((c) => (
         <article className="rounded-xl border p-3 grid gap-2" key={c.id}>
           <p>
@@ -333,9 +334,7 @@ export function ReceptionSale({
       </form>
       {order && (
         <>
-          <p className="mt-4" role="status">
-            {t("orderRecorded")}
-          </p>
+          <SuccessNotice success={!!order} message={t("orderRecorded")} />
           <ReceiptForm key={order} orderId={order} business />
         </>
       )}

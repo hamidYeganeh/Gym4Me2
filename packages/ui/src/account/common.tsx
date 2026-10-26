@@ -8,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { accountRecovery } from "../lib/account-recovery";
 import { useQueryRetry } from "../hooks/use-query-retry";
+import { useFeedbackToast } from "../hooks/use-feedback-toast";
 import { Alert, AlertDescription } from "@repo/ui/kit/Alert";
 import { Button } from "@repo/ui/kit/Button";
 import {
@@ -72,7 +73,14 @@ export function Status({ value }: { value: string }) {
     </Badge>
   );
 }
-export function ErrorNotice({ error }: { error: unknown }) {
+export function ErrorNotice({
+  error,
+  validation = false,
+}: {
+  error: unknown;
+  /** Only errors produced by local form validation belong inside the form. */
+  validation?: boolean;
+}) {
   const t = useTranslations();
   const code =
     typeof error === "string"
@@ -100,13 +108,27 @@ export function ErrorNotice({ error }: { error: unknown }) {
           ),
         ) as Record<string, string | number>)
       : {};
-  return error ? (
+  const message = t(
+    isTranslationKey(code) ? code : "Errors.requestFailed",
+    params,
+  );
+  useFeedbackToast("error", message, validation ? null : error);
+  return error && validation ? (
     <Alert variant="destructive" role="alert">
-      <AlertDescription>
-        {t(isTranslationKey(code) ? code : "Errors.requestFailed", params)}
-      </AlertDescription>
+      <AlertDescription>{message}</AlertDescription>
     </Alert>
   ) : null;
+}
+
+export function SuccessNotice({
+  success,
+  message,
+}: {
+  success: boolean;
+  message: string;
+}) {
+  useFeedbackToast("success", message, success);
+  return null;
 }
 export function Blank({
   title,

@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 export const classCardVariants = cva(
-  "relative isolate flex aspect-[14/15] w-full max-w-sm flex-col justify-between overflow-hidden rounded-3xl bg-image-surface text-image-foreground [container-type:inline-size]",
+  "relative isolate flex aspect-[13/14] w-full max-w-sm flex-col justify-between overflow-hidden rounded-[2rem] border-2 border-border bg-image-surface text-image-foreground [container-type:inline-size]",
 );
 export const classCardStyles = {
   hero: cva("pointer-events-none absolute inset-0"),
