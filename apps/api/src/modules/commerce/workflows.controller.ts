@@ -47,17 +47,6 @@ export class AthleteWorkflowsController {
   @Get('programs') programs(@Req() r: AuthRequest) {
     return dto(this.service.programs(this.actor(r)));
   }
-  @Post('coach/offerings') createOffering(
-    @Req() r: AuthRequest,
-    @Body() body: unknown,
-  ) {
-    return dto(
-      this.service.createCoachProgram(
-        this.actor(r),
-        parse(c.coachProgramSchema, body),
-      ),
-    );
-  }
   @Get('coach/programs') coachPrograms(@Req() r: AuthRequest) {
     return dto(this.service.programs(this.actor(r), true));
   }

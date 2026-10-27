@@ -15,7 +15,6 @@ test("first launch, discovery and booking information are public on web and nati
     "/discovery/club",
     "/discovery/clubs/club-id/slots",
     "/discovery/clubs/club-id/reviews",
-    "/discovery/compare",
     "/explore",
     "/services",
     "/services/detail",
@@ -43,7 +42,8 @@ test("reservations and all account destinations require sign-in", () => {
     "/saved/clubs",
     "/saved/coaches",
     "/messages",
-    "/training",
+    "/programs",
+    "/programs/detail",
     "/notifications",
     "/new-private-feature",
   ])

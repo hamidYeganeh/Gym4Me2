@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { LumaPage, useLuma } from "./common";
-export { SportsInvitations } from "./invitations";
 export { MessagesPage } from "./messages";
 export { ConversationPage, ConversationDetails } from "./chat";
 export { NotificationsPage } from "./notifications";

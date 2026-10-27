@@ -74,7 +74,7 @@ export class SportsWorkflowsService {
   async sports() {
     return rows(
       this.db,
-      sql`SELECT sp.id,sp.name,sp.slug,coalesce((SELECT jsonb_agg(DISTINCT s.kind) FROM sport_services s JOIN sport_service_versions v ON v.id=s.published_version_id WHERE v.sport_id=sp.id AND s.status='published'),'[]'::jsonb) formats FROM sports sp WHERE sp.is_active ORDER BY sp.name`,
+      sql`SELECT sp.id,sp.name,sp.slug,coalesce((SELECT jsonb_agg(DISTINCT s.kind) FROM sport_services s JOIN sport_service_versions v ON v.id=s.published_version_id WHERE v.sport_id=sp.id AND s.status='published' AND s.kind<>'program'),'[]'::jsonb) formats FROM sports sp WHERE sp.is_active ORDER BY sp.name`,
     );
   }
   async createCoachProgram(

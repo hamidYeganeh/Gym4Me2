@@ -69,11 +69,6 @@ const configFor = (surface: AppSurface): SsgoiConfig => ({
         transition: lumaClub(),
       }),
     ),
-    {
-      from: "/",
-      to: "/training",
-      transition: lumaPush(),
-    },
     { on: "/**", priority: -100, transition: lumaFade() },
   ],
 });

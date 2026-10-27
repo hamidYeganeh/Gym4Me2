@@ -213,31 +213,35 @@ function CheckoutForm({
                 />
               </Field>
             )}
-            {quantity === 1 && (
-              <Field label={w("beneficiary")}>
-                <select
-                  value={dependentId}
-                  onChange={(e) => {
-                    setDependentId(e.target.value);
-                    setMembership("");
-                    setRenewMembershipId("");
-                    changeDetails();
-                  }}
-                >
-                  <option value="">{w("myself")}</option>
-                  {dependents.data
-                    ?.filter((d) => d.status === "active")
-                    .map((d) => (
-                      <option key={d.id} value={d.id}>
-                        {d.name}
-                      </option>
-                    ))}
-                </select>
-                <Link className="underline" href="/household">
-                  {w("household")}
-                </Link>
-              </Field>
-            )}
+            {quantity === 1 &&
+              (Boolean(dependents.data?.some((d) => d.status === "active")) ||
+                query.data.offering?.audience === "family" ||
+                (query.data.eligibility?.maximumAge != null &&
+                  query.data.eligibility.maximumAge < 18)) && (
+                <Field label={w("beneficiary")}>
+                  <select
+                    value={dependentId}
+                    onChange={(e) => {
+                      setDependentId(e.target.value);
+                      setMembership("");
+                      setRenewMembershipId("");
+                      changeDetails();
+                    }}
+                  >
+                    <option value="">{w("myself")}</option>
+                    {dependents.data
+                      ?.filter((d) => d.status === "active")
+                      .map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.name}
+                        </option>
+                      ))}
+                  </select>
+                  <Link className="underline" href="/household">
+                    {w("household")}
+                  </Link>
+                </Field>
+              )}
             {!dependentId &&
               (identityRequired ||
                 (query.data.kind !== "membership" &&

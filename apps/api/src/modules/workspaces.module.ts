@@ -1,3 +1,5 @@
+import { DemoController } from './training/demo.controller';
+import { ProductNavigationController } from './profile/navigation.controller';
 import { HouseholdBillingService } from './commerce/household-billing.service';
 import {
   HouseholdController,
@@ -35,7 +37,6 @@ import {
   PushConfigurationController,
   WebPushController,
 } from './push/push.controller';
-import { DemoController } from './training/demo.controller';
 import {
   AdminAnalyticsController,
   BusinessAnalyticsController,
@@ -43,12 +44,10 @@ import {
 } from './analytics/analytics.controller';
 import { AnalyticsService } from './analytics/analytics.service';
 import {
-  TrainingController,
-  CollaborationController,
-} from './training/training.controller';
+  LegacyProgramsController,
+  ProductEventsController,
+} from './training/legacy-programs.controller';
 import { TrainingService } from './training/training.service';
-import { ExerciseVideoService } from './training/exercise-video.service';
-import { ExerciseVideoController } from './training/exercise-video.controller';
 import { CollaborationService } from './training/collaboration.service';
 import { CoachingPracticeService } from './coaching/practice.service';
 import { CoachingRecordsService } from './coaching/records.service';
@@ -157,6 +156,10 @@ import {
 @Module({
   imports: [DatabaseModule, AuthModule, StorageModule],
   controllers: [
+    DemoController,
+    ProductNavigationController,
+    LegacyProgramsController,
+    ProductEventsController,
     HouseholdController,
     TuitionController,
     CollectionsController,
@@ -167,7 +170,6 @@ import {
     CrmController,
     GrowthRecommendationsController,
     GrowthOffersController,
-    ExerciseVideoController,
     AdvancedBusinessController,
     CoachSettlementsController,
     AdminAdvancedController,
@@ -177,9 +179,6 @@ import {
     AdminAnalyticsController,
     BusinessAnalyticsController,
     CoachAnalyticsController,
-    TrainingController,
-    CollaborationController,
-    DemoController,
     CoachingController,
     CoachingPracticeController,
     CoachingDirectoryController,
@@ -232,7 +231,6 @@ import {
     CrmService,
     LegacyGroupReconciliationService,
     GrowthDiscoveryService,
-    ExerciseVideoService,
     AdvancedBusinessService,
     WebPushService,
     WebPushSender,

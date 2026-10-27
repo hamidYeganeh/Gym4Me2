@@ -5,7 +5,15 @@ import { randomInt, randomUUID } from 'node:crypto';
 import { resolve } from 'node:path';
 import { HouseholdBillingService } from '../src/modules/commerce/household-billing.service';
 import * as hb from '../src/modules/commerce/household-billing.contracts';
-import { trainingRelationship } from '../src/modules/training/training.service';
+import { BusinessSportsController } from '../src/modules/commerce/commerce.controller';
+import { ProductNavigationController } from '../src/modules/profile/navigation.controller';
+import * as tc from '../src/modules/training/training.contracts';
+import { LegacyProgramsController } from '../src/modules/training/legacy-programs.controller';
+import type { AuthRequest } from '../src/modules/auth/auth.guard';
+import {
+  TrainingService,
+  trainingRelationship,
+} from '../src/modules/training/training.service';
 import { ConfigService } from '@nestjs/config';
 import { sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
@@ -150,7 +158,7 @@ async function service(
     }),
   );
   await commerce.publish(f.owner.id, s.id, 1);
-  return commerce.detail(s.id);
+  return { ...(await commerce.service(db, s.id, true)), occurrences: [] };
 }
 async function session(f: Fixture, serviceId: string, capacity = 3, days = 1) {
   return commerce.schedule(f.owner.id, serviceId, {
@@ -176,6 +184,30 @@ async function buy(
   );
   await commerce.captureCash(f.owner.id, o.id, 'Synthetic test payment');
   return commerce.myOrder(f.athlete.id, o.id);
+}
+// Recreate an order accepted before v1 withdrew new program purchases.
+async function historicalProgramOrder(
+  athleteId: string,
+  serviceId: string,
+  relationshipId: string,
+) {
+  const s = await commerce.service(db, serviceId, true);
+  const snapshot = {
+    title: s.title,
+    kind: s.kind,
+    policy: s.policy,
+    offering: s.offering,
+    branchId: s.branch_id,
+    quantity: 1,
+    participants: [],
+    coaching: null,
+    programRelationshipId: relationshipId,
+  };
+  const [order] = await rows<{ id: string }>(
+    db,
+    sql`INSERT INTO sport_orders(user_id,organization_id,service_id,version_id,amount_minor,snapshot,idempotency_key,request_hash,expires_at) VALUES(${athleteId},${s.organization_id},${s.id},${s.version_id},${s.amount_minor},${JSON.stringify(snapshot)}::jsonb,${randomUUID()},'legacy-fixture',now()+interval '10 minutes') RETURNING id`,
+  );
+  return order;
 }
 async function coach(f: Fixture) {
   const u = await person();
@@ -770,7 +802,7 @@ void test('venue coordination blocks payment until staff approves the requested 
   );
   assert.ok(attempt.id);
 });
-void test('independent coach programs have a paid intake and controlled delivery lifecycle', async () => {
+void test('previously sold coach programs retain their paid intake and controlled delivery lifecycle', async () => {
   const f = await fixture(),
     trainer = await coach(f),
     sportId = await sport('karate');
@@ -795,9 +827,10 @@ void test('independent coach programs have a paid intake and controlled delivery
       }),
     /Practice.invalidService/,
   );
-  const order = await commerce.checkout(
+  const order = await historicalProgramOrder(
     f.athlete.id,
-    checkoutSchema.parse({ serviceId: offer.id, idempotencyKey: randomUUID() }),
+    offer.id,
+    trainer.relationship.id,
   );
   const [shop] = await rows<{ organization_id: string; branch_id: string }>(
     db,
@@ -1186,9 +1219,10 @@ void test('ending a relationship between checkout and payment preserves paid pro
   const f = await fixture(),
     trainer = await coach(f),
     s = await service(f, 'program', { coachUserId: trainer.id });
-  const order = await commerce.checkout(
+  const order = await historicalProgramOrder(
     f.athlete.id,
-    checkoutSchema.parse({ serviceId: s.id, idempotencyKey: randomUUID() }),
+    s.id,
+    trainer.relationship.id,
   );
   await db.execute(
     sql`UPDATE coaching_relationships SET status='ended' WHERE id=${trainer.relationship.id}`,
@@ -1549,5 +1583,236 @@ void test('legacy classification versions preserve sold metadata and benefit rev
       })
     ).services.length,
     0,
+  );
+});
+
+void test('v1 withdraws new program discovery, quotes and checkout while preserving existing orders', async () => {
+  const f = await fixture(),
+    trainer = await coach(f),
+    s = await service(f, 'program', { coachUserId: trainer.id });
+  const host = navRequest(f.owner);
+  host.principal.session.client = 'business';
+  assert.throws(
+    () =>
+      new BusinessSportsController(commerce).create(host, {
+        organizationId: f.org.id,
+        branchId: f.branch.id,
+        title: 'Retired program',
+        kind: 'program',
+        amountMinor: '100000',
+        coachUserId: trainer.id,
+        policy,
+      }),
+    /Backend.serviceUnavailable/,
+  );
+  assert.ok(
+    !(await commerce.catalog('', undefined, f.org.id)).some(
+      (item) => item.id === s.id,
+    ),
+  );
+  await assert.rejects(
+    () => commerce.detail(s.id),
+    /Backend.serviceUnavailable/,
+  );
+  await assert.rejects(
+    () => commerce.quote(f.athlete.id, { serviceId: s.id }),
+    /Backend.serviceUnavailable/,
+  );
+  await assert.rejects(
+    () =>
+      commerce.checkout(
+        f.athlete.id,
+        checkoutSchema.parse({ serviceId: s.id, idempotencyKey: randomUUID() }),
+      ),
+    /Backend.serviceUnavailable/,
+  );
+  const order = await historicalProgramOrder(
+    f.athlete.id,
+    s.id,
+    trainer.relationship.id,
+  );
+  await commerce.captureCash(
+    f.owner.id,
+    order.id,
+    'Synthetic previous order settlement',
+  );
+  assert.equal((await commerce.myOrder(f.athlete.id, order.id)).status, 'paid');
+});
+
+const navRequest = (user: { id: string; phone: string }) =>
+  ({
+    principal: { user, session: { client: 'application' } },
+  }) as unknown as AuthRequest;
+void test('navigation reflects only the current account, pending invitations and granted business branches', async () => {
+  const f = await fixture(),
+    navigation = new ProductNavigationController(database);
+  const clean = await navigation.get(navRequest(f.athlete));
+  assert.ok(clean && Object.values(clean).every((value) => value === false));
+  assert.equal(
+    (await navigation.get(navRequest(f.owner))).businessReady,
+    false,
+  );
+  await service(f, 'class');
+  const owner = await navigation.get(navRequest(f.owner));
+  assert.equal(owner.manage, true);
+  assert.equal(owner.operate, true);
+  assert.equal(owner.finance, true);
+  assert.equal(owner.businessReady, true);
+  const accountant = await navigation.get(navRequest(f.accountant));
+  assert.equal(accountant.manage, false);
+  assert.equal(accountant.operate, false);
+  assert.equal(accountant.finance, true);
+  assert.equal(accountant.businessReady, true);
+  const manager = await person();
+  const [member] = await rows<{ id: string }>(
+    db,
+    sql`INSERT INTO organization_members(organization_id,user_id,role,all_branches) VALUES(${f.org.id},${manager.id},'manager',false) RETURNING id`,
+  );
+  assert.equal(
+    (await navigation.get(navRequest(manager))).businessReady,
+    false,
+  );
+  await db.execute(
+    sql`INSERT INTO organization_member_branches(organization_id,member_id,branch_id) VALUES(${f.org.id},${member.id},${f.branch.id})`,
+  );
+  assert.equal((await navigation.get(navRequest(manager))).businessReady, true);
+  await db.execute(
+    sql`INSERT INTO organization_invitations(organization_id,phone,role,invited_by,expires_at) VALUES(${f.org.id},${f.athlete.phone},'manager',${f.owner.id},now()+interval '1 day')`,
+  );
+  assert.equal((await navigation.get(navRequest(f.athlete))).teamInvites, true);
+  assert.equal((await navigation.get(navRequest(f.other))).teamInvites, false);
+  await db.execute(
+    sql`UPDATE organization_invitations SET revoked_at=now() WHERE phone=${f.athlete.phone}`,
+  );
+  assert.equal(
+    (await navigation.get(navRequest(f.athlete))).teamInvites,
+    false,
+  );
+});
+void test('legacy program history is private and paid fulfilment cannot outlive its scoped contract', async () => {
+  const f = await fixture(),
+    trainer = await coach(f),
+    s = await service(f, 'program', { coachUserId: trainer.id });
+  const order = await historicalProgramOrder(
+    f.athlete.id,
+    s.id,
+    trainer.relationship.id,
+  );
+  await commerce.captureCash(
+    f.owner.id,
+    order.id,
+    'Synthetic paid legacy contract',
+  );
+  const [request] = await workflow.programs(f.athlete.id);
+  await workflow.intake(
+    f.athlete.id,
+    String(request.id),
+    c.programIntakeSchema.parse({
+      revision: 1,
+      goals: 'Synthetic goal',
+      experience: '',
+      limitations: '',
+      location: '',
+      idempotencyKey: randomUUID(),
+    }),
+  );
+  const training = new TrainingService(database),
+    controller = new LegacyProgramsController(database, training);
+  const [exercise] = await training.library();
+  const content = {
+    title: 'Previous paid plan',
+    note: 'Synthetic',
+    days: [
+      {
+        name: 'First day',
+        exercises: [
+          {
+            id: randomUUID(),
+            exerciseId: exercise.id,
+            sets: 3,
+            reps: 10,
+            seconds: null,
+            load: null,
+            restSeconds: 60,
+            note: '',
+            group: 'single',
+            groupId: '',
+          },
+        ],
+      },
+    ],
+  };
+  const planId = randomUUID(),
+    input = {
+      id: planId,
+      revision: 0,
+      relationshipId: trainer.relationship.id,
+      isTemplate: false,
+      operationId: randomUUID(),
+      content,
+    };
+  await assert.rejects(() =>
+    controller.save(navRequest(f.other), String(request.id), input),
+  );
+  await assert.rejects(() =>
+    controller.save(navRequest(trainer), String(request.id), {
+      ...input,
+      relationshipId: randomUUID(),
+    }),
+  );
+  await controller.save(navRequest(trainer), String(request.id), input);
+  const publish = {
+    revision: 1,
+    effectiveFrom: new Date().toISOString().slice(0, 10),
+    operationId: randomUUID(),
+  };
+  const published = (await controller.publish(
+    navRequest(trainer),
+    String(request.id),
+    planId,
+    publish,
+  )) as { assignment: { id: string } };
+  const detail = (await controller.detail(
+    navRequest(f.athlete),
+    published.assignment.id,
+  )) as { content: { title: string } };
+  assert.equal(detail.content.title, content.title);
+  await assert.rejects(() =>
+    controller.detail(navRequest(f.other), published.assignment.id),
+  );
+  assert.equal(
+    ((await controller.list(navRequest(f.athlete))) as unknown[]).length,
+    1,
+  );
+  assert.equal(
+    ((await controller.list(navRequest(f.other))) as unknown[]).length,
+    0,
+  );
+  await db.transaction((tx) =>
+    commerce.cancelHostedOrder(tx, order.id, 'Synthetic refund'),
+  );
+  await assert.rejects(() =>
+    controller.publish(
+      navRequest(trainer),
+      String(request.id),
+      planId,
+      publish,
+    ),
+  );
+  await assert.rejects(() =>
+    training.save(
+      trainer.id,
+      tc.savePlan.parse({ ...input, revision: 2 }),
+      String(request.id),
+    ),
+  );
+  assert.equal(
+    (
+      (await controller.detail(
+        navRequest(f.athlete),
+        published.assignment.id,
+      )) as { content: { title: string } }
+    ).content.title,
+    content.title,
   );
 });

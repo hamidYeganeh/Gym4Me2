@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from "react";
 import { useReadiness } from "@repo/api/system";
-import Link from "next/link";
 import { AnimatedThemeToggler } from "./kit/AnimatedThemeToggler";
 import { BarbellHorizontalIcon, GlobeIcon } from "./icons";
 import { Button } from "./kit/Button";
@@ -83,20 +82,6 @@ export function WorkspaceHome({
           </Button>
         </div>
       </header>
-      <Link
-        href="/training"
-        scroll={false}
-        className="block rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        aria-label={labels.dialog}
-      >
-        <div
-          data-zoom-exit-key="training"
-          className="flex aspect-[3/1] items-center justify-center rounded-3xl bg-primary/15 text-6xl text-primary"
-        >
-          <BarbellHorizontalIcon />
-        </div>
-        <p className="mt-3 text-lg font-semibold">{labels.dialog}</p>
-      </Link>
       <Card>
         <CardHeader>
           <Badge variant="secondary">{labels.ready}</Badge>

@@ -12,11 +12,9 @@ export function navigationRoute(pathname: string, search: string) {
     "/bookings/detail": "/bookings",
     "/memberships/detail": "/memberships",
     "/orders/detail": "/orders",
+    "/programs/detail": "/programs",
 
     "/messages/conversation": "/messages",
-    "/training/conversation": "/training/conversation",
-    "/training/workout": "/training/workout",
-    "/training/plan": "/training/plan",
     "/support/detail": "/support",
     "/tickets/view": "/tickets",
   };
@@ -51,13 +49,13 @@ export function applicationRouteLayout(pathname: string, search: string) {
     logical.startsWith("/tickets/") ||
     logical.startsWith("/checkout/mock-gateway") ||
     logical.startsWith("/messages/") ||
-    logical.startsWith("/training/") ||
     logical.startsWith("/coaching/") ||
     logical.startsWith("/profile/") ||
     logical.startsWith("/support/") ||
     logical.startsWith("/bookings/") ||
     logical.startsWith("/orders/") ||
     logical.startsWith("/memberships/") ||
+    logical.startsWith("/programs/") ||
     logical.endsWith("/gallery");
   return {
     logical,

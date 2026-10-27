@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useTranslations } from "@repo/i18n";
-import { useAccount } from "@repo/api/profile";
+import { useAccount, useProductNavigation } from "@repo/api/profile";
 import { useLogout } from "@repo/api/auth";
 import { Bookmark, Settings, Mail, ChevronLeft, Pencil } from "lucide-react";
 import { MobilePage } from "../mobile-page";
@@ -74,6 +74,8 @@ export function MobileAccount({ section = "account" }: { section?: Section }) {
   const guest = recovery?.kind === "signIn";
   const account =
     accountReadDenied(query.error) || guest ? undefined : query.data;
+  const navigation = useProductNavigation(Boolean(account));
+  const hasInvitations = !navigation.error && navigation.data?.teamInvites;
   const hadAccount = useRef(false);
   useEffect(() => {
     if (account) hadAccount.current = true;
@@ -145,11 +147,13 @@ export function MobileAccount({ section = "account" }: { section?: Section }) {
                   description={t("editHint")}
                   icon={<Pencil className="size-5" />}
                 />
-                <MenuLink
-                  href={paths.invitations}
-                  title={copy("teamInvitations")}
-                  icon={<Mail className="size-5" />}
-                />
+                {hasInvitations && (
+                  <MenuLink
+                    href={paths.invitations}
+                    title={copy("teamInvitations")}
+                    icon={<Mail className="size-5" />}
+                  />
+                )}
                 <MenuLink
                   href="/saved"
                   title={savedCopy("title")}

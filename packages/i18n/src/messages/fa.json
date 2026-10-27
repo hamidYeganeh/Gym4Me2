@@ -813,7 +813,8 @@
     "pushTestWait": "برای ارسال دوبارهٔ اعلان، ۳۰ ثانیه صبر کنید.",
     "sessionAlreadyReserved": "این سانس را قبلاً رزرو کرده‌اید. جزئیات آن را در بخش رزروهای من ببینید.",
     "membershipExhausted": "جلسهٔ آزاد در این عضویت باقی نمانده است. اعتبار و رزروهای فعال را بررسی کنید.",
-    "nativePushUnavailable": "ارسال اعلان بومی هنوز برای این سیستم‌عامل تنظیم نشده است."
+    "nativePushUnavailable": "ارسال اعلان بومی هنوز برای این سیستم‌عامل تنظیم نشده است.",
+    "serviceUnavailable": "این خدمت در دسترس نیست."
   },
   "Preview": {
     "atlasAthleticClub": "باشگاه اطلس",
@@ -2786,7 +2787,8 @@
     "payments": "پرداخت‌ها",
     "reports": "گزارش‌ها",
     "advanced": "پلن و تسویه‌ها",
-    "workspace": "فضای کار"
+    "workspace": "فضای کار",
+    "moreTools": "ابزارهای مدیریت"
   },
   "LumaDesign": {
     "schedule": "برنامهٔ من",
@@ -3555,6 +3557,7 @@
     "calendars": "تقویم‌های دنبال‌شده",
     "filterByDate": "فیلتر تاریخ",
     "hideCalendar": "بستن تقویم",
-    "clearDate": "همهٔ تاریخ‌ها"
+    "clearDate": "همهٔ تاریخ‌ها",
+    "programHistory": "برنامه‌های قبلی من"
   }
 }

@@ -1,4 +1,5 @@
 export * from "./profile.dto";
+export * from "./navigation";
 export * from "./profile.endpoints";
 export * from "./profile.clients";
 export * from "./profile.hooks";

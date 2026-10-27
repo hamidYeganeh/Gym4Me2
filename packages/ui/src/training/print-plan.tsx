@@ -92,76 +92,92 @@ export function PrintTrainingPlan({
       )}
       {printing &&
         createPortal(
-          <article
-            className="training-print"
-            dir={fmt.locale === "fa" ? "rtl" : "ltr"}
-          >
-            <h1>{content.title}</h1>
-            {content.note && (
-              <p style={{ whiteSpace: "pre-wrap" }}>{content.note}</p>
-            )}
-            {content.nutrition && (
-              <section>
-                <h2>{t("nutritionPlan")}</h2>
-                <p style={{ whiteSpace: "pre-wrap" }}>{content.nutrition}</p>
-              </section>
-            )}
-            {content.days.map((day, index) => (
-              <section key={index}>
-                <h2>{day.name}</h2>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>{t("movement")}</th>
-                      <th>{t("sets")}</th>
-                      <th>{t("printTarget")}</th>
-                      <th>{t("printLoad")}</th>
-                      <th>{t("printRest")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {day.exercises.map((e) => {
-                      const movement = library.find(
-                        (m) => m.id === e.exerciseId,
-                      );
-                      return (
-                        <tr key={e.id}>
-                          <th scope="row">
-                            {(fmt.locale === "fa"
-                              ? movement?.nameFa
-                              : movement?.nameEn) ?? e.exerciseId}
-                            {e.group !== "single" && (
-                              <p>
-                                {t(e.group)} {e.groupId}
-                              </p>
-                            )}
-                            {e.note && (
-                              <p style={{ whiteSpace: "pre-wrap" }}>{e.note}</p>
-                            )}
-                          </th>
-                          <td>{fmt.number(e.sets)}</td>
-                          <td>
-                            {fmt.number(e.reps ?? e.seconds ?? 0)}{" "}
-                            {t(e.reps === null ? "seconds" : "reps")}
-                          </td>
-                          <td>
-                            {e.load === null
-                              ? t("printUnspecified")
-                              : `${fmt.number(e.load)} ${t("kg")}`}
-                          </td>
-                          <td>
-                            {fmt.number(e.restSeconds)} {t("seconds")}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </section>
-            ))}
-          </article>,
+          <ReadOnlyTrainingPlan content={content} library={library} print />,
           document.body,
         )}
     </>
+  );
+}
+
+export function ReadOnlyTrainingPlan({
+  content,
+  library,
+  print = false,
+}: {
+  content: PlanContent;
+  library: Exercise[];
+  print?: boolean;
+}) {
+  const t = useTranslations("Training"),
+    fmt = useTrainingLocale();
+  return (
+    <article
+      className={
+        print
+          ? "training-print"
+          : "luma-group p-4 overflow-x-auto [&_section]:my-5 [&_table]:w-full [&_th]:p-2 [&_td]:p-2 [&_td]:text-center [&_h2]:font-semibold"
+      }
+      dir={fmt.locale === "fa" ? "rtl" : "ltr"}
+    >
+      <h1>{content.title}</h1>
+      {content.note && <p style={{ whiteSpace: "pre-wrap" }}>{content.note}</p>}
+      {content.nutrition && (
+        <section>
+          <h2>{t("nutritionPlan")}</h2>
+          <p style={{ whiteSpace: "pre-wrap" }}>{content.nutrition}</p>
+        </section>
+      )}
+      {content.days.map((day, index) => (
+        <section key={index}>
+          <h2>{day.name}</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>{t("movement")}</th>
+                <th>{t("sets")}</th>
+                <th>{t("printTarget")}</th>
+                <th>{t("printLoad")}</th>
+                <th>{t("printRest")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {day.exercises.map((e) => {
+                const movement = library.find((m) => m.id === e.exerciseId);
+                return (
+                  <tr key={e.id}>
+                    <th scope="row">
+                      {(fmt.locale === "fa"
+                        ? movement?.nameFa
+                        : movement?.nameEn) ?? e.exerciseId}
+                      {e.group !== "single" && (
+                        <p>
+                          {t(e.group)} {e.groupId}
+                        </p>
+                      )}
+                      {e.note && (
+                        <p style={{ whiteSpace: "pre-wrap" }}>{e.note}</p>
+                      )}
+                    </th>
+                    <td>{fmt.number(e.sets)}</td>
+                    <td>
+                      {fmt.number(e.reps ?? e.seconds ?? 0)}{" "}
+                      {t(e.reps === null ? "seconds" : "reps")}
+                    </td>
+                    <td>
+                      {e.load === null
+                        ? t("printUnspecified")
+                        : `${fmt.number(e.load)} ${t("kg")}`}
+                    </td>
+                    <td>
+                      {fmt.number(e.restSeconds)} {t("seconds")}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </section>
+      ))}
+    </article>
   );
 }

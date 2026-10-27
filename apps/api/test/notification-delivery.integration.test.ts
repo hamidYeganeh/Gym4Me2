@@ -25,6 +25,7 @@ import {
   CommerceService,
   rows,
 } from '../src/modules/commerce/commerce.service';
+import { CommunityService } from '../src/modules/commerce/community.service';
 import { SportsConversationService } from '../src/modules/commerce/conversations.service';
 import { SportsInvitationService } from '../src/modules/commerce/invitations.service';
 import { SamanMockPaymentAdapter } from '../src/modules/commerce/sandbox-payment';
@@ -1367,6 +1368,48 @@ void test('server test never describes a permanent vendor failure as queued', as
   try {
     p.setOutcome('failed');
     assert.equal((await p.service.test(p.principal)).status, 'failed');
+  } finally {
+    await p.service.unsubscribe(p.principal);
+  }
+});
+
+void test('retired workout and sports-invitation links stay out of notices and queued browser pushes', async () => {
+  const p = await pushDevice(),
+    userId = p.principal.user.id;
+  try {
+    const community = new CommunityService(database, commerce);
+    for (const href of [
+      '/training',
+      '/training/conversation?id=old',
+      '/invitations/sports',
+    ]) {
+      assert.equal(
+        await deliverSportsNotification(db, { ...notice(userId), href }),
+        null,
+      );
+      await db.execute(
+        sql`INSERT INTO sport_notifications(user_id,title,body,href,source_key) VALUES(${userId},'Historical notice','',${href},${randomUUID()})`,
+      );
+    }
+    assert.equal(
+      (await community.notificationPage(userId, { view: 'all' })).items.length,
+      0,
+    );
+    assert.equal(
+      (await community.notificationPage(userId, { view: 'unread' })).items
+        .length,
+      0,
+    );
+    await p.service.drain();
+    assert.equal(p.sent.length, 0);
+    assert.ok(
+      await deliverSportsNotification(db, {
+        ...notice(userId),
+        href: '/orders',
+      }),
+    );
+    await p.service.drain();
+    assert.equal(p.sent.length, 1);
   } finally {
     await p.service.unsubscribe(p.principal);
   }

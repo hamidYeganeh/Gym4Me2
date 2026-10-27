@@ -813,7 +813,8 @@
     "pushTestWait": "Wait 30 seconds before sending another test.",
     "sessionAlreadyReserved": "You already reserved this session. Open My bookings to see its details.",
     "membershipExhausted": "No unreserved sessions remain on this membership. Check its balance and active bookings.",
-    "nativePushUnavailable": "Native notification delivery is not configured for this platform."
+    "nativePushUnavailable": "Native notification delivery is not configured for this platform.",
+    "serviceUnavailable": "This service is unavailable."
   },
   "Preview": {
     "atlasAthleticClub": "Atlas Athletic Club",
@@ -2786,7 +2787,8 @@
     "payments": "Payments",
     "reports": "Reports",
     "advanced": "Plans & settlements",
-    "workspace": "Workspace"
+    "workspace": "Workspace",
+    "moreTools": "Management tools"
   },
   "LumaDesign": {
     "schedule": "My schedule",
@@ -3555,6 +3557,7 @@
     "calendars": "Followed calendars",
     "filterByDate": "Filter by date",
     "hideCalendar": "Hide calendar",
-    "clearDate": "All dates"
+    "clearDate": "All dates",
+    "programHistory": "My previous programs"
   }
 }

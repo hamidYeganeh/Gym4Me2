@@ -3,10 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { useSportsQuery, type ServiceDto } from "@repo/api/sports";
-import { usePracticeQuery, type CoachDirectoryDto } from "@repo/api/profile";
 import type { ReactNode } from "react";
 import { useApiContext } from "@repo/api/provider";
-import { CoachCard } from "@repo/ui/kit/CoachCard";
 import { ClassCard } from "@repo/ui/kit/ClassCard";
 import {
   Carousel,
@@ -16,7 +14,6 @@ import {
   CarouselNext,
 } from "@repo/ui/kit/Carousel";
 import { Section, amount, QueryState } from "../luma/common";
-import { useSavedCoach } from "./use-saved-coach";
 import { useCatalogClub } from "./use-catalog";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 
@@ -156,57 +153,6 @@ export function DiscoveryClasses() {
               </CarouselItem>
             );
           })}
-        </CardCarousel>
-      </QueryState>
-    </Section>
-  );
-}
-
-function DiscoveryCoach({ coach }: { coach: CoachDirectoryDto }) {
-  const locale = useLocale();
-  const t = useTranslations("Coaches");
-  const [saved, setSaved] = useSavedCoach(coach.userId);
-  return (
-    <CoachCard
-      badgeLabel={coach.city}
-      locale={locale}
-      saved={saved}
-      onSavedChange={setSaved}
-      href={`/coaches/detail?id=${coach.userId}`}
-      labels={{
-        new: t("new"),
-        save: t("save"),
-        unsave: t("unsave"),
-        certified: t("certified"),
-        experience: t("experience"),
-        rating: t("rating"),
-      }}
-      coach={{
-        id: coach.userId,
-        name: coach.displayName ?? t("fallbackName"),
-        specialty: coach.specialties.filter(Boolean).join(" · "),
-        certified: false,
-        yearsOfExperience: coach.experienceYears,
-      }}
-    />
-  );
-}
-
-export function DiscoveryCoaches() {
-  const t = useTranslations("Coaches");
-  const query = usePracticeQuery<{
-    items: CoachDirectoryDto[];
-    hasMore: boolean;
-  }>("coaching/directory", { page: 1 });
-  return (
-    <Section title={t("title")} href="/coaches">
-      <QueryState query={query}>
-        <CardCarousel title={t("title")}>
-          {query.data?.items.slice(0, 4).map((coach) => (
-            <CarouselItem key={coach.userId} className="basis-full!">
-              <DiscoveryCoach coach={coach} />
-            </CarouselItem>
-          ))}
         </CardCarousel>
       </QueryState>
     </Section>

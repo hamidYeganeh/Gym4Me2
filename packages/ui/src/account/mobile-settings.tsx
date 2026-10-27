@@ -1,4 +1,5 @@
 "use client";
+import { useProductNavigation } from "@repo/api/profile";
 
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -90,6 +91,7 @@ export function MobileSettings({
   login: ReactNode;
 }) {
   const t = useTranslations();
+  const navigation = useProductNavigation(Boolean(account));
   const locale = useLocale();
   const changeLocale = useChangeLocale();
   return (
@@ -134,9 +136,11 @@ export function MobileSettings({
           {t("Copy.activeSessions")}
         </SettingsRow>
         <Separator />
-        <SettingsRow href="/invitations" icon={<Mail className="size-5" />}>
-          {t("Copy.teamInvitations")}
-        </SettingsRow>
+        {!navigation.error && navigation.data?.teamInvites && (
+          <SettingsRow href="/invitations" icon={<Mail className="size-5" />}>
+            {t("Copy.teamInvitations")}
+          </SettingsRow>
+        )}
       </SettingsGroup>
       <SettingsGroup title={t("AccountDesign.preferences")}>
         <SettingsRow

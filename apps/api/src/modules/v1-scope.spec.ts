@@ -47,6 +47,15 @@ describe('v1 public API scope', () => {
   });
 
   it.each([
+    ['get', '/profile/training'],
+    ['get', '/profile/training/exercises'],
+    ['post', '/profile/training/plans'],
+    ['post', '/profile/training/sessions/sync'],
+    ['get', '/profile/coaching-collaboration'],
+    ['get', '/sports/community/invitations'],
+    ['post', '/sports/community/host/invitations'],
+    ['post', '/profile/sports-workflows/coach/offerings'],
+    ['get', '/admin/training/videos'],
     ['get', '/sports/games'],
     ['get', '/profile/games'],
     ['post', '/profile/games'],
@@ -81,7 +90,8 @@ describe('v1 public API scope', () => {
     '/sports/account/bookings',
     '/sports/account/memberships',
     '/sports/account/orders',
-    '/profile/training',
+    '/profile/navigation',
+    '/profile/program-history',
     '/sports/community/notifications',
   ])('keeps core endpoint %s protected by authentication', async (path) => {
     const response = await request(app.getHttpServer())

@@ -1403,7 +1403,7 @@ test('invitations only expose eligible branch athletes with masked phone numbers
     }),
   ).rejects.toThrow('Backend.invitationRecipientUnavailable');
 });
-test('duplicate invitations and answers are idempotent and never allocate capacity or money', async () => {
+test('legacy invitation replay retains its state without allocating money or reviving retired notices', async () => {
   const invitations = testingModule.get(SportsInvitationService),
     user = await invitationAthlete(),
     service = await create();
@@ -1469,7 +1469,7 @@ test('duplicate invitations and answers are idempotent and never allocate capaci
     db,
     sql`SELECT id FROM sport_notifications WHERE source_key=${`invite:${id}`}`,
   );
-  expect(notices).toHaveLength(1);
+  expect(notices).toHaveLength(0);
 });
 test('cancellation and response race produces one revision and obsolete unread notices disappear', async () => {
   const invitations = testingModule.get(SportsInvitationService),

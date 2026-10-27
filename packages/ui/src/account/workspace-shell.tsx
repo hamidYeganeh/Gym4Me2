@@ -4,15 +4,16 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "@repo/i18n";
 import { Logo } from "@repo/theme/logo";
-import { useAccount } from "@repo/api/profile";
+import { useAccount, useProductNavigation } from "@repo/api/profile";
 import { useLogout } from "@repo/api/auth";
 import { LogOut, Menu, UserRound } from "lucide-react";
 import { BottomSheet } from "../kit/BottomSheet";
 import { Button } from "../kit/Button";
 import { accountReadDenied } from "../lib/account-recovery";
-import { ErrorNotice } from "./common";
+import { ErrorNotice, QueryError } from "./common";
 import {
   workspaceNavigation,
+  workspaceSecondaryNavigation,
   isWorkspaceRouteActive,
   type NavigationGroup,
 } from "./workspace-navigation";
@@ -56,11 +57,16 @@ function WorkspaceChrome({
   children: ReactNode;
 }) {
   const t = useTranslations(),
-    nav = workspaceNavigation(client),
     query = useAccount(),
     logout = useLogout(),
     router = useRouter();
   const account = accountReadDenied(query.error) ? undefined : query.data;
+  const navigationQuery = useProductNavigation(Boolean(account), true);
+  const context =
+    navigationQuery.error || !account ? undefined : navigationQuery.data;
+  const nav = workspaceNavigation(client, context);
+  const secondary =
+    client === "business" ? workspaceSecondaryNavigation(context) : [];
   const conversation = path.startsWith("/messages/");
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -80,38 +86,74 @@ function WorkspaceChrome({
         aria-label={t("Copy.panelNavigation")}
         className="workspace-menu"
       >
-        {groups.map((group) => (
-          <section key={group} aria-label={t(`WorkspaceNav.${group}`)}>
-            <h2>{t(`WorkspaceNav.${group}`)}</h2>
-            <div>
-              {nav
-                .filter((item) => item.group === group)
-                .map((item) => {
-                  const active = isWorkspaceRouteActive(path, item.href);
-                  return (
-                    <Link
-                      key={item.key}
-                      href={item.href}
-                      prefetch={false}
-                      aria-current={active ? "page" : undefined}
-                      onClick={() => {
-                        if (mobile) setOpen(false);
-                      }}
-                    >
-                      <item.icon size={19} aria-hidden="true" />
-                      <span>{t(item.title)}</span>
-                      {active && (
-                        <span
-                          className="workspace-menu-dot"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </Link>
-                  );
-                })}
-            </div>
-          </section>
-        ))}
+        {groups
+          .filter((group) => nav.some((item) => item.group === group))
+          .map((group) => (
+            <section key={group} aria-label={t(`WorkspaceNav.${group}`)}>
+              <h2>{t(`WorkspaceNav.${group}`)}</h2>
+              <div>
+                {nav
+                  .filter((item) => item.group === group)
+                  .map((item) => {
+                    const active = isWorkspaceRouteActive(path, item.href);
+                    return (
+                      <Link
+                        key={item.key}
+                        href={item.href}
+                        prefetch={false}
+                        aria-current={active ? "page" : undefined}
+                        onClick={() => {
+                          if (mobile) setOpen(false);
+                        }}
+                      >
+                        <item.icon size={19} aria-hidden="true" />
+                        <span>{t(item.title)}</span>
+                        {active && (
+                          <span
+                            className="workspace-menu-dot"
+                            aria-hidden="true"
+                          />
+                        )}
+                      </Link>
+                    );
+                  })}
+              </div>
+            </section>
+          ))}
+        {secondary.length > 0 && (
+          <details
+            key={path}
+            open={secondary.some((item) =>
+              isWorkspaceRouteActive(path, item.href),
+            )}
+          >
+            <summary className="cursor-pointer p-3">
+              {t("WorkspaceNav.moreTools")}
+            </summary>
+            <section>
+              <div>
+                {secondary.map((item) => (
+                  <Link
+                    key={item.key}
+                    href={item.href}
+                    prefetch={false}
+                    aria-current={
+                      isWorkspaceRouteActive(path, item.href)
+                        ? "page"
+                        : undefined
+                    }
+                    onClick={() => {
+                      if (mobile) setOpen(false);
+                    }}
+                  >
+                    <item.icon size={19} aria-hidden="true" />
+                    <span>{t(item.title)}</span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </details>
+        )}
       </nav>
     );
   }
@@ -128,7 +170,11 @@ function WorkspaceChrome({
   );
   const dockKeys =
     client === "business"
-      ? ["overview", "sports-calendar", "sports-messages"]
+      ? [
+          "overview",
+          context?.operate ? "sports-calendar" : "payments",
+          context?.operate ? "reception" : "reports",
+        ]
       : ["overview", "analytics", "users"];
   const identity = (
     <div className="workspace-identity">
@@ -198,6 +244,10 @@ function WorkspaceChrome({
             </Button>
           </header>
         )}
+        <QueryError
+          error={navigationQuery.error}
+          retry={navigationQuery.refetch}
+        />
         {children}
         {!conversation && (
           <nav

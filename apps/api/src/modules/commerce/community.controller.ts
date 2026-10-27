@@ -35,21 +35,10 @@ import { jsonDto } from './commerce.service';
 import { commandKey } from './commerce.contracts';
 import { ApiBody, ApiQuery } from '@nestjs/swagger';
 import {
-  invitationCreateBodySchema,
-  invitationAnswerBodySchema,
-  invitationCancelBodySchema,
   conversationPreferencesBodySchema,
   calendarSettingsBodySchema,
   conversationStateBodySchema,
 } from './commerce.openapi';
-import { SportsInvitationService } from './invitations.service';
-import {
-  invitationCreateSchema,
-  invitationAnswerSchema,
-  invitationCancelSchema,
-  invitationPageSchema,
-  invitationRecipientSchema,
-} from './invitations.contracts';
 const id = (v: string) => parse(z.uuid(), v);
 const dto = async (value: Promise<unknown>) => jsonDto(await value);
 @DomainController('sports', 'community')
@@ -58,7 +47,6 @@ const dto = async (value: Promise<unknown>) => jsonDto(await value);
 export class SportsCommunityController {
   constructor(
     private readonly s: CommunityService,
-    private readonly invitationsService: SportsInvitationService,
     private readonly conversationsService: SportsConversationService,
     private readonly calendarsService: SportsCalendarService,
   ) {}
@@ -87,31 +75,6 @@ export class SportsCommunityController {
         r.principal.user.id,
         parse(calendarScopeSchema, query),
         parse(calendarSettingsSchema, body),
-      ),
-    );
-  }
-  @Get('invitations')
-  @ApiQuery({ name: 'cursor', required: false, type: String })
-  invitations(@Req() r: AuthRequest, @Query() query: unknown) {
-    return dto(
-      this.invitationsService.list(
-        r.principal.user.id,
-        parse(invitationPageSchema, query).cursor,
-      ),
-    );
-  }
-  @Post('invitations/:id/answer')
-  @ApiBody({ schema: invitationAnswerBodySchema })
-  answer(
-    @Req() r: AuthRequest,
-    @Param('id') value: string,
-    @Body() body: unknown,
-  ) {
-    return dto(
-      this.invitationsService.answer(
-        r.principal.user.id,
-        id(value),
-        parse(invitationAnswerSchema, body),
       ),
     );
   }
@@ -356,63 +319,6 @@ export class SportsCommunityController {
       this.conversationsService.start(
         r.principal.user.id,
         parse(z.object({ occurrenceId: z.uuid() }).strict(), body).occurrenceId,
-      ),
-    );
-  }
-  @Post('host/invitations')
-  @ApiBody({ schema: invitationCreateBodySchema })
-  invite(@Req() r: AuthRequest, @Body() body: unknown) {
-    return dto(
-      this.invitationsService.create(
-        r.principal.user.id,
-        parse(invitationCreateSchema, body),
-      ),
-    );
-  }
-  @Get('host/services/:id/invitations')
-  @ApiQuery({ name: 'cursor', required: false, type: String })
-  hostInvitations(
-    @Req() r: AuthRequest,
-    @Param('id') value: string,
-    @Query() query: unknown,
-  ) {
-    return dto(
-      this.invitationsService.host(
-        r.principal.user.id,
-        id(value),
-        parse(invitationPageSchema, query).cursor,
-      ),
-    );
-  }
-  @Get('host/services/:id/recipients')
-  @ApiQuery({ name: 'search', required: false, type: String })
-  recipients(
-    @Req() r: AuthRequest,
-    @Param('id') value: string,
-    @Query() query: unknown,
-  ) {
-    return dto(
-      this.invitationsService.recipients(
-        r.principal.user.id,
-        id(value),
-        parse(invitationRecipientSchema, query).search,
-        parse(invitationRecipientSchema, query).page,
-        parse(invitationRecipientSchema, query).limit,
-      ),
-    );
-  }
-  @Post('host/invitations/:id/cancel')
-  @ApiBody({ schema: invitationCancelBodySchema })
-  cancelInvitation(
-    @Req() r: AuthRequest,
-    @Param('id') value: string,
-    @Body() body: unknown,
-  ) {
-    return dto(
-      this.invitationsService.cancel(
-        r.principal.user.id,
-        id(value),
-        parse(invitationCancelSchema, body),
       ),
     );
   }

@@ -58,13 +58,13 @@ export function useAcceptInvitation() {
   return useApiMutation(
     (api, input: { id: string }) =>
       profileClients.acceptInvitation(api, input.id),
-    [["profile"], ["business", "organizations"]],
+    [["profile"], ["business"], ["sports", "navigation"]],
   );
 }
 export function useUpdateCoach() {
   return useApiMutation(
     (api, input: dto.UpdateCoachDto) => profileClients.updateCoach(api, input),
-    [["profile"]],
+    [["profile"], ["sports", "navigation"]],
   );
 }
 export function useRespondAffiliation() {

@@ -80,6 +80,13 @@ export const businessNav: WorkspaceNavItem[] = [
     group: "work",
   },
   {
+    key: "members",
+    href: "/members",
+    title: "Luma.members",
+    icon: Users,
+    group: "work",
+  },
+  {
     key: "reception",
     href: "/reception",
     title: "Luma.reception",
@@ -119,13 +126,6 @@ export const businessNav: WorkspaceNavItem[] = [
     href: "/coaching",
     title: "Practice.coachingManagement",
     icon: Users,
-    group: "management",
-  },
-  {
-    key: "training",
-    href: "/training",
-    title: "Luma.training",
-    icon: Dumbbell,
     group: "management",
   },
   {
@@ -222,13 +222,6 @@ export const adminNav: WorkspaceNavItem[] = [
     group: "management",
   },
   {
-    key: "training",
-    href: "/training",
-    title: "Luma.training",
-    icon: Dumbbell,
-    group: "management",
-  },
-  {
     key: "taxonomies",
     href: "/taxonomies",
     title: "Copy.categories",
@@ -264,17 +257,56 @@ export const adminNav: WorkspaceNavItem[] = [
     group: "account",
   },
 ];
+export type WorkspaceNavigationContext = Partial<
+  import("@repo/api/profile").ProductNavigation
+>;
+const secondaryKeys = new Set([
+  "crm",
+  "advanced",
+  "branches",
+  "team",
+  "coaching",
+  "resources",
+  "imports",
+]);
+function permitted(item: WorkspaceNavItem, c: WorkspaceNavigationContext) {
+  if (item.key === "invitations") return Boolean(c.teamInvites);
+  if (item.key === "sports-messages") return Boolean(c.messages);
+  if (
+    ["sports-calendar", "sports-services", "members", "reception"].includes(
+      item.key,
+    )
+  )
+    return Boolean(c.operate);
+  if (["payments", "reports"].includes(item.key)) return Boolean(c.finance);
+  if (item.key === "branches") return Boolean(c.manage && c.multipleBranches);
+  if (item.key === "crm") return Boolean(c.manage && c.businessReady);
+  if (item.key === "advanced") return Boolean(c.finance && c.businessReady);
+  if (secondaryKeys.has(item.key)) return Boolean(c.manage);
+  return true;
+}
 export function workspaceNavigation(
   client: "business" | "admin" | "application",
+  context: WorkspaceNavigationContext = {},
 ) {
+  if (client === "business")
+    return [
+      ...businessNav.filter((item) => !secondaryKeys.has(item.key)),
+      ...commonNav,
+    ].filter((item) => permitted(item, context));
   return [
-    ...(client === "business"
-      ? businessNav
-      : client === "admin"
-        ? adminNav
-        : []),
-    ...commonNav,
+    ...(client === "admin" ? adminNav : []),
+    ...commonNav.filter(
+      (item) => item.key !== "invitations" || context.teamInvites,
+    ),
   ];
+}
+export function workspaceSecondaryNavigation(
+  context: WorkspaceNavigationContext = {},
+) {
+  return businessNav.filter(
+    (item) => secondaryKeys.has(item.key) && permitted(item, context),
+  );
 }
 export function isWorkspaceRouteActive(path: string, href: string) {
   return href === "/"

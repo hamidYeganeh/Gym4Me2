@@ -50,7 +50,6 @@ import { ResourceManager } from "./resources";
 import { SessionManager, AdminSchedulePanel } from "./session-management";
 import { OccurrenceSeriesManager } from "./occurrence-series";
 import { ServiceCoverEditor } from "./cover";
-import { ServiceInvitations } from "./invitations";
 import { CalendarManager } from "./calendars";
 import {
   ServiceEligibilityFields,
@@ -443,14 +442,7 @@ function Services({
               onChange={(e) => setKind(e.target.value as ServiceDto["kind"])}
             >
               {(
-                [
-                  "class",
-                  "course",
-                  "court",
-                  "access",
-                  "membership",
-                  "program",
-                ] as const
+                ["class", "course", "court", "access", "membership"] as const
               ).map((kind) => (
                 <NativeSelectOption key={kind} value={kind}>
                   {t(`kinds.${kind}`)}
@@ -630,7 +622,6 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
   const [documentsOpen, setDocumentsOpen] = useState(false);
   const [couponsOpen, setCouponsOpen] = useState(false);
   const [coverOpen, setCoverOpen] = useState(false);
-  const [invitationsOpen, setInvitationsOpen] = useState(false);
   return (
     <Card>
       <CardHeader>
@@ -693,17 +684,8 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
               {t(s.status === "draft" ? "publish" : "publishChanges")}
             </Button>
           )}
-          <Button
-            variant="outline"
-            className="min-h-11"
-            aria-expanded={invitationsOpen}
-            onClick={() => setInvitationsOpen((value) => !value)}
-          >
-            {t("manageInvitations")}
-          </Button>
         </div>
         {coverOpen && <ServiceCoverEditor service={s} />}
-        {invitationsOpen && <ServiceInvitations service={s} />}
         {editOpen && (
           <form
             className="mt-6 grid gap-4 sm:grid-cols-2"

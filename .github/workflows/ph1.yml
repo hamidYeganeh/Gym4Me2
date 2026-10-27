@@ -61,7 +61,7 @@ jobs:
         run: |
           docker compose exec -T postgres-test psql -U gym4me -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE gym4me_coaching_test'
           pnpm --filter api exec jest --config test/jest.coaching.json --runInBand
-      - name: Verify training, offline command races and private collaboration
+      - name: Verify legacy training data, privacy and offline command compatibility
         run: |
           docker compose exec -T postgres-test psql -U gym4me -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE gym4me_training_test'
           pnpm --filter api test:training
