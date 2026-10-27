@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   remainingMembershipSessions,
+  renewableCheckoutMemberships,
   usableCheckoutMemberships,
 } from "../lib/checkout-memberships";
 import { checkoutMembershipFixtures } from "./fixtures/checkout-memberships";
@@ -137,5 +138,47 @@ test("an unscoped same-branch membership does not unlock unrelated services", ()
       +now,
     ).length,
     0,
+  );
+});
+
+test("new buyers have no renewal choice and non-membership purchases cannot renew credit", () => {
+  const plan = { id: valid.serviceId, kind: "membership" as const };
+  assert.deepEqual(renewableCheckoutMemberships(plan, []), []);
+  assert.deepEqual(renewableCheckoutMemberships(service, memberships), []);
+});
+
+test("renewals preserve expired and frozen history but exclude cancelled and unrelated purchases", () => {
+  const plan = { id: valid.serviceId, kind: "membership" as const };
+  const history = [
+    valid,
+    { ...valid, id: "expired", status: "expired" },
+    { ...valid, id: "frozen", status: "frozen" },
+    { ...valid, id: "cancelled", status: "cancelled" },
+    { ...valid, id: "other", serviceId: "other-service" },
+  ];
+  assert.deepEqual(
+    renewableCheckoutMemberships(plan, history).map((m) => m.id),
+    [valid.id, "expired", "frozen"],
+  );
+});
+
+test("guardian and dependent renewals stay bound to the selected beneficiary", () => {
+  const plan = { id: valid.serviceId, kind: "membership" as const };
+  const family = [
+    valid,
+    { ...valid, id: "child-a-plan", dependentId: "child-a" },
+    { ...valid, id: "child-b-plan", dependentId: "child-b" },
+  ];
+  assert.deepEqual(
+    renewableCheckoutMemberships(plan, family).map((m) => m.id),
+    [valid.id],
+  );
+  assert.deepEqual(
+    renewableCheckoutMemberships(plan, family, "child-a").map((m) => m.id),
+    ["child-a-plan"],
+  );
+  assert.deepEqual(
+    renewableCheckoutMemberships(plan, family, "unknown-child"),
+    [],
   );
 });

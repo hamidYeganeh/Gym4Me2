@@ -1110,7 +1110,8 @@
     "invalidPriceRange": "Enter whole prices from 0 to 1,000,000,000 toman. Maximum must be at least minimum.",
     "selectLocation": "Select area",
     "selectedLocation": "Selected",
-    "photoCredits": "Photo credits"
+    "photoCredits": "Photo credits",
+    "moreFilters": "More filters"
   },
   "StaffScope": {
     "title": "Branch access",
@@ -3468,7 +3469,12 @@
     "orderRecorded": "Walk-in order recorded. Add the payment receipt below.",
     "beneficiary": "Athlete",
     "myself": "Myself",
-    "household": "Family and children"
+    "household": "Family and children",
+    "membershipStartDefault": "Membership starts after payment is confirmed.",
+    "membershipStartsOn": "Selected start date: {date}",
+    "changeStartDate": "Change start date",
+    "renewalUnavailableOption": "Selected membership unavailable",
+    "renewalUnavailable": "This membership cannot be renewed. Choose another membership or a new purchase."
   },
   "Closure": {
     "invalidDate": "Enter a valid date.",

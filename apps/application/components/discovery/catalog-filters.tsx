@@ -1,5 +1,6 @@
 "use client";
-import { useTranslations } from "@repo/i18n";
+import { useState } from "react";
+import { useTranslations, useLocale } from "@repo/i18n";
 import { validCatalogPrices, type ClubFiltersDto } from "@repo/api/catalog";
 import { Field, FieldLabel } from "@repo/ui/kit/Field";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
@@ -15,6 +16,7 @@ export function CatalogFilters({
   value: PriceFilters;
   onChange: (value: PriceFilters) => void;
 }) {
+  const locale = useLocale();
   const invalid = !validCatalogPrices(value);
   const t = useTranslations("Tariffs");
   const copy = useTranslations("Catalog");
@@ -33,105 +35,17 @@ export function CatalogFilters({
     "package",
     "course",
   ] as const;
+  const advancedCount = [
+    value.serviceType,
+    value.unit,
+    value.minPrice,
+    value.maxPrice,
+  ].filter((entry) => entry !== undefined).length;
+  const [advancedOpen, setAdvancedOpen] = useState(
+    advancedCount > 0 || invalid,
+  );
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
-      <Field>
-        <FieldLabel htmlFor="filter-service">{t("service")}</FieldLabel>
-        <NativeSelect
-          id="filter-service"
-          value={value.serviceType ?? ""}
-          onChange={(event) =>
-            onChange({
-              ...value,
-              serviceType:
-                (event.target.value as PriceFilters["serviceType"]) ||
-                undefined,
-            })
-          }
-        >
-          <NativeSelectOption value="">
-            {copy("allServices")}
-          </NativeSelectOption>
-          {services.map((service) => (
-            <NativeSelectOption key={service} value={service}>
-              {t(`service_${service}`)}
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
-      </Field>
-      <Field>
-        <FieldLabel htmlFor="filter-unit">{t("unit")}</FieldLabel>
-        <NativeSelect
-          id="filter-unit"
-          value={value.unit ?? ""}
-          onChange={(event) =>
-            onChange({
-              ...value,
-              unit: (event.target.value as PriceFilters["unit"]) || undefined,
-            })
-          }
-        >
-          <NativeSelectOption value="">{copy("allUnits")}</NativeSelectOption>
-          {units.map((unit) => (
-            <NativeSelectOption key={unit} value={unit}>
-              {t(`unit_${unit}`)}
-            </NativeSelectOption>
-          ))}
-        </NativeSelect>
-      </Field>
-      <Field>
-        <FieldLabel htmlFor="filter-min-price">{copy("minPrice")}</FieldLabel>
-        <Input
-          id="filter-min-price"
-          aria-invalid={invalid}
-          aria-describedby={invalid ? "filter-price-error" : undefined}
-          type="number"
-          min={0}
-          max={1000000000}
-          step={1}
-          value={value.minPrice ?? ""}
-          onChange={(event) =>
-            onChange({
-              ...value,
-              minPrice:
-                event.target.value === ""
-                  ? undefined
-                  : Number(event.target.value),
-            })
-          }
-        />
-      </Field>
-      <Field>
-        <FieldLabel htmlFor="filter-max-price">{copy("maxPrice")}</FieldLabel>
-        <Input
-          id="filter-max-price"
-          aria-invalid={invalid}
-          aria-describedby={invalid ? "filter-price-error" : undefined}
-          type="number"
-          min={0}
-          max={1000000000}
-          step={1}
-          value={value.maxPrice ?? ""}
-          onChange={(event) =>
-            onChange({
-              ...value,
-              maxPrice:
-                event.target.value === ""
-                  ? undefined
-                  : Number(event.target.value),
-            })
-          }
-        />
-      </Field>
-      {invalid && (
-        <p
-          id="filter-price-error"
-          role="alert"
-          className="text-sm text-destructive sm:col-span-2"
-        >
-          {copy("invalidPriceRange")}
-        </p>
-      )}
+    <div className="grid gap-4">
       <Field>
         <FieldLabel htmlFor="filter-sort">{copy("sort")}</FieldLabel>
         <NativeSelect
@@ -151,6 +65,123 @@ export function CatalogFilters({
           ))}
         </NativeSelect>
       </Field>
+      <details
+        className="rounded-2xl border p-4"
+        open={advancedOpen}
+        onToggle={(event) => setAdvancedOpen(event.currentTarget.open)}
+      >
+        <summary className="min-h-11 cursor-pointer font-medium">
+          {copy("moreFilters")}
+          {advancedCount > 0 &&
+            ` (${new Intl.NumberFormat(locale).format(advancedCount)})`}
+        </summary>
+        <div className="grid gap-3 pt-3 sm:grid-cols-2">
+          <Field>
+            <FieldLabel htmlFor="filter-service">{t("service")}</FieldLabel>
+            <NativeSelect
+              id="filter-service"
+              value={value.serviceType ?? ""}
+              onChange={(event) =>
+                onChange({
+                  ...value,
+                  serviceType:
+                    (event.target.value as PriceFilters["serviceType"]) ||
+                    undefined,
+                })
+              }
+            >
+              <NativeSelectOption value="">
+                {copy("allServices")}
+              </NativeSelectOption>
+              {services.map((service) => (
+                <NativeSelectOption key={service} value={service}>
+                  {t(`service_${service}`)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="filter-unit">{t("unit")}</FieldLabel>
+            <NativeSelect
+              id="filter-unit"
+              value={value.unit ?? ""}
+              onChange={(event) =>
+                onChange({
+                  ...value,
+                  unit:
+                    (event.target.value as PriceFilters["unit"]) || undefined,
+                })
+              }
+            >
+              <NativeSelectOption value="">
+                {copy("allUnits")}
+              </NativeSelectOption>
+              {units.map((unit) => (
+                <NativeSelectOption key={unit} value={unit}>
+                  {t(`unit_${unit}`)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="filter-min-price">
+              {copy("minPrice")}
+            </FieldLabel>
+            <Input
+              id="filter-min-price"
+              aria-invalid={invalid}
+              aria-describedby={invalid ? "filter-price-error" : undefined}
+              type="number"
+              min={0}
+              max={1000000000}
+              step={1}
+              value={value.minPrice ?? ""}
+              onChange={(event) =>
+                onChange({
+                  ...value,
+                  minPrice:
+                    event.target.value === ""
+                      ? undefined
+                      : Number(event.target.value),
+                })
+              }
+            />
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="filter-max-price">
+              {copy("maxPrice")}
+            </FieldLabel>
+            <Input
+              id="filter-max-price"
+              aria-invalid={invalid}
+              aria-describedby={invalid ? "filter-price-error" : undefined}
+              type="number"
+              min={0}
+              max={1000000000}
+              step={1}
+              value={value.maxPrice ?? ""}
+              onChange={(event) =>
+                onChange({
+                  ...value,
+                  maxPrice:
+                    event.target.value === ""
+                      ? undefined
+                      : Number(event.target.value),
+                })
+              }
+            />
+          </Field>
+          {invalid && (
+            <p
+              id="filter-price-error"
+              role="alert"
+              className="text-sm text-destructive sm:col-span-2"
+            >
+              {copy("invalidPriceRange")}
+            </p>
+          )}
+        </div>
+      </details>
     </div>
   );
 }

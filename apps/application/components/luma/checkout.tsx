@@ -15,6 +15,7 @@ import { checkoutIssue } from "../../lib/checkout-availability";
 import { paymentGatewayDestination } from "../../lib/payment-gateway";
 import {
   remainingMembershipSessions,
+  renewableCheckoutMemberships,
   usableCheckoutMemberships,
 } from "../../lib/checkout-memberships";
 import {
@@ -45,7 +46,7 @@ export function CheckoutPage() {
   const occurrence = params.get("occurrence");
   return (
     <CheckoutForm
-      key={`${service ?? ""}:${occurrence ?? ""}`}
+      key={`${service ?? ""}:${occurrence ?? ""}:${params.get("renew") ?? ""}:${params.get("dependent") ?? ""}`}
       service={service}
       occurrence={occurrence}
     />
@@ -66,6 +67,7 @@ function CheckoutForm({
     params.get("renew") ?? "",
   );
   const [startsOn, setStartsOn] = useState("");
+  const [startDateOpen, setStartDateOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [dependentId, setDependentId] = useState(params.get("dependent") ?? "");
   const dependents =
@@ -97,6 +99,7 @@ function CheckoutForm({
   const [coupon, setCoupon] = useState("");
   const key = useRef<string | null>(null);
   const membershipHintId = useId();
+  const renewalHintId = useId();
   const consent = useRef<HTMLLabelElement>(null);
   if (!service)
     return (
@@ -115,6 +118,17 @@ function CheckoutForm({
   const membershipUnavailable =
     Boolean(membership) &&
     !eligibleMemberships.some((item) => item.id === membership);
+  const renewals = query.data
+    ? renewableCheckoutMemberships(
+        query.data,
+        memberships.data ?? [],
+        dependentId,
+      )
+    : [];
+  const renewalUnavailable =
+    Boolean(renewMembershipId) &&
+    !memberships.isPending &&
+    !renewals.some((item) => item.id === renewMembershipId);
   const busy = quote.isPending || checkout.isPending;
   const identityRequired =
     quantity > 1 ||
@@ -225,6 +239,8 @@ function CheckoutForm({
                       setDependentId(e.target.value);
                       setMembership("");
                       setRenewMembershipId("");
+                      setStartsOn("");
+                      setStartDateOpen(false);
                       changeDetails();
                     }}
                   >
@@ -309,42 +325,77 @@ function CheckoutForm({
               ))}
             {query.data.kind === "membership" && (
               <>
-                <Field label={w("renew")}>
-                  <select
-                    value={renewMembershipId}
-                    onChange={(e) => {
-                      setRenewMembershipId(e.target.value);
-                      changeDetails();
-                    }}
-                  >
-                    <option value="">{w("newMembership")}</option>
-                    {memberships.data
-                      ?.filter(
-                        (m) =>
-                          m.serviceId === service &&
-                          (m.dependentId ?? "") === dependentId &&
-                          ["active", "expired", "frozen"].includes(m.status),
-                      )
-                      .map((m) => (
+                {(renewals.length > 0 || renewalUnavailable) && (
+                  <Field label={w("renew")}>
+                    <select
+                      value={renewMembershipId}
+                      disabled={busy || Boolean(memberships.error)}
+                      onChange={(e) => {
+                        setRenewMembershipId(e.target.value);
+                        setStartsOn("");
+                        setStartDateOpen(false);
+                        changeDetails();
+                      }}
+                      aria-invalid={renewalUnavailable}
+                      aria-describedby={
+                        renewalUnavailable ? renewalHintId : undefined
+                      }
+                    >
+                      <option value="">{w("newMembership")}</option>
+                      {renewalUnavailable && (
+                        <option value={renewMembershipId} disabled>
+                          {w("renewalUnavailableOption")}
+                        </option>
+                      )}
+                      {renewals.map((m) => (
                         <option key={m.id} value={m.id}>
                           {m.title}
                           {m.endsAt ? ` · ${stamp(m.endsAt, locale)}` : ""}
                         </option>
                       ))}
-                  </select>
-                </Field>
-                {renewMembershipId && (
+                    </select>
+                  </Field>
+                )}
+                {renewalUnavailable && (
+                  <p id={renewalHintId} role="alert" className="luma-error">
+                    {w("renewalUnavailable")}
+                  </p>
+                )}
+                <p className="luma-meta my-3">
+                  {startsOn
+                    ? w("membershipStartsOn", {
+                        date: new Intl.DateTimeFormat(locale, {
+                          dateStyle: "medium",
+                          timeZone: "Asia/Tehran",
+                        }).format(new Date(`${startsOn}T12:00:00+03:30`)),
+                      })
+                    : w(
+                        renewMembershipId
+                          ? "renewHint"
+                          : "membershipStartDefault",
+                      )}
+                </p>
+                {renewMembershipId && startsOn && (
                   <p className="luma-meta">{w("renewHint")}</p>
                 )}
-                <Field label={w("startsOn")}>
-                  <IranianDateInput
-                    value={startsOn}
-                    onValueChange={(iso) => {
-                      setStartsOn(iso);
-                      changeDetails();
-                    }}
-                  />
-                </Field>
+                <details
+                  className="reservation-policy"
+                  open={startDateOpen}
+                  onToggle={(event) =>
+                    setStartDateOpen(event.currentTarget.open)
+                  }
+                >
+                  <summary>{w("changeStartDate")}</summary>
+                  <Field label={w("startsOn")}>
+                    <IranianDateInput
+                      value={startsOn}
+                      onValueChange={(iso) => {
+                        setStartsOn(iso);
+                        changeDetails();
+                      }}
+                    />
+                  </Field>
+                </details>
               </>
             )}
             {query.data.offering?.confirmation === "before_payment" && (
@@ -525,6 +576,7 @@ function CheckoutForm({
                     (Boolean(quote.data) && !accepted) ||
                     busy ||
                     membershipUnavailable ||
+                    renewalUnavailable ||
                     Boolean(unavailable) ||
                     incomplete ||
                     (!occurrence &&

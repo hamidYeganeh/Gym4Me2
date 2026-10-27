@@ -1110,7 +1110,8 @@
     "invalidPriceRange": "قیمت‌ها باید عدد صحیح بین صفر و ۱٬۰۰۰٬۰۰۰٬۰۰۰ تومان باشند؛ بیشینه نباید کمتر از کمینه باشد.",
     "selectLocation": "انتخاب مکان",
     "selectedLocation": "انتخاب‌شده",
-    "photoCredits": "منابع عکس‌ها"
+    "photoCredits": "منابع عکس‌ها",
+    "moreFilters": "فیلترهای بیشتر"
   },
   "StaffScope": {
     "title": "محدودهٔ دسترسی شعبه",
@@ -3468,7 +3469,12 @@
     "orderRecorded": "سفارش حضوری ثبت شد؛ دریافت را در ادامه ثبت کنید.",
     "beneficiary": "ورزشکار استفاده‌کننده",
     "myself": "خودم",
-    "household": "خانواده و فرزندان"
+    "household": "خانواده و فرزندان",
+    "membershipStartDefault": "شروع عضویت: پس از تأیید پرداخت",
+    "membershipStartsOn": "تاریخ شروع انتخاب‌شده: {date}",
+    "changeStartDate": "تغییر تاریخ شروع",
+    "renewalUnavailableOption": "عضویت انتخاب‌شده در دسترس نیست",
+    "renewalUnavailable": "عضویت انتخاب‌شده برای تمدید در دسترس نیست؛ عضویت دیگری انتخاب کنید یا خرید جدید را بزنید."
   },
   "Closure": {
     "invalidDate": "تاریخ معتبر وارد کنید.",

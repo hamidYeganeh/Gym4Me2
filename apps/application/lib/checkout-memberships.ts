@@ -42,3 +42,18 @@ export function usableCheckoutMemberships(
     return remaining === null || remaining >= required;
   });
 }
+
+/** A renewal belongs to this service and beneficiary; credit for other services is unrelated. */
+export function renewableCheckoutMemberships(
+  service: Pick<ServiceDto, "id" | "kind">,
+  memberships: MembershipDto[],
+  dependentId = "",
+) {
+  if (service.kind !== "membership") return [];
+  return memberships.filter(
+    (membership) =>
+      membership.serviceId === service.id &&
+      (membership.dependentId ?? "") === dependentId &&
+      ["active", "expired", "frozen"].includes(membership.status),
+  );
+}
