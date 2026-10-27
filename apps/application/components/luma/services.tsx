@@ -2,6 +2,7 @@
 import { useListState } from "@repo/ui/hooks/use-list-state";
 import { useTrainingEvent } from "@repo/ui/training";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
+import { isPrimaryService, primaryServiceKinds } from "../../lib/product-scope";
 import { ServiceCover, ServiceCoverThumbnail } from "@repo/ui/sports-cover";
 import Link from "next/link";
 import { useDeferredValue, useState } from "react";
@@ -36,22 +37,12 @@ export function ServicesPage({
   const searchParams = useSearchParams();
   const [kind, setKind] = useState(() => {
     const requested = searchParams.get("kind") ?? "";
-    return [
-      "class",
-      "course",
-      "court",
-      "access",
-      "membership",
-      "program",
-    ].includes(requested)
-      ? requested
-      : "";
+    return isPrimaryService(requested) ? requested : "";
   });
   const sports =
     useSportsQuery<{ id: string; name: string; formats: string[] }[]>(
       "sports/formats",
     );
-  const growth = useTranslations("Growth");
   const t = useLuma();
   const locale = useLocale();
   const [q, setQ] = useListState(
@@ -70,14 +61,9 @@ export function ServicesPage({
     branchId,
   });
   const availableFormats = sports.data?.find((s) => s.id === sport)?.formats;
+  const primaryServices = query.data?.filter((s) => isPrimaryService(s.kind));
   return (
     <LumaPage title={t("services")} back={back}>
-      <Link className="luma-row" href="/household">
-        {w("household")}
-      </Link>
-      <Link className="luma-row" href="/explore">
-        {growth("explore")}
-      </Link>
       <Field label={t("search")}>
         <input
           value={q}
@@ -106,16 +92,7 @@ export function ServicesPage({
         <Field label={w("format")}>
           <select value={kind} onChange={(e) => setKind(e.target.value)}>
             <option value="">{w("allFormats")}</option>
-            {(
-              [
-                "class",
-                "course",
-                "court",
-                "access",
-                "membership",
-                "program",
-              ] as const
-            )
+            {primaryServiceKinds
               .filter(
                 (k) =>
                   !sport || !availableFormats || availableFormats.includes(k),
@@ -128,14 +105,8 @@ export function ServicesPage({
           </select>
         </Field>
       </div>
-      <Link className="luma-row" href="/programs">
-        {w("programs")}
-      </Link>
-      <Link className="luma-row" href="/games">
-        {growth("games")}
-      </Link>
       <QueryState query={query}>
-        {query.data?.map((s) => (
+        {primaryServices?.map((s) => (
           <Row
             key={s.id}
             title={s.title}
@@ -155,14 +126,13 @@ export function ServicesPage({
             </span>
           </Row>
         ))}
-        {!query.data?.length && <Empty illustration="punchingBag" />}
+        {!primaryServices?.length && <Empty illustration="punchingBag" />}
       </QueryState>
     </LumaPage>
   );
 }
 export function ServiceDetail() {
   const w = useTranslations("Workflow");
-  const growth = useTranslations("Growth");
   const params = useSearchParams();
   const id = params.get("id");
   useTrainingEvent("service_selected", id);
@@ -188,18 +158,6 @@ export function ServiceDetail() {
       className="luma-service-detail"
     >
       <QueryState query={query}>
-        {query.data?.kind === "court" &&
-          query.data.occurrences
-            ?.filter((o) => o.status === "scheduled" && o.remaining > 0)
-            .map((o) => (
-              <Link
-                className="luma-row"
-                key={`game-${o.id}`}
-                href={`/games/new?service=${id}&occurrence=${o.id}`}
-              >
-                {growth("createGame")} · {stamp(o.startAt, locale)}
-              </Link>
-            ))}
         {query.data && (
           <>
             <ServiceCover cover={query.data.cover} />

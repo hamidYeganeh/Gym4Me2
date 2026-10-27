@@ -6,7 +6,6 @@ const digest = Array(32).fill("AB").join(":");
 const expectedPaths = [
   "/discovery/clubs/*",
   "/services/*",
-  "/calendars/*",
   "/bookings/*",
   "/orders/*",
   "/messages/*",

@@ -452,23 +452,6 @@ function Builder() {
             />
           </label>
           {!d.relationshipId && (
-            <p className="training-muted">{t("nutritionPersonalHint")}</p>
-          )}
-          <label>
-            {t("nutritionPlan")}
-            <textarea
-              value={d.content.nutrition ?? ""}
-              maxLength={10000}
-              disabled={loadingTemplate}
-              onChange={(e) =>
-                change((v) => {
-                  v.content.nutrition = e.target.value;
-                  return v;
-                })
-              }
-            />
-          </label>
-          {!d.relationshipId && (
             <label className="training-check">
               <input
                 type="checkbox"

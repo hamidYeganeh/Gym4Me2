@@ -18,10 +18,8 @@ import { ConsentGuard } from '../profile/consent.guard';
 import { CommunityService } from './community.service';
 import { SportsCalendarService } from './calendars.service';
 import {
-  calendarPageSchema,
   calendarScopeSchema,
   calendarSettingsSchema,
-  calendarFollowSchema,
 } from './calendars.contracts';
 import { SportsConversationService } from './conversations.service';
 import {
@@ -42,7 +40,6 @@ import {
   invitationCancelBodySchema,
   conversationPreferencesBodySchema,
   calendarSettingsBodySchema,
-  calendarFollowBodySchema,
   conversationStateBodySchema,
 } from './commerce.openapi';
 import { SportsInvitationService } from './invitations.service';
@@ -55,34 +52,6 @@ import {
 } from './invitations.contracts';
 const id = (v: string) => parse(z.uuid(), v);
 const dto = async (value: Promise<unknown>) => jsonDto(await value);
-@DomainController('sports', 'calendars')
-export class SportsCalendarsController {
-  constructor(private readonly s: SportsCalendarService) {}
-  @Get() list() {
-    return dto(
-      this.s
-        .page({ ...calendarPageSchema.parse({}), limit: 100 })
-        .then((p) => p.items),
-    );
-  }
-  @Get('page')
-  @ApiQuery({ name: 'cursor', required: false, type: String })
-  @ApiQuery({ name: 'search', required: false, type: String })
-  @ApiQuery({ name: 'limit', required: false, type: Number })
-  page(@Query() query: unknown) {
-    return dto(this.s.page(parse(calendarPageSchema, query)));
-  }
-  @Get(':id/services')
-  @ApiQuery({ name: 'cursor', required: false, type: String })
-  services(@Param('id') value: string, @Query() query: unknown) {
-    return dto(
-      this.s.services(id(value), parse(invitationPageSchema, query).cursor),
-    );
-  }
-  @Get(':id') detail(@Param('id') value: string) {
-    return dto(this.s.detail(id(value)));
-  }
-}
 @DomainController('sports', 'community')
 @ClientHeader()
 @UseGuards(ClientGuard, AuthGuard, ConsentGuard)
@@ -93,45 +62,6 @@ export class SportsCommunityController {
     private readonly conversationsService: SportsConversationService,
     private readonly calendarsService: SportsCalendarService,
   ) {}
-  @Get('calendars') calendars(@Req() r: AuthRequest) {
-    return dto(
-      this.calendarsService
-        .page(
-          { ...calendarPageSchema.parse({}), limit: 100 },
-          r.principal.user.id,
-        )
-        .then((p) => p.items),
-    );
-  }
-  @Get('calendars/page')
-  @ApiQuery({ name: 'cursor', required: false, type: String })
-  @ApiQuery({ name: 'search', required: false, type: String })
-  @ApiQuery({ name: 'limit', required: false, type: Number })
-  calendarPage(@Req() r: AuthRequest, @Query() query: unknown) {
-    return dto(
-      this.calendarsService.page(
-        parse(calendarPageSchema, query),
-        r.principal.user.id,
-      ),
-    );
-  }
-  @Get('calendars/:id/follow')
-  calendarFollowStatus(@Req() r: AuthRequest, @Param('id') value: string) {
-    return this.calendarsService.following(r.principal.user.id, id(value));
-  }
-  @Post('calendars/:id/follow')
-  @ApiBody({ schema: calendarFollowBodySchema })
-  follow(
-    @Req() r: AuthRequest,
-    @Param('id') value: string,
-    @Body() body: unknown,
-  ) {
-    return this.calendarsService.follow(
-      r.principal.user.id,
-      id(value),
-      parse(calendarFollowSchema, body).following,
-    );
-  }
   @Get('host/calendar')
   @ApiQuery({ name: 'organizationId', required: true, type: String })
   @ApiQuery({ name: 'branchId', required: true, type: String })

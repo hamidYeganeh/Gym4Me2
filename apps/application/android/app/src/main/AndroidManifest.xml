@@ -28,7 +28,6 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="gym4me.ir" android:pathPrefix="/discovery/clubs/" />
                 <data android:scheme="https" android:host="gym4me.ir" android:pathPrefix="/services/" />
-                <data android:scheme="https" android:host="gym4me.ir" android:pathPrefix="/calendars/" />
                 <data android:scheme="https" android:host="gym4me.ir" android:pathPrefix="/bookings/" />
                 <data android:scheme="https" android:host="gym4me.ir" android:pathPrefix="/orders/" />
                 <data android:scheme="https" android:host="gym4me.ir" android:pathPrefix="/messages/" />
@@ -42,8 +41,6 @@
                 <data android:scheme="gym4me" android:host="club" />
                 <data android:scheme="gym4me" android:host="service" />
                 <data android:scheme="gym4me" android:host="services" />
-                <data android:scheme="gym4me" android:host="calendar" />
-                <data android:scheme="gym4me" android:host="calendars" />
                 <data android:scheme="gym4me" android:host="booking" />
                 <data android:scheme="gym4me" android:host="bookings" />
                 <data android:scheme="gym4me" android:host="order" />

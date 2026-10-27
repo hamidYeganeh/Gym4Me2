@@ -69,7 +69,7 @@ jobs:
         run: |
           docker compose exec -T postgres-test psql -U gym4me -d postgres -v ON_ERROR_STOP=1 -c 'CREATE DATABASE gym4me_ph5_test'
           pnpm --filter api test:ph5
-      - name: Verify CRM, offers, network credit, split games, food sources and native push
+      - name: Verify retained CRM, capacity offers and native push
         env:
           COMPLETION_TEST_DATABASE_URL: postgresql://gym4me:gym4me_local@127.0.0.1:55433/gym4me_completion_test
         run: |

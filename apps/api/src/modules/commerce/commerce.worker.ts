@@ -1,6 +1,6 @@
 import { NativePushService } from '../push/native-push.service';
 import { AdvancedBusinessService } from '../advanced-business/ph5.service';
-import { GamesService } from '../growth/games.service';
+import { LegacyGroupReconciliationService } from '../commerce/legacy-group-reconciliation.service';
 import { Optional } from '@nestjs/common';
 import { WebPushService } from '../push/push.service';
 import {
@@ -22,7 +22,7 @@ export class CommerceWorker implements OnModuleInit, OnModuleDestroy {
     private readonly config: ConfigService<Environment, true>,
     private readonly push: WebPushService,
     @Optional() private readonly advanced?: AdvancedBusinessService,
-    @Optional() private readonly games?: GamesService,
+    @Optional() private readonly games?: LegacyGroupReconciliationService,
     @Optional() private readonly nativePush?: NativePushService,
   ) {}
   onModuleInit() {

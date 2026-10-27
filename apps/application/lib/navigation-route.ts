@@ -12,7 +12,7 @@ export function navigationRoute(pathname: string, search: string) {
     "/bookings/detail": "/bookings",
     "/memberships/detail": "/memberships",
     "/orders/detail": "/orders",
-    "/calendars/detail": "/calendars",
+
     "/messages/conversation": "/messages",
     "/training/conversation": "/training/conversation",
     "/training/workout": "/training/workout",

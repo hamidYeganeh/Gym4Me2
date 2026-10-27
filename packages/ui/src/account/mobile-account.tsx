@@ -62,7 +62,7 @@ function MenuLink({
 }
 export function MobileAccount({ section = "account" }: { section?: Section }) {
   const t = useTranslations("MobileAccount");
-  const coaching = useTranslations("Coaching");
+  const simple = useTranslations("SimpleApp");
   const copy = useTranslations("Copy");
   const savedCopy = useTranslations("SavedPages");
   const privacy = useTranslations("Privacy");
@@ -156,8 +156,8 @@ export function MobileAccount({ section = "account" }: { section?: Section }) {
                   icon={<Bookmark className="size-5" />}
                 />
                 <MenuLink
-                  href="/coaching"
-                  title={coaching("title")}
+                  href="/more"
+                  title={simple("more")}
                   icon={<Mail className="size-5" />}
                 />
                 <MenuLink

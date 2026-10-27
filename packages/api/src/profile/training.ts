@@ -32,8 +32,8 @@ export type Exercise = {
   videoUrl?: string | null;
   videoSource?: string | null;
   videoRevision?: number;
-  videoCaptionFa?: string|null;
-  videoCaptionEn?: string|null;
+  videoCaptionFa?: string | null;
+  videoCaptionEn?: string | null;
 };
 export type PlanSummary = {
   id: string;
@@ -144,116 +144,6 @@ export type TrainingProgress = {
     | "feedback"
   >[];
 };
-export type AdaptivePreferences = {
-  goal: "general" | "strength" | "hypertrophy";
-  experience: "beginner" | "intermediate" | "advanced";
-  minutes: number;
-  equipment: ("bodyweight" | "dumbbell" | "band" | "mat")[];
-  avoidMuscles: (
-    "legs" | "chest" | "arms" | "back" | "core" | "shoulders" | "cardio"
-  )[];
-  excludeExercises: string[];
-};
-export type AdaptiveRecommendation = {
-  id: string;
-  expiresAt: string;
-  status: "ready" | "rest" | "noExercises";
-  estimatedMinutes: number;
-  historySessions: number;
-  recentlyTrained: string[];
-  content: PlanContent | null;
-  movements: {
-    exerciseId: string;
-    sets: number;
-    reps: number | null;
-    seconds: number | null;
-    load: number | null;
-    restSeconds: number;
-    reason:
-      "firstSession" | "maintain" | "progress" | "reduce" | "recentlyTrained";
-    evidenceSessionIds: string[];
-  }[];
-};
-export function useAdaptivePreview() {
-  return useApiMutation<
-    AdaptiveRecommendation,
-    { operationId: string; preferences: AdaptivePreferences }
-  >(
-    (api, body) =>
-      api.request({
-        method: "POST",
-        path: "profile/training/recommendations",
-        body,
-      }),
-    [],
-  );
-}
-export function useAcceptAdaptive() {
-  return useApiMutation<
-    { planId: string; assignmentId: string },
-    { id: string; operationId: string }
-  >(
-    (api, { id, operationId }) =>
-      api.request({
-        method: "POST",
-        path: `profile/training/recommendations/${id}/accept`,
-        body: { operationId },
-      }),
-    [["training"]],
-  );
-}
-export type NutritionEntryInput = {
-  operationId: string;
-  eatenOn: string;
-  meal: "breakfast" | "lunch" | "dinner" | "snack";
-  name: string;
-  grams: number;
-  per100g: { calories: number; protein: number; carbs: number; fat: number };
-};
-export type NutritionDay = {
-  date: string;
-  totals: {
-    calories: string;
-    protein: string;
-    carbs: string;
-    fat: string;
-    entries: number;
-  };
-  entries: {
-    id: string;
-    eatenOn: string;
-    meal: NutritionEntryInput["meal"];
-    name: string;
-    grams: string;
-    calories: string;
-    protein: string;
-    carbs: string;
-    fat: string;
-    revision: number;
-  }[];
-  hasMore: boolean;
-};
-export function useNutritionEntry() {
-  return useApiMutation<{ id: string }, NutritionEntryInput>(
-    (api, body) =>
-      api.request({ method: "POST", path: "profile/nutrition/entries", body }),
-    [["training"]],
-  );
-}
-export function useRemoveNutrition() {
-  return useApiMutation<
-    { id: string },
-    { id: string; revision: number; operationId: string }
-  >(
-    (api, { id, ...body }) =>
-      api.request({
-        method: "POST",
-        path: `profile/nutrition/entries/${id}/remove`,
-        body,
-      }),
-    [["training"]],
-  );
-}
 export type WeeklyCheckin = {
   id: string;
   weekStart: string;

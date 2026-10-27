@@ -2,7 +2,6 @@
 import { TuitionPlan } from "@repo/ui/sports-tuition";
 import { IranianDateInput } from "@repo/ui/kit/IranianDateInput";
 import { ReceiptForm } from "@repo/ui/sports-receipts";
-import { CreditPayment } from "@repo/ui/growth-credits";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { useTrainingEvent } from "@repo/ui/training";
 import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
@@ -613,7 +612,6 @@ export function PaymentStatus() {
   );
   const verify = useSportsCommand(`sports/account/orders/${id}/verify`);
   const reconcile = useSportsCommand(`sports/account/orders/${id}/query`);
-  const growth = useTranslations("Growth");
   const [scenario, setScenario] = useState("success");
   const [gatewayError, setGatewayError] = useState(false);
   const paymentKey = useRef<string | null>(null);
@@ -657,14 +655,6 @@ export function PaymentStatus() {
             {order.snapshot.kind === "membership" && (
               <TuitionPlan orderId={id} />
             )}
-            {order.snapshot.groupId && (
-              <Link
-                className="luma-row"
-                href={`/games/detail?id=${order.snapshot.groupId}`}
-              >
-                {growth("viewGame")}
-              </Link>
-            )}
             {order.snapshot.offering?.confirmation === "before_payment" &&
               !order.coordinationApproved && (
                 <p role="status" className="luma-meta">
@@ -680,17 +670,6 @@ export function PaymentStatus() {
                 order.snapshot.groupId && order.snapshot.kind !== "split_share"
               ) && (
                 <>
-                  {!hasPendingPayment &&
-                    order.snapshot.kind !== "split_share" &&
-                    order.status === "awaiting_payment" &&
-                    (order.nextPaymentMinor ?? order.balanceDueMinor) ===
-                      order.balanceDueMinor && (
-                      <CreditPayment
-                        orderId={id}
-                        organizationId={order.organizationId}
-                        amount={order.amountMinor}
-                      />
-                    )}
                   <ReceiptForm orderId={id} />
                   <p className="luma-meta mt-6">{t("sandbox")}</p>
                   <Row title={t("payNow")}>

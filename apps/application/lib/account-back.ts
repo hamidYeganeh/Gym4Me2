@@ -13,7 +13,7 @@ export function accountBackPath(pathname: string, search = ""): string | null {
     "/bookings/detail": "/bookings",
     "/memberships/detail": "/memberships",
     "/orders/detail": "/orders",
-    "/calendars/detail": "/calendars",
+
     "/messages/conversation": "/messages",
     "/support/detail": "/support",
     "/notifications/preferences": "/notifications",
@@ -46,7 +46,7 @@ export function accountBackPath(pathname: string, search = ""): string | null {
       "/bookings",
       "/memberships",
       "/orders",
-      "/calendars",
+
       "/messages",
       "/support",
       "/notifications",

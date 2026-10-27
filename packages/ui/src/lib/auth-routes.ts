@@ -8,10 +8,6 @@ const publicRoutes = new Set([
   "/services/detail",
   "/coaches",
   "/coaches/detail",
-  "/calendars",
-  "/calendars/detail",
-  "/games",
-  "/games/detail",
   "/privacy",
   "/login",
   "/auth/otp",
@@ -21,12 +17,9 @@ const publicRoutes = new Set([
 
 /** Browsing is public; account destinations require a confirmed session. */
 export function applicationRouteRequiresAccount(pathname: string, search = "") {
+  // Existing callers pass the complete authentication intent.
+  void search;
   const path = pathname.replace(/\/$/, "") || "/";
-  if (
-    path === "/calendars" &&
-    new URLSearchParams(search).get("view") === "following"
-  )
-    return true;
   return !publicRoutes.has(path) && !path.startsWith("/discovery/");
 }
 

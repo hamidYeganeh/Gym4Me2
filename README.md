@@ -1,5 +1,7 @@
 # Gym4Me
 
+The first release focuses on club discovery, memberships, reservations and admission. Deferred nutrition, adaptive workout suggestions, split-payment games, cross-organization credit and followed calendars are preserved on `codex/v2-extended-features` and removed from the active `main` product. See the [current v1 scope](docs/product/v1-scope-2026-10-27.fa.md), including compatibility for previous purchases and refunds.
+
 A pnpm/Turborepo workspace with four Next.js applications, a NestJS API, and shared Persian-first UI infrastructure.
 
 ## Product documentation

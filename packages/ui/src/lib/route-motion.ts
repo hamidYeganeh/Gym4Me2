@@ -62,7 +62,7 @@ export const detailRoutes = [
   "/bookings",
   "/memberships",
   "/orders",
-  "/calendars",
+
   "/support",
   "/notifications",
   "/waitlist",
@@ -82,7 +82,7 @@ export const detailRoutes = [
   "/bookings/*",
   "/memberships/*",
   "/orders/*",
-  "/calendars/*",
+
   "/messages/**",
   "/support/*",
   "/profile/**",
