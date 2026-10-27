@@ -129,7 +129,7 @@ export class NativePushService {
         );
         const [target] = await rows<NativeDevice>(
           tx,
-          sql`SELECT d.id,d.platform,d.token,d.locale FROM native_push_devices d JOIN sport_notifications n ON n.id=${job.notification_id} AND n.user_id=d.user_id LEFT JOIN sport_notification_preferences p ON p.user_id=d.user_id WHERE d.id=${job.device_id} AND n.read_at IS NULL AND n.href NOT LIKE '/training%' AND n.href NOT LIKE '/invitations/sports%' AND n.created_at>now()-interval '1 hour' AND CASE n.preference WHEN 'messages' THEN coalesce(p.messages,true) WHEN 'reminders' THEN coalesce(p.reminders,true) WHEN 'invitations' THEN coalesce(p.invitations,true) ELSE true END FOR SHARE OF d,n`,
+          sql`SELECT d.id,d.platform,d.token,d.locale FROM native_push_devices d JOIN sport_notifications n ON n.id=${job.notification_id} AND n.user_id=d.user_id LEFT JOIN sport_notification_preferences p ON p.user_id=d.user_id WHERE d.id=${job.device_id} AND n.read_at IS NULL AND n.created_at>now()-interval '1 hour' AND CASE n.preference WHEN 'messages' THEN coalesce(p.messages,true) WHEN 'reminders' THEN coalesce(p.reminders,true) WHEN 'invitations' THEN coalesce(p.invitations,true) ELSE true END FOR SHARE OF d,n`,
         );
         const result =
           active.length && session.length && target

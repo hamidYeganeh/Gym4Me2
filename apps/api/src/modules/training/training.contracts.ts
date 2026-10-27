@@ -114,7 +114,12 @@ export const feedback = operation
 export const event = z
   .object({
     id: z.uuid(),
-    name: z.enum(['discovery_searched', 'service_selected', 'checkout_opened']),
+    name: z.enum([
+      'discovery_searched',
+      'service_selected',
+      'checkout_opened',
+      'workout_opened',
+    ]),
     entityId: z.uuid().nullable(),
   })
   .strict();

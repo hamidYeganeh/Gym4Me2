@@ -149,7 +149,7 @@ export class WebPushService {
      SELECT p.id,p.endpoint,p.p256dh,p.auth,p.locale FROM web_push_subscriptions p
      JOIN sport_notifications n ON n.id=${job.notification_id} AND n.user_id=p.user_id
      LEFT JOIN sport_notification_preferences pref ON pref.user_id=p.user_id
-     WHERE p.id=${job.subscription_id} AND n.read_at IS NULL AND n.href NOT LIKE '/training%' AND n.href NOT LIKE '/invitations/sports%' AND n.created_at>now()-interval '1 hour'
+     WHERE p.id=${job.subscription_id} AND n.read_at IS NULL AND n.created_at>now()-interval '1 hour'
      AND CASE n.preference WHEN 'messages' THEN coalesce(pref.messages,true)
        WHEN 'reminders' THEN coalesce(pref.reminders,true) WHEN 'invitations' THEN coalesce(pref.invitations,true) ELSE true END
      FOR SHARE OF p,n`);

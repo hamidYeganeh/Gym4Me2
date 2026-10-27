@@ -372,8 +372,6 @@ export class CommerceService {
   }
   async detail(id: string) {
     const service = await this.service(this.db, id, true);
-    if (service.kind === 'program')
-      throw new NotFoundException('Backend.serviceUnavailable');
     const occurrences = await rows(
       this.db,
       sql`SELECT o.*,(${resourceAvailable}) resource_available,
@@ -1110,8 +1108,6 @@ export class CommerceService {
     > & { quantity?: number; participants?: Participant[] },
   ) {
     const service = await this.service(this.db, input.serviceId, true);
-    if (service.kind === 'program')
-      throw new NotFoundException('Backend.serviceUnavailable');
     const dependent = await purchaseDependent(
       this.db,
       userId,
@@ -1299,8 +1295,6 @@ export class CommerceService {
             },
           ]
         : (input.participants ?? []);
-      if (service.kind === 'program')
-        throw new NotFoundException('Backend.serviceUnavailable');
       const quantity = validateParticipants(
         { ...input, participants: canonicalParticipants },
         service,

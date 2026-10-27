@@ -1,3 +1,7 @@
+export { TrainingHome } from "./home";
+export { TrainingBuilder } from "./builder";
+export { TrainingWorkout } from "./workout";
+export { TrainingCollaboration } from "./collaboration";
 export {
   ServiceReviewForm,
   ReviewReportForm,
@@ -5,5 +9,4 @@ export {
   DemoPanel,
 } from "./service-reviews";
 export { useTrainingEvent } from "./common";
-export { TrainingPdfProvider } from "./pdf-export";
-export { PrintTrainingPlan, ReadOnlyTrainingPlan } from "./print-plan";
+export { TrainingPdfProvider } from './pdf-export';

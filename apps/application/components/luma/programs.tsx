@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { useProductNavigation } from "@repo/api/profile";
 import { useTranslations, useLocale } from "@repo/i18n";
 import { useSportsQuery, useSportsCommand } from "@repo/api/sports";
 import { CommandError, Field, LumaPage, QueryState, stamp } from "./common";
@@ -26,50 +25,29 @@ type Program = {
 };
 export function ProgramsPage() {
   const t = useTranslations("Workflow"),
-    [coachMode, setCoach] = useState(false);
-  const navigation = useProductNavigation();
-  const canCoach = !navigation.error && navigation.data?.canCoach;
-  const coach = coachMode && Boolean(canCoach);
-  const history = useSportsQuery<{ id: string; title: string }[]>(
-    "profile/program-history",
-  );
-  const simple = useTranslations("SimpleApp");
+    [coach, setCoach] = useState(false);
   const query = useSportsQuery<Program[]>(
     `profile/sports-workflows/${coach ? "coach/" : ""}programs`,
   );
   return (
-    <LumaPage title={simple("programHistory")} back="/orders">
-      {canCoach && (
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <button
-            className="luma-cta"
-            aria-pressed={!coach}
-            onClick={() => setCoach(false)}
-          >
-            {t("programs")}
-          </button>
-          <button
-            className="luma-cta"
-            aria-pressed={coach}
-            onClick={() => setCoach(true)}
-          >
-            {t("coachPrograms")}
-          </button>
-        </div>
-      )}
-      {!coach && (
-        <QueryState query={history}>
-          {history.data?.map((p) => (
-            <Link
-              key={p.id}
-              className="luma-row"
-              href={`/programs/detail?id=${p.id}`}
-            >
-              {p.title}
-            </Link>
-          ))}
-        </QueryState>
-      )}
+    <LumaPage title={t(coach ? "coachPrograms" : "programs")} back="/services">
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <button
+          className="luma-cta"
+          aria-pressed={!coach}
+          onClick={() => setCoach(false)}
+        >
+          {t("programs")}
+        </button>
+        <button
+          className="luma-cta"
+          aria-pressed={coach}
+          onClick={() => setCoach(true)}
+        >
+          {t("coachPrograms")}
+        </button>
+      </div>
+      {coach && <CoachProgramForm />}
       <QueryState query={query}>
         {query.data?.map((p) => (
           <ProgramOrder
@@ -162,6 +140,12 @@ function ProgramOrder({
       {coach &&
         ["queued", "preparing", "revision_requested"].includes(p.status) && (
           <>
+            <Link
+              className="luma-row"
+              href={`/training/plan?relationship=${p.relationshipId}`}
+            >
+              {t("openBuilder")}
+            </Link>
             <button
               className="luma-cta"
               disabled={update.isPending || p.status === "preparing"}
@@ -208,10 +192,7 @@ function ProgramOrder({
           </>
         )}
       {p.assignmentId && (
-        <Link
-          className="luma-row"
-          href={`/programs/detail?id=${p.assignmentId}`}
-        >
+        <Link className="luma-row" href="/training">
           {t("openTraining")}
         </Link>
       )}
@@ -241,5 +222,94 @@ function ProgramOrder({
         )}
       <CommandError error={intake.error ?? update.error ?? revision.error} />
     </article>
+  );
+}
+
+function CoachProgramForm() {
+  const t = useTranslations("Workflow"),
+    [result, setResult] = useState<string | null>(null),
+    key = useRef(crypto.randomUUID());
+  const sports =
+    useSportsQuery<{ id: string; name: string }[]>("sports/formats");
+  const command = useSportsCommand<{ id: string }>(
+    "profile/sports-workflows/coach/offerings",
+  );
+  return (
+    <details className="luma-group p-4 my-4">
+      <summary>{t("createProgram")}</summary>
+      <form
+        className="grid gap-3 mt-4"
+        onChange={() => {
+          key.current = crypto.randomUUID();
+        }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const f = new FormData(e.currentTarget);
+          const price = String(f.get("price"));
+          if (!/^\d+$/.test(price)) return;
+          command.mutate(
+            {
+              title: f.get("title"),
+              sportId: f.get("sport"),
+              amountMinor: (BigInt(price) * BigInt(10)).toString(),
+              deliveryDays: Number(f.get("delivery")),
+              supportDays: Number(f.get("support")),
+              terms: f.get("terms"),
+              idempotencyKey: key.current,
+            },
+            { onSuccess: (r) => setResult(r.id) },
+          );
+        }}
+      >
+        <Field label={t("service")}>
+          <input name="title" minLength={2} maxLength={160} required />
+        </Field>
+        <Field label={t("sport")}>
+          <select name="sport" required>
+            <option value="">{t("chooseSport")}</option>
+            {sports.data?.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field label={t("amount")}>
+          <input name="price" type="number" min={0} step={1} required />
+        </Field>
+        <Field label={t("deliveryDays")}>
+          <input
+            name="delivery"
+            type="number"
+            min={1}
+            max={90}
+            defaultValue={3}
+            required
+          />
+        </Field>
+        <Field label={t("supportDays")}>
+          <input
+            name="support"
+            type="number"
+            min={0}
+            max={365}
+            defaultValue={30}
+            required
+          />
+        </Field>
+        <Field label={t("conditions")}>
+          <textarea name="terms" minLength={10} maxLength={10000} required />
+        </Field>
+        <button className="luma-cta" disabled={command.isPending}>
+          {t("createProgram")}
+        </button>
+        <CommandError error={command.error} />
+        {result && (
+          <Link href={`/services/detail?id=${result}`} className="luma-row">
+            {t("service")}
+          </Link>
+        )}
+      </form>
+    </details>
   );
 }

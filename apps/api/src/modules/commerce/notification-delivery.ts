@@ -15,10 +15,6 @@ export async function deliverSportsNotification(
   db: Db | Tx,
   input: Notification,
 ) {
-  if (
-    /^\/(?:training(?:[/?#]|$)|invitations\/sports(?:[/?#]|$))/.test(input.href)
-  )
-    return null;
   const preference =
     input.preference === 'messages'
       ? sql`p.messages`

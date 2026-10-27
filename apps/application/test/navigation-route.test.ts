@@ -24,7 +24,7 @@ test("every exported ID shell changes identity for IDs and ignores filters", () 
     "bookings/detail",
     "memberships/detail",
     "orders/detail",
-    "programs/detail",
+    "calendars/detail",
     "messages/conversation",
     "messages/details",
     "support/detail",

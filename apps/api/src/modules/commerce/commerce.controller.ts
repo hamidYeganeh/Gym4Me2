@@ -9,7 +9,6 @@ import {
   Res,
   UseGuards,
   ForbiddenException,
-  NotFoundException,
 } from '@nestjs/common';
 import { z } from 'zod';
 import { ConfigService } from '@nestjs/config';
@@ -422,11 +421,9 @@ export class BusinessSportsController {
   @Post('services')
   @ApiBody({ schema: serviceBodySchema })
   create(@Req() req: AuthRequest, @Body() body: unknown) {
-    const actor = this.user(req),
-      input = parse(serviceSchema, body);
-    if (input.kind === 'program')
-      throw new NotFoundException('Backend.serviceUnavailable');
-    return dto(this.service.createService(actor, input));
+    return dto(
+      this.service.createService(this.user(req), parse(serviceSchema, body)),
+    );
   }
   @Get('services/:id/coupons')
   coupons(@Req() req: AuthRequest, @Param('id') value: string) {

@@ -114,37 +114,35 @@ function PreferencesForm({
       <FieldSet disabled={save.isPending}>
         <FieldLegend className="sr-only">{t("notifyPreferences")}</FieldLegend>
         <FieldGroup className="gap-0 luma-group">
-          {notificationPreferenceKeys
-            .filter((key) => key !== "invitations")
-            .map((key) => (
-              <Field
-                key={key}
-                orientation="horizontal"
-                className="min-h-16 border-b border-border last:border-0"
-                data-disabled={save.isPending || undefined}
+          {notificationPreferenceKeys.map((key) => (
+            <Field
+              key={key}
+              orientation="horizontal"
+              className="min-h-16 border-b border-border last:border-0"
+              data-disabled={save.isPending || undefined}
+            >
+              <FieldLabel
+                htmlFor={`${id}-${key}`}
+                className="min-h-12 flex-1 items-center"
               >
-                <FieldLabel
-                  htmlFor={`${id}-${key}`}
-                  className="min-h-12 flex-1 items-center"
-                >
-                  {t(key)}
-                </FieldLabel>
-                <Checkbox
-                  id={`${id}-${key}`}
-                  name={key}
-                  checked={draft.values[key]}
-                  disabled={save.isPending}
-                  onCheckedChange={(checked) => {
-                    setDraft((current) => ({
-                      ...current,
-                      values: { ...current.values, [key]: checked === true },
-                    }));
-                    setFeedback(null);
-                    save.reset();
-                  }}
-                />
-              </Field>
-            ))}
+                {t(key)}
+              </FieldLabel>
+              <Checkbox
+                id={`${id}-${key}`}
+                name={key}
+                checked={draft.values[key]}
+                disabled={save.isPending}
+                onCheckedChange={(checked) => {
+                  setDraft((current) => ({
+                    ...current,
+                    values: { ...current.values, [key]: checked === true },
+                  }));
+                  setFeedback(null);
+                  save.reset();
+                }}
+              />
+            </Field>
+          ))}
         </FieldGroup>
         <div className="flex flex-wrap gap-3">
           <Button

@@ -3,15 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useTranslations } from "@repo/i18n";
-import {
-  ChevronLeft,
-  Compass,
-  Home,
-  UserRound,
-  CalendarDays,
-  CreditCard,
-} from "lucide-react";
-import { usePathname } from "next/navigation";
+import { ChevronLeft, Dumbbell, Home, UserRound } from "lucide-react";
 import { Button } from "../kit/Button";
 import { Avatar, AvatarFallback } from "../kit/Avatar";
 import { cn } from "../lib/utils";
@@ -36,36 +28,30 @@ export function AccountAvatar({
 }
 
 export function AccountNavigation() {
-  const t = useTranslations("SimpleApp");
-  const path = usePathname();
-  const items = [
-    { href: "/", label: "home", Icon: Home },
-    { href: "/discovery", label: "gyms", Icon: Compass },
-    { href: "/bookings", label: "bookings", Icon: CalendarDays },
-    { href: "/memberships", label: "memberships", Icon: CreditCard },
-  ] as const;
+  const t = useTranslations("ProfileOverview");
   return (
     <nav
-      aria-label={t("more")}
-      className="profile-navigation fixed inset-x-5 bottom-[calc(1rem+var(--app-safe-bottom,0px))] mx-auto flex max-w-[calc(36rem-2.5rem)] items-center gap-1 rounded-full border border-border bg-card/95 p-2 shadow-lg backdrop-blur-xl"
+      aria-label={t("navigation")}
+      className="profile-navigation fixed inset-x-5 bottom-[calc(1rem+var(--app-safe-bottom,0px))] mx-auto flex max-w-[calc(36rem-2.5rem)] items-center gap-2 rounded-full border border-border bg-card/95 p-2 shadow-lg backdrop-blur-xl"
     >
-      {items.map(({ href, label, Icon }) => (
-        <Button
-          key={href}
-          variant={path === href ? "secondary" : "ghost"}
-          asChild
-          className="h-14 flex-1 min-w-0 px-1"
-        >
-          <Link
-            href={href}
-            aria-current={path === href ? "page" : undefined}
-            className="flex flex-col gap-1"
-          >
-            <Icon />
-            <span className="text-xs">{t(label)}</span>
-          </Link>
-        </Button>
-      ))}
+      <Button variant="ghost" asChild className="h-14 flex-1">
+        <Link href="/discovery" className="flex flex-col gap-1">
+          <Home />
+          <span className="text-xs">{t("home")}</span>
+        </Link>
+      </Button>
+      <Button variant="ghost" asChild className="h-14 flex-1">
+        <Link href="/training" className="flex flex-col gap-1">
+          <Dumbbell />
+          <span className="text-xs">{t("training")}</span>
+        </Link>
+      </Button>
+      <Button variant="secondary" asChild className="h-14 flex-1">
+        <Link href="/profile" className="flex flex-col gap-1">
+          <UserRound />
+          <span className="text-xs">{t("title")}</span>
+        </Link>
+      </Button>
     </nav>
   );
 }

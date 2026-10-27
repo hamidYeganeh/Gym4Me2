@@ -68,5 +68,5 @@ test("cold catalog links return through details while preserving branch", () => 
     "/discovery/clubs/abc?branch=def",
   );
   assert.equal(accountBackPath("/discovery/map"), "/discovery");
-  assert.equal(accountBackPath("/programs/detail"), "/programs");
+  assert.equal(accountBackPath("/discovery/compare"), "/discovery");
 });

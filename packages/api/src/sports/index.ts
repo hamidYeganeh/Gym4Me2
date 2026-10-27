@@ -691,6 +691,61 @@ export function useSportsNotifications(view: "all" | "unread") {
   );
 }
 
+export function useSportsCalendars(view: "all" | "following", search = "") {
+  const { api } = useApiContext();
+  return useInfiniteQuery<
+    CalendarPageDto,
+    ApiError,
+    InfiniteData<CalendarPageDto, string>,
+    QueryKey,
+    string
+  >({
+    queryKey: [...api.scope, "sports", "calendars/page", view, search],
+    initialPageParam: "",
+    queryFn: ({ pageParam, signal }) =>
+      api.request<CalendarPageDto>(
+        {
+          method: "GET",
+          path:
+            view === "following"
+              ? "sports/community/calendars/page"
+              : "sports/calendars/page",
+          query: { search, cursor: pageParam || undefined },
+        },
+        { signal },
+      ),
+    getNextPageParam: (page) => page.nextCursor ?? undefined,
+  });
+}
+export function useCalendarServices(calendar: CalendarDetailDto) {
+  const { api } = useApiContext();
+  return useInfiniteQuery<
+    CalendarServicePageDto,
+    ApiError,
+    InfiniteData<CalendarServicePageDto, string>,
+    QueryKey,
+    string
+  >({
+    queryKey: [...api.scope, "sports", "calendar/services", calendar.id],
+    initialPageParam: "",
+    initialData: {
+      pages: [
+        { items: calendar.services, nextCursor: calendar.nextServiceCursor },
+      ],
+      pageParams: [""],
+    },
+    queryFn: ({ pageParam, signal }) =>
+      api.request<CalendarServicePageDto>(
+        {
+          method: "GET",
+          path: `sports/calendars/${calendar.id}/services`,
+          query: { cursor: pageParam || undefined },
+        },
+        { signal },
+      ),
+    getNextPageParam: (page) => page.nextCursor ?? undefined,
+  });
+}
 export function useSaveSportsCalendar(scope: {
   organizationId: string;
   branchId: string;

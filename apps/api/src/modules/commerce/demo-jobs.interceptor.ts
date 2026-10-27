@@ -1,5 +1,5 @@
 import { AdvancedBusinessService } from '../advanced-business/ph5.service';
-import { LegacyGroupReconciliationService } from '../commerce/legacy-group-reconciliation.service';
+import { GamesService } from '../growth/games.service';
 import { Optional } from '@nestjs/common';
 import {
   CallHandler,
@@ -23,7 +23,7 @@ export class DemoJobsInterceptor implements NestInterceptor {
     private readonly config: ConfigService<Environment, true>,
     private readonly commerce: CommerceService,
     @Optional() private readonly advanced?: AdvancedBusinessService,
-    @Optional() private readonly games?: LegacyGroupReconciliationService,
+    @Optional() private readonly games?: GamesService,
   ) {
     this.dueWork = new RequestDueWork(async () => {
       await this.commerce.runJobs();

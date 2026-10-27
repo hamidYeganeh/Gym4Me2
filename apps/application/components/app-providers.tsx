@@ -29,25 +29,6 @@ const nativeApiFetch =
 
 function AppNavigationRuntime() {
   useEffect(() => registerAppNavigation(), []);
-  useEffect(() => {
-    if (!("serviceWorker" in navigator)) return;
-    void navigator.serviceWorker
-      .getRegistrations()
-      .then(async (registrations) => {
-        for (const registration of registrations) {
-          const worker =
-            registration.active ??
-            registration.waiting ??
-            registration.installing;
-          if (
-            worker &&
-            new URL(worker.scriptURL).pathname === "/training-sw.js"
-          )
-            await registration.update();
-        }
-      })
-      .catch(() => undefined);
-  }, []);
   return null;
 }
 function NativeRuntime() {

@@ -7,8 +7,8 @@ import {
   ChevronLeft,
   CircleUserRound,
   Compass,
-  CreditCard,
   House,
+  MessageCircle,
   Plus,
   RefreshCw,
 } from "lucide-react";
@@ -25,7 +25,6 @@ import {
 } from "@repo/ui/lib/account-recovery";
 import { AuthRequired, ErrorNotice } from "@repo/ui/account";
 import { useAccount } from "@repo/api/profile";
-import { primaryNavigationSection } from "../../lib/product-scope";
 import "./luma.css";
 import { SlidingSegments } from "@repo/ui/motion-controls";
 import {
@@ -62,34 +61,38 @@ export function LumaNavigation({
   const pathname = usePathname();
   const path = pathOverride ?? pathname;
   const t = useLuma();
-  const simple = useTranslations("SimpleApp");
-  const section = primaryNavigationSection(path);
+  const design = useTranslations("LumaDesign");
   return (
     <nav className="luma-navigation" aria-label={t("navigation")}>
       {[
         {
           href: "/",
-          label: simple("home"),
+          label: design("schedule"),
           Icon: House,
-          active: section === "home",
+          active:
+            path === "/" ||
+            [
+              "/bookings",
+              "/memberships",
+              "/orders",
+              "/training",
+              "/coaching",
+            ].some((prefix) => path.startsWith(prefix)),
         },
         {
           href: "/discovery",
-          label: simple("gyms"),
+          label: t("discover"),
           Icon: Compass,
-          active: section === "gyms",
+          active:
+            path.startsWith("/discovery") ||
+            path.startsWith("/services") ||
+            path.startsWith("/calendars"),
         },
         {
-          href: "/bookings",
-          label: simple("bookings"),
-          Icon: CalendarDays,
-          active: section === "bookings",
-        },
-        {
-          href: "/memberships",
-          label: simple("memberships"),
-          Icon: CreditCard,
-          active: section === "memberships",
+          href: "/messages",
+          label: t("messages"),
+          Icon: MessageCircle,
+          active: path.startsWith("/messages"),
         },
       ].map(({ href, label, Icon, active }) => (
         <Link
@@ -408,17 +411,22 @@ export function QueryState({
   if (query.error)
     return (
       <div className="luma-empty">
-        <ErrorNotice error={query.error} />
-        <button
-          ref={button}
-          type="button"
-          className="luma-cta"
-          disabled={retrying}
-          aria-busy={retrying}
-          onClick={run}
-        >
-          {t("retry")}
-        </button>
+        <ErrorNotice
+          error={query.error}
+          persistent={accountReadDenied(query.error)}
+        />
+        {!accountReadDenied(query.error) && (
+          <button
+            ref={button}
+            type="button"
+            className="luma-cta"
+            disabled={retrying}
+            aria-busy={retrying}
+            onClick={run}
+          >
+            {t("retry")}
+          </button>
+        )}
       </div>
     );
   return children;

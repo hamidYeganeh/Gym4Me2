@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "@repo/i18n";
 import {
   usePracticeQuery,
-  useProductNavigation,
   type PracticeWorkspaceDto,
   type AssessmentDto,
   type NoteDto,
@@ -61,7 +60,6 @@ export function CredentialPreview({
   );
 }
 export function CoachingPracticePanel() {
-  const navigation = useProductNavigation();
   const t = useTranslations("Practice"),
     locale = useLocale();
   const q = usePracticeQuery<PracticeWorkspaceDto>(
@@ -96,6 +94,9 @@ export function CoachingPracticePanel() {
             {t(x)}
           </Button>
         ))}
+        <Button variant="outline" asChild>
+          <Link href="/training">{t("trainingWorkspace")}</Link>
+        </Button>
         <Button variant="outline" asChild>
           <Link href="/coaches">{t("directory")}</Link>
         </Button>
@@ -274,11 +275,9 @@ export function CoachingPracticePanel() {
         </>
       )}
       {tab === "sessions" && <CoachingSessions workspace={d} />}
-      {!navigation.error && navigation.data?.programHistory && (
-        <Link href="/programs" className="underline">
-          {t("programOrders")}
-        </Link>
-      )}
+      <Link href="/programs" className="underline">
+        {t("programOrders")}
+      </Link>
       {tab === "finance" && <CoachFinance />}
       <StudentSessionJourney
         sessions={d.studentSessions}

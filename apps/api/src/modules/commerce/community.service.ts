@@ -26,7 +26,7 @@ export class CommunityService {
     input: NotificationPageInput,
     limit = 20,
   ) {
-    const filter = sql`user_id=${userId} AND href NOT LIKE '/training%' AND href NOT LIKE '/invitations/sports%' ${input.view === 'unread' ? sql`AND read_at IS NULL` : sql``}`;
+    const filter = sql`user_id=${userId} ${input.view === 'unread' ? sql`AND read_at IS NULL` : sql``}`;
     if (
       input.cursor &&
       !(

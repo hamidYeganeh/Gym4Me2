@@ -44,7 +44,10 @@ import {
 import { SportsOperationsService } from '../src/modules/commerce/operations.service';
 import { CommunityService } from '../src/modules/commerce/community.service';
 import { SportsCalendarService } from '../src/modules/commerce/calendars.service';
-import { calendarSettingsSchema } from '../src/modules/commerce/calendars.contracts';
+import {
+  calendarPageSchema,
+  calendarSettingsSchema,
+} from '../src/modules/commerce/calendars.contracts';
 import { SportsConversationService } from '../src/modules/commerce/conversations.service';
 import { deliverTimeSensitiveNotification } from '../src/modules/commerce/time-sensitive-notifications';
 import { SportsDocumentService } from '../src/modules/commerce/documents.service';
@@ -1403,7 +1406,7 @@ test('invitations only expose eligible branch athletes with masked phone numbers
     }),
   ).rejects.toThrow('Backend.invitationRecipientUnavailable');
 });
-test('legacy invitation replay retains its state without allocating money or reviving retired notices', async () => {
+test('duplicate invitations and answers are idempotent and never allocate capacity or money', async () => {
   const invitations = testingModule.get(SportsInvitationService),
     user = await invitationAthlete(),
     service = await create();
@@ -1469,7 +1472,7 @@ test('legacy invitation replay retains its state without allocating money or rev
     db,
     sql`SELECT id FROM sport_notifications WHERE source_key=${`invite:${id}`}`,
   );
-  expect(notices).toHaveLength(0);
+  expect(notices).toHaveLength(1);
 });
 test('cancellation and response race produces one revision and obsolete unread notices disappear', async () => {
   const invitations = testingModule.get(SportsInvitationService),
@@ -3298,6 +3301,169 @@ test('calendar writes and receipt replay enforce the current organization and br
     'Backend.branchAccessDenied',
   );
 });
+test('calendar follows are idempotent, cannot recreate pending-deletion data and hide unavailable branches', async () => {
+  const calendars = testingModule.get(SportsCalendarService),
+    scope = await calendarBranch();
+  const cal = await calendars.save(
+      owner,
+      scope,
+      calendarSettingsSchema.parse({
+        title: 'Follow calendar',
+        revision: 0,
+        idempotencyKey: randomUUID(),
+      }),
+    ),
+    id = String(cal.id);
+  const [before] = await rows(
+    db,
+    sql`SELECT (SELECT count(*) FROM sport_orders)::int orders,(SELECT count(*) FROM sport_reservations)::int reservations`,
+  );
+  await Promise.all([
+    calendars.follow(athlete, id, true),
+    calendars.follow(athlete, id, true),
+  ]);
+  expect(await calendars.following(athlete, id)).toEqual({ following: true });
+  expect(
+    await rows(
+      db,
+      sql`SELECT user_id FROM sport_calendar_follows WHERE user_id=${athlete} AND calendar_id=${id}`,
+    ),
+  ).toHaveLength(1);
+  await rows(
+    db,
+    sql`UPDATE branch_profiles SET archived_at=now() WHERE branch_id=${scope.branchId}`,
+  );
+  try {
+    expect(
+      (
+        await calendars.page(
+          calendarPageSchema.parse({ search: 'Follow calendar' }),
+          athlete,
+        )
+      ).items,
+    ).toHaveLength(0);
+    await expect(calendars.detail(id)).rejects.toThrow(
+      'Backend.calendarUnavailable',
+    );
+    await calendars.follow(athlete, id, false);
+  } finally {
+    await rows(
+      db,
+      sql`UPDATE branch_profiles SET archived_at=null WHERE branch_id=${scope.branchId}`,
+    );
+  }
+  expect(await calendars.following(athlete, id)).toEqual({ following: false });
+  await rows(
+    db,
+    sql`UPDATE users SET deletion_pending=true WHERE id=${athlete}`,
+  );
+  try {
+    await expect(calendars.follow(athlete, id, true)).rejects.toThrow(
+      'Backend.accountDeletionPending',
+    );
+  } finally {
+    await rows(
+      db,
+      sql`UPDATE users SET deletion_pending=false WHERE id=${athlete}`,
+    );
+  }
+  const [after] = await rows(
+    db,
+    sql`SELECT (SELECT count(*) FROM sport_orders)::int orders,(SELECT count(*) FROM sport_reservations)::int reservations`,
+  );
+  expect(after).toEqual(before);
+});
+test('public and followed calendar pages cover older than 100 entries with exact timestamp ties', async () => {
+  const calendars = testingModule.get(SportsCalendarService),
+    prefix = `History ${randomUUID()}`;
+  const items = await rows<{ id: string }>(
+    db,
+    sql`WITH b AS(INSERT INTO branches(organization_id,name,slug) SELECT ${org},${prefix}||n,gen_random_uuid()::text FROM generate_series(1,101) n RETURNING id,organization_id,name), p AS(INSERT INTO branch_profiles(club_id,branch_id) SELECT organization_id,id FROM b)
+    INSERT INTO sport_calendars(organization_id,branch_id,title,created_at) SELECT organization_id,id,name,'2026-01-01'::timestamptz FROM b RETURNING id`,
+  );
+  for (const userId of [undefined, athlete]) {
+    if (userId)
+      await rows(
+        db,
+        sql`INSERT INTO sport_calendar_follows(user_id,calendar_id,created_at) SELECT ${userId},id,'2026-01-01'::timestamptz + ((row_number() over(order by id)/3)::text||' microseconds')::interval FROM sport_calendars WHERE title LIKE ${prefix + '%'}`,
+      );
+    const seen: string[] = [];
+    let cursor: string | undefined;
+    do {
+      const page = await calendars.page(
+        calendarPageSchema.parse({ search: prefix, cursor, limit: 25 }),
+        userId,
+      );
+      seen.push(...page.items.map((i) => i.id));
+      cursor = page.nextCursor ?? undefined;
+    } while (cursor);
+    expect(seen).toHaveLength(101);
+    expect(new Set(seen).size).toBe(101);
+  }
+  const [oldest] = await rows<{ id: string }>(
+    db,
+    sql`SELECT id FROM sport_calendars WHERE title LIKE ${prefix + '%'} ORDER BY title DESC LIMIT 1`,
+  );
+  await rows(
+    db,
+    sql`UPDATE sport_calendars SET created_at='2010-01-01' WHERE id=${oldest.id}`,
+  );
+  expect(
+    (
+      await calendars.page({ ...calendarPageSchema.parse({}), limit: 100 })
+    ).items.some((c) => c.id === oldest.id),
+  ).toBe(false);
+  expect((await calendars.detail(oldest.id)).id).toBe(oldest.id);
+  await expect(
+    calendars.page(calendarPageSchema.parse({ cursor: items[0].id }), other),
+  ).rejects.toThrow('Backend.invalidCalendarCursor');
+});
+test('calendar service paging retains the published catalog and excludes unlisted or foreign cursors', async () => {
+  const calendars = testingModule.get(SportsCalendarService),
+    scope = await calendarBranch();
+  const service = await commerce.createService(
+    owner,
+    serviceSchema.parse({
+      ...scope,
+      title: 'Calendar base',
+      kind: 'class',
+      amountMinor: '0',
+      policy,
+    }),
+  );
+  await commerce.publish(owner, service.id, 1);
+  await rows(
+    db,
+    sql`WITH additions AS(INSERT INTO sport_services(organization_id,branch_id,title,kind,created_at) SELECT ${org},${scope.branchId},'Calendar item '||n,'class','2026-01-01'::timestamptz + ((n/3)::text||' microseconds')::interval FROM generate_series(1,101) n RETURNING id,title)
+    INSERT INTO sport_service_versions(service_id,version,title,amount_minor,description,policy,eligibility) SELECT a.id,1,a.title,0,v.description,v.policy,v.eligibility FROM additions a CROSS JOIN sport_service_versions v WHERE v.id=${service.version_id}`,
+  );
+  await rows(
+    db,
+    sql`UPDATE sport_services s SET status='published',published_version_id=v.id FROM sport_service_versions v WHERE v.service_id=s.id AND s.branch_id=${scope.branchId}`,
+  );
+  await rows(
+    db,
+    sql`UPDATE sport_service_versions v SET visibility='unlisted' FROM sport_services s WHERE v.service_id=s.id AND s.branch_id=${scope.branchId} AND s.title='Calendar item 101'`,
+  );
+  const host = await calendars.host(owner, scope),
+    id = host.calendar.id;
+  expect((await calendars.detail(id)).next_service_cursor).not.toBeNull();
+  const seen: string[] = [];
+  let cursor: string | undefined;
+  do {
+    const page = await calendars.services(id, cursor);
+    seen.push(...page.items.map((i) => i.id));
+    cursor = page.nextCursor ?? undefined;
+  } while (cursor);
+  expect(seen).toHaveLength(101);
+  expect(new Set(seen).size).toBe(101);
+  expect(seen).toContain(service.id);
+  const foreign = await create();
+  await expect(calendars.services(id, foreign.id)).rejects.toThrow(
+    'Backend.invalidCalendarCursor',
+  );
+});
+
 test('conversation pages cover more than 100 records with scoped microsecond cursors and separate archives', async () => {
   const scope = await calendarBranch(),
     manager = await calendarStaff(scope.branchId, 'manager');

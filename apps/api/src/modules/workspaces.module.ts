@@ -1,5 +1,3 @@
-import { DemoController } from './training/demo.controller';
-import { ProductNavigationController } from './profile/navigation.controller';
 import { HouseholdBillingService } from './commerce/household-billing.service';
 import {
   HouseholdController,
@@ -16,7 +14,17 @@ import { NativePushController } from './push/native-push.controller';
 import { NativePushService } from './push/native-push.service';
 import { NativePushSender } from './push/native-push.sender';
 import { CrmService } from './growth/crm.service';
-import { LegacyGroupReconciliationService } from './commerce/legacy-group-reconciliation.service';
+import { GamesService } from './growth/games.service';
+import { GamesInterceptor } from './growth/games.interceptor';
+import {
+  PublicGamesController,
+  AccountGamesController,
+} from './growth/growth.controller';
+import { NetworkCreditService } from './growth/credit.service';
+import {
+  AccountCreditController,
+  BusinessCreditController,
+} from './growth/growth.controller';
 import {
   CrmController,
   GrowthRecommendationsController,
@@ -37,6 +45,7 @@ import {
   PushConfigurationController,
   WebPushController,
 } from './push/push.controller';
+import { DemoController } from './training/demo.controller';
 import {
   AdminAnalyticsController,
   BusinessAnalyticsController,
@@ -44,10 +53,15 @@ import {
 } from './analytics/analytics.controller';
 import { AnalyticsService } from './analytics/analytics.service';
 import {
-  LegacyProgramsController,
-  ProductEventsController,
-} from './training/legacy-programs.controller';
+  TrainingController,
+  CollaborationController,
+} from './training/training.controller';
 import { TrainingService } from './training/training.service';
+import { AdaptiveTrainingService } from './training/adaptive.service';
+import { NutritionService } from './training/nutrition.service';
+import { NutritionController } from './training/nutrition.controller';
+import { ExerciseVideoService } from './training/exercise-video.service';
+import { ExerciseVideoController } from './training/exercise-video.controller';
 import { CollaborationService } from './training/collaboration.service';
 import { CoachingPracticeService } from './coaching/practice.service';
 import { CoachingRecordsService } from './coaching/records.service';
@@ -78,7 +92,10 @@ import { CommerceWorker } from './commerce/commerce.worker';
 import { CommunityService } from './commerce/community.service';
 import { SportsCalendarService } from './commerce/calendars.service';
 import { SportsConversationService } from './commerce/conversations.service';
-import { SportsCommunityController } from './commerce/community.controller';
+import {
+  SportsCalendarsController,
+  SportsCommunityController,
+} from './commerce/community.controller';
 import { CommerceService } from './commerce/commerce.service';
 import {
   ConfiguredPaymentAdapter,
@@ -156,10 +173,6 @@ import {
 @Module({
   imports: [DatabaseModule, AuthModule, StorageModule],
   controllers: [
-    DemoController,
-    ProductNavigationController,
-    LegacyProgramsController,
-    ProductEventsController,
     HouseholdController,
     TuitionController,
     CollectionsController,
@@ -168,8 +181,14 @@ import {
     BusinessWorkflowsController,
     NativePushController,
     CrmController,
+    PublicGamesController,
+    AccountGamesController,
+    AccountCreditController,
+    BusinessCreditController,
     GrowthRecommendationsController,
     GrowthOffersController,
+    ExerciseVideoController,
+    NutritionController,
     AdvancedBusinessController,
     CoachSettlementsController,
     AdminAdvancedController,
@@ -179,6 +198,9 @@ import {
     AdminAnalyticsController,
     BusinessAnalyticsController,
     CoachAnalyticsController,
+    TrainingController,
+    CollaborationController,
+    DemoController,
     CoachingController,
     CoachingPracticeController,
     CoachingDirectoryController,
@@ -188,6 +210,7 @@ import {
     SportsAccountController,
     SportsPaymentCallbacksController,
     BusinessSportsController,
+    SportsCalendarsController,
     SportsCommunityController,
     SportsOperationsController,
     AdminSportsController,
@@ -229,19 +252,24 @@ import {
     NativePushService,
     NativePushSender,
     CrmService,
-    LegacyGroupReconciliationService,
+    GamesService,
+    NetworkCreditService,
     GrowthDiscoveryService,
+    ExerciseVideoService,
+    NutritionService,
     AdvancedBusinessService,
     WebPushService,
     WebPushSender,
     { provide: APP_INTERCEPTOR, useClass: WebPushInterceptor },
     AnalyticsService,
     TrainingService,
+    AdaptiveTrainingService,
     CollaborationService,
     CoachingService,
     CoachingPracticeService,
     CoachingRecordsService,
     { provide: APP_INTERCEPTOR, useClass: DemoJobsInterceptor },
+    { provide: APP_INTERCEPTOR, useClass: GamesInterceptor },
     CommerceService,
     SamanMockPaymentAdapter,
     SamanSandboxPaymentAdapter,

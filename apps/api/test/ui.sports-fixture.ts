@@ -276,7 +276,7 @@ export async function seedUiSports(
         db,
         sql`INSERT INTO branch_profiles(club_id,branch_id) VALUES(${clubs[0].id},${branch.id})`,
       );
-      await calendars.save(
+      const calendar = await calendars.save(
         people[0].id,
         { organizationId: clubs[0].id, branchId: branch.id },
         {
@@ -287,6 +287,7 @@ export async function seedUiSports(
           idempotencyKey: randomUUID(),
         },
       );
+      await calendars.follow(people[1].id, String(calendar.id), true);
     }
     for (let n = 1; n <= 21; n++) {
       const service = await commerce.createService(

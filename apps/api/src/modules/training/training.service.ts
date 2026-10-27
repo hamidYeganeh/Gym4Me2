@@ -204,30 +204,12 @@ export class TrainingService {
       versions,
     };
   }
-  private async legacyContract(
-    tx: Tx,
-    actor: string,
-    requestId: string,
-    relationshipId: string | null,
-  ) {
-    const [contract] = await rows(
-      tx,
-      sql`SELECT p.id FROM sport_program_requests p JOIN sport_orders o ON o.id=p.order_id WHERE p.id=${requestId} AND p.coach_id=${actor} AND p.relationship_id=${relationshipId} AND o.status IN ('paid','partially_refunded') AND p.status IN ('queued','preparing','revision_requested') FOR SHARE OF o,p`,
-    );
-    if (!contract) throw new NotFoundException('Training.notFound');
-  }
-  async save(
-    actor: string,
-    input: z.infer<typeof c.savePlan>,
-    legacyRequestId?: string,
-  ) {
+  async save(actor: string, input: z.infer<typeof c.savePlan>) {
     return trainingCommand(
       this.db,
       actor,
       input.operationId,
-      legacyRequestId
-        ? ['savePlan', input, legacyRequestId]
-        : ['savePlan', input],
+      ['savePlan', input],
       async (tx) => {
         let athlete = actor;
         if (input.relationshipId) {
@@ -277,30 +259,16 @@ export class TrainingService {
         );
         return p;
       },
-      async (tx) => {
-        if (input.relationshipId)
-          await trainingRelationship(
-            tx,
-            actor,
-            input.relationshipId,
-            true,
-            true,
-          );
-        if (legacyRequestId)
-          await this.legacyContract(
-            tx,
-            actor,
-            legacyRequestId,
-            input.relationshipId,
-          );
-      },
+      input.relationshipId
+        ? (tx) =>
+            trainingRelationship(tx, actor, input.relationshipId!, true, true)
+        : undefined,
     );
   }
   async publish(
     actor: string,
     id: string,
     input: z.infer<typeof c.publishPlan>,
-    legacyRequestId?: string,
   ) {
     const authorize = async (tx: Tx) => {
       const [p] = await rows<PlanRow>(
@@ -308,13 +276,6 @@ export class TrainingService {
         sql`SELECT * FROM training_plans WHERE id=${id} AND owner_id=${actor}`,
       );
       if (!p) throw new NotFoundException('Training.notFound');
-      if (legacyRequestId)
-        await this.legacyContract(
-          tx,
-          actor,
-          legacyRequestId,
-          p.relationship_id,
-        );
       if (p.relationship_id)
         await trainingRelationship(tx, actor, p.relationship_id, true, true);
     };
@@ -322,9 +283,7 @@ export class TrainingService {
       this.db,
       actor,
       input.operationId,
-      legacyRequestId
-        ? ['publish', id, input, legacyRequestId]
-        : ['publish', id, input],
+      ['publish', id, input],
       async (tx) => {
         const [p] = await rows<PlanRow>(
           tx,

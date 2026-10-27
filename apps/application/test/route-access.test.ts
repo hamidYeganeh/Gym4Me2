@@ -15,10 +15,14 @@ test("first launch, discovery and booking information are public on web and nati
     "/discovery/club",
     "/discovery/clubs/club-id/slots",
     "/discovery/clubs/club-id/reviews",
+    "/discovery/compare",
     "/explore",
     "/services",
     "/services/detail",
     "/coaches/detail",
+    "/calendars",
+    "/calendars/detail",
+    "/games/detail",
   ])
     assert.equal(
       applicationRouteRequiresAccount(path, "id=public-id"),
@@ -42,13 +46,16 @@ test("reservations and all account destinations require sign-in", () => {
     "/saved/clubs",
     "/saved/coaches",
     "/messages",
-    "/programs",
-    "/programs/detail",
+    "/training",
     "/notifications",
+    "/games/new",
     "/new-private-feature",
   ])
     assert.equal(applicationRouteRequiresAccount(path), true, path);
-  assert.equal(applicationRouteRequiresAccount("/more"), true);
+  assert.equal(
+    applicationRouteRequiresAccount("/calendars", "view=following"),
+    true,
+  );
 });
 
 test("sign-in and policy remain public so a guest can enter and leave login", () => {
@@ -80,7 +87,7 @@ test("cancelling sign-in returns to public content without an authentication loo
   for (const target of [
     "/profile/edit",
     "/messages",
-    "/more",
+    "/calendars?view=following",
     "/auth/otp",
     "//evil.example",
   ])

@@ -13,12 +13,11 @@ export function accountBackPath(pathname: string, search = ""): string | null {
     "/bookings/detail": "/bookings",
     "/memberships/detail": "/memberships",
     "/orders/detail": "/orders",
-    "/programs/detail": "/programs",
-    "/programs": "/more",
-
+    "/calendars/detail": "/calendars",
     "/messages/conversation": "/messages",
     "/support/detail": "/support",
     "/notifications/preferences": "/notifications",
+    "/invitations/sports": "/",
     "/membership-card": "/",
     "/documents": "/",
     "/host": "/",
@@ -47,7 +46,7 @@ export function accountBackPath(pathname: string, search = ""): string | null {
       "/bookings",
       "/memberships",
       "/orders",
-
+      "/calendars",
       "/messages",
       "/support",
       "/notifications",
@@ -72,7 +71,8 @@ export function accountBackPath(pathname: string, search = ""): string | null {
       ? `${club[1]}${branch ? `?${new URLSearchParams({ branch })}` : ""}`
       : "/discovery";
   }
-  if (path === "/discovery/map") return "/discovery";
+  if (path === "/discovery/map" || path === "/discovery/compare")
+    return "/discovery";
   if (path === "/set-password") return "/profile/settings";
   if (path === "/reset-password")
     return applicationAuthHref(

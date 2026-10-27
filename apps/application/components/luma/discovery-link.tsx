@@ -11,6 +11,9 @@ export function ServicesLink() {
         <span className="flex-1">{t("services")}</span>
         <ChevronLeft className="ltr:rotate-180" />
       </Link>
+      <Link className="luma-shortcut mt-3" href="/calendars">
+        {t("calendars")}
+      </Link>
     </div>
   );
 }

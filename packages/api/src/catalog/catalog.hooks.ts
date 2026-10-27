@@ -42,6 +42,14 @@ export function useClub(id: string | undefined) {
     Boolean(id),
   );
 }
+export function useCompareClubs(ids: string[]) {
+  return useApiQuery(
+    (scope) => [...scope, "catalog", "compare", ids],
+    (api, signal) =>
+      Promise.all(ids.map((id) => catalogClients.club(api, id, { signal }))),
+    ids.length >= 2 && ids.length <= 3,
+  );
+}
 export function useClubBranch(
   id: string | undefined,
   branchId: string | undefined,

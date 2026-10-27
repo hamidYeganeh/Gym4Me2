@@ -11,7 +11,6 @@ import {
   validateEnvironment,
   type Environment,
 } from '../src/config/environment';
-import { LegacyGroupReconciliationService } from '../src/modules/commerce/legacy-group-reconciliation.service';
 import { CrmService } from '../src/modules/growth/crm.service';
 import {
   rows,
@@ -19,13 +18,19 @@ import {
 } from '../src/modules/commerce/commerce.service';
 import { SamanMockPaymentAdapter } from '../src/modules/commerce/sandbox-payment';
 import { serviceSchema } from '../src/modules/commerce/commerce.contracts';
+import { offerPrice } from '../src/modules/growth/offers';
 import { GrowthDiscoveryService } from '../src/modules/growth/discovery.service';
+import { NetworkCreditService } from '../src/modules/growth/credit.service';
 import * as c from '../src/modules/growth/growth.contracts';
+import { AdvancedBusinessService } from '../src/modules/advanced-business/ph5.service';
+import { GamesService } from '../src/modules/growth/games.service';
 import { NativePushService } from '../src/modules/push/native-push.service';
 import {
   NativePushSender,
   type NativeDevice,
 } from '../src/modules/push/native-push.sender';
+import { NutritionService } from '../src/modules/training/nutrition.service';
+import { foodEntry } from '../src/modules/training/nutrition.contracts';
 import { deliverSportsNotification } from '../src/modules/commerce/notification-delivery';
 import * as schema from '../src/database/schema';
 import type { Principal } from '../src/modules/auth/auth.service';
@@ -50,7 +55,8 @@ const commerce = new CommerceService(
     database,
     new SamanMockPaymentAdapter(config),
   ),
-  discovery = new GrowthDiscoveryService(database);
+  discovery = new GrowthDiscoveryService(database),
+  credits = new NetworkCreditService(database, commerce);
 const policy = {
   cancellationHours: 0,
   lateRefundBasisPoints: 10000,
@@ -404,90 +410,338 @@ void test('offers enforce budget, quote freshness and immutable previous order a
     0,
   );
 });
-// Pre-v1 records are seeded directly: there is no game creation API in main.
-async function legacyGroup(paidPlayers: number) {
-  const f = await sale('court');
-  const players = [await person(), await person()];
-  const parent = await commerce.checkout(
-    players[0].id,
-    {
+void test('network credit requires both organizations, prevents overspend and refunds to the same account once', async () => {
+  const f = await sale(),
+    issuer = await fixture(),
+    athlete = await person();
+  const n = await credits.create(issuer.owner.id, {
+    operationId: randomUUID(),
+    organizationId: issuer.org.id,
+    name: 'Synthetic network',
+    terms: 'Synthetic credit network conditions.',
+  });
+  const networkId = String(n.id);
+  await credits.member(issuer.owner.id, networkId, {
+    operationId: randomUUID(),
+    organizationId: f.org.id,
+    action: 'invite',
+  });
+  await credits.grant(issuer.owner.id, networkId, {
+    operationId: randomUUID(),
+    userId: athlete.id,
+    amountMinor: '100000',
+    receipt: randomUUID(),
+    reason: 'Synthetic manual receipt funding',
+  });
+  const order = await commerce.checkout(athlete.id, {
+    serviceId: f.service.id,
+    occurrenceId: f.occurrence.id,
+    idempotencyKey: randomUUID(),
+  });
+  const pay = {
+    operationId: randomUUID(),
+    networkId,
+    orderId: String(order.id),
+  };
+  await assert.rejects(() => credits.pay(athlete.id, pay));
+  await credits.member(f.owner.id, networkId, {
+    operationId: randomUUID(),
+    organizationId: f.org.id,
+    action: 'accept',
+  });
+  const [first, second] = await Promise.all([
+    credits.pay(athlete.id, pay),
+    credits.pay(athlete.id, pay),
+  ]);
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(first)),
+    JSON.parse(JSON.stringify(second)),
+  );
+  assert.equal((await credits.mine(athlete.id)).accounts[0].balance_minor, '0');
+  const [r] = await rows<{ id: string; revision: number }>(
+    db,
+    sql`SELECT id,revision FROM sport_reservations WHERE order_id=${order.id}`,
+  );
+  await commerce.cancel(athlete.id, r.id, r.revision, '100000', randomUUID());
+  await commerce.runJobs();
+  await commerce.runJobs();
+  const own = await credits.mine(athlete.id);
+  assert.equal(own.accounts[0].balance_minor, '100000');
+  assert.equal(own.entries.filter((e) => e.kind === 'refund').length, 1);
+  await assert.rejects(() =>
+    credits.grant(f.owner.id, networkId, {
+      operationId: randomUUID(),
+      userId: athlete.id,
+      amountMinor: '100000',
+      receipt: randomUUID(),
+      reason: 'Unapproved funding attempt',
+    }),
+  );
+});
+void test('open game claims one court reservation, caps players and confirms only after every share is paid', async () => {
+  const f = await sale('court'),
+    organizer = await person(),
+    player = await person(),
+    extra = await person(),
+    games = new GamesService(database, commerce);
+  const created = await games.create(organizer.id, {
+    operationId: randomUUID(),
+    serviceId: f.service.id,
+    occurrenceId: f.occurrence.id,
+    title: 'Synthetic game',
+    playerCount: 2,
+    public: true,
+    acceptedTerms: true,
+  });
+  const join = await games.join(player.id, created.id, {
+    operationId: randomUUID(),
+    acceptedTerms: true,
+  });
+  await assert.rejects(() =>
+    games.join(extra.id, created.id, {
+      operationId: randomUUID(),
+      acceptedTerms: true,
+    }),
+  );
+  const own = await games.detail(organizer.id, created.id);
+  assert.equal(own.shares.length, 2);
+  assert.equal(own.ownShare?.amount_minor, '50000');
+  const pay = async (user: string, order: string) => {
+    await commerce.startPayment(user, order, 'success', randomUUID());
+    await commerce.verifyPayment(user, order);
+  };
+  await pay(organizer.id, own.ownShare.order_id);
+  await games.reconcile(created.id);
+  assert.equal(
+    (await games.detail(player.id, created.id)).status,
+    'recruiting',
+  );
+  await pay(player.id, join.orderId);
+  await Promise.all([games.reconcile(created.id), games.reconcile(created.id)]);
+  assert.equal((await games.detail(player.id, created.id)).status, 'confirmed');
+  const [count] = await rows<{ n: number }>(
+    db,
+    sql`SELECT count(*)::int n FROM sport_reservations r JOIN growth_games g ON g.order_id=r.order_id WHERE g.id=${created.id}`,
+  );
+  assert.equal(count.n, 1);
+  const report = await commerce.report(f.owner.id, f.org.id, f.branch.id);
+  assert.equal(report.sales_minor, '100000');
+  assert.equal(report.collected_minor, '100000');
+  const advanced = await new AdvancedBusinessService(database, config).overview(
+    f.owner.id,
+    'business',
+    { organizationId: f.org.id, branchId: f.branch.id },
+  );
+  assert.equal(advanced.report?.sold_minor, '100000');
+  assert.equal(advanced.report?.collected_minor, '100000');
+  assert.equal(advanced.comparison?.[0]?.sold_minor, '100000');
+
+  await games.cancel(organizer.id, created.id, {
+    operationId: randomUUID(),
+    acceptedTerms: true,
+  });
+  for (let i = 0; i < 4; i++) {
+    await db.execute(
+      sql`UPDATE sport_outbox SET due_at=now(),lease_until=null WHERE processed_at IS NULL`,
+    );
+    await commerce.runJobs();
+  }
+  const refunds = await rows<{ refunded_minor: string }>(
+    db,
+    sql`SELECT o.refunded_minor::text FROM sport_orders o JOIN growth_game_shares sh ON sh.order_id=o.id WHERE sh.game_id=${created.id}`,
+  );
+  assert.deepEqual(
+    refunds.map((r) => r.refunded_minor),
+    ['50000', '50000'],
+  );
+  const parent = await rows<{ state: string }>(
+    db,
+    sql`SELECT r.state FROM sport_refunds r JOIN growth_games g ON g.order_id=r.order_id WHERE g.id=${created.id}`,
+  );
+  assert.equal(parent[0].state, 'succeeded');
+});
+void test('group shares consume only one offer use and preserve remaining offer budget', async () => {
+  const f = await sale('court'),
+    games = new GamesService(database, commerce),
+    actor = await person();
+  const offer = {
+    operationId: randomUUID(),
+    occurrenceId: f.occurrence.id,
+    discountBasisPoints: 1000,
+    maxUses: 2,
+    endsAt: new Date(Date.now() + 3600000).toISOString(),
+    revision: 0,
+    active: true,
+  };
+  await discovery.saveOffer(f.owner.id, offer);
+  const created = await games.create(actor.id, {
+    operationId: randomUUID(),
+    serviceId: f.service.id,
+    occurrenceId: f.occurrence.id,
+    title: 'Synthetic discounted group',
+    playerCount: 2,
+    public: false,
+    acceptedTerms: true,
+  });
+  assert.equal(
+    (await games.detail(actor.id, created.id)).ownShare?.amount_minor,
+    '45000',
+  );
+  assert.equal(
+    (await offerPrice(db, f.occurrence.id, '100000')).amount,
+    '90000',
+  );
+  await discovery.saveOffer(f.owner.id, {
+    ...offer,
+    operationId: randomUUID(),
+    revision: 1,
+    maxUses: 1,
+  });
+});
+void test('every group participant needs the service documents, including expiry checks', async () => {
+  const requirement = 'Synthetic clearance',
+    f = await sale('court', [requirement]),
+    organizer = await person(),
+    player = await person(),
+    games = new GamesService(database, commerce);
+  await db.execute(
+    sql`INSERT INTO sport_documents(user_id,service_id,name,object_key,status) VALUES(${organizer.id},${f.service.id},${requirement},'synthetic-only/organizer.pdf','approved')`,
+  );
+  const g = await games.create(organizer.id, {
+    operationId: randomUUID(),
+    serviceId: f.service.id,
+    occurrenceId: f.occurrence.id,
+    title: 'Synthetic restricted court',
+    playerCount: 2,
+    public: true,
+    acceptedTerms: true,
+  });
+  const join = () =>
+    games.join(player.id, g.id, {
+      operationId: randomUUID(),
+      acceptedTerms: true,
+    });
+  await assert.rejects(join);
+  await db.execute(
+    sql`INSERT INTO sport_documents(user_id,service_id,name,object_key,status,expires_at) VALUES(${player.id},${f.service.id},${requirement},'synthetic-only/player.pdf','approved',now()-interval '1 day')`,
+  );
+  await assert.rejects(join);
+  await db.execute(
+    sql`UPDATE sport_documents SET expires_at=now()+interval '1 day' WHERE user_id=${player.id} AND service_id=${f.service.id}`,
+  );
+  assert.ok((await join()).orderId);
+});
+void test('an incomplete group expires and refunds a paid share exactly once', async () => {
+  const f = await sale('court'),
+    organizer = await person(),
+    games = new GamesService(database, commerce),
+    created = await games.create(organizer.id, {
+      operationId: randomUUID(),
       serviceId: f.service.id,
       occurrenceId: f.occurrence.id,
-      idempotencyKey: randomUUID(),
-    },
-    'online',
-    true,
+      title: 'Synthetic incomplete game',
+      playerCount: 2,
+      public: true,
+      acceptedTerms: true,
+    });
+  const detail = await games.detail(organizer.id, created.id);
+  await commerce.startPayment(
+    organizer.id,
+    detail.ownShare.order_id,
+    'success',
+    randomUUID(),
   );
-  const id = randomUUID();
+  await commerce.verifyPayment(organizer.id, detail.ownShare.order_id);
   await db.execute(
-    sql`INSERT INTO growth_games(id,organizer_id,order_id,occurrence_id,title,player_count,deadline,public) VALUES(${id},${players[0].id},${parent.id},${f.occurrence.id},'Historical group',2,${parent.expires_at},false)`,
+    sql`UPDATE growth_games SET deadline=now()-interval '1 second' WHERE id=${created.id}`,
   );
-  const shareOrders: string[] = [];
-  for (let i = 0; i < 2; i++) {
-    if (i >= paidPlayers) {
-      await db.execute(
-        sql`INSERT INTO growth_game_shares(game_id,slot,amount_minor) VALUES(${id},${i + 1},50000)`,
-      );
-      continue;
-    }
-    const [order] = await rows<{ id: string }>(
-      db,
-      sql`INSERT INTO sport_orders(user_id,organization_id,service_id,version_id,amount_minor,snapshot,idempotency_key,request_hash,expires_at) SELECT ${players[i].id},organization_id,service_id,version_id,50000,snapshot||${JSON.stringify({ kind: 'split_share', groupId: id, approvalRequired: false })}::jsonb,${randomUUID()},${randomUUID()},expires_at FROM sport_orders WHERE id=${parent.id} RETURNING id`,
-    );
-    await db.execute(
-      sql`INSERT INTO growth_game_shares(game_id,slot,amount_minor,user_id,order_id) VALUES(${id},${i + 1},50000,${players[i].id},${order.id})`,
-    );
-    await commerce.startPayment(
-      players[i].id,
-      order.id,
-      'success',
-      randomUUID(),
-    );
-    await commerce.verifyPayment(players[i].id, order.id);
-    shareOrders.push(order.id);
-  }
-  return { id, parent, shareOrders };
-}
-void test('v1 still reconciles fully paid legacy groups once without a creation endpoint', async () => {
-  const group = await legacyGroup(2);
-  const service = new LegacyGroupReconciliationService(database, commerce);
-  await Promise.all([service.reconcile(group.id), service.reconcile(group.id)]);
-  const [state] = await rows<{ status: string }>(
-    db,
-    sql`SELECT status FROM growth_games WHERE id=${group.id}`,
-  );
-  assert.equal(state.status, 'confirmed');
-  const [bookings] = await rows<{ n: number }>(
-    db,
-    sql`SELECT count(*)::int n FROM sport_reservations WHERE order_id=${group.parent.id}`,
-  );
-  assert.equal(bookings.n, 1);
-  const [payments] = await rows<{ n: number }>(
-    db,
-    sql`SELECT count(*)::int n FROM sport_payments WHERE order_id=${group.parent.id} AND provider='team_split' AND state='verified'`,
-  );
-  assert.equal(payments.n, 1);
-});
-void test('v1 expires an incomplete legacy group and refunds its paid share exactly once', async () => {
-  const group = await legacyGroup(1);
-  await db.execute(
-    sql`UPDATE growth_games SET deadline=now()-interval '1 second' WHERE id=${group.id}`,
-  );
-  const service = new LegacyGroupReconciliationService(database, commerce);
-  await service.runDue();
-  await service.runDue();
+  await games.reconcile(created.id);
+  await games.reconcile(created.id);
   await commerce.runJobs();
-  const [state] = await rows<{ status: string }>(
-    db,
-    sql`SELECT status FROM growth_games WHERE id=${group.id}`,
+  assert.equal(
+    (await games.detail(organizer.id, created.id)).status,
+    'cancelled',
   );
-  assert.equal(state.status, 'cancelled');
   const [refund] = await rows<{ amount: string; n: number }>(
     db,
-    sql`SELECT sum(amount_minor)::text amount,count(*)::int n FROM sport_refunds WHERE order_id=${group.shareOrders[0]} AND state='succeeded'`,
+    sql`SELECT sum(amount_minor)::text amount,count(*)::int n FROM sport_refunds WHERE order_id=${detail.ownShare.order_id} AND state='succeeded'`,
   );
   assert.equal(refund.amount, '50000');
   assert.equal(refund.n, 1);
+});
+void test('background reconciliation skips unfunded holds instead of starving funded groups', async () => {
+  const games = new GamesService(database, commerce);
+  for (let i = 0; i < 25; i++) {
+    const f = await sale('court'),
+      actor = await person();
+    const g = await games.create(actor.id, {
+      operationId: randomUUID(),
+      serviceId: f.service.id,
+      occurrenceId: f.occurrence.id,
+      title: 'Synthetic unfunded group',
+      playerCount: 2,
+      public: false,
+      acceptedTerms: true,
+    });
+    await db.execute(
+      sql`UPDATE growth_games SET deadline=now()+interval '2 minutes' WHERE id=${g.id}`,
+    );
+  }
+  const f = await sale('court'),
+    a = await person(),
+    b = await person();
+  const g = await games.create(a.id, {
+    operationId: randomUUID(),
+    serviceId: f.service.id,
+    occurrenceId: f.occurrence.id,
+    title: 'Synthetic funded group',
+    playerCount: 2,
+    public: false,
+    acceptedTerms: true,
+  });
+  const own = (await games.detail(a.id, g.id)).ownShare,
+    second = await games.join(b.id, g.id, {
+      operationId: randomUUID(),
+      acceptedTerms: true,
+    });
+  for (const [actor, order] of [
+    [a.id, own.order_id],
+    [b.id, second.orderId],
+  ]) {
+    await commerce.startPayment(actor, order, 'success', randomUUID());
+    await commerce.verifyPayment(actor, order);
+  }
+  await games.runDue();
+  assert.equal((await games.detail(a.id, g.id)).status, 'confirmed');
+});
+void test('food catalog has real composition data and logs canonical values with source ownership', async () => {
+  const nutrition = new NutritionService(database),
+    actor = await person(),
+    stranger = await person();
+  const foods = nutrition.foods({ q: 'برنج سفید', page: 1 });
+  assert.equal(foods.items[0].id, '168878');
+  const input = {
+    operationId: randomUUID(),
+    eatenOn: '2026-10-24',
+    meal: 'lunch' as const,
+    grams: 150,
+    locale: 'fa' as const,
+  };
+  await nutrition.addFood(actor.id, '168878', input);
+  await nutrition.addFood(actor.id, '168878', input);
+  const day = await nutrition.day(actor.id, '2026-10-24');
+  assert.equal(day.totals.calories, '195.00');
+  assert.equal(day.entries.length, 1);
+  assert.equal(day.entries[0].food_id, '168878');
+  assert.equal(
+    (await nutrition.day(stranger.id, '2026-10-24')).entries.length,
+    0,
+  );
+  assert.equal(
+    foodEntry.safeParse({ ...input, per100g: { calories: 0 } }).success,
+    false,
+  );
+  assert.throws(() => nutrition.addFood(actor.id, 'not-a-food', input));
 });
 void test('native push is native-session bound, future-only, deduplicated and revoked on logout', async () => {
   class Sender extends NativePushSender {

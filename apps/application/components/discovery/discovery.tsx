@@ -20,13 +20,17 @@ import Link from "next/link";
 import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { useTaxonomies, catalogSelectSource } from "@repo/api/catalog";
-import { useTranslations } from "@repo/i18n";
+import { useLocale, useTranslations } from "@repo/i18n";
 import { ClubCard } from "@repo/ui/kit/ClubCard";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 import { Button } from "@repo/ui/kit/Button";
 import { useInfiniteCatalogClubs, useCatalogClubs } from "./use-catalog";
 import { CatalogState } from "./catalog-state";
-import { ClubGallerySection, DiscoveryClasses } from "./discovery-sections";
+import {
+  ClubGallerySection,
+  DiscoveryClasses,
+  DiscoveryCoaches,
+} from "./discovery-sections";
 import type { ClubCardProps } from "@repo/ui/kit/ClubCard";
 import { validCatalogPrices } from "@repo/api/catalog";
 import { LocationPicker, type LocationValue } from "./location-picker";
@@ -63,6 +67,8 @@ export function SavedClubCard({
         saved={saved}
         onSavedChange={setSaved}
         priority={priority}
+        compareHref={`/discovery/compare?club=${club.id}`}
+        compareLabel={t("compare")}
         labels={{
           save: t("save"),
           unsave: t("unsave"),
@@ -86,6 +92,7 @@ export function Discovery() {
   const copy = useTranslations("Copy");
   const tabs = useTranslations("DiscoveryTabs");
   const catalog = useTranslations("Catalog");
+  const locale = useLocale();
   const queryCategory = useSyncExternalStore(
     (listener) => {
       window.addEventListener("popstate", listener);
@@ -225,8 +232,12 @@ export function Discovery() {
       {recommendedClubs[0] && <ClubGallerySection club={recommendedClubs[0]} />}
     </div>,
     <div key="cinematic" className="discovery-feed-group">
-      {clubSection("cinematic", t("spacesToTrain"))}
+      {clubSection(
+        "cinematic",
+        t("spacesToTrain"),
+      )}
       {featuredSection(3)}
+      <DiscoveryCoaches />
     </div>,
   ];
   const feed = sections.map(

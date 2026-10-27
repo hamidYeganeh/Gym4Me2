@@ -813,8 +813,7 @@
     "pushTestWait": "Wait 30 seconds before sending another test.",
     "sessionAlreadyReserved": "You already reserved this session. Open My bookings to see its details.",
     "membershipExhausted": "No unreserved sessions remain on this membership. Check its balance and active bookings.",
-    "nativePushUnavailable": "Native notification delivery is not configured for this platform.",
-    "serviceUnavailable": "This service is unavailable."
+    "nativePushUnavailable": "Native notification delivery is not configured for this platform."
   },
   "Preview": {
     "atlasAthleticClub": "Atlas Athletic Club",
@@ -2787,8 +2786,7 @@
     "payments": "Payments",
     "reports": "Reports",
     "advanced": "Plans & settlements",
-    "workspace": "Workspace",
-    "moreTools": "Management tools"
+    "workspace": "Workspace"
   },
   "LumaDesign": {
     "schedule": "My schedule",
@@ -3519,45 +3517,5 @@
     "publishedSportRequired": "Published service sports must remain in the club and branch sports lists.",
     "time": "Time",
     "tehranTime": "Times are in Tehran time."
-  },
-  "SimpleApp": {
-    "home": "Home",
-    "gyms": "Gyms",
-    "bookings": "Bookings",
-    "memberships": "Memberships",
-    "homeTitle": "My gym",
-    "homeHint": "Your next booking and gym access, together.",
-    "findGym": "Find a gym",
-    "nextBooking": "Next booking",
-    "entryTicket": "Show entry code",
-    "noUpcomingBooking": "No upcoming bookings. Choose your next session from Gyms.",
-    "activeMemberships": "Available gym access",
-    "validUntil": "Valid until",
-    "noExpiry": "No expiry date",
-    "sessionsLeft": "{count} sessions available",
-    "noActiveMembership": "No membership currently allows direct entry. Check your memberships for booking and access conditions.",
-    "more": "More",
-    "purchasesAndHelp": "Purchases and help",
-    "orders": "Orders and payments",
-    "saved": "Saved gyms",
-    "documents": "Service documents",
-    "waitlist": "Waiting list",
-    "support": "Support",
-    "coaching": "Coaching and training",
-    "coaches": "Find a coach",
-    "programs": "Training program orders",
-    "training": "Training plans and history",
-    "coachWorkspace": "Coach and student workspace",
-    "messages": "Messages",
-    "otherActivity": "Other activity and history",
-    "credits": "Existing credit",
-    "games": "Group games",
-    "family": "Family members",
-    "invitations": "Invitations",
-    "calendars": "Followed calendars",
-    "filterByDate": "Filter by date",
-    "hideCalendar": "Hide calendar",
-    "clearDate": "All dates",
-    "programHistory": "My previous programs"
   }
 }

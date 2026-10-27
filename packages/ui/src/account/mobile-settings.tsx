@@ -1,5 +1,4 @@
 "use client";
-import { useProductNavigation } from "@repo/api/profile";
 
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -19,6 +18,7 @@ import {
   Languages,
   Bell,
   LifeBuoy,
+  Wallet,
 } from "lucide-react";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { Separator } from "../kit/Separator";
@@ -91,7 +91,6 @@ export function MobileSettings({
   login: ReactNode;
 }) {
   const t = useTranslations();
-  const navigation = useProductNavigation(Boolean(account));
   const locale = useLocale();
   const changeLocale = useChangeLocale();
   return (
@@ -136,11 +135,13 @@ export function MobileSettings({
           {t("Copy.activeSessions")}
         </SettingsRow>
         <Separator />
-        {!navigation.error && navigation.data?.teamInvites && (
-          <SettingsRow href="/invitations" icon={<Mail className="size-5" />}>
-            {t("Copy.teamInvitations")}
-          </SettingsRow>
-        )}
+        <SettingsRow href="/credits" icon={<Wallet className="size-5" />}>
+          {t("Growth.credits")}
+        </SettingsRow>
+        <Separator />
+        <SettingsRow href="/invitations" icon={<Mail className="size-5" />}>
+          {t("Copy.teamInvitations")}
+        </SettingsRow>
       </SettingsGroup>
       <SettingsGroup title={t("AccountDesign.preferences")}>
         <SettingsRow

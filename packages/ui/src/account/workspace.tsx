@@ -1,11 +1,11 @@
 "use client";
-import { DemoPanel } from "../training/service-reviews";
 import { workspaceNavigation } from "./workspace-navigation";
 import "../workspace-design.css";
+import { DemoPanel } from "../training/service-reviews";
 import { AnalyticsPanel } from "../analytics/panel";
 import { useTranslations, useLocale, getDirection } from "@repo/i18n";
 
-import { useAccount, useAccess, useProductNavigation } from "@repo/api/profile";
+import { useAccount, useAccess } from "@repo/api/profile";
 import { useLogout } from "@repo/api/auth";
 import { useOrganizations } from "@repo/api/business";
 import { useAdminOverview } from "@repo/api/admin";
@@ -123,14 +123,7 @@ export function AccountWorkspace({
     }
   }
   const locale = useLocale();
-  const navigation = useProductNavigation(
-    Boolean(account) && client !== "application",
-    true,
-  );
-  const nav = workspaceNavigation(
-    client,
-    navigation.error || !account ? undefined : navigation.data,
-  ).map((item) => ({
+  const nav = workspaceNavigation(client).map((item) => ({
     ...item,
     title: t(item.title),
   }));

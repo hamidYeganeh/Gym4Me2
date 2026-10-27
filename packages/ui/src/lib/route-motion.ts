@@ -53,6 +53,8 @@ export const surfaceTabs: Record<AppSurface, string[]> = {
 };
 
 export const detailRoutes = [
+  "/training",
+  "/training/**",
   "/coaching/**",
   "/coaching",
   "/coaches",
@@ -60,7 +62,7 @@ export const detailRoutes = [
   "/bookings",
   "/memberships",
   "/orders",
-
+  "/calendars",
   "/support",
   "/notifications",
   "/waitlist",
@@ -71,6 +73,7 @@ export const detailRoutes = [
   "/analytics",
   "/demo",
   "/profile",
+  "/discovery/compare",
   "/discovery/map",
   "/discovery/club",
   "/discovery/clubs/*",
@@ -79,13 +82,14 @@ export const detailRoutes = [
   "/bookings/*",
   "/memberships/*",
   "/orders/*",
-
+  "/calendars/*",
   "/messages/**",
   "/support/*",
   "/profile/**",
   "/sessions",
   "/privacy",
   "/invitations",
+  "/invitations/sports",
   "/membership-card",
   "/organizations/**",
   "/users/*",
