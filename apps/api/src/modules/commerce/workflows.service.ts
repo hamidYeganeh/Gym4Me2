@@ -143,6 +143,8 @@ export class SportsWorkflowsService {
               entryAllowed: false,
               deliveryDays: input.deliveryDays,
               supportDays: input.supportDays,
+              maxRevisions: input.maxRevisions,
+              responseHours: input.responseHours,
             },
             policy: {
               cancellationHours: 0,
@@ -513,7 +515,7 @@ export class SportsWorkflowsService {
     if (coach) await approvedCoach(this.db, actor);
     return rows(
       this.db,
-      sql`SELECT p.*,u.display_name,o.snapshot->>'title' title,o.snapshot->'offering' offering,coalesce((SELECT jsonb_agg(jsonb_build_object('id',a.id,'title',t.title)) FROM training_assignments a JOIN training_versions v ON v.id=a.version_id JOIN training_plans t ON t.id=v.plan_id WHERE a.relationship_id=p.relationship_id AND t.owner_id=p.coach_id),'[]'::jsonb) assignments FROM sport_program_requests p JOIN users u ON u.id=CASE WHEN ${coach} THEN p.athlete_id ELSE p.coach_id END JOIN sport_orders o ON o.id=p.order_id WHERE ${coach ? sql`p.coach_id=${actor}` : sql`p.athlete_id=${actor}`} ORDER BY p.created_at DESC LIMIT 100`,
+      sql`SELECT p.*,u.display_name,(SELECT count(*)::int FROM sport_program_events e WHERE e.request_id=p.id AND e.kind='revision_requested') revision_count,(SELECT coalesce(jsonb_agg(jsonb_build_object('id',e.id,'kind',e.kind,'reason',e.reason,'createdAt',e.created_at) ORDER BY e.sequence),'[]'::jsonb) FROM sport_program_events e WHERE e.request_id=p.id) events,(CASE WHEN p.status IN ('queued','preparing','revision_requested') THEN coalesce(p.revision_due_at,CASE WHEN p.assignment_id IS NULL THEN p.due_at END)<now() ELSE false END) overdue,o.snapshot->>'title' title,o.snapshot->'offering' offering,coalesce((SELECT jsonb_agg(jsonb_build_object('id',a.id,'title',t.title)) FROM training_assignments a JOIN training_versions v ON v.id=a.version_id JOIN training_plans t ON t.id=v.plan_id WHERE a.relationship_id=p.relationship_id AND t.owner_id=p.coach_id),'[]'::jsonb) assignments FROM sport_program_requests p JOIN users u ON u.id=CASE WHEN ${coach} THEN p.athlete_id ELSE p.coach_id END JOIN sport_orders o ON o.id=p.order_id WHERE ${coach ? sql`p.coach_id=${actor}` : sql`p.athlete_id=${actor}`} ORDER BY p.created_at DESC LIMIT 100`,
     );
   }
   private async programAccess(
@@ -545,6 +547,9 @@ export class SportsWorkflowsService {
           sql`UPDATE sport_program_requests SET intake=${JSON.stringify({ goals: input.goals, experience: input.experience, limitations: input.limitations, location: input.location })}::jsonb,status='queued',revision=revision+1,updated_at=now(),due_at=now()+coalesce((SELECT (snapshot->'offering'->>'deliveryDays')::int FROM sport_orders WHERE id=order_id),3)*interval '1 day' WHERE id=${id} AND revision=${input.revision} AND status='intake' RETURNING id,coach_id`,
         );
         if (!p) throw new ConflictException('Workflow.programChanged');
+        await tx.execute(
+          sql`INSERT INTO sport_program_events(request_id,kind) VALUES(${id},'intake')`,
+        );
         return { ok: true };
       },
     );
@@ -585,7 +590,10 @@ export class SportsWorkflowsService {
         }
         await rows(
           tx,
-          sql`UPDATE sport_program_requests SET status=${input.status},assignment_id=${input.assignmentId ?? null},support_ends_at=CASE WHEN ${input.status}='delivered' THEN coalesce(support_ends_at,now()+coalesce((SELECT (snapshot->'offering'->>'supportDays')::int FROM sport_orders WHERE id=${p.order_id}),30)*interval '1 day') ELSE support_ends_at END,revision=revision+1,updated_at=now() WHERE id=${id}`,
+          sql`UPDATE sport_program_requests SET status=${input.status},assignment_id=coalesce(${input.assignmentId ?? null}::uuid,assignment_id),support_ends_at=CASE WHEN ${input.status}='delivered' THEN coalesce(support_ends_at,now()+coalesce((SELECT (snapshot->'offering'->>'supportDays')::int FROM sport_orders WHERE id=${p.order_id}),30)*interval '1 day') ELSE support_ends_at END,revision=revision+1,updated_at=now() WHERE id=${id}`,
+        );
+        await tx.execute(
+          sql`INSERT INTO sport_program_events(request_id,kind,assignment_id) VALUES(${id},${input.status},${input.assignmentId ?? null})`,
         );
         if (input.status === 'delivered')
           await deliverSportsNotification(tx, {
@@ -611,12 +619,36 @@ export class SportsWorkflowsService {
       ['program-revise', id, input],
       (tx) => this.programAccess(tx, actor, id, false),
       async (tx) => {
-        const changed = await rows(
+        const [p] = await rows<{
+          status: string;
+          revision: number;
+          support_ends_at: Date | null;
+          max_revisions: number | null;
+          response_hours: number | null;
+        }>(
           tx,
-          sql`UPDATE sport_program_requests SET status='revision_requested',intake=intake||jsonb_build_object('revisionReason',${input.reason}::text),revision=revision+1,updated_at=now() WHERE id=${id} AND revision=${input.revision} AND status='delivered' AND support_ends_at>now() RETURNING id`,
+          sql`SELECT p.*,(o.snapshot->'offering'->>'maxRevisions')::int max_revisions,(o.snapshot->'offering'->>'responseHours')::int response_hours FROM sport_program_requests p JOIN sport_orders o ON o.id=p.order_id WHERE p.id=${id} FOR UPDATE OF p`,
         );
-        if (!changed.length)
+        if (
+          !p ||
+          p.revision !== input.revision ||
+          p.status !== 'delivered' ||
+          !p.support_ends_at ||
+          p.support_ends_at <= new Date()
+        )
           throw new ConflictException('Workflow.programChanged');
+        const [count] = await rows<{ total: number }>(
+          tx,
+          sql`SELECT count(*)::int total FROM sport_program_events WHERE request_id=${id} AND kind='revision_requested'`,
+        );
+        if (p.max_revisions !== null && count.total >= p.max_revisions)
+          throw new ConflictException('Workflow.revisionLimitReached');
+        await tx.execute(
+          sql`UPDATE sport_program_requests SET status='revision_requested',intake=intake||jsonb_build_object('revisionReason',${input.reason}::text),revision_due_at=CASE WHEN ${p.response_hours}::int IS NOT NULL THEN now()+${p.response_hours}*interval '1 hour' ELSE NULL END,revision=revision+1,updated_at=now() WHERE id=${id}`,
+        );
+        await tx.execute(
+          sql`INSERT INTO sport_program_events(request_id,kind,reason) VALUES(${id},'revision_requested',${input.reason})`,
+        );
         return { ok: true };
       },
     );

@@ -2,6 +2,7 @@
 import { useMemo } from "react";
 import { useLocale } from "@repo/i18n";
 import {
+  useInfiniteClubs,
   useClub,
   useClubBranch,
   useClubs,
@@ -46,4 +47,18 @@ export function useCatalogClub(id: string, branchId?: string) {
     branch: branchData,
     branchQuery: branch,
   };
+}
+
+export function useInfiniteCatalogClubs(
+  filters: Omit<ClubFiltersDto, "page"> = {},
+) {
+  const locale = useLocale();
+  const query = useInfiniteClubs(filters);
+  const clubs = useMemo(() => {
+    const unique = new Map(
+      query.data?.pages.flat().map((club) => [club.id, club]),
+    );
+    return Array.from(unique.values()).map((club) => summaryView(club, locale));
+  }, [query.data, locale]);
+  return { ...query, clubs };
 }

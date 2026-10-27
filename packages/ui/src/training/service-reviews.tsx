@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "../account/common";
 import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { useState } from "react";
 import Link from "next/link";
@@ -80,7 +81,7 @@ export function ServiceReviewForm({
           <Button type="submit" disabled={m.isPending}>
             {t("submitReview")}
           </Button>
-          {saved && <p role="status">{t("reviewPending")}</p>}
+          <SuccessNotice success={saved} message={t("reviewPending")} />
         </form>
       </details>
     </div>

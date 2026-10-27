@@ -35,6 +35,7 @@ import {
 } from './community-page';
 import { jsonDto } from './commerce.service';
 import { commandKey } from './commerce.contracts';
+import { supportCreateSchema, supportReplySchema } from './support.contracts';
 import { ApiBody, ApiQuery } from '@nestjs/swagger';
 import {
   invitationCreateBodySchema,
@@ -379,22 +380,34 @@ export class SportsCommunityController {
     return dto(this.s.support(r.principal.user.id));
   }
   @Post('support')
-  @JsonBody({ title: { type: 'string' }, body: { type: 'string' } })
+  @JsonBody(
+    {
+      title: { type: 'string' },
+      body: { type: 'string' },
+      orderId: { type: 'string', format: 'uuid' },
+      category: {
+        type: 'string',
+        enum: [
+          'general',
+          'booking_issue',
+          'entry_denied',
+          'provider_absent',
+          'payment',
+          'refund',
+          'program',
+        ],
+      },
+      idempotencyKey: { type: 'string' },
+    },
+    ['title', 'body'],
+  )
   supportCreate(@Req() r: AuthRequest, @Body() body: unknown) {
-    const v = parse(
-      z
-        .object({
-          title: z.string().trim().min(3).max(160),
-          body: z.string().trim().min(3).max(5000),
-          orderId: z.uuid().optional(),
-        })
-        .strict(),
-      body,
-    );
+    const v = parse(supportCreateSchema, body);
     return dto(
-      this.s.createTicket(r.principal.user.id, v.title, v.body, v.orderId),
+      this.s.createTicket(r.principal.user.id, v.title, v.body, v.orderId, v),
     );
   }
+
   @Get('support/:id') ticket(
     @Req() r: AuthRequest,
     @Param('id') value: string,
@@ -402,23 +415,20 @@ export class SportsCommunityController {
     return dto(this.s.ticket(r.principal.user.id, id(value)));
   }
   @Post('support/:id/messages')
-  @JsonBody({ body: { type: 'string' } })
+  @JsonBody({ body: { type: 'string' }, idempotencyKey: { type: 'string' } }, [
+    'body',
+  ])
   reply(
     @Req() r: AuthRequest,
     @Param('id') value: string,
     @Body() body: unknown,
   ) {
+    const v = parse(supportReplySchema, body);
     return dto(
-      this.s.reply(
-        r.principal.user.id,
-        id(value),
-        parse(
-          z.object({ body: z.string().trim().min(1).max(5000) }).strict(),
-          body,
-        ).body,
-      ),
+      this.s.reply(r.principal.user.id, id(value), v.body, v.idempotencyKey),
     );
   }
+
   @Post('host/conversations')
   @JsonBody({ occurrenceId: { type: 'string' } })
   start(@Req() r: AuthRequest, @Body() body: unknown) {

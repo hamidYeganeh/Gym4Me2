@@ -3,13 +3,13 @@ import {
   IranianDateInput,
   IranianDateTimeInput,
 } from "../kit/IranianDateInput";
-import { useRef, useState, useEffect, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { useTranslations, useLocale } from "@repo/i18n";
 import { usePracticeCommand } from "@repo/api/profile";
 import { Button } from "../kit/Button";
 import { Input } from "../kit/Input";
 import { Textarea } from "../kit/Textarea";
-import { ErrorNotice } from "./common";
+import { ErrorNotice, SuccessNotice } from "./common";
 export function usePracticeAction() {
   const command = usePracticeCommand(),
     busy = useRef(false);
@@ -39,17 +39,10 @@ export function PracticeFeedback({
   action: ReturnType<typeof usePracticeAction>;
 }) {
   const t = useTranslations("Practice");
-  const status = useRef<HTMLParagraphElement>(null);
-  useEffect(() => {
-    if (action.saved && document.activeElement === document.body)
-      status.current?.focus({ preventScroll: true });
-  }, [action.saved]);
   return (
     <>
       <ErrorNotice error={action.error} />
-      <p role="status" tabIndex={-1} ref={status}>
-        {action.saved ? t("saved") : ""}
-      </p>
+      <SuccessNotice success={action.saved} message={t("saved")} />
     </>
   );
 }

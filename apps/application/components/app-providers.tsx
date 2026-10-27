@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, type ReactNode } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useLocale, getDirection, type Locale } from "@repo/i18n";
 import { ClientLocaleProvider } from "@repo/i18n/client-provider";
 import { ApiProvider, setNativeApiForeground } from "@repo/api/provider";
 import { ThemeProvider, useTheme } from "@repo/theme/provider";
 import { DirectionProvider } from "@repo/ui/kit/Direction";
 import { TooltipProvider } from "@repo/ui/kit/Tooltip";
-import { Toaster } from "@repo/ui/kit/Sonner";
+import { Toaster } from "@repo/ui/kit/Sileo";
 import { TrainingPdfProvider } from "@repo/ui/training";
 import { LumaShell } from "./luma/shell";
 import { NativePushRuntime } from "./luma/native-device-notifications";
@@ -34,6 +34,14 @@ function AppNavigationRuntime() {
 function NativeRuntime() {
   const router = useRouter();
   const { resolvedTheme } = useTheme();
+  useEffect(() => {
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute(
+        "content",
+        resolvedTheme === "light" ? "#ffffff" : "#101113",
+      );
+  }, [resolvedTheme]);
   useEffect(() => {
     let disposed = false;
     const removers: (() => Promise<void>)[] = [];
@@ -122,7 +130,6 @@ function NativeRuntime() {
   return null;
 }
 function DirectionAndMotion({ children }: { children: ReactNode }) {
-  const qa = usePathname().startsWith("/qa/");
   const locale = useLocale();
   const direction = getDirection(locale);
   return (
@@ -163,17 +170,11 @@ function DirectionAndMotion({ children }: { children: ReactNode }) {
               <TooltipProvider>
                 <NativeRuntime />
                 <NativePushRuntime />
-                {!qa && <FavoritesSync />}
+                <FavoritesSync />
                 <LumaShell>{children}</LumaShell>
                 <Toaster
                   dir={direction}
                   offset={{
-                    top: "calc(1rem + var(--app-safe-top))",
-                    bottom: "calc(1rem + var(--app-safe-bottom))",
-                    left: "calc(1rem + var(--app-safe-left))",
-                    right: "calc(1rem + var(--app-safe-right))",
-                  }}
-                  mobileOffset={{
                     top: "calc(1rem + var(--app-safe-top))",
                     bottom: "calc(1rem + var(--app-safe-bottom))",
                     left: "calc(1rem + var(--app-safe-left))",
@@ -197,7 +198,7 @@ export function AppProviders({
 }) {
   return (
     <ClientLocaleProvider initialLocale={locale}>
-      <ThemeProvider>
+      <ThemeProvider defaultTheme="dark" storageKey="gym4me-application-theme">
         <AppNavigationRuntime />
         <DirectionAndMotion>{children}</DirectionAndMotion>
       </ThemeProvider>

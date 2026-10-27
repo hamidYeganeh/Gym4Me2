@@ -1,3 +1,4 @@
+import { supportAdminReplySchema } from './support.contracts';
 import { managementFilters } from './management-filters';
 import {
   Body,
@@ -359,22 +360,26 @@ export class AdminSportsController {
     return dto(this.s.adminTicket(r.principal, id(value)));
   }
   @Post('support/:id/reply')
-  @JsonBody({ body: { type: 'string' }, resolve: { type: 'boolean' } })
+  @JsonBody(
+    {
+      body: { type: 'string' },
+      resolve: { type: 'boolean' },
+      revision: { type: 'integer', minimum: 1 },
+      resolution: {
+        type: 'string',
+        enum: ['answered', 'correction', 'refund_review', 'provider_contacted'],
+      },
+      idempotencyKey: { type: 'string' },
+    },
+    ['body', 'resolve'],
+  )
   reply(
     @Req() r: AuthRequest,
     @Param('id') value: string,
     @Body() body: unknown,
   ) {
-    const v = parse(
-      z
-        .object({
-          body: z.string().trim().min(1).max(5000),
-          resolve: z.boolean(),
-        })
-        .strict(),
-      body,
-    );
-    return dto(this.s.adminReply(r.principal, id(value), v.body, v.resolve));
+    const v = parse(supportAdminReplySchema, body);
+    return dto(this.s.adminReply(r.principal, id(value), v.body, v.resolve, v));
   }
   @Post('jobs/:id/retry') retry(
     @Req() r: AuthRequest,

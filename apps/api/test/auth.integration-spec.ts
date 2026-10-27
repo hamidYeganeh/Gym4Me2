@@ -38,6 +38,8 @@ import { KavenegarService } from '../src/modules/auth/kavenegar.service';
 import { WorkspacesModule } from '../src/modules/workspaces.module';
 import { PrivacyService } from '../src/modules/profile/privacy.service';
 import { RetentionService } from '../src/modules/profile/retention.service';
+import { DeletionJournalService } from '../src/modules/profile/deletion-journal.service';
+import { MediaRetentionService } from '../src/modules/clubs/media-retention.service';
 import { ClubService } from '../src/modules/clubs/club.service';
 import { tokenHash } from '../src/modules/auth/auth.service';
 import { configureApi } from '../src/platform/http/configure-api';
@@ -1221,6 +1223,48 @@ test('deletion requests are idempotent and cancellable, dry-run is safe, process
     .update(accountDeletionRequests)
     .set({ eligibleAfter: new Date(0) })
     .where(eq(accountDeletionRequests.userId, person.userId));
+  const journal = jest.spyOn(app.get(DeletionJournalService), 'record');
+  journal.mockRejectedValueOnce(new Error('Independent store unavailable'));
+  await expect(app.get(RetentionService).run(true)).rejects.toThrow(
+    'Independent store unavailable',
+  );
+  expect(
+    (await db.select().from(users).where(eq(users.id, person.userId)))[0],
+  ).toMatchObject({
+    phone: person.phone,
+    deletedAt: null,
+    status: 'suspended',
+    deletionPending: true,
+  });
+  expect(
+    (
+      await db
+        .select()
+        .from(accountDeletionRequests)
+        .where(eq(accountDeletionRequests.userId, person.userId))
+    )[0].status,
+  ).toBe('processing');
+  await call(
+    'post',
+    'profile/account/privacy/deletion/cancel',
+    'application',
+    person.cookie,
+  ).expect(401);
+  // Acknowledgement followed by a database failure must keep the durable intent.
+  const erase = jest.spyOn(app.get(MediaRetentionService), 'eraseCoaching');
+  erase.mockRejectedValueOnce(new Error('Erasure transaction failed'));
+  await expect(app.get(RetentionService).run(true)).rejects.toThrow(
+    'Erasure transaction failed',
+  );
+  expect(
+    (await db.select().from(users).where(eq(users.id, person.userId)))[0]
+      .deletedAt,
+  ).toBeNull();
+  expect(journal.mock.invocationCallOrder.at(-1)).toBeLessThan(
+    erase.mock.invocationCallOrder[0],
+  );
+  erase.mockRestore();
+  journal.mockRestore();
   expect(await app.get(RetentionService).run(true)).toMatchObject({
     applied: true,
     deletedAccounts: 1,

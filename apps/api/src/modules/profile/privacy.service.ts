@@ -131,6 +131,7 @@ export class PrivacyService {
           }
         : null,
       canRequestDeletion: !blocked,
+      canCancelDeletion: requests[0]?.status === 'pending',
     };
   }
   async update(userId: string, input: z.infer<typeof preferencesSchema>) {
@@ -232,7 +233,7 @@ export class PrivacyService {
         .select()
         .from(s.accountDeletionRequests)
         .where(eq(s.accountDeletionRequests.userId, p.user.id));
-      if (request?.status === 'pending') return;
+      if (request && ['pending', 'processing'].includes(request.status)) return;
       const requestedAt = new Date();
       const eligibleAfter = new Date(
         requestedAt.getTime() + this.policy().deletionGraceDays * 86400000,
@@ -275,6 +276,13 @@ export class PrivacyService {
         .for('update');
       if (!user || user.deletedAt || user.status !== 'active')
         throw new UnauthorizedException('Backend.signInFirst');
+      const [request] = await tx
+        .select()
+        .from(s.accountDeletionRequests)
+        .where(eq(s.accountDeletionRequests.userId, userId))
+        .for('update');
+      if (request?.status === 'processing')
+        throw new ConflictException('Backend.deletionAlreadyStarted');
       const rows = await tx
         .update(s.accountDeletionRequests)
         .set({ status: 'cancelled' })
@@ -480,6 +488,16 @@ export class PrivacyService {
           advancedAdjustments: (
             await tx.execute(
               sql`SELECT a.* FROM business_adjustments a JOIN business_earnings e ON e.id=a.earning_id JOIN business_statements st ON st.id=e.statement_id WHERE st.coach_id=${userId}`,
+            )
+          ).rows,
+          programRequests: (
+            await tx.execute(
+              sql`SELECT * FROM sport_program_requests WHERE athlete_id=${userId} OR coach_id=${userId}`,
+            )
+          ).rows,
+          programHistory: (
+            await tx.execute(
+              sql`SELECT e.* FROM sport_program_events e JOIN sport_program_requests p ON p.id=e.request_id WHERE p.athlete_id=${userId} OR p.coach_id=${userId}`,
             )
           ).rows,
           coachingLedger: (

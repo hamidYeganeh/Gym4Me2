@@ -3,11 +3,12 @@ import { useFormatter } from "@repo/i18n";
 import { isTranslationKey, type TranslationKey } from "@repo/i18n/messages";
 import { useTranslations } from "@repo/i18n";
 
-import { useId, type ReactNode, type RefObject } from "react";
+import { type ReactNode, type RefObject } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { accountRecovery } from "../lib/account-recovery";
 import { useQueryRetry } from "../hooks/use-query-retry";
+import { useFeedbackToast } from "../hooks/use-feedback-toast";
 import { Alert, AlertDescription } from "@repo/ui/kit/Alert";
 import { Button } from "@repo/ui/kit/Button";
 import {
@@ -18,8 +19,10 @@ import {
   EmptyTitle,
   EmptyDescription,
 } from "@repo/ui/kit/Empty";
-import { Field, FieldLabel } from "@repo/ui/kit/Field";
-import { Input } from "@repo/ui/kit/Input";
+import {
+  TextField as KitTextField,
+  type TextFieldProps,
+} from "@repo/ui/kit/TextField";
 import { Spinner } from "@repo/ui/kit/Spinner";
 import { Badge } from "@repo/ui/kit/Badge";
 import { Inbox } from "lucide-react";
@@ -70,7 +73,14 @@ export function Status({ value }: { value: string }) {
     </Badge>
   );
 }
-export function ErrorNotice({ error }: { error: unknown }) {
+export function ErrorNotice({
+  error,
+  validation = false,
+}: {
+  error: unknown;
+  /** Only errors produced by local form validation belong inside the form. */
+  validation?: boolean;
+}) {
   const t = useTranslations();
   const code =
     typeof error === "string"
@@ -98,13 +108,27 @@ export function ErrorNotice({ error }: { error: unknown }) {
           ),
         ) as Record<string, string | number>)
       : {};
-  return error ? (
+  const message = t(
+    isTranslationKey(code) ? code : "Errors.requestFailed",
+    params,
+  );
+  useFeedbackToast("error", message, validation ? null : error);
+  return error && validation ? (
     <Alert variant="destructive" role="alert">
-      <AlertDescription>
-        {t(isTranslationKey(code) ? code : "Errors.requestFailed", params)}
-      </AlertDescription>
+      <AlertDescription>{message}</AlertDescription>
     </Alert>
   ) : null;
+}
+
+export function SuccessNotice({
+  success,
+  message,
+}: {
+  success: boolean;
+  message: string;
+}) {
+  useFeedbackToast("success", message, success);
+  return null;
 }
 export function Blank({
   title,
@@ -153,31 +177,10 @@ export function Loading() {
     </div>
   );
 }
-export function TextField({
-  label,
-  name,
-  fieldClassName,
-  className,
-  id,
-  ...props
-}: {
-  label: string;
-  name: string;
-  fieldClassName?: string;
-} & React.ComponentProps<typeof Input>) {
-  const generatedId = useId();
-  const inputId = id ?? generatedId;
-  return (
-    <Field className={fieldClassName}>
-      <FieldLabel htmlFor={inputId}>{label}</FieldLabel>
-      <Input
-        {...props}
-        id={inputId}
-        name={name}
-        className={cn("min-h-11", className)}
-      />
-    </Field>
-  );
+export function TextField(
+  props: TextFieldProps & { label: string; name: string },
+) {
+  return <KitTextField {...props} />;
 }
 export function Submit({
   busy,

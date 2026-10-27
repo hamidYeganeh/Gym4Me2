@@ -19,7 +19,11 @@ export type PasswordStatusDto = {
   canSetPassword: boolean;
 };
 export type RequestOtpDto = { phone: string };
-export type OtpChallengeDto = { challengeId: string; retryAfter: number };
+export type OtpChallengeDto = {
+  challengeId: string;
+  retryAfter: number;
+  expiresIn: number;
+};
 export type VerifyOtpDto = { challengeId: string; code: string };
 export type VerifiedSessionDto = { user: Account; expiresAt: string };
 export type SessionDto = {

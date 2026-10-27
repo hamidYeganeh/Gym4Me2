@@ -18,7 +18,7 @@ import {
   FieldLegend,
   FieldSet,
 } from "@repo/ui/kit/Field";
-import { Alert, AlertDescription } from "@repo/ui/kit/Alert";
+import { ErrorNotice, SuccessNotice } from "@repo/ui/account";
 import { useQueryRetry } from "@repo/ui/hooks/use-query-retry";
 import {
   notificationPreferenceKeys,
@@ -110,11 +110,7 @@ function PreferencesForm({
       className="flex flex-col gap-5"
     >
       <FieldDescription id={`${id}-scope`}>{t("notifyScope")}</FieldDescription>
-      {refreshError && (
-        <Alert variant="destructive" role="alert">
-          <AlertDescription>{t("notifyRefreshFailed")}</AlertDescription>
-        </Alert>
-      )}
+      <ErrorNotice error={refreshError} />
       <FieldSet disabled={save.isPending}>
         <FieldLegend className="sr-only">{t("notifyPreferences")}</FieldLegend>
         <FieldGroup className="gap-0 luma-group">
@@ -183,15 +179,17 @@ function PreferencesForm({
           {t(save.isPending ? "saving" : "save")}
         </Button>
       </FieldSet>
-      <p role="status" className="luma-meta">
-        {dirty
-          ? t("notifyUnsaved")
-          : feedback === "saved"
-            ? t("notifyChangesSaved")
-            : feedback === "refreshed"
-              ? t("notifyRefreshed")
-              : ""}
-      </p>
+      {dirty && (
+        <p role="status" className="luma-meta">
+          {t("notifyUnsaved")}
+        </p>
+      )}
+      <SuccessNotice
+        success={feedback !== null}
+        message={t(
+          feedback === "saved" ? "notifyChangesSaved" : "notifyRefreshed",
+        )}
+      />
       <CommandError error={save.error} />
     </form>
   );

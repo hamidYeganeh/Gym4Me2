@@ -1,4 +1,5 @@
 "use client";
+import { ErrorNotice } from "@repo/ui/account";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { useClubs, type ClubSummaryDto } from "@repo/api/catalog";
 import { useGrowthQuery } from "@repo/api/growth";
@@ -81,13 +82,12 @@ export function LiveCatalog() {
         >
           <h2 className="text-4xl font-semibold">{t("brand")}</h2>
           <p className="text-xl">{t("liveCatalogIntro")}</p>
-          <p role={clubs.error ? "alert" : "status"}>
-            {clubs.error
-              ? t("catalogUnavailable")
-              : clubs.isLoading
-                ? t("catalogLoading")
-                : t("catalogEmpty")}
-          </p>
+          <ErrorNotice error={clubs.error} />
+          {!clubs.error && (
+            <p role="status">
+              {t(clubs.isLoading ? "catalogLoading" : "catalogEmpty")}
+            </p>
+          )}
           {clubs.error && (
             <Button variant="outline" onClick={() => void clubs.refetch()}>
               {t("retry")}
@@ -104,8 +104,8 @@ export function LiveCatalog() {
           <p className="mt-3 text-muted-foreground">{t("liveClassesHint")}</p>
         </header>
         {sessions.error ? (
-          <div role="alert">
-            <p>{t("catalogUnavailable")}</p>
+          <div>
+            <ErrorNotice error={sessions.error} />
             <Button variant="outline" onClick={() => void sessions.refetch()}>
               {t("retry")}
             </Button>

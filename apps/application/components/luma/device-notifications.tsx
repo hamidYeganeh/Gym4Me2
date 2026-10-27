@@ -8,6 +8,8 @@ import {
   PUSH_SCOPE,
 } from "@repo/api/web-push";
 import { Button } from "@repo/ui/kit/Button";
+import { ErrorNotice } from "@repo/ui/account";
+import { useFeedbackToast } from "@repo/ui/hooks/use-feedback-toast";
 import { Card, CardContent } from "@repo/ui/kit/Card";
 import { NativeDeviceNotifications } from "./native-device-notifications";
 
@@ -67,6 +69,11 @@ function WebDeviceNotifications() {
   const [status, setStatus] = useState<
     "idle" | "enabled" | "disabled" | "accepted" | "queued" | "error"
   >("idle");
+  useFeedbackToast(
+    status === "error" ? "error" : "success",
+    t(status === "idle" ? "enabled" : status),
+    status === "idle" ? null : status,
+  );
   useEffect(() => {
     const refresh = () =>
       setPermission(
@@ -206,13 +213,7 @@ function WebDeviceNotifications() {
         {permission === "unsupported" && (
           <p className="text-sm leading-7">{t("installHelp")}</p>
         )}
-        {query.error && (
-          <p className="text-sm" role="status">
-            {t(
-              [401, 403].includes(query.error.status) ? "signIn" : "loadError",
-            )}
-          </p>
-        )}
+        <ErrorNotice error={query.error} />
         {!query.error && query.data && !available && (
           <p className="text-sm">{t("unconfigured")}</p>
         )}
@@ -250,9 +251,7 @@ function WebDeviceNotifications() {
             </Button>
           )}
         </div>
-        <p role="status" className="text-sm leading-7">
-          {status === "idle" ? (active ? t("enabled") : "") : t(status)}
-        </p>
+        {active && <p className="text-sm leading-7">{t("enabled")}</p>}
       </CardContent>
     </Card>
   );

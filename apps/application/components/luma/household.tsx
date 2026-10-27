@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "@repo/ui/account";
 import { useRef } from "react";
 import { useTranslations } from "@repo/i18n";
 import { useSportsCommand, useSportsQuery } from "@repo/api/sports";
@@ -102,7 +103,7 @@ function DependentForm({ dependent: d }: { dependent?: Dependent }) {
           {w("save")}
         </button>
         <CommandError error={command.error} />
-        {command.isSuccess && <p role="status">{t("profileSaved")}</p>}
+        <SuccessNotice success={command.isSuccess} message={t("profileSaved")} />
       </form>
     </details>
   );

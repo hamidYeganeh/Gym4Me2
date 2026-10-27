@@ -1,4 +1,6 @@
 "use client";
+import { toast } from "@repo/ui/kit/Sileo";
+import { ErrorNotice } from "@repo/ui/account";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "@repo/i18n";
@@ -95,7 +97,6 @@ export function NativeDeviceNotifications() {
     }>("profile/native-push");
   const [busy, setBusy] = useState(false),
     [testCooldown, setTestCooldown] = useState(false),
-    [message, setMessage] = useState(""),
     [platform, setPlatform] = useState("");
   const refetch = q.refetch;
   useEffect(() => {
@@ -109,12 +110,12 @@ export function NativeDeviceNotifications() {
     );
     const updated = () => {
       setBusy(false);
-      setMessage(t("nativeEnabled"));
+      toast.success(t("nativeEnabled"));
       void refetch();
     };
     const failed = () => {
       setBusy(false);
-      setMessage(t("failed"));
+      toast.error(t("failed"));
     };
     window.addEventListener("gym4me:native-push-updated", updated);
     window.addEventListener("gym4me:native-push-error", failed);
@@ -125,13 +126,12 @@ export function NativeDeviceNotifications() {
   }, [refetch, t]);
   async function enable() {
     setBusy(true);
-    setMessage("");
     try {
       const { PushNotifications } =
         await import("@capacitor/push-notifications");
       const permission = await PushNotifications.requestPermissions();
       if (permission.receive !== "granted") {
-        setMessage(t("nativeDenied"));
+        toast.error(t("nativeDenied"));
         setBusy(false);
         return;
       }
@@ -144,7 +144,7 @@ export function NativeDeviceNotifications() {
         });
       await PushNotifications.register();
     } catch {
-      setMessage(t("failed"));
+      toast.error(t("failed"));
       setBusy(false);
     }
   }
@@ -154,9 +154,9 @@ export function NativeDeviceNotifications() {
       window.dispatchEvent(new Event("gym4me:clear-native-push"));
       await api.request({ method: "POST", path: "profile/native-push/remove" });
       await q.refetch();
-      setMessage(t("nativeDisabled"));
+      toast.success(t("nativeDisabled"));
     } catch {
-      setMessage(t("failed"));
+      toast.error(t("failed"));
     } finally {
       setBusy(false);
     }
@@ -170,7 +170,11 @@ export function NativeDeviceNotifications() {
         method: "POST",
         path: "profile/native-push/test",
       });
-      setMessage(
+      toast[
+        result.result === "accepted" || result.result === "queued"
+          ? "success"
+          : "error"
+      ](
         result.result === "accepted"
           ? t("nativeAccepted")
           : result.result === "queued"
@@ -178,7 +182,7 @@ export function NativeDeviceNotifications() {
             : t("failed"),
       );
     } catch (error) {
-      setMessage(
+      toast.error(
         error instanceof ApiError && error.code === "Backend.pushTestWait"
           ? backend("pushTestWait")
           : t("failed"),
@@ -220,7 +224,7 @@ export function NativeDeviceNotifications() {
           {t("nativeTest")}
         </Button>
       </div>
-      <p role="status">{message}</p>
+      <ErrorNotice error={q.error} />
     </section>
   );
 }

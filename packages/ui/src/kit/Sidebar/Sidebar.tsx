@@ -3,7 +3,6 @@ import { useTranslations } from "@repo/i18n";
 import { sidebarMenuButtonVariants, sidebarStyles } from "./Sidebar.styles";
 import type {
   SidebarContentProps,
-  SidebarContextProps,
   SidebarFooterProps,
   SidebarGroupActionProps,
   SidebarGroupContentProps,
@@ -32,7 +31,7 @@ import { cn } from "@repo/ui/lib/utils";
 import { Slot } from "radix-ui";
 import * as React from "react";
 
-import { useIsMobile } from "@repo/ui/hooks/use-mobile";
+import * as SidebarPrimitive from "@animate-ui/react/primitives/sidebar";
 import { Button } from "@repo/ui/kit/Button";
 import { Input } from "@repo/ui/kit/Input";
 import { Separator } from "@repo/ui/kit/Separator";
@@ -47,110 +46,25 @@ import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ui/kit/Tooltip";
 import { PanelLeftIcon } from "lucide-react";
 
-const SIDEBAR_COOKIE_NAME = "sidebar_state";
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
-const SIDEBAR_KEYBOARD_SHORTCUT = "b";
+const useSidebar = SidebarPrimitive.useSidebar;
 
-const SidebarContext = React.createContext<SidebarContextProps | null>(null);
-
-function useSidebar() {
-  const context = React.useContext(SidebarContext);
-  if (!context) {
-    throw new Error("useSidebar must be used within a SidebarProvider.");
-  }
-
-  return context;
-}
-
-function SidebarProvider({
-  defaultOpen = true,
-  open: openProp,
-  onOpenChange: setOpenProp,
-  className,
-  style,
-  children,
-  ...props
-}: SidebarProviderProps) {
-  const isMobile = useIsMobile();
-  const [openMobile, setOpenMobile] = React.useState(false);
-
-  // This is the internal state of the sidebar.
-  // We use openProp and setOpenProp for control from outside the component.
-  const [_open, _setOpen] = React.useState(defaultOpen);
-  const open = openProp ?? _open;
-  const setOpen = React.useCallback(
-    (value: boolean | ((value: boolean) => boolean)) => {
-      const openState = typeof value === "function" ? value(open) : value;
-      if (setOpenProp) {
-        setOpenProp(openState);
-      } else {
-        _setOpen(openState);
-      }
-
-      // This sets the cookie to keep the sidebar state.
-      document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
-    },
-    [setOpenProp, open],
-  );
-
-  // Helper to toggle the sidebar.
-  const toggleSidebar = React.useCallback(() => {
-    return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open);
-  }, [isMobile, setOpen, setOpenMobile]);
-
-  // Adds a keyboard shortcut to toggle the sidebar.
-  React.useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
-        (event.metaKey || event.ctrlKey)
-      ) {
-        event.preventDefault();
-        toggleSidebar();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [toggleSidebar]);
-
-  // We add a state so that we can do data-state="expanded" or "collapsed".
-  // This makes it easier to style the sidebar with Tailwind classes.
-  const state = open ? "expanded" : "collapsed";
-
-  const contextValue = React.useMemo<SidebarContextProps>(
-    () => ({
-      state,
-      open,
-      setOpen,
-      isMobile,
-      openMobile,
-      setOpenMobile,
-      toggleSidebar,
-    }),
-    [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar],
-  );
-
+function SidebarProvider({ className, style, ...props }: SidebarProviderProps) {
   return (
-    <SidebarContext.Provider value={contextValue}>
-      <div
-        data-slot="sidebar-wrapper"
-        style={
-          {
-            "--sidebar-width": SIDEBAR_WIDTH,
-            "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
-            ...style,
-          } as React.CSSProperties
-        }
-        className={cn(sidebarStyles.sidebarProvider(), className)}
-        {...props}
-      >
-        {children}
-      </div>
-    </SidebarContext.Provider>
+    <SidebarPrimitive.Provider
+      data-slot="sidebar-wrapper"
+      style={
+        {
+          "--sidebar-width": SIDEBAR_WIDTH,
+          "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+          ...style,
+        } as React.CSSProperties
+      }
+      className={cn(sidebarStyles.sidebarProvider(), className)}
+      {...props}
+    />
   );
 }
 
@@ -214,7 +128,7 @@ function Sidebar({
       data-slot="sidebar"
     >
       {/* This is what handles the sidebar gap on desktop */}
-      <div
+      <SidebarPrimitive.Gap
         data-slot="sidebar-gap"
         className={cn(
           sidebarStyles.sidebar6(),
@@ -226,7 +140,7 @@ function Sidebar({
             : sidebarStyles.sidebar12(),
         )}
       />
-      <div
+      <SidebarPrimitive.Container
         data-slot="sidebar-container"
         data-side={side}
         className={cn(
@@ -247,7 +161,7 @@ function Sidebar({
         >
           {children}
         </div>
-      </div>
+      </SidebarPrimitive.Container>
     </div>
   );
 }
@@ -359,7 +273,7 @@ function SidebarSeparator({ className, ...props }: SidebarSeparatorProps) {
 
 function SidebarContent({ className, ...props }: SidebarContentProps) {
   return (
-    <div
+    <SidebarPrimitive.Highlight
       data-slot="sidebar-content"
       data-sidebar="content"
       className={cn(sidebarStyles.sidebarContent(), className)}

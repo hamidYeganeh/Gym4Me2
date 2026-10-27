@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "../account/common";
 import { useState } from "react";
 import { BottomSheet } from "../kit/BottomSheet";
 import { UserRound } from "lucide-react";
@@ -94,7 +95,7 @@ export function Reception({ org, branch }: { org: string; branch: string }) {
             </Button>
           </form>
           <QueryError error={check.error} />
-          {check.isSuccess && <p className="mt-3">{t("created")}</p>}
+          <SuccessNotice success={check.isSuccess} message={t("created")} />
         </CardContent>
       </Card>
       <Card>
@@ -217,7 +218,10 @@ function ReservationActions({
                 {w("recordEntry")}
               </Button>
               <QueryError error={entry.error} />
-              {entry.isSuccess && <p role="status">{w("entryRecorded")}</p>}
+              <SuccessNotice
+                success={entry.isSuccess}
+                message={w("entryRecorded")}
+              />
             </>
           )}
           <div className="flex gap-3 mb-4">

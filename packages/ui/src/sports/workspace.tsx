@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "../account/common";
 import { IranianDateTimeInput } from "../kit/IranianDateInput";
 import { LegacyReadiness } from "./legacy-readiness";
 import { OfferingFields, readOffering } from "./offering-fields";
@@ -950,11 +951,10 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
             </Button>
           </form>
         )}
-        {scheduleResult !== null && (
-          <p role="status" className="mt-4 text-sm text-muted-foreground">
-            {t("seriesScheduled", { count: scheduleResult })}
-          </p>
-        )}
+        <SuccessNotice
+          success={scheduleResult !== null}
+          message={t("seriesScheduled", { count: scheduleResult ?? 0 })}
+        />
         {open && (
           <>
             <OccurrenceSeriesManager serviceId={s.id} />
@@ -1381,11 +1381,10 @@ function OccurrenceActions({
         <QueryError error={command.error} />
       </BottomSheet>
       <QueryError error={command.error ?? chat.error} />
-      {chat.isSuccess && (
-        <p role="status" className="mt-3 text-sm">
-          {t("conversationAvailable")}
-        </p>
-      )}
+      <SuccessNotice
+        success={chat.isSuccess}
+        message={t("conversationAvailable")}
+      />
     </div>
   );
 }
@@ -1601,12 +1600,22 @@ function JobRow({
 }
 function AdminTicket({ ticket }: { ticket: TicketDto }) {
   const t = useTranslations("Luma");
+  const flow = useTranslations("SupportWorkflow");
+  const key = useRef<string | null>(null);
   const query = useSportsQuery<TicketDto>(`admin/sports/support/${ticket.id}`);
   const command = useSportsCommand(`admin/sports/support/${ticket.id}/reply`);
   return (
     <Card>
       <CardHeader>
         <CardTitle>{ticket.title}</CardTitle>
+        {ticket.priority === "urgent" && (
+          <p className="text-sm text-destructive">{flow("urgent")}</p>
+        )}
+        {ticket.category && (
+          <p className="text-sm text-muted-foreground">
+            {flow(`categories.${ticket.category}`)}
+          </p>
+        )}
       </CardHeader>
       <CardContent>
         {query.data?.messages.map((m) => (
@@ -1616,10 +1625,27 @@ function AdminTicket({ ticket }: { ticket: TicketDto }) {
         ))}
         <form
           className="grid gap-4 mt-4"
+          onChange={() => {
+            key.current = null;
+          }}
           onSubmit={(e) => {
             e.preventDefault();
             const f = new FormData(e.currentTarget);
-            command.mutate({ body: f.get("body"), resolve: f.has("resolve") });
+            key.current ??= crypto.randomUUID();
+            command.mutate(
+              {
+                body: f.get("body"),
+                resolve: f.has("resolve"),
+                revision: query.data?.revision,
+                resolution: f.get("resolution"),
+                idempotencyKey: key.current,
+              },
+              {
+                onSuccess: () => {
+                  key.current = null;
+                },
+              },
+            );
           }}
         >
           <Textarea
@@ -1628,11 +1654,29 @@ function AdminTicket({ ticket }: { ticket: TicketDto }) {
             maxLength={5000}
             aria-label={t("message")}
           />
+          <FormField label={flow("resolution")}>
+            <NativeSelect name="resolution" defaultValue="answered">
+              {(
+                [
+                  "answered",
+                  "correction",
+                  "refund_review",
+                  "provider_contacted",
+                ] as const
+              ).map((value) => (
+                <NativeSelectOption key={value} value={value}>
+                  {flow(`resolutions.${value}`)}
+                </NativeSelectOption>
+              ))}
+            </NativeSelect>
+          </FormField>
           <label className="flex gap-2">
             <input type="checkbox" name="resolve" />
             {t("resolve")}
           </label>
-          <Button disabled={command.isPending}>{t("send")}</Button>
+          <Button disabled={command.isPending || !query.data}>
+            {t("send")}
+          </Button>
           <QueryError error={query.error ?? command.error} />
         </form>
       </CardContent>

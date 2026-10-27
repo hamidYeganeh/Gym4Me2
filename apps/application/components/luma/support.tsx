@@ -3,7 +3,8 @@ import Link from "next/link";
 import { useId, useRef, useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LumaSheet } from "./sheet";
-import { useLocale } from "@repo/i18n";
+import { useLocale, useTranslations } from "@repo/i18n";
+import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import type { ApiError } from "@repo/api";
 import {
   useSportsCommand,
@@ -13,6 +14,7 @@ import {
   type TicketMessageDto,
   type CreateTicketInput,
   type ReplyTicketInput,
+  type SupportCategory,
 } from "@repo/api/sports";
 import { Button } from "@repo/ui/kit/Button";
 import { Input } from "@repo/ui/kit/Input";
@@ -26,8 +28,9 @@ import {
   FieldSet,
   FieldLegend,
 } from "@repo/ui/kit/Field";
+import { ErrorNotice } from "@repo/ui/account";
+import { toast } from "@repo/ui/kit/Sileo";
 import { Alert, AlertDescription } from "@repo/ui/kit/Alert";
-import { isActiveSurfaceElement } from "@repo/ui/lib/active-surface";
 import { useQueryRetry } from "@repo/ui/hooks/use-query-retry";
 import {
   isSupportReference,
@@ -49,7 +52,25 @@ import {
 export function SupportPage() {
   const t = useLuma(),
     locale = useLocale();
-  const order = useSearchParams().get("order") ?? undefined;
+  const flow = useTranslations("SupportWorkflow");
+  const params = useSearchParams();
+  const order = params.get("order") ?? undefined;
+  const categories: SupportCategory[] = order
+    ? [
+        "general",
+        "booking_issue",
+        "entry_denied",
+        "provider_absent",
+        "payment",
+        "refund",
+        "program",
+      ]
+    : ["general"];
+  const requestedCategory = params.get("category") as SupportCategory;
+  const [category, setCategory] = useState<SupportCategory>(
+    categories.includes(requestedCategory) ? requestedCategory : "general",
+  );
+  const createKey = useRef<string | null>(null);
   const router = useRouter();
   const [creating, setCreating] = useState(Boolean(order));
   const query = useSportsQuery<TicketSummaryDto[]>("sports/community/support");
@@ -65,7 +86,12 @@ export function SupportPage() {
     <LumaPage title={t("support")} back="/">
       {readable ? (
         <>
-          {query.error && <RefreshFailure refresh={() => query.refetch()} />}
+          {query.error && (
+            <RefreshFailure
+              error={query.error}
+              refresh={() => query.refetch()}
+            />
+          )}
           <button
             type="button"
             className="luma-cta"
@@ -111,14 +137,49 @@ export function SupportPage() {
                   key={order ?? "general"}
                   pending={create.isPending}
                   error={create.error}
-                  onEdit={create.reset}
+                  initialTitle={
+                    category === "general" ? "" : flow(`categories.${category}`)
+                  }
+                  context={
+                    <>
+                      <label className="grid gap-2 text-sm">
+                        {flow("category")}
+                        <NativeSelect
+                          value={category}
+                          onChange={(e) => {
+                            setCategory(e.target.value as SupportCategory);
+                            createKey.current = null;
+                            create.reset();
+                          }}
+                        >
+                          {categories.map((value) => (
+                            <option key={value} value={value}>
+                              {flow(`categories.${value}`)}
+                            </option>
+                          ))}
+                        </NativeSelect>
+                      </label>
+                      {["entry_denied", "provider_absent"].includes(
+                        category,
+                      ) && <p className="luma-meta">{flow("urgentHint")}</p>}
+                    </>
+                  }
+                  onEdit={() => {
+                    createKey.current = null;
+                    create.reset();
+                  }}
                   save={async (draft) => {
+                    createKey.current ??= crypto.randomUUID();
                     const ticket = await create.mutateAsync({
                       title: draft.title.trim(),
                       body: draft.body.trim(),
                       orderId: order,
+                      category: order ? category : "general",
+                      idempotencyKey: createKey.current,
                     });
-                    setCreating(false);
+                    createKey.current = null;
+                    // Unmount with the new route. Closing first would traverse the
+                    // sheet's history entry concurrently with router.push().
                     router.push(`/support/detail?id=${ticket.id}`);
                   }}
                 />
@@ -131,7 +192,7 @@ export function SupportPage() {
                 key={ticket.id}
                 title={ticket.title}
                 state={ticket.status}
-                meta={stamp(ticket.createdAt, locale)}
+                meta={`${ticket.priority === "urgent" ? `${flow("urgent")} · ` : ""}${stamp(ticket.updatedAt ?? ticket.createdAt, locale)}`}
                 href={`/support/detail?id=${ticket.id}`}
               />
             ))}
@@ -150,6 +211,8 @@ export function SupportPage() {
 export function SupportDetail() {
   const t = useLuma(),
     locale = useLocale();
+  const flow = useTranslations("SupportWorkflow");
+  const replyKey = useRef<string | null>(null);
   const id = useSearchParams().get("id");
   const valid = !!id && isSupportReference(id);
   const query = useSportsQuery<TicketDto>(
@@ -174,16 +237,43 @@ export function SupportDetail() {
         <Empty />
       ) : readable ? (
         <>
-          {query.error && <RefreshFailure refresh={() => query.refetch()} />}
+          {query.error && (
+            <RefreshFailure
+              error={query.error}
+              refresh={() => query.refetch()}
+            />
+          )}
           <Row
             title={query.data!.title}
             state={query.data!.status}
             meta={stamp(query.data!.createdAt, locale)}
           />
+          {query.data!.orderId && (
+            <Row
+              title={flow("relatedOrder")}
+              href={`/orders/detail?id=${query.data!.orderId}`}
+            />
+          )}
+          {query.data!.resolution &&
+            (query.data!.status === "resolved" ||
+              query.data!.resolution === "refund_review") && (
+              <p className="luma-meta">
+                {flow(`resolutions.${query.data!.resolution}`)}
+              </p>
+            )}
+          {query.data!.resolution === "refund_review" && (
+            <p className="luma-meta">{flow("refundReviewHint")}</p>
+          )}
+          {query.data!.status === "resolved" && (
+            <p className="luma-meta">{flow("reopenHint")}</p>
+          )}
           <Section title={t("messages")}>
             <div className="luma-chat">
               {query.data!.messages.map((message) => (
                 <article key={message.id} className="luma-bubble">
+                  <p className="luma-meta mb-2">
+                    {flow(message.fromSupport ? "supportTeam" : "you")}
+                  </p>
                   <p className="whitespace-pre-wrap break-words">
                     {message.body}
                   </p>
@@ -197,14 +287,33 @@ export function SupportDetail() {
             </div>
             {!query.data!.messages.length && <Empty />}
           </Section>
+          {Boolean(query.data!.events?.length) && (
+            <details className="service-conditions my-4">
+              <summary>{flow("history")}</summary>
+              {query.data!.events?.map((event) => (
+                <p className="luma-meta py-2" key={event.id}>
+                  {flow(`events.${event.kind}`)} ·{" "}
+                  {stamp(event.createdAt, locale)}
+                </p>
+              ))}
+            </details>
+          )}
           <SupportForm
             key={id}
             reply
             pending={reply.isPending}
             error={reply.error}
-            onEdit={reply.reset}
+            onEdit={() => {
+              replyKey.current = null;
+              reply.reset();
+            }}
             save={async (draft) => {
-              await reply.mutateAsync({ body: draft.body.trim() });
+              replyKey.current ??= crypto.randomUUID();
+              await reply.mutateAsync({
+                body: draft.body.trim(),
+                idempotencyKey: replyKey.current,
+              });
+              replyKey.current = null;
             }}
           />
         </>
@@ -217,12 +326,18 @@ export function SupportDetail() {
   );
 }
 
-function RefreshFailure({ refresh }: { refresh(): unknown }) {
+function RefreshFailure({
+  error,
+  refresh,
+}: {
+  error: ApiError;
+  refresh(): unknown;
+}) {
   const t = useLuma();
   const { button, retrying, run } = useQueryRetry(refresh);
   return (
-    <Alert variant="destructive">
-      <AlertDescription>{t("supportRefreshFailed")}</AlertDescription>
+    <div>
+      <ErrorNotice error={error} />
       <Button
         type="button"
         ref={button}
@@ -233,7 +348,7 @@ function RefreshFailure({ refresh }: { refresh(): unknown }) {
       >
         {t("retry")}
       </Button>
-    </Alert>
+    </div>
   );
 }
 
@@ -243,8 +358,12 @@ function SupportForm({
   error,
   save,
   onEdit,
+  context,
+  initialTitle = "",
 }: {
   reply?: boolean;
+  context?: React.ReactNode;
+  initialTitle?: string;
   pending: boolean;
   error: ApiError | null;
   save(draft: SupportDraft): Promise<void>;
@@ -253,17 +372,17 @@ function SupportForm({
   const t = useLuma(),
     locale = useLocale(),
     id = useId();
-  const [draft, setDraft] = useState<SupportDraft>({ title: "", body: "" });
+  const [draft, setDraft] = useState<SupportDraft>({
+    title: initialTitle,
+    body: "",
+  });
   const [errors, setErrors] = useState<SupportErrors>({});
-  const [sent, setSent] = useState(false);
   const submitting = useRef(false),
     title = useRef<HTMLInputElement>(null),
-    body = useRef<HTMLTextAreaElement>(null),
-    status = useRef<HTMLParagraphElement>(null);
+    body = useRef<HTMLTextAreaElement>(null);
   function edit(key: keyof SupportDraft, value: string) {
     setDraft((current) => ({ ...current, [key]: value }));
     setErrors((current) => ({ ...current, [key]: undefined }));
-    setSent(false);
     onEdit();
   }
   async function submit(event: FormEvent) {
@@ -271,27 +390,17 @@ function SupportForm({
     if (submitting.current || pending) return;
     const invalid = validateSupportDraft(draft, reply);
     setErrors(invalid);
-    setSent(false);
     if (Object.keys(invalid).length) {
       (invalid.title ? title : body).current?.focus();
       return;
     }
-    const origin = document.activeElement;
     submitting.current = true;
     try {
       await save(draft);
       setDraft({ title: "", body: "" });
-      setSent(true);
-      requestAnimationFrame(() => {
-        if (
-          isActiveSurfaceElement(status.current) &&
-          (document.activeElement === document.body ||
-            document.activeElement === origin)
-        )
-          status.current?.focus();
-      });
+      toast.success(t(reply ? "supportReplySent" : "supportTicketSent"));
     } catch {
-      /* CommandError keeps the server response visible; retain the draft. */
+      /* CommandError toasts the server response; retain the draft. */
     } finally {
       submitting.current = false;
     }
@@ -308,6 +417,7 @@ function SupportForm({
           {t(reply ? "supportReply" : "newTicket")}
         </FieldLegend>
         <FieldGroup>
+          {context}
           {!reply && (
             <Field
               data-invalid={!!errors.title}
@@ -377,14 +487,6 @@ function SupportForm({
         </Button>
       </FieldSet>
       <CommandError error={error} />
-      <p
-        ref={status}
-        role="status"
-        tabIndex={-1}
-        className="luma-meta focus-visible:outline-2 focus-visible:outline-ring"
-      >
-        {sent ? t(reply ? "supportReplySent" : "supportTicketSent") : ""}
-      </p>
     </form>
   );
 }

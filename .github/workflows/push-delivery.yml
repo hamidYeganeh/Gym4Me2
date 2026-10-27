@@ -22,3 +22,11 @@ jobs:
           curl --fail --silent --show-error --retry 2 --retry-delay 3 --max-time 50 \
             --header "Authorization: Bearer $PUSH_JOBS_SECRET" \
             https://gym4me-demo-api.vercel.app/api/v1/system/push-jobs
+      - name: Finish due account deletions with independent receipts
+        env:
+          PUSH_JOBS_SECRET: ${{ secrets.GYM_PUSH_JOBS_TOKEN }}
+        run: |
+          test -n "$PUSH_JOBS_SECRET"
+          curl --fail --silent --show-error --retry 2 --retry-delay 3 --max-time 50 \
+            --header "Authorization: Bearer $PUSH_JOBS_SECRET" \
+            https://gym4me-demo-api.vercel.app/api/v1/system/push-jobs/retention

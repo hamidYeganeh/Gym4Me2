@@ -7,8 +7,8 @@ import {
   ChevronLeft,
   CircleUserRound,
   Compass,
+  CreditCard,
   House,
-  MessageCircle,
   Plus,
   RefreshCw,
 } from "lucide-react";
@@ -23,8 +23,9 @@ import {
   accountRecovery,
   accountReadDenied,
 } from "@repo/ui/lib/account-recovery";
-import { AuthRequired } from "@repo/ui/account";
+import { AuthRequired, ErrorNotice } from "@repo/ui/account";
 import { useAccount } from "@repo/api/profile";
+import { primaryNavigationSection } from "../../lib/product-scope";
 import "./luma.css";
 import { SlidingSegments } from "@repo/ui/motion-controls";
 import {
@@ -61,38 +62,34 @@ export function LumaNavigation({
   const pathname = usePathname();
   const path = pathOverride ?? pathname;
   const t = useLuma();
-  const design = useTranslations("LumaDesign");
+  const simple = useTranslations("SimpleApp");
+  const section = primaryNavigationSection(path);
   return (
     <nav className="luma-navigation" aria-label={t("navigation")}>
       {[
         {
           href: "/",
-          label: design("schedule"),
+          label: simple("home"),
           Icon: House,
-          active:
-            path === "/" ||
-            [
-              "/bookings",
-              "/memberships",
-              "/orders",
-              "/training",
-              "/coaching",
-            ].some((prefix) => path.startsWith(prefix)),
+          active: section === "home",
         },
         {
           href: "/discovery",
-          label: t("discover"),
+          label: simple("gyms"),
           Icon: Compass,
-          active:
-            path.startsWith("/discovery") ||
-            path.startsWith("/services") ||
-            path.startsWith("/calendars"),
+          active: section === "gyms",
         },
         {
-          href: "/messages",
-          label: t("messages"),
-          Icon: MessageCircle,
-          active: path.startsWith("/messages"),
+          href: "/bookings",
+          label: simple("bookings"),
+          Icon: CalendarDays,
+          active: section === "bookings",
+        },
+        {
+          href: "/memberships",
+          label: simple("memberships"),
+          Icon: CreditCard,
+          active: section === "memberships",
         },
       ].map(({ href, label, Icon, active }) => (
         <Link
@@ -410,8 +407,8 @@ export function QueryState({
     );
   if (query.error)
     return (
-      <div role="alert" className="luma-empty">
-        <p>{t("loadError")}</p>
+      <div className="luma-empty">
+        <ErrorNotice error={query.error} />
         <button
           ref={button}
           type="button"
@@ -470,14 +467,12 @@ export function CommandError({ error }: { error: ApiError | null }) {
   return recovery?.kind === "signIn" ? (
     <AuthRequired compact returnTo={returnTo} />
   ) : recovery?.kind === "consent" ? (
-    <div role="alert" className="luma-error">
-      <p>{t("consentRequired")}</p>
+    <div>
+      <ErrorNotice error={error} />
       <Link href={recovery.href}>{t("completeProfile")}</Link>
     </div>
   ) : error ? (
-    <p role="alert" className="luma-error">
-      {error.status === 409 ? t("conflict") : t("actionError")}
-    </p>
+    <ErrorNotice error={error} />
   ) : null;
 }
 export function CreateAction() {

@@ -55,7 +55,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@repo/ui/kit/Dialog";
-import { toast } from "@repo/ui/kit/Sonner";
+import { toast } from "@repo/ui/kit/Sileo";
 import {
   ErrorNotice,
   QueryError,
@@ -218,7 +218,7 @@ function PreferencesForm({ value }: { value: PrivacyDto }) {
     marketingChoice.confirmed === value.marketingConsent
       ? marketingChoice.checked
       : value.marketingConsent;
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<unknown>(null);
   const pending = useRef(false);
   const form = useRef<HTMLFormElement>(null);
   const id = useId();
@@ -237,7 +237,7 @@ function PreferencesForm({ value }: { value: PrivacyDto }) {
         });
       toast.success(t("saved"));
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       pending.current = false;
       restoreFocus(
@@ -343,7 +343,10 @@ function PreferencesForm({ value }: { value: PrivacyDto }) {
           <FieldDescription>{t("marketingHint")}</FieldDescription>
         </div>
       </Field>
-      <ErrorNotice error={error} />
+      <ErrorNotice
+        error={error}
+        validation={error === "Privacy.confirmChoices"}
+      />
       <div>
         <Submit
           busy={mutation.isPending}
@@ -401,7 +404,7 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
   const cancelDeletion = useCancelDeletion();
   const dateLabel = useDateLabel();
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<unknown>(null);
   const pending = useRef(false);
   const deletionAction = useRef<HTMLButtonElement>(null);
   const busy =
@@ -422,7 +425,7 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
       await exportFile(result);
       toast.success(t("exportReady"));
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       pending.current = false;
       setExporting(false);
@@ -441,7 +444,7 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
       setConfirmOpen(false);
       toast.success(t(cancel ? "deletionCancelled" : "deletionRequested"));
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       pending.current = false;
       // Closing the dialog handles successful requests; cancellation replaces its trigger.
@@ -485,24 +488,29 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
                   {t("export")}
                 </Button>
               </div>
-              {value.deletion?.status === "pending" ? (
+              {value.deletion &&
+              ["pending", "processing"].includes(value.deletion.status) ? (
                 <Alert>
                   <AlertDescription className="grid gap-3">
                     <p>
-                      {t("pendingUntil", {
-                        date: dateLabel(value.deletion.eligibleAfter),
-                      })}
+                      {value.deletion.status === "processing"
+                        ? t("deletionProcessing")
+                        : t("pendingUntil", {
+                            date: dateLabel(value.deletion.eligibleAfter),
+                          })}
                     </p>
-                    <div>
-                      <Button
-                        ref={deletionAction}
-                        variant="outline"
-                        disabled={busy}
-                        onClick={() => void deletion(true)}
-                      >
-                        {t("cancelDeletion")}
-                      </Button>
-                    </div>
+                    {value.canCancelDeletion !== false ? (
+                      <div>
+                        <Button
+                          ref={deletionAction}
+                          variant="outline"
+                          disabled={busy}
+                          onClick={() => void deletion(true)}
+                        >
+                          {t("cancelDeletion")}
+                        </Button>
+                      </div>
+                    ) : null}
                   </AlertDescription>
                 </Alert>
               ) : (

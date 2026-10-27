@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState, type ReactNode } from "react";
-import { useTranslations } from "@repo/i18n";
+import { ErrorNotice } from "@repo/ui/account";
 import {
   activeSurfaceTarget,
   isActiveSurfaceElement,
@@ -19,7 +19,6 @@ export function LumaLoadMore({
   const pending = useRef(false);
   const button = useRef<HTMLButtonElement>(null);
   const [failed, setFailed] = useState(false);
-  const t = useTranslations("Luma");
   return (
     <>
       <button
@@ -60,11 +59,7 @@ export function LumaLoadMore({
       >
         {children}
       </button>
-      {failed && (
-        <p role="alert" className="luma-error">
-          {t("loadError")}
-        </p>
-      )}
+      <ErrorNotice error={failed ? "Luma.loadError" : null} />
     </>
   );
 }

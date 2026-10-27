@@ -127,6 +127,8 @@ export const coachProgramSchema = z
     amountMinor: money,
     deliveryDays: z.number().int().min(1).max(90),
     supportDays: z.number().int().min(0).max(365),
+    maxRevisions: z.number().int().min(0).max(100).nullable().default(null),
+    responseHours: z.number().int().min(1).max(720).nullable().default(null),
     terms: z.string().trim().min(10).max(10000),
     idempotencyKey: commandKey,
   })

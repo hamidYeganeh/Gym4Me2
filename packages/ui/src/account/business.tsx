@@ -25,7 +25,7 @@ import {
   isActiveSurfaceElement,
   restoreOverlayFocus,
 } from "../lib/active-surface";
-import { toast } from "sonner";
+import { toast } from "../kit/Sileo";
 import { Plus } from "lucide-react";
 import { Button } from "@repo/ui/kit/Button";
 import {
@@ -75,7 +75,7 @@ export function OrganizationsContent() {
   const query = useOrganizations();
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<unknown>(null);
   async function create(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -86,7 +86,7 @@ export function OrganizationsContent() {
 
       toast.success(t("Copy.organizationRegisteredAndAwaitingReview"));
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       setBusy(false);
     }
@@ -176,7 +176,7 @@ export function BranchesContent({
   const query = useBranches(organization.id);
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<unknown>(null);
   async function create(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -190,7 +190,7 @@ export function BranchesContent({
 
       toast.success(t("Copy.branchAdded"));
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       setBusy(false);
     }
@@ -292,7 +292,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
   const formId = useId();
   const [attempted, setAttempted] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<unknown>(null);
   const [removal, setRemoval] = useState<{
     id: string;
     invitation: boolean;
@@ -355,7 +355,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
 
       toast.success(t("Copy.theInvitationWillAppearInTheAccount"));
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       pending.current = false;
       setBusy(false);
@@ -403,7 +403,7 @@ export function TeamContent({ organization }: { organization: Organization }) {
 
       toast.success(t("Copy.accessRevoked"));
     } catch (err) {
-      setError((err as Error).message);
+      setError(err);
     } finally {
       pending.current = false;
       setBusy(false);

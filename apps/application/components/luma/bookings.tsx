@@ -1,4 +1,7 @@
 "use client";
+import { PurchaseConditions } from "./purchase-conditions";
+import { membershipAccess } from "../../lib/membership-access";
+import { useAppClock } from "./use-app-clock";
 import { TuitionPlan } from "@repo/ui/sports-tuition";
 import { ReceiptForm } from "@repo/ui/sports-receipts";
 import { ConfirmAction } from "@repo/ui/confirm-action";
@@ -96,12 +99,7 @@ export function BookingDetail() {
               state={query.data.status}
               orderTotal
             />
-            <details className="reservation-policy">
-              <summary>{copy("cancellationPolicy")}</summary>
-              <p className="luma-meta whitespace-pre-wrap">
-                {query.data.snapshot.policy.terms}
-              </p>
-            </details>
+            <PurchaseConditions policy={query.data.snapshot.policy} />
             <ServiceEligibilitySummary
               value={query.data.snapshot.eligibility}
             />
@@ -207,10 +205,18 @@ export function BookingDetail() {
             <CommandError error={cancel.error ?? change.error} />
             <Link
               className="luma-cta bg-muted text-foreground"
-              href={`/support?order=${query.data.orderId}`}
+              href={`/support?order=${query.data.orderId}&category=booking_issue`}
             >
               {t("support")}
             </Link>
+            {query.data.status === "confirmed" && (
+              <Link
+                className="luma-row"
+                href={`/support?order=${query.data.orderId}&category=entry_denied`}
+              >
+                {copy("reportEntryProblem")}
+              </Link>
+            )}
           </>
         )}
       </QueryState>
@@ -250,7 +256,7 @@ export function MembershipsPage() {
   );
 }
 export function MembershipDetail() {
-  const [clock] = useState(() => Date.now());
+  const clock = useAppClock();
   const id = useSearchParams().get("id");
   const t = useLuma();
   const query = useSportsQuery<MembershipDto>(
@@ -277,21 +283,19 @@ export function MembershipDetail() {
               state={query.data.status}
               meta={`${t("remaining")}: ${query.data.granted === null ? "∞" : query.data.granted - query.data.consumed - query.data.held}`}
             />
-            <Section title={t("conditions")}>
-              <p className="luma-meta">{query.data.policy.terms}</p>
-            </Section>
-            {query.data.status === "active" &&
-              query.data.offering?.entryAllowed !== false &&
-              !query.data.paymentOverdue &&
-              (!query.data.startsAt ||
-                Date.parse(query.data.startsAt) <= clock) && (
-                <Link
-                  className="luma-cta"
-                  href={`/tickets/view?id=${id}&membership=true`}
-                >
-                  {t("ticket")}
-                </Link>
-              )}
+            <PurchaseConditions
+              kind="membership"
+              policy={query.data.policy}
+              offering={query.data.offering}
+            />
+            {membershipAccess(query.data, clock) === "active" && (
+              <Link
+                className="luma-cta"
+                href={`/tickets/view?id=${id}&membership=true`}
+              >
+                {t("ticket")}
+              </Link>
+            )}
             <Link
               className="luma-cta bg-muted text-foreground"
               href={`/checkout?service=${query.data.serviceId}&renew=${id}${query.data.dependentId ? `&dependent=${query.data.dependentId}` : ""}`}
@@ -377,9 +381,11 @@ export function OrderDetail() {
             <Section title={t("price")}>
               <Price value={query.data.amountMinor} />
             </Section>
-            <Section title={t("conditions")}>
-              <p className="luma-meta">{query.data.snapshot.policy.terms}</p>
-            </Section>
+            <PurchaseConditions
+              kind={query.data.snapshot.kind}
+              policy={query.data.snapshot.policy}
+              offering={query.data.snapshot.offering}
+            />
             <ServiceEligibilitySummary
               value={query.data.snapshot.eligibility}
             />

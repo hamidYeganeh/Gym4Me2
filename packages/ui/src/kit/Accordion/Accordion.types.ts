@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { Accordion as AccordionPrimitive } from "radix-ui";
+import { Accordion as AccordionPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { accordionVariants } from "./Accordion.styles";
 export type AccordionProps = React.ComponentProps<

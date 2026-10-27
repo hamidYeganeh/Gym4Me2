@@ -4,10 +4,28 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { sql } from 'drizzle-orm';
+import { supportCommand } from './support-command';
+import type { z } from 'zod';
+import type { supportCreateSchema } from './support.contracts';
 import { DatabaseService } from '../../database/database.service';
 import { CommerceService, rows } from './commerce.service';
 import { lockWritableAccount } from '../auth/account-lock';
 import type { NotificationPageInput } from './community-page';
+
+type SupportTicketRecord = {
+  id: string;
+  title: string;
+  user_id: string;
+  order_id: string | null;
+  status: 'open' | 'assigned' | 'resolved';
+  category: string;
+  priority: 'normal' | 'urgent';
+  revision: number;
+  assigned_to: string | null;
+  resolution: string | null;
+  created_at: Date;
+  updated_at: Date;
+};
 
 @Injectable()
 export class CommunityService {
@@ -79,7 +97,7 @@ export class CommunityService {
   async support(userId: string) {
     return rows(
       this.db,
-      sql`SELECT * FROM sport_tickets WHERE user_id=${userId} ORDER BY created_at DESC LIMIT 100`,
+      sql`SELECT * FROM sport_tickets WHERE user_id=${userId} ORDER BY updated_at DESC,id DESC LIMIT 100`,
     );
   }
   async createTicket(
@@ -87,22 +105,52 @@ export class CommunityService {
     title: string,
     body: string,
     orderId?: string,
+    options?: Pick<
+      z.infer<typeof supportCreateSchema>,
+      'category' | 'idempotencyKey'
+    >,
   ) {
-    if (orderId) await this.commerce.myOrder(userId, orderId);
-    return this.db.transaction(async (tx) => {
-      const [ticket] = await rows<{ id: string }>(
-        tx,
-        sql`INSERT INTO sport_tickets(user_id,title,order_id) VALUES(${userId},${title},${orderId ?? null}) RETURNING *`,
-      );
-      await rows(
-        tx,
-        sql`INSERT INTO sport_ticket_messages(ticket_id,sender_id,body) VALUES(${ticket.id},${userId},${body})`,
-      );
-      return ticket;
-    });
+    const category = options?.category ?? 'general';
+    if (category !== 'general' && !orderId)
+      throw new BadRequestException('Support.orderRequired');
+    return supportCommand(
+      this.db,
+      userId,
+      options?.idempotencyKey,
+      ['create', title, body, orderId, category],
+      async (tx) => {
+        if (
+          orderId &&
+          !(
+            await rows(
+              tx,
+              sql`SELECT id FROM sport_orders WHERE id=${orderId} AND user_id=${userId}`,
+            )
+          ).length
+        )
+          throw new NotFoundException('Workflow.orderUnavailable');
+      },
+      async (tx) => {
+        const priority = ['entry_denied', 'provider_absent'].includes(category)
+          ? 'urgent'
+          : 'normal';
+        const [ticket] = await rows<{ id: string }>(
+          tx,
+          sql`INSERT INTO sport_tickets(user_id,title,order_id,category,priority) VALUES(${userId},${title},${orderId ?? null},${category},${priority}) RETURNING *`,
+        );
+        await tx.execute(
+          sql`INSERT INTO sport_ticket_messages(ticket_id,sender_id,body) VALUES(${ticket.id},${userId},${body})`,
+        );
+        await tx.execute(
+          sql`INSERT INTO sport_ticket_events(ticket_id,kind) VALUES(${ticket.id},'created')`,
+        );
+        return ticket;
+      },
+    );
   }
+
   async ticket(userId: string, id: string) {
-    const [ticket] = await rows(
+    const [ticket] = await rows<SupportTicketRecord>(
       this.db,
       sql`SELECT * FROM sport_tickets WHERE id=${id} AND user_id=${userId}`,
     );
@@ -111,16 +159,48 @@ export class CommunityService {
       ...ticket,
       messages: await rows(
         this.db,
-        sql`SELECT * FROM sport_ticket_messages WHERE ticket_id=${id} ORDER BY created_at LIMIT 100`,
+        sql`SELECT id,body,created_at,(sender_id<>${userId}) from_support FROM (SELECT * FROM sport_ticket_messages WHERE ticket_id=${id} ORDER BY sequence DESC LIMIT 100) recent ORDER BY sequence`,
+      ),
+      events: await rows(
+        this.db,
+        sql`SELECT id,kind,created_at FROM (SELECT * FROM sport_ticket_events WHERE ticket_id=${id} ORDER BY sequence DESC LIMIT 200) recent ORDER BY sequence`,
       ),
     };
   }
-  async reply(userId: string, id: string, body: string) {
-    await this.ticket(userId, id);
-    const [message] = await rows(
+  async reply(userId: string, id: string, body: string, key?: string) {
+    return supportCommand(
       this.db,
-      sql`INSERT INTO sport_ticket_messages(ticket_id,sender_id,body) VALUES(${id},${userId},${body}) RETURNING *`,
+      userId,
+      key,
+      ['reply', id, body],
+      async (tx) => {
+        if (
+          !(
+            await rows(
+              tx,
+              sql`SELECT id FROM sport_tickets WHERE id=${id} AND user_id=${userId}`,
+            )
+          ).length
+        )
+          throw new NotFoundException();
+      },
+      async (tx) => {
+        const [ticket] = await rows<{ status: string }>(
+          tx,
+          sql`SELECT status FROM sport_tickets WHERE id=${id} FOR UPDATE`,
+        );
+        const [message] = await rows(
+          tx,
+          sql`INSERT INTO sport_ticket_messages(ticket_id,sender_id,body) VALUES(${id},${userId},${body}) RETURNING id,body,created_at`,
+        );
+        await tx.execute(
+          sql`UPDATE sport_tickets SET status=CASE WHEN status='resolved' THEN 'open' ELSE status END,assigned_to=CASE WHEN status='resolved' THEN NULL ELSE assigned_to END,revision=revision+1,updated_at=now() WHERE id=${id}`,
+        );
+        await tx.execute(
+          sql`INSERT INTO sport_ticket_events(ticket_id,kind) VALUES(${id},${ticket.status === 'resolved' ? 'reopened' : 'reply'})`,
+        );
+        return message;
+      },
     );
-    return message;
   }
 }

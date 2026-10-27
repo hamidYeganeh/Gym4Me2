@@ -10,10 +10,11 @@ import {
   LoaderCircle,
   X,
 } from "lucide-react";
-import { useTranslations } from "@repo/i18n";
+import { useLocale, useTranslations } from "@repo/i18n";
 import { Button } from "../kit/Button";
 import { Field, FieldGroup, FieldLabel } from "../kit/Field";
 import { OneTimeCode } from "../kit/OneTimeCode";
+import { SlidingNumber } from "../kit/SlidingNumber";
 import { applicationAuthHref } from "../lib/auth-routes";
 import { useOverlayHistory } from "../hooks/use-overlay-history";
 import { ErrorNotice } from "./common";
@@ -76,6 +77,7 @@ export function MobileAuth({
   method,
   challenge,
   remaining,
+  expiresIn,
   busy,
   verified,
   codeRejected,
@@ -87,6 +89,7 @@ export function MobileAuth({
   editPhone,
   policy,
   cancelHref,
+  returnTo = cancelHref,
 }: {
   client?: "application" | "business" | "admin";
   onMethodChange?: (method: "otp" | "password") => void;
@@ -99,10 +102,11 @@ export function MobileAuth({
   method: "otp" | "password";
   challenge: string | null;
   remaining: number;
+  expiresIn: number;
   busy: boolean;
   verified: boolean;
   codeRejected: boolean;
-  error: string | null;
+  error: unknown;
   fieldErrors: LoginErrors;
   recovery: boolean;
   submit: (event: FormEvent) => void;
@@ -110,8 +114,10 @@ export function MobileAuth({
   editPhone: () => void;
   policy: ReactNode;
   cancelHref: string;
+  returnTo?: string;
 }) {
   const t = useTranslations();
+  const locale = useLocale();
   const validationCopy = useTranslations("AuthValidation");
   const codeId = useId();
   useOverlayHistory(Boolean(challenge), (open) => {
@@ -124,6 +130,7 @@ export function MobileAuth({
     busy ||
     invalid ||
     codeRejected ||
+    (Boolean(challenge) && expiresIn <= 0) ||
     (!challenge && method === "otp" && remaining > 0);
   return (
     <AuthScreen
@@ -145,11 +152,44 @@ export function MobileAuth({
       description={
         challenge ? (
           <>
-            {t("Copy.a5DigitCodeWasSentTo")}
-            <br />
-            <bdi className="font-medium text-foreground">{phone}</bdi>
-            <br />
-            {t("Copy.theCodeIsValidForTwoMinutes")}
+            <span className="block">{t("Copy.otpSentTo")}</span>
+            <bdi className="mt-1 block font-medium text-foreground">
+              {phone}
+            </bdi>
+            <span
+              role="timer"
+              data-expired={expiresIn <= 0}
+              aria-live="off"
+              aria-label={t("Copy.otpRemainingTime", {
+                minutes: Math.floor(expiresIn / 60),
+                seconds: expiresIn % 60,
+              })}
+              className="auth-code-timer mt-3 flex items-center justify-center gap-2 text-sm"
+            >
+              <span>
+                {t(expiresIn > 0 ? "Copy.otpValidity" : "Copy.otpExpired")}
+              </span>
+              <span
+                dir="ltr"
+                aria-hidden="true"
+                className="inline-flex items-center gap-0.5 font-medium text-foreground tabular-nums"
+              >
+                <SlidingNumber
+                  value={Math.floor(expiresIn / 60)}
+                  padStart
+                  locale={locale}
+                />
+                <span>:</span>
+                <SlidingNumber
+                  value={expiresIn % 60}
+                  padStart
+                  locale={locale}
+                />
+              </span>
+            </span>
+            <span className="sr-only" aria-live="polite">
+              {expiresIn <= 0 ? t("Copy.otpExpired") : ""}
+            </span>
           </>
         ) : recovery ? (
           t("Password.resetHint")
@@ -186,8 +226,8 @@ export function MobileAuth({
               href={
                 recovery
                   ? client === "application"
-                    ? applicationAuthHref("password", cancelHref)
-                    : `/login?${new URLSearchParams({ method: "password", returnTo: cancelHref })}`
+                    ? applicationAuthHref("password", returnTo)
+                    : `/login?${new URLSearchParams({ method: "password", returnTo })}`
                   : cancelHref
               }
               aria-label={t("Kit.close")}
@@ -226,11 +266,7 @@ export function MobileAuth({
                   data-auth-field="code"
                   aria-invalid={!!fieldErrors.code || codeRejected || undefined}
                   aria-describedby={
-                    fieldErrors.code
-                      ? `${codeId}-error`
-                      : codeRejected
-                        ? `${codeId}-server-error`
-                        : undefined
+                    fieldErrors.code ? `${codeId}-error` : undefined
                   }
                   autoFocus
                   length={5}
@@ -249,7 +285,7 @@ export function MobileAuth({
                   inputMode="numeric"
                   autoComplete="one-time-code"
                   pattern="[0-9۰-۹٠-٩]*"
-                  disabled={busy}
+                  disabled={busy || expiresIn <= 0}
                 />
               </div>
               {fieldErrors.code && (
@@ -262,7 +298,6 @@ export function MobileAuth({
             <LoginField
               field="phone"
               label={t("Copy.mobileNumber")}
-              hiddenLabel
               error={fieldErrors.phone && validationCopy(fieldErrors.phone)}
               type="tel"
               inputMode="tel"
@@ -277,44 +312,6 @@ export function MobileAuth({
               autoFocus
             />
           )}
-          {!challenge &&
-            !recovery &&
-            (client === "application" ? (
-              <Button variant="ghost" asChild>
-                <Link
-                  aria-disabled={busy || undefined}
-                  tabIndex={busy ? -1 : undefined}
-                  onClick={(event) => {
-                    if (busy) event.preventDefault();
-                  }}
-                  href={applicationAuthHref(
-                    method === "otp" ? "password" : "otp",
-                    cancelHref,
-                  )}
-                >
-                  {t(
-                    method === "otp"
-                      ? "Password.withPassword"
-                      : "Password.withOtp",
-                  )}
-                </Link>
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                variant="ghost"
-                disabled={busy}
-                onClick={() =>
-                  onMethodChange?.(method === "otp" ? "password" : "otp")
-                }
-              >
-                {t(
-                  method === "otp"
-                    ? "Password.withPassword"
-                    : "Password.withOtp",
-                )}
-              </Button>
-            ))}
           {method === "password" && !challenge && (
             <LoginField
               field="password"
@@ -331,11 +328,7 @@ export function MobileAuth({
               required
             />
           )}
-          {error && (
-            <div id={`${codeId}-server-error`}>
-              <ErrorNotice error={error} />
-            </div>
-          )}
+          <ErrorNotice error={error} />
         </FieldGroup>
         {challenge && (
           <div className="flex flex-wrap justify-center gap-2">
@@ -361,14 +354,12 @@ export function MobileAuth({
         )}
         {method === "password" && !challenge && (
           <Button variant="link" asChild>
-            <Link
-              href={`/reset-password?${new URLSearchParams({ returnTo: cancelHref })}`}
-            >
+            <Link href={`/reset-password?${new URLSearchParams({ returnTo })}`}>
               {t("Password.forgot")}
             </Link>
           </Button>
         )}
-        <div className="mt-auto flex flex-col gap-4 pt-12">
+        <div className="auth-submit-actions mt-auto flex flex-col gap-4 pt-12">
           {client !== "application" && !challenge && (
             <p className="text-center text-sm leading-7 text-muted-foreground">
               {t(
@@ -392,6 +383,47 @@ export function MobileAuth({
           {!challenge && <div className="text-center">{policy}</div>}
         </div>
       </form>
+      {!challenge && !recovery && (
+        <div
+          className="mt-6 flex flex-col border-t border-border pt-4"
+          data-auth-method-switch
+        >
+          {client === "application" ? (
+            <Button variant="ghost" asChild>
+              <Link
+                aria-disabled={busy || undefined}
+                tabIndex={busy ? -1 : undefined}
+                onClick={(event) => {
+                  if (busy) event.preventDefault();
+                }}
+                href={applicationAuthHref(
+                  method === "otp" ? "password" : "otp",
+                  returnTo,
+                )}
+              >
+                {t(
+                  method === "otp"
+                    ? "Password.withPassword"
+                    : "Password.withOtp",
+                )}
+              </Link>
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={busy}
+              onClick={() =>
+                onMethodChange?.(method === "otp" ? "password" : "otp")
+              }
+            >
+              {t(
+                method === "otp" ? "Password.withPassword" : "Password.withOtp",
+              )}
+            </Button>
+          )}
+        </div>
+      )}
     </AuthScreen>
   );
 }

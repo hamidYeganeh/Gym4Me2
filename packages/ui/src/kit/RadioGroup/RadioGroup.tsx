@@ -3,7 +3,7 @@ import { radioGroupStyles } from "./RadioGroup.styles";
 import type { RadioGroupItemProps, RadioGroupProps } from "./RadioGroup.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { RadioGroup as RadioGroupPrimitive } from "radix-ui";
+import { RadioGroup as RadioGroupPrimitive } from "@animate-ui/react/primitives/radix-ui";
 
 function RadioGroup({ className, ...props }: RadioGroupProps) {
   return (

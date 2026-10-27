@@ -8,7 +8,7 @@ import type { Account } from "@repo/api/auth";
 import type { SessionDto as Session } from "@repo/api/auth";
 import { useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { toast } from "../kit/Sileo";
 import { Button } from "@repo/ui/kit/Button";
 import {
   Card,

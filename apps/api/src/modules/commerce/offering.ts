@@ -12,6 +12,8 @@ export const offeringSchema = z
     maxTickets: z.number().int().min(1).max(20).default(20),
     deliveryDays: z.number().int().min(1).max(90).default(3),
     supportDays: z.number().int().min(0).max(365).default(30),
+    maxRevisions: z.number().int().min(0).max(100).nullable().default(null),
+    responseHours: z.number().int().min(1).max(720).nullable().default(null),
     confirmation: z.enum(['instant', 'before_payment']).default('instant'),
   })
   .strict();

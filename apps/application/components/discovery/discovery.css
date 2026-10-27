@@ -24,8 +24,8 @@
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 50%;
-  background: linear-gradient(140deg, #d6e5db, #b8c9c0);
-  color: #263b2f;
+  background: color-mix(in srgb, var(--primary) 12%, var(--card));
+  color: var(--primary-ink);
 }
 .discovery-header-actions {
   display: flex;
@@ -70,8 +70,8 @@
   background: var(--muted);
 }
 .discovery-categories [aria-pressed="true"] {
-  background: var(--foreground);
-  color: var(--background);
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 .discovery-filter-fields {
   display: grid;
@@ -156,4 +156,127 @@
   .discovery-featured .discovery-result {
     flex-basis: 13rem;
   }
+}
+
+/* Reuse the same catalog sections, interleaved with the location carousels. */
+.discovery-feed-group {
+  display: grid;
+  min-width: 0;
+  gap: 2rem;
+}
+.discovery-featured .discovery-result {
+  flex: 0 0 min(78vw, 280px);
+}
+.discovery-featured--editorial .discovery-result,
+.discovery-featured--cinematic .discovery-result {
+  flex-basis: min(86vw, 420px);
+}
+.discovery-featured [data-slot="club-card"] .club-card-cover {
+  aspect-ratio: auto;
+}
+.discovery-featured [data-slot="club-card"] .club-card-facilities {
+  display: flex;
+}
+.discovery-featured [data-slot="club-card"] h2 {
+  font-size: 1.1rem;
+}
+.discovery-featured [data-slot="club-card"] .club-card-price {
+  font-size: 0.85rem;
+}
+.discovery-gallery {
+  min-width: 0;
+  padding-block: 1rem;
+  border-block: 1px solid var(--border);
+}
+.discovery-gallery-photos {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.discovery-gallery-photos a {
+  position: relative;
+  flex: none;
+  height: 230px;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  scroll-snap-align: start;
+  background: var(--muted);
+}
+.discovery-gallery-photos .gallery-cover {
+  width: 70%;
+}
+.discovery-gallery-photos .gallery-photo {
+  width: 36%;
+}
+.discovery-gallery-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1rem;
+}
+.discovery-gallery-summary h2 {
+  font-weight: 650;
+  font-size: 1rem;
+}
+.discovery-gallery-summary p {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+.discovery-gallery-photos .gallery-cover:only-child {
+  width: 100%;
+}
+/* One complete card per slide, aligned with the page content. */
+.discovery-featured > div {
+  margin-inline: 0;
+  padding-inline: 0;
+  scroll-snap-type: x mandatory;
+}
+.discovery-featured .discovery-result {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+.discovery-results {
+  gap: 1.25rem;
+}
+.discovery-card-carousel {
+  min-width: 0;
+}
+.discovery-card-carousel [data-slot="coach-card"],
+.discovery-card-carousel [data-slot="class-card"] {
+  max-width: none;
+  width: 100%;
+  aspect-ratio: 6/5;
+}
+
+.discovery-card-carousel [data-layout="compact"] {
+  aspect-ratio: auto;
+}
+.discovery-feed-group {
+  gap: 2rem;
+}
+.discovery-feed-group > .luma-section {
+  margin-block: 0;
+}
+.discovery-card-carousel {
+  margin-top: 0.75rem;
+}
+.discovery-feed-group {
+  grid-template-columns: minmax(0, 1fr);
+}
+.discovery-feed-group > .luma-section {
+  min-width: 0;
+}
+.discovery-card-carousel [data-layout="compact"] {
+  min-width: 0;
+}
+
+.discovery-card-carousel [data-slot="coach-card"][data-variant="default"] {
+  aspect-ratio: 3/4;
+}
+
+.discovery-card-carousel [data-slot="class-card"]:not([data-layout="compact"]) {
+  aspect-ratio: 13/14;
 }

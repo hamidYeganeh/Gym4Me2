@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ComponentProps } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "@repo/i18n";
@@ -94,7 +94,7 @@ export function BookingCalendar({ title }: { title?: string } = {}) {
     if (value && value < today) setTab("past");
   }
   return (
-    <ScheduleCalendar
+    <BookingCalendarFrame
       title={title ?? copy("title")}
       today={today}
       month={month}
@@ -204,6 +204,46 @@ export function BookingCalendar({ title }: { title?: string } = {}) {
           </button>
         )}
       </QueryState>
-    </ScheduleCalendar>
+    </BookingCalendarFrame>
+  );
+}
+
+function BookingCalendarFrame({
+  controls,
+  children,
+  ...calendar
+}: ComponentProps<typeof ScheduleCalendar>) {
+  const t = useTranslations("SimpleApp");
+  const [open, setOpen] = useState(false);
+  return (
+    <section aria-label={calendar.title}>
+      <div className="schedule-filters flex flex-wrap gap-2">
+        {controls}
+        <button
+          type="button"
+          className="schedule-pill"
+          aria-expanded={open}
+          aria-controls="booking-date-filter"
+          onClick={() => setOpen((v) => !v)}
+        >
+          {t(open ? "hideCalendar" : "filterByDate")}
+        </button>
+        {calendar.selected && (
+          <button
+            className="schedule-pill"
+            type="button"
+            onClick={() => calendar.onSelect(undefined)}
+          >
+            {t("clearDate")}
+          </button>
+        )}
+      </div>
+      {open && (
+        <div id="booking-date-filter" className="mt-4">
+          <ScheduleCalendar {...calendar} />
+        </div>
+      )}
+      {children}
+    </section>
   );
 }

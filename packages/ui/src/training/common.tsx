@@ -15,7 +15,12 @@ import { useApiContext } from "@repo/api/provider";
 import { clearTrainingLocal } from "@repo/api/training-offline";
 import { trainingIdentity } from "./identity";
 import { AccountDesignPage } from "../account/account-design";
-import { ErrorNotice, Loading, QueryError } from "../account/common";
+import {
+  ErrorNotice,
+  Loading,
+  QueryError,
+  SuccessNotice,
+} from "../account/common";
 import { Button } from "../kit/Button";
 import "./training.css";
 const Owner = createContext("");
@@ -230,15 +235,14 @@ export function TrainingFeedback({
 }) {
   return (
     <>
-      <p
-        className="training-status"
-        ref={action.status}
-        role="status"
-        tabIndex={-1}
-      >
-        {action.message}
-      </p>
-      <ErrorNotice error={action.error} />
+      <SuccessNotice success={!!action.message} message={action.message} />
+      <ErrorNotice
+        error={action.error}
+        validation={
+          action.error instanceof Error &&
+          action.error.message === "Training.imageLimit"
+        }
+      />
     </>
   );
 }

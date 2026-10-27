@@ -8,7 +8,8 @@ import {
   usePrivacy,
 } from "@repo/api/profile";
 import { useTranslations } from "@repo/i18n";
-import { toast } from "@repo/ui/kit/Sonner";
+import { toast } from "@repo/ui/kit/Sileo";
+import { useRequireAccount } from "../use-require-account";
 const eventName = "gym4me:saved-clubs";
 const memory = new Map<string, boolean>();
 const realId = (id: string) =>
@@ -86,7 +87,7 @@ export function FavoritesSync() {
 export function useSavedClub(id: string) {
   const account = useAccount();
   const favorites = useFavorites(Boolean(account.data));
-  const setSaved = useClubSaveCommand(account);
+  const setSaved = useClubSaveCommand();
   const guest = useSyncExternalStore(
     subscribe,
     () => guestSaved(id),
@@ -100,20 +101,18 @@ export function useSavedClub(id: string) {
 
 /** Mount once for a saved list: row mounts must not restart its guest account query. */
 export function useSetSavedClub() {
-  return useClubSaveCommand(useAccount());
+  return useClubSaveCommand();
 }
 
-function useClubSaveCommand(account: ReturnType<typeof useAccount>) {
+function useClubSaveCommand() {
   const setFavorite = useSetFavorite();
+  const requireAccount = useRequireAccount();
   const t = useTranslations("Favorites");
-  return (id: string, saved: boolean) => {
-    if (account.isPending || setFavorite.isPending) return;
-    if (account.data)
-      void setFavorite
-        .mutateAsync({ id, saved })
-        .catch(() => toast.error(t("saveError")));
-    else if (account.error?.status === 401) writeGuest(id, saved);
-    else toast.error(t("saveError"));
+  return async (id: string, saved: boolean) => {
+    if (setFavorite.isPending || !(await requireAccount())) return;
+    await setFavorite
+      .mutateAsync({ id, saved })
+      .catch(() => toast.error(t("saveError")));
   };
 }
 export function useSavedClubIds(ids?: string[]) {

@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@repo/ui/kit/Card";
 import { SocialIcon, type SocialPlatform } from "@repo/ui/kit/SocialIcon";
-import { toast } from "@repo/ui/kit/Sonner";
+import { toast } from "@repo/ui/kit/Sileo";
 import { useClubUrl } from "./use-club-url";
 import { useCatalogClub } from "./use-catalog";
 

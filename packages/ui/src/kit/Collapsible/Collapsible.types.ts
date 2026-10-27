@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { Collapsible as CollapsiblePrimitive } from "radix-ui";
+import { Collapsible as CollapsiblePrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type { collapsibleVariants } from "./Collapsible.styles";
 export type CollapsibleProps = React.ComponentProps<
   typeof CollapsiblePrimitive.Root

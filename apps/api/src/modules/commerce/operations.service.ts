@@ -1,4 +1,5 @@
 import type { Tx } from '../clubs/club.repository';
+import { supportCommand } from './support-command';
 import { validateOffering } from './offering';
 import {
   managementWhere,
@@ -510,7 +511,7 @@ export class SportsOperationsService {
         ),
         rows(
           this.db,
-          sql`SELECT id,title,status,created_at FROM sport_tickets WHERE status<>'resolved' AND ${managementWhere(filters, sql`created_at`, sql`status`, [sql`title`, sql`id::text`])} ORDER BY created_at ${managementDirection(filters)},id ${managementPage(filters)}`,
+          sql`SELECT id,title,status,created_at,category,priority,revision,order_id,updated_at FROM sport_tickets WHERE status<>'resolved' AND ${managementWhere(filters, sql`created_at`, sql`status`, [sql`title`, sql`id::text`])} ORDER BY (priority='urgent') DESC,created_at ${managementDirection(filters)},id ${managementPage(filters)}`,
         ),
         rows(
           this.db,
@@ -565,25 +566,53 @@ export class SportsOperationsService {
     id: string,
     body: string,
     resolve: boolean,
+    options?: {
+      revision?: number;
+      resolution?: string;
+      idempotencyKey?: string;
+    },
   ) {
     await this.admin.requireAdmin(principal);
-    return this.db.transaction(async (tx) => {
-      const [ticket] = await rows(
-        tx,
-        sql`SELECT * FROM sport_tickets WHERE id=${id} FOR UPDATE`,
-      );
-      if (!ticket) throw new NotFoundException();
-      await rows(
-        tx,
-        sql`INSERT INTO sport_ticket_messages(ticket_id,sender_id,body) VALUES(${id},${principal.user.id},${body})`,
-      );
-      await rows(
-        tx,
-        sql`UPDATE sport_tickets SET status=${resolve ? 'resolved' : 'assigned'},assigned_to=${principal.user.id} WHERE id=${id}`,
-      );
-      return { ok: true };
-    });
+    return supportCommand(
+      this.db,
+      principal.user.id,
+      options?.idempotencyKey,
+      [
+        'admin-reply',
+        id,
+        body,
+        resolve,
+        options?.revision,
+        options?.resolution,
+      ],
+      async () => {},
+      async (tx) => {
+        const [ticket] = await rows<{ revision: number }>(
+          tx,
+          sql`SELECT revision FROM sport_tickets WHERE id=${id} FOR UPDATE`,
+        );
+        if (!ticket) throw new NotFoundException();
+        if (
+          options?.revision !== undefined &&
+          ticket.revision !== options.revision
+        )
+          throw new ConflictException('Support.changed');
+        await tx.execute(
+          sql`INSERT INTO sport_ticket_messages(ticket_id,sender_id,body) VALUES(${id},${principal.user.id},${body})`,
+        );
+        const closesRequest =
+          resolve && options?.resolution !== 'refund_review';
+        await tx.execute(
+          sql`UPDATE sport_tickets SET status=${closesRequest ? 'resolved' : 'assigned'},assigned_to=${principal.user.id},resolution=${resolve ? (options?.resolution ?? 'answered') : null},revision=revision+1,updated_at=now() WHERE id=${id}`,
+        );
+        await tx.execute(
+          sql`INSERT INTO sport_ticket_events(ticket_id,kind) VALUES(${id},${closesRequest ? 'resolved' : 'assigned'})`,
+        );
+        return { ok: true };
+      },
+    );
   }
+
   async retryJob(principal: Principal, id: string) {
     await this.admin.requireAdmin(principal);
     await rows(

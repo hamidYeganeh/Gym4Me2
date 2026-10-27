@@ -18,6 +18,10 @@ export function readOffering(f: FormData): OfferingDto {
     maxTickets: Number(f.get("maxTickets") ?? 20),
     deliveryDays: Number(f.get("deliveryDays") ?? 3),
     supportDays: Number(f.get("supportDays") ?? 30),
+    maxRevisions: f.get("maxRevisions") ? Number(f.get("maxRevisions")) : null,
+    responseHours: f.get("responseHours")
+      ? Number(f.get("responseHours"))
+      : null,
     confirmation: String(
       f.get("confirmation") ?? "instant",
     ) as OfferingDto["confirmation"],
@@ -130,6 +134,7 @@ export function OfferingFields({
               required
             />
           </FormField>
+          <ProgramCommitmentFields offering={service?.offering} />
           <FormField label={t("supportDays")}>
             <Input
               name="supportDays"
@@ -157,6 +162,33 @@ export function OfferingFields({
           </NativeSelect>
         </FormField>
       )}
+    </>
+  );
+}
+
+function ProgramCommitmentFields({ offering }: { offering?: OfferingDto }) {
+  const t = useTranslations("ProgramCommitments");
+  return (
+    <>
+      <FormField label={t("maxRevisions")}>
+        <Input
+          name="maxRevisions"
+          type="number"
+          min={0}
+          max={100}
+          defaultValue={offering?.maxRevisions ?? ""}
+          required
+        />
+      </FormField>
+      <FormField label={t("responseHours")}>
+        <Input
+          name="responseHours"
+          type="number"
+          min={1}
+          max={720}
+          defaultValue={offering?.responseHours ?? ""}
+        />
+      </FormField>
     </>
   );
 }

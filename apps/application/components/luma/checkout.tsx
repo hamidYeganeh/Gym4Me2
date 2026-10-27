@@ -1,4 +1,5 @@
 "use client";
+import { PurchaseConditions } from "./purchase-conditions";
 import { TuitionPlan } from "@repo/ui/sports-tuition";
 import { IranianDateInput } from "@repo/ui/kit/IranianDateInput";
 import { ReceiptForm } from "@repo/ui/sports-receipts";
@@ -344,12 +345,12 @@ function CheckoutForm({
             {query.data.offering?.confirmation === "before_payment" && (
               <p className="luma-meta">{w("coordinationHint")}</p>
             )}
-            <details className="reservation-policy">
-              <summary>{t("conditions")}</summary>
-              <p className="luma-meta whitespace-pre-wrap">
-                {quote.data?.policy.terms ?? query.data.policy.terms}
-              </p>
-            </details>
+            <PurchaseConditions
+              kind={query.data.kind}
+              policy={quote.data?.policy ?? query.data.policy}
+              offering={query.data.offering}
+              approvalRequired={query.data.approvalRequired}
+            />
             <ServiceEligibilitySummary
               value={quote.data?.eligibility ?? query.data.eligibility}
             />

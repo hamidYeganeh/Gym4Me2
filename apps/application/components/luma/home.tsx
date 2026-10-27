@@ -1,164 +1,152 @@
 "use client";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
-  Bookmark,
   Bell,
-  CalendarDays,
+  Compass,
   CreditCard,
-  Dumbbell,
-  FileText,
-  LifeBuoy,
-  ListChecks,
-  Receipt,
-  Ticket,
+  CalendarDays,
+  MoreHorizontal,
 } from "lucide-react";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { useAccount } from "@repo/api/profile";
-import { ServiceCoverThumbnail } from "@repo/ui/sports-cover";
-import { PersonalAgenda } from "./agenda";
-import { AuthWelcome } from "@repo/ui/account";
-import { Skeleton } from "@repo/ui/kit/Skeleton";
-import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
+import { accountReadDenied } from "@repo/ui/lib/account-recovery";
+import { Discovery } from "../discovery/discovery";
 import {
   useSportsQuery,
-  type ServiceDto,
-  type CalendarPageDto,
+  type BookingPageDto,
+  type MembershipDto,
 } from "@repo/api/sports";
-import {
-  CreateAction,
-  Empty,
-  LumaPage,
-  Price,
-  QueryState,
-  Row,
-  Section,
-  stamp,
-  useLuma,
-} from "./common";
+import { LumaPage, QueryState, Row, Section, stamp, useLuma } from "./common";
+import { membershipAccess } from "../../lib/membership-access";
+import { useAppClock } from "./use-app-clock";
 export function HomePage() {
   const account = useAccount();
-  const t = useLuma();
-  const recovery = useAuthRecovery(account, "/");
-  if (recovery?.kind === "signIn")
-    return (
-      <LumaPage title={t("home")} className="luma-guest-home">
-        <AuthWelcome />
-      </LumaPage>
-    );
-  if (account.isPending)
-    return (
-      <LumaPage title={t("home")}>
-        <div
-          role="status"
-          aria-label={t("loading")}
-          className="flex flex-col items-center gap-6 py-24"
-        >
-          <Skeleton className="h-64 w-4/5 rounded-4xl" />
-          <Skeleton className="h-8 w-1/2" />
-          <Skeleton className="h-12 w-3/4 rounded-full" />
-        </div>
-      </LumaPage>
-    );
-  if (account.error)
-    return (
-      <LumaPage title={t("home")}>
-        <QueryState query={account}>{null}</QueryState>
-      </LumaPage>
-    );
-  return <SignedInHome />;
+  if (account.data && !accountReadDenied(account.error))
+    return <SignedInHome />;
+  return <GuestHome settled={account.error?.status === 401} />;
+}
+function GuestHome({ settled }: { settled: boolean }) {
+  const router = useRouter();
+  useEffect(() => {
+    if (settled && window.location.pathname === "/")
+      router.replace("/discovery");
+  }, [settled, router]);
+  // Public content is available even while the initial session check is pending.
+  return <Discovery />;
 }
 function SignedInHome() {
   const t = useLuma();
+  const simple = useTranslations("SimpleApp");
   const locale = useLocale();
-  const brand = useTranslations("Home");
-  const calendars = useSportsQuery<CalendarPageDto>(
-    "sports/community/calendars/page",
-    { limit: 3 },
+  const now = useAppClock();
+  const bookings = useSportsQuery<BookingPageDto>(
+    "sports/account/bookings/page",
+    { tab: "upcoming", limit: 1 },
   );
-  const services = useSportsQuery<ServiceDto[]>("sports/services");
+  const memberships = useSportsQuery<MembershipDto[]>(
+    "sports/account/memberships",
+  );
+  const active = memberships.data?.filter(
+    (m) => membershipAccess(m, now) === "active",
+  );
   return (
     <LumaPage
-      title={brand("brand")}
+      title={simple("homeTitle")}
       actions={
-        <>
-          <CreateAction />
-          <Link
-            href="/notifications"
-            className="luma-icon"
-            aria-label={t("notifications")}
-          >
-            <Bell size={21} />
-          </Link>
-        </>
+        <Link
+          href="/notifications"
+          className="luma-icon"
+          aria-label={t("notifications")}
+        >
+          <Bell size={21} />
+        </Link>
       }
     >
-      <PersonalAgenda />
-      <div className="luma-shortcuts">
-        {(
-          [
-            { href: "/memberships", key: "memberships", Icon: CreditCard },
-            { href: "/training", key: "training", Icon: Dumbbell },
-            { href: "/saved", key: "saved", Icon: Bookmark },
-            { href: "/orders", key: "orders", Icon: Receipt },
-            { href: "/documents", key: "documents", Icon: FileText },
-            { href: "/waitlist", key: "waitlist", Icon: ListChecks },
-            { href: "/membership-card", key: "ticket", Icon: Ticket },
-            {
-              href: "/invitations/sports",
-              key: "invitations",
-              Icon: CalendarDays,
-            },
-            { href: "/support", key: "support", Icon: LifeBuoy },
-          ] as const
-        ).map(({ href, key, Icon }) => (
-          <Link className="luma-shortcut" key={href} href={href}>
-            <Icon size={21} />
-            {t(key)}
-          </Link>
-        ))}
-      </div>
-      {(calendars.isPending ||
-        calendars.error ||
-        Boolean(calendars.data?.items.length)) &&
-        calendars.error?.status !== 401 && (
-          <Section title={t("yourCalendars")} href="/calendars?view=following">
-            <QueryState query={calendars}>
-              {calendars.data?.items.map((c) => (
-                <Row
-                  key={c.id}
-                  title={c.title}
-                  href={`/calendars/detail?id=${c.id}`}
-                  meta={c.description}
-                />
-              ))}
-              {!calendars.data?.items.length && (
-                <Empty compact illustration="watch" />
+      <p className="luma-meta mb-5">{simple("homeHint")}</p>
+      <Link className="luma-cta gap-2" href="/discovery">
+        <Compass size={20} />
+        {simple("findGym")}
+      </Link>
+      <Section title={simple("nextBooking")} href="/bookings">
+        <QueryState query={bookings}>
+          {bookings.data?.items.map((booking) => (
+            <article className="luma-group p-4" key={booking.id}>
+              <Row
+                title={booking.title}
+                meta={`${booking.branchName} · ${stamp(booking.startAt, locale)}`}
+                state={booking.status}
+                href={`/bookings/detail?id=${booking.id}`}
+              />
+              {booking.status === "confirmed" && (
+                <Link
+                  className="luma-cta"
+                  href={`/tickets/view?id=${booking.id}`}
+                >
+                  {simple("entryTicket")}
+                </Link>
               )}
-            </QueryState>
-          </Section>
-        )}
-      <Section title={t("picked")} href="/services">
-        <QueryState query={services}>
-          {services.data?.slice(0, 6).map((s) => (
-            <Row
-              key={s.id}
-              title={s.title}
-              icon={<ServiceCoverThumbnail cover={s.cover} />}
-              meta={[s.clubName, stamp(s.nextStartAt, locale)]
-                .filter(Boolean)
-                .join(" · ")}
-              href={`/services/detail?id=${s.id}`}
-            >
-              <span className="luma-meta">
-                <Price value={s.amountMinor} />
-              </span>
-            </Row>
+            </article>
           ))}
-          {!services.data?.length && (
-            <Empty compact illustration="kettlebell" />
+          {!bookings.data?.items.length && (
+            <p className="luma-meta py-4">{simple("noUpcomingBooking")}</p>
           )}
         </QueryState>
       </Section>
+      <Section title={simple("activeMemberships")} href="/memberships">
+        <QueryState query={memberships}>
+          {active?.slice(0, 2).map((m) => (
+            <article key={m.id} className="luma-group p-4 mb-3">
+              <Row
+                title={
+                  m.dependentName ? `${m.dependentName} · ${m.title}` : m.title
+                }
+                href={`/memberships/detail?id=${m.id}`}
+                meta={
+                  m.endsAt
+                    ? `${simple("validUntil")} ${stamp(m.endsAt, locale)}`
+                    : simple("noExpiry")
+                }
+              >
+                <span className="luma-meta">
+                  {simple("sessionsLeft", {
+                    count:
+                      m.granted === null
+                        ? "∞"
+                        : new Intl.NumberFormat(locale).format(
+                            Math.max(0, m.granted - m.consumed - m.held),
+                          ),
+                  })}
+                </span>
+              </Row>
+              <Link
+                className="luma-cta bg-muted text-foreground"
+                href={`/tickets/view?id=${m.id}&membership=true`}
+              >
+                {simple("entryTicket")}
+              </Link>
+            </article>
+          ))}
+          {!active?.length && (
+            <p className="luma-meta py-4">{simple("noActiveMembership")}</p>
+          )}
+        </QueryState>
+      </Section>
+      <div className="luma-shortcuts">
+        <Link className="luma-shortcut" href="/bookings">
+          <CalendarDays size={21} />
+          {simple("bookings")}
+        </Link>
+        <Link className="luma-shortcut" href="/memberships">
+          <CreditCard size={21} />
+          {simple("memberships")}
+        </Link>
+        <Link className="luma-shortcut" href="/more">
+          <MoreHorizontal size={21} />
+          {simple("more")}
+        </Link>
+      </div>
     </LumaPage>
   );
 }

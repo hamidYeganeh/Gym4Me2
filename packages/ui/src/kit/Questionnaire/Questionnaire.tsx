@@ -20,7 +20,7 @@ import type {
 } from "./Questionnaire.types";
 
 import { cn } from "@repo/ui/lib/utils";
-import { Questionnaire as QuestionnairePrimitive } from "@shadcn/react/questionnaire";
+import { Questionnaire as QuestionnairePrimitive } from "@animate-ui/react/primitives/questionnaire";
 
 import { buttonVariants } from "@repo/ui/kit/Button";
 import { CheckIcon } from "lucide-react";

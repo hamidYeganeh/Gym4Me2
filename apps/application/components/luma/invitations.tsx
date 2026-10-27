@@ -1,4 +1,5 @@
 "use client";
+import { ErrorNotice } from "@repo/ui/account";
 import Link from "next/link";
 import { useId, useRef } from "react";
 import { Button } from "@repo/ui/kit/Button";
@@ -43,11 +44,7 @@ export function SportsInvitations() {
           <Invitation key={i.id} invitation={i} />
         ))}
         {!items.length && <Empty />}
-        {nextPageFailed && (
-          <p role="alert" className="luma-error mt-4">
-            {t("loadMoreInvitationsError")}
-          </p>
-        )}
+        {nextPageFailed && <ErrorNotice error={query.error} />}
         {query.hasNextPage && (
           <LumaLoadMore
             loading={query.isFetchingNextPage}

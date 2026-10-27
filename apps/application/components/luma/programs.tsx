@@ -2,11 +2,24 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { useTranslations, useLocale } from "@repo/i18n";
+import type { OfferingDto } from "@repo/api/sports";
+import { useAppClock } from "./use-app-clock";
 import { useSportsQuery, useSportsCommand } from "@repo/api/sports";
 import { CommandError, Field, LumaPage, QueryState, stamp } from "./common";
 type Program = {
   id: string;
+  orderId: string;
   title: string;
+  offering?: OfferingDto;
+  overdue?: boolean;
+  revisionCount?: number;
+  revisionDueAt?: string | null;
+  events?: {
+    id: string;
+    kind: "intake" | "preparing" | "delivered" | "revision_requested";
+    reason: string;
+    createdAt: string;
+  }[];
   displayName: string;
   status:
     | "intake"
@@ -68,7 +81,8 @@ function ProgramOrder({
   program: Program;
   coach: boolean;
 }) {
-  const [clock] = useState(() => Date.now());
+  const clock = useAppClock();
+  const copy = useTranslations("ProgramCommitments");
   const t = useTranslations("Workflow"),
     locale = useLocale(),
     key = useRef(crypto.randomUUID());
@@ -87,6 +101,29 @@ function ProgramOrder({
         {p.title} · {p.displayName}
       </h2>
       <p>{t(p.status)}</p>
+      {p.overdue && (
+        <p role="status" className="text-sm text-destructive">
+          {copy("overdue")}
+        </p>
+      )}
+      {p.status === "delivered" &&
+        p.supportEndsAt &&
+        Date.parse(p.supportEndsAt) <= clock && (
+          <p className="luma-meta">{copy("supportEnded")}</p>
+        )}
+      {p.offering?.maxRevisions != null && (
+        <p className="luma-meta">
+          {copy("revisionCount", {
+            used: p.revisionCount ?? 0,
+            total: p.offering.maxRevisions,
+          })}
+        </p>
+      )}
+      {p.revisionDueAt && p.status !== "delivered" && (
+        <p className="luma-meta">
+          {copy("responseDue")}: {stamp(p.revisionDueAt, locale)}
+        </p>
+      )}
       <p className="luma-meta">
         {t("dueAt")}: {stamp(p.dueAt, locale)}
       </p>
@@ -199,7 +236,9 @@ function ProgramOrder({
       {!coach &&
         p.status === "delivered" &&
         p.supportEndsAt &&
-        Date.parse(p.supportEndsAt) > clock && (
+        Date.parse(p.supportEndsAt) > clock &&
+        (p.offering?.maxRevisions == null ||
+          (p.revisionCount ?? 0) < p.offering.maxRevisions) && (
           <form
             className="grid gap-3"
             onSubmit={(e) => {
@@ -220,6 +259,28 @@ function ProgramOrder({
             </button>
           </form>
         )}
+      <Link
+        className="luma-row"
+        href={`/support?order=${p.orderId}&category=program`}
+      >
+        {copy("help")}
+      </Link>
+      {Boolean(p.events?.length) && (
+        <details className="service-conditions">
+          <summary>{copy("history")}</summary>
+          {p.events?.map((event) => (
+            <div key={event.id} className="py-2">
+              <p className="luma-meta">
+                {t(event.kind === "intake" ? "queued" : event.kind)} ·{" "}
+                {stamp(event.createdAt, locale)}
+              </p>
+              {event.reason && (
+                <p className="text-sm whitespace-pre-wrap">{event.reason}</p>
+              )}
+            </div>
+          ))}
+        </details>
+      )}
       <CommandError error={intake.error ?? update.error ?? revision.error} />
     </article>
   );
@@ -254,6 +315,10 @@ function CoachProgramForm() {
               amountMinor: (BigInt(price) * BigInt(10)).toString(),
               deliveryDays: Number(f.get("delivery")),
               supportDays: Number(f.get("support")),
+              maxRevisions: Number(f.get("maxRevisions")),
+              responseHours: f.get("responseHours")
+                ? Number(f.get("responseHours"))
+                : null,
               terms: f.get("terms"),
               idempotencyKey: key.current,
             },
@@ -297,6 +362,7 @@ function CoachProgramForm() {
             required
           />
         </Field>
+        <ProgramCommitmentFields />
         <Field label={t("conditions")}>
           <textarea name="terms" minLength={10} maxLength={10000} required />
         </Field>
@@ -311,5 +377,19 @@ function CoachProgramForm() {
         )}
       </form>
     </details>
+  );
+}
+
+function ProgramCommitmentFields() {
+  const t = useTranslations("ProgramCommitments");
+  return (
+    <>
+      <Field label={t("maxRevisions")}>
+        <input name="maxRevisions" type="number" min={0} max={100} required />
+      </Field>
+      <Field label={t("responseHours")}>
+        <input name="responseHours" type="number" min={1} max={720} />
+      </Field>
+    </>
   );
 }

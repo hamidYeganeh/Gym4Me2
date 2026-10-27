@@ -11,7 +11,7 @@ import {
 } from "@repo/ui/kit/Drawer";
 import { Button } from "@repo/ui/kit/Button";
 import { Bookmark, Copy, Share2, X, Send, MessageCircle } from "lucide-react";
-import { toast } from "@repo/ui/kit/Sonner";
+import { toast } from "@repo/ui/kit/Sileo";
 import { useClubUrl } from "./use-club-url";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 export function ClubShareSheet({

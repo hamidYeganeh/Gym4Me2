@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { Popover as PopoverPrimitive } from "radix-ui";
+import { Popover as PopoverPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { popoverVariants } from "./Popover.styles";
 export type PopoverProps = React.ComponentProps<typeof PopoverPrimitive.Root>;

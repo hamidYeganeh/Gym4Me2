@@ -3,6 +3,11 @@ export function navigationRoute(pathname: string, search: string) {
   const params = new URLSearchParams(search);
   const id = params.get("id");
   const clean = pathname.replace(/\/$/, "") || "/";
+  if (clean === "/discovery/location" && id) {
+    const kind = params.get("kind");
+    if (kind === "provinces" || kind === "cities" || kind === "districts")
+      return `/discovery/location/${kind}/${encodeURIComponent(id)}`;
+  }
   if (clean === "/discovery/club" && id) {
     const view = params.get("view");
     return `/discovery/clubs/${encodeURIComponent(id)}${["gallery", "reviews", "slots"].includes(view ?? "") ? `/${view}` : ""}`;
@@ -47,7 +52,6 @@ export function applicationRouteLayout(pathname: string, search: string) {
       "/profile/complete",
       "/checkout",
     ].includes(logical) ||
-    logical.startsWith("/qa/") ||
     logical.startsWith("/services/") ||
     logical.startsWith("/tickets/") ||
     logical.startsWith("/checkout/mock-gateway") ||

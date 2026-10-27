@@ -135,6 +135,8 @@ export type OfferingDto = {
   maxTickets: number;
   deliveryDays: number;
   supportDays: number;
+  maxRevisions?: number | null;
+  responseHours?: number | null;
   confirmation: "instant" | "before_payment";
 };
 export type ParticipantDto = {
@@ -469,15 +471,44 @@ export type TicketSummaryDto = {
   title: string;
   status: string;
   createdAt: string;
+  updatedAt?: string;
+  orderId?: string | null;
+  category?: SupportCategory;
+  priority?: "normal" | "urgent";
+  revision?: number;
+  resolution?:
+    "answered" | "correction" | "refund_review" | "provider_contacted" | null;
 };
-export type TicketMessageDto = { id: string; body: string; createdAt: string };
-export type TicketDto = TicketSummaryDto & { messages: TicketMessageDto[] };
+export type SupportCategory =
+  | "general"
+  | "booking_issue"
+  | "entry_denied"
+  | "provider_absent"
+  | "payment"
+  | "refund"
+  | "program";
+export type TicketMessageDto = {
+  id: string;
+  body: string;
+  createdAt: string;
+  fromSupport?: boolean;
+};
+export type TicketDto = TicketSummaryDto & {
+  messages: TicketMessageDto[];
+  events?: {
+    id: string;
+    kind: "created" | "reply" | "assigned" | "resolved" | "reopened";
+    createdAt: string;
+  }[];
+};
 export type CreateTicketInput = {
   title: string;
   body: string;
   orderId?: string;
+  category?: SupportCategory;
+  idempotencyKey?: string;
 };
-export type ReplyTicketInput = { body: string };
+export type ReplyTicketInput = { body: string; idempotencyKey?: string };
 export type SportsCheckoutInput = {
   dependentId?: string;
   quantity?: number;

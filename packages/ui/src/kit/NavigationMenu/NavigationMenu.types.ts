@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { NavigationMenu as NavigationMenuPrimitive } from "radix-ui";
+import { NavigationMenu as NavigationMenuPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { navigationMenuTriggerStyle } from "./NavigationMenu.styles";
 export type NavigationMenuProps = React.ComponentProps<

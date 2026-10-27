@@ -1,4 +1,5 @@
 "use client";
+import { SuccessNotice } from "../account/common";
 import { normalizeLoginDigits } from "../account/login-validation";
 import { useRef } from "react";
 import { useTranslations, useLocale } from "@repo/i18n";
@@ -76,7 +77,7 @@ export function ReceiptForm({
       <Button type="submit" disabled={command.isPending || command.isSuccess}>
         {t("save")}
       </Button>
-      {command.isSuccess && <p role="status">{t("pending")}</p>}
+      <SuccessNotice success={command.isSuccess} message={t("pending")} />
       <QueryError error={command.error} />
     </form>
   );

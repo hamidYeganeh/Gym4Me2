@@ -16,6 +16,7 @@ import { Loading, QueryError, ErrorNotice } from "./common";
 import { CoachingPracticePanel } from "./practice";
 import Link from "next/link";
 import { PrivacyNotice } from "./privacy";
+import { toast } from "../kit/Sileo";
 
 export function CoachingWorkspace() {
   const t = useTranslations("Coaching");
@@ -28,20 +29,16 @@ export function CoachingWorkspace() {
   const invite = useInviteStudent();
   const answer = useAnswerCoaching();
   const update = useUpdateCoach();
-  const [message, setMessage] = useState("");
   const [error, setError] = useState<unknown>(null);
   const busy = useRef(false);
-  const status = useRef<HTMLParagraphElement>(null);
   const pending = invite.isPending || answer.isPending || update.isPending;
   async function run(work: () => Promise<unknown>) {
     if (busy.current) return;
     busy.current = true;
     setError(null);
-    setMessage("");
     try {
       await work();
-      setMessage(t("saved"));
-      status.current?.focus();
+      toast.success(t("saved"));
     } catch (cause) {
       setError(cause);
     } finally {
@@ -59,9 +56,6 @@ export function CoachingWorkspace() {
           <PrivacyNotice href="/profile/settings/privacy" />
           <CoachingPracticePanel />
           <p className="text-sm text-muted-foreground">{t("hint")}</p>
-          <p role="status" tabIndex={-1} ref={status}>
-            {message}
-          </p>
           <ErrorNotice error={error} />
           {query.isLoading ? (
             <Loading />

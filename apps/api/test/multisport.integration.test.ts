@@ -1,4 +1,8 @@
 import 'reflect-metadata';
+import { CommunityService } from '../src/modules/commerce/community.service';
+import { AdminService } from '../src/modules/admin/admin.service';
+import type { Principal } from '../src/modules/auth/auth.service';
+import { supportCreateSchema } from '../src/modules/commerce/support.contracts';
 import assert from 'node:assert/strict';
 import { before, after, test } from 'node:test';
 import { randomInt, randomUUID } from 'node:crypto';
@@ -1550,4 +1554,264 @@ void test('legacy classification versions preserve sold metadata and benefit rev
     ).services.length,
     0,
   );
+});
+
+void test('support requests validate ownership, prioritize entry problems and replay without duplicate tickets', async () => {
+  const f = await fixture(),
+    s = await service(f, 'membership');
+  const order = await buy(f, s.id);
+  const support = new CommunityService(database, commerce);
+  const options = {
+    category: 'entry_denied' as const,
+    idempotencyKey: randomUUID(),
+  };
+  const first = await support.createTicket(
+    f.athlete.id,
+    'Synthetic entry issue',
+    'Synthetic venue rejection',
+    order.id,
+    options,
+  );
+  const replay = await support.createTicket(
+    f.athlete.id,
+    'Synthetic entry issue',
+    'Synthetic venue rejection',
+    order.id,
+    options,
+  );
+  assert.equal(first.id, replay.id);
+  const ticket = await support.ticket(f.athlete.id, first.id);
+  assert.equal(ticket.priority, 'urgent');
+  assert.equal(ticket.messages.length, 1);
+  assert.equal(ticket.events.length, 1);
+  await assert.rejects(() =>
+    support.createTicket(
+      f.other.id,
+      'Synthetic foreign issue',
+      'Synthetic body',
+      order.id,
+      { ...options, idempotencyKey: randomUUID() },
+    ),
+  );
+  await assert.rejects(() => support.ticket(f.other.id, first.id));
+  await assert.rejects(() =>
+    support.createTicket(
+      f.athlete.id,
+      'Changed payload',
+      'Synthetic venue rejection',
+      order.id,
+      options,
+    ),
+  );
+  assert.equal(
+    supportCreateSchema.safeParse({
+      title: 'Valid title',
+      body: 'Valid body',
+      category: 'entry_denied',
+    }).success,
+    false,
+  );
+});
+
+void test('support resolutions reject stale decisions and a customer reply reopens the operational queue', async () => {
+  const f = await fixture();
+  const support = new CommunityService(database, commerce);
+  const admin = new AdminService(database);
+  await db.execute(
+    sql`INSERT INTO platform_admins(user_id) VALUES(${f.owner.id})`,
+  );
+  const principal = {
+    user: { id: f.owner.id },
+    session: { client: 'admin' },
+  } as Principal;
+  const ops = new SportsOperationsService(database, commerce, support, admin);
+  const ticket = await support.createTicket(
+    f.athlete.id,
+    'Synthetic help request',
+    'Synthetic description',
+    undefined,
+    { category: 'general', idempotencyKey: randomUUID() },
+  );
+  await assert.rejects(() =>
+    ops.adminReply(principal, ticket.id, 'Synthetic response', true, {
+      revision: 2,
+      idempotencyKey: randomUUID(),
+    }),
+  );
+  const decision = {
+    revision: 1,
+    resolution: 'answered',
+    idempotencyKey: randomUUID(),
+  };
+  await ops.adminReply(
+    principal,
+    ticket.id,
+    'Synthetic response',
+    true,
+    decision,
+  );
+  await ops.adminReply(
+    principal,
+    ticket.id,
+    'Synthetic response',
+    true,
+    decision,
+  );
+  assert.equal(
+    (await support.ticket(f.athlete.id, ticket.id)).messages.length,
+    2,
+  );
+  const key = randomUUID();
+  await support.reply(f.athlete.id, ticket.id, 'Still unresolved', key);
+  await support.reply(f.athlete.id, ticket.id, 'Still unresolved', key);
+  const reopened = await support.ticket(f.athlete.id, ticket.id);
+  assert.equal(reopened.status, 'open');
+  assert.equal(reopened.assigned_to, null);
+  assert.equal(reopened.messages.length, 3);
+  assert.equal(reopened.events.at(-1)?.kind, 'reopened');
+});
+
+void test('program revisions preserve the delivered plan, enforce purchased limits and retain distinct reasons', async () => {
+  const f = await fixture(),
+    trainer = await coach(f);
+  const offer = await workflow.createCoachProgram(
+    trainer.id,
+    c.coachProgramSchema.parse({
+      title: 'Synthetic bounded revisions',
+      sportId: await sport('bounded'),
+      amountMinor: '100000',
+      deliveryDays: 2,
+      supportDays: 14,
+      maxRevisions: 1,
+      responseHours: 12,
+      terms: 'Synthetic bounded program terms.',
+      idempotencyKey: randomUUID(),
+    }),
+  );
+  const order = await commerce.checkout(
+    f.athlete.id,
+    checkoutSchema.parse({ serviceId: offer.id, idempotencyKey: randomUUID() }),
+  );
+  await commerce.captureCash(trainer.id, order.id, 'Synthetic program payment');
+  const [p] = await workflow.programs(f.athlete.id);
+  await workflow.intake(
+    f.athlete.id,
+    String(p.id),
+    c.programIntakeSchema.parse({
+      revision: 1,
+      goals: 'Synthetic goal',
+      experience: '',
+      limitations: '',
+      location: '',
+      idempotencyKey: randomUUID(),
+    }),
+  );
+  const [plan] = await rows<{ id: string }>(
+    db,
+    sql`INSERT INTO training_plans(owner_id,athlete_id,relationship_id,title,draft) VALUES(${trainer.id},${f.athlete.id},${trainer.relationship.id},'Synthetic revision plan','{}'::jsonb) RETURNING id`,
+  );
+  const [version] = await rows<{ id: string }>(
+    db,
+    sql`INSERT INTO training_versions(plan_id,version,content,effective_from) VALUES(${plan.id},1,'{}'::jsonb,current_date) RETURNING id`,
+  );
+  const [assignment] = await rows<{ id: string }>(
+    db,
+    sql`INSERT INTO training_assignments(version_id,athlete_id,relationship_id) VALUES(${version.id},${f.athlete.id},${trainer.relationship.id}) RETURNING id`,
+  );
+  await workflow.updateProgram(
+    trainer.id,
+    String(p.id),
+    c.programUpdateSchema.parse({
+      revision: 2,
+      status: 'delivered',
+      assignmentId: assignment.id,
+      idempotencyKey: randomUUID(),
+    }),
+  );
+  const revision = c.programRevisionSchema.parse({
+    revision: 3,
+    reason: 'First distinct correction reason',
+    idempotencyKey: randomUUID(),
+  });
+  await workflow.reviseProgram(f.athlete.id, String(p.id), revision);
+  await workflow.reviseProgram(f.athlete.id, String(p.id), revision);
+  await workflow.updateProgram(
+    trainer.id,
+    String(p.id),
+    c.programUpdateSchema.parse({
+      revision: 4,
+      status: 'preparing',
+      idempotencyKey: randomUUID(),
+    }),
+  );
+  const [preparing] = await workflow.programs(f.athlete.id);
+  assert.equal(preparing.assignment_id, assignment.id);
+  assert.equal(preparing.revision_count, 1);
+  assert.ok(preparing.revision_due_at);
+  await workflow.updateProgram(
+    trainer.id,
+    String(p.id),
+    c.programUpdateSchema.parse({
+      revision: 5,
+      status: 'delivered',
+      assignmentId: assignment.id,
+      idempotencyKey: randomUUID(),
+    }),
+  );
+  await assert.rejects(
+    () =>
+      workflow.reviseProgram(f.athlete.id, String(p.id), {
+        ...revision,
+        revision: 6,
+        reason: 'Another correction',
+        idempotencyKey: randomUUID(),
+      }),
+    /revisionLimitReached/,
+  );
+  const events = await rows(
+    db,
+    sql`SELECT reason FROM sport_program_events WHERE request_id=${p.id} AND kind='revision_requested'`,
+  );
+  assert.equal(events.length, 1);
+  assert.equal(events[0].reason, 'First distinct correction reason');
+});
+
+void test('refund-review requests stay actionable and long support threads retain the latest reply', async () => {
+  const f = await fixture();
+  const support = new CommunityService(database, commerce);
+  const admin = new AdminService(database);
+  await db.execute(
+    sql`INSERT INTO platform_admins(user_id) VALUES(${f.owner.id})`,
+  );
+  const principal = {
+    user: { id: f.owner.id },
+    session: { client: 'admin' },
+  } as Principal;
+  const ops = new SportsOperationsService(database, commerce, support, admin);
+  const ticket = await support.createTicket(
+    f.athlete.id,
+    'Synthetic financial followup',
+    'Synthetic request',
+  );
+  await ops.adminReply(principal, ticket.id, 'Pending financial review', true, {
+    revision: 1,
+    resolution: 'refund_review',
+    idempotencyKey: randomUUID(),
+  });
+  assert.equal(
+    (await support.ticket(f.athlete.id, ticket.id)).status,
+    'assigned',
+  );
+  await db.execute(
+    sql`INSERT INTO sport_ticket_messages(ticket_id,sender_id,body) SELECT ${ticket.id}::uuid,${f.athlete.id}::uuid,'Synthetic history '||i FROM generate_series(1,105) i`,
+  );
+  await support.reply(
+    f.athlete.id,
+    ticket.id,
+    'Latest visible reply',
+    randomUUID(),
+  );
+  const latest = await support.ticket(f.athlete.id, ticket.id);
+  assert.equal(latest.messages.length, 100);
+  assert.equal(latest.messages.at(-1)?.body, 'Latest visible reply');
 });

@@ -11,6 +11,7 @@ import { ClientLocaleProvider } from "@repo/i18n/client-provider";
 import { ThemeProvider } from "@repo/theme/provider";
 import { DirectionProvider } from "@repo/ui/kit/Direction";
 import { ApiProvider } from "@repo/api/provider";
+import { Toaster } from "@repo/ui/kit/Sileo";
 
 function WebsiteDirection({ children }: { children: ReactNode }) {
   const locale = useLocale();
@@ -22,6 +23,7 @@ function WebsiteDirection({ children }: { children: ReactNode }) {
           {t("skip")}
         </a>
         {children}
+        <Toaster dir={getDirection(locale)} />
       </DirectionProvider>
     </ApiProvider>
   );

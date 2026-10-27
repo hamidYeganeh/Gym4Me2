@@ -407,6 +407,20 @@
       "when": 1792886400006,
       "tag": "0057_legacy_service_review",
       "breakpoints": true
+    },
+    {
+      "idx": 58,
+      "version": "7",
+      "when": 1793059200000,
+      "tag": "0058_service_commitments",
+      "breakpoints": true
+    },
+    {
+      "idx": 59,
+      "version": "7",
+      "when": 1793059200001,
+      "tag": "0059_support_event_order",
+      "breakpoints": true
     }
   ]
 }

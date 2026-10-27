@@ -3,6 +3,21 @@ import { validateEnvironment } from './environment';
 const DATABASE_URL = 'postgresql://test:example@localhost:55433/gym4me_test';
 
 describe('API environment', () => {
+  it('allows local web access only when explicitly enabled for a demo', () => {
+    expect(validateEnvironment({ DATABASE_URL }).DEMO_LOCAL_WEB_ENABLED).toBe(
+      false,
+    );
+    expect(() =>
+      validateEnvironment({ DATABASE_URL, DEMO_LOCAL_WEB_ENABLED: 'true' }),
+    ).toThrow('requires DEMO_MODE');
+    expect(
+      validateEnvironment({
+        DATABASE_URL,
+        DEMO_MODE: 'true',
+        DEMO_LOCAL_WEB_ENABLED: 'true',
+      }).DEMO_LOCAL_WEB_ENABLED,
+    ).toBe(true);
+  });
   it('keeps demo mode opt-in and requires explicit live SMS activation', () => {
     expect(validateEnvironment({ DATABASE_URL }).DEMO_MODE).toBe(false);
     expect(

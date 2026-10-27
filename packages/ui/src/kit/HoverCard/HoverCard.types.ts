@@ -1,5 +1,5 @@
 import type { VariantProps } from "class-variance-authority";
-import { HoverCard as HoverCardPrimitive } from "radix-ui";
+import { HoverCard as HoverCardPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import type * as React from "react";
 import type { hoverCardVariants } from "./HoverCard.styles";
 export type HoverCardProps = React.ComponentProps<
