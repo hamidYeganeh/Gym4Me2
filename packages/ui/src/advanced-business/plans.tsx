@@ -1,4 +1,5 @@
 "use client";
+import { boundedCount } from "../lib/integer-input";
 import { useState } from "react";
 import { useTranslations } from "@repo/i18n";
 import type {
@@ -171,7 +172,7 @@ function Activation({
 }) {
   const t = useTranslations("PH5");
   const [months, setMonths] = useState("1");
-  const count = Math.max(1, Math.min(12, Number(months) || 1));
+  const count = boundedCount(months, 12);
   return (
     <Form
       surface={surface}

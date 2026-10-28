@@ -39,7 +39,7 @@ export function QueryError({
     );
   return (
     <div className="text-destructive my-4">
-      <ErrorNotice error={error} persistent={accountReadDenied(error)} />
+      <ErrorNotice error={error} persistent />
       {recovery ? (
         <Button asChild variant="outline" className="min-h-11">
           <Link href={recovery.href}>

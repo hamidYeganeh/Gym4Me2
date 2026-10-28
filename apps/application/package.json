@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start --port 7081",
     "lint": "eslint",
+    "test": "tsx --test --test-concurrency=1 test/*.test.ts",
     "check-types": "next typegen && tsc --noEmit",
     "build:native": "node scripts/build-native.mjs",
     "native:sync": "pnpm build:native && cap sync",
@@ -48,6 +49,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

@@ -13,6 +13,7 @@
     "./card": "./src/card.tsx",
     "./focus.css": "./src/focus.css",
     "./page-transitions": "./src/page-transitions.tsx",
+    "./recovery": "./src/recovery.tsx",
     "./account": "./src/account/index.ts",
     "./analytics": "./src/analytics/panel.tsx",
     "./mobile-page": "./src/mobile-page.tsx",

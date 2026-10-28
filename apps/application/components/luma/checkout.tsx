@@ -12,6 +12,8 @@ import { useId, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { checkoutIssue } from "../../lib/checkout-availability";
+import { boundedCount } from "@repo/ui/lib/integer-input";
+import { useAppClock } from "./use-app-clock";
 import { paymentGatewayDestination } from "../../lib/payment-gateway";
 import {
   remainingMembershipSessions,
@@ -101,6 +103,7 @@ function CheckoutForm({
   const membershipHintId = useId();
   const renewalHintId = useId();
   const consent = useRef<HTMLLabelElement>(null);
+  const now = useAppClock();
   if (!service)
     return (
       <LumaPage title={t("checkout")} back="/services">
@@ -108,7 +111,9 @@ function CheckoutForm({
       </LumaPage>
     );
   const selected = query.data?.occurrences.find((o) => o.id === occurrence);
-  const unavailable = query.data ? checkoutIssue(query.data, occurrence) : null;
+  const unavailable = query.data
+    ? checkoutIssue(query.data, occurrence, now, quantity)
+    : null;
   const eligibleMemberships =
     query.data && quantity === 1
       ? usableCheckoutMemberships(query.data, memberships.data ?? []).filter(
@@ -129,7 +134,14 @@ function CheckoutForm({
     Boolean(renewMembershipId) &&
     !memberships.isPending &&
     !renewals.some((item) => item.id === renewMembershipId);
-  const busy = quote.isPending || checkout.isPending;
+  const activeDependents =
+    dependents.data?.filter((item) => item.status === "active") ?? [];
+  const dependentUnavailable =
+    Boolean(dependentId) &&
+    (Boolean(dependents.error) ||
+      (!dependents.isPending &&
+        !activeDependents.some((item) => item.id === dependentId)));
+  const busy = quote.isPending || checkout.isPending || enrollSeries.isPending;
   const identityRequired =
     quantity > 1 ||
     (query.data?.offering?.audience &&
@@ -200,13 +212,15 @@ function CheckoutForm({
               <Field label={w("quantity")}>
                 <input
                   type="number"
+                  step={1}
+                  disabled={busy}
                   min={1}
                   max={query.data.offering?.maxTickets ?? 20}
                   value={quantity}
                   onChange={(e) => {
-                    const n = Math.min(
+                    const n = boundedCount(
+                      e.target.value,
                       query.data?.offering?.maxTickets ?? 20,
-                      Math.max(1, Number(e.target.value) || 1),
                     );
                     setQuantity(n);
                     if (n > 1) setDependentId("");
@@ -227,14 +241,19 @@ function CheckoutForm({
                 />
               </Field>
             )}
+            <QueryState query={dependents} compact>
+              {null}
+            </QueryState>
             {quantity === 1 &&
-              (Boolean(dependents.data?.some((d) => d.status === "active")) ||
+              (Boolean(dependentId) ||
+                activeDependents.length > 0 ||
                 query.data.offering?.audience === "family" ||
                 (query.data.eligibility?.maximumAge != null &&
                   query.data.eligibility.maximumAge < 18)) && (
                 <Field label={w("beneficiary")}>
                   <select
                     value={dependentId}
+                    disabled={busy}
                     onChange={(e) => {
                       setDependentId(e.target.value);
                       setMembership("");
@@ -245,19 +264,27 @@ function CheckoutForm({
                     }}
                   >
                     <option value="">{w("myself")}</option>
-                    {dependents.data
-                      ?.filter((d) => d.status === "active")
-                      .map((d) => (
-                        <option key={d.id} value={d.id}>
-                          {d.name}
-                        </option>
-                      ))}
+                    {dependentUnavailable && (
+                      <option value={dependentId} disabled>
+                        {w("dependentUnavailableOption")}
+                      </option>
+                    )}
+                    {activeDependents.map((d) => (
+                      <option key={d.id} value={d.id}>
+                        {d.name}
+                      </option>
+                    ))}
                   </select>
                   <Link className="underline" href="/household">
                     {w("household")}
                   </Link>
                 </Field>
               )}
+            {dependentUnavailable && (
+              <p role="alert" className="luma-error">
+                {w("dependentUnavailable")}
+              </p>
+            )}
             {!dependentId &&
               (identityRequired ||
                 (query.data.kind !== "membership" &&
@@ -268,6 +295,7 @@ function CheckoutForm({
                   <Field label={w("name")}>
                     <input
                       value={person.name}
+                      disabled={busy}
                       maxLength={120}
                       onChange={(e) => {
                         setParticipants(
@@ -283,6 +311,7 @@ function CheckoutForm({
                     <Field label={w("birthDate")}>
                       <IranianDateInput
                         value={person.birthDate ?? ""}
+                        disabled={busy}
                         onValueChange={(iso) => {
                           setParticipants(
                             participants.map((p, j) =>
@@ -296,6 +325,7 @@ function CheckoutForm({
                     <Field label={w("gender")}>
                       <select
                         value={person.gender}
+                        disabled={busy}
                         onChange={(e) => {
                           setParticipants(
                             participants.map((p, j) =>
@@ -389,6 +419,7 @@ function CheckoutForm({
                   <Field label={w("startsOn")}>
                     <IranianDateInput
                       value={startsOn}
+                      disabled={busy}
                       onValueChange={(iso) => {
                         setStartsOn(iso);
                         changeDetails();
@@ -536,7 +567,16 @@ function CheckoutForm({
               {selected?.seriesId && membership && (
                 <button
                   className="luma-cta my-3"
-                  disabled={!accepted || !quote.data || enrollSeries.isPending}
+                  disabled={
+                    !accepted ||
+                    !quote.data ||
+                    busy ||
+                    membershipUnavailable ||
+                    dependentUnavailable ||
+                    (Boolean(dependentId) && dependents.isPending) ||
+                    Boolean(unavailable) ||
+                    incomplete
+                  }
                   onClick={() => {
                     key.current ??= crypto.randomUUID();
                     enrollSeries.mutate(
@@ -577,6 +617,8 @@ function CheckoutForm({
                     busy ||
                     membershipUnavailable ||
                     renewalUnavailable ||
+                    dependentUnavailable ||
+                    (Boolean(dependentId) && dependents.isPending) ||
                     Boolean(unavailable) ||
                     incomplete ||
                     (!occurrence &&

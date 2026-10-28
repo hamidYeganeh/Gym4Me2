@@ -103,18 +103,24 @@ export function Reception({ org, branch }: { org: string; branch: string }) {
           <CardTitle>{t("recentVisits")}</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-3">
-          <QueryError error={visits.error} />
-          {visits.data?.length === 0 && <p>{t("empty")}</p>}
-          {visits.data?.map((visit) => (
-            <VisitActions key={visit.id} visit={visit} locale={locale} />
-          ))}
+          <QueryError error={visits.error} retry={visits.refetch} />
+          {visits.isPending && <Loading />}
+          {!visits.error && visits.data?.length === 0 && <p>{t("empty")}</p>}
+          {!visits.error &&
+            visits.data?.map((visit) => (
+              <VisitActions key={visit.id} visit={visit} locale={locale} />
+            ))}
         </CardContent>
       </Card>
       {query.isPending && <Loading />}
-      <QueryError error={query.error} />
-      {query.data?.map((r) => (
-        <ReservationActions key={r.id} item={r} org={org} branch={branch} />
-      ))}
+      <QueryError error={query.error} retry={query.refetch} />
+      {!query.error && query.data?.length === 0 && (
+        <p role="status">{t("empty")}</p>
+      )}
+      {!query.error &&
+        query.data?.map((r) => (
+          <ReservationActions key={r.id} item={r} org={org} branch={branch} />
+        ))}
       <Pager
         page={list.filters.page}
         setPage={list.page}

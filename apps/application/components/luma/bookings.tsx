@@ -33,6 +33,10 @@ import {
 import { ReservationSummary } from "./reservation-design";
 import { useTranslations } from "@repo/i18n";
 import { LumaSheet } from "./sheet";
+import { rescheduleOptions } from "../../lib/reschedule-options";
+import { useAppClock } from "./use-app-clock";
+import { membershipAccess } from "../../lib/membership-access";
+import { boundedCount } from "@repo/ui/lib/integer-input";
 export function BookingsPage() {
   const t = useLuma();
   return (
@@ -72,6 +76,13 @@ export function BookingDetail() {
   );
   const cancel = useSportsCommand(`sports/account/bookings/${id}/cancel`);
   const change = useSportsCommand(`sports/account/bookings/${id}/reschedule`);
+  const now = useAppClock();
+  const alternatives = rescheduleOptions(
+    service.data?.occurrences ?? [],
+    query.data?.occurrenceId ?? "",
+    query.data?.quantity ?? 1,
+    now,
+  );
   if (!id)
     return (
       <LumaPage title={t("yourBookings")} back="/bookings">
@@ -156,54 +167,64 @@ export function BookingDetail() {
                 )}
               </>
             )}
-            {query.data.status === "confirmed" && (
-              <>
-                <button
-                  className="luma-cta bg-muted text-foreground"
-                  onClick={() => setRescheduleOpen((v) => !v)}
-                >
-                  {t("reschedule")}
-                </button>
-                {rescheduleOpen && (
-                  <Field label={t("chooseSession")}>
-                    <NativeSelect
-                      value={target}
-                      onChange={(e) => setTarget(e.target.value)}
-                    >
-                      <option value="">{t("chooseSession")}</option>
-                      {service.data?.occurrences
-                        .filter(
-                          (o) =>
-                            o.id !== query.data?.occurrenceId &&
-                            o.remaining > 0 &&
-                            o.resourceAvailable !== false,
-                        )
-                        .map((o) => (
-                          <option key={o.id} value={o.id}>
-                            {stamp(o.startAt, locale)}
-                          </option>
-                        ))}
-                    </NativeSelect>
-                    <button
-                      className="luma-cta"
-                      disabled={!target || change.isPending}
-                      onClick={() =>
-                        change.mutate(
-                          {
-                            occurrenceId: target,
-                            revision: query.data!.revision,
-                            idempotencyKey: crypto.randomUUID(),
-                          },
-                          { onSuccess: () => setRescheduleOpen(false) },
-                        )
-                      }
-                    >
-                      {t("continue")}
-                    </button>
-                  </Field>
-                )}
-              </>
-            )}
+            {query.data.status === "confirmed" &&
+              query.data.snapshot.kind === "course" && (
+                <p className="luma-meta">{t("courseRescheduleSupport")}</p>
+              )}
+            {query.data.status === "confirmed" &&
+              !query.data.checkedInAt &&
+              query.data.snapshot.kind !== "course" && (
+                <>
+                  <button
+                    className="luma-cta bg-muted text-foreground"
+                    onClick={() => setRescheduleOpen((v) => !v)}
+                  >
+                    {t("reschedule")}
+                  </button>
+                  {rescheduleOpen && (
+                    <QueryState query={service}>
+                      {alternatives.length === 0 ? (
+                        <Empty compact>{t("noRescheduleSessions")}</Empty>
+                      ) : (
+                        <Field label={t("chooseSession")}>
+                          <NativeSelect
+                            value={target}
+                            disabled={change.isPending}
+                            onChange={(e) => setTarget(e.target.value)}
+                          >
+                            <option value="">{t("chooseSession")}</option>
+                            {alternatives.map((o) => (
+                              <option key={o.id} value={o.id}>
+                                {stamp(o.startAt, locale)}
+                              </option>
+                            ))}
+                          </NativeSelect>
+                          <button
+                            className="luma-cta"
+                            disabled={
+                              !alternatives.some(
+                                (item) => item.id === target,
+                              ) || change.isPending
+                            }
+                            onClick={() =>
+                              change.mutate(
+                                {
+                                  occurrenceId: target,
+                                  revision: query.data!.revision,
+                                  idempotencyKey: crypto.randomUUID(),
+                                },
+                                { onSuccess: () => setRescheduleOpen(false) },
+                              )
+                            }
+                          >
+                            {t("continue")}
+                          </button>
+                        </Field>
+                      )}
+                    </QueryState>
+                  )}
+                </>
+              )}
             <CommandError error={cancel.error ?? change.error} />
             <Link
               className="luma-cta bg-muted text-foreground"
@@ -242,6 +263,7 @@ export function MembershipsPage() {
         ))}
         {!query.data?.length && (
           <Empty>
+            <p>{t("noMembershipsYet")}</p>
             <Link href="/services">{t("services")}</Link>
           </Empty>
         )}
@@ -250,7 +272,7 @@ export function MembershipsPage() {
   );
 }
 export function MembershipDetail() {
-  const [clock] = useState(() => Date.now());
+  const clock = useAppClock();
   const id = useSearchParams().get("id");
   const t = useLuma();
   const locale = useLocale();
@@ -288,18 +310,14 @@ export function MembershipDetail() {
             <Section title={t("conditions")}>
               <p className="luma-meta">{query.data.policy.terms}</p>
             </Section>
-            {query.data.status === "active" &&
-              query.data.offering?.entryAllowed !== false &&
-              !query.data.paymentOverdue &&
-              (!query.data.startsAt ||
-                Date.parse(query.data.startsAt) <= clock) && (
-                <Link
-                  className="luma-cta"
-                  href={`/tickets/view?id=${id}&membership=true`}
-                >
-                  {t("ticket")}
-                </Link>
-              )}
+            {membershipAccess(query.data, clock) === "active" && (
+              <Link
+                className="luma-cta"
+                href={`/tickets/view?id=${id}&membership=true`}
+              >
+                {t("ticket")}
+              </Link>
+            )}
             <Link
               className="luma-cta bg-muted text-foreground"
               href={`/checkout?service=${query.data.serviceId}&renew=${id}${query.data.dependentId ? `&dependent=${query.data.dependentId}` : ""}`}
@@ -314,7 +332,14 @@ export function MembershipDetail() {
                     min={1}
                     max={query.data.policy.freezeDays}
                     value={days}
-                    onChange={(e) => setDays(Number(e.target.value))}
+                    onChange={(e) =>
+                      setDays(
+                        boundedCount(
+                          e.target.value,
+                          query.data!.policy.freezeDays,
+                        ),
+                      )
+                    }
                   />
                   <button
                     className="luma-cta"

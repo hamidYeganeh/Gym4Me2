@@ -229,7 +229,7 @@ export function QueryError({
   if (!error) return null;
   return (
     <div className="grid gap-3">
-      <ErrorNotice error={error} persistent={accountReadDenied(error)} />
+      <ErrorNotice error={error} persistent />
       {recovery ? (
         <Button asChild variant="outline" className="min-h-11 w-fit">
           <Link href={recovery.href}>

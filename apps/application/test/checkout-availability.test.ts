@@ -31,6 +31,18 @@ test("the last available seat is allowed but a full session is blocked", () => {
   );
 });
 
+test("party checkout requires enough seats for every ticket", () => {
+  const service = {
+    ...services[0]!,
+    occurrences: [{ ...session, remaining: 2 }],
+  };
+  assert.equal(checkoutIssue(service, session.id, +now, 2), null);
+  assert.equal(
+    checkoutIssue(service, session.id, +now, 3),
+    "checkoutSessionFull",
+  );
+});
+
 test("a blocked resource is distinct from a full session", () => {
   assert.equal(
     checkoutIssue(services[0]!, services[0]!.occurrences[2]!.id, +now),
@@ -73,6 +85,41 @@ test("a course cannot continue when another session has lost capacity or its res
     };
     assert.equal(
       checkoutIssue(changed, selected.id, +now),
+      "checkoutCourseUnavailable",
+    );
+  }
+});
+
+test("a full or unavailable different course cohort does not block the selected cohort", () => {
+  const course = services[1]!;
+  const selected = { ...course.occurrences[0]!, seriesId: "chosen-cohort" };
+  for (const change of [
+    { remaining: 0 },
+    { resourceAvailable: false },
+    { status: "cancelled" },
+  ]) {
+    const other = {
+      ...course.occurrences[1]!,
+      seriesId: "other-cohort",
+      ...change,
+    };
+    assert.equal(
+      checkoutIssue(
+        { ...course, occurrences: [selected, other] },
+        selected.id,
+        +now,
+      ),
+      null,
+    );
+    assert.equal(
+      checkoutIssue(
+        {
+          ...course,
+          occurrences: [selected, { ...other, seriesId: selected.seriesId }],
+        },
+        selected.id,
+        +now,
+      ),
       "checkoutCourseUnavailable",
     );
   }

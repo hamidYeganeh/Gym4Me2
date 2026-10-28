@@ -3,6 +3,11 @@ import { FilterSheet } from "../kit/BottomSheet";
 import { useState, useId } from "react";
 import Link from "next/link";
 import { useLocale, useTranslations } from "@repo/i18n";
+import { useProductNavigation } from "@repo/api/profile";
+import {
+  workspaceNavigation,
+  workspaceSecondaryNavigation,
+} from "../account/workspace-navigation";
 import {
   useAnalytics,
   type AnalyticsFilters,
@@ -44,6 +49,14 @@ export function AnalyticsPanel({ surface }: { surface: AnalyticsSurface }) {
   const [filters, setFilters] = useState<AnalyticsFilters>(() => period(30));
   const [draft, setDraft] = useState(filters);
   const query = useAnalytics(surface, filters);
+  const navigation = useProductNavigation(surface === "business", true);
+  const context = navigation.error ? undefined : navigation.data;
+  const permittedLinks = new Set(
+    [
+      ...workspaceNavigation("business", context),
+      ...workspaceSecondaryNavigation(context),
+    ].map((item) => item.href),
+  );
   const data = [401, 403].includes(query.error?.status ?? 0)
     ? undefined
     : query.data;
@@ -535,13 +548,19 @@ export function AnalyticsPanel({ surface }: { surface: AnalyticsSurface }) {
                           "reception",
                         ]
                       : ["coaching", "training"]
-                  ).map((path) => (
-                    <Button key={path} variant="outline" asChild>
-                      <Link href={`/${path}`}>
-                        {t(`control.${path}` as Parameters<typeof t>[0])}
-                      </Link>
-                    </Button>
-                  ))}
+                  )
+                    .filter(
+                      (path) =>
+                        surface !== "business" ||
+                        permittedLinks.has(`/${path}`),
+                    )
+                    .map((path) => (
+                      <Button key={path} variant="outline" asChild>
+                        <Link href={`/${path}`}>
+                          {t(`control.${path}` as Parameters<typeof t>[0])}
+                        </Link>
+                      </Button>
+                    ))}
                 </CardContent>
               </Card>
             </div>

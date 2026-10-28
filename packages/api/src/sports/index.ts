@@ -175,6 +175,8 @@ export type ServiceDto = {
   revision: number;
 };
 export type BookingDto = {
+  quantity?: number;
+  checkedInAt?: string | null;
   id: string;
   title: string;
   serviceId: string;
@@ -188,6 +190,7 @@ export type BookingDto = {
   endAt: string;
   amountMinor: string;
   snapshot: {
+    kind?: ServiceDto["kind"];
     policy: PolicyDto;
     title: string;
     eligibility?: ServiceEligibilityDto;

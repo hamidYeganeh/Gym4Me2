@@ -1838,7 +1838,12 @@
     "createSession": "Create session",
     "sessionEditHint": "Capacity cannot be lower than existing bookings. Sessions with bookings, invitations or conversations cannot be moved silently; use cancellation or booking rescheduling.",
     "refunds": "Refunds",
-    "occurrenceCancelHint": "Cancels this session and its bookings. Any refunds remain tracked against their orders."
+    "occurrenceCancelHint": "Cancels this session and its bookings. Any refunds remain tracked against their orders.",
+    "noRescheduleSessions": "No alternative sessions are available. You can contact support for help.",
+    "courseRescheduleSupport": "Contact support to reschedule a course.",
+    "emptyMemberships": "This athlete has no memberships to show.",
+    "noMembershipsYet": "You have no memberships yet. Browse club services to get started.",
+    "workspaceAccessDenied": "Your role cannot access this area of the organization. Choose an available area from the workspace menu."
   },
   "AuthValidation": {
     "phoneRequired": "Enter your mobile number.",
@@ -3474,7 +3479,9 @@
     "membershipStartsOn": "Selected start date: {date}",
     "changeStartDate": "Change start date",
     "renewalUnavailableOption": "Selected membership unavailable",
-    "renewalUnavailable": "This membership cannot be renewed. Choose another membership or a new purchase."
+    "renewalUnavailable": "This membership cannot be renewed. Choose another membership or a new purchase.",
+    "dependentUnavailableOption": "Beneficiary unavailable",
+    "dependentUnavailable": "This dependent is unavailable. Try again or select another beneficiary."
   },
   "Closure": {
     "invalidDate": "Enter a valid date.",
@@ -3565,5 +3572,13 @@
     "hideCalendar": "Hide calendar",
     "clearDate": "All dates",
     "programHistory": "My previous programs"
+  },
+  "Recovery": {
+    "errorTitle": "This page could not be displayed",
+    "errorDescription": "Something went wrong while displaying this page. Try again or return home.",
+    "retry": "Try again",
+    "home": "Return home",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "This address does not exist or is no longer available. Continue from the home page."
   }
 }

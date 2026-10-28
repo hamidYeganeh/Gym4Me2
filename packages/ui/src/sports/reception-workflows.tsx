@@ -1,5 +1,6 @@
 "use client";
-import { SuccessNotice } from "../account/common";
+import { boundedCount } from "../lib/integer-input";
+import { SuccessNotice, Loading } from "../account/common";
 import {
   normalizeLoginDigits,
   normalizeLoginPhone,
@@ -27,6 +28,7 @@ export function CustomerEntry({
 }) {
   const t = useTranslations("Workflow"),
     [search, setSearch] = useState("");
+  const luma = useTranslations("Luma");
   const deferred = useDeferredValue(search);
   const query = useSportsQuery<
     {
@@ -67,47 +69,55 @@ export function CustomerEntry({
       </FormField>
       <p className="text-sm text-muted-foreground">{t("searchHint")}</p>
       {deferred.length >= 3 && (
-        <QueryError error={query.error} retry={query.refetch} />
+        <>
+          <QueryError error={query.error} retry={query.refetch} />
+          {query.isPending && <Loading />}
+          {!query.isPending && !query.error && query.data?.length === 0 && (
+            <p role="status">{luma("empty")}</p>
+          )}
+        </>
       )}
       <QueryError error={entry.error} />
       <SuccessNotice success={entry.isSuccess} message={t("entryRecorded")} />
-      {query.data?.map((c) => (
-        <article className="rounded-xl border p-3 grid gap-2" key={c.id}>
-          <p>
-            {c.displayName} · <span dir="ltr">{c.phone}</span>
-          </p>
-          {c.memberships.map((m) => (
-            <div
-              className="flex flex-wrap items-center justify-between gap-3"
-              key={m.id}
-            >
-              <span>
-                {m.dependentName ? `${m.dependentName} · ` : ""}
-                {m.title}
-              </span>
-              <Button
-                disabled={
-                  entry.isPending ||
-                  m.status !== "active" ||
-                  !m.entryAllowed ||
-                  Date.parse(m.startsAt) > Date.now() ||
-                  Boolean(m.endsAt && Date.parse(m.endsAt) <= Date.now())
-                }
-                onClick={() =>
-                  entry.mutate({
-                    organizationId: org,
-                    branchId: branch,
-                    membershipId: m.id,
-                    idempotencyKey: crypto.randomUUID(),
-                  })
-                }
+      {!query.error &&
+        query.data?.map((c) => (
+          <article className="rounded-xl border p-3 grid gap-2" key={c.id}>
+            <p>
+              {c.displayName} · <span dir="ltr">{c.phone}</span>
+            </p>
+            {c.memberships.length === 0 && <p>{luma("emptyMemberships")}</p>}
+            {c.memberships.map((m) => (
+              <div
+                className="flex flex-wrap items-center justify-between gap-3"
+                key={m.id}
               >
-                {t("recordEntry")}
-              </Button>
-            </div>
-          ))}
-        </article>
-      ))}
+                <span>
+                  {m.dependentName ? `${m.dependentName} · ` : ""}
+                  {m.title}
+                </span>
+                <Button
+                  disabled={
+                    entry.isPending ||
+                    m.status !== "active" ||
+                    !m.entryAllowed ||
+                    Date.parse(m.startsAt) > Date.now() ||
+                    Boolean(m.endsAt && Date.parse(m.endsAt) <= Date.now())
+                  }
+                  onClick={() =>
+                    entry.mutate({
+                      organizationId: org,
+                      branchId: branch,
+                      membershipId: m.id,
+                      idempotencyKey: crypto.randomUUID(),
+                    })
+                  }
+                >
+                  {t("recordEntry")}
+                </Button>
+              </div>
+            ))}
+          </article>
+        ))}
     </section>
   );
 }
@@ -283,9 +293,9 @@ export function ReceptionSale({
               max={selected.offering?.maxTickets ?? 20}
               onChange={(e) =>
                 setQuantity(
-                  Math.min(
+                  boundedCount(
+                    e.target.value,
                     selected.offering?.maxTickets ?? 20,
-                    Math.max(1, Number(e.target.value) || 1),
                   ),
                 )
               }

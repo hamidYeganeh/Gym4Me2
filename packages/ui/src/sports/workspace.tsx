@@ -202,6 +202,17 @@ export function SportsWorkspace({ page }: { page: Page }) {
   const organizations = useOrganizations();
   const [organization, setOrganization] = useState("");
   const org = organization || organizations.data?.[0]?.id;
+  const role = organizations.data?.find((item) => item.id === org)?.role;
+  const canManage = role === "owner" || role === "manager";
+  const canOperate = canManage || role === "receptionist";
+  const canUsePage =
+    page === "resources"
+      ? canManage
+      : page === "reception" || page === "members" || page === "imports"
+        ? canOperate
+        : page === "reports"
+          ? canManage || role === "accountant"
+          : Boolean(role);
   const branches = useBranches(org);
   const [branchSelection, setBranch] = useState("");
   const branch = branchSelection || branches.data?.[0]?.id;
@@ -211,17 +222,17 @@ export function SportsWorkspace({ page }: { page: Page }) {
   const services = useSportsQuery<ServiceDto[]>(
     "business/sports/services",
     scope,
-    enabled && needsServices,
+    enabled && needsServices && canUsePage,
   );
   const title = t(page);
   const error =
     organizations.error ??
     branches.error ??
-    (needsServices ? services.error : null);
+    (needsServices && canUsePage ? services.error : null);
   const loading =
     organizations.isPending ||
     Boolean(org && branches.isPending) ||
-    (enabled && needsServices && services.isPending);
+    (enabled && needsServices && canUsePage && services.isPending);
   if (error?.status === 401)
     return (
       <SportsFrame title={title}>
@@ -270,7 +281,8 @@ export function SportsWorkspace({ page }: { page: Page }) {
         retry={() => {
           const requests: Promise<unknown>[] = [organizations.refetch()];
           if (org) requests.push(branches.refetch());
-          if (enabled && needsServices) requests.push(services.refetch());
+          if (enabled && needsServices && canUsePage)
+            requests.push(services.refetch());
           return Promise.allSettled(requests);
         }}
       />
@@ -278,17 +290,18 @@ export function SportsWorkspace({ page }: { page: Page }) {
         <Loading />
       ) : !enabled ? (
         <Blank>{t("empty")}</Blank>
+      ) : !canUsePage ? (
+        <Blank>{t("workspaceAccessDenied")}</Blank>
       ) : (
         <>
-          {page === "services" && (
+          {page === "services" && canManage && (
             <LegacyReadiness org={org!} branch={branch!} />
           )}
           {page === "services" && (
             <Services
               org={org!}
               branch={branch!}
-              services={services.data ?? []}
-              loading={services.isPending}
+              canManage={canManage}
               key={`${org}:${branch}`}
             />
           )}{" "}
@@ -332,11 +345,11 @@ export function SportsWorkspace({ page }: { page: Page }) {
 function Services({
   org,
   branch,
+  canManage,
 }: {
   org: string;
   branch: string;
-  services: ServiceDto[];
-  loading: boolean;
+  canManage: boolean;
 }) {
   const t = useTranslations("Luma");
   const list = useManagementFilters("services", `${org}:${branch}`);
@@ -351,11 +364,16 @@ function Services({
   const resources = useSportsQuery<{ id: string; name: string }[]>(
     "business/sports/resources",
     { organizationId: org, branchId: branch },
+    canManage,
   );
   const [kind, setKind] = useState<ServiceDto["kind"]>("class");
   const coaches = useSportsQuery<
     { userId: string; displayName: string | null }[]
-  >("business/coaching/candidates", { organizationId: org, branchId: branch });
+  >(
+    "business/coaching/candidates",
+    { organizationId: org, branchId: branch },
+    canManage,
+  );
   const [formOpen, setFormOpen] = useState(false);
   return (
     <div className="grid gap-6">
@@ -366,9 +384,14 @@ function Services({
         kinds
       />
       <QueryError error={query.error} retry={query.refetch} />
-      <Button onClick={() => setFormOpen((v) => !v)}>{t("newService")}</Button>
+      <SuccessNotice success={create.isSuccess} message={t("created")} />
+      {canManage && (
+        <Button onClick={() => setFormOpen((v) => !v)}>
+          {t("newService")}
+        </Button>
+      )}
       <BottomSheet
-        open={formOpen}
+        open={formOpen && canManage}
         onOpenChange={(open) => {
           if (!create.isPending) setFormOpen(open);
         }}
@@ -585,11 +608,27 @@ function Services({
       {loading ? (
         <Loading />
       ) : (
+        !query.error &&
         services.length === 0 && <Blank>{t("noBranchServices")}</Blank>
       )}
-      {services.map((s) => (
-        <ServiceActions key={s.id} service={s} />
-      ))}
+      {!query.error &&
+        services.map((s) =>
+          canManage ? (
+            <ServiceActions key={s.id} service={s} />
+          ) : (
+            <Card key={s.id}>
+              <CardHeader>
+                <CardTitle>{s.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Status value={s.status} />
+                <p className="text-sm text-muted-foreground">
+                  {t(`kinds.${s.kind}`)}
+                </p>
+              </CardContent>
+            </Card>
+          ),
+        )}
       <Pager
         page={list.filters.page}
         setPage={list.page}
