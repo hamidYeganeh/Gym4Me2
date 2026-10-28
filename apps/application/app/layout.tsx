@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { getDirection, isLocale, defaultLocale } from "@repo/i18n";
 import { getLocale, getTranslations } from "@repo/i18n/server";
 import { iranSansX } from "@repo/theme/fonts";
+import { applicationThemeMigration } from "../lib/application-theme";
 import "./globals.css";
 import "@repo/ui/focus.css";
 import "./application-focus.css";
@@ -19,7 +20,10 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Gym4Me",
       statusBarStyle: "black-translucent",
     },
-    icons: { apple: "/icons/icon-180.png" },
+    icons: {
+      icon: "/icons/icon-192.png",
+      apple: "/icons/icon-180.png",
+    },
   };
 }
 
@@ -42,6 +46,10 @@ export default async function RootLayout({
         data-gym-focus="application"
         className="min-h-dvh select-none antialiased"
       >
+        <script
+          id="gym4me-theme-migration"
+          dangerouslySetInnerHTML={{ __html: applicationThemeMigration }}
+        />
         <div className="application-frame mx-auto w-full max-w-xl">
           <AppProviders locale={locale}>{children}</AppProviders>
         </div>

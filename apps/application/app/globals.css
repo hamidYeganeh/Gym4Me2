@@ -1,7 +1,7 @@
 @import "@repo/theme/globals.css";
 @import "@repo/theme/icons.css";
 @import "@repo/ui/luma-system.css";
-@source "../../../packages/ui/src";
+@source "../node_modules/@repo/ui/src";
 
 input,
 textarea,

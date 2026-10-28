@@ -43,7 +43,7 @@ try {
     recursive: true,
     filter: (source) =>
       source !== join(appDirectory, "app/.well-known") &&
-      !["clubs", "coaches"].some(
+      !["clubs", "coaches", "location"].some(
         (name) => source === join(appDirectory, "app/discovery", name),
       ),
   });

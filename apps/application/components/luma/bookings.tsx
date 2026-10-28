@@ -188,6 +188,7 @@ export function BookingDetail() {
                       ) : (
                         <Field label={t("chooseSession")}>
                           <NativeSelect
+                            aria-label={t("chooseSession")}
                             value={target}
                             disabled={change.isPending}
                             onChange={(e) => setTarget(e.target.value)}

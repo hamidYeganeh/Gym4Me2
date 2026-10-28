@@ -6,8 +6,10 @@ import { useTranslations, useLocale } from "@repo/i18n";
 import {
   useSportsCommand,
   useSportsQuery,
+  type BookingDto,
   type MembershipDto,
 } from "@repo/api/sports";
+import { ticketWindow } from "../../lib/ticket-window";
 import {
   CommandError,
   Empty,
@@ -25,6 +27,11 @@ export function TicketPage() {
   const id = params.get("id");
   const membership = params.get("membership") === "true";
   const [pass, setPass] = useState("");
+  const booking = useSportsQuery<BookingDto>(
+    `sports/account/bookings/${id}`,
+    undefined,
+    Boolean(id) && !membership,
+  );
   const passes = useSportsQuery<
     { id: string; ordinal: number; name: string; admittedAt: string | null }[]
   >(
@@ -70,6 +77,9 @@ export function TicketPage() {
     );
   const expired =
     Boolean(token.data) && new Date(token.data!.expiresAt).getTime() <= clock;
+  const entryWindow = booking.data
+    ? ticketWindow(booking.data.startAt, booking.data.endAt, clock)
+    : undefined;
   return (
     <LumaPage
       title={t("ticket")}
@@ -79,6 +89,22 @@ export function TicketPage() {
           : `/bookings/detail?id=${id}`
       }
     >
+      {!membership && (
+        <QueryState query={booking}>
+          {entryWindow && !entryWindow.available && (
+            <p className="luma-meta" role="status">
+              {entryWindow.upcoming
+                ? t("ticketOpensAt", {
+                    time: stamp(
+                      new Date(entryWindow.opensAt).toISOString(),
+                      locale,
+                    ),
+                  })
+                : t("ticketSessionEnded")}
+            </p>
+          )}
+        </QueryState>
+      )}
       {!!passes.data?.length && (
         <fieldset className="grid gap-3 my-4">
           <legend>{w("passes")}</legend>
@@ -125,7 +151,7 @@ export function TicketPage() {
       </div>
       <button
         className="luma-cta"
-        disabled={token.isPending}
+        disabled={token.isPending || (!membership && !entryWindow?.available)}
         onClick={() => {
           setQrError(false);
           token.mutate({ entryPassId: pass || undefined });

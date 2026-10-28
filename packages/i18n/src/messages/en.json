@@ -1519,6 +1519,8 @@
     "invitationNote": "Accepting an invitation does not reserve a spot. Choose the service to register.",
     "expires": "Expires",
     "refreshTicket": "Refresh ticket",
+    "ticketOpensAt": "Your ticket becomes available at {time}, two hours before the session starts.",
+    "ticketSessionEnded": "The entry window for this session has ended.",
     "termsAccept": "I have read and accept the service conditions",
     "useMembership": "Use membership",
     "cash": "Cash",

@@ -17,9 +17,11 @@ import {
 export function ServiceReviewForm({
   clubId,
   branchId,
+  returnTo,
 }: {
   clubId: string;
   branchId: string;
+  returnTo: string;
 }) {
   const t = useTranslations("Training"),
     account = useAccount(),
@@ -31,7 +33,7 @@ export function ServiceReviewForm({
     return (
       <Button type="button" variant="outline" asChild>
         <Link
-          href={`/login?returnTo=${encodeURIComponent(`/discovery/clubs/${clubId}/reviews?branch=${branchId}`)}`}
+          href={`/login?${new URLSearchParams({ returnTo })}`}
         >
           {t("signInToReview")}
         </Link>

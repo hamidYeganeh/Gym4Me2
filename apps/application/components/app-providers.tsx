@@ -5,6 +5,7 @@ import { useLocale, getDirection, type Locale } from "@repo/i18n";
 import { ClientLocaleProvider } from "@repo/i18n/client-provider";
 import { ApiProvider, setNativeApiForeground } from "@repo/api/provider";
 import { ThemeProvider, useTheme } from "@repo/theme/provider";
+import { applicationThemeStorageKey } from "../lib/application-theme";
 import { DirectionProvider } from "@repo/ui/kit/Direction";
 import { TooltipProvider } from "@repo/ui/kit/Tooltip";
 import { Toaster } from "@repo/ui/kit/Sileo";
@@ -217,7 +218,7 @@ export function AppProviders({
 }) {
   return (
     <ClientLocaleProvider initialLocale={locale}>
-      <ThemeProvider defaultTheme="dark" storageKey="gym4me-application-theme">
+      <ThemeProvider defaultTheme="dark" storageKey={applicationThemeStorageKey}>
         <AppNavigationRuntime />
         <DirectionAndMotion>{children}</DirectionAndMotion>
       </ThemeProvider>

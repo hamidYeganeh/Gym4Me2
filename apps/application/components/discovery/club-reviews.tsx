@@ -111,7 +111,11 @@ export function ClubReviews({
       {query.isPending && <CatalogState loading />}
       {query.isError && <CatalogState retry={() => void query.refetch()} />}
       {currentBranch && (
-        <ServiceReviewForm clubId={clubId} branchId={currentBranch} />
+        <ServiceReviewForm
+          clubId={clubId}
+          branchId={currentBranch}
+          returnTo={clubHref(clubId, "reviews", { branch: currentBranch })}
+        />
       )}
       {(full ? reviews : reviews.slice(0, 5)).map((review) => (
         <div key={review.id} className="space-y-3">
