@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { StarFullIcon as Star } from "../../icons";
 import { reviewsSummaryStyles as s } from "./ReviewsSummary.styles";
 import type { ReviewsSummaryProps } from "./ReviewsSummary.types";
 export function ReviewsSummary({

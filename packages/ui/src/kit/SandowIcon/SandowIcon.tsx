@@ -7,13 +7,30 @@ export function createSandowIcon(
   layers: readonly SandowIconLayer[],
   displayName: string,
 ) {
-  function SandowIcon({ label, tone, className, ...props }: SandowIconProps) {
+  function SandowIcon({
+    label,
+    tone,
+    className,
+    size,
+    style,
+    strokeWidth: _strokeWidth,
+    fill: _fill,
+    absoluteStrokeWidth: _absoluteStrokeWidth,
+    ...props
+  }: SandowIconProps) {
+    void _strokeWidth;
+    void _fill;
+    void _absoluteStrokeWidth;
     return (
       <span
         role={label ? "img" : undefined}
         aria-label={label}
         aria-hidden={label ? undefined : true}
         className={cn(sandowIconVariants({ tone }), className)}
+        style={{
+          ...(size ? { width: size, height: size, fontSize: size } : {}),
+          ...style,
+        }}
         {...props}
       >
         {layers.map(([codepoint, opacity]) => (

@@ -11,9 +11,9 @@ import {
   useSyncExternalStore,
   type ComponentProps,
 } from "react";
-import { Check } from "lucide-react";
-import { normalizeOneTimeCode } from "./OneTimeCode.utils";
+import { CheckIcon as Check } from "../../icons";
 import "./OneTimeCode.css";
+import { normalizeOneTimeCode } from "./OneTimeCode.utils";
 
 /* ══ One-time code ════════════════════════════════════════
    Six small cells and a caret. Digits rise into their cells;

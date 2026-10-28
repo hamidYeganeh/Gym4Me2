@@ -1,12 +1,16 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { StarFullIcon as Star } from "../../icons";
 import { clubFeaturedCardStyles as s } from "./ClubFeaturedCard.styles";
 import type { ClubFeaturedCardProps } from "./ClubFeaturedCard.types";
 export function ClubFeaturedCard({ club, viewLabel }: ClubFeaturedCardProps) {
   return (
-    <article data-slot="club-featured-card" className={s.root()}>
+    <article
+      data-zoom-exit-key={`club-${club.id}`}
+      data-slot="club-featured-card"
+      className={s.root()}
+    >
       <Image
         src={club.photos[0].src}
         alt={club.photos[0].alt}
@@ -27,7 +31,7 @@ export function ClubFeaturedCard({ club, viewLabel }: ClubFeaturedCardProps) {
           src={club.logo ?? club.photos[0].src}
           alt=""
           fill
-          sizes="96px"
+          sizes="128px"
           className="object-cover"
           unoptimized
         />

@@ -1,0 +1,26 @@
+[Unit]
+Description=Gym4Me API
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=docker.service
+
+[Service]
+Type=simple
+User=gym4me
+Group=gym4me
+WorkingDirectory=/opt/gym4me/current/apps/api
+EnvironmentFile=/etc/gym4me/api.env
+ExecStart=/usr/local/bin/node dist/main.js
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGTERM
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+UMask=0077
+SyslogIdentifier=gym4me-api
+
+[Install]
+WantedBy=multi-user.target

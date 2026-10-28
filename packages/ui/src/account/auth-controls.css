@@ -76,7 +76,6 @@
 .mobile-auth {
   position: relative;
 }
-.mobile-auth::before,
 .auth-sheet-handle {
   content: "";
   display: block;
@@ -86,6 +85,7 @@
   background: var(--border);
 }
 .mobile-auth::before {
+  display: none;
   position: absolute;
   top: calc(1.75rem + var(--app-safe-top, 0px));
   inset-inline-start: calc(50% - 1.25rem);

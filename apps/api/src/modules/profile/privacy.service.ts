@@ -445,6 +445,9 @@ export class PrivacyService {
               sql`SELECT * FROM coaching_practices WHERE user_id=${userId}`,
             )
           ).rows,
+          coachingSamples: (
+            await tx.execute(sql`SELECT id,title,position,created_at FROM coach_samples WHERE coach_id=${userId}`)
+          ).rows,
           coachingCredentials: (
             await tx.execute(
               sql`SELECT id,title,issuer,expires_at,created_at FROM coaching_credentials WHERE coach_id=${userId}`,

@@ -1,13 +1,14 @@
 "use client";
 
-import { useId } from "react";
 import { Field as FieldPrimitive } from "@base-ui/react/field";
-import { Field, FieldDescription, FieldError, FieldLabel } from "../Field";
-import { SmoothInput } from "../SmoothInput";
+import { useId } from "react";
 import { cn } from "../../lib/utils";
+import { Field, FieldDescription, FieldError, FieldLabel } from "../Field";
+import { Search } from "../Search";
+import { LabelInput } from "../LabelInput";
 import type { TextFieldProps } from "./TextField.types";
 
-/** Skiper's smooth caret with Base UI's label, description and validation wiring. */
+/** Floating label with Base UI description and validation wiring. */
 export function TextField({
   label,
   description,
@@ -25,8 +26,12 @@ export function TextField({
   "aria-invalid": ariaInvalid,
   ...props
 }: TextFieldProps) {
+  void smooth;
+  void reducedMotion;
+  void hiddenLabel;
   const generatedId = useId();
   const inputId = id ?? generatedId;
+  const Control = props.type === "search" ? Search : LabelInput;
   const invalid = !!error || ariaInvalid === true || ariaInvalid === "true";
   return (
     <FieldPrimitive.Root
@@ -46,17 +51,17 @@ export function TextField({
     >
       <FieldPrimitive.Label
         htmlFor={inputId}
-        render={<FieldLabel className={hiddenLabel ? "sr-only" : undefined} />}
+        render={<FieldLabel className="sr-only" />}
       >
         {label}
       </FieldPrimitive.Label>
-      <SmoothInput
+      <Control
+        label={label}
         {...props}
         id={inputId}
         name={name}
         disabled={disabled}
         className={cn("min-h-11", className)}
-        reducedMotion={!smooth || reducedMotion}
         aria-invalid={invalid || ariaInvalid}
       />
       {description && (

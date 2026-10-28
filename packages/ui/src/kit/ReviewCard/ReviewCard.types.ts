@@ -1,4 +1,6 @@
 import type { VariantProps } from "class-variance-authority";
+import type { ReactNode } from "react";
+import type { Reaction } from "../EmojiReactions";
 import type { reviewCardVariants } from "./ReviewCard.styles";
 
 export type ReviewSummary = {
@@ -23,8 +25,9 @@ export type ReviewCardProps = ReviewCardVariants & {
     rating: string;
   };
   locale?: string;
-  vote?: ReviewVote;
-  onVoteChange?: (vote: ReviewVote) => void;
+  reactions?: Reaction[];
+  onReact?: (emoji: string, active: boolean) => Promise<unknown> | void;
+  reactionControl?: ReactNode;
   onReport?: () => void;
   onMore?: () => void;
   className?: string;

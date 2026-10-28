@@ -7,13 +7,13 @@ import type {
   InputOTPSlotProps,
 } from "./InputOtp.types";
 
-import { cn } from "@repo/ui/lib/utils";
 import {
   OTPInput,
   OTPInputContext,
 } from "@animate-ui/react/primitives/input-otp";
-import { MinusIcon } from "lucide-react";
+import { cn } from "@repo/ui/lib/utils";
 import * as React from "react";
+import { MinusIcon } from "../../icons";
 
 function InputOTP({ className, containerClassName, ...props }: InputOTPProps) {
   return (

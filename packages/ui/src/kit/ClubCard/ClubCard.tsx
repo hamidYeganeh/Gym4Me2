@@ -1,22 +1,22 @@
 "use client";
 
-import { useClubPhoto } from "../../hooks/use-club-photo";
 import { useTranslations } from "@repo/i18n";
+import { Like } from "@repo/ui/kit/Like";
 import Image from "next/image";
 import Link from "next/link";
+import { useClubPhoto } from "../../hooks/use-club-photo";
 import {
-  Bookmark,
-  GitCompareArrows,
-  MapPin,
-  Star,
-  Dumbbell,
-} from "lucide-react";
+  BarbellHorizontalIcon as Dumbbell,
+  ArrowLeftRightIcon as GitCompareArrows,
+  MapPin1Icon as MapPin,
+  StarFullIcon as Star,
+} from "../../icons";
 import { cn } from "../../lib/utils";
 import { Button } from "../Button";
 import { ProgressiveBlur } from "../ProgressiveBlur";
+import "./ClubCard.css";
 import { clubCardStyles as s } from "./ClubCard.styles";
 import type { ClubCardProps } from "./ClubCard.types";
-import "./ClubCard.css";
 
 export function ClubCard({
   club,
@@ -49,10 +49,11 @@ export function ClubCard({
   return (
     <article
       data-slot="club-card"
+      data-zoom-exit-key={`club-${club.id}`}
       data-variant={variant}
       className={cn(s.root({ size, variant }), "club-card", className)}
     >
-      <div className="club-card-cover" data-zoom-exit-key={`club-${club.id}`}>
+      <div className="club-card-cover">
         <Image
           src={photo.src}
           alt={photo.alt}
@@ -81,16 +82,14 @@ export function ClubCard({
       />
       <div className="club-card-actions">
         {onSavedChange && (
-          <Button
+          <Like
             size="icon-lg"
             variant={imageVariant ? "image" : "secondary"}
             type="button"
             aria-label={saved ? labels.unsave : labels.save}
             aria-pressed={saved}
             onClick={() => onSavedChange(!saved)}
-          >
-            <Bookmark className={saved ? "fill-current" : undefined} />
-          </Button>
+          ></Like>
         )}
         {compareHref && (
           <Button
@@ -107,6 +106,14 @@ export function ClubCard({
       {featuredLabel && (
         <span className="club-card-featured">{featuredLabel}</span>
       )}
+      {!landscape && club.facilities[0] && (
+        <ul className="club-card-facilities">
+          <li>
+            <Dumbbell size={14} />
+            <span>{club.facilities[0]}</span>
+          </li>
+        </ul>
+      )}
       {!landscape && rating}
       <div className="club-card-copy">
         <div className="club-card-heading">
@@ -116,22 +123,8 @@ export function ClubCard({
           <MapPin size={14} />
           <span>{club.address}</span>
         </p>
-        <p className="club-card-price">
-          {club.price}
-          {club.pricePeriod && <small> / {club.pricePeriod}</small>}
-        </p>
+        <p className="club-card-price">{club.price}</p>
         {landscape && rating}
-        <ul className="club-card-facilities">
-          {club.facilities
-            .slice(0, 2)
-            .filter(Boolean)
-            .map((item, index) => (
-              <li key={index}>
-                {index === 0 && <Dumbbell size={14} />}
-                <span>{item}</span>
-              </li>
-            ))}
-        </ul>
         {!landscape && club.photos.length > 1 && (
           <div
             className="club-card-dots"

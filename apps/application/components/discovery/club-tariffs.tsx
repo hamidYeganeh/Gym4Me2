@@ -19,8 +19,8 @@ export function ClubTariffs({ tariffs }: { tariffs: TariffDto[] }) {
           </CardHeader>
           <CardContent className="grid gap-3">
             <p className="text-lg font-semibold">
-              {number.format(tariff.priceToman)} {t("toman")} /{" "}
-              {t(`unit_${tariff.unit}`)}
+              {number.format(tariff.priceToman)} {t("toman")}
+              {tariff.unit !== "visit" && <> / {t(`unit_${tariff.unit}`)}</>}
             </p>
             <p className="text-sm text-muted-foreground">
               {t(`service_${tariff.serviceType}`)}
@@ -38,7 +38,7 @@ export function ClubTariffs({ tariffs }: { tariffs: TariffDto[] }) {
                 ))}
               </ul>
             ) : null}
-            <p className="whitespace-pre-line text-sm">{tariff.conditions}</p>
+            {tariff.conditions && !/بانکی کسر نمی|demo|sandbox|demonstration/i.test(tariff.conditions) && <p className="whitespace-pre-line text-sm">{tariff.conditions}</p>}
             <p className="text-xs text-muted-foreground">
               {t("version", { version: number.format(tariff.version) })} ·{" "}
               {new Intl.DateTimeFormat(locale, {

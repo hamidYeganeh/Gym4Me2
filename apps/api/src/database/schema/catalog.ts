@@ -69,6 +69,8 @@ function taxonomy<T extends string>(name: T) {
       name: varchar('name', { length: 120 }).notNull(),
       slug: varchar('slug', { length: 120 }).notNull().unique(),
       description: text('description'),
+      imageUrl: text('image_url'),
+      iconName: varchar('icon_name', { length: 100 }),
       isActive: boolean('is_active').default(true).notNull(),
       createdAt: created(),
       updatedAt: updated(),
@@ -178,6 +180,10 @@ export const clubs = pgTable(
     coverId: uuid('cover_id'),
     description: text('description'),
     shortDescription: varchar('short_description', { length: 280 }),
+    faq: jsonb('faq')
+      .$type<{ question: string; answer: string }[]>()
+      .default([])
+      .notNull(),
     publicationStatus: publicationState('publication_status')
       .default('draft')
       .notNull(),

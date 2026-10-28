@@ -272,7 +272,7 @@ function PreferencesForm({ value }: { value: PrivacyDto }) {
       ref={form}
       onSubmit={submit}
       aria-busy={mutation.isPending}
-      className="grid gap-5 [&_[data-slot=button]]:min-h-11 [&_label]:min-h-11"
+      className="grid gap-4 [&_[data-slot=button]]:min-h-11 [&_label]:min-h-11 [&>[data-slot=field]]:rounded-2xl [&>[data-slot=field]]:border [&>[data-slot=field]]:p-4 [&_[data-slot=checkbox]]:!size-5 [&_[data-slot=checkbox]]:!min-h-5 [&_[data-slot=checkbox]]:!min-w-5"
     >
       {(value.marketingConsent || value.profilePublic) && (
         <div className="flex flex-wrap gap-3">
@@ -394,7 +394,13 @@ function usePrivacyActionFocus(busy: boolean) {
     setVersion((value) => value + 1);
   };
 }
-export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
+export function AccountPrivacy({
+  mobile = false,
+  onboarding = false,
+}: {
+  mobile?: boolean;
+  onboarding?: boolean;
+}) {
   const t = useTranslations("Privacy");
   const query = usePrivacy();
   const exportAccount = useExportAccount();
@@ -477,68 +483,72 @@ export function AccountPrivacy({ mobile = false }: { mobile?: boolean }) {
               </div>
             </details>
             <PreferencesForm key={value.policy.version} value={value} />
-            <div className="grid gap-4 border-t pt-6">
-              <p className="text-sm text-muted-foreground">{t("exportHint")}</p>
-              <div>
-                <Button
-                  variant="outline"
-                  disabled={busy}
-                  onClick={() => void exportData()}
-                >
-                  {t("export")}
-                </Button>
-              </div>
-              {value.deletion &&
-              ["pending", "processing"].includes(value.deletion.status) ? (
-                <Alert>
-                  <AlertDescription className="grid gap-3">
-                    <p>
-                      {value.deletion.status === "processing"
-                        ? t("deletionProcessing")
-                        : t("pendingUntil", {
-                            date: dateLabel(value.deletion.eligibleAfter),
-                          })}
+            {!onboarding && (
+              <div className="grid gap-4 border-t pt-6">
+                <p className="text-sm text-muted-foreground">
+                  {t("exportHint")}
+                </p>
+                <div>
+                  <Button
+                    variant="outline"
+                    disabled={busy}
+                    onClick={() => void exportData()}
+                  >
+                    {t("export")}
+                  </Button>
+                </div>
+                {value.deletion &&
+                ["pending", "processing"].includes(value.deletion.status) ? (
+                  <Alert>
+                    <AlertDescription className="grid gap-3">
+                      <p>
+                        {value.deletion.status === "processing"
+                          ? t("deletionProcessing")
+                          : t("pendingUntil", {
+                              date: dateLabel(value.deletion.eligibleAfter),
+                            })}
+                      </p>
+                      {value.canCancelDeletion !== false ? (
+                        <div>
+                          <Button
+                            ref={deletionAction}
+                            variant="outline"
+                            disabled={busy}
+                            onClick={() => void deletion(true)}
+                          >
+                            {t("cancelDeletion")}
+                          </Button>
+                        </div>
+                      ) : null}
+                    </AlertDescription>
+                  </Alert>
+                ) : (
+                  <>
+                    <p className="text-sm text-muted-foreground">
+                      {t(
+                        value.canRequestDeletion
+                          ? "deleteHint"
+                          : "responsibilities",
+                        { days: value.policy.deletionGraceDays },
+                      )}
                     </p>
-                    {value.canCancelDeletion !== false ? (
-                      <div>
-                        <Button
-                          ref={deletionAction}
-                          variant="outline"
-                          disabled={busy}
-                          onClick={() => void deletion(true)}
-                        >
-                          {t("cancelDeletion")}
-                        </Button>
-                      </div>
-                    ) : null}
-                  </AlertDescription>
-                </Alert>
-              ) : (
-                <>
-                  <p className="text-sm text-muted-foreground">
-                    {t(
-                      value.canRequestDeletion
-                        ? "deleteHint"
-                        : "responsibilities",
-                      { days: value.policy.deletionGraceDays },
-                    )}
-                  </p>
-                  <div>
-                    <Button
-                      ref={deletionAction}
-                      variant="destructive"
-                      disabled={busy || !value.canRequestDeletion}
-                      onClick={() => {
-                        setError(null);
-                        setConfirmOpen(true);
-                      }}
-                    >
-                      {t("requestDeletion")}
-                    </Button>
-                  </div>
-                </>
-              )}
-            </div>
+                    <div>
+                      <Button
+                        ref={deletionAction}
+                        variant="destructive"
+                        disabled={busy || !value.canRequestDeletion}
+                        onClick={() => {
+                          setError(null);
+                          setConfirmOpen(true);
+                        }}
+                      >
+                        {t("requestDeletion")}
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
             {!confirmOpen && <ErrorNotice error={error} />}
             <Dialog
               open={confirmOpen}

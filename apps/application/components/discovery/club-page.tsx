@@ -1,29 +1,31 @@
 "use client";
+import { ClubCoaches, ClubClassesPreview } from "./club-people-classes";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { clubHref } from "../../lib/club-href";
 import { ClubFeaturedCard } from "@repo/ui/kit/ClubFeaturedCard";
-import { CategoryCarousel } from "./category-carousel";
+import { useSelectedBranch } from "./use-selected-branch";
+import { ClubBranchCard } from "@repo/ui/kit/ClubBranchCard";
 import { Carousel, CarouselContent, CarouselItem } from "@repo/ui/kit/Carousel";
 import { ClubShareSheet } from "./club-share-sheet";
 import { ClubGalleryPreview } from "./club-gallery-preview";
 import { ClubSocialShare } from "./club-social-share";
 import { ClubAvailability } from "./club-availability";
+import { ClubFaq } from "@repo/ui/kit/ClubFaq";
 import { ClubReviews } from "./club-reviews";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { ClubDetail } from "@repo/ui/kit/ClubDetail";
 import { toast } from "@repo/ui/kit/Sileo";
 import { useCatalogClub, useCatalogClubs } from "./use-catalog";
 import { CatalogState } from "./catalog-state";
-import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";
+
 import { useClubUrl } from "./use-club-url";
 import { useSavedClub } from "./use-saved-club";
 import { ClubTariffs } from "./club-tariffs";
 
-export function ClubPage({ clubId }: { clubId: string }) {
-  const router = useRouter();
-  const params = useSearchParams();
-  const query = useCatalogClub(clubId, params.get("branch") ?? undefined);
+export function ClubPage({ clubId, initialClub, initialBranch }: { clubId: string; initialClub?: import("@repo/api/catalog").ClubDto; initialBranch?: import("@repo/api/catalog").BranchProfileDto }) {
+  const [selectedBranch, setSelectedBranch] = useSelectedBranch(clubId);
+  const query = useCatalogClub(clubId, selectedBranch, initialClub, initialBranch);
   if (!query.club)
     return (
       <CatalogState
@@ -40,11 +42,9 @@ export function ClubPage({ clubId }: { clubId: string }) {
       branchLoading={query.branchQuery.isPending}
       branchError={query.branchQuery.isError}
       retryBranch={() => void query.branchQuery.refetch()}
-      onBranchChange={(branch) =>
-        router.replace(clubHref(clubId, undefined, { branch }), {
-          scroll: false,
-        })
-      }
+      onBranchChange={setSelectedBranch}
+      active={query.data?.operatingStatus === "active"}
+      faq={query.data?.faq ?? []}
       tariffs={query.data?.tariffs ?? []}
     />
   );
@@ -58,6 +58,8 @@ function ClubContent({
   retryBranch,
   onBranchChange,
   tariffs,
+  faq,
+  active,
 }: {
   club: import("@repo/ui/kit/ClubDetail").ClubDetailData;
   branches: import("@repo/api/catalog").ClubDto["branches"];
@@ -66,21 +68,23 @@ function ClubContent({
   branchError: boolean;
   retryBranch: () => void;
   onBranchChange: (id: string) => void;
+  active: boolean;
+  faq: import("@repo/api/catalog").ClubFaqDto[];
   tariffs: import("@repo/api/catalog").TariffDto[];
 }) {
   const router = useRouter();
-  const clubId = club.id;
+  const clubId = club.slug ?? club.id;
   const [shareOpen, setShareOpen] = useState(false);
   const locale = useLocale();
   const t = useTranslations("Clubs");
   const recommendations = useCatalogClubs()
-    .clubs.filter((item) => item.id !== clubId)
+    .clubs.filter((item) => item.id !== club.id)
     .sort(
       (a, b) =>
         Number(b.category === club.category) -
         Number(a.category === club.category),
     );
-  const [saved, setSaved] = useSavedClub(clubId);
+  const [saved, setSaved] = useSavedClub(club.id);
   const url = useClubUrl(clubId, branch?.id);
   async function share() {
     if (!url) {
@@ -122,25 +126,29 @@ function ClubContent({
             </Carousel>
           </section>
         }
-        categories={<CategoryCarousel locale={locale} />}
         branches={
           branches.length ? (
             <section className="flex min-w-0 flex-col gap-4">
               <h2 className="text-2xl font-semibold">{t("branches")}</h2>
-              <ToggleGroup
-                type="single"
-                value={branch?.id ?? ""}
-                onValueChange={(id) => {
-                  if (id) onBranchChange(id);
-                }}
-                className="flex flex-wrap justify-start"
-              >
+              <div className="flex gap-3 overflow-x-auto pb-2">
                 {branches.map((item) => (
-                  <ToggleGroupItem key={item.id} value={item.id}>
-                    {item.name}
-                  </ToggleGroupItem>
+                  <ClubBranchCard
+                    key={item.id}
+                    branch={{
+                      id: item.id,
+                      name: item.name,
+                      address:
+                        item.id === branch?.id
+                          ? (branch.location.address ?? "")
+                          : "",
+                      photo: club.photos[0]!,
+                    }}
+                    viewLabel={t("branches")}
+                    selected={branch?.id === item.id}
+                    onSelect={() => onBranchChange(item.id)}
+                  />
                 ))}
-              </ToggleGroup>
+              </div>
             </section>
           ) : undefined
         }
@@ -156,6 +164,7 @@ function ClubContent({
         }
         availability={
           <>
+            <ClubClassesPreview clubId={club.id} slug={clubId} />
             <ClubTariffs
               tariffs={tariffs.filter(
                 (tariff) =>
@@ -171,32 +180,22 @@ function ClubContent({
             )}
           </>
         }
+        faq={<ClubFaq items={faq} />}
         reviews={<ClubReviews clubId={clubId} branchId={branch?.id} />}
         coaches={
-          branch?.coaches.length ? (
-            <section className="flex flex-col gap-4">
-              <h2 className="text-2xl font-semibold">{t("coachCount")}</h2>
-              {branch.coaches.map((coach) => (
-                <article
-                  key={coach.id}
-                  className="rounded-2xl border border-border p-4"
-                >
-                  <p className="font-semibold">{coach.displayName}</p>
-                  {coach.biography && (
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {coach.biography}
-                    </p>
-                  )}
-                </article>
-              ))}
-            </section>
-          ) : undefined
+          branchLoading ? (
+            <CatalogState loading />
+          ) : branchError ? (
+            <CatalogState retry={retryBranch} />
+          ) : (
+            <ClubCoaches branch={branch} />
+          )
         }
         saved={saved}
         onSavedChange={setSaved}
         onShare={() => setShareOpen(true)}
         onPlanVisit={
-          branch
+          branch && active && branch.operatingStatus === "active"
             ? () =>
                 router.push(clubHref(clubId, "slots", { branch: branch.id }))
             : undefined

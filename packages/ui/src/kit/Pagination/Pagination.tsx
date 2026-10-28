@@ -17,8 +17,8 @@ import { Button } from "@repo/ui/kit/Button";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  MoreHorizontalIcon,
-} from "lucide-react";
+  DotThreeHorizontalIcon as MoreHorizontalIcon,
+} from "../../icons";
 
 function Pagination({ className, ...props }: PaginationProps) {
   const t = useTranslations();

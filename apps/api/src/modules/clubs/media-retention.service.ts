@@ -22,7 +22,7 @@ export class MediaRetentionService {
     for (const file of trainingFiles.rows)
       await this.storage.delete(file.image_key);
     const media = await tx.execute<{ object_key: string }>(
-      sql`SELECT object_key FROM coaching_credentials WHERE coach_id=${userId} AND object_key IS NOT NULL`,
+      sql`SELECT object_key FROM coaching_credentials WHERE coach_id=${userId} AND object_key IS NOT NULL UNION SELECT before_key FROM coach_samples WHERE coach_id=${userId} UNION SELECT after_key FROM coach_samples WHERE coach_id=${userId}`,
     );
     for (const item of media.rows) await this.storage.delete(item.object_key);
   }
@@ -132,7 +132,7 @@ export class MediaRetentionService {
     for await (const object of this.storage.objects('coaching/')) {
       if (object.modifiedAt >= cutoff) continue;
       const referenced = await this.database.db.execute(
-        sql`SELECT id FROM coaching_credentials WHERE object_key=${object.key} LIMIT 1`,
+        sql`SELECT id FROM coaching_credentials WHERE object_key=${object.key} UNION SELECT id FROM coach_samples WHERE before_key=${object.key} OR after_key=${object.key} LIMIT 1`,
       );
       if (referenced.rows.length) continue;
       result.eligibleObjects++;

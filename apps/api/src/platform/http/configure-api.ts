@@ -1,4 +1,5 @@
 import { INestApplication, VersioningType } from '@nestjs/common';
+import { ExpressAdapter } from '@nestjs/platform-express';
 import {
   LocaleExceptionFilter,
   ReadinessLocalizationInterceptor,
@@ -8,9 +9,18 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 export interface ApiOptions {
   corsOrigins: string[];
   docsEnabled: boolean;
+  trustLoopbackProxy?: boolean;
 }
 
 export function configureApi(app: INestApplication, options: ApiOptions): void {
+  if (options.trustLoopbackProxy) {
+    // The VPS binds the API to loopback; nginx replaces incoming forwarded IPs.
+    // Trust only local hops, never an arbitrary caller or a fixed hop count.
+    const adapter = app.getHttpAdapter();
+    if (!(adapter instanceof ExpressAdapter))
+      throw new Error('Trusted loopback proxy requires the Express adapter');
+    adapter.set('trust proxy', 'loopback');
+  }
   app.use(
     (
       _req: unknown,

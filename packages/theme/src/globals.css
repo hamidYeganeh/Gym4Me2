@@ -314,3 +314,2155 @@ html[data-theme-transition="active"]::view-transition-group(root) {
   --panel-blur: 0px;
   --panel-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* ══ Label input ═══════════════════════════════════════════
+   lab/LabelInput.tsx. Positioned at the root for the canvas
+   halo — see the note on .gen. */
+.lbi {
+  position: relative;
+  font-family: var(--font-sans);
+  display: grid;
+  place-items: center;
+  /* room above the field for the lifted label */
+  padding-top: 12px;
+}
+
+/* no fill: the field is only its outline */
+.lbi-box {
+  position: relative;
+  background: transparent;
+  cursor: text;
+}
+
+/* ── the outline ────────────────────────────────────────────
+   Always whole. At rest a hairline of grey; focused, the ink
+   at a hair heavier; left filled, a grey a step darker than
+   rest. The gap across the top is the only part that moves. */
+.lbi-ring {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.lbi-ring path {
+  fill: none;
+  stroke: color-mix(
+    in srgb,
+    var(--foreground, #17181a) 32%,
+    var(--background, #ffffff)
+  );
+  stroke-width: 1;
+  stroke-linecap: butt;
+  transition:
+    stroke 220ms ease,
+    stroke-width 220ms ease;
+}
+
+.lbi:is([data-focus="true"], :has(.lbi-field:focus)) .lbi-ring path {
+  stroke: var(--foreground);
+  stroke-width: 1.5;
+}
+
+.lbi[data-filled="true"]:not([data-focus="true"]) .lbi-ring path {
+  stroke: color-mix(
+    in srgb,
+    var(--foreground, #17181a) 32%,
+    var(--background, #ffffff)
+  );
+}
+
+/* the gap: whole at rest, parting from its middle when the
+   label lifts. The dash is longer than the path so offset 0
+   is the whole line and -1 is none of it. */
+.lbi-gap {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 0;
+  transition:
+    stroke 220ms ease,
+    stroke-width 220ms ease,
+    stroke-dashoffset 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lbi:is([data-up="true"], :has(.lbi-field:focus), :has(.lbi-field:autofill))
+  .lbi-gap {
+  stroke-dashoffset: -1;
+}
+
+/* ── the label ──────────────────────────────────────────────
+   Its placeholder self in the middle of the field, and its
+   lifted self centred on the top edge — the second is the
+   first moved up by half the field and scaled from its left. */
+.lbi-label {
+  position: absolute;
+  inset-inline-start: var(--lbi-x);
+  top: 50%;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: pre;
+  color: var(--muted-foreground);
+  transform-origin: left center;
+  transform: translateY(-50%);
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 220ms ease;
+  cursor: text;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.lbi:is([data-up="true"], :has(.lbi-field:focus), :has(.lbi-field:autofill))
+  .lbi-label {
+  transform: translateY(-50%) translateY(-26px) scale(0.78);
+  color: var(--muted-foreground);
+}
+
+.lbi:is([data-focus="true"], :has(.lbi-field:focus)) .lbi-label {
+  color: var(--foreground, var(--foreground));
+}
+
+.lbi-label span {
+  display: inline-block;
+}
+
+/* the hop: each letter lifts a hair and settles, one after the
+   next, so the word ripples as it rises */
+.lbi:is([data-focus="true"], :has(.lbi-field:focus)) .lbi-label span {
+  animation: lbi-hop 460ms cubic-bezier(0.3, 0.7, 0.3, 1) both;
+  animation-delay: calc(var(--i) * 24ms);
+}
+
+.lbi-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding-inline-start: var(--lbi-x);
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  font: inherit;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--foreground, var(--foreground));
+  outline: none;
+}
+
+/* the reveal: the text passes through a soft blur rather than
+   snapping between dots and letters. Two names so a second
+   press restarts it. */
+.lbi-field[data-flip="1"] {
+  animation: lbi-flip-a 260ms ease-out;
+}
+
+.lbi-field[data-flip="0"] {
+  animation: lbi-flip-b 260ms ease-out;
+}
+
+.lbi-eye {
+  position: absolute;
+  inset-inline-end: 10px;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  margin-top: -15px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    scale 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lbi-eye:hover {
+  color: var(--foreground, var(--foreground));
+}
+
+.lbi-eye:active {
+  scale: 0.96;
+}
+
+/* the two icons in one place, trading places */
+.lbi-eye .sandow-icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity 220ms ease,
+    scale 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 220ms ease;
+}
+
+.lbi-eye .sandow-icon:last-child {
+  opacity: 0;
+  scale: 0.7;
+  filter: blur(2px);
+}
+
+.lbi-eye[data-show="true"] svg:first-child {
+  opacity: 0;
+  scale: 0.7;
+  filter: blur(2px);
+}
+
+.lbi-eye[data-show="true"] svg:last-child {
+  opacity: 1;
+  scale: 1;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lbi-ring path,
+  .lbi-gap,
+  .lbi-label {
+    transition-duration: 160ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lbi:is([data-focus="true"], :has(.lbi-field:focus)) .lbi-label span,
+  .lbi-field {
+    animation: none;
+  }
+}
+
+@keyframes lbi-hop {
+  0% {
+    transform: translateY(0);
+  }
+  38% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes lbi-flip-a {
+  from {
+    filter: blur(3px);
+    opacity: 0.5;
+  }
+}
+
+@keyframes lbi-flip-b {
+  from {
+    filter: blur(3px);
+    opacity: 0.5;
+  }
+}
+
+.lbi {
+  min-width: 0;
+  width: 100%;
+}
+.lbi[data-rtl] .lbi-ring {
+  transform: scaleX(-1);
+}
+.lbi[data-rtl] .lbi-label {
+  transform-origin: right center;
+  letter-spacing: normal;
+}
+.lbi[data-disabled] {
+  opacity: 0.5;
+}
+.lbi[data-invalid="true"] .lbi-ring path {
+  stroke: var(--destructive);
+}
+.lbi:has(.lbi-field:autofill) .lbi-label {
+  transform: translateY(-50%) translateY(-26px) scale(0.78);
+}
+[data-slot="input-group"] > .lbi {
+  flex: 1;
+  width: auto;
+  padding-top: 0;
+}
+[data-slot="input-group"] .lbi-ring {
+  display: none;
+}
+[data-slot="input-group"] .lbi-box {
+  height: 48px !important;
+}
+[data-slot="input-group"]
+  .lbi:is([data-up="true"], :has(.lbi-field:focus), :has(.lbi-field:autofill))
+  .lbi-label {
+  transform: translateY(-50%) translateY(-13px) scale(0.78);
+}
+[data-slot="input-group"]
+  .lbi:is([data-up="true"], :has(.lbi-field:focus), :has(.lbi-field:autofill))
+  .lbi-field {
+  padding-top: 10px;
+}
+
+/* ══ Emoji reactions ═════════════════════════════════════ */
+.rxn {
+  position: relative;
+  width: 300px;
+  /* the pill needs room above the row; the message gives it.
+     No left inset: at 16px the message fills the 300px frame
+     itself, so the block sits in the middle of its card while
+     everything in it stays left-aligned */
+  padding: 8px 0 0 0;
+  font-family: var(--font-sans);
+  color: var(--foreground, var(--foreground));
+}
+
+/* the name and time on their own line, then the message as a
+   pill that hugs its words */
+.rxn-msg {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.rxn-who {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 4px;
+  font-size: 12px;
+  letter-spacing: 0em;
+}
+
+.rxn-face {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.rxn-who b {
+  font-weight: 500;
+}
+
+.rxn-who span {
+  color: color-mix(
+    in srgb,
+    var(--foreground, #17181a) 52%,
+    var(--card, #ffffff)
+  );
+}
+
+/* the message's pill, and the picker it turns into: the surface is
+   this, its width and corner sprung by the component */
+.rxn-morph {
+  position: relative;
+  /* the words sit in the middle of the pill whatever width the
+     spring is at, so a measuring pixel can never pile up on one side */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card, var(--card));
+  border-radius: var(--rxn-r);
+}
+
+[data-stroke="on"] .rxn-morph {
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.rxn-text {
+  display: block;
+  width: max-content;
+  padding: 0 20px;
+  font-size: 16px;
+  line-height: 22px;
+  white-space: nowrap;
+  transform-origin: 50% 50%;
+  letter-spacing: -0.01em;
+}
+
+.rxn-row {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin-top: 8px;
+}
+
+.rxn-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 16px 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--card, var(--card));
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+  letter-spacing: -0.01em;
+}
+
+/* the ones you are in carry a coloured edge — the fill stays the
+   chip's own */
+.rxn-chip[data-mine] {
+  background: var(--card, var(--card));
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--ring, #2231dd) 35%, transparent);
+  color: var(--ring, #2231dd);
+}
+
+/* the signal blue is too deep on a dark chip: a lighter blue there */
+[data-theme="dark"] .rxn-chip[data-mine],
+[data-fill="dark"] .rxn-chip[data-mine] {
+  color: #8c9bff;
+  box-shadow: inset 0 0 0 1px rgba(140, 155, 255, 0.4);
+}
+
+[data-theme="dark"] [data-fill="light"] .rxn-chip[data-mine] {
+  color: var(--ring, #2231dd);
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--ring, #2231dd) 35%, transparent);
+}
+
+.rxn-chip-e {
+  font-size: 20px;
+  line-height: 1;
+  transition: opacity 160ms ease;
+  letter-spacing: -0.02em;
+}
+
+.rxn-chip-e[data-landing] {
+  opacity: 0;
+}
+
+/* ── each emoji's own arrival ─────────────────────────────── */
+.rxn-p {
+  position: relative;
+  display: inline-block;
+  font-style: normal;
+  line-height: 1;
+}
+
+.rxn-p[data-play][data-k="launch"] {
+  animation: rxn-launch 640ms cubic-bezier(0.3, 1.2, 0.4, 1);
+}
+
+/* its exhaust: a small puff left behind under it */
+.rxn-p[data-play][data-k="launch"]::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  top: 70%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--foreground, #17181a) 20%, transparent);
+  animation: rxn-puff 520ms ease-out forwards;
+}
+
+.rxn-p[data-play][data-k="flicker"] {
+  animation: rxn-flicker 620ms ease-out;
+}
+
+.rxn-p[data-play][data-k="confetti"] {
+  animation: rxn-pop 420ms cubic-bezier(0.3, 1.6, 0.4, 1);
+}
+
+.rxn-bits {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  pointer-events: none;
+}
+
+.rxn-bits b {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px;
+  border-radius: 1px;
+  background: var(--c);
+  animation: rxn-bit 560ms cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+.rxn-p[data-play][data-k="glance"] {
+  animation: rxn-glance 700ms ease-in-out;
+}
+
+.rxn-p[data-play][data-k="tick"] {
+  animation: rxn-tick 460ms cubic-bezier(0.3, 1.6, 0.4, 1);
+}
+
+.rxn-p[data-play][data-k="beat"] {
+  animation: rxn-beat 620ms ease-in-out;
+}
+
+.rxn-p[data-play][data-k="nod"] {
+  animation: rxn-nod 520ms cubic-bezier(0.3, 1.4, 0.4, 1);
+  transform-origin: 50% 90%;
+}
+
+.rxn-p[data-play][data-k="laugh"] {
+  animation: rxn-laugh 560ms ease-in-out;
+}
+
+.rxn-p[data-play][data-k="wow"] {
+  animation: rxn-wow 520ms cubic-bezier(0.3, 1.5, 0.4, 1);
+  transform-origin: 50% 100%;
+}
+
+.rxn-p[data-play][data-k="droop"] {
+  animation: rxn-droop 700ms ease-in-out;
+  transform-origin: 50% 100%;
+}
+
+.rxn-p[data-play][data-k="bow"] {
+  animation: rxn-bow 620ms ease-in-out;
+  transform-origin: 50% 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rxn-p[data-play],
+  .rxn-p[data-play]::after,
+  .rxn-bits b {
+    animation: none;
+  }
+}
+
+.rxn-count {
+  display: inline-flex;
+  font-variant-numeric: tabular-nums;
+}
+
+.rxn-col {
+  display: inline-block;
+  height: 1.4em;
+  overflow: hidden;
+  line-height: 1.4em;
+}
+
+.rxn-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 220ms cubic-bezier(0.24, 1.34, 0.38, 1);
+}
+
+.rxn-strip > span {
+  height: 1.4em;
+}
+
+.rxn-add-wrap {
+  display: flex;
+}
+
+.rxn-add {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--card, var(--card));
+  color: color-mix(
+    in srgb,
+    var(--foreground, #17181a) 52%,
+    var(--card, #ffffff)
+  );
+  cursor: pointer;
+  /* a finger holds and slides from here: no scroll, no text
+     selection, no system menu getting in the way */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  transition:
+    color 160ms ease,
+    scale 160ms cubic-bezier(0.24, 1.34, 0.38, 1);
+}
+
+.rxn-add:hover,
+.rxn-add[aria-expanded="true"] {
+  color: var(--foreground, var(--foreground));
+  scale: 1.06;
+}
+
+/* the pill floats above the row, from the row's start, so it
+   never runs off the block whatever the chips have pushed the
+   button to */
+/* the emoji row, laid inside the message's pill once it has opened */
+.rxn-pill {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  /* the same 6px round the row on every side — the emoji's own
+     box is its glyph, so the air above and below is the padding
+     and nothing else */
+  padding: 8px;
+}
+
+.rxn-emo {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rxn-emo span {
+  display: block;
+  font-size: 20px;
+  line-height: 1;
+  transform: scale(var(--s, 1));
+  transform-origin: 50% 90%;
+  /* still one at a time, but it eases up to size and back with a
+     soft settle rather than snapping */
+  transition: transform 220ms cubic-bezier(0.24, 1.34, 0.38, 1);
+  letter-spacing: -0.02em;
+}
+
+.rxn-tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  translate: -50% 0;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--popover, #17181a);
+  color: var(--popover-foreground, #fff);
+  font-size: 11px;
+  font-weight: 400;
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: 0em;
+}
+
+.rxn-fly {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  pointer-events: none;
+  letter-spacing: -0.01em;
+}
+
+@keyframes rxn-launch {
+  0% {
+    transform: translate(0, 0) rotate(0);
+  }
+  30% {
+    transform: translate(2px, -7px) rotate(-12deg);
+  }
+  60% {
+    transform: translate(-1px, 1px) rotate(4deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0);
+  }
+}
+
+@keyframes rxn-puff {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-5px, 6px) scale(1.6);
+  }
+}
+
+@keyframes rxn-flicker {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  15% {
+    transform: scale(1.18, 1.1);
+    filter: brightness(1.35);
+  }
+  30% {
+    transform: scale(0.94, 1.08);
+    filter: brightness(1);
+  }
+  48% {
+    transform: scale(1.1, 0.96);
+    filter: brightness(1.25);
+  }
+  66% {
+    transform: scale(0.98, 1.04);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes rxn-pop {
+  0% {
+    transform: scale(0.7) rotate(-12deg);
+  }
+  50% {
+    transform: scale(1.18) rotate(6deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes rxn-bit {
+  0% {
+    transform: rotate(var(--a)) translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(var(--a)) translateY(-16px) scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes rxn-glance {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2.5px);
+  }
+  60% {
+    transform: translateX(2.5px);
+  }
+}
+
+@keyframes rxn-tick {
+  0% {
+    transform: scale(0.6) rotate(-14deg);
+  }
+  55% {
+    transform: scale(1.2) rotate(4deg);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes rxn-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.26);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.18);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rxn-nod {
+  0% {
+    transform: rotate(0);
+  }
+  35% {
+    transform: rotate(-16deg) translateY(-2px);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes rxn-laugh {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  40% {
+    transform: rotate(9deg);
+  }
+  60% {
+    transform: rotate(-7deg);
+  }
+  80% {
+    transform: rotate(4deg);
+  }
+}
+
+@keyframes rxn-wow {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(0.92, 1.22);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rxn-droop {
+  0%,
+  100% {
+    transform: none;
+  }
+  40% {
+    transform: translateY(2px) rotate(-8deg) scale(0.96);
+  }
+}
+
+@keyframes rxn-bow {
+  0%,
+  100% {
+    transform: none;
+  }
+  40% {
+    transform: translateY(2px) scale(1, 0.9);
+  }
+  60% {
+    transform: translateY(1px) scale(1, 0.95);
+  }
+}
+
+.rxn {
+  max-width: 100%;
+}
+.rxn-row {
+  flex-wrap: wrap;
+}
+.rxn-pill {
+  direction: ltr;
+}
+.rxn-count {
+  direction: ltr;
+}
+.rxn button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.rxn button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rxn-strip {
+    transition: none;
+  }
+}
+
+/* ══ Like — Bencho (MIT), adapted to semantic theme tokens ══ */
+/* a fixed frame: the pill grows by a digit at 9,999 and the
+   block must not rescale on the wall when it does */
+.lk-frame {
+  width: 240px;
+  height: 130px;
+  display: grid;
+  place-items: center;
+}
+.lk {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--r);
+  background: var(--card);
+  color: var(--foreground);
+  font: inherit;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: scale 220ms cubic-bezier(0.22, 1, 0.36, 1);
+  letter-spacing: -0.01em;
+}
+.lk[data-variant="image"] {
+  background: color-mix(in srgb, var(--image-surface) 70%, transparent);
+  color: var(--image-foreground);
+  backdrop-filter: blur(12px);
+}
+[data-stroke="on"] .lk {
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.lk:active {
+  scale: 0.96;
+}
+.lk:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.lk:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--card),
+    0 0 0 4px var(--ring);
+}
+.lk-heart {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+}
+.lk-glyph {
+  position: relative;
+  z-index: 1;
+  display: grid;
+}
+/* the heart is gone while the bloom happens, then springs in
+   from nothing, red, past its size and back */
+.lk-glyph[data-on] {
+  color: var(--lk-on);
+  animation: lk-pop 520ms cubic-bezier(0.3, 1.5, 0.4, 1) both;
+}
+.lk[data-fx="Bloom"] .lk-glyph[data-on] {
+  animation: lk-heart 760ms cubic-bezier(0.3, 1.6, 0.4, 1) both;
+}
+.lk-burst {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  pointer-events: none;
+}
+/* the bloom: a full disc that grows, then hollows out from the
+   middle into a ring and thins to nothing — a border as wide as
+   the radius is a disc, and a border going to 0 is the hole */
+.lk-bloom {
+  position: absolute;
+  left: -17px;
+  top: -17px;
+  width: 34px;
+  height: 34px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 17px solid #cc8ef5;
+  animation: lk-bloom 560ms cubic-bezier(0.25, 0.8, 0.35, 1) both;
+}
+.lk[data-color="Ink"] .lk-bloom {
+  border-color: var(--lk-on);
+  animation-name: lk-bloom-ink;
+}
+/* seven spokes, each a pair of dots, thrown as the ring opens */
+.lk-spoke {
+  position: absolute;
+  left: 0;
+  top: 0;
+  rotate: var(--a);
+}
+.lk-spoke i {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--c);
+  animation: lk-dot 620ms cubic-bezier(0.2, 0.8, 0.3, 1) 200ms both;
+}
+/* the pair sits either side of the spoke, one a little behind */
+.lk-spoke i:first-child {
+  --side: -4px;
+  --far: 0px;
+}
+.lk-spoke i:last-child {
+  --side: 4px;
+  --far: -5px;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+}
+/* ── Firework: up and out, then they fall ────── */
+.lk-fw {
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: lk-fw-x 1000ms cubic-bezier(0.2, 0.7, 0.4, 1) var(--d) both;
+}
+.lk-fw i {
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  animation: lk-fw-y 1000ms linear var(--d) both;
+}
+/* the count: one wheel per digit, each its own window */
+.lk-count {
+  display: flex;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.lk-wheel {
+  position: relative;
+  display: inline-block;
+  height: 1.25em;
+  overflow: hidden;
+}
+.lk-digit {
+  display: block;
+  line-height: 1.25em;
+}
+.lk-comma {
+  line-height: 1.25em;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lk-glyph[data-on],
+  .lk-bloom,
+  .lk-spoke i,
+  .lk-fw,
+  .lk-fw i {
+    animation: none;
+  }
+  .lk-burst {
+    display: none;
+  }
+}
+@keyframes lk-pop {
+  0% {
+    scale: 0.6;
+  }
+  45% {
+    scale: 1.28;
+  }
+  100% {
+    scale: 1;
+  }
+}
+@keyframes lk-heart {
+  0%,
+  28% {
+    scale: 0;
+  }
+  62% {
+    scale: 1.25;
+  }
+  100% {
+    scale: 1;
+  }
+}
+@keyframes lk-bloom {
+  0% {
+    scale: 0.15;
+    border-width: 17px;
+    border-color: #e5484d;
+  }
+  40% {
+    scale: 1;
+    border-width: 17px;
+    border-color: #cc8ef5;
+  }
+  75% {
+    border-width: 2px;
+    opacity: 1;
+  }
+  100% {
+    scale: 1.12;
+    border-width: 0;
+    opacity: 0;
+    border-color: #cc8ef5;
+  }
+}
+@keyframes lk-bloom-ink {
+  0% {
+    scale: 0.15;
+    border-width: 17px;
+  }
+  40% {
+    scale: 1;
+    border-width: 17px;
+  }
+  75% {
+    border-width: 2px;
+    opacity: 1;
+  }
+  100% {
+    scale: 1.12;
+    border-width: 0;
+    opacity: 0;
+  }
+}
+@keyframes lk-dot {
+  0% {
+    translate: 12px var(--side);
+    scale: 1;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    translate: calc(18px + var(--fly) * 14px + var(--far))
+      calc(var(--side) * 1.6);
+    scale: 0;
+    opacity: 1;
+  }
+}
+@keyframes lk-fw-x {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: var(--x) 0;
+  }
+}
+@keyframes lk-fw-y {
+  0% {
+    translate: 0 0;
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.2, 0.7, 0.4, 1);
+  }
+  45% {
+    translate: 0 var(--y);
+    opacity: 1;
+    animation-timing-function: cubic-bezier(0.5, 0, 0.8, 0.5);
+  }
+  100% {
+    translate: 0 calc(var(--y) + 30px);
+    opacity: 0;
+  }
+}
+/* ══ Rolling counter ═════════════════════════════════════ */
+.rct {
+  font-family: var(--font-sans);
+  position: relative;
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0;
+  /* 5px round each key — above, below and at the box's end —
+     and the corner is the box's less that same 5, so the keys
+     sit concentric in it at any Corner */
+  padding: 5px;
+  border-radius: var(--rct-r);
+  background: var(--card);
+  color: var(--foreground);
+}
+[data-stroke="on"] .rct {
+  box-shadow: 0 0 0 1px var(--border);
+}
+.rct-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: var(--rct-cell);
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: var(--rct-in);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--card));
+  color: inherit;
+  cursor: pointer;
+  transition:
+    scale 200ms cubic-bezier(0.3, 0.9, 0.4, 1),
+    background-color 160ms ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+.rct-btn:hover {
+  background: color-mix(in srgb, var(--foreground) 10%, var(--card));
+}
+.rct-btn:active {
+  scale: 0.9;
+  transition-duration: 110ms;
+}
+.rct-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.rct-btn:focus-visible,
+.rct-num:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--card),
+    0 0 0 4px var(--ring);
+}
+/* the number hugs its digits and the buttons hug the number:
+   a column arriving or leaving animates its own width, so the
+   pill grows and shrinks with the count rather than keeping
+   room for five digits it is not showing */
+.rct-num {
+  display: flex;
+  justify-content: center;
+  padding: 0 14px;
+  height: var(--rct-cell);
+  font-size: 30px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: var(--rct-cell);
+  cursor: ns-resize;
+  touch-action: none;
+  user-select: none;
+  border-radius: 8px;
+  /* rolling digits fade at the window's top and bottom edge */
+  mask-image: linear-gradient(transparent, #000 20%, #000 80%, transparent);
+}
+.rct-pair {
+  display: flex;
+}
+.rct-col {
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  height: var(--rct-cell);
+  transition:
+    width 320ms cubic-bezier(0.3, 1.2, 0.4, 1),
+    opacity 220ms ease;
+}
+.rct-col[data-on] {
+  width: 0.64em;
+  opacity: 1;
+}
+.rct-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform;
+}
+.rct-strip > span {
+  height: var(--rct-cell);
+  flex-shrink: 0;
+}
+.rct-sep {
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition:
+    width 320ms cubic-bezier(0.3, 1.2, 0.4, 1),
+    opacity 220ms ease;
+}
+.rct-sep[data-on] {
+  width: 0.26em;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rct * {
+    transition: none;
+  }
+}
+
+.lbi:has(.lbi-field:autofill) .lbi-gap {
+  stroke-dashoffset: -1;
+}
+.lbi-label {
+  max-width: calc(100% - 56px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* The shared field draws its own outline; legacy page input fills must not
+   cover the floating label or introduce a second border. */
+.lbi .lbi-box .lbi-field {
+  background: transparent;
+  border: 0;
+  border-radius: inherit;
+  box-shadow: none;
+  min-height: 0;
+  height: 100%;
+  padding-inline-start: var(--lbi-x);
+  outline: none;
+}
+.lbi-label {
+  z-index: 1;
+  line-height: 1.5;
+}
+
+.lbi.lbi[data-invalid="true"] .lbi-ring path {
+  stroke: var(--destructive);
+}
+
+/* ══ Image compare ════════════════════════════════════════ */
+.cmp {
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: ew-resize;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  background: var(--foreground);
+}
+
+.cmp:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.cmp-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  -webkit-user-drag: none;
+}
+
+/* no drift now: two separate photographs have to stay exactly in
+   register, or the x-ray stops lining up with the picture */
+.cmp-before {
+  position: absolute;
+  inset: 0;
+}
+
+.cmp-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(23, 24, 26, 0.36);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  pointer-events: none;
+  letter-spacing: 0em;
+}
+
+.cmp-tag.cmp-right {
+  left: auto;
+  right: 12px;
+}
+
+/* the line is drawn, so it can bend: a 2px white curve with a
+   soft glow, over the whole block */
+.cmp-line {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
+}
+
+.cmp-line path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.cmp-grip {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  pointer-events: none;
+}
+
+.cmp-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: 0 2px 12px rgba(23, 24, 26, 0.25);
+  transition: scale 220ms cubic-bezier(0.24, 1.34, 0.38, 1);
+}
+
+.cmp:hover .cmp-knob {
+  scale: 1.08;
+}
+
+.cmp[data-held] .cmp-knob {
+  scale: 0.9;
+}
+.cmp {
+  direction: ltr;
+}
+.cmp-error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  padding: 2rem;
+  text-align: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cmp-knob {
+    transition: none;
+  }
+}
+
+/* ══ Dynamic island ══════════════════════════════════════
+   The frame is sized to the largest the island opens to, so
+   the pill never moves surrounding workout controls mid-morph. */
+.dyn {
+  width: 100%;
+  min-height: 104px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-sans);
+}
+/* centred in the block, so it grows out from its middle */
+.dyn-pill {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  isolation: isolate;
+}
+.dyn-toggle {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: inherit;
+}
+.dyn-open,
+.dyn-compact {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  pointer-events: none;
+}
+/* shut: one mark at each end, the middle left dark for the camera, as on the real one */
+.dyn-compact {
+  justify-content: space-between;
+  color: var(--primary);
+}
+.dyn-num,
+.dyn-big {
+  font-variant-numeric: tabular-nums;
+  color: var(--primary);
+}
+.dyn-num {
+  font-size: 15px;
+}
+.dyn-big {
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 500;
+}
+.dyn-readout {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.dyn-label {
+  font-size: 12px;
+  color: rgb(255 255 255 / 0.72);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dyn-round,
+.dyn-reset {
+  pointer-events: auto;
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: scale 160ms ease;
+}
+.dyn-round {
+  background: color-mix(in srgb, var(--primary) 24%, transparent);
+  color: var(--primary);
+}
+.dyn-reset {
+  background: rgb(255 255 255 / 0.1);
+  color: #fff;
+}
+.dyn-round:active,
+.dyn-reset:active {
+  scale: 0.96;
+}
+.dyn-toggle:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -4px;
+}
+.dyn-round:focus-visible,
+.dyn-reset:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dyn-round,
+  .dyn-reset {
+    transition: none;
+  }
+}
+
+/* Club FAQs: a quiet closed card, an accented edge and raised toggle when open. */
+.club-faq {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.club-faq-item {
+  border: 2px solid transparent;
+  border-radius: 28px;
+  background: var(--muted);
+  overflow: hidden;
+  transition:
+    border-color 250ms ease,
+    background-color 250ms ease;
+}
+.club-faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  list-style: none;
+  cursor: pointer;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.club-faq-question::-webkit-details-marker {
+  display: none;
+}
+.club-faq-question > span:first-child {
+  overflow-wrap: anywhere;
+}
+.club-faq-toggle {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
+  background: var(--background);
+  transition:
+    background-color 250ms ease,
+    color 250ms ease;
+}
+.club-faq-toggle > span {
+  transition: rotate 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.club-faq-item[open] {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--muted) 85%, var(--foreground) 4%);
+}
+.club-faq-item[open] .club-faq-toggle {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.club-faq-item[open] .club-faq-toggle > span {
+  rotate: 180deg;
+}
+.club-faq-answer {
+  padding: 0 20px 24px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.9;
+  color: var(--foreground);
+}
+.club-faq-question:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -5px;
+  border-radius: 24px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .club-faq-item,
+  .club-faq-toggle,
+  .club-faq-toggle > span {
+    transition: none;
+  }
+}
+
+/* Sport tiles keep the reference proportions at every carousel width. */
+@layer components {
+  .sport-card {
+    container-type: inline-size;
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex: none;
+    align-items: flex-end;
+    width: 171px;
+    aspect-ratio: 171 / 127;
+    border-radius: 32px;
+    overflow: hidden;
+    scroll-snap-align: start;
+    background: var(--sport-card-color, var(--primary));
+    color: var(--primary-foreground);
+    text-decoration: none;
+  }
+  .sport-card-watermark {
+    position: absolute;
+    z-index: -1;
+    inset-block-start: -12%;
+    inset-inline-start: -6%;
+    color: var(--primary-foreground);
+    opacity: 0.16;
+    pointer-events: none;
+  }
+  .sport-card-image {
+    z-index: -1;
+    object-fit: cover;
+    opacity: 0.24;
+    mix-blend-mode: multiply;
+  }
+  .sport-card-arrow {
+    position: absolute;
+    inset-block-start: 10%;
+    inset-inline-end: 8%;
+    pointer-events: none;
+  }
+  .sport-card-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5cqw;
+    width: 100%;
+    padding: 7%;
+  }
+  .sport-card-name {
+    font-size: 8.3cqw;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+  .sport-card-description {
+    font-size: 6.5cqw;
+    line-height: 1.3;
+    color: rgb(255 255 255 / 0.7);
+    overflow-wrap: anywhere;
+  }
+  .sport-card:focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 4px;
+  }
+}
+
+/* ══ Seek ═══════════════════════════════════════════════════
+   A search icon that becomes a search field, as one object.
+
+   Everything below is width and radius. There is no crossfade
+   between two components, no second element to keep in sync,
+   and nothing that animates on a clock of its own — the box
+   is sprung in JS and every other value here is derived from
+   how far through that spring it is. That is the whole reason
+   the transformation reads as continuous: there is only one
+   number, so nothing can arrive at the wrong time relative to
+   anything else. */
+.sek {
+  /* the frame is the composition. It never moves, which is
+     what gives the magnet a stable home to measure from and
+     keeps the object centred at every width. */
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* ── THE FRAME IS `--frame`, and it was not ──────────────
+     Seek.tsx computes `--frame` and `--frameh` from the width
+     that is actually set — its note explains why at length:
+     the wall fits a card by the BOUNDING BOX, so a frame sized
+     for the widest the knob goes makes every smaller setting
+     draw smaller. It has been publishing those two numbers to
+     a stylesheet that ignored them and used a hard 380 x 96.
+
+     Measured on a phone card: the frame reserved 380 for a
+     field set to 320, the wall fitted 380 into 260, and the
+     shut button — the only thing drawn at rest — came out at
+     44px. The 36px of nothing was being paid for in the one
+     part of the object you are looking at.
+
+     With the variables wired up the knob does what its own
+     comment says it does, and the frame is tight to what is
+     set on every screen. */
+  width: var(--frame, 380px);
+  height: var(--frameh, 96px);
+  font-family: var(--font-sans);
+}
+
+/* ── the object ─────────────────────────────────────────────
+   Width is the state. Height is fixed, so the radius can be
+   derived from the width rather than animated beside it —
+   at 44 the corner is 22 and the shape IS a circle, and there
+   is no frame where the two disagree.
+
+   The surface is the quietest thing that still reads as an
+   object: a low-alpha ink fill and a hairline. No shadow, no
+   glass, no gradient — at this size any of them would be the
+   loudest thing on an otherwise empty page. */
+.sek-skin {
+  position: relative;
+  width: var(--w);
+  /* --shut, NOT a number. The component sets the closed width
+     and the height from one constant precisely so they cannot
+     drift, and its own comment says so: "the skin's height and
+     the closed width are the same number by definition, and
+     two places holding it is two places to get it wrong."
+     Hard-coded here at 44 against a --shut of 64, the closed
+     state was a 64x44 lozenge — a circle that is not round is
+     the one shape everybody notices. */
+  height: var(--shut);
+  /* ── ONE SHAPE RULE ─────────────────────────────────────
+     Fully round, at every width. The radius used to
+     interpolate 22 → 13, which was a second thing to keep in
+     agreement with the first; a stadium corner needs no
+     agreement at all. At --shut wide it is a circle and at 320
+     a pill, and those are the same rule rather than two ends
+     of a tween. Height is fixed, so it cannot be anything
+     else. */
+  /* the Corner knob's, and ::before and .sek-hit inherit it */
+  border-radius: var(--sek-r, 999px);
+  /* ── FLAT, and glass only if asked ──────────────────────
+     `--pane` is the bench's own material token, so this
+     follows the Glass dial rather than deciding for itself:
+     at 0 it resolves to a solid board and at 100 to the
+     frosted pane. It was a translucent ink wash with an inset
+     hairline, which is glass by every visual measure while
+     answering to no control — the worst of both, since it
+     could not be turned off.
+
+     And it picks up Fill for free. Flat resolves --pane to
+     --board, and Fill redeclares --board, so a dark fill
+     gives a dark pill without this rule naming a colour. */
+  background: var(--muted);
+  -webkit-backdrop-filter: blur(var(--g-blur, 2px)) saturate(var(--g-sat, 150%))
+    brightness(var(--g-bright, 100%));
+  backdrop-filter: blur(var(--g-blur, 2px)) saturate(var(--g-sat, 150%))
+    brightness(var(--g-bright, 100%));
+  isolation: isolate;
+  /* the magnet, and the press, on one transform — two
+     transforms on one element is one of them winning */
+  transform: translate(var(--lx), var(--ly)) scale(var(--sk, 1));
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 220ms ease;
+  /* the field is inside from the first frame; this is what
+     keeps it from spilling out of a 44px circle */
+  overflow: hidden;
+}
+
+/* the edge, and NOTHING until Stroke asks for it. A hairline
+   nobody switched on is a hairline the control cannot remove,
+   which is the same bug the background had. */
+.sek-skin::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Hover: it comes up a hair and lifts off the ground. Both
+   are small enough to be felt rather than seen, which is the
+   point — a hover state you notice is a hover state that has
+   said too much. */
+.sek:not([data-open="true"]) .sek-skin:hover {
+  --sk: 1.045;
+  /* the surface answers, without drawing an edge it was not
+     given — brightness rather than an outline */
+  --g-bright: 104%;
+}
+
+/* pressed: it yields before it moves. A thing that gives
+   under a click reads as having been pushed; a thing that
+   only expands reads as having been triggered.
+
+   Two moments, one rule. `:active` is the button held down —
+   a click only fires on release, so without it there was
+   nothing under a finger that stayed. `data-press` is the 90ms
+   beat after the click (and after Enter or Space) before it
+   opens. Both carry the hover rule's own :not([data-open]) and
+   come after it, so they win on order at equal specificity:
+   written as `.sek[data-press] .sek-skin` they were one class
+   short, and a pointer still over the button — which is where
+   a pointer is when it clicks — kept the hover's 1.045 and the
+   squeeze never showed. Reported in cabralorenzo/bencho#5. */
+.sek:not([data-open="true"]) .sek-skin:active,
+.sek:not([data-open="true"])[data-press="true"] .sek-skin {
+  --sk: 0.93;
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* the field is a text target, and the object is a button */
+.sek[data-open="true"] .sek-skin {
+  cursor: text;
+}
+
+/* ── the lens ───────────────────────────────────────────────
+   Fixed to the box's left inset and never animated. At the
+   shut width that inset centres it; at the open width it is
+   the field's padding. The lens crossing the page is the box
+   growing around a mark that stayed still. */
+.sek-lens {
+  position: absolute;
+  inset-inline-start: var(--inset);
+  top: 50%;
+  width: var(--lens);
+  height: var(--lens);
+  margin-top: calc(var(--lens) / -2);
+  fill: none;
+  stroke: var(--muted-foreground);
+  /* 1.5, AND THE NUMBER CANNOT BE COMPARED TO LUCIDE'S.
+     Every lucide glyph is drawn on a 24-unit grid; this one is
+     drawn on 18. A stroke-width of u paints at u/viewBox of
+     the icon's size, so lucide's 2-on-24 is 0.0833 and a 2
+     here would be 0.1111 — the same number, a third heavier.
+     1.5/18 is 0.0833 exactly, which is the radial menu's
+     weight and the nav's.
+
+     The value that stood here was 1.6 (0.0889). That was very
+     nearly right; it was changed to 2 on the assumption that
+     the two viewBoxes matched, and they never did. */
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  pointer-events: none;
+  transition:
+    stroke 220ms ease,
+    stroke-width 220ms ease;
+}
+
+.sek-skin:hover .sek-lens {
+  stroke: var(--foreground);
+}
+
+.sek[data-open="true"] .sek-lens {
+  stroke: var(--muted-foreground);
+}
+
+/* typing: the lens thickens a hair and darkens. One beat per
+   burst, not one per keystroke — a mark that flickers at the
+   rate of your typing is noise wearing the costume of
+   feedback. */
+/* still "a hair", and still the same proportion of the base it
+   always was — 1.9 was to 1.6 as 1.8 is to 1.5 */
+.sek[data-busy="true"] .sek-lens {
+  stroke: var(--foreground);
+  stroke-width: 1.8;
+}
+
+/* ── the field ──────────────────────────────────────────────
+   Present from the first frame and revealed by --say, which
+   is the last third of the width's own progress. It slides a
+   few pixels as it arrives, from the left, so it reads as
+   having come out of the lens rather than as having faded up
+   where it stood. */
+.sek-field {
+  position: absolute;
+  inset-inline-start: calc(var(--inset) + var(--lens) + 11px);
+  inset-inline-end: 44px;
+  top: 0;
+  height: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  /* 14 is the NAV's size, and the nav's field is 44px tall.
+     This pill is --shut, 64, and carrying header type in it
+     left the words looking like a caption inside the object
+     rather than its content. 18 restores roughly the
+     proportion the bar has — 0.28 of the height against the
+     bar's 0.32 — on a control that is the whole component
+     rather than one item in a row of them. */
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  outline: none;
+  opacity: var(--say);
+  transform: translateX(calc((1 - var(--say)) * -6px));
+  /* until it is most of the way open it is not a target, and
+     a caret that can be placed in a 44px circle is a caret in
+     the wrong place */
+  pointer-events: var(--say-hit, none);
+}
+
+.sek[data-open="true"] .sek-field {
+  --say-hit: auto;
+}
+
+.sek-field::placeholder {
+  color: var(--muted-foreground);
+}
+
+/* the way in, while there is one */
+.sek-hit {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+.sek-hit:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--ring);
+}
+
+/* Production forms fill their allocated column. The source lens is a Sandow font icon. */
+.sek {
+  min-width: 0;
+  max-width: 100%;
+}
+.sek-lens {
+  color: var(--muted-foreground);
+  display: grid;
+  place-items: center;
+}
+.sek[data-busy="true"] .sek-lens {
+  color: var(--foreground);
+}
+.sek-skin:focus-within {
+  box-shadow: inset 0 0 0 2px var(--ring);
+}
+.sek-field:disabled,
+.sek-hit:disabled {
+  cursor: not-allowed;
+}
+.sek:has(input:disabled) {
+  opacity: 0.5;
+}
+.sek-clear {
+  position: absolute;
+  inset-inline-end: 4px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.sek-clear:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -3px;
+}
+.sek-field::-webkit-search-cancel-button {
+  display: none;
+}
+.sek .sek-skin input.sek-field,
+.sek .sek-skin input.sek-field:focus,
+.sek .sek-skin input.sek-field:focus-visible {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+.lbi .lbi-box input.lbi-field:focus,
+.lbi .lbi-box input.lbi-field:focus-visible {
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sek-skin,
+  .sek-lens {
+    transition: none;
+  }
+}
+
+/* SportCard also serves as a native toggle in sport filters. */
+button.sport-card {
+  border: 0;
+  padding: 0;
+  font-family: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+button.sport-card[data-selected] {
+  box-shadow: inset 0 0 0 3px var(--foreground);
+}
+button.sport-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.sport-card-selection {
+  position: absolute;
+  inset-inline-end: 12px;
+  inset-block-start: 12px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--image-surface);
+  color: var(--image-foreground);
+}
+
+/* Review reactions use compact chips; the picker floats above them without
+   reserving a second message row. Keep the original travel/landing motion. */
+.rxn {
+  width: fit-content;
+  max-width: 100%;
+  padding: 0;
+}
+.rxn-msg {
+  position: absolute;
+  inset-inline-start: 0;
+  bottom: calc(100% + 10px);
+  z-index: 10;
+  visibility: hidden;
+}
+.rxn-msg[data-open] {
+  visibility: visible;
+}
+.rxn-morph {
+  background: var(--secondary);
+  box-shadow: 0 4px 24px #0002;
+}
+.rxn-row {
+  margin-top: 0;
+  min-height: 44px;
+  gap: 10px;
+}
+.rxn-chip {
+  height: 44px;
+  padding: 0 16px;
+  gap: 10px;
+  font-size: 16px;
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  direction: ltr;
+}
+.rxn-chip-e {
+  font-size: 25px;
+}
+.rxn-chip[data-mine] {
+  background: var(--secondary);
+  color: var(--foreground);
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+.rxn-add {
+  width: 44px;
+  height: 44px;
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+.rxn-add-glyph {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.rxn-add-plus {
+  position: absolute;
+  top: -7px;
+  right: -5px;
+  font: 700 17px/1 var(--font-sans);
+  background: var(--secondary);
+  border-radius: 50%;
+}
+.rxn-chip:focus-visible,
+.rxn-add:focus-visible,
+.rxn-emo:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+/* Links retain their focus treatment without underlining their labels. */
+a:any-link,
+a:any-link:hover,
+a:any-link:focus-visible {
+  text-decoration: none !important;
+}
+
+/* A photo viewer occupies the viewport even on mobile, where ordinary dialogs
+   become bottom sheets. The photo is contained without clipping its edges. */
+[data-slot="dialog-content"].club-image-fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  transform: none !important;
+  translate: none !important;
+  width: 100vw !important;
+  max-width: none !important;
+  height: 100dvh !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: #101113;
+  z-index: 80;
+  overflow: hidden;
+}
+.club-image-fullscreen > .dialog-grabber {
+  display: none;
+}
+.club-image-fullscreen > [data-slot="dialog-close"] {
+  z-index: 2;
+  top: max(16px, env(safe-area-inset-top));
+}
+
+/* Flat component chrome; editable controls retain their own boundaries. */
+*:not(input):not(textarea):not(select):not([role="combobox"]):not(
+    [data-slot="native-select"]
+  ):not([data-slot="input-group"]):not(.sek-skin):not(.lbi-box) {
+  border-color: transparent !important;
+  outline: none !important;
+  --tw-ring-shadow: 0 0 #0000 !important;
+  --tw-ring-offset-shadow: 0 0 #0000 !important;
+}
+:is(button, a, [tabindex], [role="button"]):not([role="combobox"]):not(
+    [data-slot="native-select"]
+  ):focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+form :is(.grid, [data-slot="field-group"]) {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+form [data-slot="field"] {
+  flex-direction: column;
+  align-items: stretch;
+}
+form [class*="col-span-"] {
+  grid-column: auto !important;
+}
+form :is(.flex, .flex-wrap):has(> [data-slot="field"]) {
+  flex-direction: column;
+  align-items: stretch;
+}

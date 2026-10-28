@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDownIcon as ChevronDown } from "./icons";
 import "./motion-controls.css";
 
 /** Selection updates immediately; only the decorative measured pill is animated. */

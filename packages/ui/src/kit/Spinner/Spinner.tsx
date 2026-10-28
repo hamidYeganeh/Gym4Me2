@@ -1,7 +1,7 @@
 "use client";
 import { useTranslations } from "@repo/i18n";
 import { cn } from "@repo/ui/lib/utils";
-import { Loader2Icon } from "lucide-react";
+import { ArrowRotateClockwise1Icon as Loader2Icon } from "../../icons";
 import { spinnerStyles } from "./Spinner.styles";
 import type { SpinnerProps } from "./Spinner.types";
 

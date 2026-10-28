@@ -14,7 +14,7 @@ export const chartStyles = {
   ),
   chartTooltipContent4: cva("grid gap-1.5"),
   chartTooltipContent5: cva(
-    "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
+    "flex w-full flex-wrap items-stretch gap-2 [&>:is(svg,.sandow-icon)]:h-2.5 [&>:is(svg,.sandow-icon)]:w-2.5 [&>:is(svg,.sandow-icon)]:text-muted-foreground",
   ),
   chartTooltipContent6: cva("dot"),
   chartTooltipContent7: cva("items-center"),
@@ -34,7 +34,7 @@ export const chartStyles = {
   chartLegendContent3: cva("pb-3"),
   chartLegendContent4: cva("pt-3"),
   chartLegendContent5: cva(
-    "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground",
+    "flex items-center gap-1.5 [&>:is(svg,.sandow-icon)]:h-3 [&>:is(svg,.sandow-icon)]:w-3 [&>:is(svg,.sandow-icon)]:text-muted-foreground",
   ),
   chartLegendContent6: cva("h-2 w-2 shrink-0 rounded-[2px]"),
 };

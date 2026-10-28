@@ -1,13 +1,13 @@
 import type {
+  BranchProfileDto,
   ClubDto,
   ClubSummaryDto,
-  BranchProfileDto,
   MediaDto,
 } from "@repo/api/catalog";
-import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 import { getTranslator } from "@repo/i18n/messages";
-import { clubHref } from "./club-href";
+import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 import { catalogInterval } from "./catalog-hours";
+import { clubHref } from "./club-href";
 
 const placeholder = "/images/club-placeholder.svg";
 export function catalogPhotos(
@@ -37,7 +37,8 @@ export function summaryView(
   const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
   return {
     id: club.id,
-    href: clubHref(club.id, undefined, { branch: club.mainBranch.id }),
+    slug: club.slug,
+    href: clubHref(club.slug),
     name: club.name,
     category: club.categories.map((item) => item.name).join(" · "),
     categories: club.categories.map((item) => item.name),
@@ -60,15 +61,12 @@ export function summaryView(
       : "",
     priceCurrency: t("Preview.toman"),
     locale,
-    rating:
-      club.rating.average === null
-        ? t("Catalog.noRating")
-        : number.format(club.rating.average),
+    rating: number.format(club.rating.average ?? 0),
     reviews: number.format(club.rating.count),
     photos: catalogPhotos([club.cover], club.name),
     facilities: [
       club.sports.map((item) => item.name).join(" · "),
-      club.mainBranch.cityName ?? "",
+      "",
       club.shortDescription ?? "",
     ],
     description: club.shortDescription ?? "",
@@ -85,28 +83,29 @@ export function detailView(
 ): ClubDetailData {
   const t = getTranslator(locale);
   const number = new Intl.NumberFormat(locale, { maximumFractionDigits: 1 });
-  const days = [
-    "Catalog.day0",
-    "Catalog.day1",
-    "Catalog.day2",
-    "Catalog.day3",
-    "Catalog.day4",
-    "Catalog.day5",
-    "Catalog.day6",
-  ] as const;
-  const hours =
-    branch?.openingHours.weekly
-      .map(
-        (row) =>
-          `${t(days[row.dayOfWeek] ?? "Catalog.day0")} · ${t(`Catalog.audience_${row.audience}`)} · ${catalogInterval(row, locale)}`,
+  const intervals = branch?.openingHours.weekly ?? [];
+  const hours = intervals.length
+    ? catalogInterval(
+        {
+          startMinute: Math.round(
+            intervals.reduce((sum, row) => sum + row.startMinute, 0) /
+              intervals.length,
+          ),
+          endMinute: Math.round(
+            intervals.reduce((sum, row) => sum + row.endMinute, 0) /
+              intervals.length,
+          ),
+        },
+        locale,
       )
-      .join(" · ") ?? "";
+    : "-";
   const tariff = club.tariffs
     .filter((item) => item.branchId === null || item.branchId === branch?.id)
     .sort((a, b) => a.priceToman - b.priceToman)[0];
   return {
     id: club.id,
-    href: clubHref(club.id),
+    slug: club.slug,
+    href: clubHref(club.slug),
     name: club.name,
     logo: club.logo?.url,
     category: club.categories.map((item) => item.name).join(" · "),
@@ -124,10 +123,7 @@ export function detailView(
     pricePeriod: tariff ? t(`Tariffs.unit_${tariff.unit}`) : "",
     priceCurrency: t("Preview.toman"),
     locale,
-    rating:
-      club.rating.average === null
-        ? t("Catalog.noRating")
-        : number.format(club.rating.average),
+    rating: number.format(club.rating.average ?? 0),
     reviews: number.format(club.rating.count),
     photos: catalogPhotos(
       [club.cover, ...club.gallery, ...(branch?.gallery ?? [])],
@@ -142,11 +138,18 @@ export function detailView(
     hours,
     distance: "",
     coachCount: branch?.coaches.length ?? 0,
-    amenities: (branch?.amenities ?? [])
+    amenities: [
+      ...(branch?.amenities ?? []),
+      ...(branch?.accessibilityFeatures ?? []).map((item) => ({
+        ...item,
+        availability: "included" as const,
+      })),
+    ]
       .filter((item) => item.availability !== "unavailable")
       .map((item) => ({
         id: item.id,
         label: item.name,
+        image: item.imageUrl ?? undefined,
         description:
           item.description ??
           t(

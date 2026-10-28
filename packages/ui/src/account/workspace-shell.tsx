@@ -1,20 +1,24 @@
 "use client";
-import { useRef, useState, type ReactNode } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useLogout } from "@repo/api/auth";
+import { useAccount, useProductNavigation } from "@repo/api/profile";
 import { useTranslations } from "@repo/i18n";
 import { Logo } from "@repo/theme/logo";
-import { useAccount, useProductNavigation } from "@repo/api/profile";
-import { useLogout } from "@repo/api/auth";
-import { LogOut, Menu, UserRound } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useRef, useState, type ReactNode } from "react";
+import {
+  ArrowSignOut1Icon as LogOut,
+  MenuLeftIcon as Menu,
+  UserIcon as UserRound,
+} from "../icons";
 import { BottomSheet } from "../kit/BottomSheet";
 import { Button } from "../kit/Button";
 import { accountReadDenied } from "../lib/account-recovery";
 import { ErrorNotice, QueryError } from "./common";
 import {
+  isWorkspaceRouteActive,
   workspaceNavigation,
   workspaceSecondaryNavigation,
-  isWorkspaceRouteActive,
   type NavigationGroup,
 } from "./workspace-navigation";
 import "./workspace-shell.css";

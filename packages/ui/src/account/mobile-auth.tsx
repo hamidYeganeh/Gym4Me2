@@ -1,30 +1,29 @@
 "use client";
 
+import { useLocale, useTranslations } from "@repo/i18n";
 import Link from "next/link";
 import { useId, type FormEvent, type ReactNode } from "react";
+import { useOverlayHistory } from "../hooks/use-overlay-history";
 import {
-  ChevronLeft,
-  Smartphone,
-  MessageSquareText,
-  KeyRound,
-  LoaderCircle,
-  X,
-} from "lucide-react";
-import { useLocale, useTranslations } from "@repo/i18n";
+  ChevronLeftIcon as ChevronLeft,
+  Key1Icon as KeyRound,
+  ArrowRotateClockwise1Icon as LoaderCircle,
+  ChatLineIcon as MessageSquareText,
+  MobileIcon as Smartphone,
+} from "../icons";
 import { Button } from "../kit/Button";
 import { Field, FieldGroup, FieldLabel } from "../kit/Field";
 import { OneTimeCode } from "../kit/OneTimeCode";
 import { SlidingNumber } from "../kit/SlidingNumber";
 import { applicationAuthHref } from "../lib/auth-routes";
-import { useOverlayHistory } from "../hooks/use-overlay-history";
+import "./auth-controls.css";
 import { ErrorNotice } from "./common";
 import { LoginField, LoginFieldError } from "./login-field";
 import {
-  loginFieldErrors,
   normalizeLoginDigits as digits,
+  loginFieldErrors,
   type LoginErrors,
 } from "./login-validation";
-import "./auth-controls.css";
 
 export function AuthScreen({
   title,
@@ -230,19 +229,12 @@ export function MobileAuth({
                     : `/login?${new URLSearchParams({ method: "password", returnTo })}`
                   : cancelHref
               }
-              aria-label={t("Kit.close")}
+              aria-label={t("Luma.back")}
             >
-              <X strokeWidth={1.5} />
+              <ChevronLeft className="rtl:rotate-180" />
             </Link>
           </Button>
         )
-      }
-      actions={
-        client === "application" && !challenge && !recovery ? (
-          <Button variant="ghost" asChild>
-            <Link href="/discovery">{t("AuthDesign.browse")}</Link>
-          </Button>
-        ) : undefined
       }
     >
       <form

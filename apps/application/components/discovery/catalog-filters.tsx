@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { useTranslations, useLocale } from "@repo/i18n";
 import { validCatalogPrices, type ClubFiltersDto } from "@repo/api/catalog";
 import { Field, FieldLabel } from "@repo/ui/kit/Field";
@@ -41,9 +40,6 @@ export function CatalogFilters({
     value.minPrice,
     value.maxPrice,
   ].filter((entry) => entry !== undefined).length;
-  const [advancedOpen, setAdvancedOpen] = useState(
-    advancedCount > 0 || invalid,
-  );
   return (
     <div className="grid gap-4">
       <Field>
@@ -65,16 +61,12 @@ export function CatalogFilters({
           ))}
         </NativeSelect>
       </Field>
-      <details
-        className="rounded-2xl border p-4"
-        open={advancedOpen}
-        onToggle={(event) => setAdvancedOpen(event.currentTarget.open)}
-      >
-        <summary className="min-h-11 cursor-pointer font-medium">
+      <fieldset className="min-w-0 border-t pt-5">
+        <legend className="px-2 text-base font-semibold">
           {copy("moreFilters")}
           {advancedCount > 0 &&
             ` (${new Intl.NumberFormat(locale).format(advancedCount)})`}
-        </summary>
+        </legend>
         <div className="grid gap-3 pt-3 sm:grid-cols-2">
           <Field>
             <FieldLabel htmlFor="filter-service">{t("service")}</FieldLabel>
@@ -181,7 +173,7 @@ export function CatalogFilters({
             </p>
           )}
         </div>
-      </details>
+      </fieldset>
     </div>
   );
 }

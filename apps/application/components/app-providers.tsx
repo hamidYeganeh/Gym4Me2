@@ -1,4 +1,5 @@
 "use client";
+import { DetailPrefetch } from "./detail-prefetch";
 import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, getDirection, type Locale } from "@repo/i18n";
@@ -163,6 +164,7 @@ function DirectionAndMotion({ children }: { children: ReactNode }) {
           : undefined
       }
     >
+      <DetailPrefetch />
       <OtpAutofillProvider start={startNativeOtp}>
         <AccountExportProvider
           exportFile={

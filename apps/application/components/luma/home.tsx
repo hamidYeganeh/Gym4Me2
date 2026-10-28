@@ -1,25 +1,25 @@
 "use client";
-import Link from "next/link";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import {
-  Bell,
-  Compass,
-  CreditCard,
-  CalendarDays,
-  MoreHorizontal,
-} from "lucide-react";
-import { useLocale, useTranslations } from "@repo/i18n";
 import { useAccount } from "@repo/api/profile";
-import { accountReadDenied } from "@repo/ui/lib/account-recovery";
-import { Discovery } from "../discovery/discovery";
 import {
   useSportsQuery,
   type BookingPageDto,
   type MembershipDto,
 } from "@repo/api/sports";
-import { LumaPage, QueryState, Row, Section, stamp, useLuma } from "./common";
+import { useLocale, useTranslations } from "@repo/i18n";
+import {
+  Bell1Icon as Bell,
+  Calendar1Icon as CalendarDays,
+  CompassIcon as Compass,
+  CreditCardIcon as CreditCard,
+  DotThreeHorizontalIcon as MoreHorizontal,
+} from "@repo/ui/icons";
+import { accountReadDenied } from "@repo/ui/lib/account-recovery";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { membershipAccess } from "../../lib/membership-access";
+import { Discovery } from "../discovery/discovery";
+import { LumaPage, QueryState, Row, Section, stamp, useLuma } from "./common";
 import { useAppClock } from "./use-app-clock";
 export function HomePage() {
   const account = useAccount();

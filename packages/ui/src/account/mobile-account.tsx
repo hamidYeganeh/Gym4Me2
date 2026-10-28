@@ -1,23 +1,29 @@
 "use client";
+import { useLogout } from "@repo/api/auth";
+import { useAccount, useProductNavigation } from "@repo/api/profile";
+import { useTranslations } from "@repo/i18n";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useTranslations } from "@repo/i18n";
-import { useAccount, useProductNavigation } from "@repo/api/profile";
-import { useLogout } from "@repo/api/auth";
-import { Bookmark, Settings, Mail, ChevronLeft, Pencil } from "lucide-react";
+import { useAuthRecovery } from "../hooks/use-auth-recovery";
+import {
+  BookmarkIcon as Bookmark,
+  ChevronLeftIcon as ChevronLeft,
+  Envelope1Icon as Mail,
+  Pencil1Icon as Pencil,
+  Gear1Icon as Settings,
+} from "../icons";
+import { accountReadDenied } from "../lib/account-recovery";
 import { MobilePage } from "../mobile-page";
-import { PrivacyDesignPage } from "./privacy-design";
-import { ProfileOverview } from "./profile-overview";
 import { AccountDesignPage } from "./account-design";
+import { AuthRequired } from "./auth-entry";
+import { Loading, QueryError } from "./common";
 import { MobileProfileEdit } from "./mobile-profile-edit";
 import { MobileSettings } from "./mobile-settings";
-import { SessionsContent, InvitationsContent } from "./profile";
 import { AccountPrivacy, PrivacyNotice } from "./privacy";
-import { QueryError, Loading } from "./common";
-import { AuthRequired } from "./auth-entry";
-import { useAuthRecovery } from "../hooks/use-auth-recovery";
-import { accountReadDenied } from "../lib/account-recovery";
+import { PrivacyDesignPage } from "./privacy-design";
+import { InvitationsContent, SessionsContent } from "./profile";
+import { ProfileOverview } from "./profile-overview";
 
 type Section =
   "account" | "edit" | "settings" | "sessions" | "invitations" | "privacy";

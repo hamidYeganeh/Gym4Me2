@@ -19,7 +19,6 @@ import {
 } from "@repo/ui/kit/Card";
 import { FieldGroup } from "@repo/ui/kit/Field";
 import { Badge } from "@repo/ui/kit/Badge";
-import { PhoneChange } from "./phone-change";
 import { sessionSignInHref } from "../lib/session-navigation";
 import { isActiveSurfaceElement } from "../lib/active-surface";
 import { AccountPrivacy } from "./privacy";
@@ -114,6 +113,7 @@ export function ProfileContent({
               <TextField
                 id={`${editor.id}-phone`}
                 label={t("Copy.verifiedMobileNumber")}
+                description={t("ProfileRefresh.phoneFixed")}
                 name="phone"
                 dir="ltr"
                 value={account.phone}
@@ -133,7 +133,6 @@ export function ProfileContent({
           </form>
         </CardContent>
       </Card>
-      <PhoneChange />
     </div>
   );
 }

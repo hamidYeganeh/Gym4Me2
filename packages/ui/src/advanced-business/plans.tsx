@@ -1,23 +1,24 @@
 "use client";
-import { boundedCount } from "../lib/integer-input";
-import { useState } from "react";
-import { useTranslations } from "@repo/i18n";
 import type {
   AdvancedData,
   AdvancedSurface,
   BusinessPlan,
 } from "@repo/api/advanced-business";
-import { Card, CardHeader, CardTitle, CardContent } from "../kit/Card";
+import { useTranslations } from "@repo/i18n";
+import { Input as KitInput } from "@repo/ui/kit/Input";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "../kit/Card";
 import { NativeSelectOption } from "../kit/NativeSelect";
+import { boundedCount } from "../lib/integer-input";
 import {
   Field,
-  Select,
   Form,
   Money,
-  Reason,
   Outcome,
-  value,
+  Reason,
+  Select,
   useFinancialDate,
+  value,
 } from "./forms";
 export function PlanControls({
   surface,
@@ -191,7 +192,7 @@ function Activation({
       })}
     >
       <Field name="months" label={t("months")}>
-        <input
+        <KitInput
           className="min-h-11 rounded-xl border bg-background px-3"
           type="number"
           name="months"

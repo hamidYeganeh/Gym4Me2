@@ -1,5 +1,5 @@
 import type * as dto from "./catalog.dto";
-import type { ApiClient, RequestOptions } from "../transport";
+import { ApiError, type ApiClient, type RequestOptions } from "../transport";
 import { catalogEndpoints } from "./catalog.endpoints";
 import { readLocationPages } from "./location-pages";
 export const catalogClients = {
@@ -51,8 +51,37 @@ export const catalogClients = {
     options: RequestOptions = {},
   ) =>
     api.request<dto.ClubSummaryDto[]>(catalogEndpoints.clubs(filters), options),
-  club: (api: ApiClient, id: string, options: RequestOptions = {}) =>
-    api.request<dto.ClubDto>(catalogEndpoints.club(id), options),
+  club: async (api: ApiClient, id: string, options: RequestOptions = {}) => {
+    try {
+      return await api.request<dto.ClubDto>(catalogEndpoints.club(id), options);
+    } catch (error) {
+      // Older deployed APIs accept UUIDs only. Resolve public slugs without
+      // leaking database identifiers into browser routes.
+      if (
+        !(error instanceof ApiError) ||
+        error.status !== 400 ||
+        error.code !== "Backend.invalidClubInformation" ||
+        /^[0-9a-f]{8}-[0-9a-f-]{27}$/i.test(id)
+      )
+        throw error;
+      const seen = new Set<string>();
+      for (let page = 1; ; page++) {
+        const clubs = await api.request<dto.ClubSummaryDto[]>(
+          catalogEndpoints.clubs({ page }),
+          options,
+        );
+        const match = clubs.find((club) => club.slug === id);
+        if (match)
+          return api.request<dto.ClubDto>(
+            catalogEndpoints.club(match.id),
+            options,
+          );
+        if (!clubs.length || clubs.every((club) => seen.has(club.id))) break;
+        clubs.forEach((club) => seen.add(club.id));
+      }
+      throw new ApiError(404, "Backend.clubNotFound");
+    }
+  },
   branch: (
     api: ApiClient,
     id: string,

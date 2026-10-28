@@ -1,27 +1,34 @@
 "use client";
 import { useTranslations } from "@repo/i18n";
 
-import { useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import {
+  ChevronLeftIcon as ChevronLeft,
+  ChevronRightIcon as ChevronRight,
+  CloseXIcon as X,
+} from "@repo/ui/icons";
+import { Badge } from "@repo/ui/kit/Badge";
+import { Button } from "@repo/ui/kit/Button";
+import { Carousel, CarouselContent, CarouselItem } from "@repo/ui/kit/Carousel";
+import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 import {
   Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
   DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
 } from "@repo/ui/kit/Dialog";
 import Image from "next/image";
 import Link from "next/link";
-import { Carousel, CarouselContent, CarouselItem } from "@repo/ui/kit/Carousel";
-import { Badge } from "@repo/ui/kit/Badge";
-import { Button } from "@repo/ui/kit/Button";
-import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
+import { useRef, useState } from "react";
 export function ClubShowcase({
   club,
   locale,
   viewLabel,
 }: {
-  club: ClubDetailData;
+  club: Pick<
+    ClubDetailData,
+    "id" | "name" | "category" | "categories" | "logo" | "href"
+  > & { photos: { src: string; alt: string }[] };
   locale: string;
   viewLabel: string;
 }) {
@@ -41,7 +48,7 @@ export function ClubShowcase({
   if (!cover) return null;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <article className="flex min-w-0 flex-col gap-4" aria-label={club.name}>
+      <article data-zoom-exit-key={`${club.href?.includes("/coaches/") ? "coach" : "club"}-${club.id}`} className="flex min-w-0 flex-col gap-4" aria-label={club.name}>
         <Carousel
           opts={{ align: "start", direction: locale === "fa" ? "rtl" : "ltr" }}
           aria-label={club.name}

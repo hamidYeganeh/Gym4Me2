@@ -18,7 +18,7 @@ export const buttonGroupVariants = cva(
 
 export const buttonGroupStyles = {
   buttonGroupText: cva(
-    "flex items-center gap-2 rounded-4xl border bg-muted px-2.5 text-sm font-medium [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
+    "flex items-center gap-2 rounded-4xl border bg-muted px-2.5 text-sm font-medium [&_:is(svg,.sandow-icon)]:pointer-events-none [&_:is(svg,.sandow-icon):not([class*='size-'])]:size-4",
   ),
   buttonGroupSeparator: cva(
     "relative self-stretch bg-input data-horizontal:mx-px data-horizontal:w-auto data-vertical:my-px data-vertical:h-auto",

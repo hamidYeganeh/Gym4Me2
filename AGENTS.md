@@ -8,3 +8,10 @@ Read `docs/README.md` inside that installed package first, then read the relevan
 
 This block is written and re-added by `turbo` before repository-scoped commands when an AI agent is detected. In the Turborepo source repository, its template is defined in `crates/turborepo-cli/src/cli/agent_guidance.rs`. Removing the managed block while updates are enabled means a later qualifying invocation will add it again. Set `"agentGuidance": false` in the root `turbo.json` or `turbo.jsonc` to opt out; this does not remove an existing block. Keep the block committed with your work to avoid an uncommitted change on the next agent invocation.
 <!-- END:turborepo-agent-rules -->
+
+## Production deployment
+
+For Gym4Me VPS releases, deployment checks, or code rollback, use the project skill
+at `.agents/skills/gym4me-deploy/SKILL.md`. It preserves production envs, stages new
+releases, and documents backup, migration, activation, and verification. A status
+request or skill invocation alone does not authorize publishing a release.

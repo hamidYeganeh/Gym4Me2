@@ -46,6 +46,10 @@ export function applicationRouteLayout(pathname: string, search: string) {
       "/checkout",
     ].includes(logical) ||
     logical.startsWith("/services/") ||
+    logical.startsWith("/discovery/classes/") ||
+    /^\/discovery\/clubs\/[^/]+\/classess(?:\/[^/]+)?$/.test(logical) ||
+    logical.startsWith("/discovery/coaches/") ||
+    /^\/discovery\/clubs\/[^/]+\/slots$/.test(logical) ||
     logical.startsWith("/tickets/") ||
     logical.startsWith("/checkout/mock-gateway") ||
     logical.startsWith("/messages/") ||
@@ -60,6 +64,9 @@ export function applicationRouteLayout(pathname: string, search: string) {
   return {
     logical,
     protectedPage,
-    navigationVisible: !protectedPage && !fullscreen,
+    navigationVisible:
+      !protectedPage &&
+      !fullscreen &&
+      logical.split("/").filter(Boolean).length <= 1,
   };
 }

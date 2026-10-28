@@ -8,6 +8,7 @@
     "./lib/*": "./src/lib/*.ts",
     "./hooks/*": "./src/hooks/*.ts",
     "./icons": "./src/icons/index.ts",
+    "./icons/catalog": "./src/icons/catalog.ts",
     "./workspace-home": "./src/workspace-home.tsx",
     "./button": "./src/button.tsx",
     "./card": "./src/card.tsx",
@@ -30,7 +31,9 @@
     "./growth-crm": "./src/growth/crm.tsx",
     "./growth-discovery": "./src/growth/discovery.tsx",
     "./sports-receipts": "./src/sports/payment-receipts.tsx",
-    "./sports-tuition": "./src/sports/tuition-plan.tsx"
+    "./sports-tuition": "./src/sports/tuition-plan.tsx",
+    "./discovery-content": "./src/discovery-content.tsx",
+    "./admin-discovery-content": "./src/account/admin-discovery-content.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -40,6 +43,7 @@
     "@eslint/js": "^9",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@types/leaflet": "^1.9.22",
     "@types/node": "26.4.1",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.5",
@@ -71,7 +75,7 @@
     "input-otp": "^1.5.0",
     "jspdf": "^4.2.1",
     "jsqr": "1.4.0",
-    "lucide-react": "^1.55.0",
+    "leaflet": "^1.9.4",
     "motion": "^14.1.0",
     "next-themes": "^0.4.6",
     "radix-ui": "^1.7.0",

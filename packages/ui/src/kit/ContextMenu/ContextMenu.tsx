@@ -18,9 +18,9 @@ import type {
   ContextMenuTriggerProps,
 } from "./ContextMenu.types";
 
-import { cn } from "@repo/ui/lib/utils";
-import { CheckIcon, ChevronRightIcon } from "lucide-react";
 import { ContextMenu as ContextMenuPrimitive } from "@animate-ui/react/primitives/radix-ui";
+import { cn } from "@repo/ui/lib/utils";
+import { CheckIcon, ChevronRightIcon } from "../../icons";
 
 function ContextMenu({ ...props }: ContextMenuProps) {
   return <ContextMenuPrimitive.Root data-slot="context-menu" {...props} />;

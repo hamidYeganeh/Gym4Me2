@@ -1,37 +1,38 @@
 "use client";
-import Link from "next/link";
-import {
-  ArrowLeft,
-  Bell,
-  CalendarDays,
-  ChevronLeft,
-  CircleUserRound,
-  Compass,
-  CreditCard,
-  House,
-  Plus,
-  RefreshCw,
-} from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { performAppBack } from "../../lib/app-navigation";
-import { useLocale, useTranslations } from "@repo/i18n";
-import type { ReactNode } from "react";
 import type { ApiError } from "@repo/api";
-import { useQueryRetry } from "@repo/ui/hooks/use-query-retry";
-import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
-import {
-  accountRecovery,
-  accountReadDenied,
-} from "@repo/ui/lib/account-recovery";
-import { AuthRequired, ErrorNotice } from "@repo/ui/account";
 import { useAccount } from "@repo/api/profile";
-import { primaryNavigationSection } from "../../lib/product-scope";
-import "./luma.css";
-import { SlidingSegments } from "@repo/ui/motion-controls";
+import { useLocale, useTranslations } from "@repo/i18n";
+import { AuthRequired, ErrorNotice } from "@repo/ui/account";
+import { useAuthRecovery } from "@repo/ui/hooks/use-auth-recovery";
+import { useQueryRetry } from "@repo/ui/hooks/use-query-retry";
+import {
+  ArrowLeftIcon as ArrowLeft,
+  Bell1Icon as Bell,
+  Calendar1Icon as CalendarDays,
+  ChevronLeftIcon as ChevronLeft,
+  UserIcon as CircleUserRound,
+  CompassIcon as Compass,
+  CreditCardIcon as CreditCard,
+  House1Icon as House,
+  PlusIcon as Plus,
+  ArrowRepeatClockwise1Icon as RefreshCw,
+} from "@repo/ui/icons";
+import { Button } from "@repo/ui/kit/Button";
 import {
   FitnessIllustration,
   type FitnessIllustrationKind,
 } from "@repo/ui/kit/FitnessIllustration";
+import {
+  accountReadDenied,
+  accountRecovery,
+} from "@repo/ui/lib/account-recovery";
+import { SlidingSegments } from "@repo/ui/motion-controls";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import type { ReactNode } from "react";
+import { performAppBack } from "../../lib/app-navigation";
+import { primaryNavigationSection } from "../../lib/product-scope";
+import "./luma.css";
 export function useLuma() {
   return useTranslations("Luma");
 }
@@ -278,6 +279,7 @@ export function Row({
   state,
   icon,
   date,
+  motionKey,
 }: {
   title: string;
   meta?: string;
@@ -286,6 +288,7 @@ export function Row({
   state?: string;
   icon?: ReactNode;
   date?: string;
+  motionKey?: string;
 }) {
   const locale = useLocale();
   const validDate =
@@ -323,7 +326,7 @@ export function Row({
     </>
   );
   return href ? (
-    <Link href={href} className="luma-row">
+    <Link href={href} data-zoom-exit-key={motionKey} className="luma-row">
       {content}
     </Link>
   ) : (
@@ -342,12 +345,14 @@ export function Empty({
   children,
   compact = false,
   icon,
-  illustration,
+  illustration = "club",
+  action,
 }: {
   children?: ReactNode;
   compact?: boolean;
   icon?: ReactNode;
   illustration?: FitnessIllustrationKind;
+  action?: ReactNode;
 }) {
   const t = useLuma();
   return (
@@ -358,6 +363,11 @@ export function Empty({
         <span aria-hidden="true">{icon ?? <CalendarDays />}</span>
       )}
       <p>{children ?? t("empty")}</p>
+      {action ?? (
+        <Button asChild variant="outline">
+          <Link href="/discovery">{t("discover")}</Link>
+        </Button>
+      )}
     </div>
   );
 }

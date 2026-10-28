@@ -44,7 +44,7 @@ import {
 } from "@repo/ui/kit/Sheet";
 import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ui/kit/Tooltip";
-import { PanelLeftIcon } from "lucide-react";
+import { SidebarLeftIcon as PanelLeftIcon } from "../../icons";
 
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";

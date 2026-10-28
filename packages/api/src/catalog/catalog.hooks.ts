@@ -1,6 +1,6 @@
 "use client";
 import { clubFeedOptions } from "./catalog-feed";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { useApiContext } from "../provider";
 import { validCatalogPrices } from "./catalog.dto";
 import type * as dto from "./catalog.dto";
@@ -35,22 +35,28 @@ export function useClubs(
     enabled && validCatalogPrices(filters),
   );
 }
-export function useClub(id: string | undefined) {
-  return useApiQuery(
-    (scope) => catalogKeys(scope).club(id),
-    (api, signal) => catalogClients.club(api, id ?? "", { signal }),
-    Boolean(id),
-  );
+export function useClub(id: string | undefined, initialData?: dto.ClubDto) {
+  const { api } = useApiContext();
+  return useQuery<dto.ClubDto, import("../transport").ApiError>({
+    queryKey: catalogKeys(api.scope).club(id),
+    queryFn: ({ signal }) => catalogClients.club(api, id ?? "", { signal }),
+    enabled: Boolean(id),
+    initialData,
+  });
 }
 export function useClubBranch(
   id: string | undefined,
   branchId: string | undefined,
+  initialData?: dto.BranchProfileDto,
 ) {
   return useApiQuery(
     (scope) => catalogKeys(scope).branch(id, branchId),
     (api, signal) =>
       catalogClients.branch(api, id ?? "", branchId ?? "", { signal }),
     Boolean(id && branchId),
+    undefined,
+    false,
+    initialData,
   );
 }
 export function useTaxonomies(

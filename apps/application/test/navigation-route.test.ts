@@ -1,5 +1,5 @@
-import { test } from "node:test";
 import assert from "node:assert/strict";
+import { test } from "node:test";
 import {
   applicationRouteLayout,
   navigationRoute,
@@ -67,10 +67,7 @@ test("web and native club detail, gallery, reviews and slots share identity and 
       `id=abc&view=${view}&branch=south`,
     );
     assert.deepEqual(native, web, view);
-    assert.equal(
-      native.navigationVisible,
-      view === "reviews" || view === "slots",
-    );
+    assert.equal(native.navigationVisible, false);
   }
   assert.equal(
     applicationRouteLayout("/discovery/club", "id=abc&view=unknown")
@@ -104,4 +101,31 @@ test("checkout reserves its bottom edge for payment actions on web and native", 
     false,
   );
   assert.equal(applicationRouteLayout("/bookings", "").navigationVisible, true);
+});
+
+test("only primary routes show bottom navigation", () => {
+  for (const path of [
+    "/",
+    "/discovery",
+    "/bookings",
+    "/memberships",
+    "/coaches",
+  ])
+    assert.equal(
+      applicationRouteLayout(path, "").navigationVisible,
+      true,
+      path,
+    );
+  for (const path of [
+    "/discovery/coaches/atlas-strength",
+    "/coaches/detail",
+    "/discovery/clubs/one",
+    "/saved/coaches",
+    "/auth/otp",
+  ])
+    assert.equal(
+      applicationRouteLayout(path, "").navigationVisible,
+      false,
+      path,
+    );
 });

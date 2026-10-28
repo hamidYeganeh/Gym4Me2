@@ -1,4 +1,5 @@
 "use client";
+import { BusinessFieldSteps } from "../account/business-form-steps";
 import { useRef, useState, type ReactNode, type FormEvent } from "react";
 import { useLocale, useTranslations } from "@repo/i18n";
 import { isTranslationKey } from "@repo/i18n/messages";
@@ -118,10 +119,24 @@ export function Form({
         disabled={disabled || m.isPending}
         className="grid min-w-0 gap-4 disabled:opacity-60"
       >
-        {children}
-        <Button type="submit" disabled={disabled || m.isPending}>
-          {m.isPending ? t("saving") : label}
-        </Button>
+        {surface === "business" ? (
+          <BusinessFieldSteps
+            submit={
+              <Button type="submit" disabled={disabled || m.isPending}>
+                {m.isPending ? t("saving") : label}
+              </Button>
+            }
+          >
+            {children}
+          </BusinessFieldSteps>
+        ) : (
+          <>
+            {children}
+            <Button type="submit" disabled={disabled || m.isPending}>
+              {m.isPending ? t("saving") : label}
+            </Button>
+          </>
+        )}
       </fieldset>
     </form>
   );

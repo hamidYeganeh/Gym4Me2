@@ -1,4 +1,11 @@
 "use client";
+import { Search } from "../Search";
+import {
+  filterSelectOptions,
+  mergeSelectOptions,
+  useSelectOptions,
+} from "@repo/api/select-options";
+import { useTranslations } from "@repo/i18n";
 import {
   Children,
   Fragment,
@@ -9,33 +16,26 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useTranslations } from "@repo/i18n";
 import {
-  Check,
+  SortDescendingIcon as ArrowDownWideNarrow,
+  Calendar1Icon as CalendarDays,
+  CheckIcon as Check,
   ChevronDownIcon,
-  Search,
-  X,
-  MapPin,
-  Dumbbell,
-  CalendarDays,
-  Clock,
-  CreditCard,
-  ArrowDownWideNarrow,
-  Users,
-  Globe,
-  Sun,
-  Moon,
-  Monitor,
-  LoaderCircle,
-} from "lucide-react";
-import "./NativeSelect.css";
-import {
-  useSelectOptions,
-  mergeSelectOptions,
-  filterSelectOptions,
-} from "@repo/api/select-options";
+  ClockIcon as Clock,
+  CreditCardIcon as CreditCard,
+  BarbellHorizontalIcon as Dumbbell,
+  GlobeIcon as Globe,
+  ArrowRotateClockwise1Icon as LoaderCircle,
+  MapPin1Icon as MapPin,
+  MonitorIcon as Monitor,
+  MoonIcon as Moon,
+
+  SunIcon as Sun,
+  UsersTwoIcon as Users,
+} from "../../icons";
 import { cn } from "../../lib/utils";
 import { BottomSheet } from "../BottomSheet";
+import "./NativeSelect.css";
 import { nativeSelectStyles } from "./NativeSelect.styles";
 import type {
   NativeSelectOptGroupProps,
@@ -429,17 +429,11 @@ export function NativeSelect({
             <div
               data-sheet-search=""
               data-gym-focus-proxy=""
-              className="flex w-full min-w-0 min-h-12 items-center gap-3 rounded-2xl bg-muted px-4"
+              className="w-full min-w-0"
             >
               <Search
-                size={19}
-                aria-hidden="true"
-                className="shrink-0 text-muted-foreground"
-              />
-              <input
                 ref={input}
                 role="combobox"
-                type="text"
                 autoComplete="off"
                 maxLength={100}
                 aria-autocomplete="list"
@@ -453,7 +447,8 @@ export function NativeSelect({
                 aria-label={t("search")}
                 placeholder={t("search")}
                 value={search}
-                className="h-12 w-0 min-w-0 max-w-full flex-1 bg-transparent text-base outline-none"
+                onClear={() => { setSearch(""); setActive(0); }}
+                className="w-full"
                 onChange={(event) => {
                   setSearch(event.target.value);
                   setActive(0);
@@ -493,20 +488,7 @@ export function NativeSelect({
                   }
                 }}
               />
-              {search && (
-                <button
-                  type="button"
-                  className="flex size-11 shrink-0 items-center justify-center"
-                  aria-label={t("clearSearch")}
-                  onClick={() => {
-                    setSearch("");
-                    setActive(0);
-                    input.current?.focus();
-                  }}
-                >
-                  <X size={18} />
-                </button>
-              )}
+
             </div>
           </div>
         }

@@ -1,23 +1,23 @@
 "use client";
 
+import {
+  ArrowRightIcon as ArrowRight,
+  ArrowRotateCounterclockwise1Icon as RotateCcw,
+
+} from "@repo/ui/icons";
+import { AnimatedThemeToggler } from "@repo/ui/kit/AnimatedThemeToggler";
+import { Badge } from "@repo/ui/kit/Badge";
+import { Button } from "@repo/ui/kit/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/kit/Card";
+import { Search } from "@repo/ui/kit/Search";
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, RotateCcw, Search } from "lucide-react";
-import { Button } from "@repo/ui/kit/Button";
-import { Badge } from "@repo/ui/kit/Badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/kit/Card";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@repo/ui/kit/InputGroup";
-import { AnimatedThemeToggler } from "@repo/ui/kit/AnimatedThemeToggler";
+import { backgroundExamples } from "./backgrounds";
 import { controlExamples } from "./controls";
 import { displayExamples } from "./display";
-import { overlayExamples } from "./overlays";
 import { fitnessExamples } from "./fitness";
 import { motionExamples } from "./motion";
-import { backgroundExamples } from "./backgrounds";
+import { overlayExamples } from "./overlays";
 import { sectionExamples } from "./sections";
 import { categories, type DemoCategory } from "./types";
 
@@ -75,17 +75,12 @@ export function DemoGallery({
             کنترل‌ها و انیمیشن‌ها را امتحان کن.
           </p>
         </div>
-        <InputGroup>
-          <InputGroupAddon>
-            <Search aria-hidden="true" />
-          </InputGroupAddon>
-          <InputGroupInput
+        <Search onClear={() => setSearch("")}
             aria-label="جست‌وجوی کامپوننت"
             placeholder="جست‌وجو با نام فارسی یا انگلیسی…"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
           />
-        </InputGroup>
         <nav
           aria-label="دسته‌بندی کامپوننت‌ها"
           className="flex flex-wrap gap-2"

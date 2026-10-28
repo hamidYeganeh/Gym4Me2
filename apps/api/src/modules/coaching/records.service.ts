@@ -215,7 +215,7 @@ export class CoachingRecordsService {
     return coachingWrite(this.db, actor, async (tx) => {
       const [r] = await rows<{ coach_id: string; status: string }>(
         tx,
-        sql`SELECT cs.coach_id,r.status FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN coaching_services cs ON cs.service_id=o.service_id WHERE r.id=${reservationId} AND r.user_id=${actor} FOR SHARE OF r`,
+        sql`SELECT cs.coach_id,r.status FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN coaching_services cs ON cs.service_id=o.service_id WHERE r.id=${reservationId} AND r.user_id=${actor} AND o.end_at<=now() FOR SHARE OF r`,
       );
       if (!r) throw new ForbiddenException('Practice.completeFirst');
       const [prior] = await rows(

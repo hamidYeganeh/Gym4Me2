@@ -9,9 +9,9 @@ export const reviewCardStyles = {
   body: cva("text-base leading-7 text-muted-foreground"),
   rating: cva("flex items-center gap-3 tabular-nums"),
   stars: cva("inline-flex gap-1 text-rating"),
-  star: cva("relative inline-flex size-5 [&>svg]:size-full"),
+  star: cva("relative inline-flex size-5 [&>:is(svg,.sandow-icon)]:size-full"),
   fill: cva(
-    "absolute inset-y-0 left-0 overflow-hidden [&>svg]:size-5 [&>svg]:max-w-none",
+    "absolute inset-y-0 left-0 overflow-hidden [&>:is(svg,.sandow-icon)]:size-5 [&>:is(svg,.sandow-icon)]:max-w-none",
   ),
   verified: cva(
     "flex items-center gap-2 font-medium text-primary [&_.sandow-icon]:text-xl",

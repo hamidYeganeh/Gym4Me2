@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { CoachSamplesEditor } from "./coach-samples";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useLocale, useTranslations } from "@repo/i18n";
@@ -160,6 +161,7 @@ export function CoachingPracticePanel() {
             </p>
             {p?.reviewReason && <p>{p.reviewReason}</p>}
           </Form>
+          {p && <CoachSamplesEditor />}
           {p && (
             <Form
               title={t("credential")}

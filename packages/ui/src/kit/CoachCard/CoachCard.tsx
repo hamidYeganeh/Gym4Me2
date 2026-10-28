@@ -1,14 +1,19 @@
 "use client";
 import { useTranslations } from "@repo/i18n";
-import { useState } from "react";
+import { Like } from "@repo/ui/kit/Like";
 import Image from "next/image";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "../Avatar";
-import { Star, ArrowUpRight } from "lucide-react";
-import { BookmarkIcon, SealCheckIcon, Calendar1Icon } from "../../icons";
+import { useState } from "react";
+import {
+  ArrowUpRightIcon as ArrowUpRight,
+  Calendar1Icon,
+  SealCheckIcon,
+  StarFullIcon as Star,
+} from "../../icons";
 import { cn } from "../../lib/utils";
-import { Button } from "../Button";
+import { Avatar, AvatarFallback, AvatarImage } from "../Avatar";
 import { Badge } from "../Badge";
+import { Button } from "../Button";
 import { SocialIcon } from "../SocialIcon";
 import { coachCardVariants, coachCardStyles as s } from "./CoachCard.styles";
 import type { CoachCardProps } from "./CoachCard.types";
@@ -55,6 +60,7 @@ export function CoachCard({
     return (
       <article
         data-slot="coach-card"
+        data-zoom-exit-key={`coach-${coach.id}`}
         data-layout="compact"
         className={cn(
           "relative flex w-full items-start gap-4 rounded-3xl border border-border bg-card p-5 text-card-foreground",
@@ -64,6 +70,7 @@ export function CoachCard({
         {href && (
           <Link
             href={href}
+            scroll={false}
             className="absolute inset-0 rounded-[inherit] focus-visible:outline-2 focus-visible:outline-ring"
             aria-label={coach.name}
           />
@@ -84,15 +91,13 @@ export function CoachCard({
         </div>
         <div className="relative flex shrink-0 flex-col gap-3">
           {onSavedChange && (
-            <Button
+            <Like
               variant="ghost"
               size="icon"
               aria-label={saved ? labels.unsave : labels.save}
               aria-pressed={saved}
               onClick={() => onSavedChange(!saved)}
-            >
-              <BookmarkIcon />
-            </Button>
+            ></Like>
           )}
           <ArrowUpRight
             aria-hidden="true"
@@ -104,6 +109,7 @@ export function CoachCard({
   return (
     <article
       data-slot="coach-card"
+      data-zoom-exit-key={`coach-${coach.id}`}
       data-variant={variant}
       className={cn(coachCardVariants({ variant }), className)}
     >
@@ -170,15 +176,13 @@ export function CoachCard({
             <span />
           ))}
         {onSavedChange && (
-          <Button
+          <Like
             variant="image"
             size="icon-lg"
             aria-label={saved ? labels.unsave : labels.save}
             aria-pressed={saved}
             onClick={() => onSavedChange(!saved)}
-          >
-            <BookmarkIcon />
-          </Button>
+          ></Like>
         )}
       </div>
       <div className={s.content({ variant })}>
@@ -220,12 +224,12 @@ export function CoachCard({
                   </span>
                 </>
               )}
-              <span className={s.experience()}>
+              {coach.yearsOfExperience > 0 && <span className={s.experience()}>
                 <Calendar1Icon />
                 <span>
                   {number.format(coach.yearsOfExperience)} {labels.experience}
                 </span>
-              </span>
+              </span>}
             </div>
           </>
         )}

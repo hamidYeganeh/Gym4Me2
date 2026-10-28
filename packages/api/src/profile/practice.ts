@@ -1,4 +1,6 @@
 "use client";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useApiContext } from "../provider";
 import { useApiQuery, useApiMutation } from "../query";
 import type { QueryParams } from "../transport";
 export type PracticeDto = {
@@ -105,6 +107,7 @@ export type NoteDto = {
   revision: number;
 };
 export type CoachDirectoryDto = {
+  publicId: string;
   userId: string;
   displayName: string | null;
   biography: string | null;
@@ -112,11 +115,13 @@ export type CoachDirectoryDto = {
   goals: string[];
   city: string;
   experienceYears: number;
-  reviewExpiresAt: string;
+  reviewExpiresAt: string | null;
+  credentialVerified?: boolean;
   fromPriceMinor: string | null;
 };
 export type CoachDetailDto = CoachDirectoryDto & {
   services: {
+    publicId: string;
     serviceId: string;
     title: string;
     kind: string;
@@ -171,12 +176,15 @@ export function usePracticeQuery<T>(
   path: string,
   query: QueryParams = {},
   enabled = true,
+  initialData?: T,
 ) {
   return useApiQuery(
     (scope) => [...scope, "coaching", path, query],
     (api, signal) => api.request<T>({ method: "GET", path, query }, { signal }),
     enabled,
     0,
+    false,
+    initialData,
   );
 }
 export function usePracticeCommand() {
@@ -202,3 +210,32 @@ export type CoachReviewReportDto = {
   revision: number;
   decisions: { reason: string; hidden: boolean; createdAt: string }[];
 };
+
+/** Ordered coach portfolio, limited to five before/after pairs. */
+export type CoachSampleDto = {
+  id: string;
+  title: string;
+  revision: number;
+  before: string;
+  after: string;
+};
+
+export function useInfiniteCoaches(filters: QueryParams = {}, enabled = true) {
+  const { api } = useApiContext();
+  return useInfiniteQuery({
+    queryKey: [...api.scope, "coaching", "directory", filters],
+    initialPageParam: 1,
+    enabled,
+    queryFn: ({ pageParam, signal }) =>
+      api.request<{ items: CoachDirectoryDto[]; hasMore: boolean }>(
+        {
+          method: "GET",
+          path: "coaching/directory",
+          query: { ...filters, page: pageParam, limit: 50 },
+        },
+        { signal },
+      ),
+    getNextPageParam: (last, pages) =>
+      last.hasMore ? pages.length + 1 : undefined,
+  });
+}

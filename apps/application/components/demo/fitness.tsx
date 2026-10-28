@@ -1,23 +1,28 @@
 "use client";
+import { SportCard } from "@repo/ui/kit/SportCard";
+import { ExclamationMarkTriangleIcon } from "@repo/ui/icons";
+import { ClubFaq } from "@repo/ui/kit/ClubFaq";
+import { WorkoutTimer } from "@repo/ui/training";
+import { ImageCompare } from "@repo/ui/kit/ImageCompare";
 
-import { useState } from "react";
-import { Dumbbell } from "lucide-react";
+import { BarbellHorizontalIcon as Dumbbell } from "@repo/ui/icons";
+import { Button } from "@repo/ui/kit/Button";
+import { ChoiceOptionCard } from "@repo/ui/kit/ChoiceOptionCard";
+import { ClassCard } from "@repo/ui/kit/ClassCard";
+import { ClubBranchCard } from "@repo/ui/kit/ClubBranchCard";
 import { ClubCard } from "@repo/ui/kit/ClubCard";
 import { ClubDetail } from "@repo/ui/kit/ClubDetail";
 import { ClubFeaturedCard } from "@repo/ui/kit/ClubFeaturedCard";
-import { ClubBranchCard } from "@repo/ui/kit/ClubBranchCard";
-import { Button } from "@repo/ui/kit/Button";
 import { CoachCard } from "@repo/ui/kit/CoachCard";
 import { CoachDetail } from "@repo/ui/kit/CoachDetail";
-import { ClassCard } from "@repo/ui/kit/ClassCard";
 import { EquipmentCard } from "@repo/ui/kit/EquipmentCard";
-import { ChoiceOptionCard } from "@repo/ui/kit/ChoiceOptionCard";
-import { ReviewCard, type ReviewVote } from "@repo/ui/kit/ReviewCard";
-import { ReviewsSummary } from "@repo/ui/kit/ReviewsSummary";
+import { FitnessIllustration } from "@repo/ui/kit/FitnessIllustration";
 import { LocationCard } from "@repo/ui/kit/LocationCard";
 import { LocationExplorer } from "@repo/ui/kit/LocationExplorer";
-import { FitnessIllustration } from "@repo/ui/kit/FitnessIllustration";
+import { ReviewCard } from "@repo/ui/kit/ReviewCard";
+import { ReviewsSummary } from "@repo/ui/kit/ReviewsSummary";
 import { toast } from "@repo/ui/kit/Sileo";
+import { useState } from "react";
 import { getClubs } from "../../lib/clubs";
 import { getCoaches } from "../../lib/coaches";
 import { ClubShowcase } from "../discovery/club-showcase";
@@ -44,7 +49,7 @@ function ClubExample() {
       club={club}
       saved={saved}
       onSavedChange={setSaved}
-      labels={{ ...saveLabels, discover: "مشاهدهٔ نمونه" }}
+      labels={{ ...saveLabels, discover: "مشاهده باشگاه" }}
     />
   );
 }
@@ -175,8 +180,8 @@ function ClassExample() {
   );
 }
 
+const demoReactions = [{ emoji: "🚀", count: 3, mine: false }, { emoji: "🔥", count: 2, mine: false }];
 function ReviewExample() {
-  const [vote, setVote] = useState<ReviewVote>(null);
   return (
     <ReviewCard
       review={{
@@ -189,8 +194,7 @@ function ReviewExample() {
         author: { displayName: "کاربر نمونه" },
       }}
       locale="fa"
-      vote={vote}
-      onVoteChange={setVote}
+      reactions={demoReactions}
       onReport={() => toast.info("گزارش نمونه")}
       labels={{
         verified: "بازدید تأییدشده",
@@ -205,8 +209,6 @@ function ReviewExample() {
 }
 
 function LocationExample() {
-  const [selected, setSelected] = useState(false);
-  const [saved, setSaved] = useState(false);
   return (
     <LocationCard
       name="تهران"
@@ -214,11 +216,7 @@ function LocationExample() {
       cover={club.photos[0]}
       clubCount={24}
       kindLabel="شهر"
-      selected={selected}
-      onSelect={() => setSelected(!selected)}
-      saved={saved}
-      onSavedChange={setSaved}
-      saveLabel="ذخیرهٔ شهر"
+      href="/discovery"
     />
   );
 }
@@ -316,6 +314,33 @@ export const fitnessExamples: DemoExample[] = [
     Preview: ChoiceExample,
   },
   {
+    name: "SportCard",
+    title: "کارت ورزش",
+    keywords: "sport card ورزش کارت",
+    category: "cards",
+    Preview: () => <div dir="ltr"><SportCard name="Live Chat" description="25 currently chatting" icon={ExclamationMarkTriangleIcon} href="/messages" className="w-full max-w-[342px]" /></div>,
+  },
+  {
+    name: "ClubFaq",
+    title: "پرسش‌های متداول باشگاه",
+    keywords: "faq سوال پاسخ باشگاه",
+    category: "fitness",
+    Preview: () => <ClubFaq items={[{ question: "برای جلسهٔ اول چه وسایلی همراه داشته باشم؟", answer: "لباس ورزشی راحت، کفش مناسب سالن، حوله و بطری آب همراه داشته باش. این پاسخ صرفاً نمونهٔ نمایشی است." }, { question: "آیا می‌توانم پیش از رزرو از باشگاه بازدید کنم؟", answer: "برای هماهنگی بازدید با پذیرش باشگاه تماس بگیر. این پاسخ صرفاً نمونهٔ نمایشی است." }]} />,
+  },
+  {
+    name: "DynamicIsland",
+    title: "تایمر تمرین",
+    keywords: "زمان تمرین استراحت تایمر timer workout",
+    category: "fitness",
+    Preview: () => <WorkoutTimer sessionKey="demo" />,
+  },
+  {
+    name: "ImageCompare",
+    keywords: "مقایسه تصویر قبل بعد نمونه مربی",
+    category: "cards",
+    Preview: () => <ImageCompare before={club.photos[0]!.src} after={club.photos[1]!.src} />,
+  },
+  {
     name: "ReviewCard",
     title: "کارت نظر",
     keywords: "نظر امتیاز",
@@ -351,7 +376,7 @@ export const fitnessExamples: DemoExample[] = [
     keywords: "باشگاه گالری تصویر اسلاید",
     category: "cards",
     Preview: () => (
-      <ClubShowcase club={club} locale="fa" viewLabel="مشاهدهٔ نمونه" />
+      <ClubShowcase club={club} locale="fa" viewLabel="مشاهده باشگاه" />
     ),
   },
   {

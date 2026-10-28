@@ -11,6 +11,7 @@ async function bootstrap() {
   configureApi(app, {
     corsOrigins: config.get('CORS_ORIGINS', { infer: true }),
     docsEnabled: config.get('API_DOCS_ENABLED', { infer: true }),
+    trustLoopbackProxy: config.get('TRUST_LOOPBACK_PROXY', { infer: true }),
   });
   await app.listen(
     config.get('PORT', { infer: true }),

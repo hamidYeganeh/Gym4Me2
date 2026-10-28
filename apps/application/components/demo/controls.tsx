@@ -1,31 +1,47 @@
 "use client";
+import { Search as SearchInput } from "@repo/ui/kit/Search";
+import { IconPicker } from "@repo/ui/kit/IconPicker";
+import { RollingCounter } from "@repo/ui/kit/RollingCounter";
 
-import { useState } from "react";
-import { Search, Plus, Minus } from "lucide-react";
 import { Button } from "@repo/ui/kit/Button";
-import { ButtonGroup } from "@repo/ui/kit/ButtonGroup";
-import { Input } from "@repo/ui/kit/Input";
-import { SmoothInput } from "@repo/ui/kit/SmoothInput";
-import { TextField } from "@repo/ui/kit/TextField";
-import { Textarea } from "@repo/ui/kit/Textarea";
-import { Label } from "@repo/ui/kit/Label";
+import { Calendar } from "@repo/ui/kit/Calendar";
+import { Checkbox } from "@repo/ui/kit/Checkbox";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@repo/ui/kit/Combobox";
 import {
   Field,
-  FieldLabel,
   FieldDescription,
   FieldError,
+  FieldLabel,
 } from "@repo/ui/kit/Field";
+import { Input } from "@repo/ui/kit/Input";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@repo/ui/kit/InputOtp";
 import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@repo/ui/kit/InputGroup";
-import { Checkbox } from "@repo/ui/kit/Checkbox";
-import { Switch } from "@repo/ui/kit/Switch";
+  IranianDateInput,
+  IranianDateTimeInput,
+} from "@repo/ui/kit/IranianDateInput";
+import { Label } from "@repo/ui/kit/Label";
+import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
+import { OneTimeCode, type OneTimeCodeProps } from "@repo/ui/kit/OneTimeCode";
+import {
+  Questionnaire,
+  QuestionnaireActions,
+  QuestionnaireChoice,
+  QuestionnaireChoices,
+  QuestionnaireItem,
+  QuestionnaireNext,
+  QuestionnairePrevious,
+  QuestionnaireSubmit,
+  QuestionnaireTitle,
+} from "@repo/ui/kit/Questionnaire";
 import { RadioGroup, RadioGroupItem } from "@repo/ui/kit/RadioGroup";
-import { Toggle } from "@repo/ui/kit/Toggle";
-import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";
-import { Slider } from "@repo/ui/kit/Slider";
+import { ScheduleCalendar } from "@repo/ui/kit/ScheduleCalendar";
 import {
   Select,
   SelectContent,
@@ -33,36 +49,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@repo/ui/kit/Select";
-import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxList,
-  ComboboxItem,
-} from "@repo/ui/kit/Combobox";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@repo/ui/kit/InputOtp";
-import { OneTimeCode, type OneTimeCodeProps } from "@repo/ui/kit/OneTimeCode";
-import {
-  IranianDateInput,
-  IranianDateTimeInput,
-} from "@repo/ui/kit/IranianDateInput";
-import { Calendar } from "@repo/ui/kit/Calendar";
-import { ScheduleCalendar } from "@repo/ui/kit/ScheduleCalendar";
-import {
-  Questionnaire,
-  QuestionnaireItem,
-  QuestionnaireTitle,
-  QuestionnaireChoices,
-  QuestionnaireChoice,
-  QuestionnaireActions,
-  QuestionnaireNext,
-  QuestionnairePrevious,
-  QuestionnaireSubmit,
-} from "@repo/ui/kit/Questionnaire";
 import { toast } from "@repo/ui/kit/Sileo";
+import { Slider } from "@repo/ui/kit/Slider";
+import { SmoothInput } from "@repo/ui/kit/SmoothInput";
+import { Switch } from "@repo/ui/kit/Switch";
+import { TextField } from "@repo/ui/kit/TextField";
+import { Textarea } from "@repo/ui/kit/Textarea";
+import { Toggle } from "@repo/ui/kit/Toggle";
+import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";
+import { useState } from "react";
 import type { DemoExample } from "./types";
+
+function IconPickerExample() {
+  const [icon, setIcon] = useState<string | null>("BarbellHorizontalIcon");
+  return <IconPicker value={icon} onChange={setIcon} />;
+}
 
 function Buttons() {
   const [count, setCount] = useState(0);
@@ -87,27 +88,7 @@ function Buttons() {
         </Button>
       ))}
       <Button disabled>غیرفعال</Button>
-      <ButtonGroup aria-label="شمارنده">
-        <Button
-          variant="outline"
-          size="icon"
-          aria-label="کاهش"
-          onClick={() => setCount(count - 1)}
-        >
-          <Minus />
-        </Button>
-        <Button variant="outline" aria-live="polite">
-          {count}
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          aria-label="افزایش"
-          onClick={() => setCount(count + 1)}
-        >
-          <Plus />
-        </Button>
-      </ButtonGroup>
+      <RollingCounter value={count} onValueChange={setCount} label="شمارنده" />
     </div>
   );
 }
@@ -329,15 +310,7 @@ export const controlExamples: DemoExample[] = [
     keywords: "جستجو ورودی گروه",
     category: "controls",
     Preview: () => (
-      <InputGroup>
-        <InputGroupAddon>
-          <Search />
-        </InputGroupAddon>
-        <InputGroupInput
-          aria-label="جست‌وجوی باشگاه"
-          placeholder="نام باشگاه…"
-        />
-      </InputGroup>
+      <SearchInput aria-label="جست‌وجوی باشگاه" placeholder="نام باشگاه…" />
     ),
   },
   {
@@ -521,9 +494,29 @@ export const controlExamples: DemoExample[] = [
     Preview: DateExample,
   },
   {
+    name: "Search",
+    title: "جست‌وجوی بازشونده",
+    keywords: "search جستجو جست‌وجو بنچو",
+    category: "controls",
+    Preview: () => (
+      <SearchInput
+        expanded={false}
+        aria-label="جست‌وجوی نمونه"
+        placeholder="جست‌وجو…"
+      />
+    ),
+  },
+  {
     name: "Questionnaire",
     keywords: "پرسشنامه چندمرحله سوال",
     category: "controls",
     Preview: QuestionnaireExample,
+  },
+  {
+    name: "IconPicker",
+    title: "انتخاب آیکون سندو",
+    keywords: "admin icon font sandow آیکون مدیریت",
+    category: "controls",
+    Preview: IconPickerExample,
   },
 ];

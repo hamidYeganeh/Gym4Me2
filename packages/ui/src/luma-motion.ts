@@ -79,7 +79,7 @@ function build(
   );
 }
 
-/** Existing protected image anchors drive the shared visual; direct entry still pushes. */
+/** Entity cards carry their cover and metadata into detail; direct entry still pushes. */
 export function lumaClub() {
   const preset = zoom({ type: "static", variant: "fade" });
   return {

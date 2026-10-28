@@ -25,7 +25,7 @@ export const navigationMenuStyles = {
     "origin-top-center relative mt-1.5 h-(--radix-navigation-menu-viewport-height) w-full overflow-hidden rounded-3xl bg-popover text-popover-foreground shadow-lg ring-1 ring-foreground/5 md:w-(--radix-navigation-menu-viewport-width)",
   ),
   navigationMenuLink: cva(
-    "flex items-center gap-1.5 rounded-3xl p-3 text-sm transition-all outline-none hover:bg-muted focus:bg-muted   focus-visible:outline-none in-data-[slot=navigation-menu-content]:rounded-2xl data-[active=true]:bg-muted/50 data-[active=true]:hover:bg-muted data-[active=true]:focus:bg-muted [&_svg:not([class*='size-'])]:size-4",
+    "flex items-center gap-1.5 rounded-3xl p-3 text-sm transition-all outline-none hover:bg-muted focus:bg-muted   focus-visible:outline-none in-data-[slot=navigation-menu-content]:rounded-2xl data-[active=true]:bg-muted/50 data-[active=true]:hover:bg-muted data-[active=true]:focus:bg-muted [&_:is(svg,.sandow-icon):not([class*='size-'])]:size-4",
   ),
   navigationMenuIndicator: cva(
     "top-full z-1 flex h-1.5 items-end justify-center overflow-hidden",

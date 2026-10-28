@@ -20,7 +20,11 @@ export function applicationRouteRequiresAccount(pathname: string, search = "") {
   // Existing callers pass the complete authentication intent.
   void search;
   const path = pathname.replace(/\/$/, "") || "/";
-  return !publicRoutes.has(path) && !path.startsWith("/discovery/");
+  return (
+    !publicRoutes.has(path) &&
+    !path.startsWith("/discovery/") &&
+    !/^\/club\/[^/]+\/classes$/.test(path)
+  );
 }
 
 /** Cancel goes to public content; successful sign-in still uses the full intent. */

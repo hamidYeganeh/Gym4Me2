@@ -1,7 +1,10 @@
 "use client";
-import { useState, type CSSProperties } from "react";
-import { ArrowRight, LoaderCircle } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
+import { useState, type CSSProperties } from "react";
+import {
+  ArrowRightIcon as ArrowRight,
+  ArrowRotateClockwise1Icon as LoaderCircle,
+} from "./icons";
 /** A deliberate swipe and an equivalent keyboard/touch button invoke the same command. */
 export function ConfirmAction({
   label,

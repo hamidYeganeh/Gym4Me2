@@ -1,4 +1,7 @@
 "use client";
+import { BusinessFormSteps } from "./business-form-steps";
+import { ClubPhoneEditor } from "./club-phone-editor";
+import { BranchLocationMap } from "./branch-location-map";
 
 import { useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
@@ -19,6 +22,7 @@ import {
   useLocations,
   catalogSelectSource,
 } from "@repo/api/catalog";
+import { ClubFaqEditor } from "./club-faq-editor";
 import { MediaLink } from "./media-link";
 import { BusinessTariffs } from "./business-tariffs";
 import type {
@@ -197,18 +201,8 @@ function TaxonomyPicker({
 const text = (data: FormData, key: string) =>
   String(data.get(key) ?? "").trim();
 const optional = (data: FormData, key: string) => text(data, key) || null;
-const phones = (data: FormData, previous: PhoneDto[]) =>
-  text(data, "phones")
-    .split(/\n/)
-    .map((number) => number.trim())
-    .filter(Boolean)
-    .map((number, index) => {
-      const existing =
-        previous[index]?.number === number
-          ? previous[index]
-          : previous.find((item) => item.number === number);
-      return existing ?? { number };
-    });
+const phones = (data: FormData, _previous: PhoneDto[]) =>
+  JSON.parse(text(data, "labeledPhones") || "[]") as PhoneDto[];
 
 export function BusinessClubContent({ id }: { id: string }) {
   const t = useTranslations("BusinessCatalog");
@@ -367,6 +361,7 @@ function ClubForm({ club, editable }: { club: ClubDto; editable: boolean }) {
   );
   const [sports, setSports] = useState(club.sports.map((item) => item.id));
   const [tags, setTags] = useState(club.tags.map((item) => item.id));
+  const [faq, setFaq] = useState(club.faq ?? []);
   async function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -376,6 +371,7 @@ function ClubForm({ club, editable }: { club: ClubDto; editable: boolean }) {
         input: {
           name: text(data, "name"),
           slug: text(data, "slug"),
+          faq,
           shortDescription: optional(data, "shortDescription"),
           description: optional(data, "description"),
           phones: phones(data, club.phones),
@@ -396,71 +392,76 @@ function ClubForm({ club, editable }: { club: ClubDto; editable: boolean }) {
           disabled={!editable || mutation.isPending}
           className="grid gap-6"
         >
-          <div className="grid gap-5 sm:grid-cols-2">
-            <TextField
-              label={t("name")}
-              name="name"
-              defaultValue={club.name}
-              required
-              minLength={2}
-              maxLength={120}
-            />
-            <TextField
-              label={t("slug")}
-              name="slug"
-              defaultValue={club.slug}
-              required
-              minLength={3}
-              maxLength={120}
-              pattern="[a-z0-9]+(-[a-z0-9]+)*"
-              dir="ltr"
-            />
-          </div>
-          <Multiline
-            label={t("shortDescription")}
-            name="shortDescription"
-            defaultValue={club.shortDescription ?? ""}
-            maxLength={280}
-          />
-          <Multiline
-            label={t("description")}
-            name="description"
-            defaultValue={club.description ?? ""}
-            maxLength={10000}
-          />
-          <Multiline
-            label={t("contact")}
-            name="phones"
-            dir="ltr"
-            defaultValue={club.phones.map((phone) => phone.number).join("\n")}
-            hint={t("phoneHint")}
-          />
-          <TaxonomyPicker
-            label={t("categories")}
-            kind="club-categories"
-            value={categories}
-            selected={club.categories}
-            onChange={setCategories}
-          />
-          <TaxonomyPicker
-            label={t("sports")}
-            kind="sports"
-            value={sports}
-            selected={club.sports}
-            onChange={setSports}
-          />
-          <TaxonomyPicker
-            label={t("tags")}
-            kind="tags"
-            value={tags}
-            selected={club.tags}
-            onChange={setTags}
-          />
-          {editable && (
-            <div>
-              <Submit busy={mutation.isPending}>{t("save")}</Submit>
+          <BusinessFormSteps
+            labels={[t("clubProfile"), t("contact"), t("sports")]}
+          >
+            <div className="grid gap-5">
+              <div className="grid gap-5">
+                <TextField
+                  label={t("name")}
+                  name="name"
+                  defaultValue={club.name}
+                  required
+                  minLength={2}
+                  maxLength={120}
+                />
+                <TextField
+                  label={t("slug")}
+                  name="slug"
+                  defaultValue={club.slug}
+                  required
+                  minLength={3}
+                  maxLength={120}
+                  pattern="[a-z0-9]+(-[a-z0-9]+)*"
+                  dir="ltr"
+                />
+              </div>
+              <Multiline
+                label={t("shortDescription")}
+                name="shortDescription"
+                defaultValue={club.shortDescription ?? ""}
+                maxLength={280}
+              />
+              <Multiline
+                label={t("description")}
+                name="description"
+                defaultValue={club.description ?? ""}
+                maxLength={10000}
+              />
+              <ClubFaqEditor value={faq} onChange={setFaq} />
             </div>
-          )}
+            <div className="grid gap-5">
+              <ClubPhoneEditor initial={club.phones} />
+            </div>
+            <div className="grid gap-5">
+              <TaxonomyPicker
+                label={t("categories")}
+                kind="club-categories"
+                value={categories}
+                selected={club.categories}
+                onChange={setCategories}
+              />
+              <TaxonomyPicker
+                label={t("sports")}
+                kind="sports"
+                value={sports}
+                selected={club.sports}
+                onChange={setSports}
+              />
+              <TaxonomyPicker
+                label={t("tags")}
+                kind="tags"
+                value={tags}
+                selected={club.tags}
+                onChange={setTags}
+              />
+              {editable && (
+                <div>
+                  <Submit busy={mutation.isPending}>{t("save")}</Submit>
+                </div>
+              )}
+            </div>
+          </BusinessFormSteps>
         </fieldset>
         <MutationNotice error={mutation.error} />
       </form>
@@ -670,6 +671,12 @@ function BranchForm({
   const t = useTranslations("BusinessCatalog");
   const mutation = useUpdateClubBranch();
   const [location, setLocation] = useState(branch.location);
+  const [latitude, setLatitude] = useState(
+    String(branch.location.coordinates?.[0] ?? ""),
+  );
+  const [longitude, setLongitude] = useState(
+    String(branch.location.coordinates?.[1] ?? ""),
+  );
   const [sports, setSports] = useState(branch.sports.map((item) => item.id));
   const [amenities, setAmenities] = useState(
     branch.amenities.map((item) => item.id),
@@ -776,338 +783,362 @@ function BranchForm({
           disabled={!editable || mutation.isPending}
           className="grid gap-6"
         >
-          <Section title={t("branchProfile")} hint={t("permissionsHint")}>
-            <div className="grid gap-5 sm:grid-cols-2">
-              <TextField
-                label={t("name")}
-                name="name"
-                defaultValue={branch.name}
-                required
-                minLength={2}
-                maxLength={120}
-              />
-              <Field>
-                <FieldLabel htmlFor="operatingStatus">
-                  {t("operatingStatus")}
-                </FieldLabel>
-                <NativeSelect
-                  id="operatingStatus"
-                  name="operatingStatus"
-                  defaultValue={branch.operatingStatus}
-                >
-                  {statuses.map((value) => (
-                    <NativeSelectOption key={value} value={value}>
-                      {t(value)}
-                    </NativeSelectOption>
-                  ))}
-                </NativeSelect>
-              </Field>
-            </div>
-            <Multiline
-              label={t("contact")}
-              name="phones"
-              dir="ltr"
-              defaultValue={branch.phones
-                .map((phone) => phone.number)
-                .join("\n")}
-              hint={t("phoneHint")}
-            />
-            <Multiline
-              label={t("rules")}
-              name="rules"
-              defaultValue={branch.rules ?? ""}
-              maxLength={5000}
-            />
-            <Multiline
-              label={t("visitInstructions")}
-              name="visitInstructions"
-              defaultValue={branch.visitInstructions ?? ""}
-              maxLength={3000}
-            />
-          </Section>
-          <Section title={t("location")}>
-            <Multiline
-              label={t("address")}
-              name="address"
-              defaultValue={branch.location.address ?? ""}
-              maxLength={1000}
-            />
-            <div className="grid gap-5 sm:grid-cols-2">
-              {geo.map(({ name, label, query }) => (
-                <Field key={name}>
-                  <FieldLabel htmlFor={name}>{t(label)}</FieldLabel>
-                  <NativeSelect
-                    id={name}
-                    optionsSource={catalogSelectSource(
-                      (
-                        {
-                          countryId: "countries",
-                          provinceId: "provinces",
-                          cityId: "cities",
-                          districtId: "districts",
-                        } as const
-                      )[name],
-                      name === "provinceId"
-                        ? (location.countryId ?? undefined)
-                        : name === "cityId"
-                          ? (location.provinceId ?? undefined)
-                          : name === "districtId"
-                            ? (location.cityId ?? undefined)
-                            : undefined,
-                    )}
-                    value={location[name] ?? ""}
-                    disabled={
-                      query.isLoading ||
-                      (name !== "countryId" &&
-                        !location[
-                          geo[geo.findIndex((item) => item.name === name) - 1]!
-                            .name
-                        ])
-                    }
-                    onChange={(event) =>
-                      setLocation((current) => ({
-                        ...current,
-                        [name]: event.target.value || null,
-                        ...(name === "countryId"
-                          ? { provinceId: null, cityId: null, districtId: null }
-                          : name === "provinceId"
-                            ? { cityId: null, districtId: null }
-                            : name === "cityId"
-                              ? { districtId: null }
-                              : {}),
-                      }))
-                    }
-                  >
-                    <NativeSelectOption value="">
-                      {t("select")}
-                    </NativeSelectOption>
-                    {query.data?.map((place) => (
-                      <NativeSelectOption key={place.id} value={place.id}>
-                        {place.name}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                  <QueryError error={query.error} retry={query.refetch} />
-                </Field>
-              ))}
-              <TextField
-                label={t("latitude")}
-                name="latitude"
-                type="number"
-                step="any"
-                min={-90}
-                max={90}
-                dir="ltr"
-                defaultValue={branch.location.coordinates?.[0] ?? ""}
-              />
-              <TextField
-                label={t("longitude")}
-                name="longitude"
-                type="number"
-                step="any"
-                min={-180}
-                max={180}
-                dir="ltr"
-                defaultValue={branch.location.coordinates?.[1] ?? ""}
-              />
-            </div>
-          </Section>
-          <Section title={t("sports")}>
-            <TaxonomyPicker
-              kind="sports"
-              label={t("sports")}
-              value={sports}
-              selected={branch.sports}
-              onChange={setSports}
-            />
-            <TaxonomyPicker
-              kind="amenities"
-              label={t("amenities")}
-              value={amenities}
-              selected={branch.amenities}
-              onChange={setAmenities}
-            />
-            <TaxonomyPicker
-              kind="equipments"
-              label={t("equipments")}
-              value={equipments}
-              selected={branch.equipments}
-              onChange={setEquipments}
-            />
-            <TaxonomyPicker
-              kind="accessibility-features"
-              label={t("accessibility")}
-              value={accessibility}
-              selected={branch.accessibilityFeatures}
-              onChange={setAccessibility}
-            />
-            <Field>
-              <FieldLabel>{t("audience")}</FieldLabel>
-              <div className="flex flex-wrap gap-4">
-                {audiences.map((value) => (
-                  <label
-                    key={value}
-                    className="flex items-center gap-2 text-sm"
-                  >
-                    <input
-                      type="checkbox"
-                      className="accent-primary"
-                      checked={audience.includes(value)}
-                      onChange={(event) =>
-                        setAudience(
-                          event.target.checked
-                            ? [...audience, value]
-                            : audience.filter((item) => item !== value),
-                        )
-                      }
-                    />
-                    {t(value)}
-                  </label>
-                ))}
-              </div>
-            </Field>
-          </Section>
-          <Section title={t("hours")} hint={t("hoursHint")}>
-            {hours.map((hour, index) => (
-              <div
-                key={index}
-                className="grid gap-3 rounded-2xl border p-4 sm:grid-cols-2 lg:grid-cols-4"
-              >
+          <BusinessFormSteps
+            labels={[
+              t("branchProfile"),
+              t("location"),
+              t("sports"),
+              t("hours"),
+            ]}
+          >
+            <Section title={t("branchProfile")} hint={t("permissionsHint")}>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <TextField
+                  label={t("name")}
+                  name="name"
+                  defaultValue={branch.name}
+                  required
+                  minLength={2}
+                  maxLength={120}
+                />
                 <Field>
-                  <FieldLabel htmlFor={`day-${index}`}>{t("day")}</FieldLabel>
-                  <NativeSelect
-                    id={`day-${index}`}
-                    value={hour.dayOfWeek}
-                    onChange={(event) =>
-                      setHours((current) =>
-                        current.map((item, i) =>
-                          i === index
-                            ? { ...item, dayOfWeek: Number(event.target.value) }
-                            : item,
-                        ),
-                      )
-                    }
-                  >
-                    {days.map((day, i) => (
-                      <NativeSelectOption key={day} value={i}>
-                        {t(day)}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
-                </Field>
-                <Field>
-                  <FieldLabel htmlFor={`audience-${index}`}>
-                    {t("audience")}
+                  <FieldLabel htmlFor="operatingStatus">
+                    {t("operatingStatus")}
                   </FieldLabel>
                   <NativeSelect
-                    id={`audience-${index}`}
-                    value={hour.audience}
-                    onChange={(event) =>
-                      setHours((current) =>
-                        current.map((item, i) =>
-                          i === index
-                            ? {
-                                ...item,
-                                audience: event.target.value as Audience,
-                              }
-                            : item,
-                        ),
-                      )
-                    }
+                    id="operatingStatus"
+                    name="operatingStatus"
+                    defaultValue={branch.operatingStatus}
                   >
-                    {audiences.map((value) => (
+                    {statuses.map((value) => (
                       <NativeSelectOption key={value} value={value}>
                         {t(value)}
                       </NativeSelectOption>
                     ))}
                   </NativeSelect>
                 </Field>
-                {(["startMinute", "endMinute"] as const).map((key, i) => (
-                  <TextField
-                    key={key}
-                    name={`${key}-${index}`}
-                    label={t(i === 0 ? "start" : "end")}
-                    type="time"
-                    required
-                    value={`${String(Math.floor((hour[key] % 1440) / 60)).padStart(2, "0")}:${String(hour[key] % 60).padStart(2, "0")}`}
-                    onChange={(event) => {
-                      const parts = event.target.value.split(":").map(Number);
-                      setHours((current) =>
-                        current.map((item, j) =>
-                          j === index
+              </div>
+              <ClubPhoneEditor initial={branch.phones} />
+              <Multiline
+                label={t("rules")}
+                name="rules"
+                defaultValue={branch.rules ?? ""}
+                maxLength={5000}
+              />
+              <Multiline
+                label={t("visitInstructions")}
+                name="visitInstructions"
+                defaultValue={branch.visitInstructions ?? ""}
+                maxLength={3000}
+              />
+            </Section>
+            <Section title={t("location")}>
+              <BranchLocationMap
+                disabled={!editable || mutation.isPending}
+                value={
+                  latitude && longitude
+                    ? [Number(latitude), Number(longitude)]
+                    : null
+                }
+                onChange={([lat, lng]) => {
+                  setLatitude(lat.toFixed(6));
+                  setLongitude(lng.toFixed(6));
+                }}
+              />
+              <Multiline
+                label={t("address")}
+                name="address"
+                defaultValue={branch.location.address ?? ""}
+                maxLength={1000}
+              />
+              <div className="grid gap-5 sm:grid-cols-2">
+                {geo.map(({ name, label, query }) => (
+                  <Field key={name}>
+                    <FieldLabel htmlFor={name}>{t(label)}</FieldLabel>
+                    <NativeSelect
+                      id={name}
+                      optionsSource={catalogSelectSource(
+                        (
+                          {
+                            countryId: "countries",
+                            provinceId: "provinces",
+                            cityId: "cities",
+                            districtId: "districts",
+                          } as const
+                        )[name],
+                        name === "provinceId"
+                          ? (location.countryId ?? undefined)
+                          : name === "cityId"
+                            ? (location.provinceId ?? undefined)
+                            : name === "districtId"
+                              ? (location.cityId ?? undefined)
+                              : undefined,
+                      )}
+                      value={location[name] ?? ""}
+                      disabled={
+                        query.isLoading ||
+                        (name !== "countryId" &&
+                          !location[
+                            geo[
+                              geo.findIndex((item) => item.name === name) - 1
+                            ]!.name
+                          ])
+                      }
+                      onChange={(event) =>
+                        setLocation((current) => ({
+                          ...current,
+                          [name]: event.target.value || null,
+                          ...(name === "countryId"
                             ? {
-                                ...item,
-                                [key]:
-                                  (parts[0] ?? 0) * 60 +
-                                  (parts[1] ?? 0) +
-                                  (key === "endMinute" && item.endMinute >= 1440
-                                    ? 1440
-                                    : 0),
+                                provinceId: null,
+                                cityId: null,
+                                districtId: null,
                               }
-                            : item,
-                        ),
-                      );
-                    }}
-                  />
+                            : name === "provinceId"
+                              ? { cityId: null, districtId: null }
+                              : name === "cityId"
+                                ? { districtId: null }
+                                : {}),
+                        }))
+                      }
+                    >
+                      <NativeSelectOption value="">
+                        {t("select")}
+                      </NativeSelectOption>
+                      {query.data?.map((place) => (
+                        <NativeSelectOption key={place.id} value={place.id}>
+                          {place.name}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                    <QueryError error={query.error} retry={query.refetch} />
+                  </Field>
                 ))}
-                <label className="flex items-center gap-2 text-sm sm:col-span-2">
-                  <input
-                    type="checkbox"
-                    className="accent-primary"
-                    checked={hour.endMinute >= 1440}
-                    onChange={(event) =>
+                <TextField
+                  label={t("latitude")}
+                  name="latitude"
+                  type="number"
+                  step="any"
+                  min={-90}
+                  max={90}
+                  dir="ltr"
+                  value={latitude}
+                  onChange={(e) => setLatitude(e.target.value)}
+                />
+                <TextField
+                  label={t("longitude")}
+                  name="longitude"
+                  type="number"
+                  step="any"
+                  min={-180}
+                  max={180}
+                  dir="ltr"
+                  value={longitude}
+                  onChange={(e) => setLongitude(e.target.value)}
+                />
+              </div>
+            </Section>
+            <Section title={t("sports")}>
+              <TaxonomyPicker
+                kind="sports"
+                label={t("sports")}
+                value={sports}
+                selected={branch.sports}
+                onChange={setSports}
+              />
+              <TaxonomyPicker
+                kind="amenities"
+                label={t("amenities")}
+                value={amenities}
+                selected={branch.amenities}
+                onChange={setAmenities}
+              />
+              <TaxonomyPicker
+                kind="equipments"
+                label={t("equipments")}
+                value={equipments}
+                selected={branch.equipments}
+                onChange={setEquipments}
+              />
+              <TaxonomyPicker
+                kind="accessibility-features"
+                label={t("accessibility")}
+                value={accessibility}
+                selected={branch.accessibilityFeatures}
+                onChange={setAccessibility}
+              />
+              <Field>
+                <FieldLabel>{t("audience")}</FieldLabel>
+                <div className="flex flex-wrap gap-4">
+                  {audiences.map((value) => (
+                    <label
+                      key={value}
+                      className="flex items-center gap-2 text-sm"
+                    >
+                      <input
+                        type="checkbox"
+                        className="accent-primary"
+                        checked={audience.includes(value)}
+                        onChange={(event) =>
+                          setAudience(
+                            event.target.checked
+                              ? [...audience, value]
+                              : audience.filter((item) => item !== value),
+                          )
+                        }
+                      />
+                      {t(value)}
+                    </label>
+                  ))}
+                </div>
+              </Field>
+            </Section>
+            <Section title={t("hours")} hint={t("hoursHint")}>
+              {hours.map((hour, index) => (
+                <div
+                  key={index}
+                  className="grid gap-3 rounded-2xl border p-4 sm:grid-cols-2 lg:grid-cols-4"
+                >
+                  <Field>
+                    <FieldLabel htmlFor={`day-${index}`}>{t("day")}</FieldLabel>
+                    <NativeSelect
+                      id={`day-${index}`}
+                      value={hour.dayOfWeek}
+                      onChange={(event) =>
+                        setHours((current) =>
+                          current.map((item, i) =>
+                            i === index
+                              ? {
+                                  ...item,
+                                  dayOfWeek: Number(event.target.value),
+                                }
+                              : item,
+                          ),
+                        )
+                      }
+                    >
+                      {days.map((day, i) => (
+                        <NativeSelectOption key={day} value={i}>
+                          {t(day)}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor={`audience-${index}`}>
+                      {t("audience")}
+                    </FieldLabel>
+                    <NativeSelect
+                      id={`audience-${index}`}
+                      value={hour.audience}
+                      onChange={(event) =>
+                        setHours((current) =>
+                          current.map((item, i) =>
+                            i === index
+                              ? {
+                                  ...item,
+                                  audience: event.target.value as Audience,
+                                }
+                              : item,
+                          ),
+                        )
+                      }
+                    >
+                      {audiences.map((value) => (
+                        <NativeSelectOption key={value} value={value}>
+                          {t(value)}
+                        </NativeSelectOption>
+                      ))}
+                    </NativeSelect>
+                  </Field>
+                  {(["startMinute", "endMinute"] as const).map((key, i) => (
+                    <TextField
+                      key={key}
+                      name={`${key}-${index}`}
+                      label={t(i === 0 ? "start" : "end")}
+                      type="time"
+                      required
+                      value={`${String(Math.floor((hour[key] % 1440) / 60)).padStart(2, "0")}:${String(hour[key] % 60).padStart(2, "0")}`}
+                      onChange={(event) => {
+                        const parts = event.target.value.split(":").map(Number);
+                        setHours((current) =>
+                          current.map((item, j) =>
+                            j === index
+                              ? {
+                                  ...item,
+                                  [key]:
+                                    (parts[0] ?? 0) * 60 +
+                                    (parts[1] ?? 0) +
+                                    (key === "endMinute" &&
+                                    item.endMinute >= 1440
+                                      ? 1440
+                                      : 0),
+                                }
+                              : item,
+                          ),
+                        );
+                      }}
+                    />
+                  ))}
+                  <label className="flex items-center gap-2 text-sm sm:col-span-2">
+                    <input
+                      type="checkbox"
+                      className="accent-primary"
+                      checked={hour.endMinute >= 1440}
+                      onChange={(event) =>
+                        setHours((current) =>
+                          current.map((item, i) =>
+                            i === index
+                              ? {
+                                  ...item,
+                                  endMinute:
+                                    (item.endMinute % 1440) +
+                                    (event.target.checked ? 1440 : 0),
+                                }
+                              : item,
+                          ),
+                        )
+                      }
+                    />
+                    {t("nextDay")}
+                  </label>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="ghost"
+                    onClick={() =>
                       setHours((current) =>
-                        current.map((item, i) =>
-                          i === index
-                            ? {
-                                ...item,
-                                endMinute:
-                                  (item.endMinute % 1440) +
-                                  (event.target.checked ? 1440 : 0),
-                              }
-                            : item,
-                        ),
+                        current.filter((_, i) => i !== index),
                       )
                     }
-                  />
-                  {t("nextDay")}
-                </label>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  onClick={() =>
-                    setHours((current) => current.filter((_, i) => i !== index))
-                  }
-                >
-                  {t("remove")}
-                </Button>
-              </div>
-            ))}
-            <Button
-              type="button"
-              variant="outline"
-              className="w-fit"
-              onClick={() =>
-                setHours((current) => [
-                  ...current,
-                  {
-                    dayOfWeek: 0,
-                    audience: "all",
-                    startMinute: 360,
-                    endMinute: 1380,
-                  },
-                ])
-              }
-            >
-              {t("addHours")}
-            </Button>
-          </Section>
-          {editable && (
-            <div>
-              <Submit busy={mutation.isPending}>{t("save")}</Submit>
-            </div>
-          )}
+                  >
+                    {t("remove")}
+                  </Button>
+                </div>
+              ))}
+              <Button
+                type="button"
+                variant="outline"
+                className="w-fit"
+                onClick={() =>
+                  setHours((current) => [
+                    ...current,
+                    {
+                      dayOfWeek: 0,
+                      audience: "all",
+                      startMinute: 360,
+                      endMinute: 1380,
+                    },
+                  ])
+                }
+              >
+                {t("addHours")}
+              </Button>
+              {editable && (
+                <Submit busy={mutation.isPending}>{t("save")}</Submit>
+              )}
+            </Section>
+          </BusinessFormSteps>
         </fieldset>
         <MutationNotice error={error} />
       </form>

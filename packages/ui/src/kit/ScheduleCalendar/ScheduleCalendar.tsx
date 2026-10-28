@@ -1,8 +1,12 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import { useLocale, useTranslations } from "@repo/i18n";
+import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import {
+  Calendar1Icon as CalendarDays,
+  ChevronLeftIcon as ChevronLeft,
+  ChevronRightIcon as ChevronRight,
+} from "../../icons";
 import {
   calendarMonth,
   shiftCalendarDay,

@@ -334,20 +334,58 @@ export class CoachingPracticeService {
       return { ok: true };
     });
   }
-  async search(input: z.infer<typeof c.coachSearchSchema>, id?: string) {
+  async search(
+    input: Omit<z.infer<typeof c.coachSearchSchema>, 'limit'> & {
+      limit?: number;
+    },
+    id?: string,
+  ) {
+    const limit = input.limit ?? 50;
     const term = `%${input.search.replace(/[\\%_]/g, '\\$&')}%`;
     const result = await rows(
       this.db,
-      sql`SELECT p.user_id,p.specialties,p.goals,p.city,p.experience_years,p.review_expires_at,u.display_name,c.biography,(SELECT min(v.amount_minor)::text FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id JOIN clubs cl ON cl.id=s.organization_id JOIN organizations org ON org.id=s.organization_id WHERE cs.coach_id=p.user_id AND ${publicServiceVisible}) AS from_price_minor FROM coaching_practices p JOIN users u ON u.id=p.user_id JOIN coach_profiles c ON c.user_id=p.user_id WHERE p.review_status='approved' AND p.review_expires_at>now() AND p.published AND u.profile_public AND u.status='active' AND NOT u.deletion_pending AND u.deleted_at IS NULL AND (${id ?? null}::uuid IS NULL OR p.user_id=${id ?? null}::uuid) AND (u.display_name ILIKE ${term} OR c.biography ILIKE ${term}) AND (${input.city}='' OR p.city=${input.city}) AND (${input.specialty}='' OR ${input.specialty}=ANY(p.specialties)) AND (${input.goal}='' OR ${input.goal}=ANY(p.goals)) AND (${input.maxPrice ?? null}::bigint IS NULL OR EXISTS(SELECT 1 FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id WHERE cs.coach_id=p.user_id AND ${publicServiceVisible} AND v.amount_minor<=${input.maxPrice ?? null}::bigint)) ORDER BY u.display_name,p.user_id LIMIT 21 OFFSET ${(input.page - 1) * 20}`,
+      sql`WITH directory_practices AS (
+        SELECT p.user_id,p.specialties,p.goals,p.city,p.experience_years,p.review_status,p.review_reason,p.review_expires_at,p.published,p.buffer_minutes,p.travel_minutes,p.revision,p.updated_at,p.public_id,true AS credential_verified FROM coaching_practices p
+        UNION ALL
+        SELECT c.user_id, coalesce(aff.specialties,'{}'::text[]) AS specialties, '{}'::text[] AS goals,
+          coalesce(aff.city,'') AS city, 0 AS experience_years, 'approved' AS review_status,
+          NULL::text AS review_reason, 'infinity'::timestamptz AS review_expires_at, true AS published,
+          0 AS buffer_minutes, 0 AS travel_minutes, 1 AS revision, c.updated_at,
+          'affiliate-' || replace(c.user_id::text,'-','') AS public_id, false AS credential_verified
+        FROM coach_profiles c
+        JOIN LATERAL (
+          SELECT array_agg(DISTINCT sp.name) FILTER (WHERE sp.name IS NOT NULL) AS specialties, min(ci.name) AS city
+          FROM branch_coaches bc JOIN branches b ON b.id=bc.branch_id
+          JOIN clubs cl ON cl.id=b.organization_id JOIN organizations org ON org.id=cl.id
+          JOIN branch_profiles bp ON bp.branch_id=b.id LEFT JOIN cities ci ON ci.id=bp.city_id
+          LEFT JOIN sports sp ON sp.id=bc.sport_id
+          WHERE bc.coach_id=c.user_id AND bc.status='active'
+            AND (bc.starts_on IS NULL OR bc.starts_on<=current_date) AND (bc.ends_on IS NULL OR bc.ends_on>=current_date)
+            AND cl.publication_status='published' AND cl.archived_at IS NULL AND cl.operating_status='active' AND org.status='approved' AND bp.archived_at IS NULL AND bp.operating_status='active'
+            AND NOT EXISTS(SELECT 1 FROM business_branch_state bs WHERE bs.branch_id=b.id AND NOT bs.active)
+            AND bp.address IS NOT NULL AND bp.country_id IS NOT NULL AND bp.province_id IS NOT NULL AND bp.city_id IS NOT NULL AND bp.latitude IS NOT NULL AND bp.longitude IS NOT NULL
+            AND EXISTS(SELECT 1 FROM branch_weekly_hours wh WHERE wh.branch_id=b.id)
+            AND EXISTS(SELECT 1 FROM branch_sports bs WHERE bs.branch_id=b.id)
+            AND EXISTS(SELECT 1 FROM club_phones ph WHERE ph.club_id=cl.id AND (ph.branch_id IS NULL OR ph.branch_id=b.id))
+          HAVING count(*)>0
+        ) aff ON true
+        WHERE NOT EXISTS(SELECT 1 FROM coaching_practices existing WHERE existing.user_id=c.user_id)
+      ) SELECT p.credential_verified,p.user_id,p.public_id,p.specialties,p.goals,p.city,p.experience_years,CASE WHEN p.credential_verified THEN p.review_expires_at ELSE NULL END AS review_expires_at,u.display_name,c.biography,(SELECT min(v.amount_minor)::text FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id JOIN clubs cl ON cl.id=s.organization_id JOIN organizations org ON org.id=s.organization_id WHERE cs.coach_id=p.user_id AND ${publicServiceVisible}) AS from_price_minor FROM directory_practices p JOIN users u ON u.id=p.user_id JOIN coach_profiles c ON c.user_id=p.user_id WHERE p.review_status='approved' AND p.review_expires_at>now() AND p.published AND u.profile_public AND u.status='active' AND NOT u.deletion_pending AND u.deleted_at IS NULL AND (${id ?? null}::uuid IS NULL OR p.user_id=${id ?? null}::uuid) AND (${input.search}='' OR u.display_name ILIKE ${term} OR c.biography ILIKE ${term}) AND (${input.city}='' OR p.city=${input.city}) AND (${input.specialty}='' OR ${input.specialty}=ANY(p.specialties)) AND (${input.goal}='' OR ${input.goal}=ANY(p.goals)) AND (${input.maxPrice ?? null}::bigint IS NULL OR EXISTS(SELECT 1 FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id WHERE cs.coach_id=p.user_id AND ${publicServiceVisible} AND v.amount_minor<=${input.maxPrice ?? null}::bigint)) ORDER BY u.display_name,p.user_id LIMIT ${limit + 1} OFFSET ${(input.page - 1) * limit}`,
     );
-    return { items: result.slice(0, 20), hasMore: result.length > 20 };
+    return { items: result.slice(0, limit), hasMore: result.length > limit };
   }
-  async detail(id: string) {
+  async detail(reference: string) {
+    const [match] = await rows<{ user_id: string }>(
+      this.db,
+      sql`SELECT user_id FROM coaching_practices WHERE public_id=${reference} OR user_id::text=${reference} UNION SELECT user_id FROM coach_profiles WHERE 'affiliate-' || replace(user_id::text,'-','')=${reference}`,
+    );
+    if (!match) throw new NotFoundException('Practice.unavailable');
+    const id = match.user_id;
     const result = await this.search(c.coachSearchSchema.parse({}), id);
     if (!result.items[0]) throw new NotFoundException('Practice.unavailable');
     const services = await rows(
       this.db,
-      sql`SELECT cs.service_id,s.kind,cs.mode,cs.entry_amount_minor::text,s.title,b.name AS branch_name,o.name AS club_name,v.amount_minor::text,v.approval_required,v.session_count,v.duration_days,v.policy FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id JOIN branches b ON b.id=s.branch_id JOIN organizations o ON o.id=s.organization_id JOIN clubs cl ON cl.id=o.id WHERE cs.coach_id=${id} AND ${publicServiceVisible} LIMIT 100`,
+      sql`SELECT cs.service_id,s.public_id,s.kind,cs.mode,cs.entry_amount_minor::text,s.title,b.name AS branch_name,o.name AS club_name,v.amount_minor::text,v.approval_required,v.session_count,v.duration_days,v.policy FROM coaching_services cs JOIN sport_services s ON s.id=cs.service_id JOIN sport_service_versions v ON v.id=s.published_version_id JOIN branches b ON b.id=s.branch_id JOIN organizations o ON o.id=s.organization_id JOIN clubs cl ON cl.id=o.id WHERE cs.coach_id=${id} AND ${publicServiceVisible} LIMIT 100`,
     );
     const reviews = await rows(
       this.db,

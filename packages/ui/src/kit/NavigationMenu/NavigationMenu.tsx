@@ -1,6 +1,6 @@
-import { cn } from "@repo/ui/lib/utils";
-import { ChevronDownIcon } from "lucide-react";
 import { NavigationMenu as NavigationMenuPrimitive } from "@animate-ui/react/primitives/radix-ui";
+import { cn } from "@repo/ui/lib/utils";
+import { ChevronDownIcon } from "../../icons";
 import {
   navigationMenuStyles,
   navigationMenuTriggerStyle,

@@ -7,5 +7,9 @@ export type SandowIconProps = Omit<ComponentProps<"span">, "children"> &
   SandowIconVariants & {
     /** Omit for decorative icons. Provide a localized label for standalone icons. */
     label?: string;
+    size?: number | string;
+    strokeWidth?: number | string;
+    fill?: string;
+    absoluteStrokeWidth?: boolean;
   };
 export type SandowIconLayer = readonly [codepoint: number, opacity: number];

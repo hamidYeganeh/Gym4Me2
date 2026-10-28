@@ -19,11 +19,11 @@ import type {
   QuestionnaireTitleProps,
 } from "./Questionnaire.types";
 
-import { cn } from "@repo/ui/lib/utils";
 import { Questionnaire as QuestionnairePrimitive } from "@animate-ui/react/primitives/questionnaire";
+import { cn } from "@repo/ui/lib/utils";
 
 import { buttonVariants } from "@repo/ui/kit/Button";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon } from "../../icons";
 
 function Questionnaire({ className, ...props }: QuestionnaireProps) {
   return (

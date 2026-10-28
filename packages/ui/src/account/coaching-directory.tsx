@@ -1,31 +1,47 @@
 "use client";
-import Link from "next/link";
+import { DiscoveryContentSections } from "../discovery-content";
+import { serviceHref, coachHref } from "@repo/ui/lib/public-route";
 import { ApiError } from "@repo/api";
-import { AuthRequired } from "./auth-entry";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { useTranslations, useLocale } from "@repo/i18n";
-import { MapPin, BadgeCheck, ArrowUpLeft } from "lucide-react";
-import { FilterSheet } from "../kit/BottomSheet";
 import {
-  usePracticeQuery,
   useAccount,
-  type CoachDirectoryDto,
+  useInfiniteCoaches,
+  usePracticeQuery,
   type CoachDetailDto,
 } from "@repo/api/profile";
+import { useLocale, useTranslations } from "@repo/i18n";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import {
+  ArrowTopLeftIcon as ArrowUpLeft,
+  SealCheckIcon as BadgeCheck,
+  MapPin1Icon as MapPin,
+} from "../icons";
+import { FilterSheet } from "../kit/BottomSheet";
 import { Button } from "../kit/Button";
 import { AccountDesignPage } from "./account-design";
+import { AuthRequired } from "./auth-entry";
+import { Input } from "../kit/Input";
+import { CoachSamples } from "./coach-samples";
+import { CoachProfileLink } from "./coach-profile-link";
+import { FitnessIllustration } from "../kit/FitnessIllustration";
 import { Loading, QueryError } from "./common";
 import {
   PracticeField as Field,
   PracticeForm as Form,
-  PracticeMoney,
-  usePracticeAction,
   PracticeFeedback,
+  PracticeMoney,
   text,
+  usePracticeAction,
 } from "./practice-forms";
-import { CoachProfileLink } from "./coach-profile-link";
-export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
+import { ReviewReactions } from "./review-reactions";
+export function CoachingDirectory({
+  detail = false,
+  backHref,
+}: {
+  detail?: boolean;
+  backHref?: string;
+}) {
   const t = useTranslations("Practice"),
     params = useSearchParams(),
     id = params.get("id") ?? "";
@@ -37,7 +53,6 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
     specialty: "",
     goal: "",
     maxPrice: undefined as string | undefined,
-    page: 1,
   });
   const activeFilters = [
     filters.city,
@@ -45,11 +60,27 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
     filters.goal,
     filters.maxPrice,
   ].filter(Boolean).length;
-  const q = usePracticeQuery<{ items: CoachDirectoryDto[]; hasMore: boolean }>(
-    "coaching/directory",
-    filters,
-    !detail,
+  const q = useInfiniteCoaches(filters, !detail);
+  const coaches = Array.from(
+    new Map(
+      q.data?.pages
+        .flatMap((page) => page.items)
+        .map((coach) => [coach.userId, coach]),
+    ).values(),
   );
+  const sentinel = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const node = sentinel.current;
+    if (!node || !q.hasNextPage || q.isFetchingNextPage || q.isError) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) void q.fetchNextPage();
+      },
+      { rootMargin: "400px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [q.hasNextPage, q.isFetchingNextPage, q.isError, q.fetchNextPage]);
   const profile = usePracticeQuery<CoachDetailDto>(
     `coaching/directory/${id}`,
     {},
@@ -61,7 +92,7 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
   return (
     <AccountDesignPage
       title={t("directory")}
-      backHref={detail ? "/coaches" : "/coaching"}
+      backHref={backHref ?? (detail ? "/coaches" : "/coaching")}
     >
       <PracticeFeedback action={a} />
       {a.error instanceof ApiError && a.error.status === 401 && (
@@ -69,6 +100,16 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
       )}
       {!detail ? (
         <>
+          <DiscoveryContentSections page="coaches" />
+          <Input
+            type="search"
+            label={t("search")}
+            value={filters.search}
+            maxLength={120}
+            onChange={(event) =>
+              setFilters({ ...filters, search: event.target.value })
+            }
+          />
           <FilterSheet count={activeFilters}>
             <form
               className="space-y-3 rounded-3xl border bg-card p-5"
@@ -83,13 +124,13 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
                   maxPrice: text(f, "price")
                     ? String(BigInt(text(f, "price")) * BigInt(10))
                     : undefined,
-                  page: 1,
                 });
               }}
             >
               <div className="coach-directory-search">
                 <Field
                   name="search"
+                  type="search"
                   label={t("search")}
                   value={filters.search}
                 />
@@ -119,13 +160,36 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
           </FilterSheet>
           {q.isLoading ? (
             <Loading />
-          ) : q.error ? (
+          ) : q.error && !coaches.length ? (
             <QueryError error={q.error} retry={q.refetch} />
-          ) : !q.data?.items.length ? (
-            <p>{t("noCoaches")}</p>
+          ) : !coaches.length ? (
+            <div className="flex flex-col items-center gap-4 py-10 text-center">
+              <FitnessIllustration kind="coach" />
+              <p>{t("noCoaches")}</p>
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  setFilters({
+                    search: "",
+                    city: "",
+                    specialty: "",
+                    goal: "",
+                    maxPrice: undefined,
+                  })
+                }
+              >
+                {t("search")}
+              </Button>
+            </div>
           ) : (
-            q.data.items.map((c) => (
-              <article key={c.userId} className="coach-directory-card">
+            coaches.map((c) => (
+              <article
+                key={c.userId}
+                data-zoom-exit-key={
+                  c.publicId ? `coach-${c.publicId}` : undefined
+                }
+                className="coach-directory-card"
+              >
                 <div className="coach-directory-identity">
                   <span className="coach-directory-avatar" aria-hidden="true">
                     {(c.displayName || t("coach"))
@@ -153,10 +217,12 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
                     {t("experienceYears")}:{" "}
                     {new Intl.NumberFormat(locale).format(c.experienceYears)}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <BadgeCheck size={14} />
-                    {t("credentialChecked")}
-                  </span>
+                  {c.credentialVerified && (
+                    <span className="flex items-center gap-1">
+                      <BadgeCheck size={14} />
+                      {t("credentialChecked")}
+                    </span>
+                  )}
                 </p>
                 <div className="coach-directory-footer">
                   <span>
@@ -166,32 +232,35 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
                       visual("meetCoach")
                     )}
                   </span>
-                  <Button variant="outline" asChild>
-                    <Link href={`/coaches/detail?id=${c.userId}`}>
+                  {c.publicId ? (
+                    <Button variant="outline" asChild>
+                      <Link href={coachHref(c.publicId)}>
+                        {t("viewCoach")}
+                        <ArrowUpLeft className="ltr:rotate-90" size={16} />
+                      </Link>
+                    </Button>
+                  ) : (
+                    <Button variant="outline" disabled title={t("unavailable")}>
                       {t("viewCoach")}
-                      <ArrowUpLeft className="ltr:rotate-90" size={16} />
-                    </Link>
-                  </Button>
+                    </Button>
+                  )}
                 </div>
               </article>
             ))
           )}
-          <div className="flex gap-2">
+          {q.error && coaches.length > 0 && (
+            <QueryError error={q.error} retry={() => q.fetchNextPage()} />
+          )}
+          <div ref={sentinel} className="h-1" aria-hidden="true" />
+          {q.hasNextPage && (
             <Button
               variant="outline"
-              disabled={filters.page === 1 || q.isFetching}
-              onClick={() => setFilters({ ...filters, page: filters.page - 1 })}
-            >
-              {t("previous")}
-            </Button>
-            <Button
-              variant="outline"
-              disabled={!q.data?.hasMore || q.isFetching}
-              onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
+              disabled={q.isFetchingNextPage}
+              onClick={() => void q.fetchNextPage()}
             >
               {t("next")}
             </Button>
-          </div>
+          )}
         </>
       ) : profile.isLoading ? (
         <Loading />
@@ -207,7 +276,7 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
               {p.city} · {p.specialties.join("، ")}
             </p>
             <p>{p.biography}</p>
-            <CoachProfileLink userId={p.userId} />
+            <CoachProfileLink userId={p.publicId} />
             <p>{t("credentialChecked")}</p>
             <p className="text-sm text-muted-foreground">
               {t("requestConsent")}
@@ -224,6 +293,7 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
               <Link href="/coaching">{t("manageRelationship")}</Link>
             </Button>
           </article>
+          <CoachSamples username={p.publicId} />
           <h2 className="font-semibold">{t("services")}</h2>
           {p.services.map((s) => (
             <article
@@ -266,9 +336,7 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
                   : t("directConfirmation")}
               </p>
               <Button variant="outline" asChild>
-                <Link href={`/services/detail?id=${s.serviceId}`}>
-                  {t("bookService")}
-                </Link>
+                <Link href={serviceHref(s.publicId)}>{t("bookService")}</Link>
               </Button>
             </article>
           ))}
@@ -276,10 +344,9 @@ export function CoachingDirectory({ detail = false }: { detail?: boolean }) {
           {!p.reviews.length && <p>{t("noReviews")}</p>}
           {p.reviews.map((r) => (
             <article key={r.id} className="space-y-2 rounded-3xl border p-5">
-              <p>
-                {r.rating}/5 · {t("verifiedSession")}
-              </p>
+              <p>{r.rating}/5</p>
               <p>{r.body}</p>
+              <ReviewReactions kind="coach" reviewId={r.id} />
               {r.example && <p>{r.example}</p>}
               {r.reply && (
                 <p>

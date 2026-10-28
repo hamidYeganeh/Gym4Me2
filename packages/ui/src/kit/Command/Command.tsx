@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { useTranslations } from "@repo/i18n";
 import { commandStyles } from "./Command.styles";
 import type {
@@ -23,8 +24,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@repo/ui/kit/Dialog";
-import { InputGroup, InputGroupAddon } from "@repo/ui/kit/InputGroup";
-import { CheckIcon, SearchIcon } from "lucide-react";
+import { Search } from "../Search";
+import { CheckIcon } from "../../icons";
 
 function Command({ className, ...props }: CommandProps) {
   return (
@@ -64,21 +65,19 @@ function CommandDialog({
 }
 
 function CommandInput({ className, ...props }: CommandInputProps) {
+  const [value, setValue] = useState(String(props.defaultValue ?? ""));
   return (
     <div
       data-slot="command-input-wrapper"
       className={commandStyles.commandInput()}
     >
-      <InputGroup className={commandStyles.commandInput2()}>
-        <CommandPrimitive.Input
-          data-slot="command-input"
-          className={cn(commandStyles.commandInput3(), className)}
-          {...props}
-        />
-        <InputGroupAddon>
-          <SearchIcon className={commandStyles.commandInput4()} />
-        </InputGroupAddon>
-      </InputGroup>
+      <Search
+        value={props.value ?? value}
+        placeholder={props.placeholder}
+        aria-label={props["aria-label"] ?? props.placeholder}
+        render={<CommandPrimitive.Input data-slot="command-input" {...props} onValueChange={(next) => { setValue(next); props.onValueChange?.(next); }} />}
+        className={className}
+      />
     </div>
   );
 }

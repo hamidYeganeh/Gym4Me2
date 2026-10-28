@@ -721,141 +721,41 @@ test('native OTP issues a bearer restricted to its native application session an
   await native('post', 'auth/sessions/logout', data.token).expect(201);
   await native('get', 'profile/account', data.token).expect(401);
 });
-test('phone changes require a recent session, bind challenges to that session and revoke every prior device', async () => {
+test('phone changes are disabled without issuing SMS, changing the number or revoking sessions', async () => {
   const person = await login('application');
-  const otherTokens = [
-    randomBytes(32).toString('base64url'),
-    randomBytes(32).toString('base64url'),
-    randomBytes(32).toString('base64url'),
-  ];
-  await db.insert(authSessions).values(
-    otherTokens.map((token, index) => ({
-      userId: person.userId,
-      client: index === 0 ? 'business' : 'application',
-      transport: index === 1 ? ('native' as const) : ('web' as const),
-      tokenHash: tokenHash(token),
-      device: 'Phone change other device',
-      expiresAt: new Date(Date.now() + 3600000),
-    })),
-  );
+  const [before] = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, person.userId));
   const newNumber = phone();
-  const sent = await call(
+  await call(
     'post',
     'profile/account/phone/request',
     'application',
     person.cookie,
   )
     .send({ phone: newNumber })
-    .expect(201);
-  const challengeId = payload(sent).challengeId!;
-  challengeIds.push(challengeId);
-  await call('post', 'auth/otp/verify', 'application')
-    .send({ challengeId, code: delivered.get(newNumber) })
-    .expect(401);
+    .expect(403)
+    .expect((response) =>
+      expect(response.body.code).toBe('Backend.phoneChangesDisabled'),
+    );
   await call(
     'post',
     'profile/account/phone/verify',
     'application',
     person.cookie,
   )
-    .send({
-      challengeId,
-      code: delivered.get(newNumber) === '00000' ? '11111' : '00000',
-    })
-    .expect(401)
-    .expect((response) => {
-      expect(response.body).toMatchObject({
-        code: 'Backend.theCodeIsIncorrectOrExpired',
-      });
-    });
-  await call('get', 'profile/account', 'application', person.cookie).expect(
-    200,
-  );
-  await call(
-    'post',
-    'profile/account/phone/verify',
-    'application',
-    `gym4me_application=${otherTokens[2]}`,
-  )
-    .send({ challengeId, code: delivered.get(newNumber) })
-    .expect(401);
-  const finished = await call(
-    'post',
-    'profile/account/phone/verify',
-    'application',
-    person.cookie,
-  )
-    .send({ challengeId, code: delivered.get(newNumber) })
-    .expect(201);
-  expect(finished.body).toEqual({ success: true });
-  await call('get', 'profile/account', 'application', person.cookie).expect(
-    401,
-  );
-  const [changed] = await db
+    .send({ challengeId: randomUUID(), code: '12345' })
+    .expect(403);
+  const [after] = await db
     .select()
     .from(users)
     .where(eq(users.id, person.userId));
-  expect(changed.phone).toBe(newNumber);
-  const devices = await db
-    .select()
-    .from(authSessions)
-    .where(eq(authSessions.userId, person.userId));
-  expect(devices).toHaveLength(4);
-  expect(devices.every((device) => device.revokedAt !== null)).toBe(true);
-  await call(
-    'get',
-    'profile/account',
-    'business',
-    `gym4me_business=${otherTokens[0]}`,
-  ).expect(401);
-  await call(
-    'get',
-    'profile/account',
-    'application',
-    `gym4me_application=${otherTokens[2]}`,
-  ).expect(401);
-  await request(app.getHttpServer())
-    .get('/api/v1/profile/account')
-    .set('x-gym-client', 'application')
-    .set('x-gym-platform', 'native')
-    .set('Origin', 'capacitor://localhost')
-    .set('Authorization', `Bearer ${otherTokens[1]}`)
-    .expect(401);
-  // Model the elapsed resend cooldown on this consumed test-only challenge.
-  await db
-    .update(otpChallenges)
-    .set({ createdAt: new Date(Date.now() - 61000) })
-    .where(eq(otpChallenges.id, challengeId));
-  const newLoginChallenge = await challenge(newNumber, 'application');
-  const signedInAgain = await call('post', 'auth/otp/verify', 'application')
-    .send({ challengeId: newLoginChallenge, code: delivered.get(newNumber) })
-    .expect(201);
-  expect(payload(signedInAgain).user!.id).toBe(person.userId);
-
-  const [event] = await db
-    .select()
-    .from(auditEvents)
-    .where(
-      and(
-        eq(auditEvents.actorId, person.userId),
-        eq(auditEvents.action, 'account.phone_changed'),
-      ),
-    );
-  expect(event.action).toBe('account.phone_changed');
-  expect(JSON.stringify(event.details)).not.toContain(newNumber);
-  const staleSession: typeof business = await login('application');
-  await db
-    .update(authSessions)
-    .set({ createdAt: new Date(Date.now() - 11 * 60000) })
-    .where(eq(authSessions.userId, staleSession.userId));
-  await call(
-    'post',
-    'profile/account/phone/request',
-    'application',
-    staleSession.cookie,
-  )
-    .send({ phone: phone() })
-    .expect(403);
+  expect(after.phone).toBe(before.phone);
+  expect(delivered.has(newNumber)).toBe(false);
+  await call('get', 'profile/account', 'application', person.cookie).expect(
+    200,
+  );
 });
 
 test('privacy defaults require current policy and age, leave marketing optional and allow clearing optional profile', async () => {

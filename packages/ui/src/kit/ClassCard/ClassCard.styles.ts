@@ -15,7 +15,7 @@ export const classCardStyles = {
     "h-auto max-w-1/2 shrink rounded-full border-image-foreground/25 bg-image-foreground/10 px-[4cqw] py-[2.5cqw] text-[clamp(0.625rem,3.2cqw,0.875rem)] leading-normal font-normal whitespace-normal text-image-foreground backdrop-blur-md",
   ),
   duration: cva(
-    "flex shrink-0 items-center gap-[2cqw] text-[clamp(0.625rem,3.2cqw,0.875rem)] text-image-foreground/90 tabular-nums [&_svg]:size-[4cqw] [&_svg]:shrink-0",
+    "flex shrink-0 items-center gap-[2cqw] text-[clamp(0.625rem,3.2cqw,0.875rem)] text-image-foreground/90 tabular-nums [&_:is(svg,.sandow-icon)]:size-[4cqw] [&_:is(svg,.sandow-icon)]:shrink-0",
   ),
   link: cva(
     "absolute inset-0 z-10 rounded-[inherit] outline-none focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-image-foreground",
@@ -34,13 +34,13 @@ export const classCardStyles = {
     "mb-[1cqw] flex flex-wrap items-center gap-x-[4cqw] gap-y-1 text-image-foreground/85 tabular-nums",
   ),
   value: cva(
-    "flex items-center gap-[1.5cqw] text-[clamp(0.625rem,3cqw,0.75rem)] [&_svg]:size-[4.5cqw] [&_svg]:shrink-0",
+    "flex items-center gap-[1.5cqw] text-[clamp(0.625rem,3cqw,0.75rem)] [&_:is(svg,.sandow-icon)]:size-[4.5cqw] [&_:is(svg,.sandow-icon)]:shrink-0",
   ),
   actions: cva("flex shrink-0 flex-col items-center gap-3"),
   save: cva(
     "pointer-events-auto border-image-foreground/25 bg-image-foreground/10 backdrop-blur-md hover:bg-image-foreground/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-image-foreground aria-pressed:border-image-foreground/60 aria-pressed:bg-image-foreground/25 aria-pressed:text-image-foreground",
   ),
   arrow: cva(
-    "flex size-[clamp(2.75rem,12.8cqw,4.25rem)] items-center justify-center rounded-full border border-image-foreground/25 bg-image-foreground/10 backdrop-blur-md [&_svg]:size-[4.5cqw]",
+    "flex size-[clamp(2.75rem,12.8cqw,4.25rem)] items-center justify-center rounded-full border border-image-foreground/25 bg-image-foreground/10 backdrop-blur-md [&_:is(svg,.sandow-icon)]:size-[4.5cqw]",
   ),
 };

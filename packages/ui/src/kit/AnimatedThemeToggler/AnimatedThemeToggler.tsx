@@ -1,7 +1,7 @@
 "use client";
-import { useSyncExternalStore } from "react";
 import { useTheme } from "@repo/theme/provider";
 import { transitionTheme } from "@repo/theme/transition";
+import { useSyncExternalStore } from "react";
 import { MoonIcon, SunIcon } from "../../icons";
 import { cn } from "../../lib/utils";
 import { Button } from "../Button";
@@ -11,7 +11,7 @@ const subscribe = () => () => {};
 export function AnimatedThemeToggler({
   label,
   variant = "circle",
-  duration = 120,
+  duration = 620,
   fromCenter,
   className,
   disabled,

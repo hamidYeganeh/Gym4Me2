@@ -7,3 +7,5 @@ export {
 export { useTrainingEvent } from "./common";
 export { TrainingPdfProvider } from "./pdf-export";
 export { PrintTrainingPlan, ReadOnlyTrainingPlan } from "./print-plan";
+
+export { WorkoutTimer } from "./workout-timer";

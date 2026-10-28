@@ -25,15 +25,24 @@ export function useCatalogClubs(
   );
   return { ...query, data, clubs };
 }
-export function useCatalogClub(id: string, branchId?: string) {
+export function useCatalogClub(
+  id: string,
+  branchId?: string,
+  initialClub?: import("@repo/api/catalog").ClubDto,
+  initialBranch?: import("@repo/api/catalog").BranchProfileDto,
+) {
   const locale = useLocale();
-  const query = useClub(id);
+  const query = useClub(id, initialClub);
   const data = availableCatalogData(query.data, query.error);
   const main =
     data?.branches.find((branch) => branch.id === branchId) ??
     data?.branches.find((branch) => branch.isMain) ??
     data?.branches[0];
-  const branch = useClubBranch(id, main?.id);
+  const branch = useClubBranch(
+    data?.id ?? "",
+    main?.id,
+    initialBranch?.id === main?.id ? initialBranch : undefined,
+  );
   const branchData = availableCatalogData(branch.data, branch.error);
   const club = useMemo(
     () => (data ? detailView(data, branchData, locale) : undefined),

@@ -1,7 +1,8 @@
 "use client";
-import { useRef, useState } from "react";
+import { useSportsCommand, useSportsQuery } from "@repo/api/sports";
 import { useTranslations } from "@repo/i18n";
-import { useSportsQuery, useSportsCommand } from "@repo/api/sports";
+import { Input as KitInput } from "@repo/ui/kit/Input";
+import { useRef, useState } from "react";
 import { Button } from "../kit/Button";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { QueryError } from "./query-error";
@@ -165,7 +166,7 @@ export function MakeupSession({
             </NativeSelectOption>
           ))}
         </NativeSelect>
-        <input
+        <KitInput
           name="reason"
           aria-label={t("reason")}
           minLength={3}

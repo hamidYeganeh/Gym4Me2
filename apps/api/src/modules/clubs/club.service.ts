@@ -453,8 +453,13 @@ export class ClubService {
   adminBranch(id: string, branchId: string) {
     return readBranch(this.database.db, id, branchId);
   }
-  publicDetail(id: string) {
-    return readClub(this.database.db, id, true);
+  async publicDetail(reference: string) {
+    const [organization] = await this.database.db.select({ id: s.organizations.id })
+      .from(s.organizations).where(eq(s.organizations.slug, reference));
+    if (organization) return readClub(this.database.db, organization.id, true);
+    // Legacy bookmarks resolve only to issue a canonical redirect at the web boundary.
+    if (/^[0-9a-f]{8}-[0-9a-f-]{27}$/i.test(reference)) return readClub(this.database.db, reference, true);
+    throw new NotFoundException('Backend.clubNotFound');
   }
   async publicBranch(id: string, branchId: string) {
     await readClub(this.database.db, id, true);

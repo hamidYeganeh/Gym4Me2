@@ -9,7 +9,9 @@ export function rememberClubMotionOrigin(target: EventTarget | null) {
   const link = target.closest("a[href]");
   const route = link?.closest<HTMLElement>("[data-ssgoi-transition]");
   if (!link || !route) return;
-  const anchor = link.closest("article")?.querySelector(`[${exitAttribute}]`);
+  const anchor =
+    link.closest<HTMLElement>(`[${exitAttribute}]`) ??
+    link.closest("article")?.querySelector(`[${exitAttribute}]`);
   const key = anchor?.getAttribute(exitAttribute) ?? null;
   const matches = [...route.querySelectorAll(`[${exitAttribute}]`)].filter(
     (element) => element.getAttribute(exitAttribute) === key,

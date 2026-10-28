@@ -1,37 +1,36 @@
 "use client";
-import { DemoPanel } from "../training/service-reviews";
-import { workspaceNavigation } from "./workspace-navigation";
-import "../workspace-design.css";
+import { getDirection, useLocale, useTranslations } from "@repo/i18n";
 import { AnalyticsPanel } from "../analytics/panel";
-import { useTranslations, useLocale, getDirection } from "@repo/i18n";
+import { DemoPanel } from "../training/service-reviews";
+import "../workspace-design.css";
+import { workspaceNavigation } from "./workspace-navigation";
 
-import { useAccount, useAccess, useProductNavigation } from "@repo/api/profile";
+import { ApiError, type ApiApplication as Client } from "@repo/api";
+import { useAdminOverview } from "@repo/api/admin";
+import type { Account } from "@repo/api/auth";
 import { useLogout } from "@repo/api/auth";
 import { useOrganizations } from "@repo/api/business";
-import { useAdminOverview } from "@repo/api/admin";
-import { ApiError, type ApiApplication as Client } from "@repo/api";
-import type { Account } from "@repo/api/auth";
-import Link from "next/link";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useEffect, useRef, useState, Suspense, type ReactNode } from "react";
-import {
-  Building2,
-  Dumbbell,
-  LogOut,
-  ShieldCheck,
-  Users,
-  ScrollText,
-  MessageSquare,
-} from "lucide-react";
+import { useAccess, useAccount, useProductNavigation } from "@repo/api/profile";
 import { Button } from "@repo/ui/kit/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/kit/Card";
-import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { Field, FieldLabel } from "@repo/ui/kit/Field";
+import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
+import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  Building2Icon as Building2,
+  BarbellHorizontalIcon as Dumbbell,
+  ArrowSignOut1Icon as LogOut,
+  ChatLineIcon as MessageSquare,
+  Note1Icon as ScrollText,
+  ShieldCheckIcon as ShieldCheck,
+  UsersTwoIcon as Users,
+} from "../icons";
 
-import { Blank, Loading, QueryError, Status, useRoleNames } from "./common";
-import { ProfileContent, SessionsContent, InvitationsContent } from "./profile";
-import { PrivacyNotice } from "./privacy";
-import { BranchesContent, OrganizationsContent, TeamContent } from "./business";
+import { accountReadDenied } from "../lib/account-recovery";
+import { isActiveSurfaceElement } from "../lib/active-surface";
+import { sessionSignInHref } from "../lib/session-navigation";
 import {
   AdminAuditContent,
   AdminOrganizationsContent,
@@ -39,20 +38,27 @@ import {
   useEventNames,
 } from "./admin";
 import {
-  AdminTaxonomiesContent,
   AdminLocationsContent,
   AdminModerationContent,
+  AdminTaxonomiesContent,
 } from "./admin-catalog";
 import {
-  AdminOrganizationDetailContent,
   AdminBranchDetailContent,
+  AdminOrganizationDetailContent,
   AdminUserDetailContent,
 } from "./admin-details";
-import { BusinessClubContent, BusinessBranchContent } from "./business-catalog";
-import { useDateLabel } from "./common";
-import { sessionSignInHref } from "../lib/session-navigation";
-import { accountReadDenied } from "../lib/account-recovery";
-import { isActiveSurfaceElement } from "../lib/active-surface";
+import { BranchesContent, OrganizationsContent, TeamContent } from "./business";
+import { BusinessBranchContent, BusinessClubContent } from "./business-catalog";
+import {
+  Blank,
+  Loading,
+  QueryError,
+  Status,
+  useDateLabel,
+  useRoleNames,
+} from "./common";
+import { PrivacyNotice } from "./privacy";
+import { InvitationsContent, ProfileContent, SessionsContent } from "./profile";
 export type Section =
   | "analytics"
   | "overview"

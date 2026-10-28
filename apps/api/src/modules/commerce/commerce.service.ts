@@ -359,7 +359,7 @@ export class CommerceService {
     }
     const items = await rows<Row & { id: string }>(
       this.db,
-      sql`SELECT s.id,s.organization_id,v.title,s.kind,s.branch_id,b.name branch_name,o.name club_name,v.amount_minor::text,v.description,v.level,v.coach_name,v.coach_user_id,v.eligibility,v.sport_id,v.offering,(SELECT name FROM sports WHERE id=v.sport_id) sport_name,${serviceCoverProjection},
+      sql`SELECT s.id,s.public_id,s.organization_id,v.title,s.kind,s.branch_id,b.name branch_name,o.name club_name,v.amount_minor::text,v.description,v.level,v.coach_name,v.coach_user_id,v.eligibility,v.sport_id,v.offering,(SELECT name FROM sports WHERE id=v.sport_id) sport_name,${serviceCoverProjection},
       (SELECT min(o.start_at) FROM sport_occurrences o JOIN sport_service_versions ov ON ov.id=o.version_id WHERE o.service_id=s.id AND o.status='scheduled' AND o.start_at>now() AND (${resourceAvailable})) next_start_at
       FROM sport_services s JOIN branches b ON b.id=s.branch_id JOIN branch_profiles bp ON bp.branch_id=s.branch_id AND bp.club_id=s.organization_id JOIN clubs c ON c.id=s.organization_id JOIN organizations o ON o.id=s.organization_id
       JOIN sport_service_versions v ON v.id=s.published_version_id
@@ -370,7 +370,10 @@ export class CommerceService {
       nextCursor: items.length > limit ? items[limit - 1].id : null,
     };
   }
-  async detail(id: string) {
+  async detail(reference: string) {
+    const match = await one<{ id: string }>(this.db,
+      sql`SELECT id FROM sport_services WHERE public_id=${reference} OR id::text=${reference}`);
+    const id = match.id;
     const service = await this.service(this.db, id, true);
     if (service.kind === 'program')
       throw new NotFoundException('Backend.serviceUnavailable');
@@ -2219,7 +2222,7 @@ export class CommerceService {
     );
   }
   private bookingSelection(userId: string, id?: string) {
-    return sql`SELECT r.*,o.start_at,o.end_at,ord.snapshot->>'title' AS title,s.id service_id,s.branch_id,b.name branch_name,ord.snapshot,ord.amount_minor::text
+    return sql`SELECT r.*,o.start_at,o.end_at,ord.snapshot->>'title' AS title,s.id service_id,s.organization_id,s.branch_id,b.name branch_name,ord.snapshot,ord.amount_minor::text
       FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id
       JOIN sport_services s ON s.id=o.service_id JOIN branches b ON b.id=s.branch_id
       JOIN sport_orders ord ON ord.id=r.order_id WHERE r.user_id=${userId}

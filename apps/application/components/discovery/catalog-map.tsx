@@ -1,13 +1,19 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { loadMapSdk } from "./map-sdk";
-import { LocateFixed, MapPin, RotateCcw, Plus, Minus } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
-import { Skeleton } from "@repo/ui/kit/Skeleton";
-import { toast } from "@repo/ui/kit/Sonner";
+import {
+  Target1Icon as LocateFixed,
+  MapPin1Icon as MapPin,
+  MinusIcon as Minus,
+  PlusIcon as Plus,
+  ArrowRotateCounterclockwise1Icon as RotateCcw,
+} from "@repo/ui/icons";
 import { Button } from "@repo/ui/kit/Button";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
+import { Skeleton } from "@repo/ui/kit/Skeleton";
+import { toast } from "@repo/ui/kit/Sonner";
+import { useEffect, useRef, useState } from "react";
 import "./discovery-map.css";
+import { loadMapSdk } from "./map-sdk";
 
 type Point = [number, number]; // Leaflet: latitude, longitude (catalog uses longitude, latitude).
 type Layer = {
@@ -310,11 +316,7 @@ export function CatalogMap({
           role="status"
           aria-label={t("loading")}
         >
-          <div className="grid size-full grid-cols-3 gap-3" aria-hidden="true">
-            {Array.from({ length: 12 }, (_, i) => (
-              <Skeleton key={i} className="size-full rounded-2xl" />
-            ))}
-          </div>
+          <Skeleton className="size-full rounded-none" aria-hidden="true" />
           <span className="sr-only">{t("loadingDescription")}</span>
         </div>
       )}

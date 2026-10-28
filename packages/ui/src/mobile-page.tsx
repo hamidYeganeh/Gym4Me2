@@ -1,11 +1,11 @@
 "use client";
-import type { ReactNode } from "react";
-import Link from "next/link";
 import { useTranslations } from "@repo/i18n";
-import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
+import type { ReactNode } from "react";
+import "./account/account-design.css";
+import { ChevronLeftIcon as ChevronLeft } from "./icons";
 import { Button } from "./kit/Button";
 import { cn } from "./lib/utils";
-import "./account/account-design.css";
 
 export function MobileHeader({
   title,

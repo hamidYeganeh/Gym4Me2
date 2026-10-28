@@ -1,16 +1,16 @@
 "use client";
-import { SuccessNotice } from "@repo/ui/account";
-import { NativeSelect } from "@repo/ui/kit/NativeSelect";
-import { useId, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { useLocale } from "@repo/i18n";
-import { FileText } from "lucide-react";
 import {
-  useSportsQuery,
   useSportsCommand,
-  type ServiceDto,
+  useSportsQuery,
   type DocumentDto,
+  type ServiceDto,
 } from "@repo/api/sports";
+import { useLocale } from "@repo/i18n";
+import { SuccessNotice } from "@repo/ui/account";
+import { File1Icon as FileText } from "@repo/ui/icons";
+import { NativeSelect } from "@repo/ui/kit/NativeSelect";
+import { useSearchParams } from "next/navigation";
+import { useId, useRef, useState } from "react";
 import {
   documentFileAccept,
   documentFileIssue,

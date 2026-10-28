@@ -1,28 +1,28 @@
 "use client";
-import { useEffect, useId, useRef, useState } from "react";
-import { cn } from "../../lib/utils";
-import { useClubPhoto } from "../../hooks/use-club-photo";
 import Image from "next/image";
 import Link from "next/link";
+import { useId, useState } from "react";
+import { useClubPhoto } from "../../hooks/use-club-photo";
+import { useDetailHero } from "../../hooks/use-detail-hero";
 import {
+  BarbellHorizontalIcon,
+  CalendarPlusIcon,
   ChevronLeftIcon,
-  BookmarkIcon,
   ClockIcon,
   MapPin1Icon,
-  StarFullIcon,
   Share1Icon,
-  BarbellHorizontalIcon,
-  UserIcon,
+  HeartIcon,
   Shower1Icon,
-  WifiFullIcon,
+  StarFullIcon,
+  UserIcon,
   UsersThreeIcon,
+  WifiFullIcon,
   WindIcon,
-  CalendarPlusIcon,
 } from "../../icons";
+import { cn } from "../../lib/utils";
 import { Button } from "../Button";
+import { EquipmentDetails } from "../EquipmentCard";
 import { Separator } from "../Separator";
-import { EquipmentCard } from "../EquipmentCard";
-import { SlidingNumber } from "../SlidingNumber";
 import { clubDetailStyles as s } from "./ClubDetail.styles";
 import type { ClubDetailProps } from "./ClubDetail.types";
 
@@ -44,6 +44,7 @@ export function ClubDetail({
   labels,
   coaches,
   reviews,
+  faq,
   availability,
   galleryPreview,
   socialShare,
@@ -53,24 +54,7 @@ export function ClubDetail({
 }: ClubDetailProps) {
   const [expanded, setExpanded] = useState(false);
   const descriptionId = useId();
-  const [scrolled, setScrolled] = useState(false);
-  const [heroPassed, setHeroPassed] = useState(false);
-  const heroRef = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const update = () => {
-      setScrolled(window.scrollY > 8);
-      setHeroPassed(
-        (heroRef.current?.getBoundingClientRect().bottom ?? 1) <= 0,
-      );
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
+  const { heroRef, imageRef, heroPassed, scrolled } = useDetailHero();
   const [photoIndex, setPhotoIndex] = useClubPhoto(club.id);
   const photo = club.photos[photoIndex] ?? club.photos[0];
   return (
@@ -99,14 +83,19 @@ export function ClubDetail({
           aria-pressed={saved}
           onClick={() => onSavedChange(!saved)}
         >
-          <BookmarkIcon />
+          <HeartIcon />
         </Button>
       </nav>
 
-      <section ref={heroRef} className={s.hero()} aria-label={club.name}>
+      <section
+        data-zoom-enter-key={`club-${club.id}`}
+        ref={heroRef}
+        className={s.hero()}
+        aria-label={club.name}
+      >
         <div
-          className="absolute inset-0"
-          data-zoom-enter-key={`club-${club.id}`}
+          ref={imageRef}
+          className="absolute inset-0 will-change-transform motion-reduce:will-change-auto"
         >
           <Image
             src={photo.src}
@@ -119,77 +108,54 @@ export function ClubDetail({
           />
         </div>
         <div className={s.overlay()} />
-      </section>
-      <div className={s.panel()}>
         <div className={s.heading()}>
           <div className={s.headingContent()}>
             <p className={s.category()}>{club.category}</p>
             <h1 className={s.title()}>{club.name}</h1>
+            <p className="text-sm text-image-foreground/80">{club.address}</p>
           </div>
           <p className={s.price()}>
             {club.priceValue === null ? (
               club.price
             ) : (
-              <SlidingNumber
-                value={club.priceValue}
-                locale={club.locale}
-                useGrouping
-              />
+              <bdi className="tabular-nums" dir="ltr">
+                {new Intl.NumberFormat(club.locale).format(club.priceValue)}
+              </bdi>
             )}{" "}
             {club.priceValue !== null && club.priceCurrency}
-            {club.priceValue !== null && (
-              <span className={s.period()}>{club.pricePeriod}</span>
-            )}
           </p>
         </div>
-
-        <div className="club-detail-actions">
-          {onPlanVisit && (
-            <button type="button" onClick={onPlanVisit}>
-              <CalendarPlusIcon />
-              <span>{labels.visit}</span>
-            </button>
-          )}
-          <button type="button" onClick={onShare}>
-            <Share1Icon />
-            <span>{labels.share}</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => onSavedChange(!saved)}
-            aria-pressed={saved}
-          >
-            <BookmarkIcon />
-            <span>{saved ? labels.unsave : labels.save}</span>
-          </button>
-        </div>
-        <div className={s.gallery()} role="group" aria-label={labels.gallery}>
-          {club.photos.map((item, index) => (
-            <button
-              type="button"
-              key={item.src}
-              className={s.thumbnail({ selected: index === photoIndex })}
-              aria-label={`${labels.photo} ${index + 1}: ${item.alt}`}
-              aria-pressed={index === photoIndex}
-              onClick={() => setPhotoIndex(index)}
-            >
-              <Image
-                src={item.src}
-                alt=""
-                fill
-                sizes="(max-width: 640px) 28vw, 260px"
-                className={s.image()}
-                unoptimized
-              />
-            </button>
-          ))}
-        </div>
+      </section>
+      <div className={s.panel()}>
+        {club.photos.length > 1 && (
+          <div className={s.gallery()} role="group" aria-label={labels.gallery}>
+            {club.photos.map((item, index) => (
+              <button
+                type="button"
+                key={item.src}
+                className={s.thumbnail({ selected: index === photoIndex })}
+                aria-label={`${labels.photo} ${index + 1}: ${item.alt}`}
+                aria-pressed={index === photoIndex}
+                onClick={() => setPhotoIndex(index)}
+              >
+                <Image
+                  src={item.src}
+                  alt=""
+                  fill
+                  sizes="(max-width: 640px) 28vw, 260px"
+                  className={s.image()}
+                  unoptimized
+                />
+              </button>
+            ))}
+          </div>
+        )}
         <dl className={s.stats()}>
           {[
             { Icon: ClockIcon, value: club.hours, label: labels.hours },
             {
               Icon: MapPin1Icon,
-              value: club.userDistance ?? labels.distanceUnavailable,
+              value: club.userDistance || "-",
               label: labels.distance,
             },
             {
@@ -209,7 +175,9 @@ export function ClubDetail({
               </span>
               <div className="min-w-0 flex-1 text-start">
                 <dt className={s.caption()}>{label}</dt>
-                <dd className={s.statValue()}>{value}</dd>
+                <dd className={s.statValue()} title={value}>
+                  {value}
+                </dd>
               </div>
             </div>
           ))}
@@ -251,7 +219,8 @@ export function ClubDetail({
                 ] ?? BarbellHorizontalIcon;
               return (
                 <li key={item.id}>
-                  <EquipmentCard
+                  <EquipmentDetails
+                    image={item.image}
                     label={item.label}
                     description={item.description}
                     icon={<Icon />}
@@ -265,13 +234,13 @@ export function ClubDetail({
         {branches}
         {coaches}
         {reviews}
+        {faq}
         {recommendations}
         {socialShare}
         <footer className={s.footer()}>
           <Button
-            variant="outline"
+            variant="image"
             size="icon-lg"
-            className="size-12"
             aria-label={labels.share}
             onClick={onShare}
           >

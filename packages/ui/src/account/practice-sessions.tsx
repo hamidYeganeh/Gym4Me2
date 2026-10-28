@@ -1,18 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
-import {
-  CalendarDays,
-  Check,
-  ChevronLeft,
-  Clock3,
-  MapPin,
-  Plus,
-  Users,
-  X,
-} from "lucide-react";
-import { useLocale, useTranslations } from "@repo/i18n";
 import {
   usePracticeQuery,
   type CoachingMembershipDto,
@@ -21,18 +8,31 @@ import {
   type PracticeWorkspaceDto,
 } from "@repo/api/profile";
 import { useSportsQuery } from "@repo/api/sports";
-import { MakeupSession } from "../sports/class-roster";
-import { Button } from "../kit/Button";
+import { useLocale, useTranslations } from "@repo/i18n";
+import Link from "next/link";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import {
+  Calendar1Icon as CalendarDays,
+  CheckIcon as Check,
+  ChevronLeftIcon as ChevronLeft,
+  ClockIcon as Clock3,
+  MapPin1Icon as MapPin,
+  PlusIcon as Plus,
+  UsersTwoIcon as Users,
+  CloseXIcon as X,
+} from "../icons";
 import { BottomSheet } from "../kit/BottomSheet";
+import { Button } from "../kit/Button";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { Textarea } from "../kit/Textarea";
-import { cn } from "../lib/utils";
 import {
   coachingSessionBalance,
   groupCoachingSessions,
   nextCoachingSession,
   type CoachingSessionGroup,
 } from "../lib/coaching-sessions";
+import { cn } from "../lib/utils";
+import { MakeupSession } from "../sports/class-roster";
 import {
   ManagementFilterBar,
   useManagementFilters,
@@ -41,14 +41,15 @@ import { AccountAvatar } from "./account-design";
 import { Pager } from "./admin";
 import { Loading, QueryError } from "./common";
 import {
-  PracticeDate,
-  PracticeFeedback,
   PracticeField as Field,
   PracticeForm as Form,
   iso,
+  PracticeDate,
+  PracticeFeedback,
   text,
   usePracticeAction,
 } from "./practice-forms";
+import { WorkoutTimer } from "../training/workout-timer";
 import "./practice-sessions.css";
 
 const statusKeys: Record<
@@ -439,6 +440,7 @@ function CoachSessionDetail({
       }
     >
       <div className="coaching-session-detail space-y-6">
+        {!["cancelled", "completed", "no_show"].includes(group.status) && <WorkoutTimer sessionKey={`coach:${s.occurrenceId}`} />}
         <div className="space-y-4">
           <SessionStatus status={group.status} />
           <h3 className="text-2xl font-semibold leading-9">{s.title}</h3>

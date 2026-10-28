@@ -1,12 +1,12 @@
 "use client";
+import { useLocale, useTranslations } from "@repo/i18n";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Heart, MapPin } from "lucide-react";
-import { useLocale, useTranslations } from "@repo/i18n";
-import { ProgressiveBlur } from "../ProgressiveBlur";
+import { MapPin1Icon as MapPin } from "../../icons";
 import { cn } from "../../lib/utils";
-import { Avatar, AvatarImage, AvatarFallback, AvatarGroup } from "../Avatar";
+import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from "../Avatar";
+import { ProgressiveBlur } from "../ProgressiveBlur";
 import { locationCardStyles as s } from "./LocationCard.styles";
 import type { LocationCardProps } from "./LocationCard.types";
 export function LocationCard({
@@ -19,9 +19,6 @@ export function LocationCard({
   className,
   selected,
   active,
-  saved,
-  onSavedChange,
-  saveLabel,
   selectionProps,
   onSelect,
   href,
@@ -70,7 +67,7 @@ export function LocationCard({
           className={s.action()}
           aria-label={[name, parent].filter(Boolean).join(" · ")}
         />
-      ) : (
+      ) : onSelect ? (
         <button
           {...selectionProps}
           type="button"
@@ -81,24 +78,9 @@ export function LocationCard({
           )}
           aria-label={[name, parent].filter(Boolean).join(" · ")}
         />
-      )}
+      ) : null}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-2 p-[8%]">
         {kindLabel ? <span className={s.pill()}>{kindLabel}</span> : <span />}
-        {onSavedChange ? (
-          <button
-            type="button"
-            aria-label={saveLabel}
-            aria-pressed={saved ?? false}
-            onClick={() => onSavedChange(!saved)}
-            className="pointer-events-auto grid size-11 shrink-0 place-items-center rounded-full border border-white/15 bg-black/15 text-white backdrop-blur-md transition-colors hover:bg-white/25"
-          >
-            <Heart
-              size={19}
-              aria-hidden="true"
-              className={saved ? "fill-current" : undefined}
-            />
-          </button>
-        ) : null}
       </div>
       <div className={s.content()}>
         <h3 className="text-lg font-semibold leading-snug [overflow-wrap:anywhere]">

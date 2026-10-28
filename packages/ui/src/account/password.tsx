@@ -1,19 +1,19 @@
 "use client";
-import { useEffect, useState, type FormEvent } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "@repo/i18n";
 import { ApiError } from "@repo/api";
 import { usePasswordStatus, useSetPassword } from "@repo/api/auth";
-import { AuthScreen } from "./mobile-auth";
-import { ChevronLeft, KeyRound } from "lucide-react";
-import { FieldGroup } from "../kit/Field";
-import { Button } from "../kit/Button";
-import { TextField, ErrorNotice, QueryError, Loading, Submit } from "./common";
-import { toast } from "../kit/Sileo";
-import { safeReturnPath } from "./safe-return-path";
-import { applicationAuthHref } from "../lib/auth-routes";
 import { useApiContext } from "@repo/api/provider";
+import { useTranslations } from "@repo/i18n";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, type FormEvent } from "react";
+import { ChevronLeftIcon as ChevronLeft, Key1Icon as KeyRound } from "../icons";
+import { Button } from "../kit/Button";
+import { FieldGroup } from "../kit/Field";
+import { toast } from "../kit/Sileo";
+import { applicationAuthHref } from "../lib/auth-routes";
+import { ErrorNotice, Loading, QueryError, Submit, TextField } from "./common";
+import { AuthScreen } from "./mobile-auth";
+import { safeReturnPath } from "./safe-return-path";
 export function SetPasswordPage({
   backHref = "/profile/settings",
 }: {

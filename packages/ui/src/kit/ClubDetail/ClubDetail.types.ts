@@ -21,6 +21,7 @@ export type ClubDetailData = ClubSummary & {
   amenities: {
     id: string;
     icon?: "weights" | "coaching" | "showers" | "wifi" | "group" | "air";
+    image?: string;
     label: string;
     description: string;
   }[];
@@ -33,6 +34,7 @@ export type ClubDetailProps = {
   onPlanVisit?: () => void;
   coaches?: ReactNode;
   reviews?: ReactNode;
+  faq?: ReactNode;
   availability?: ReactNode;
   galleryPreview?: ReactNode;
   socialShare?: ReactNode;

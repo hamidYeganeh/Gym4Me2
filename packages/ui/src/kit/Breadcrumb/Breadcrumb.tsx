@@ -1,8 +1,11 @@
 "use client";
 import { useTranslations } from "@repo/i18n";
 import { cn } from "@repo/ui/lib/utils";
-import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
 import { Slot } from "radix-ui";
+import {
+  ChevronRightIcon,
+  DotThreeHorizontalIcon as MoreHorizontalIcon,
+} from "../../icons";
 import { breadcrumbStyles } from "./Breadcrumb.styles";
 import type {
   BreadcrumbEllipsisProps,

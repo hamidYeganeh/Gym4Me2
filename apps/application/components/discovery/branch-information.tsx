@@ -1,7 +1,12 @@
 "use client";
+import { ClubLocationCard } from "./club-location-card";
 import type { ReactNode } from "react";
 import type { BranchProfileDto } from "@repo/api/catalog";
 import { useLocale, useTranslations } from "@repo/i18n";
+import { catalogIcon } from "@repo/ui/icons/catalog";
+import { SportCard } from "@repo/ui/kit/SportCard";
+import { EquipmentDetails } from "@repo/ui/kit/EquipmentCard";
+import { BarbellHorizontalIcon } from "@repo/ui/icons";
 import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/kit/Card";
 
 export function BranchInformation({ branch }: { branch: BranchProfileDto }) {
@@ -12,7 +17,7 @@ export function BranchInformation({ branch }: { branch: BranchProfileDto }) {
     <Card>
       <CardHeader>
         <CardTitle>
-          <h3>{label}</h3>
+          <h3 className="text-2xl font-semibold">{label}</h3>
         </CardTitle>
       </CardHeader>
       <CardContent className="text-sm leading-7 [overflow-wrap:anywhere]">
@@ -28,11 +33,10 @@ export function BranchInformation({ branch }: { branch: BranchProfileDto }) {
       className="flex min-w-0 flex-col gap-4"
       aria-label={t("branchInformation", { branch: branch.name })}
     >
-      <h2 className="text-xl font-semibold">
+      <h2 className="text-2xl font-semibold">
         {t("branchInformation", { branch: branch.name })}
       </h2>
-      {fact(t("operatingStatus"), t(`operating_${branch.operatingStatus}`))}
-      {fact(t("address"), branch.location.address || missing)}
+      <ClubLocationCard key={branch.id} branch={branch} />
       {fact(
         t("branchContact"),
         branch.phones.length ? (
@@ -59,72 +63,37 @@ export function BranchInformation({ branch }: { branch: BranchProfileDto }) {
           missing
         ),
       )}
-      {fact(
-        t("sports"),
-        branch.sports.length
-          ? branch.sports.map((item) => item.name).join(" · ")
-          : missing,
+      {branch.sports.length > 0 && (
+        <section className="flex flex-col gap-3">
+          <h3 className="text-2xl font-semibold">{t("sports")}</h3>
+          <div className="flex snap-x gap-3 overflow-x-auto pb-2">
+            {branch.sports.map((sport) => (
+              <SportCard
+                key={sport.id}
+                name={sport.name}
+                color="var(--primary)"
+                className="!text-primary-foreground [&_.sport-card-watermark]:!text-primary-foreground"
+                image={sport.imageUrl}
+                icon={catalogIcon(sport.iconName)}
+              />
+            ))}
+          </div>
+        </section>
       )}
-      {fact(
-        t("equipment"),
-        branch.equipments.length ? (
-          <ul className="grid gap-2">
+      {branch.equipments.length > 0 && (
+        <section className="flex flex-col gap-3">
+          <h3 className="text-2xl font-semibold">{t("equipment")}</h3>
+          <div className="flex snap-x gap-3 overflow-x-auto pb-2">
             {branch.equipments.map((item) => (
-              <li key={item.id}>
-                {item.name}
-                {item.quantity !== null
-                  ? ` · ${t("equipmentCount", { count: number.format(item.quantity) })}`
-                  : ""}
-                {item.description && (
-                  <p className="whitespace-pre-line">{item.description}</p>
-                )}
-              </li>
+              <EquipmentDetails
+                key={item.id}
+                label={item.name}
+                description={item.description ?? undefined}
+                icon={<BarbellHorizontalIcon />}
+              />
             ))}
-          </ul>
-        ) : (
-          missing
-        ),
-      )}
-      {fact(
-        t("facilities"),
-        branch.amenities.length ? (
-          <ul className="grid gap-2">
-            {branch.amenities.map((item) => (
-              <li key={item.id}>
-                {item.name} ·{" "}
-                {item.availability === "included"
-                  ? t("includedAmenity")
-                  : item.availability === "paid"
-                    ? t("paidAmenity")
-                    : item.availability === "unavailable"
-                      ? t("unavailableAmenity")
-                      : t("notDeclared")}
-                {item.description && (
-                  <p className="whitespace-pre-line">{item.description}</p>
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          missing
-        ),
-      )}
-      {fact(
-        t("accessibility"),
-        branch.accessibilityFeatures.length ? (
-          <ul className="grid gap-2">
-            {branch.accessibilityFeatures.map((item) => (
-              <li key={item.id}>
-                {item.name}
-                {item.description && (
-                  <p className="whitespace-pre-line">{item.description}</p>
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          missing
-        ),
+          </div>
+        </section>
       )}
       {fact(
         t("audiencePolicy"),

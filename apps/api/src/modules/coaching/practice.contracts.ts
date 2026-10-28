@@ -107,6 +107,7 @@ export const coachingServiceSchema = z
   .strict();
 export const coachSearchSchema = z
   .object({
+    limit: z.coerce.number().int().min(1).max(50).default(50),
     search: z.string().trim().max(120).default(''),
     city: z.string().trim().max(100).default(''),
     specialty: z.string().trim().max(80).default(''),

@@ -1,29 +1,29 @@
 "use client";
 import { useProductNavigation } from "@repo/api/profile";
 
+import type { Account } from "@repo/api/auth";
+import { useLocale, useTranslations } from "@repo/i18n";
+import { useChangeLocale } from "@repo/i18n/client-provider";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { Account } from "@repo/api/auth";
-import { useChangeLocale } from "@repo/i18n/client-provider";
-import { useLocale, useTranslations } from "@repo/i18n";
 import {
-  ChevronLeft,
-  KeyRound,
-  Monitor,
-  ShieldCheck,
-  Palette,
-  Mail,
-  Pencil,
-  LogOut,
-  FileText,
-  Languages,
-  Bell,
-  LifeBuoy,
-} from "lucide-react";
+  Bell1Icon as Bell,
+  ChevronLeftIcon as ChevronLeft,
+  File1Icon as FileText,
+  Key1Icon as KeyRound,
+  TranslateIcon as Languages,
+  LifebuoyIcon as LifeBuoy,
+  ArrowSignOut1Icon as LogOut,
+  Envelope1Icon as Mail,
+  MonitorIcon as Monitor,
+  PaletteIcon as Palette,
+  Pencil1Icon as Pencil,
+  ShieldCheckIcon as ShieldCheck,
+} from "../icons";
+import { AnimatedThemeToggler } from "../kit/AnimatedThemeToggler";
+import { Button } from "../kit/Button";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { Separator } from "../kit/Separator";
-import { Button } from "../kit/Button";
-import { AnimatedThemeToggler } from "../kit/AnimatedThemeToggler";
 import { AccountAvatar } from "./account-design";
 import { ErrorNotice } from "./common";
 

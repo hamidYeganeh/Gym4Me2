@@ -1,8 +1,12 @@
 "use client";
-import { CalendarDays, Clock3, MapPin } from "lucide-react";
-import { useLocale, useTranslations } from "@repo/i18n";
-import { ServiceCoverThumbnail } from "@repo/ui/sports-cover";
 import type { ServiceCoverDto } from "@repo/api/sports";
+import { useLocale, useTranslations } from "@repo/i18n";
+import {
+  Calendar1Icon as CalendarDays,
+  ClockIcon as Clock3,
+  MapPin1Icon as MapPin,
+} from "@repo/ui/icons";
+import { ServiceCoverThumbnail } from "@repo/ui/sports-cover";
 import { Price, StatusBadge, stamp } from "./common";
 import "./reservation-design.css";
 

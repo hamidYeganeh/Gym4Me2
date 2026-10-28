@@ -155,3 +155,73 @@ test('picker search and pagination reject unbounded or invalid input', () => {
   expect(optionSearchSchema.parse('  Tehran  ')).toBe('Tehran');
   expect(optionSearchSchema.safeParse('a'.repeat(101)).success).toBe(false);
 });
+
+test('club FAQs preserve order, trim content and allow clearing the list', () => {
+  expect(
+    clubPatchSchema.parse({
+      faq: [
+        { question: ' Hours? ', answer: ' Until 10. ' },
+        { question: 'Parking?', answer: 'Yes.' },
+      ],
+    }).faq,
+  ).toEqual([
+    { question: 'Hours?', answer: 'Until 10.' },
+    { question: 'Parking?', answer: 'Yes.' },
+  ]);
+  expect(clubPatchSchema.parse({ faq: [] }).faq).toEqual([]);
+  expect(clubPatchSchema.parse({}).faq).toBeUndefined();
+});
+test('club FAQs reject empty, oversized and unexpected content', () => {
+  for (const faq of [
+    [{ question: ' ', answer: 'Answer' }],
+    [{ question: 'Question', answer: '' }],
+    [{ question: 'x'.repeat(301), answer: 'Answer' }],
+    [{ question: 'Question', answer: 'x'.repeat(3001) }],
+    [{ question: 'Question', answer: 'Answer', html: true }],
+    Array.from({ length: 21 }, () => ({
+      question: 'Question',
+      answer: 'Answer',
+    })),
+    null,
+  ])
+    expect(clubPatchSchema.safeParse({ faq }).success).toBe(false);
+});
+
+test('catalog icons accept stable font names and nullable resets', () => {
+  expect(
+    taxonomyPatchSchema.parse({ iconName: 'BarbellHorizontalIcon' }).iconName,
+  ).toBe('BarbellHorizontalIcon');
+  expect(taxonomyPatchSchema.parse({ iconName: null }).iconName).toBeNull();
+  expect(taxonomyPatchSchema.parse({ name: 'بدنسازی' })).not.toHaveProperty(
+    'iconName',
+  );
+  for (const iconName of ['<svg/>', '../../file', 'x'.repeat(101)]) {
+    expect(taxonomyPatchSchema.safeParse({ iconName }).success).toBe(false);
+  }
+});
+
+test('club contacts retain multiple department labels, extensions and the single primary choice', () => {
+  const phones = [
+    {
+      number: '۰۲۱ ۵۶۷۸۱۲۳۴',
+      label: 'دفتر مدیریت',
+      extension: '101',
+      isPrimary: true,
+    },
+    {
+      number: '02156781235',
+      label: 'پذیرش',
+      extension: null,
+      isPrimary: false,
+    },
+  ];
+  const parsed = clubPatchSchema.parse({ phones }).phones!;
+  expect(parsed.map((phone) => phone.label)).toEqual(['دفتر مدیریت', 'پذیرش']);
+  expect(parsed[0].number).toBe('02156781234');
+  expect(branchPatchSchema.parse({ phones }).phones).toEqual(parsed);
+  expect(
+    clubPatchSchema.safeParse({
+      phones: phones.map((phone) => ({ ...phone, isPrimary: true })),
+    }).success,
+  ).toBe(false);
+});

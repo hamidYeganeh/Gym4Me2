@@ -1,6 +1,7 @@
+import { redirect } from "next/navigation";
 import { ClubPage } from "../../../../components/discovery/club-page";
 import type { Metadata } from "next";
-import { getPublicClub } from "../../../../lib/public-catalog";
+import { getPublicClub, getPublicClubBranch } from "../../../../lib/public-catalog";
 export async function generateMetadata({
   params,
 }: {
@@ -17,7 +18,7 @@ export async function generateMetadata({
     ...(base
       ? {
           metadataBase: new URL(base),
-          alternates: { canonical: `/discovery/clubs/${club.id}` },
+          alternates: { canonical: `/discovery/clubs/${club.slug}` },
         }
       : {}),
     openGraph: {
@@ -34,10 +35,14 @@ export async function generateMetadata({
 }
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ clubId: string }>;
+  searchParams: Promise<{ branch?: string }>;
 }) {
   const { clubId } = await params;
-  await getPublicClub(clubId);
-  return <ClubPage clubId={clubId} />;
+  const club = await getPublicClub(clubId);
+  if (clubId !== club.slug || (await searchParams).branch)
+    redirect(`/discovery/clubs/${club.slug}`);
+  return <ClubPage clubId={clubId} initialClub={club} initialBranch={await getPublicClubBranch(clubId)} />;
 }

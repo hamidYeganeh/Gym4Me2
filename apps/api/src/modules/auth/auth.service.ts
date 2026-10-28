@@ -85,7 +85,7 @@ export class AuthService {
     const codeHash = this.otpHash(id, code);
     const now = new Date();
     await this.database.db.transaction(async (tx) => {
-      // Serialize requests across API instances; IPs are hashed and are never trusted from forwarded headers.
+      // Serialize requests across API instances; hash the adapter-validated client IP.
       const ipKey = this.hash(`ip:${ip}`);
       await tx.execute(
         sql`select pg_advisory_xact_lock(hashtextextended(${ipKey}, 0))`,

@@ -4,3 +4,5 @@ export type {
   EquipmentCardProps,
   EquipmentCardVariants,
 } from "./EquipmentCard.types";
+
+export { EquipmentDetails } from "./EquipmentDetails";

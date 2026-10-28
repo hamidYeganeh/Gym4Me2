@@ -10,6 +10,8 @@ import {
   type RefObject,
   type ReactNode,
 } from "react";
+import { PageTransition as AnimatePageTransition } from "./animate-ui/components/page-transition";
+import { usePathname } from "next/navigation";
 import { Ssgoi, type SsgoiConfig } from "@ssgoi/react";
 import { SsgoiRouteBoundary } from "@ssgoi/react/nextjs";
 import {
@@ -48,9 +50,20 @@ const configFor = (surface: AppSurface): SsgoiConfig => ({
       transition: lumaFade(),
     },
     {
-      on: "/discovery/coaches/*",
-      priority: 20,
-      transition: lumaPush(),
+      from: "/**",
+      to: "/discovery/coaches/*",
+      priority: 25,
+      transition: lumaInstant(),
+    },
+    {
+      from: "/**",
+      to: [
+        "/discovery/classes/*",
+        "/discovery/clubs/*/classess/*",
+        "/services/*",
+      ],
+      priority: 25,
+      transition: lumaClub(),
     },
     {
       on: [
@@ -61,14 +74,12 @@ const configFor = (surface: AppSurface): SsgoiConfig => ({
       priority: 20,
       transition: lumaPush(),
     },
-    ...["/", "/discovery", "/saved", "/discovery/map", "/qa/ph0"].map(
-      (from) => ({
-        from,
-        to: "/discovery/clubs/*",
-        priority: 15,
-        transition: lumaClub(),
-      }),
-    ),
+    {
+      from: "/**",
+      to: "/discovery/clubs/*",
+      priority: 15,
+      transition: lumaClub(),
+    },
     { on: "/**", priority: -100, transition: lumaFade() },
   ],
 });
@@ -135,11 +146,13 @@ export function PageTransitions({
   routeId?: string;
   surface?: AppSurface;
 }) {
+  const pathname = usePathname();
+  const coachRoute = (routeId ?? pathname).startsWith("/discovery/coaches/");
   const reduce = useSyncExternalStore(subscribe, getReducedMotion, () => true);
   const root = useRef<HTMLDivElement>(null);
   const active = useRef<ActiveRouteState>({ element: null });
   useLayoutEffect(() => {
-    if (!root.current || !routeId) return;
+    if (surface === "application" || !root.current || !routeId) return;
     const state = active.current;
     const isolation = isolateInactiveRoutes(root.current, () => state.element);
     state.refresh = isolation.sync;
@@ -147,7 +160,7 @@ export function PageTransitions({
       state.refresh = undefined;
       isolation.dispose();
     };
-  }, [routeId]);
+  }, [routeId, surface]);
   // SSGOI restores tab positions; browser anchoring otherwise shifts the
   // viewport again when the outgoing route finishes leaving the layout.
   return (
@@ -167,18 +180,27 @@ export function PageTransitions({
       style={{ overflowAnchor: "none" }}
       className="relative isolate min-h-dvh overflow-x-clip"
     >
-      <Ssgoi config={reduce ? reducedConfigs[surface] : configs[surface]}>
-        <ActiveRoute.Provider value={active}>
-          <SsgoiRouteBoundary
-            as={RouteFrame}
-            resolve={
-              routeId ? () => ({ id: routeId, key: routeId }) : resolveRoute
-            }
-          >
-            {children}
-          </SsgoiRouteBoundary>
-        </ActiveRoute.Provider>
-      </Ssgoi>
+      {surface === "application" ? (
+        <AnimatePageTransition
+          effect={coachRoute ? "zoom" : "fade"}
+          pageKey={routeId ?? pathname}
+        >
+          {children}
+        </AnimatePageTransition>
+      ) : (
+        <Ssgoi config={reduce ? reducedConfigs[surface] : configs[surface]}>
+          <ActiveRoute.Provider value={active}>
+            <SsgoiRouteBoundary
+              as={RouteFrame}
+              resolve={
+                routeId ? () => ({ id: routeId, key: routeId }) : resolveRoute
+              }
+            >
+              {children}
+            </SsgoiRouteBoundary>
+          </ActiveRoute.Provider>
+        </Ssgoi>
+      )}
     </div>
   );
 }

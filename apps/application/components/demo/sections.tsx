@@ -1,17 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { CalendarDays, CreditCard, Dumbbell } from "lucide-react";
+import {
+  Calendar1Icon as CalendarDays,
+  CreditCardIcon as CreditCard,
+  BarbellHorizontalIcon as Dumbbell,
+} from "@repo/ui/icons";
 import { Button } from "@repo/ui/kit/Button";
 import { FitnessNote } from "@repo/ui/kit/FitnessIllustration";
 import { toast } from "@repo/ui/kit/Sileo";
-import { ClubList } from "../discovery/club-list";
-import { ClubGalleryPreview } from "../discovery/club-gallery-preview";
-import { ClubAvailability } from "../discovery/club-availability";
+import { useState } from "react";
 import { BranchInformation } from "../discovery/branch-information";
-import { ClubTariffs } from "../discovery/club-tariffs";
 import { CatalogState } from "../discovery/catalog-state";
-import { Section, Row, Empty, Segments, Price } from "../luma/common";
+import { ClubAvailability } from "../discovery/club-availability";
+import { ClubGalleryPreview } from "../discovery/club-gallery-preview";
+import { ClubList } from "../discovery/club-list";
+import { ClubTariffs } from "../discovery/club-tariffs";
+import { Empty, Price, Row, Section, Segments } from "../luma/common";
 import { ReservationSummary } from "../luma/reservation-design";
 import { demoBranch, demoClubs, demoTariffs } from "./section-fixtures";
 import type { DemoExample } from "./types";

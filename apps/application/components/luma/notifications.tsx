@@ -1,26 +1,26 @@
 "use client";
-import { ErrorNotice } from "@repo/ui/account";
-import { FilterSheet } from "@repo/ui/kit/BottomSheet";
-import Link from "next/link";
-import { useId, useRef } from "react";
-import { isActiveSurfaceElement } from "@repo/ui/lib/active-surface";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale, useTranslations } from "@repo/i18n";
-import { isTranslationKey } from "@repo/i18n/messages";
-import { Bell } from "lucide-react";
 import {
-  useSportsNotifications,
   useSportsCommand,
+  useSportsNotifications,
   type NotificationDto,
   type NotificationReadDto,
 } from "@repo/api/sports";
+import { useLocale, useTranslations } from "@repo/i18n";
+import { isTranslationKey } from "@repo/i18n/messages";
+import { ErrorNotice } from "@repo/ui/account";
+import { Bell1Icon as Bell } from "@repo/ui/icons";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
+import { isActiveSurfaceElement } from "@repo/ui/lib/active-surface";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useId, useRef } from "react";
 import {
+  CommandError,
+  Empty,
   LumaPage,
-  Segments,
   QueryState,
   Row,
-  Empty,
-  CommandError,
+  Segments,
   stamp,
   useLuma,
 } from "./common";

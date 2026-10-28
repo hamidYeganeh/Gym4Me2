@@ -2,7 +2,6 @@
 import { SuccessNotice } from "../account/common";
 import { NativeSelect } from "@repo/ui/kit/NativeSelect";
 import { useState } from "react";
-import Link from "next/link";
 import { useTranslations } from "@repo/i18n";
 import { useAccount, useTrainingQuery } from "@repo/api/profile";
 import { useCreateReview } from "@repo/api/catalog";
@@ -17,11 +16,12 @@ import {
 export function ServiceReviewForm({
   clubId,
   branchId,
-  returnTo,
+  reservationId,
 }: {
   clubId: string;
   branchId: string;
   returnTo: string;
+  reservationId?: string;
 }) {
   const t = useTranslations("Training"),
     account = useAccount(),
@@ -29,16 +29,7 @@ export function ServiceReviewForm({
     [body, setBody] = useState(""),
     [rating, setRating] = useState(5),
     [saved, setSaved] = useState(false);
-  if (!account.data)
-    return (
-      <Button type="button" variant="outline" asChild>
-        <Link
-          href={`/login?${new URLSearchParams({ returnTo })}`}
-        >
-          {t("signInToReview")}
-        </Link>
-      </Button>
-    );
+  if (!account.data || !reservationId) return null;
   return (
     <div className="training-root">
       <details>
@@ -49,7 +40,7 @@ export function ServiceReviewForm({
             e.preventDefault();
             setSaved(false);
             void m
-              .mutateAsync({ id: clubId, branchId, input: { rating, body } })
+              .mutateAsync({ id: clubId, branchId, input: { rating, body, reservationId } })
               .then(() => {
                 setSaved(true);
                 setBody("");

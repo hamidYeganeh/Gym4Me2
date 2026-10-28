@@ -6,7 +6,7 @@ function getBase() {
     ? (process.env.NEXT_PUBLIC_SITE_URL ?? "")
     : (process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin);
 }
-export function useClubUrl(clubId: string, branchId?: string) {
+export function useClubUrl(clubId: string, _branchId?: string) {
   const base = useSyncExternalStore(
     subscribe,
     getBase,
@@ -14,6 +14,6 @@ export function useClubUrl(clubId: string, branchId?: string) {
   );
   if (!base) return "";
   const url = new URL(`/discovery/clubs/${encodeURIComponent(clubId)}`, base);
-  if (branchId) url.searchParams.set("branch", branchId);
+
   return url.href;
 }

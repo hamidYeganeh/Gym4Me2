@@ -7,15 +7,15 @@ import type {
   AccordionTriggerProps,
 } from "./Accordion.types";
 
-import { cn } from "@repo/ui/lib/utils";
-import { ChevronDownIcon } from "lucide-react";
+import { Accordion as AccordionPrimitive } from "@animate-ui/react/primitives/radix-ui";
 import {
-  transition,
   toCssTiming,
+  transition,
   useShouldReduceMotion,
   useTempoTransition,
 } from "@animate-ui/react/utils/motion";
-import { Accordion as AccordionPrimitive } from "@animate-ui/react/primitives/radix-ui";
+import { cn } from "@repo/ui/lib/utils";
+import { ChevronDownIcon } from "../../icons";
 
 function Accordion({ className, ...props }: AccordionProps) {
   return (

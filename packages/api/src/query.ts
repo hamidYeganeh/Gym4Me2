@@ -16,12 +16,14 @@ export function useApiQuery<T>(
   enabled = true,
   staleTime?: number,
   manual = false,
+  initialData?: T,
 ) {
   const { api } = useApiContext();
   return useQuery<T, ApiError>({
     queryKey: key(api.scope),
     queryFn: enabled || manual ? ({ signal }) => load(api, signal) : skipToken,
     enabled,
+    initialData,
     ...(staleTime === undefined ? {} : { staleTime }),
   });
 }

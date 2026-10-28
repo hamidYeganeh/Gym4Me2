@@ -1,14 +1,14 @@
 "use client";
-import { useEffect, useRef } from "react";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import { useTranslations } from "@repo/i18n";
 import { useLocationDiscovery } from "@repo/api/catalog";
+import { useTranslations } from "@repo/i18n";
+import { ChevronRightIcon as ChevronRight } from "@repo/ui/icons";
 import { Button } from "@repo/ui/kit/Button";
 import { Skeleton } from "@repo/ui/kit/Skeleton";
-import { useInfiniteCatalogClubs } from "./use-catalog";
+import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { SavedClubCard } from "./discovery";
 import "./discovery.css";
+import { useInfiniteCatalogClubs } from "./use-catalog";
 
 export function LocationPage({
   kind,
@@ -48,12 +48,7 @@ export function LocationPage({
     );
     observer.observe(sentinel.current);
     return () => observer.disconnect();
-  }, [
-    hasNextPage,
-    isFetching,
-    isFetchNextPageError,
-    fetchNextPage,
-  ]);
+  }, [hasNextPage, isFetching, isFetchNextPageError, fetchNextPage]);
   return (
     <main className="discovery-page">
       <header className="flex items-center gap-3 py-4">

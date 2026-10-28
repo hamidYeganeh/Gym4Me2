@@ -180,7 +180,7 @@ export class ClubCommunityService {
         );
       const [proof] = await rows<{ id: string }>(
         tx,
-        sql`SELECT r.id FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN sport_services v ON v.id=o.service_id WHERE r.user_id=${p.user.id} AND v.branch_id=${branchId} AND v.organization_id=${clubId} AND r.status='completed' AND (${input.reservationId ?? null}::uuid IS NULL OR r.id=${input.reservationId ?? null}::uuid) ORDER BY o.start_at DESC LIMIT 1 FOR SHARE OF r`,
+        sql`SELECT r.id FROM sport_reservations r JOIN sport_occurrences o ON o.id=r.occurrence_id JOIN sport_services v ON v.id=o.service_id WHERE r.user_id=${p.user.id} AND v.branch_id=${branchId} AND v.organization_id=${clubId} AND r.status='completed' AND o.end_at <= now() AND (${input.reservationId ?? null}::uuid IS NULL OR r.id=${input.reservationId ?? null}::uuid) ORDER BY o.start_at DESC LIMIT 1 FOR SHARE OF r`,
       );
       if (!proof)
         throw new ForbiddenException('Training.completedServiceRequired');

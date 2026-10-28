@@ -1,11 +1,13 @@
 "use client";
 import { catalogSelectSource } from "@repo/api/catalog";
+import { IconPicker } from "../kit/IconPicker";
 import { FilterSheet } from "../kit/BottomSheet";
 import { AdminServiceReports } from "../training/service-reviews";
 import { useTranslations, useLocale } from "@repo/i18n";
 
 import {
   useAdminTaxonomies,
+  useInitializeCatalog,
   useAdminLocations,
   useAdminReviews,
   useCreateTaxonomy,
@@ -72,6 +74,7 @@ const taxonomyKeys = [
 
 export function AdminTaxonomiesContent() {
   const t = useTranslations();
+  const initialize = useInitializeCatalog();
 
   const taxonomies = taxonomyKeys.map((item) => ({
     ...item,
@@ -85,6 +88,24 @@ export function AdminTaxonomiesContent() {
   const query = useAdminTaxonomies(kind, { page, search });
   return (
     <>
+      <section className="grid gap-3 rounded-2xl bg-muted/40 p-5">
+        <h2 className="font-semibold">{t("BusinessFlow.initialTitle")}</h2>
+        <p className="text-sm text-muted-foreground">
+          {t("BusinessFlow.initialHint")}
+        </p>
+        <Button
+          disabled={initialize.isPending}
+          onClick={() => initialize.mutate(undefined)}
+        >
+          {t("BusinessFlow.initialize")}
+        </Button>
+        <ErrorNotice error={initialize.error} />
+        {initialize.data && (
+          <p role="status">
+            {t("BusinessFlow.initialAdded", { count: initialize.data.added })}
+          </p>
+        )}
+      </section>
       <p className="text-sm text-muted-foreground">
         {t("Copy.categoriesAreUsedInClubFormsAnd")}{" "}
       </p>
@@ -118,6 +139,7 @@ export function AdminTaxonomiesContent() {
           </Field>
           <TextField
             name="termSearch"
+            type="search"
             fieldClassName="w-full sm:w-64"
             label={t("Copy.search")}
             value={input}
@@ -227,6 +249,10 @@ function TermDialog({
   const [name, setName] = useState(term?.name ?? "");
   const [slug, setSlug] = useState(term?.slug ?? "");
   const [description, setDescription] = useState(term?.description ?? "");
+  const [iconName, setIconName] = useState<string | null>(
+    term?.iconName ?? null,
+  );
+  const [imageUrl, setImageUrl] = useState(term?.imageUrl ?? "");
   const [active, setActive] = useState(term?.isActive ?? true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
@@ -243,6 +269,8 @@ function TermDialog({
             name: name.trim(),
             slug,
             description: description.trim() || null,
+            imageUrl: imageUrl.trim() || null,
+            iconName,
             isActive: active,
           },
         });
@@ -253,6 +281,8 @@ function TermDialog({
             name: name.trim(),
             slug,
             description: description.trim() || null,
+            imageUrl: imageUrl.trim() || null,
+            iconName,
             isActive: active,
           },
         });
@@ -300,6 +330,15 @@ function TermDialog({
             maxLength={120}
             pattern="[a-z0-9]+(-[a-z0-9]+)*"
             placeholder={t("Copy.slugPlaceholder")}
+          />
+          <IconPicker value={iconName} onChange={setIconName} />
+          <TextField
+            name="termImage"
+            type="url"
+            dir="ltr"
+            label={t("Catalog.imageUrl")}
+            value={imageUrl}
+            onChange={(event) => setImageUrl(event.target.value)}
           />
           <Field>
             <FieldLabel htmlFor="termDescription">

@@ -195,7 +195,8 @@ const phone = z
     label: optionalText(80),
     extension: z
       .string()
-      .regex(/^\d{1,10}$/)
+      .transform(normalizeDigits)
+      .pipe(z.string().regex(/^\d{1,10}$/))
       .nullable()
       .optional(),
     isPrimary: z.boolean().default(false),
@@ -229,6 +230,16 @@ const gallery = z
     (list) => new Set(list.map((m) => m.mediaId)).size === list.length,
     'Backend.duplicateMediaIsNotAllowed',
   );
+export const clubFaqSchema = z
+  .array(
+    z
+      .object({
+        question: z.string().trim().min(1).max(300),
+        answer: z.string().trim().min(1).max(3000),
+      })
+      .strict(),
+  )
+  .max(20);
 export const clubPatchSchema = z
   .object({
     name: name.optional(),
@@ -240,6 +251,7 @@ export const clubPatchSchema = z
       .optional(),
     description: optionalText(10000),
     shortDescription: optionalText(280),
+    faq: clubFaqSchema.optional(),
     logoId: id.nullable().optional(),
     coverId: id.nullable().optional(),
     categoryIds: ids.optional(),
@@ -526,6 +538,18 @@ export const taxonomyCreateSchema = z
       .string()
       .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
       .max(120),
+    iconName: z
+      .string()
+      .max(100)
+      .regex(/^[A-Z][A-Za-z0-9]*Icon$/)
+      .nullable()
+      .optional(),
+    imageUrl: z
+      .string()
+      .url()
+      .refine((value) => /^https?:\/\//.test(value))
+      .nullable()
+      .optional(),
     description: optionalText(2000),
     isActive: z.boolean().default(true),
   })

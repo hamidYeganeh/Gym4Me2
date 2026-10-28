@@ -22,14 +22,13 @@ import { Combobox as ComboboxPrimitive } from "@animate-ui/react/primitives/base
 import { cn } from "@repo/ui/lib/utils";
 import * as React from "react";
 
+import { Search } from "../Search";
 import { Button } from "@repo/ui/kit/Button";
 import {
-  InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupInput,
 } from "@repo/ui/kit/InputGroup";
-import { CheckIcon, ChevronDownIcon, XIcon } from "lucide-react";
+import { CheckIcon, ChevronDownIcon, CloseXIcon as XIcon } from "../../icons";
 
 const Combobox = ComboboxPrimitive.Root;
 
@@ -76,9 +75,9 @@ function ComboboxInput({
   ...props
 }: ComboboxInputProps) {
   return (
-    <InputGroup className={cn(comboboxStyles.comboboxInput(), className)}>
+    <div className={cn("flex min-w-0 items-center gap-2", className)}>
       <ComboboxPrimitive.Input
-        render={<InputGroupInput disabled={disabled} />}
+        render={<Search disabled={disabled} />}
         {...props}
       />
       <InputGroupAddon align="inline-end">
@@ -97,7 +96,7 @@ function ComboboxInput({
         {showClear && <ComboboxClear disabled={disabled} />}
       </InputGroupAddon>
       {children}
-    </InputGroup>
+    </div>
   );
 }
 

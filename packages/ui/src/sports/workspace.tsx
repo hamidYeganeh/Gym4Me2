@@ -1,4 +1,6 @@
 "use client";
+import { BusinessFieldSteps } from "../account/business-form-steps";
+import { BusinessFormSteps } from "../account/business-form-steps";
 import { SuccessNotice } from "../account/common";
 import { IranianDateTimeInput } from "../kit/IranianDateInput";
 import { LegacyReadiness } from "./legacy-readiness";
@@ -455,154 +457,184 @@ function Services({
             );
           }}
         >
-          <FormField label={t("title")}>
-            <Input name="title" minLength={2} maxLength={160} required />
-          </FormField>
-          <FormField label={t("kind")}>
-            <NativeSelect
-              name="kind"
-              value={kind}
-              onChange={(e) => setKind(e.target.value as ServiceDto["kind"])}
-            >
-              {(
-                ["class", "course", "court", "access", "membership"] as const
-              ).map((kind) => (
-                <NativeSelectOption key={kind} value={kind}>
-                  {t(`kinds.${kind}`)}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FormField>
-          <OfferingFields kind={kind} services={services} />
-          <FormField label={t("coach")}>
-            <NativeSelect name="coachUserId" required={kind === "program"}>
-              <NativeSelectOption value="">
-                {t("chooseSession")}
-              </NativeSelectOption>
-              {coaches.data?.map((c) => (
-                <NativeSelectOption key={c.userId} value={c.userId}>
-                  {c.displayName ?? c.userId}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </FormField>
-          <FormField label={t("description")}>
-            <Textarea name="description" maxLength={10000} />
-          </FormField>
-          <p className="sm:col-span-2 text-sm text-muted-foreground">
-            {t("serviceCoverAfterCreate")}
-          </p>
-          <FormField label={`${t("price")} (${t("toman")})`}>
-            <Input
-              name="price"
-              type="number"
-              step="1"
-              min="0"
-              max="1000000000000"
-              required
-              defaultValue="0"
-            />
-          </FormField>
-          <FormField label={t("days")}>
-            <Input name="duration" type="number" min="1" max="3660" />
-          </FormField>
-          <FormField label={t("sessions")}>
-            <Input name="sessions" type="number" min="1" max="10000" />
-          </FormField>
-          <FormField label={t("level")}>
-            <Input name="level" maxLength={80} defaultValue="" />
-          </FormField>
-          <FormField label={t("coach")}>
-            <Input name="coach" maxLength={120} defaultValue="" />
-          </FormField>
-          <FormField label={t("requiredDocuments")}>
-            <Textarea name="requirements" placeholder={t("onePerLine")} />
-          </FormField>
-          <ServiceEligibilityFields />
-          <FormField label={t("conditions")}>
-            <Textarea name="terms" minLength={10} maxLength={10000} required />
-          </FormField>
-          <FormField label={t("cancelHours")}>
-            <Input name="cutoff" type="number" min="0" max="8760" required />
-          </FormField>
-          <FormField label={t("refundPercent")}>
-            <Input name="refund" type="number" min="0" max="100" required />
-          </FormField>
-          <FormField label={t("freezeDays")}>
-            <Input
-              name="freeze"
-              type="number"
-              min="0"
-              max="365"
-              defaultValue="0"
-              required
-            />
-          </FormField>
-          <FormField label={t("depositPercent")}>
-            <Input
-              name="deposit"
-              type="number"
-              min="0"
-              max="100"
-              defaultValue="0"
-              required
-            />
-          </FormField>
-          <FormField label={t("guestAllowance")}>
-            <Input
-              name="guests"
-              type="number"
-              min="0"
-              max="100"
-              defaultValue="0"
-              required
-            />
-          </FormField>
-          <FormField label={t("consumeOn")}>
-            <NativeSelect name="consumeOn">
-              <NativeSelectOption value="attendance">
-                {t("attendance")}
-              </NativeSelectOption>
-              <NativeSelectOption value="confirmation">
-                {t("registration")}
-              </NativeSelectOption>
-            </NativeSelect>
-          </FormField>
-          <FormField label={t("visibility")}>
-            <NativeSelect name="visibility">
-              <NativeSelectOption value="public">
-                {t("public")}
-              </NativeSelectOption>
-              <NativeSelectOption value="unlisted">
-                {t("unlisted")}
-              </NativeSelectOption>
-            </NativeSelect>
-          </FormField>
-          <fieldset className="flex flex-col gap-3">
-            <legend className="mb-3">{t("resources")}</legend>
-            {resources.data?.map((r) => (
-              <label className="flex items-center gap-2" key={r.id}>
-                <input name="resources" value={r.id} type="checkbox" />
-                {r.name}
-              </label>
-            ))}
-          </fieldset>
-          <div className="flex flex-col gap-3">
-            {(["approval", "participants", "noShow", "transfer"] as const).map(
-              (key) => (
-                <label key={key} className="flex items-center gap-2">
-                  <input name={key} type="checkbox" />
-                  {t(key)}
-                </label>
-              ),
-            )}
-          </div>
-          <div className="sm:col-span-2">
-            <QueryError error={create.error} />
-            <Button type="submit" disabled={create.isPending}>
-              {t("save")}
-            </Button>
-          </div>
+          <BusinessFormSteps
+            key={String(formOpen)}
+            labels={[t("newService"), t("price"), t("conditions")]}
+          >
+            <div className="grid gap-4">
+              <FormField label={t("title")}>
+                <Input name="title" minLength={2} maxLength={160} required />
+              </FormField>
+              <FormField label={t("kind")}>
+                <NativeSelect
+                  name="kind"
+                  value={kind}
+                  onChange={(e) =>
+                    setKind(e.target.value as ServiceDto["kind"])
+                  }
+                >
+                  {(
+                    [
+                      "class",
+                      "course",
+                      "court",
+                      "access",
+                      "membership",
+                    ] as const
+                  ).map((kind) => (
+                    <NativeSelectOption key={kind} value={kind}>
+                      {t(`kinds.${kind}`)}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              </FormField>
+              <OfferingFields kind={kind} services={services} />
+              <FormField label={t("coach")}>
+                <NativeSelect name="coachUserId" required={kind === "program"}>
+                  <NativeSelectOption value="">
+                    {t("chooseSession")}
+                  </NativeSelectOption>
+                  {coaches.data?.map((c) => (
+                    <NativeSelectOption key={c.userId} value={c.userId}>
+                      {c.displayName ?? c.userId}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              </FormField>
+              <FormField label={t("description")}>
+                <Textarea name="description" maxLength={10000} />
+              </FormField>
+              <p className="sm:col-span-2 text-sm text-muted-foreground">
+                {t("serviceCoverAfterCreate")}
+              </p>
+            </div>
+            <div className="grid gap-4">
+              <FormField label={`${t("price")} (${t("toman")})`}>
+                <Input
+                  name="price"
+                  type="number"
+                  step="1"
+                  min="0"
+                  max="1000000000000"
+                  required
+                  defaultValue="0"
+                />
+              </FormField>
+              <FormField label={t("days")}>
+                <Input name="duration" type="number" min="1" max="3660" />
+              </FormField>
+              <FormField label={t("sessions")}>
+                <Input name="sessions" type="number" min="1" max="10000" />
+              </FormField>
+              <FormField label={t("level")}>
+                <Input name="level" maxLength={80} defaultValue="" />
+              </FormField>
+              <FormField label={t("coach")}>
+                <Input name="coach" maxLength={120} defaultValue="" />
+              </FormField>
+              <FormField label={t("requiredDocuments")}>
+                <Textarea name="requirements" placeholder={t("onePerLine")} />
+              </FormField>
+            </div>
+            <div className="grid gap-4">
+              <ServiceEligibilityFields />
+              <FormField label={t("conditions")}>
+                <Textarea
+                  name="terms"
+                  minLength={10}
+                  maxLength={10000}
+                  required
+                />
+              </FormField>
+              <FormField label={t("cancelHours")}>
+                <Input
+                  name="cutoff"
+                  type="number"
+                  min="0"
+                  max="8760"
+                  required
+                />
+              </FormField>
+              <FormField label={t("refundPercent")}>
+                <Input name="refund" type="number" min="0" max="100" required />
+              </FormField>
+              <FormField label={t("freezeDays")}>
+                <Input
+                  name="freeze"
+                  type="number"
+                  min="0"
+                  max="365"
+                  defaultValue="0"
+                  required
+                />
+              </FormField>
+              <FormField label={t("depositPercent")}>
+                <Input
+                  name="deposit"
+                  type="number"
+                  min="0"
+                  max="100"
+                  defaultValue="0"
+                  required
+                />
+              </FormField>
+              <FormField label={t("guestAllowance")}>
+                <Input
+                  name="guests"
+                  type="number"
+                  min="0"
+                  max="100"
+                  defaultValue="0"
+                  required
+                />
+              </FormField>
+              <FormField label={t("consumeOn")}>
+                <NativeSelect name="consumeOn">
+                  <NativeSelectOption value="attendance">
+                    {t("attendance")}
+                  </NativeSelectOption>
+                  <NativeSelectOption value="confirmation">
+                    {t("registration")}
+                  </NativeSelectOption>
+                </NativeSelect>
+              </FormField>
+              <FormField label={t("visibility")}>
+                <NativeSelect name="visibility">
+                  <NativeSelectOption value="public">
+                    {t("public")}
+                  </NativeSelectOption>
+                  <NativeSelectOption value="unlisted">
+                    {t("unlisted")}
+                  </NativeSelectOption>
+                </NativeSelect>
+              </FormField>
+              <fieldset className="flex flex-col gap-3">
+                <legend className="mb-3">{t("resources")}</legend>
+                {resources.data?.map((r) => (
+                  <label className="flex items-center gap-2" key={r.id}>
+                    <input name="resources" value={r.id} type="checkbox" />
+                    {r.name}
+                  </label>
+                ))}
+              </fieldset>
+              <div className="flex flex-col gap-3">
+                {(
+                  ["approval", "participants", "noShow", "transfer"] as const
+                ).map((key) => (
+                  <label key={key} className="flex items-center gap-2">
+                    <input name={key} type="checkbox" />
+                    {t(key)}
+                  </label>
+                ))}
+              </div>
+              <div className="sm:col-span-2">
+                <QueryError error={create.error} />
+                <Button type="submit" disabled={create.isPending}>
+                  {t("save")}
+                </Button>
+              </div>
+            </div>
+          </BusinessFormSteps>
         </form>
       </BottomSheet>
       {loading ? (
@@ -772,114 +804,120 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
               );
             }}
           >
-            <p className="sm:col-span-2 text-sm text-muted-foreground">
-              {t("serviceEditHint")}
-            </p>
-            <FormField label={t("title")}>
-              <Input
-                name="title"
-                defaultValue={s.title}
-                minLength={2}
-                maxLength={160}
-                required
-              />
-            </FormField>
-            <FormField label={`${t("price")} (${t("toman")})`}>
-              <Input
-                name="price"
-                type="number"
-                step="0.1"
-                min="0"
-                max="1000000000000"
-                defaultValue={rialToTomanInput(s.amountMinor)}
-                required
-              />
-            </FormField>
-            <FormField label={t("description")}>
-              <Textarea
-                name="description"
-                defaultValue={s.description}
-                maxLength={10000}
-              />
-            </FormField>
-            <FormField label={t("conditions")}>
-              <Textarea
-                name="terms"
-                defaultValue={s.policy.terms}
-                minLength={10}
-                maxLength={10000}
-                required
-              />
-            </FormField>
-            <FormField label={t("cancelHours")}>
-              <Input
-                name="cutoff"
-                type="number"
-                min="0"
-                max="8760"
-                defaultValue={s.policy.cancellationHours}
-                required
-              />
-            </FormField>
-            <FormField label={t("refundPercent")}>
-              <Input
-                name="refund"
-                type="number"
-                min="0"
-                max="100"
-                defaultValue={s.policy.lateRefundBasisPoints / 100}
-                required
-              />
-            </FormField>
-            <FormField label={t("level")}>
-              <Input name="level" maxLength={80} defaultValue={s.level} />
-            </FormField>
-            <OfferingFields
-              kind={s.kind}
-              service={s}
-              services={benefits.data ?? []}
-            />
-            <ServiceEligibilityFields value={s.eligibility} />
-            <FormField label={t("coach")}>
-              <Input name="coach" maxLength={120} defaultValue={s.coachName} />
-            </FormField>
-            <FormField label={t("visibility")}>
-              <NativeSelect
-                name="visibility"
-                defaultValue={s.visibility ?? "public"}
-              >
-                <NativeSelectOption value="public">
-                  {t("public")}
-                </NativeSelectOption>
-                <NativeSelectOption value="unlisted">
-                  {t("unlisted")}
-                </NativeSelectOption>
-              </NativeSelect>
-            </FormField>
-            <div className="flex flex-col gap-3">
-              <label className="flex items-center gap-2">
-                <input
-                  name="approval"
-                  type="checkbox"
-                  defaultChecked={s.approvalRequired}
+            <BusinessFieldSteps>
+              <p className="sm:col-span-2 text-sm text-muted-foreground">
+                {t("serviceEditHint")}
+              </p>
+              <FormField label={t("title")}>
+                <Input
+                  name="title"
+                  defaultValue={s.title}
+                  minLength={2}
+                  maxLength={160}
+                  required
                 />
-                {t("approval")}
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  name="participants"
-                  type="checkbox"
-                  defaultChecked={s.showParticipants}
+              </FormField>
+              <FormField label={`${t("price")} (${t("toman")})`}>
+                <Input
+                  name="price"
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="1000000000000"
+                  defaultValue={rialToTomanInput(s.amountMinor)}
+                  required
                 />
-                {t("participants")}
-              </label>
-            </div>
-            <div className="sm:col-span-2">
-              <QueryError error={update.error} />
-              <Button type="submit" disabled={update.isPending}>
-                {t("save")}
-              </Button>
-            </div>
+              </FormField>
+              <FormField label={t("description")}>
+                <Textarea
+                  name="description"
+                  defaultValue={s.description}
+                  maxLength={10000}
+                />
+              </FormField>
+              <FormField label={t("conditions")}>
+                <Textarea
+                  name="terms"
+                  defaultValue={s.policy.terms}
+                  minLength={10}
+                  maxLength={10000}
+                  required
+                />
+              </FormField>
+              <FormField label={t("cancelHours")}>
+                <Input
+                  name="cutoff"
+                  type="number"
+                  min="0"
+                  max="8760"
+                  defaultValue={s.policy.cancellationHours}
+                  required
+                />
+              </FormField>
+              <FormField label={t("refundPercent")}>
+                <Input
+                  name="refund"
+                  type="number"
+                  min="0"
+                  max="100"
+                  defaultValue={s.policy.lateRefundBasisPoints / 100}
+                  required
+                />
+              </FormField>
+              <FormField label={t("level")}>
+                <Input name="level" maxLength={80} defaultValue={s.level} />
+              </FormField>
+              <OfferingFields
+                kind={s.kind}
+                service={s}
+                services={benefits.data ?? []}
+              />
+              <ServiceEligibilityFields value={s.eligibility} />
+              <FormField label={t("coach")}>
+                <Input
+                  name="coach"
+                  maxLength={120}
+                  defaultValue={s.coachName}
+                />
+              </FormField>
+              <FormField label={t("visibility")}>
+                <NativeSelect
+                  name="visibility"
+                  defaultValue={s.visibility ?? "public"}
+                >
+                  <NativeSelectOption value="public">
+                    {t("public")}
+                  </NativeSelectOption>
+                  <NativeSelectOption value="unlisted">
+                    {t("unlisted")}
+                  </NativeSelectOption>
+                </NativeSelect>
+              </FormField>
+              <div className="flex flex-col gap-3">
+                <label className="flex items-center gap-2">
+                  <input
+                    name="approval"
+                    type="checkbox"
+                    defaultChecked={s.approvalRequired}
+                  />
+                  {t("approval")}
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    name="participants"
+                    type="checkbox"
+                    defaultChecked={s.showParticipants}
+                  />
+                  {t("participants")}
+                </label>
+              </div>
+              <div className="sm:col-span-2">
+                <QueryError error={update.error} />
+                <Button type="submit" disabled={update.isPending}>
+                  {t("save")}
+                </Button>
+              </div>
+            </BusinessFieldSteps>
           </form>
         )}
         {open && (
@@ -925,51 +963,57 @@ function ServiceActions({ service: s }: { service: ServiceDto }) {
               });
             }}
           >
-            <p className="sm:col-span-3 text-sm text-muted-foreground">
-              {t("scheduleSeriesHint")}
-            </p>
-            <FormField label={t("startAt")}>
-              <IranianDateTimeInput name="start" required />
-            </FormField>
-            <FormField label={t("endAt")}>
-              <IranianDateTimeInput name="end" required />
-            </FormField>
-            <FormField label={t("capacityTotal")}>
-              <Input
-                type="number"
-                min="1"
-                max="10000"
-                name="capacity"
-                required
-              />
-            </FormField>
-            <FormField label={t("repeatCount")}>
-              <Input
-                type="number"
-                min="1"
-                max="52"
-                name="count"
-                defaultValue="1"
-                required
-              />
-            </FormField>
-            <FormField label={t("repeatInterval")}>
-              <NativeSelect name="interval" defaultValue="7">
-                <NativeSelectOption value="1">{t("daily")}</NativeSelectOption>
-                <NativeSelectOption value="7">{t("weekly")}</NativeSelectOption>
-                <NativeSelectOption value="14">
-                  {t("fortnightly")}
-                </NativeSelectOption>
-              </NativeSelect>
-            </FormField>
-            {scheduleError && (
-              <p role="alert" className="sm:col-span-3 text-destructive">
-                {scheduleError}
+            <BusinessFieldSteps>
+              <p className="sm:col-span-3 text-sm text-muted-foreground">
+                {t("scheduleSeriesHint")}
               </p>
-            )}
-            <Button type="submit" disabled={schedule.isPending}>
-              {t("save")}
-            </Button>
+              <FormField label={t("startAt")}>
+                <IranianDateTimeInput name="start" required />
+              </FormField>
+              <FormField label={t("endAt")}>
+                <IranianDateTimeInput name="end" required />
+              </FormField>
+              <FormField label={t("capacityTotal")}>
+                <Input
+                  type="number"
+                  min="1"
+                  max="10000"
+                  name="capacity"
+                  required
+                />
+              </FormField>
+              <FormField label={t("repeatCount")}>
+                <Input
+                  type="number"
+                  min="1"
+                  max="52"
+                  name="count"
+                  defaultValue="1"
+                  required
+                />
+              </FormField>
+              <FormField label={t("repeatInterval")}>
+                <NativeSelect name="interval" defaultValue="7">
+                  <NativeSelectOption value="1">
+                    {t("daily")}
+                  </NativeSelectOption>
+                  <NativeSelectOption value="7">
+                    {t("weekly")}
+                  </NativeSelectOption>
+                  <NativeSelectOption value="14">
+                    {t("fortnightly")}
+                  </NativeSelectOption>
+                </NativeSelect>
+              </FormField>
+              {scheduleError && (
+                <p role="alert" className="sm:col-span-3 text-destructive">
+                  {scheduleError}
+                </p>
+              )}
+              <Button type="submit" disabled={schedule.isPending}>
+                {t("save")}
+              </Button>
+            </BusinessFieldSteps>
           </form>
         )}
         <SuccessNotice
@@ -1022,28 +1066,30 @@ function CouponManager({ serviceId }: { serviceId: string }) {
           );
         }}
       >
-        <FormField label={t("coupon")}>
-          <Input
-            name="code"
-            minLength={3}
-            maxLength={60}
-            pattern="[A-Za-z0-9_-]{3,60}"
-            autoCapitalize="characters"
-            required
-          />
-        </FormField>
-        <FormField label={t("couponPercent")}>
-          <Input name="percent" type="number" min="1" max="100" required />
-        </FormField>
-        <FormField label={t("couponMaxUses")}>
-          <Input name="maxUses" type="number" min="1" max="100000" required />
-        </FormField>
-        <FormField label={t("expires")}>
-          <IranianDateTimeInput name="expiresAt" required />
-        </FormField>
-        <Button type="submit" disabled={create.isPending}>
-          {t("createCoupon")}
-        </Button>
+        <BusinessFieldSteps>
+          <FormField label={t("coupon")}>
+            <Input
+              name="code"
+              minLength={3}
+              maxLength={60}
+              pattern="[A-Za-z0-9_-]{3,60}"
+              autoCapitalize="characters"
+              required
+            />
+          </FormField>
+          <FormField label={t("couponPercent")}>
+            <Input name="percent" type="number" min="1" max="100" required />
+          </FormField>
+          <FormField label={t("couponMaxUses")}>
+            <Input name="maxUses" type="number" min="1" max="100000" required />
+          </FormField>
+          <FormField label={t("expires")}>
+            <IranianDateTimeInput name="expiresAt" required />
+          </FormField>
+          <Button type="submit" disabled={create.isPending}>
+            {t("createCoupon")}
+          </Button>
+        </BusinessFieldSteps>
       </form>
       <QueryError
         error={create.error ?? query.error}
@@ -1642,18 +1688,20 @@ function AdminTicket({ ticket }: { ticket: TicketDto }) {
             command.mutate({ body: f.get("body"), resolve: f.has("resolve") });
           }}
         >
-          <Textarea
-            name="body"
-            required
-            maxLength={5000}
-            aria-label={t("message")}
-          />
-          <label className="flex gap-2">
-            <input type="checkbox" name="resolve" />
-            {t("resolve")}
-          </label>
-          <Button disabled={command.isPending}>{t("send")}</Button>
-          <QueryError error={query.error ?? command.error} />
+          <BusinessFieldSteps>
+            <Textarea
+              name="body"
+              required
+              maxLength={5000}
+              aria-label={t("message")}
+            />
+            <label className="flex gap-2">
+              <input type="checkbox" name="resolve" />
+              {t("resolve")}
+            </label>
+            <Button disabled={command.isPending}>{t("send")}</Button>
+            <QueryError error={query.error ?? command.error} />
+          </BusinessFieldSteps>
         </form>
       </CardContent>
     </Card>

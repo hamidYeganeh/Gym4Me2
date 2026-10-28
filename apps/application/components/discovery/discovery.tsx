@@ -1,43 +1,51 @@
 "use client";
-import { ErrorNotice, SuccessNotice } from "@repo/ui/account";
+import { DiscoveryContentSections } from "@repo/ui/discovery-content";
 import {
-  useDeferredValue,
-  useSyncExternalStore,
-  useEffect,
-  useRef,
-} from "react";
-import { Map, Search, X, Bookmark, CircleUserRound, Bell } from "lucide-react";
-import {
-  InputGroup,
-  InputGroupInput,
-  InputGroupAddon,
-  InputGroupButton,
-} from "@repo/ui/kit/InputGroup";
-import { EmptyState } from "@repo/ui/account";
-import { DiscoveryTabBar } from "./discovery-tab-bar";
-import Link from "next/link";
-import { FilterSheet } from "@repo/ui/kit/BottomSheet";
-import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
-import { useTaxonomies, catalogSelectSource } from "@repo/api/catalog";
-import { useTranslations } from "@repo/i18n";
-import { ClubCard } from "@repo/ui/kit/ClubCard";
-import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
-import { Button } from "@repo/ui/kit/Button";
-import { useInfiniteCatalogClubs } from "./use-catalog";
-import { CatalogState } from "./catalog-state";
-import type { ClubCardProps } from "@repo/ui/kit/ClubCard";
-import { validCatalogPrices } from "@repo/api/catalog";
-import { LocationPicker, type LocationValue } from "./location-picker";
-import { CatalogFilters, type PriceFilters } from "./catalog-filters";
-import { useSavedClub } from "./use-saved-club";
-import { useListState } from "@repo/ui/hooks/use-list-state";
-import { catalogLocationFilters } from "../../lib/catalog-location";
+  catalogSelectSource,
+  useTaxonomies,
+  validCatalogPrices,
+} from "@repo/api/catalog";
 import {
   useAccountLocation,
   useUpdateAccountLocation,
 } from "@repo/api/profile";
+import { useTranslations } from "@repo/i18n";
+import { EmptyState, ErrorNotice, SuccessNotice } from "@repo/ui/account";
+import { useListState } from "@repo/ui/hooks/use-list-state";
+import {
+  ArrowRightIcon,
+  Bell1Icon as Bell,
+  UserIcon as CircleUserRound,
+  MapTrifoldIcon as Map,
+} from "@repo/ui/icons";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
+import { Button } from "@repo/ui/kit/Button";
+import type { ClubCardProps } from "@repo/ui/kit/ClubCard";
+import { ClubCard } from "@repo/ui/kit/ClubCard";
+import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
+import { Search } from "@repo/ui/kit/Search";
+import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { preferredDiscoveryLocation } from "@repo/ui/lib/discovery-location";
+import Link from "next/link";
+import {
+  useDeferredValue,
+  useEffect,
+  useRef,
+  useSyncExternalStore,
+} from "react";
+import { catalogLocationFilters } from "../../lib/catalog-location";
+import { CatalogFilters, type PriceFilters } from "./catalog-filters";
+import { CatalogState } from "./catalog-state";
+import {
+  DiscoveryClubSections,
+  DiscoveryPeopleSections,
+} from "./discovery-sections";
+import { DiscoveryTabBar } from "./discovery-tab-bar";
 import "./discovery.css";
+import { LocationPicker, type LocationValue } from "./location-picker";
+import { PopularCoaches } from "./popular-coaches";
+import { useInfiniteCatalogClubs } from "./use-catalog";
+import { useSavedClub } from "./use-saved-club";
 
 export function SavedClubCard({
   club,
@@ -49,7 +57,7 @@ export function SavedClubCard({
   variant?: ClubCardProps["variant"];
 }) {
   const t = useTranslations("Clubs");
-  const [saved, setSaved] = useSavedClub(club.id);
+  const [saved] = useSavedClub(club.id);
   return (
     <div className="discovery-result">
       <ClubCard
@@ -58,7 +66,6 @@ export function SavedClubCard({
         galleryLabel={t("gallery")}
         photoLabel={t("photo")}
         saved={saved}
-        onSavedChange={setSaved}
         priority={priority}
         labels={{
           save: t("save"),
@@ -69,7 +76,9 @@ export function SavedClubCard({
     </div>
   );
 }
-export function Discovery() {
+export function Discovery({
+  directoryOnly = false,
+}: { directoryOnly?: boolean } = {}) {
   const accountArea = useAccountLocation();
   const saveArea = useUpdateAccountLocation();
   const locationsCopy = useTranslations("LocationDiscovery");
@@ -77,7 +86,6 @@ export function Discovery() {
   const t = useTranslations("Discovery");
   const luma = useTranslations("Luma");
   const copy = useTranslations("Copy");
-  const tabs = useTranslations("DiscoveryTabs");
   const catalog = useTranslations("Catalog");
   const queryCategory = useSyncExternalStore(
     (listener) => {
@@ -147,7 +155,9 @@ export function Discovery() {
   const clubs = allClubs;
   const filterCount = [
     activeCategory,
-    ...Object.values(currentPlace),
+    currentPlace.provinceId,
+    currentPlace.cityId,
+    currentPlace.districtId,
     ...Object.values(filters),
   ].filter(Boolean).length;
   const hasFilters = Boolean(search || filterCount);
@@ -216,13 +226,17 @@ export function Discovery() {
     <main className="discovery-page">
       <header className="discovery-header">
         <Link
-          href="/profile"
+          href={directoryOnly ? "/discovery" : "/profile"}
           className="discovery-account"
-          aria-label={luma("account")}
+          aria-label={directoryOnly ? catalog("back") : luma("account")}
         >
-          <CircleUserRound size={26} />
+          {directoryOnly ? (
+            <ArrowRightIcon size={26} className="ltr:rotate-180" />
+          ) : (
+            <CircleUserRound size={26} />
+          )}
         </Link>
-        <h1>{luma("discover")}</h1>
+        <h1>{directoryOnly ? t("clubs") : luma("discover")}</h1>
         <div className="discovery-header-actions">
           <Link href="/discovery/map" scroll={false} aria-label={t("map")}>
             <Map size={21} />
@@ -233,33 +247,26 @@ export function Discovery() {
         </div>
       </header>
       <section className="discovery-intro" aria-label={t("search")}>
-        <InputGroup className="discovery-search">
-          <InputGroupAddon>
-            <Search />
-          </InputGroupAddon>
-          <InputGroupInput
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-            }}
-            placeholder={t("search")}
-            aria-label={t("search")}
-          />
-          {search && (
-            <InputGroupAddon align="inline-end">
-              <InputGroupButton
-                size="icon-lg"
-                aria-label={t("clearSearch")}
-                onClick={() => {
-                  setSearch("");
-                }}
-              >
-                <X />
-              </InputGroupButton>
-            </InputGroupAddon>
-          )}
-        </InputGroup>
+        <Search
+          onClear={() => setSearch("")}
+          className="discovery-search"
+          value={search}
+          onChange={(event) => {
+            setSearch(event.target.value);
+          }}
+          placeholder={t("search")}
+          aria-label={t("search")}
+        />
       </section>
+
+      <DiscoveryContentSections page={directoryOnly ? "clubs" : "home"} />
+      {!directoryOnly && (
+        <>
+          <DiscoveryClubSections clubs={clubs} />
+          <PopularCoaches />
+          <DiscoveryPeopleSections />
+        </>
+      )}
 
       <SuccessNotice
         success={saveArea.isSuccess}
@@ -297,14 +304,7 @@ export function Discovery() {
       )}
       <div className="discovery-results-heading">
         <h2>{t("clubs")}</h2>
-        <div className="flex shrink-0 items-center gap-1">
-          {filterSheet}
-          <Button asChild variant="ghost" size="icon-lg">
-            <Link href="/saved" aria-label={tabs("saved")}>
-              <Bookmark size={18} />
-            </Link>
-          </Button>
-        </div>
+        <div className="flex shrink-0 items-center gap-1">{filterSheet}</div>
       </div>
       {validPrices && query.isPending && <CatalogState loading />}
       {validPrices && query.isError && !query.data && (
@@ -361,7 +361,7 @@ export function Discovery() {
           </Button>
         </div>
       )}
-      <DiscoveryTabBar />
+      {!directoryOnly && <DiscoveryTabBar />}
     </main>
   );
 }

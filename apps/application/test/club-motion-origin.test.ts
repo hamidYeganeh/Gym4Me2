@@ -183,3 +183,59 @@ test("a later programmatic forward entry cannot borrow an earlier card click", (
       undefined,
     );
   }));
+
+for (const kind of ["coach", "class"]) {
+  test(`${kind} motion captures a key on the card itself and restores the clicked duplicate on Back`, () =>
+    withPort(() => {
+      const key = `${kind}-${++serial}`;
+      const route = `/discovery/${kind === "coach" ? "coaches" : "clubs/atlas/classess"}`;
+      const list = new ElementPort("div", { "data-ssgoi-transition": route });
+      const cards = [0, 1].map(
+        () => new ElementPort("article", { [exit]: key }),
+      );
+      const links = cards.map((card) => {
+        const link = new ElementPort("a", { href: `${route}/${key}` });
+        card.append(link);
+        list.append(card);
+        return link;
+      });
+      const detail = new ElementPort("div").append(
+        new ElementPort("section", { "data-zoom-enter-key": key }),
+      );
+      click(links[1]!);
+      assert.equal(
+        withClubMotionOrigin(html(list), html(detail), false, () => {
+          assert.deepEqual(list.querySelectorAll(`[${exit}]`), [cards[1]]);
+          return true;
+        }),
+        true,
+      );
+      assert.equal(
+        withClubMotionOrigin(html(detail), html(list), true, () => {
+          assert.deepEqual(list.querySelectorAll(`[${exit}]`), [cards[1]]);
+          return true;
+        }),
+        true,
+      );
+      assert.equal(list.querySelectorAll(`[${exit}]`).length, 2);
+    }));
+  test(`${kind} motion captures a keyed list link without an article wrapper`, () =>
+    withPort(() => {
+      const key = `${kind}-${++serial}`;
+      const list = new ElementPort("div", {
+        "data-ssgoi-transition": "/services",
+      });
+      const link = new ElementPort("a", { href: "/detail", [exit]: key });
+      const label = new ElementPort("span");
+      link.append(label);
+      list.append(link);
+      const detail = new ElementPort("div").append(
+        new ElementPort("section", { "data-zoom-enter-key": key }),
+      );
+      click(label);
+      assert.equal(
+        withClubMotionOrigin(html(list), html(detail), false, () => true),
+        true,
+      );
+    }));
+}

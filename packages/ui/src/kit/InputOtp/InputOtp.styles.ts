@@ -16,6 +16,6 @@ export const inputOtpStyles = {
     "h-4 w-px animate-caret-blink bg-foreground duration-1000",
   ),
   inputOTPSeparator: cva(
-    "flex items-center [&_svg:not([class*='size-'])]:size-4",
+    "flex items-center [&_:is(svg,.sandow-icon):not([class*='size-'])]:size-4",
   ),
 };

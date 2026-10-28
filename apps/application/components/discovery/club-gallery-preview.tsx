@@ -58,7 +58,7 @@ export function ClubGalleryPreview({
     >
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-2xl font-semibold">{t("sectionTitle")}</h2>
-        <Button asChild variant="link">
+        <Button asChild variant="ghost">
           <Link
             href={clubHref(
               clubId,

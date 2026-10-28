@@ -1,15 +1,12 @@
 "use client";
-import { MobileHeader, MobilePage } from "@repo/ui/mobile-page";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Grid2X2,
-  GalleryHorizontal,
-} from "lucide-react";
+import { useSelectedBranch } from "./use-selected-branch";
 import { useLocale, useTranslations } from "@repo/i18n";
+import {
+  ChevronLeftIcon as ChevronLeft,
+  ChevronRightIcon as ChevronRight,
+  Image1Icon as GalleryHorizontal,
+  GridFourIcon as Grid2X2,
+} from "@repo/ui/icons";
 import { Button } from "@repo/ui/kit/Button";
 import {
   Carousel,
@@ -17,13 +14,16 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@repo/ui/kit/Carousel";
-import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";
 import { ScrollArea, ScrollBar } from "@repo/ui/kit/ScrollArea";
+import { ToggleGroup, ToggleGroupItem } from "@repo/ui/kit/ToggleGroup";
 import { cn } from "@repo/ui/lib/utils";
-import { useCatalogClub } from "./use-catalog";
-import { CatalogState } from "./catalog-state";
+import { MobileHeader, MobilePage } from "@repo/ui/mobile-page";
+import Image from "next/image";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { clubHref } from "../../lib/club-href";
+import { CatalogState } from "./catalog-state";
 import { GalleryIndicators } from "./gallery-indicators";
+import { useCatalogClub } from "./use-catalog";
 
 function subscribeSearch(listener: () => void) {
   window.addEventListener("popstate", listener);
@@ -31,9 +31,9 @@ function subscribeSearch(listener: () => void) {
 }
 const getSearch = () => window.location.search;
 
-export function ClubGallery({ clubId }: { clubId: string }) {
-  const branchId = useSearchParams().get("branch") ?? undefined;
-  const query = useCatalogClub(clubId, branchId);
+export function ClubGallery({ clubId, initialClub }: { clubId: string; initialClub?: import("@repo/api/catalog").ClubDto }) {
+  const [branchId] = useSelectedBranch(clubId);
+  const query = useCatalogClub(clubId, branchId, initialClub);
   const t = useTranslations("Clubs");
   if (!query.club)
     return (

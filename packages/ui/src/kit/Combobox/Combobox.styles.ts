@@ -2,7 +2,9 @@ import { cva } from "class-variance-authority";
 export const comboboxVariants = cva("");
 
 export const comboboxStyles = {
-  comboboxTrigger: cva("[&_svg:not([class*='size-'])]:size-4"),
+  comboboxTrigger: cva(
+    "[&_:is(svg,.sandow-icon):not([class*='size-'])]:size-4",
+  ),
   comboboxTrigger2: cva("pointer-events-none size-4 text-muted-foreground"),
   comboboxClear: cva("pointer-events-none"),
   comboboxInput: cva("w-auto"),
@@ -17,7 +19,7 @@ export const comboboxStyles = {
     "no-scrollbar max-h-[min(calc(--spacing(72)---spacing(9)),calc(var(--available-height)---spacing(9)))] scroll-py-1.5 overflow-y-auto overscroll-contain p-1.5 data-empty:p-0",
   ),
   comboboxItem: cva(
-    "relative flex w-full cursor-default items-center gap-2.5 rounded-2xl py-2 pe-8 ps-3 text-sm font-medium outline-hidden select-none data-highlighted:bg-accent data-highlighted:text-accent-foreground not-data-[variant=destructive]:data-highlighted:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+    "relative flex w-full cursor-default items-center gap-2.5 rounded-2xl py-2 pe-8 ps-3 text-sm font-medium outline-hidden select-none data-highlighted:bg-accent data-highlighted:text-accent-foreground not-data-[variant=destructive]:data-highlighted:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_:is(svg,.sandow-icon)]:pointer-events-none [&_:is(svg,.sandow-icon)]:shrink-0 [&_:is(svg,.sandow-icon):not([class*='size-'])]:size-4",
   ),
   comboboxItem2: cva(
     "pointer-events-none absolute end-2 flex size-4 items-center justify-center",

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gym4Me Deploy"
+  short_description: "Deploy and verify Gym4Me on its production VPS"
+  default_prompt: "Use $gym4me-deploy to deploy the current Gym4Me project to its production VPS and verify the release."

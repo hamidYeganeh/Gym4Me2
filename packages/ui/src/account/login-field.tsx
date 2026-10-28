@@ -1,6 +1,7 @@
 "use client";
 import { useId, type ComponentProps, type ReactNode } from "react";
 import { Field, FieldLabel } from "../kit/Field";
+import { LabelInput } from "../kit/LabelInput";
 import { SmoothInput } from "../kit/SmoothInput";
 
 export function LoginFieldError({
@@ -26,7 +27,7 @@ export function LoginField({
   field,
   label,
   error,
-  hiddenLabel = false,
+  hiddenLabel,
   ...props
 }: Omit<ComponentProps<typeof SmoothInput>, "id" | "name"> & {
   field: "phone" | "password";
@@ -34,6 +35,7 @@ export function LoginField({
   error?: string;
   hiddenLabel?: boolean;
 }) {
+  void hiddenLabel; // The floating label remains visible for both legacy variants.
   const id = useId();
   const errorId = `${id}-error`;
   const description = [props["aria-describedby"], error ? errorId : null]
@@ -44,10 +46,11 @@ export function LoginField({
       data-invalid={!!error || undefined}
       data-disabled={props.disabled || undefined}
     >
-      <FieldLabel htmlFor={id} className={hiddenLabel ? "sr-only" : undefined}>
+      <FieldLabel htmlFor={id} className="sr-only">
         {label}
       </FieldLabel>
-      <SmoothInput
+      <LabelInput
+        label={label}
         {...props}
         id={id}
         name={field}

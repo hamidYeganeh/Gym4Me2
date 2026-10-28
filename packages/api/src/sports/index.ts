@@ -144,6 +144,7 @@ export type ParticipantDto = {
 };
 export type ServiceDto = {
   id: string;
+  publicId: string;
   title: string;
   kind: "class" | "course" | "court" | "access" | "membership" | "program";
   sportId?: string | null;
@@ -175,6 +176,7 @@ export type ServiceDto = {
   revision: number;
 };
 export type BookingDto = {
+  organizationId?: string;
   quantity?: number;
   checkedInAt?: string | null;
   id: string;
@@ -547,9 +549,11 @@ export function useSportsQuery<T>(
   query?: QueryParams,
   enabled = true,
   poll = false,
+  initialData?: T,
 ) {
   const { api } = useApiContext();
   return useQuery<T, ApiError>({
+    initialData,
     queryKey: [...api.scope, "sports", path, query ?? {}],
     queryFn: ({ signal }) =>
       api.request<T>({ method: "GET", path, query }, { signal }),

@@ -22,17 +22,7 @@ export function ClubAvailability({ branch }: { branch?: BranchProfileDto }) {
     <section className="flex min-w-0 flex-col gap-4">
       <Card>
         <CardHeader>
-          <CardTitle>{t("openingHours")}</CardTitle>
-          <p className="text-xs leading-6 text-muted-foreground">
-            {t("branchUpdated", { branch: branch.name })}{" "}
-            <time dateTime={branch.updatedAt}>
-              {new Intl.DateTimeFormat(locale, {
-                dateStyle: "medium",
-                timeStyle: "short",
-                timeZone: branch.timezone,
-              }).format(new Date(branch.updatedAt))}
-            </time>
-          </p>
+          <CardTitle><h2 className="text-2xl font-semibold">{t("openingHours")}</h2></CardTitle>
         </CardHeader>
         <CardContent className="flex flex-col gap-3">
           {branch.openingHours.weekly.map((row, index) => (
@@ -71,26 +61,6 @@ export function ClubAvailability({ branch }: { branch?: BranchProfileDto }) {
               )}
             </div>
           ))}
-          {branch.rules && (
-            <p className="whitespace-pre-line border-t border-border pt-3 text-sm">
-              {branch.rules}
-            </p>
-          )}
-          {branch.visitInstructions && (
-            <p className="whitespace-pre-line text-sm text-muted-foreground">
-              {branch.visitInstructions}
-            </p>
-          )}
-          {branch.location.coordinates && (
-            <a
-              className="text-sm underline"
-              href={`https://www.google.com/maps/search/?api=1&query=${branch.location.coordinates.join(",")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {t("directions")}
-            </a>
-          )}
         </CardContent>
       </Card>
       <BranchInformation branch={branch} />

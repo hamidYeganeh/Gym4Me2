@@ -121,7 +121,7 @@ function BottomSheetExample() {
         description="یک پنل با عنوان، محتوا و دکمهٔ تأیید"
         footer={<Button onClick={() => setOpen(false)}>تمام</Button>}
       >
-        <TextField label="نام باشگاه" placeholder="جست‌وجو…" />
+        <TextField type="search" label="نام باشگاه" placeholder="جست‌وجو…" />
       </BottomSheet>
     </>
   );

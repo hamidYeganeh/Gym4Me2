@@ -1,30 +1,29 @@
-import {
-  Building2,
-  CalendarDays,
-  ChartNoAxesCombined,
-  CreditCard,
-  Dumbbell,
-  FileInput,
-  LayoutDashboard,
-  Mail,
-  MapPin,
-  MessageSquare,
-  Monitor,
-  Package,
-  ScrollText,
-  ShieldCheck,
-  Tags,
-  UserRound,
-  Users,
-  type LucideIcon,
-} from "lucide-react";
 import type { TranslationKey } from "@repo/i18n/messages";
+import {
+  Building2Icon as Building2,
+  Calendar1Icon as CalendarDays,
+  ChartAxisLinesIcon as ChartNoAxesCombined,
+  CreditCardIcon as CreditCard,
+  BarbellHorizontalIcon as Dumbbell,
+  FileUploadIcon as FileInput,
+  GridFourIcon as LayoutDashboard,
+  Envelope1Icon as Mail,
+  MapPin1Icon as MapPin,
+  ChatLineIcon as MessageSquare,
+  MonitorIcon as Monitor,
+  BoxCubeIcon as Package,
+  Note1Icon as ScrollText,
+  ShieldCheckIcon as ShieldCheck,
+  PriceTagIcon as Tags,
+  UserIcon as UserRound,
+  UsersTwoIcon as Users,
+} from "../icons";
 export type NavigationGroup = "work" | "management" | "finance" | "account";
 export type WorkspaceNavItem = {
   key: string;
   href: string;
   title: TranslationKey;
-  icon: LucideIcon;
+  icon: typeof Building2;
   group: NavigationGroup;
 };
 export const commonNav: WorkspaceNavItem[] = [
@@ -200,6 +199,7 @@ export const adminNav: WorkspaceNavItem[] = [
     icon: Building2,
     group: "management",
   },
+  { key: "discovery-content", href: "/discovery-content", title: "DiscoveryAdmin.title", icon: Building2, group: "management" },
   {
     key: "catalog-reviews",
     href: "/catalog-reviews",

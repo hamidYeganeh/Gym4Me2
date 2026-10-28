@@ -1,37 +1,37 @@
 "use client";
-import Link from "next/link";
-import Image from "next/image";
-import { useEffect, useId, useRef, useState } from "react";
-import {
-  ArrowRight,
-  MessageCircle,
-  Paperclip,
-  Send,
-  Users,
-} from "lucide-react";
-import { useLocale, useTranslations } from "@repo/i18n";
 import { useAccount } from "@repo/api/profile";
 import { useApiForeground } from "@repo/api/provider";
 import {
-  useSportsConversation,
   useSportsCommand,
+  useSportsConversation,
   type ConversationPreferencesInput,
   type MessageDto,
 } from "@repo/api/sports";
-import { SportsFrame } from "./workspace";
-import { HostConversationState } from "./host-conversation-state";
-import { HostSheet } from "./host-sheet";
-import { QueryError } from "./query-error";
+import { useLocale, useTranslations } from "@repo/i18n";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useId, useRef, useState } from "react";
+import { Loading } from "../account/common";
+import {
+  ArrowRightIcon as ArrowRight,
+  ChatIcon as MessageCircle,
+  PaperClip1Icon as Paperclip,
+  PaperPlaneDiagonalIcon as Send,
+  UsersTwoIcon as Users,
+} from "../icons";
+import { Button } from "../kit/Button";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia } from "../kit/Empty";
+import { Field, FieldGroup, FieldLabel } from "../kit/Field";
+import { Textarea } from "../kit/Textarea";
 import {
   activeSurfaceTarget,
   isActiveSurfaceElement,
 } from "../lib/active-surface";
-import { Loading } from "../account/common";
-import { Button } from "../kit/Button";
-import { Field, FieldGroup, FieldLabel } from "../kit/Field";
-import { Textarea } from "../kit/Textarea";
-import { Empty, EmptyHeader, EmptyDescription, EmptyMedia } from "../kit/Empty";
+import { HostConversationState } from "./host-conversation-state";
 import "./host-conversations.css";
+import { HostSheet } from "./host-sheet";
+import { QueryError } from "./query-error";
+import { SportsFrame } from "./workspace";
 
 export function SportsHostConversation({ id }: { id: string }) {
   const t = useTranslations("Luma"),

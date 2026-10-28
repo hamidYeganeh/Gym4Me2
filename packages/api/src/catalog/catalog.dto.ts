@@ -83,7 +83,7 @@ export type PublicReviewDto = {
   repliedAt: string | null;
   createdAt: string;
 };
-export type NamedDto = { id: string; name: string; isActive?: boolean };
+export type NamedDto = { iconName?: string | null; imageUrl?: string | null; id: string; name: string; isActive?: boolean };
 export type TaxonomyDto = NamedDto & {
   slug: string;
   description: string | null;
@@ -92,6 +92,8 @@ export type TaxonomyDto = NamedDto & {
   updatedAt: string;
 };
 export type SaveTaxonomyDto = {
+  iconName?: string | null;
+  imageUrl?: string | null;
   name: string;
   slug: string;
   description?: string | null;
@@ -207,7 +209,9 @@ export type AudiencePolicyDto = {
   maximumAge: number | null;
   notes: string | null;
 };
+export type ClubFaqDto = { question: string; answer: string };
 export type ClubDto = {
+  faq?: ClubFaqDto[];
   id: string;
   name: string;
   slug: string;
@@ -332,7 +336,11 @@ export type ReviewDto = {
   createdAt: string;
   updatedAt: string;
 };
-export type CreateReviewDto = { rating: number; body?: string | null };
+export type CreateReviewDto = {
+  rating: number;
+  body?: string | null;
+  reservationId?: string;
+};
 export type MediaInputDto = {
   type: "image" | "video";
   url: string;
@@ -350,6 +358,7 @@ export type PhoneInputDto = {
 };
 export type GalleryInputDto = { mediaId: string; caption?: string | null };
 export type ClubPatchDto = {
+  faq?: ClubFaqDto[];
   name?: string;
   slug?: string;
   description?: string | null;

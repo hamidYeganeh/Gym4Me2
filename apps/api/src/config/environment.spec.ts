@@ -3,6 +3,21 @@ import { validateEnvironment } from './environment';
 const DATABASE_URL = 'postgresql://test:example@localhost:55433/gym4me_test';
 
 describe('API environment', () => {
+  it('allows trusted local proxies only with an API bound to loopback', () => {
+    expect(validateEnvironment({ DATABASE_URL }).TRUST_LOOPBACK_PROXY).toBe(
+      false,
+    );
+    expect(() =>
+      validateEnvironment({ DATABASE_URL, TRUST_LOOPBACK_PROXY: 'true' }),
+    ).toThrow('requires API_HOST=127.0.0.1');
+    expect(
+      validateEnvironment({
+        DATABASE_URL,
+        API_HOST: '127.0.0.1',
+        TRUST_LOOPBACK_PROXY: 'true',
+      }).TRUST_LOOPBACK_PROXY,
+    ).toBe(true);
+  });
   it('allows local web access only when explicitly enabled for a demo', () => {
     expect(validateEnvironment({ DATABASE_URL }).DEMO_LOCAL_WEB_ENABLED).toBe(
       false,

@@ -1,5 +1,10 @@
 "use client";
-import { catalogSelectSource, type GeographyKind } from "@repo/api/catalog";
+import {
+  catalogSelectSource,
+  useLocations,
+  type GeographyKind,
+} from "@repo/api/catalog";
+import { useEffect } from "react";
 import { useTranslations } from "@repo/i18n";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { Field, FieldLabel } from "@repo/ui/kit/Field";
@@ -16,22 +21,22 @@ export function LocationPicker({
   onChange: (location: LocationValue) => void;
   disabled?: boolean;
 }) {
+  const countries = useLocations("countries");
+  const iran = countries.data?.find(
+    (country) => /^(iran|ایران)$/i.test(country.name) || country.code === "IR",
+  );
+  const country = iran?.id ?? "";
+  useEffect(() => {
+    if (country && value.countryId !== country)
+      onChange({ countryId: country });
+  }, [country, value.countryId, onChange]);
   const {
-    countryId: country = "",
     provinceId: province = "",
     cityId: city = "",
     districtId: district = "",
   } = value;
   return (
     <div className="grid gap-3 sm:grid-cols-2">
-      <LocationSelect
-        kind="countries"
-        disabled={disabled}
-        value={country}
-        onChange={(id) => {
-          onChange({ countryId: id });
-        }}
-      />
       <LocationSelect
         kind="provinces"
         disabled={disabled}

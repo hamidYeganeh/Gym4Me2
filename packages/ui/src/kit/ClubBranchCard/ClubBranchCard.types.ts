@@ -4,4 +4,4 @@ export type ClubBranch = {
   address: string;
   photo: { src: string; alt: string };
 };
-export type ClubBranchCardProps = { branch: ClubBranch; viewLabel: string };
+export type ClubBranchCardProps = { branch: ClubBranch; onSelect?: () => void; selected?: boolean; viewLabel: string };

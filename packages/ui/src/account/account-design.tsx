@@ -1,19 +1,19 @@
 "use client";
 
-import Link from "next/link";
-import type { ReactNode } from "react";
 import { useTranslations } from "@repo/i18n";
-import {
-  ChevronLeft,
-  Compass,
-  Home,
-  UserRound,
-  CalendarDays,
-  CreditCard,
-} from "lucide-react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "../kit/Button";
+import type { ReactNode } from "react";
+import {
+  Calendar1Icon as CalendarDays,
+  ChevronLeftIcon as ChevronLeft,
+  CompassIcon as Compass,
+  CreditCardIcon as CreditCard,
+  House1Icon as Home,
+  UserIcon as UserRound,
+} from "../icons";
 import { Avatar, AvatarFallback } from "../kit/Avatar";
+import { Button } from "../kit/Button";
 import { cn } from "../lib/utils";
 import "./account-design.css";
 

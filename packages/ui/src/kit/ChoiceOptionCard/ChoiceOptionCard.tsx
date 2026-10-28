@@ -1,11 +1,11 @@
 "use client";
 import { useId } from "react";
-import { Info } from "lucide-react";
+import { InfoCircleIcon as Info } from "../../icons";
 import { cn } from "../../lib/utils";
-import { ToggleGroupItem } from "../ToggleGroup";
-import { Switch } from "../Switch";
 import { Button } from "../Button";
-import { Tooltip, TooltipTrigger, TooltipContent } from "../Tooltip";
+import { Switch } from "../Switch";
+import { ToggleGroupItem } from "../ToggleGroup";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../Tooltip";
 import {
   choiceOptionCardVariants,
   choiceOptionCardStyles as s,

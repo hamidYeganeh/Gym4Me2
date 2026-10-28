@@ -1,0 +1,1 @@
+export { ClubFaq } from "./ClubFaq";

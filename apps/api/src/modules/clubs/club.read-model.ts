@@ -54,6 +54,7 @@ export async function readClub(db: Reader, clubId: string, publicOnly = false) {
       ownerId: s.clubs.ownerId,
       description: s.clubs.description,
       shortDescription: s.clubs.shortDescription,
+      faq: s.clubs.faq,
       publicationStatus: s.clubs.publicationStatus,
       verificationStatus: s.organizations.status,
       operatingStatus: s.clubs.operatingStatus,
@@ -94,6 +95,8 @@ export async function readClub(db: Reader, clubId: string, publicOnly = false) {
           .select({
             id: s.sports.id,
             name: s.sports.name,
+            imageUrl: s.sports.imageUrl,
+            iconName: s.sports.iconName,
             isActive: s.sports.isActive,
           })
           .from(s.clubSportLinks)
@@ -285,6 +288,8 @@ export async function readBranch(
         .select({
           id: s.sports.id,
           name: s.sports.name,
+          imageUrl: s.sports.imageUrl,
+          iconName: s.sports.iconName,
           isActive: s.sports.isActive,
         })
         .from(s.branchSports)
@@ -295,6 +300,8 @@ export async function readBranch(
         .select({
           id: s.equipments.id,
           name: s.equipments.name,
+          imageUrl: s.equipments.imageUrl,
+          iconName: s.equipments.iconName,
           quantity: s.branchEquipments.quantity,
           description: s.branchEquipments.description,
         })
@@ -309,6 +316,8 @@ export async function readBranch(
         .select({
           id: s.amenities.id,
           name: s.amenities.name,
+          imageUrl: s.amenities.imageUrl,
+          iconName: s.amenities.iconName,
           availability: s.branchAmenities.availability,
           description: s.branchAmenities.description,
         })
@@ -320,6 +329,8 @@ export async function readBranch(
         .select({
           id: s.accessibilityFeatures.id,
           name: s.accessibilityFeatures.name,
+          imageUrl: s.accessibilityFeatures.imageUrl,
+          iconName: s.accessibilityFeatures.iconName,
           description: s.branchAccessibility.description,
         })
         .from(s.branchAccessibility)

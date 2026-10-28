@@ -1,34 +1,40 @@
 "use client";
-import { useState } from "react";
-import Link from "next/link";
-import { useTranslations } from "@repo/i18n";
-import { useAccount } from "@repo/api/profile";
 import {
   useAdvanced,
   useAdvancedOptions,
   type AdvancedSurface,
 } from "@repo/api/advanced-business";
-import { ArrowUpRight, Building2, ReceiptText, Wallet } from "lucide-react";
+import { useAccount } from "@repo/api/profile";
+import { useTranslations } from "@repo/i18n";
+import { Input as KitInput } from "@repo/ui/kit/Input";
+import Link from "next/link";
+import { useState } from "react";
+import { Loading, QueryError } from "../account/common";
+import {
+  ArrowUpRightIcon as ArrowUpRight,
+  Building2Icon as Building2,
+  Note1Icon as ReceiptText,
+  WalletIcon as Wallet,
+} from "../icons";
+import { FilterSheet } from "../kit/BottomSheet";
 import { Button } from "../kit/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "../kit/Card";
 import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
-import { FilterSheet } from "../kit/BottomSheet";
-import { Loading, QueryError } from "../account/common";
-import { SlidingSegments, MotionDisclosure } from "../motion-controls";
+import { MotionDisclosure, SlidingSegments } from "../motion-controls";
 import "../workspace-design.css";
-import "./ph5.css";
+import { PriceSettings, SharedMemberships } from "./branch-controls";
 import {
   Field,
-  Select,
   Form,
   Money,
   Reason,
+  Select,
   useFinancialDate,
   value,
 } from "./forms";
+import "./ph5.css";
 import { PlanControls } from "./plans";
 import { Statement } from "./statement";
-import { PriceSettings, SharedMemberships } from "./branch-controls";
 export function AdvancedBusinessPanel({
   surface,
 }: {
@@ -162,7 +168,7 @@ export function AdvancedBusinessPanel({
             </Field>
           )}
           <Field name="from" label={t("from")}>
-            <input
+            <KitInput
               type="date"
               className="min-h-11 rounded-xl border px-3"
               value={range.from}
@@ -174,7 +180,7 @@ export function AdvancedBusinessPanel({
             />
           </Field>
           <Field name="to" label={t("to")}>
-            <input
+            <KitInput
               type="date"
               className="min-h-11 rounded-xl border px-3"
               value={range.to}

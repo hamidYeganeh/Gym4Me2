@@ -86,6 +86,7 @@ export function ManagementFilterBar({
       >
         <TextField
           name={`${id}-search`}
+          type="search"
           label={t("search")}
           value={draft.search ?? ""}
           maxLength={100}

@@ -17,11 +17,11 @@ import type {
   SheetTriggerProps,
 } from "./Sheet.types";
 
-import { cn } from "@repo/ui/lib/utils";
 import { Dialog as SheetPrimitive } from "@animate-ui/react/primitives/radix-ui";
+import { cn } from "@repo/ui/lib/utils";
 
 import { Button } from "@repo/ui/kit/Button";
-import { XIcon } from "lucide-react";
+import { CloseXIcon as XIcon } from "../../icons";
 
 const SheetDismiss = createContext<() => void>(() => undefined);
 const SheetOpen = createContext(false);

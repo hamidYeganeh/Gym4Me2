@@ -1,12 +1,12 @@
 "use client";
-import { createContext, useContext, useRef, useState } from "react";
-import { useOverlayHistory } from "../../hooks/use-overlay-history";
-import { useSheetDrag } from "../../hooks/use-sheet-drag";
-import { useIsMobile } from "../../hooks/use-mobile";
-import { useOverlayReopenFocus } from "../../hooks/use-overlay-reopen-focus";
 import { useTranslations } from "@repo/i18n";
-import { restoreDialogFocus } from "../../lib/dialog-focus";
+import { createContext, useContext, useRef, useState } from "react";
+import { useIsMobile } from "../../hooks/use-mobile";
+import { useOverlayHistory } from "../../hooks/use-overlay-history";
+import { useOverlayReopenFocus } from "../../hooks/use-overlay-reopen-focus";
+import { useSheetDrag } from "../../hooks/use-sheet-drag";
 import type { ActionFocus } from "../../lib/action-focus";
+import { restoreDialogFocus } from "../../lib/dialog-focus";
 import { dialogStyles } from "./Dialog.styles";
 import type {
   DialogCloseProps,
@@ -21,11 +21,11 @@ import type {
   DialogTriggerProps,
 } from "./Dialog.types";
 
-import { cn } from "@repo/ui/lib/utils";
 import { Dialog as DialogPrimitive } from "@animate-ui/react/primitives/radix-ui";
+import { cn } from "@repo/ui/lib/utils";
 
 import { Button } from "@repo/ui/kit/Button";
-import { XIcon } from "lucide-react";
+import { CloseXIcon as XIcon } from "../../icons";
 
 const ModalDialog = createContext(true);
 const DialogOpen = createContext(false);

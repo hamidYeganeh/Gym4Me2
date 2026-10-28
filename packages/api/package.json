@@ -19,7 +19,8 @@
     "./web-push": "./src/web-push.ts",
     "./advanced-business": "./src/advanced-business.ts",
     "./list-memory": "./src/list-memory.ts",
-    "./growth": "./src/growth.ts"
+    "./growth": "./src/growth.ts",
+    "./public-prefetch": "./src/public-prefetch.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

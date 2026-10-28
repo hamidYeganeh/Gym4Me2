@@ -1,20 +1,24 @@
 "use client";
-import { useEffect, useState, type FormEvent } from "react";
+import { ApiError } from "@repo/api";
+import { useAccount, usePrivacy, useUpdateAccount } from "@repo/api/profile";
+import { useTranslations } from "@repo/i18n";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, UserRound, LoaderCircle } from "lucide-react";
-import { useTranslations } from "@repo/i18n";
-import { useAccount, useUpdateAccount, usePrivacy } from "@repo/api/profile";
-import { ApiError } from "@repo/api";
-import { Button } from "../kit/Button";
-import { Input } from "../kit/Input";
-import { Field, FieldGroup, FieldLabel, FieldDescription } from "../kit/Field";
+import { useEffect, useState, type FormEvent } from "react";
+import {
+  CheckIcon as Check,
+  ArrowRotateClockwise1Icon as LoaderCircle,
+  UserIcon as UserRound,
+} from "../icons";
 import { Avatar, AvatarFallback } from "../kit/Avatar";
-import { AuthScreen } from "./mobile-auth";
+import { Button } from "../kit/Button";
+import { Field, FieldDescription, FieldGroup } from "../kit/Field";
+import { Input } from "../kit/Input";
+import { accountEntryHref } from "../lib/account-recovery";
 import { ErrorNotice, Loading, QueryError } from "./common";
+import { AuthScreen } from "./mobile-auth";
 import { AccountPrivacy } from "./privacy";
 import { safeReturnPath } from "./safe-return-path";
-import { accountEntryHref } from "../lib/account-recovery";
 
 export function CompleteProfilePage() {
   const t = useTranslations();
@@ -32,6 +36,9 @@ export function CompleteProfilePage() {
       ),
     );
   }, []);
+  useEffect(() => {
+    if (account.data?.displayName) setName(account.data.displayName);
+  }, [account.data?.displayName]);
   const valid = name.trim().length >= 2;
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -86,7 +93,7 @@ export function CompleteProfilePage() {
       {account.isLoading || (account.data && privacy.isLoading) ? (
         <Loading />
       ) : account.error instanceof ApiError && account.error.status === 428 ? (
-        <AccountPrivacy mobile />
+        <AccountPrivacy mobile onboarding />
       ) : account.error instanceof ApiError && account.error.status === 401 ? (
         <Button asChild>
           <Link
@@ -99,7 +106,7 @@ export function CompleteProfilePage() {
           </Link>
         </Button>
       ) : privacy.data?.acceptanceRequired ? (
-        <AccountPrivacy mobile />
+        <AccountPrivacy mobile onboarding />
       ) : privacy.error && account.data ? (
         <QueryError error={privacy.error} retry={privacy.refetch} />
       ) : account.error ? (
@@ -112,13 +119,10 @@ export function CompleteProfilePage() {
         >
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="complete-name">
-                {t("Privacy.optionalName")}
-              </FieldLabel>
               <Input
                 id="complete-name"
                 name="displayName"
-                placeholder={t("Privacy.optionalName")}
+                label={t("AuthDesign.nameLabel")}
                 autoComplete="name"
                 maxLength={100}
                 minLength={2}

@@ -1,4 +1,5 @@
 "use client";
+import { useLocale, useTranslations } from "@repo/i18n";
 import {
   Children,
   isValidElement,
@@ -7,18 +8,17 @@ import {
   type ReactNode,
   type Ref,
 } from "react";
-import { useLocale, useTranslations } from "@repo/i18n";
-import { SlidersHorizontal } from "lucide-react";
 import { useOverlayHistory } from "../../hooks/use-overlay-history";
+import { SliderDotThreeHorizontalIcon as SlidersHorizontal } from "../../icons";
 import { restoreOverlayFocus } from "../../lib/active-surface";
+import { Button } from "../Button";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
 } from "../Sheet";
-import { Button } from "../Button";
 
 export function BottomSheet({
   open,
@@ -60,7 +60,11 @@ export function BottomSheet({
           restoreOverlayFocus(trigger.current);
         }}
       >
-        <SheetHeader className="shrink-0 pe-16 pt-4 pb-4">
+        <div
+          aria-hidden="true"
+          className="mx-auto mt-3 h-1 w-10 shrink-0 rounded-full bg-border"
+        />
+        <SheetHeader className="shrink-0 pe-16 pt-5 pb-5">
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription className={description ? undefined : "sr-only"}>
             {description ?? title}
@@ -161,7 +165,7 @@ export function FilterSheet({
         }
       >
         <div
-          className="grid gap-5"
+          className="grid gap-6 divide-y divide-border [&>div]:pb-5 [&>fieldset]:pb-5"
           onSubmit={(event) => {
             if (
               event.target instanceof HTMLFormElement &&

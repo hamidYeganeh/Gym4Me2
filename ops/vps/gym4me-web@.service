@@ -1,0 +1,27 @@
+[Unit]
+Description=Gym4Me web (%i)
+After=network-online.target gym4me-api.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=gym4me
+Group=gym4me
+WorkingDirectory=/opt/gym4me/current/apps/%i
+Environment=NODE_ENV=production
+Environment=NEXT_TELEMETRY_DISABLED=1
+Environment=NODE_OPTIONS=--max-old-space-size=512
+ExecStart=/usr/local/bin/pnpm start --hostname 127.0.0.1
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGTERM
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+UMask=0027
+SyslogIdentifier=gym4me-%i
+
+[Install]
+WantedBy=multi-user.target

@@ -6,3 +6,5 @@ export * from "./catalog.keys";
 export * from "./media.hooks";
 
 export { catalogSelectSource } from "./select-options";
+
+export * from "./discovery-content";

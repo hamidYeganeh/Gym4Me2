@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useEffect, useRef, type Ref } from "react";
 import { useTranslations } from "@repo/i18n";
 import { Button } from "@repo/ui/kit/Button";
-import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { restoreCatalogRetryFocus } from "../../lib/catalog-retry-focus";
 export function CatalogState({
   loading,
@@ -33,6 +32,12 @@ export function CatalogState({
     },
     [],
   );
+  if (loading)
+    return (
+      <span role="status" className="sr-only">
+        {t("loading")}
+      </span>
+    );
   return (
     <section
       ref={section}
@@ -40,41 +45,34 @@ export function CatalogState({
       role="status"
       aria-busy={loading}
     >
-      {loading ? (
-        <>
-          <Skeleton className="h-48 w-full rounded-3xl" />
-          <p>{t("loading")}</p>
-        </>
-      ) : (
-        <>
-          <p>{t(missing ? "notFound" : "error")}</p>
-          {retry && (
-            <Button
-              ref={retryRef ?? button}
-              variant="outline"
-              onClick={() => {
-                if (
-                  missing &&
-                  !retryRef &&
-                  document.activeElement === button.current
-                )
-                  restoration.current = {
-                    surface: section.current?.parentElement ?? null,
-                    path: `${window.location.pathname}${window.location.search}`,
-                  };
-                retry();
-              }}
-              disabled={retrying}
-              aria-busy={retrying || undefined}
-            >
-              {t("retry")}
-            </Button>
-          )}
-          <Button asChild variant="ghost">
-            <Link href="/discovery">{t("back")}</Link>
+      <>
+        <p>{t(missing ? "notFound" : "error")}</p>
+        {retry && (
+          <Button
+            ref={retryRef ?? button}
+            variant="outline"
+            onClick={() => {
+              if (
+                missing &&
+                !retryRef &&
+                document.activeElement === button.current
+              )
+                restoration.current = {
+                  surface: section.current?.parentElement ?? null,
+                  path: `${window.location.pathname}${window.location.search}`,
+                };
+              retry();
+            }}
+            disabled={retrying}
+            aria-busy={retrying || undefined}
+          >
+            {t("retry")}
           </Button>
-        </>
-      )}
+        )}
+        <Button asChild variant="ghost">
+          <Link href="/discovery">{t("back")}</Link>
+        </Button>
+      </>
     </section>
   );
 }

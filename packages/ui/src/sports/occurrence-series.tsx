@@ -1,4 +1,5 @@
 "use client";
+import { BusinessFieldSteps } from "../account/business-form-steps";
 import { IranianDateTimeInput } from "../kit/IranianDateInput";
 import { useRef, useState } from "react";
 import { useLocale, useTranslations } from "@repo/i18n";
@@ -172,113 +173,115 @@ function OccurrenceSeriesEditor({
         });
       }}
     >
-      <Separator className="mb-4" />
-      <FieldSet disabled={edit.isPending}>
-        <FieldGroup className="grid gap-4 sm:grid-cols-3">
-          <p
-            id={`${series.id}-hint`}
-            className="sm:col-span-3 text-sm text-muted-foreground"
-          >
-            {t("seriesEditHint")}
-          </p>
-          <Field data-invalid={Boolean(validationError)}>
-            <FieldLabel htmlFor={`${series.id}-start`}>
-              {t("startAt")}
-            </FieldLabel>
-            <IranianDateTimeInput
-              id={`${series.id}-start`}
-              className="min-h-11"
-              name="start"
+      <BusinessFieldSteps>
+        <Separator className="mb-4" />
+        <FieldSet disabled={edit.isPending}>
+          <FieldGroup className="grid gap-4 sm:grid-cols-3">
+            <p
+              id={`${series.id}-hint`}
+              className="sm:col-span-3 text-sm text-muted-foreground"
+            >
+              {t("seriesEditHint")}
+            </p>
+            <Field data-invalid={Boolean(validationError)}>
+              <FieldLabel htmlFor={`${series.id}-start`}>
+                {t("startAt")}
+              </FieldLabel>
+              <IranianDateTimeInput
+                id={`${series.id}-start`}
+                className="min-h-11"
+                name="start"
 
-              defaultValue={localDateTime(series.startAt)}
-              aria-invalid={Boolean(validationError)}
-              aria-describedby={
-                validationError ? `${series.id}-error` : `${series.id}-hint`
-              }
-              required
-            />
-          </Field>
-          <Field data-invalid={Boolean(validationError)}>
-            <FieldLabel htmlFor={`${series.id}-end`}>{t("endAt")}</FieldLabel>
-            <IranianDateTimeInput
-              id={`${series.id}-end`}
-              className="min-h-11"
-              name="end"
+                defaultValue={localDateTime(series.startAt)}
+                aria-invalid={Boolean(validationError)}
+                aria-describedby={
+                  validationError ? `${series.id}-error` : `${series.id}-hint`
+                }
+                required
+              />
+            </Field>
+            <Field data-invalid={Boolean(validationError)}>
+              <FieldLabel htmlFor={`${series.id}-end`}>{t("endAt")}</FieldLabel>
+              <IranianDateTimeInput
+                id={`${series.id}-end`}
+                className="min-h-11"
+                name="end"
 
-              defaultValue={localDateTime(series.endAt)}
-              aria-invalid={Boolean(validationError)}
-              aria-describedby={
-                validationError ? `${series.id}-error` : undefined
-              }
-              required
-            />
-          </Field>
-          <Field>
-            <FieldLabel htmlFor={`${series.id}-capacity`}>
-              {t("capacityTotal")}
-            </FieldLabel>
-            <Input
-              id={`${series.id}-capacity`}
-              className="min-h-11"
-              name="capacity"
-              type="number"
-              min="1"
-              max="10000"
-              defaultValue={series.capacity}
-              required
-            />
-          </Field>
-          <Field>
-            <FieldLabel htmlFor={`${series.id}-interval`}>
-              {t("repeatInterval")}
-            </FieldLabel>
-            <NativeSelect
-              id={`${series.id}-interval`}
-              className="[&_select]:min-h-11"
-              name="interval"
-              defaultValue={String(series.intervalDays)}
-            >
-              <NativeSelectOption value="1">{t("daily")}</NativeSelectOption>
-              <NativeSelectOption value="7">{t("weekly")}</NativeSelectOption>
-              <NativeSelectOption value="14">
-                {t("fortnightly")}
-              </NativeSelectOption>
-            </NativeSelect>
-          </Field>
-          <Field>
-            <FieldLabel htmlFor={`${series.id}-reason`}>
-              {t("changeReason")}
-            </FieldLabel>
-            <Input
-              id={`${series.id}-reason`}
-              className="min-h-11"
-              name="reason"
-              minLength={5}
-              maxLength={500}
-              required
-            />
-          </Field>
-          {validationError && (
-            <FieldError
-              id={`${series.id}-error`}
-              role="alert"
-              className="sm:col-span-3"
-            >
-              {validationError}
-            </FieldError>
-          )}
-          <div className="sm:col-span-3">
-            <QueryError error={edit.error} />
-            <Button
-              type="submit"
-              className="min-h-11"
-              disabled={edit.isPending}
-            >
-              {t("save")}
-            </Button>
-          </div>
-        </FieldGroup>
-      </FieldSet>
+                defaultValue={localDateTime(series.endAt)}
+                aria-invalid={Boolean(validationError)}
+                aria-describedby={
+                  validationError ? `${series.id}-error` : undefined
+                }
+                required
+              />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor={`${series.id}-capacity`}>
+                {t("capacityTotal")}
+              </FieldLabel>
+              <Input
+                id={`${series.id}-capacity`}
+                className="min-h-11"
+                name="capacity"
+                type="number"
+                min="1"
+                max="10000"
+                defaultValue={series.capacity}
+                required
+              />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor={`${series.id}-interval`}>
+                {t("repeatInterval")}
+              </FieldLabel>
+              <NativeSelect
+                id={`${series.id}-interval`}
+                className="[&_select]:min-h-11"
+                name="interval"
+                defaultValue={String(series.intervalDays)}
+              >
+                <NativeSelectOption value="1">{t("daily")}</NativeSelectOption>
+                <NativeSelectOption value="7">{t("weekly")}</NativeSelectOption>
+                <NativeSelectOption value="14">
+                  {t("fortnightly")}
+                </NativeSelectOption>
+              </NativeSelect>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor={`${series.id}-reason`}>
+                {t("changeReason")}
+              </FieldLabel>
+              <Input
+                id={`${series.id}-reason`}
+                className="min-h-11"
+                name="reason"
+                minLength={5}
+                maxLength={500}
+                required
+              />
+            </Field>
+            {validationError && (
+              <FieldError
+                id={`${series.id}-error`}
+                role="alert"
+                className="sm:col-span-3"
+              >
+                {validationError}
+              </FieldError>
+            )}
+            <div className="sm:col-span-3">
+              <QueryError error={edit.error} />
+              <Button
+                type="submit"
+                className="min-h-11"
+                disabled={edit.isPending}
+              >
+                {t("save")}
+              </Button>
+            </div>
+          </FieldGroup>
+        </FieldSet>
+      </BusinessFieldSteps>
     </form>
   );
 }

@@ -1,24 +1,29 @@
 "use client";
-import { toast } from "@repo/ui/kit/Sileo";
-import Link from "next/link";
-import Image from "next/image";
-import { Fragment, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { useLocale } from "@repo/i18n";
-import { MessageCircle, Paperclip, Send, UserRound } from "lucide-react";
 import { useAccount } from "@repo/api/profile";
 import { useApiForeground } from "@repo/api/provider";
 import {
   useSportsCommand,
-  useSportsQuery,
   useSportsConversation,
+  useSportsQuery,
   type ConversationDetailDto,
   type ConversationDto,
-  type ConversationStateInput,
-  type ConversationStateDto,
   type ConversationPreferencesInput,
+  type ConversationStateDto,
+  type ConversationStateInput,
   type MessageDto,
 } from "@repo/api/sports";
+import { useLocale } from "@repo/i18n";
+import {
+  ChatIcon as MessageCircle,
+  PaperClip1Icon as Paperclip,
+  PaperPlaneDiagonalIcon as Send,
+  UserIcon as UserRound,
+} from "@repo/ui/icons";
+import { toast } from "@repo/ui/kit/Sileo";
+import Image from "next/image";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {
   CommandError,
   Empty,

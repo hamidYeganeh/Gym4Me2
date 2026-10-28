@@ -1,3 +1,10 @@
+import { CatalogBootstrapController } from '../src/modules/clubs/catalog-bootstrap.controller';
+import {
+  AdminDiscoveryContentController,
+  PublicDiscoveryContentController,
+} from '../src/modules/clubs/discovery-content.controller';
+import { AdminService } from '../src/modules/admin/admin.service';
+import type { AuthRequest } from '../src/modules/auth/auth.guard';
 import { Test, type TestingModule } from '@nestjs/testing';
 import { AnalyticsService } from '../src/modules/analytics/analytics.service';
 import { analyticsFilters } from '../src/modules/analytics/analytics.contracts';
@@ -793,4 +800,180 @@ it('coach analytics exposes aggregate service activity only and revokes ended af
       sql`UPDATE branch_coaches SET status='active' WHERE branch_id=${branch} AND coach_id=${coach}`,
     );
   }
+});
+
+it('discovers public club affiliates without practices in stable pages of 50, without verification claims', async () => {
+  const members = await db
+    .insert(s.users)
+    .values(
+      Array.from({ length: 51 }, (_, i) => ({
+        phone: `+98970${String(i).padStart(7, '0')}`,
+        displayName: `Directory Affiliate ${String(i).padStart(2, '0')}`,
+        profilePublic: true,
+      })),
+    )
+    .returning();
+  await db.insert(s.coachProfiles).values(
+    members.map((user) => ({
+      userId: user.id,
+      biography: 'Directory affiliate test',
+    })),
+  );
+  await db.insert(s.branchCoaches).values(
+    members.map((user) => ({
+      coachId: user.id,
+      branchId: branch,
+      status: 'active' as const,
+    })),
+  );
+  const filters = {
+    search: 'Directory Affiliate',
+    city: '',
+    specialty: '',
+    goal: '',
+    page: 1,
+    limit: 50,
+  };
+  const first = await practice.search(filters);
+  const next = await practice.search({ ...filters, page: 2 });
+  expect(first.items).toHaveLength(50);
+  expect(first.hasMore).toBe(true);
+  expect(next.items).toHaveLength(1);
+  expect(next.hasMore).toBe(false);
+  expect(
+    new Set([...first.items, ...next.items].map((item) => item.user_id)).size,
+  ).toBe(51);
+  expect(
+    first.items.every(
+      (item) =>
+        item.credential_verified === false && item.review_expires_at === null,
+    ),
+  ).toBe(true);
+  expect(
+    (
+      (await practice.detail(String(first.items[0].public_id))) as Record<
+        string,
+        unknown
+      >
+    ).user_id,
+  ).toBe(first.items[0].user_id);
+  await db
+    .update(s.users)
+    .set({ profilePublic: false })
+    .where(sql`${s.users.id}=${first.items[0].user_id}`);
+  await expect(
+    practice.detail(String(first.items[0].public_id)),
+  ).rejects.toThrow();
+  await rows(
+    db,
+    sql`INSERT INTO coaching_practices(user_id,review_status) VALUES(${first.items[1].user_id},'rejected')`,
+  );
+  await expect(
+    practice.detail(String(first.items[1].public_id)),
+  ).rejects.toThrow();
+});
+
+it('publishes discovery content by page, checks revisions and hides drafts and removed sections', async () => {
+  const admin = {
+    requireAdmin: jest.fn().mockResolvedValue(undefined),
+  } as unknown as AdminService;
+  const editor = new AdminDiscoveryContentController(
+    testingModule.get(DatabaseService),
+    admin,
+  );
+  const reader = new PublicDiscoveryContentController(
+    testingModule.get(DatabaseService),
+  );
+  const req = { principal: { user: { id: coach } } } as AuthRequest;
+  const content = {
+    page: 'coaches',
+    title: 'Coach banners',
+    subtitle: 'Training',
+    carouselType: 'carousel',
+    imageRatio: '4/3',
+    position: 2,
+    published: false,
+    slides: [
+      {
+        title: 'Find a coach',
+        subtitle: '',
+        image: 'https://example.com/coach.jpg',
+        href: '/discovery/coaches',
+      },
+    ],
+  };
+  const saved = (await editor.create(req, content)) as {
+    id: string;
+    revision: number;
+  };
+  expect(await reader.list('coaches')).toHaveLength(0);
+  await editor.update(req, saved.id, {
+    revision: saved.revision,
+    content: { ...content, published: true },
+  });
+  expect(await reader.list('coaches')).toHaveLength(1);
+  expect(await reader.list('clubs')).toHaveLength(0);
+  await expect(
+    editor.update(req, saved.id, { revision: saved.revision, deleted: true }),
+  ).rejects.toThrow();
+  await editor.update(req, saved.id, {
+    revision: saved.revision + 1,
+    deleted: true,
+  });
+  expect(await reader.list('coaches')).toHaveLength(0);
+  await expect(
+    editor.create(req, {
+      ...content,
+      slides: [{ ...content.slides[0], href: '//evil.example' }],
+    }),
+  ).rejects.toThrow();
+  await expect(
+    editor.create(req, {
+      ...content,
+      slides: [{ ...content.slides[0], image: 'javascript:alert(1)' }],
+    }),
+  ).rejects.toThrow();
+  (admin.requireAdmin as jest.Mock).mockRejectedValueOnce(
+    new Error('Forbidden'),
+  );
+  await expect(editor.create(req, content)).rejects.toThrow('Forbidden');
+});
+
+it('initial catalog setup is admin-only, repeatable and preserves edited resource names', async () => {
+  const permission = {
+    requireAdmin: jest.fn().mockResolvedValue(undefined),
+  } as unknown as AdminService;
+  const bootstrap = new CatalogBootstrapController(
+    testingModule.get(DatabaseService),
+    permission,
+  );
+  const req = { principal: { user: { id: coach } } } as AuthRequest;
+  await db.insert(s.amenities).values({ name: 'بوفه', slug: 'custom-cafe' });
+  const first = await bootstrap.initialize(req);
+  expect(
+    await db
+      .select()
+      .from(s.amenities)
+      .where(sql`${s.amenities.name}='بوفه'`),
+  ).toHaveLength(1);
+  expect(first.added).toBeGreaterThan(50);
+  await db
+    .update(s.sports)
+    .set({ name: 'Custom fitness name' })
+    .where(sql`${s.sports.slug}='fitness'`);
+  expect((await bootstrap.initialize(req)).added).toBe(0);
+  const [custom] = await db
+    .select()
+    .from(s.sports)
+    .where(sql`${s.sports.slug}='fitness'`);
+  expect(custom.name).toBe('Custom fitness name');
+  const [iran] = await db
+    .select()
+    .from(s.countries)
+    .where(sql`${s.countries.code}='IR'`);
+  expect(iran).toBeDefined();
+  (permission.requireAdmin as jest.Mock).mockRejectedValueOnce(
+    new Error('Forbidden'),
+  );
+  await expect(bootstrap.initialize(req)).rejects.toThrow('Forbidden');
 });

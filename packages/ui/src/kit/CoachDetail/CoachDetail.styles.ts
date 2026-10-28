@@ -1,32 +1,30 @@
 import { cva } from "class-variance-authority";
+import { clubDetailStyles } from "../ClubDetail/ClubDetail.styles";
+
 export const coachDetailStyles = {
-  root: cva(
-    "mx-auto flex w-full max-w-xl flex-col gap-6 bg-background pb-[calc(1.5rem+var(--app-safe-bottom))] ",
-  ),
-  hero: cva(
-    "relative isolate mx-5 mt-5 flex aspect-square min-h-80 flex-col overflow-hidden rounded-[1.25rem] bg-image-surface text-image-foreground",
-  ),
-  image: cva("object-cover"),
+  root: clubDetailStyles.root,
+  hero: cva("relative isolate flex h-[min(56svh,480px)] min-h-[320px] flex-col overflow-hidden bg-image-surface text-white"),
+  image: clubDetailStyles.image,
   nav: cva(
-    "relative flex items-center justify-between px-4 pt-[calc(1rem+var(--app-safe-top,0px))]",
+    "relative z-20 flex items-center justify-between px-5 pt-[calc(1rem+var(--app-safe-top,0px))] [&>a]:size-11 [&>button]:size-11 [&>a]:bg-white/20 [&>button]:bg-white/20 [&>a]:backdrop-blur-xl [&>button]:backdrop-blur-xl [&>button]:aria-pressed:bg-primary [&>button]:aria-pressed:text-black",
   ),
-  gallery: cva("absolute end-5 bottom-6 flex flex-col gap-3"),
+  gallery: cva(
+    "flex w-full justify-start gap-3 overflow-x-auto pb-1 scrollbar-none",
+  ),
   thumbnail: cva(
-    "relative h-16 w-16 overflow-hidden rounded-2xl border-2 border-image-foreground/70 p-0 data-[state=on]:border-primary data-[state=on]:ring-2 data-[state=on]:ring-primary data-[state=on]:ring-offset-2 data-[state=on]:ring-offset-image-surface",
+    "relative aspect-[1.4] h-auto w-[calc((100%-1.5rem)/3)] min-w-[calc((100%-1.5rem)/3)] shrink-0 overflow-hidden rounded-2xl border-2 border-transparent p-0 opacity-80 data-[state=on]:border-primary data-[state=on]:opacity-100 focus-visible:ring-2 focus-visible:ring-white",
   ),
-  heading: cva("relative isolate mt-auto flex flex-col gap-2 py-6 pe-24 ps-5"),
+  heading: cva("relative isolate mt-auto px-5 pt-24 pb-14 text-white"),
   gradient: cva(
-    "pointer-events-none absolute inset-0 bg-linear-to-t from-image-surface via-image-surface/70 to-transparent",
+    "pointer-events-none absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-transparent",
   ),
   content: cva("relative z-10 flex flex-col gap-2"),
-  title: cva("text-2xl font-semibold leading-tight"),
-  location: cva("flex items-center gap-2 text-sm text-image-foreground/80"),
-  panel: cva("flex flex-col gap-6 px-6"),
-  stats: cva("grid grid-cols-1 gap-0 rounded-2xl bg-muted px-4"),
-  stat: cva(
-    "flex min-h-16 items-center gap-3 border-b border-border py-3 last:border-0",
+  title: clubDetailStyles.title,
+  location: cva(
+    "flex items-start gap-2 text-sm text-white/75 [&>:is(svg,.sandow-icon)]:shrink-0",
   ),
-  icon: cva(
-    "flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary",
-  ),
+  panel: cva(`${clubDetailStyles.panel()} pb-0`),
+  stats: clubDetailStyles.stats,
+  stat: clubDetailStyles.stat,
+  icon: clubDetailStyles.statIcon,
 };

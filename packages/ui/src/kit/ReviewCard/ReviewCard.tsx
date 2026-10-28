@@ -1,9 +1,12 @@
 "use client";
-import { Star, MoreVertical, ThumbsUp, ThumbsDown } from "lucide-react";
-import { SealCheckIcon } from "../../icons";
+import {
+  DotThreeVerticalIcon as MoreVertical,
+  StarFullIcon as Star,
+} from "../../icons";
 import { cn } from "../../lib/utils";
-import { Avatar, AvatarImage, AvatarFallback } from "../Avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../Avatar";
 import { Button } from "../Button";
+import { EmojiReactions } from "../EmojiReactions";
 import { reviewCardVariants, reviewCardStyles as s } from "./ReviewCard.styles";
 import type { ReviewCardProps } from "./ReviewCard.types";
 
@@ -11,8 +14,9 @@ export function ReviewCard({
   review,
   labels,
   locale = "en",
-  vote = null,
-  onVoteChange,
+  reactions,
+  onReact,
+  reactionControl,
   onReport,
   onMore,
   className,
@@ -99,43 +103,16 @@ export function ReviewCard({
           )}
         </span>
       </div>
-      {review.verified && (
-        <p className={s.verified()}>
-          <SealCheckIcon />
-          {labels.verified}
-        </p>
-      )}
-      {(onVoteChange || onReport) && (
-        <div className={s.actions()}>
-          {onVoteChange && (
-            <>
-              <Button
-                variant={vote === "like" ? "secondary" : "ghost"}
-                aria-pressed={vote === "like"}
-                onClick={() => onVoteChange(vote === "like" ? null : "like")}
-              >
-                <ThumbsUp data-icon="inline-start" />
-                {labels.like}
-              </Button>
-              <Button
-                variant={vote === "dislike" ? "secondary" : "ghost"}
-                aria-pressed={vote === "dislike"}
-                onClick={() =>
-                  onVoteChange(vote === "dislike" ? null : "dislike")
-                }
-              >
-                <ThumbsDown data-icon="inline-start" />
-                {labels.dislike}
-              </Button>
-            </>
-          )}
-          {onReport && (
-            <Button variant="ghost" className="ms-auto" onClick={onReport}>
-              {labels.report}
-            </Button>
-          )}
-        </div>
-      )}
+      <div className={s.actions()}>
+        {reactionControl ?? (
+          <EmojiReactions reactions={reactions} onReact={onReact} />
+        )}
+        {onReport && (
+          <Button variant="ghost" className="ms-auto" onClick={onReport}>
+            {labels.report}
+          </Button>
+        )}
+      </div>
     </article>
   );
 }

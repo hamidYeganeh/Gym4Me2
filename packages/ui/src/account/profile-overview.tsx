@@ -1,17 +1,17 @@
 "use client";
 
+import type { Account } from "@repo/api/auth";
+import { useTranslations } from "@repo/i18n";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { useTranslations } from "@repo/i18n";
-import type { Account } from "@repo/api/auth";
 import {
-  ChevronLeft,
-  CalendarDays,
-  MoreHorizontal,
-  Pencil,
-  RefreshCw,
-  UserRound,
-} from "lucide-react";
+  Calendar1Icon as CalendarDays,
+  ChevronLeftIcon as ChevronLeft,
+  DotThreeHorizontalIcon as MoreHorizontal,
+  Pencil1Icon as Pencil,
+  ArrowRepeatClockwise1Icon as RefreshCw,
+  UserIcon as UserRound,
+} from "../icons";
 import { Avatar, AvatarFallback } from "../kit/Avatar";
 import { Button } from "../kit/Button";
 import {
@@ -21,8 +21,8 @@ import {
   CardHeader,
   CardTitle,
 } from "../kit/Card";
-import { AccountNavigation } from "./account-design";
 import { cn } from "../lib/utils";
+import { AccountNavigation } from "./account-design";
 import { useDateLabel } from "./common";
 
 export function ProfileOverview({

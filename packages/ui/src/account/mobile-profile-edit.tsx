@@ -1,23 +1,25 @@
 "use client";
 
-import { Check, LoaderCircle } from "lucide-react";
-import { useTranslations } from "@repo/i18n";
 import type { Account } from "@repo/api/auth";
+import { useTranslations } from "@repo/i18n";
+import {
+  CheckIcon as Check,
+  ArrowRotateClockwise1Icon as LoaderCircle,
+} from "../icons";
 import { Button } from "../kit/Button";
-import { Input } from "../kit/Input";
-import { Switch } from "../kit/Switch";
 import {
   Field,
   FieldContent,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
-  FieldError,
 } from "../kit/Field";
+import { Input } from "../kit/Input";
 import { Separator } from "../kit/Separator";
+import { Switch } from "../kit/Switch";
 import { AccountAvatar, AccountDesignPage } from "./account-design";
 import { ErrorNotice } from "./common";
-import { PhoneChange } from "./phone-change";
 import { useProfileEditor } from "./use-profile-editor";
 
 export function MobileProfileEdit({ account }: { account: Account }) {
@@ -42,20 +44,20 @@ export function MobileProfileEdit({ account }: { account: Account }) {
         </Button>
       }
     >
-      <div className="flex justify-center py-5">
+      <header className="flex flex-col items-center gap-3 py-8 text-center">
         <AccountAvatar name={name} large />
-      </div>
+        <h2 className="text-xl font-semibold">{name || t("Copy.myProfile")}</h2>
+        <p className="text-sm text-muted-foreground">
+          {t("ProfileRefresh.hint")}
+        </p>
+      </header>
       <form
         id={`${editor.id}-form`}
         onSubmit={submit}
         className="flex flex-col gap-7"
       >
         <FieldGroup className="account-edit-group gap-0 overflow-hidden rounded-4xl bg-card">
-          <Field
-            orientation="horizontal"
-            className="px-5 py-4"
-            data-invalid={invalid}
-          >
+          <Field className="px-5 py-5" data-invalid={invalid}>
             <FieldLabel htmlFor={`${editor.id}-name`}>
               {t("Privacy.optionalName")}
             </FieldLabel>
@@ -83,7 +85,7 @@ export function MobileProfileEdit({ account }: { account: Account }) {
             </FieldContent>
           </Field>
           <Separator />
-          <Field orientation="horizontal" className="px-5 py-4">
+          <Field className="px-5 py-5">
             <FieldLabel htmlFor={`${editor.id}-phone`}>
               {t("Copy.verifiedMobileNumber")}
             </FieldLabel>
@@ -93,6 +95,9 @@ export function MobileProfileEdit({ account }: { account: Account }) {
               dir="ltr"
               readOnly
             />
+            <FieldDescription>
+              {t("ProfileRefresh.phoneFixed")}
+            </FieldDescription>
           </Field>
         </FieldGroup>
         <section
@@ -138,18 +143,6 @@ export function MobileProfileEdit({ account }: { account: Account }) {
           {t("Copy.saveChanges")}
         </Button>
       </form>
-      <section
-        className="flex flex-col gap-3"
-        aria-labelledby={`${editor.id}-phone-heading`}
-      >
-        <h2
-          id={`${editor.id}-phone-heading`}
-          className="px-4 text-sm font-semibold text-muted-foreground"
-        >
-          {t("AccountDesign.contact")}
-        </h2>
-        <PhoneChange />
-      </section>
     </AccountDesignPage>
   );
 }

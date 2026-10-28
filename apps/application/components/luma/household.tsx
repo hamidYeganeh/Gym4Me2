@@ -1,9 +1,10 @@
 "use client";
-import { SuccessNotice } from "@repo/ui/account";
-import { useRef } from "react";
-import { useTranslations } from "@repo/i18n";
 import { useSportsCommand, useSportsQuery } from "@repo/api/sports";
+import { useTranslations } from "@repo/i18n";
+import { SuccessNotice } from "@repo/ui/account";
+import { Input as KitInput } from "@repo/ui/kit/Input";
 import { IranianDateInput } from "@repo/ui/kit/IranianDateInput";
+import { useRef } from "react";
 import { CommandError, Field, LumaPage, QueryState } from "./common";
 type Dependent = {
   id: string;
@@ -60,7 +61,7 @@ function DependentForm({ dependent: d }: { dependent?: Dependent }) {
         }}
       >
         <Field label={w("name")}>
-          <input
+          <KitInput
             name="name"
             defaultValue={d?.name}
             minLength={2}
@@ -103,7 +104,10 @@ function DependentForm({ dependent: d }: { dependent?: Dependent }) {
           {w("save")}
         </button>
         <CommandError error={command.error} />
-        <SuccessNotice success={command.isSuccess} message={t("profileSaved")} />
+        <SuccessNotice
+          success={command.isSuccess}
+          message={t("profileSaved")}
+        />
       </form>
     </details>
   );

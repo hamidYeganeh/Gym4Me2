@@ -25,7 +25,7 @@ test("catalog hours localize zero-padded time and mark midnight and overnight en
   );
 });
 
-test("the detail summary preserves the audience of each opening interval", () => {
+test("the detail summary shows one averaged interval while the full schedule remains intact", () => {
   const fixture = protectedCatalogFixtures();
   const branch = fixture.branches[0]!;
   branch.openingHours.weekly = [
@@ -33,8 +33,8 @@ test("the detail summary preserves the audience of each opening interval", () =>
     { dayOfWeek: 0, audience: "men", startMinute: 1320, endMinute: 1440 },
   ];
   const hours = detailView(fixture.clubs[0]!, branch, "fa").hours;
-  assert.match(hours, /شنبه · بانوان · ۰۸:۰۰–۱۲:۰۰/);
-  assert.match(hours, /شنبه · آقایان · ۲۲:۰۰–۰۰:۰۰ روز بعد/);
+  assert.equal(hours, "۱۵:۰۰–۱۸:۰۰");
+  assert.equal(branch.openingHours.weekly.length, 2);
   assert.doesNotMatch(hours, /08:00/);
 });
 

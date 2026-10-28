@@ -4,6 +4,7 @@ export function clubHref(
   query?: Record<string, string>,
 ) {
   const params = new URLSearchParams(query);
+  params.delete("branch");
   if (process.env.NEXT_PUBLIC_NATIVE_EXPORT === "true") {
     params.set("id", id);
     if (view) params.set("view", view);

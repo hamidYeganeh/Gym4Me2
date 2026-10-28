@@ -1,12 +1,15 @@
 "use client";
-import { useState } from "react";
+import { Like } from "@repo/ui/kit/Like";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Clock, Dumbbell } from "lucide-react";
-import { BookmarkIcon } from "../../icons";
+import { useState } from "react";
+import {
+  ArrowUpRightIcon as ArrowUpRight,
+  ClockIcon as Clock,
+  BarbellHorizontalIcon as Dumbbell,
+} from "../../icons";
 import { cn } from "../../lib/utils";
-import { Button } from "../Button";
-import { Avatar, AvatarImage, AvatarFallback } from "../Avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../Avatar";
 import { Badge } from "../Badge";
 import { classCardVariants, classCardStyles as s } from "./ClassCard.styles";
 import type { ClassCardProps } from "./ClassCard.types";
@@ -29,6 +32,7 @@ export function ClassCard({
     return (
       <article
         data-slot="class-card"
+        data-zoom-exit-key={`class-${classItem.id}`}
         data-layout="compact"
         className={cn(
           "relative flex w-full flex-col gap-4 rounded-3xl border border-border bg-card p-4 text-card-foreground",
@@ -38,6 +42,7 @@ export function ClassCard({
         {href && (
           <Link
             href={href}
+            scroll={false}
             className="absolute inset-0 z-10 rounded-[inherit] focus-visible:outline-2 focus-visible:outline-ring"
             aria-label={classItem.title}
           />
@@ -55,7 +60,7 @@ export function ClassCard({
                 onError={() => setFailedPhoto(photo.src)}
               />
             ) : (
-              <Dumbbell className="size-9 text-primary" strokeWidth={1.5} />
+              <Dumbbell size={36} className="text-primary" strokeWidth={1.5} />
             )}
           </div>
           <div className="flex min-w-0 flex-1 flex-col gap-2">
@@ -90,7 +95,13 @@ export function ClassCard({
   return (
     <article
       data-slot="class-card"
-      className={cn(classCardVariants(), className)}
+      data-zoom-exit-key={`class-${classItem.id}`}
+      className={cn(
+        classCardVariants(),
+        (!photo || photo.src === failedPhoto) &&
+          "[--image-surface:var(--card)] [--image-foreground:var(--card-foreground)]",
+        className,
+      )}
     >
       {href && (
         <Link
@@ -118,7 +129,8 @@ export function ClassCard({
             className="absolute inset-0 grid place-items-center bg-image-surface"
           >
             <Dumbbell
-              className="size-24 text-image-foreground/15"
+              size={96}
+              className="text-image-foreground/15"
               strokeWidth={1}
             />
           </div>
@@ -132,15 +144,13 @@ export function ClassCard({
           <span />
         )}
         {onSavedChange ? (
-          <Button
+          <Like
             variant="image"
             size="icon-lg"
             aria-label={saved ? labels.unsave : labels.save}
             aria-pressed={saved}
             onClick={() => onSavedChange(!saved)}
-          >
-            <BookmarkIcon />
-          </Button>
+          ></Like>
         ) : (
           <span
             aria-hidden="true"

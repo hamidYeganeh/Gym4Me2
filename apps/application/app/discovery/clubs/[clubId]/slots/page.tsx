@@ -1,5 +1,5 @@
-import { ServicesPage } from "../../../../../components/luma/services";
-import { clubHref } from "../../../../../lib/club-href";
+import { redirect } from "next/navigation";
+import { ClubReservation } from "../../../../../components/discovery/club-reservation";
 import { getPublicClub } from "../../../../../lib/public-catalog";
 export default async function Page({
   params,
@@ -9,13 +9,8 @@ export default async function Page({
   searchParams: Promise<{ branch?: string }>;
 }) {
   const { clubId } = await params;
-  await getPublicClub(clubId);
-  const { branch } = await searchParams;
-  return (
-    <ServicesPage
-      organizationId={clubId}
-      branchId={branch}
-      back={clubHref(clubId, undefined, branch ? { branch } : undefined)}
-    />
-  );
+  const club = await getPublicClub(clubId);
+  if (clubId !== club.slug || (await searchParams).branch)
+    redirect(`/discovery/clubs/${club.slug}/slots`);
+  return <ClubReservation initialClub={club} clubId={club.slug} />;
 }

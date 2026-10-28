@@ -1,17 +1,15 @@
 "use client";
+import { DiscoveryContentSections } from "@repo/ui/discovery-content";
 
-import { useCallback, useDeferredValue, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  ChevronLeft,
-  Bookmark,
-  Navigation,
-  Search,
-  Star,
-  X,
-} from "lucide-react";
+import { catalogSelectSource, useTaxonomies } from "@repo/api/catalog";
 import { useLocale, useTranslations } from "@repo/i18n";
+import {
+  ChevronLeftIcon as ChevronLeft,
+  PaperPlaneDiagonalIcon as Navigation,
+
+  StarFullIcon as Star,
+} from "@repo/ui/icons";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
 import { Button } from "@repo/ui/kit/Button";
 import {
   Carousel,
@@ -19,24 +17,20 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@repo/ui/kit/Carousel";
+import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
+import { Field, FieldLabel } from "@repo/ui/kit/Field";
+import { Search } from "@repo/ui/kit/Search";
+import { Like } from "@repo/ui/kit/Like";
 import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { Slider } from "@repo/ui/kit/Slider";
-import { Field, FieldLabel } from "@repo/ui/kit/Field";
-import { FilterSheet } from "@repo/ui/kit/BottomSheet";
-import {
-  InputGroup,
-  InputGroupInput,
-  InputGroupAddon,
-  InputGroupButton,
-} from "@repo/ui/kit/InputGroup";
-import { cn } from "@repo/ui/lib/utils";
-import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
-import { useCatalogClubs } from "./use-catalog";
-import { useTaxonomies, catalogSelectSource } from "@repo/api/catalog";
-import { CatalogPagination } from "./catalog-pagination";
-import { useSavedClub } from "./use-saved-club";
+import Image from "next/image";
+import Link from "next/link";
+import { useCallback, useDeferredValue, useEffect, useState } from "react";
 import { CatalogMap } from "./catalog-map";
+import { CatalogPagination } from "./catalog-pagination";
 import "./discovery-map.css";
+import { useCatalogClubs } from "./use-catalog";
+import { useSavedClub } from "./use-saved-club";
 
 function MapClubCard({
   club,
@@ -98,15 +92,13 @@ function MapClubCard({
             <span>· {club.price}</span>
           </p>
         </Link>
-        <Button
+        <Like
           variant="image"
           size="icon"
           aria-pressed={saved}
           aria-label={saved ? labels("unsave") : labels("save")}
           onClick={() => setSaved(!saved)}
-        >
-          <Bookmark className={cn(saved && "fill-current")} />
-        </Button>
+        ></Like>
       </div>
     </article>
   );
@@ -210,6 +202,7 @@ export function DiscoveryMap() {
         onSelect={selectClub}
         recenter={recenter}
       />
+      <aside className="absolute inset-x-5 top-28 z-10 max-h-[30dvh] overflow-auto rounded-2xl bg-background/95"><DiscoveryContentSections page="map" /></aside>
       <header className="discovery-map-header">
         <div className="discovery-map-heading flex items-center gap-3">
           <Button
@@ -222,12 +215,7 @@ export function DiscoveryMap() {
               <ChevronLeft className="rtl:rotate-180" />
             </Link>
           </Button>
-          <InputGroup className="discovery-map-search">
-            <InputGroupAddon>
-              <Search />
-            </InputGroupAddon>
-            <InputGroupInput
-              type="search"
+          <Search onClear={() => { setSearch(""); setPage(1); }} className="discovery-map-search"
               value={search}
               onChange={(event) => {
                 setSearch(event.target.value);
@@ -236,21 +224,6 @@ export function DiscoveryMap() {
               placeholder={t("search")}
               aria-label={discovery("search")}
             />
-            {search && (
-              <InputGroupAddon align="inline-end">
-                <InputGroupButton
-                  size="icon-xs"
-                  aria-label={discovery("clearSearch")}
-                  onClick={() => {
-                    setSearch("");
-                    setPage(1);
-                  }}
-                >
-                  <X />
-                </InputGroupButton>
-              </InputGroupAddon>
-            )}
-          </InputGroup>
         </div>
       </header>
       <div className={"discovery-map-bottom"}>
@@ -305,8 +278,7 @@ export function DiscoveryMap() {
               <div className="flex justify-between gap-4 text-sm text-muted-foreground">
                 <span>
                   {t("minimum")}:{" "}
-                  {new Intl.NumberFormat(locale).format(price[0])}{" "}
-                  {t("toman")}
+                  {new Intl.NumberFormat(locale).format(price[0])} {t("toman")}
                 </span>
                 <span>
                   {t("maximum")}:{" "}

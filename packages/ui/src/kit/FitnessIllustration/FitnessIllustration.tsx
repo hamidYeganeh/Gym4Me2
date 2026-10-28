@@ -1,19 +1,18 @@
 import type { CSSProperties, ReactNode } from "react";
 import { cn } from "../../lib/utils";
 
-// Viewports into the original, unmodified 2112 × 5000 illustration sheet.
-// Each complete object comes from the middle column; the partial last row is unused.
-const rows = {
-  bottle: 70,
-  kettlebell: 758,
-  punchingBag: 1447,
-  treadmill: 2133,
-  handGrip: 2822,
-  watch: 3508,
-  jumpRope: 4194,
-} as const;
-
-export type FitnessIllustrationKind = keyof typeof rows;
+// Legacy kinds stay compatible with existing callers; shared empty states now
+// use isolated club or coaching artwork with a genuinely transparent backdrop.
+export type FitnessIllustrationKind =
+  | "bottle"
+  | "kettlebell"
+  | "punchingBag"
+  | "treadmill"
+  | "handGrip"
+  | "watch"
+  | "jumpRope"
+  | "club"
+  | "coach";
 
 export function FitnessIllustration({
   kind,
@@ -25,10 +24,10 @@ export function FitnessIllustration({
   className?: string;
 }) {
   const style: CSSProperties = {
-    backgroundImage: 'url("/images/fitness/fitness-objects.png")',
+    backgroundImage: `url("/images/fitness/${kind === "coach" ? "coach" : "club"}-empty.png")`,
     backgroundRepeat: "no-repeat",
-    backgroundSize: `${(2112 / 550) * 100}% ${(5000 / 550) * 100}%`,
-    backgroundPosition: `${(806 / (2112 - 550)) * 100}% ${(rows[kind] / (5000 - 550)) * 100}%`,
+    backgroundSize: "contain",
+    backgroundPosition: "center",
   };
   return (
     <div
@@ -37,7 +36,7 @@ export function FitnessIllustration({
       aria-hidden="true"
       style={style}
       className={cn(
-        "pointer-events-none aspect-square shrink-0 overflow-hidden rounded-3xl bg-image-surface",
+        "pointer-events-none aspect-square shrink-0 overflow-hidden rounded-3xl bg-transparent",
         size === "sm"
           ? "size-16 rounded-2xl"
           : size === "md"

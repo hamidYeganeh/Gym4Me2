@@ -171,7 +171,7 @@ export class PublicClubsController {
     );
   }
   @Get(':id') detail(@Param('id') id: string) {
-    return this.service.publicDetail(c.validate(c.id, id));
+    return this.service.publicDetail(c.validate(z.string().min(3).max(120).regex(/^[a-z0-9-]+$/), id));
   }
   @Get(':id/branches/:branchId') branch(
     @Param('id') id: string,

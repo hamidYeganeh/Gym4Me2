@@ -4,14 +4,14 @@ import type { CoachSummary } from "@repo/ui/kit/CoachCard";
 // Illustrative profiles until club-specific coach records are connected to the API.
 export function getCoaches(locale: string, clubId: string): CoachSummary[] {
   const text = getTranslator(locale);
-  return [
+  const coaches: CoachSummary[] = [
     {
       id: `${clubId}-strength`,
       name: text("Preview.armanRezaei"),
       specialty: text("Preview.strengthLowerBody"),
       photo: {
-        src: "/images/clubs/strength.png",
-        alt: text("Preview.strengthTrainingSpace"),
+        src: "/images/coaches/arman.png",
+        alt: text("Preview.armanRezaei"),
       },
       rating: 4.5,
       reviews: 90,
@@ -24,8 +24,8 @@ export function getCoaches(locale: string, clubId: string): CoachSummary[] {
       name: text("Preview.nikaAhmadi"),
       specialty: text("Preview.fitnessMovement"),
       photo: {
-        src: "/images/clubs/studio.png",
-        alt: text("Preview.fitnessStudio"),
+        src: "/images/coaches/nika.png",
+        alt: text("Preview.nikaAhmadi"),
       },
       rating: 4.8,
       reviews: 64,
@@ -37,8 +37,8 @@ export function getCoaches(locale: string, clubId: string): CoachSummary[] {
       name: text("Preview.samanKarimi"),
       specialty: text("Preview.functionalTraining2"),
       photo: {
-        src: "/images/clubs/training.png",
-        alt: text("Preview.functionalTrainingSpace"),
+        src: "/images/coaches/saman.png",
+        alt: text("Preview.samanKarimi"),
       },
       rating: 4.2,
       reviews: 48,
@@ -46,4 +46,24 @@ export function getCoaches(locale: string, clubId: string): CoachSummary[] {
       yearsOfExperience: 4,
     },
   ];
+  const gallery = [
+    {
+      src: "/images/clubs/strength.png",
+      alt: text("Preview.strengthTrainingSpace"),
+    },
+    { src: "/images/clubs/studio.png", alt: text("Preview.fitnessStudio") },
+    {
+      src: "/images/clubs/training.png",
+      alt: text("Preview.functionalTrainingSpace"),
+    },
+  ];
+  return coaches.map((coach) => ({
+    ...coach,
+    photos: coach.photo
+      ? [
+          coach.photo,
+          ...gallery.filter((photo) => photo.src !== coach.photo?.src),
+        ]
+      : gallery,
+  }));
 }

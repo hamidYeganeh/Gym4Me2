@@ -208,6 +208,7 @@ export function AdminUsersContent() {
           <TextField
             label={t("Copy.findUser")}
             name="userSearch"
+            type="search"
             fieldClassName="w-full sm:w-64"
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -381,6 +382,7 @@ export function AdminOrganizationsContent({
           <TextField
             label={t("Copy.findOrganization")}
             name="organizationSearch"
+            type="search"
             fieldClassName="w-full sm:w-64"
             value={input}
             onChange={(e) => setInput(e.target.value)}

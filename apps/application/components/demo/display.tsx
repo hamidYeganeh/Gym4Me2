@@ -1,113 +1,116 @@
 "use client";
 
-import { useState } from "react";
-import { Dumbbell, FileText, Check, MapPin } from "lucide-react";
+import {
+  BarbellHorizontalIcon,
+  Calendar1Icon,
+  CheckIcon as Check,
+  BarbellHorizontalIcon as Dumbbell,
+  File1Icon as FileText,
+  HeartIcon,
+  MapPin1Icon as MapPin,
+} from "@repo/ui/icons";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@repo/ui/kit/Accordion";
+import { Alert, AlertDescription, AlertTitle } from "@repo/ui/kit/Alert";
+import { AspectRatio } from "@repo/ui/kit/AspectRatio";
+import {
+  Attachment,
+  AttachmentContent,
+  AttachmentDescription,
+  AttachmentMedia,
+  AttachmentTitle,
+} from "@repo/ui/kit/Attachment";
+import { Avatar, AvatarFallback } from "@repo/ui/kit/Avatar";
+import { AvatarGroup } from "@repo/ui/kit/AvatarGroup";
+import { Badge } from "@repo/ui/kit/Badge";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@repo/ui/kit/Breadcrumb";
+import { Bubble, BubbleContent } from "@repo/ui/kit/Bubble";
 import { Button } from "@repo/ui/kit/Button";
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from "@repo/ui/kit/Card";
-import { Badge } from "@repo/ui/kit/Badge";
-import { Alert, AlertTitle, AlertDescription } from "@repo/ui/kit/Alert";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@repo/ui/kit/Carousel";
+import { ChartContainer } from "@repo/ui/kit/Chart";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@repo/ui/kit/Collapsible";
+import { DirectionProvider } from "@repo/ui/kit/Direction";
 import {
   Empty,
+  EmptyContent,
+  EmptyDescription,
   EmptyHeader,
   EmptyTitle,
-  EmptyDescription,
-  EmptyContent,
 } from "@repo/ui/kit/Empty";
-import { Avatar, AvatarFallback } from "@repo/ui/kit/Avatar";
-import { AvatarGroup } from "@repo/ui/kit/AvatarGroup";
-import { AspectRatio } from "@repo/ui/kit/AspectRatio";
-import { Skeleton } from "@repo/ui/kit/Skeleton";
-import { Spinner } from "@repo/ui/kit/Spinner";
-import { Progress } from "@repo/ui/kit/Progress";
 import {
-  Breadcrumb,
-  BreadcrumbList,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbSeparator,
-  BreadcrumbPage,
-} from "@repo/ui/kit/Breadcrumb";
+  Item,
+  ItemContent,
+  ItemDescription,
+  ItemMedia,
+  ItemTitle,
+} from "@repo/ui/kit/Item";
+import { Kbd, KbdGroup } from "@repo/ui/kit/Kbd";
+import { Marker, MarkerContent, MarkerIcon } from "@repo/ui/kit/Marker";
+import { Message, MessageContent, MessageFooter } from "@repo/ui/kit/Message";
+import {
+  MessageScroller,
+  MessageScrollerContent,
+  MessageScrollerItem,
+  MessageScrollerProvider,
+  MessageScrollerViewport,
+} from "@repo/ui/kit/MessageScroller";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
 } from "@repo/ui/kit/Pagination";
+import { Progress } from "@repo/ui/kit/Progress";
+import { ProgressiveBlur } from "@repo/ui/kit/ProgressiveBlur";
 import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@repo/ui/kit/Accordion";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@repo/ui/kit/Tabs";
-import {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from "@repo/ui/kit/Collapsible";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from "@repo/ui/kit/Carousel";
-import {
-  Table,
-  TableHeader,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@repo/ui/kit/Table";
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
   ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
 } from "@repo/ui/kit/Resizable";
 import { ScrollArea } from "@repo/ui/kit/ScrollArea";
 import { Separator } from "@repo/ui/kit/Separator";
-import {
-  Item,
-  ItemMedia,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-} from "@repo/ui/kit/Item";
-import { Kbd, KbdGroup } from "@repo/ui/kit/Kbd";
-import {
-  Attachment,
-  AttachmentMedia,
-  AttachmentContent,
-  AttachmentTitle,
-  AttachmentDescription,
-} from "@repo/ui/kit/Attachment";
-import { Message, MessageContent, MessageFooter } from "@repo/ui/kit/Message";
-import {
-  MessageScroller,
-  MessageScrollerProvider,
-  MessageScrollerViewport,
-  MessageScrollerContent,
-  MessageScrollerItem,
-} from "@repo/ui/kit/MessageScroller";
-import { Bubble, BubbleContent } from "@repo/ui/kit/Bubble";
-import { Marker, MarkerIcon, MarkerContent } from "@repo/ui/kit/Marker";
-import {
-  BarbellHorizontalIcon,
-  HeartIcon,
-  Calendar1Icon,
-} from "@repo/ui/icons";
+import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { SocialIcon } from "@repo/ui/kit/SocialIcon";
-import { ProgressiveBlur } from "@repo/ui/kit/ProgressiveBlur";
-import { ChartContainer } from "@repo/ui/kit/Chart";
-import { DirectionProvider } from "@repo/ui/kit/Direction";
+import { Spinner } from "@repo/ui/kit/Spinner";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@repo/ui/kit/Table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui/kit/Tabs";
+import { useState } from "react";
 import type { DemoExample } from "./types";
 
 function ProgressExample() {

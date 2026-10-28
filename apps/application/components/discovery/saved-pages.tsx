@@ -1,15 +1,17 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowDownWideNarrow, Bookmark, Plus, UserRound } from "lucide-react";
-import { useLocale, useTranslations } from "@repo/i18n";
 import { useAccount } from "@repo/api/profile";
+import { useLocale, useTranslations } from "@repo/i18n";
+import {
+  SortDescendingIcon as ArrowDownWideNarrow,
+  BookmarkIcon as Bookmark,
+  PlusIcon as Plus,
+  UserIcon as UserRound,
+} from "@repo/ui/icons";
+import { Avatar, AvatarFallback } from "@repo/ui/kit/Avatar";
+import { Button } from "@repo/ui/kit/Button";
 import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 import type { CoachSummary } from "@repo/ui/kit/CoachCard";
-import { Button } from "@repo/ui/kit/Button";
-import { Avatar, AvatarFallback } from "@repo/ui/kit/Avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,26 +22,29 @@ import {
 } from "@repo/ui/kit/DropdownMenu";
 import {
   Empty,
-  EmptyHeader,
-  EmptyTitle,
-  EmptyDescription,
   EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
   EmptyMedia,
+  EmptyTitle,
 } from "@repo/ui/kit/Empty";
-import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { FitnessIllustration } from "@repo/ui/kit/FitnessIllustration";
+import { Skeleton } from "@repo/ui/kit/Skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@repo/ui/kit/Tabs";
-import { useCatalogClubs } from "./use-catalog";
-import { useSetSavedClub, useSavedClubIds } from "./use-saved-club";
-import { useSavedCoach, useSavedCoachIds } from "./use-saved-coach";
-import { CatalogState } from "./catalog-state";
-import { CatalogPagination } from "./catalog-pagination";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { clubIds } from "../../lib/clubs";
 import { getCoaches } from "../../lib/coaches";
 import {
   restoreSavedRemovalFocus,
   type SavedRemovalFocus,
 } from "../../lib/saved-removal-focus";
+import { CatalogPagination } from "./catalog-pagination";
+import { CatalogState } from "./catalog-state";
+import { useCatalogClubs } from "./use-catalog";
+import { useSavedClubIds, useSetSavedClub } from "./use-saved-club";
+import { useSavedCoach, useSavedCoachIds } from "./use-saved-coach";
 
 function SavedTile({
   id,

@@ -1,7 +1,11 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { Camera, ScanLine, Check } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
+import { useEffect, useRef, useState } from "react";
+import {
+  Camera1Icon as Camera,
+  CheckIcon as Check,
+  Scan1Icon as ScanLine,
+} from "../icons";
 import { BottomSheet } from "../kit/BottomSheet";
 import { Button } from "../kit/Button";
 

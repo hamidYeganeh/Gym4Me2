@@ -139,7 +139,7 @@ export class SportsCatalogController {
     );
   }
   @Get(':id') detail(@Param('id') value: string) {
-    return dto(this.service.detail(id(value)));
+    return dto(this.service.detail(parse(z.string().min(3).max(120).regex(/^[a-z0-9-]+$/), value)));
   }
 }
 @DomainController('sports', 'account')

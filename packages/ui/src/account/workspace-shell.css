@@ -190,3 +190,45 @@
       color 120ms ease-out;
   }
 }
+
+/* Navigation groups pack at the top; only the account footer uses spare height. */
+.workspace-sidebar > .workspace-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1.25rem;
+}
+.workspace-menu section {
+  flex: none;
+}
+.workspace-menu section > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.workspace-shell .workspace-menu a {
+  min-height: 2.75rem;
+  background: transparent;
+  padding: 0.65rem 0.85rem;
+}
+.workspace-shell .workspace-menu a[aria-current="page"] {
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+  color: var(--foreground);
+}
+.workspace-menu a > :is(svg, .sandow-icon) {
+  flex: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 1.2rem;
+}
+.workspace-sidebar .workspace-brand {
+  justify-content: flex-start;
+}
+.workspace-sidebar > footer {
+  flex: none;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+.workspace-menu-dot {
+  display: none;
+}

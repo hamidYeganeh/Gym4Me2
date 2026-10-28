@@ -56,7 +56,7 @@ export class CoachingDirectoryController {
     return dto(this.practice.search(parse(c.coachSearchSchema, query)));
   }
   @Get(':id') detail(@Param('id') value: string) {
-    return dto(this.practice.detail(id(value)));
+    return dto(this.practice.detail(parse(z.string().min(3).max(120).regex(/^[a-z0-9-]+$/), value)));
   }
 }
 @DomainController('profile', 'coaching-practice')

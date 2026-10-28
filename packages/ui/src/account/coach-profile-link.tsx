@@ -10,12 +10,12 @@ export function CoachProfileLink({ userId }: { userId: string }) {
     setMessage("");
     try {
       const base = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
-      const url = new URL("/coaches/detail", base);
+      const url = new URL(`/discovery/coaches/${encodeURIComponent(userId)}`, base);
       if (!["https:", "http:"].includes(url.protocol)) {
         setMessage(t("publicLinkUnavailable"));
         return;
       }
-      url.searchParams.set("id", userId);
+
       await navigator.clipboard.writeText(url.toString());
       setMessage(t("publicLinkCopied"));
     } catch {

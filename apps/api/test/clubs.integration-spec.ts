@@ -1,29 +1,29 @@
+import {
+  CreateBucketCommand,
+  DeleteBucketCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { INestApplication, ServiceUnavailableException } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
 import { eq, inArray, sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
-import { randomBytes, randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
-import { promisify } from 'node:util';
+import { randomBytes, randomUUID } from 'node:crypto';
 import { resolve } from 'node:path';
-import request, { type Response } from 'supertest';
+import { promisify } from 'node:util';
 import sharp from 'sharp';
-import {
-  S3Client,
-  CreateBucketCommand,
-  DeleteBucketCommand,
-} from '@aws-sdk/client-s3';
-import { MediaRetentionService } from '../src/modules/clubs/media-retention.service';
-import { StorageService } from '../src/modules/clubs/storage.service';
-import { ClubService } from '../src/modules/clubs/club.service';
-import { PrivacyService } from '../src/modules/profile/privacy.service';
+import request, { type Response } from 'supertest';
 import type { App } from 'supertest/types';
 import { validateEnvironment } from '../src/config/environment';
 import { DatabaseService } from '../src/database/database.service';
 import * as s from '../src/database/schema';
 import { AuthModule } from '../src/modules/auth/auth.module';
 import { tokenHash } from '../src/modules/auth/auth.service';
+import { ClubService } from '../src/modules/clubs/club.service';
+import { MediaRetentionService } from '../src/modules/clubs/media-retention.service';
+import { StorageService } from '../src/modules/clubs/storage.service';
+import { PrivacyService } from '../src/modules/profile/privacy.service';
 import { WorkspacesModule } from '../src/modules/workspaces.module';
 import { configureApi } from '../src/platform/http/configure-api';
 
@@ -1408,6 +1408,43 @@ test('reviews are paginated and moderated before affecting ratings; owners can r
     ).expect(200),
   );
   expect(listed.find((r) => r.id === review.id)?.verified).toBe(true);
+  // A person with no booking can react, but cannot author a review.
+  const reactionPath = `catalog/reviews/club/${review.id}/reactions`;
+  await call('post', reactionPath)
+    .send({ emoji: '❤️', active: true })
+    .expect(401);
+  await call(
+    'post',
+    `catalog/clubs/${clubId}/branches/${branchId}/reviews`,
+    stranger,
+  )
+    .send({ rating: 5, body: 'No booking' })
+    .expect(403);
+  for (let attempt = 0; attempt < 2; attempt++) {
+    await call('post', reactionPath, stranger)
+      .send({ emoji: '❤️', active: true })
+      .expect(201);
+  }
+  expect(body(await call('get', reactionPath).expect(200))).toEqual([
+    { emoji: '❤️', count: 1, mine: false },
+  ]);
+  expect(
+    body(await call('get', `${reactionPath}/mine`, stranger).expect(200)),
+  ).toEqual([{ emoji: '❤️', count: 1, mine: true }]);
+  await call('post', reactionPath, stranger)
+    .send({ emoji: 'invalid', active: true })
+    .expect(400);
+  await call('post', reactionPath, athlete)
+    .send({ emoji: '❤️', active: false })
+    .expect(201);
+  expect(body(await call('get', reactionPath).expect(200))).toEqual([
+    { emoji: '❤️', count: 1, mine: false },
+  ]);
+  await call('post', reactionPath, stranger)
+    .send({ emoji: '❤️', active: false })
+    .expect(201);
+  expect(body(await call('get', reactionPath).expect(200))).toEqual([]);
+
   const report = body<{ id: string }>(
     await call(
       'post',

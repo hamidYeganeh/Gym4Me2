@@ -1,11 +1,11 @@
 "use client";
-import { ErrorNotice } from "@repo/ui/account";
-import { FilterSheet } from "@repo/ui/kit/BottomSheet";
-import { useId } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale } from "@repo/i18n";
-import { MessageCircle } from "lucide-react";
 import { useSportsConversations } from "@repo/api/sports";
+import { useLocale } from "@repo/i18n";
+import { ErrorNotice } from "@repo/ui/account";
+import { ChatIcon as MessageCircle } from "@repo/ui/icons";
+import { FilterSheet } from "@repo/ui/kit/BottomSheet";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useId } from "react";
 import { Empty, LumaPage, QueryState, Row, Segments, useLuma } from "./common";
 import { LumaLoadMore } from "./load-more";
 

@@ -141,7 +141,7 @@ export async function transitionTheme(
   origin: HTMLElement,
   applyTheme: () => void,
   {
-    duration = 120,
+    duration = 620,
     variant = "circle",
     fromCenter = false,
   }: {
@@ -191,7 +191,7 @@ export async function transitionTheme(
       { clipPath },
       {
         duration: time,
-        easing: variant === "star" ? "linear" : "ease-in-out",
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
         fill: "forwards",
         pseudoElement: "::view-transition-new(root)",
       },

@@ -1,35 +1,34 @@
 "use client";
-import { useFormatter } from "@repo/i18n";
+import { useFormatter, useTranslations } from "@repo/i18n";
 import { isTranslationKey, type TranslationKey } from "@repo/i18n/messages";
-import { useTranslations } from "@repo/i18n";
 
-import { type ReactNode, type RefObject } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { accountReadDenied, accountRecovery } from "../lib/account-recovery";
-import { useQueryRetry } from "../hooks/use-query-retry";
-import { useFeedbackToast } from "../hooks/use-feedback-toast";
 import { Alert, AlertDescription } from "@repo/ui/kit/Alert";
+import { Badge } from "@repo/ui/kit/Badge";
 import { Button } from "@repo/ui/kit/Button";
 import {
   Empty,
+  EmptyContent,
+  EmptyDescription,
   EmptyHeader,
   EmptyMedia,
-  EmptyContent,
   EmptyTitle,
-  EmptyDescription,
 } from "@repo/ui/kit/Empty";
+import { Spinner } from "@repo/ui/kit/Spinner";
 import {
   TextField as KitTextField,
   type TextFieldProps,
 } from "@repo/ui/kit/TextField";
-import { Spinner } from "@repo/ui/kit/Spinner";
-import { Badge } from "@repo/ui/kit/Badge";
-import { Inbox } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { type ReactNode, type RefObject } from "react";
+import { useFeedbackToast } from "../hooks/use-feedback-toast";
+import { useQueryRetry } from "../hooks/use-query-retry";
+import { TrayIcon as Inbox } from "../icons";
 import {
   FitnessIllustration,
   type FitnessIllustrationKind,
 } from "../kit/FitnessIllustration";
+import { accountReadDenied, accountRecovery } from "../lib/account-recovery";
 import { cn } from "../lib/utils";
 
 const roleKeys = {
@@ -138,7 +137,7 @@ export function Blank({
   description,
   icon,
   action,
-  illustration,
+  illustration = "club",
 }: {
   title: string;
   description: string;
@@ -146,8 +145,10 @@ export function Blank({
   action?: ReactNode;
   illustration?: FitnessIllustrationKind;
 }) {
+  const router = useRouter();
+  const t = useTranslations("Bencho");
   return (
-    <Empty className="rounded-3xl border bg-card px-6 py-8 md:p-10">
+    <Empty className="rounded-3xl bg-transparent px-6 py-8 md:p-10">
       <EmptyHeader>
         <EmptyMedia
           variant={illustration ? "default" : "icon"}
@@ -162,7 +163,18 @@ export function Blank({
         <EmptyTitle>{title}</EmptyTitle>
         <EmptyDescription>{description}</EmptyDescription>
       </EmptyHeader>
-      {action && <EmptyContent>{action}</EmptyContent>}
+      <EmptyContent>
+        {action ?? (
+          <Button
+            variant="outline"
+            onClick={() =>
+              window.history.length > 1 ? router.back() : router.push("/")
+            }
+          >
+            {t("back")}
+          </Button>
+        )}
+      </EmptyContent>
     </Empty>
   );
 }

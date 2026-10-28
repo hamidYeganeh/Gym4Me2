@@ -1,35 +1,34 @@
 "use client";
-import { TuitionPlan } from "@repo/ui/sports-tuition";
-import { IranianDateInput } from "@repo/ui/kit/IranianDateInput";
-import { ReceiptForm } from "@repo/ui/sports-receipts";
-import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
-import { useTrainingEvent } from "@repo/ui/training";
-import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
-import { ReservationSummary } from "./reservation-design";
-import { Check } from "lucide-react";
-import Link from "next/link";
-import { useId, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import {
+  useSportsCommand,
+  useSportsQuery,
+  type MembershipDto,
+  type OrderDto,
+  type ParticipantDto,
+  type PaymentAttemptDto,
+  type QuoteDto,
+  type ServiceDto,
+} from "@repo/api/sports";
 import { useLocale, useTranslations } from "@repo/i18n";
-import { checkoutIssue } from "../../lib/checkout-availability";
+import { CheckIcon as Check } from "@repo/ui/icons";
+import { Input as KitInput } from "@repo/ui/kit/Input";
+import { IranianDateInput } from "@repo/ui/kit/IranianDateInput";
+import { NativeSelect, NativeSelectOption } from "@repo/ui/kit/NativeSelect";
 import { boundedCount } from "@repo/ui/lib/integer-input";
-import { useAppClock } from "./use-app-clock";
-import { paymentGatewayDestination } from "../../lib/payment-gateway";
+import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
+import { ReceiptForm } from "@repo/ui/sports-receipts";
+import { TuitionPlan } from "@repo/ui/sports-tuition";
+import { useTrainingEvent } from "@repo/ui/training";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useId, useRef, useState } from "react";
+import { checkoutIssue } from "../../lib/checkout-availability";
 import {
   remainingMembershipSessions,
   renewableCheckoutMemberships,
   usableCheckoutMemberships,
 } from "../../lib/checkout-memberships";
-import {
-  useSportsQuery,
-  useSportsCommand,
-  type ServiceDto,
-  type MembershipDto,
-  type OrderDto,
-  type QuoteDto,
-  type PaymentAttemptDto,
-  type ParticipantDto,
-} from "@repo/api/sports";
+import { paymentGatewayDestination } from "../../lib/payment-gateway";
 import {
   CommandError,
   Empty,
@@ -41,11 +40,15 @@ import {
   stamp,
   useLuma,
 } from "./common";
+import { ReservationSummary } from "./reservation-design";
+import { useCheckoutSelection } from "../../lib/checkout-selection";
+import { useAppClock } from "./use-app-clock";
 export function CheckoutPage() {
+  const selection = useCheckoutSelection();
   const params = useSearchParams();
-  const service = params.get("service");
+  const service = params.get("service") ?? selection.service ?? null;
   useTrainingEvent("checkout_opened", service);
-  const occurrence = params.get("occurrence");
+  const occurrence = params.get("occurrence") ?? (service === selection.service ? selection.occurrence ?? null : null);
   return (
     <CheckoutForm
       key={`${service ?? ""}:${occurrence ?? ""}:${params.get("renew") ?? ""}:${params.get("dependent") ?? ""}`}
@@ -179,7 +182,7 @@ function CheckoutForm({
   return (
     <LumaPage
       title={copy("reviewCheckout")}
-      back={`/services/detail?id=${service}`}
+      back={`/discovery/classes/${query.data?.publicId ?? service}`}
       className="checkout-page"
     >
       <QueryState query={query}>
@@ -202,7 +205,7 @@ function CheckoutForm({
                 {t(unavailable)}{" "}
                 <Link
                   className="underline"
-                  href={`/services/detail?id=${service}`}
+                  href={`/discovery/classes/${query.data?.publicId ?? service}`}
                 >
                   {t("chooseSession")}
                 </Link>
@@ -210,7 +213,7 @@ function CheckoutForm({
             )}
             {query.data.kind === "access" && (
               <Field label={w("quantity")}>
-                <input
+                <KitInput
                   type="number"
                   step={1}
                   disabled={busy}
@@ -293,7 +296,7 @@ function CheckoutForm({
                 <fieldset className="luma-group my-3 p-4 grid gap-3" key={i}>
                   <legend>{w("participant", { number: i + 1 })}</legend>
                   <Field label={w("name")}>
-                    <input
+                    <KitInput
                       value={person.name}
                       disabled={busy}
                       maxLength={120}
@@ -521,7 +524,7 @@ function CheckoutForm({
                   </p>
                 )}
                 <Field label={t("coupon")}>
-                  <input
+                  <KitInput
                     value={coupon}
                     disabled={busy}
                     onChange={(e) => {
@@ -581,7 +584,7 @@ function CheckoutForm({
                     key.current ??= crypto.randomUUID();
                     enrollSeries.mutate(
                       {
-                        serviceId: service,
+                        serviceId: query.data?.id ?? service,
                         seriesId: selected.seriesId,
                         membershipId: membership,
                         dependentId: dependentId || undefined,
@@ -631,7 +634,7 @@ function CheckoutForm({
                       checkout.reset();
                       quote.mutate(
                         {
-                          serviceId: service,
+                          serviceId: query.data?.id ?? service,
                           ...purchaseDetails,
                           occurrenceId: ["membership", "program"].includes(
                             query.data?.kind ?? "",
@@ -657,7 +660,7 @@ function CheckoutForm({
                     key.current ??= crypto.randomUUID();
                     checkout.mutate(
                       {
-                        serviceId: service,
+                        serviceId: query.data?.id ?? service,
                         ...purchaseDetails,
                         occurrenceId: ["membership", "program"].includes(
                           query.data?.kind ?? "",

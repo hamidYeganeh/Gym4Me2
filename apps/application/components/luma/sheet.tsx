@@ -1,17 +1,17 @@
 "use client";
-import { useRef, type ReactNode } from "react";
-import { useOverlayHistory } from "@repo/ui/hooks/use-overlay-history";
-import { restoreOverlayFocus } from "@repo/ui/lib/active-surface";
 import { useTranslations } from "@repo/i18n";
-import { X } from "lucide-react";
+import { useOverlayHistory } from "@repo/ui/hooks/use-overlay-history";
+import { CloseXIcon as X } from "@repo/ui/icons";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
-  SheetClose,
 } from "@repo/ui/kit/Sheet";
+import { restoreOverlayFocus } from "@repo/ui/lib/active-surface";
+import { useRef, type ReactNode } from "react";
 /** Focus trap, escape, keyboard-safe scrolling and native back share one dismissal. */
 export function LumaSheet({
   open,

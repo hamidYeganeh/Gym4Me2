@@ -166,3 +166,14 @@ export function useModerateReview() {
     [["admin"], ["catalog"], ["profile"]],
   );
 }
+
+export function useInitializeCatalog() {
+  return useApiMutation(
+    (api) =>
+      api.request<{ added: number }>({
+        method: "POST",
+        path: "admin/catalog-bootstrap",
+      }),
+    [["admin"], ["catalog"]],
+  );
+}

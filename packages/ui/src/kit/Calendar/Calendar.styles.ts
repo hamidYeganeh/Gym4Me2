@@ -42,7 +42,7 @@ export const calendarClassNames = {
   captionlabel11: cva("font-medium select-none"),
   captionlabel12: cva("text-sm"),
   captionlabel13: cva(
-    "flex items-center gap-1 rounded-(--cell-radius) text-sm [&>svg]:size-3.5 [&>svg]:text-muted-foreground",
+    "flex items-center gap-1 rounded-(--cell-radius) text-sm [&>:is(svg,.sandow-icon)]:size-3.5 [&>:is(svg,.sandow-icon)]:text-muted-foreground",
   ),
   monthgrid14: cva("w-full border-collapse"),
   weekdays15: cva("flex"),

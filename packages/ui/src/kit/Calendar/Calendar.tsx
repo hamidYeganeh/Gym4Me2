@@ -1,5 +1,5 @@
 "use client";
-import { calendarStyles, calendarClassNames } from "./Calendar.styles";
+import { calendarClassNames, calendarStyles } from "./Calendar.styles";
 import type { CalendarDayButtonProps, CalendarProps } from "./Calendar.types";
 
 import { cn } from "@repo/ui/lib/utils";
@@ -11,7 +11,7 @@ import {
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-} from "lucide-react";
+} from "../../icons";
 
 function Calendar({
   className,

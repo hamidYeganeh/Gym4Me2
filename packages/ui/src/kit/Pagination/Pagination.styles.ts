@@ -11,7 +11,7 @@ export const paginationStyles = {
   paginationNext2: cva("hidden sm:block"),
   paginationNext3: cva("rtl:rotate-180"),
   paginationEllipsis: cva(
-    "flex size-9 items-center justify-center [&_svg:not([class*='size-'])]:size-4",
+    "flex size-9 items-center justify-center [&_:is(svg,.sandow-icon):not([class*='size-'])]:size-4",
   ),
   paginationEllipsis2: cva("sr-only"),
 };

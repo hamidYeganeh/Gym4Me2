@@ -1,19 +1,33 @@
 "use client";
-import Image from "next/image";
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@repo/ui/kit/Dialog";
 import { useTranslations } from "@repo/i18n";
 import {
+  Copy1Icon as Copy,
+  ChatIcon as MessageCircle,
+  PaperPlaneDiagonalIcon as Send,
+  Share2Icon as Share2,
+  CloseXIcon as X,
+} from "@repo/ui/icons";
+import { Button } from "@repo/ui/kit/Button";
+import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
+import {
   Drawer,
+  DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-  DrawerDescription,
-  DrawerClose,
 } from "@repo/ui/kit/Drawer";
-import { Button } from "@repo/ui/kit/Button";
-import { Bookmark, Copy, Share2, X, Send, MessageCircle } from "lucide-react";
+import { Like } from "@repo/ui/kit/Like";
 import { toast } from "@repo/ui/kit/Sileo";
+import Image from "next/image";
 import { useClubUrl } from "./use-club-url";
-import type { ClubDetailData } from "@repo/ui/kit/ClubDetail";
 export function ClubShareSheet({
   club,
   branchId,
@@ -32,7 +46,8 @@ export function ClubShareSheet({
   onSavedChange: (saved: boolean) => void;
 }) {
   const t = useTranslations("Clubs");
-  const url = useClubUrl(club.id, branchId);
+  const [fullscreen, setFullscreen] = useState(false);
+  const url = useClubUrl(club.slug ?? club.id, branchId);
   async function copy() {
     if (!url) {
       toast.info(t("shareUnavailable"));
@@ -60,16 +75,40 @@ export function ClubShareSheet({
           <DrawerDescription>{t("shareDescription")}</DrawerDescription>
         </DrawerHeader>
         <div className="flex min-h-0 flex-col gap-4 overflow-y-auto px-4 pb-2">
-          <div className="relative aspect-[1200/630] shrink-0 overflow-hidden rounded-3xl bg-muted">
+          <button
+            type="button"
+            aria-label={t("viewFullscreen")}
+            onClick={() => setFullscreen(true)}
+            className="relative aspect-[1200/630] w-full shrink-0 cursor-zoom-in overflow-hidden rounded-3xl focus-visible:outline-2 focus-visible:outline-ring"
+          >
             <Image
               src={club.photos[0].src}
               alt={`${club.name} · ${club.category}`}
               fill
               sizes="544px"
-              className="object-contain"
+              className="object-cover"
               unoptimized
             />
-          </div>
+          </button>
+          <Dialog open={fullscreen} onOpenChange={setFullscreen}>
+            <DialogContent
+              className="club-image-fullscreen !translate-x-0 !translate-y-0 rtl:!translate-x-0 !bg-[#101113]"
+              aria-describedby={undefined}
+            >
+              <DialogTitle className="sr-only">{club.name}</DialogTitle>
+              <DialogDescription className="sr-only">
+                {t("viewFullscreen")}
+              </DialogDescription>
+              <Image
+                src={club.photos[0].src}
+                alt={`${club.name} · ${club.category}`}
+                fill
+                sizes="100vw"
+                className="object-contain"
+                unoptimized
+              />
+            </DialogContent>
+          </Dialog>
           <div className="flex items-center gap-3 rounded-2xl bg-muted p-3">
             <div className="min-w-0 flex-1">
               <p className="text-xs text-muted-foreground">{t("clubLink")}</p>
@@ -87,14 +126,13 @@ export function ClubShareSheet({
             </Button>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <Button
+            <Like
               variant="outline"
               onClick={() => onSavedChange(!saved)}
               aria-pressed={saved}
             >
-              <Bookmark data-icon="inline-start" />
               {saved ? t("unsave") : t("save")}
-            </Button>
+            </Like>
             <Button onClick={onShare}>
               <Share2 data-icon="inline-start" />
               {t("nativeShare")}

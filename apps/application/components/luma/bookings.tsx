@@ -1,23 +1,29 @@
 "use client";
-import { TuitionPlan } from "@repo/ui/sports-tuition";
-import { ReceiptForm } from "@repo/ui/sports-receipts";
-import { ConfirmAction } from "@repo/ui/confirm-action";
-import { BookingCalendar } from "./booking-calendar";
-import { NativeSelect } from "@repo/ui/kit/NativeSelect";
-import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale } from "@repo/i18n";
+import { WorkoutTimer } from "@repo/ui/training";
 import {
-  useSportsQuery,
   useSportsCommand,
+  useSportsQuery,
   type BookingDto,
   type MembershipDto,
   type OrderDto,
   type ServiceDto,
   type WaitlistDto,
 } from "@repo/api/sports";
+import { useLocale, useTranslations } from "@repo/i18n";
+import { ServiceReviewForm } from "@repo/ui/training";
+import { ConfirmAction } from "@repo/ui/confirm-action";
+import { Input as KitInput } from "@repo/ui/kit/Input";
+import { NativeSelect } from "@repo/ui/kit/NativeSelect";
+import { boundedCount } from "@repo/ui/lib/integer-input";
+import { ServiceEligibilitySummary } from "@repo/ui/sports-eligibility";
+import { ReceiptForm } from "@repo/ui/sports-receipts";
+import { TuitionPlan } from "@repo/ui/sports-tuition";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { membershipAccess } from "../../lib/membership-access";
+import { rescheduleOptions } from "../../lib/reschedule-options";
+import { BookingCalendar } from "./booking-calendar";
 import {
   CommandError,
   Empty,
@@ -31,12 +37,8 @@ import {
   useLuma,
 } from "./common";
 import { ReservationSummary } from "./reservation-design";
-import { useTranslations } from "@repo/i18n";
 import { LumaSheet } from "./sheet";
-import { rescheduleOptions } from "../../lib/reschedule-options";
 import { useAppClock } from "./use-app-clock";
-import { membershipAccess } from "../../lib/membership-access";
-import { boundedCount } from "@repo/ui/lib/integer-input";
 export function BookingsPage() {
   const t = useLuma();
   return (
@@ -107,6 +109,8 @@ export function BookingDetail() {
               state={query.data.status}
               orderTotal
             />
+            {query.data.status === "completed" && query.data.organizationId && now !== null && new Date(query.data.endAt).getTime() <= now && <ServiceReviewForm clubId={query.data.organizationId} branchId={query.data.branchId} reservationId={query.data.id} returnTo="/bookings" />}
+            {query.data.status === "confirmed" && <WorkoutTimer sessionKey={`athlete:${query.data.id}`} />}
             <details className="reservation-policy">
               <summary>{copy("cancellationPolicy")}</summary>
               <p className="luma-meta whitespace-pre-wrap">
@@ -328,7 +332,7 @@ export function MembershipDetail() {
             {query.data.status === "active" &&
               query.data.policy.freezeDays > 0 && (
                 <Field label={t("days")}>
-                  <input
+                  <KitInput
                     type="number"
                     min={1}
                     max={query.data.policy.freezeDays}

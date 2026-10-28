@@ -1,13 +1,20 @@
 "use client";
 import { Logo } from "@repo/theme/logo";
 
-import Link from "next/link";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
-import { KeyRound, ShieldCheck, Smartphone, Sparkles, X } from "lucide-react";
 import { useTranslations } from "@repo/i18n";
-import { Button } from "../kit/Button";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useOverlayHistory } from "../hooks/use-overlay-history";
+import {
+  Key1Icon as KeyRound,
+  ShieldCheckIcon as ShieldCheck,
+  MobileIcon as Smartphone,
+  StarFourIcon as Sparkles,
+  CloseXIcon as X,
+} from "../icons";
+import { Button } from "../kit/Button";
 import {
   Empty,
   EmptyContent,
@@ -25,12 +32,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../kit/Sheet";
-import { useOverlayHistory } from "../hooks/use-overlay-history";
-import { safeReturnPath } from "./safe-return-path";
-import { applicationAuthHref } from "../lib/auth-routes";
 import { isActiveSurfaceElement } from "../lib/active-surface";
-import { LoginPolicyNotice } from "./login-policy";
+import { applicationAuthHref } from "../lib/auth-routes";
 import "./auth-controls.css";
+import { LoginPolicyNotice } from "./login-policy";
+import { safeReturnPath } from "./safe-return-path";
 
 /** A single entry point for both new and returning athletes. */
 export function AuthEntryButton({

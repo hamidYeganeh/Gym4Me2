@@ -1,5 +1,5 @@
-import type { SocialLink } from "../SocialIcon";
 import type { VariantProps } from "class-variance-authority";
+import type { SocialLink } from "../SocialIcon";
 import type { coachCardVariants } from "./CoachCard.styles";
 
 export type CoachSummary = {
@@ -12,6 +12,7 @@ export type CoachSummary = {
   yearsOfExperience: number;
   isNew?: boolean;
   photo?: { src: string; alt: string };
+  photos?: { src: string; alt: string }[];
   socialLinks?: SocialLink[];
 };
 export type CoachCardVariants = VariantProps<typeof coachCardVariants>;

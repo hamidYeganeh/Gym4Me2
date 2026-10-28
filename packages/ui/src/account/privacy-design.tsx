@@ -1,9 +1,14 @@
 "use client";
 
+import { useTranslations } from "@repo/i18n";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Database, ShieldCheck, Settings2, UserRoundCheck } from "lucide-react";
-import { useTranslations } from "@repo/i18n";
+import {
+  DatabaseIcon as Database,
+  Gear2Icon as Settings2,
+  ShieldCheckIcon as ShieldCheck,
+  UserCheckIcon as UserRoundCheck,
+} from "../icons";
 import { Button } from "../kit/Button";
 
 export function PrivacyDesignPage({

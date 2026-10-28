@@ -1,4 +1,55 @@
 {
+  "ClubCollections": {
+    "classes": "Club classes",
+    "seeAll": "See all",
+    "noClasses": "No classes are available yet.",
+    "noCoaches": "No coaches have been listed for this branch yet."
+  },
+  "ClubLocation": {
+    "title": "Club location",
+    "map": "Map of {branch}",
+    "directions": "Directions",
+    "noLocation": "Location not provided",
+    "noAddress": "Address not provided"
+  },
+  "Bencho": {
+    "addReaction": "Add a reaction",
+    "signInToReact": "Sign in to react",
+    "like": "Like",
+    "love": "Love",
+    "haha": "Haha",
+    "wow": "Wow",
+    "sad": "Sad",
+    "thanks": "Thanks",
+    "nice": "Nice",
+    "celebrate": "Celebrate",
+    "looking": "Looking",
+    "done": "Done",
+    "ship it": "Ship it",
+    "fire": "Fire",
+    "red": "Red",
+    "orange": "Orange",
+    "yellow": "Yellow",
+    "green": "Green",
+    "blue": "Blue",
+    "purple": "Purple",
+    "save": "Save",
+    "unsave": "Unsave",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "less": "Decrease",
+    "more": "Increase",
+    "count": "Count. Drag up or down to change it.",
+    "back": "Back"
+  },
+  "DiscoverySections": {
+    "viewClub": "View club",
+    "viewCoach": "View coach",
+    "clubs": "Recommended clubs",
+    "coaches": "Discover coaches",
+    "classes": "Classes for you",
+    "seeAll": "See all"
+  },
   "SheetPicker": {
     "loading": "Loading options…",
     "loadError": "Options could not be loaded.",
@@ -139,7 +190,7 @@
     "distanceUnavailable": "Unavailable",
     "coachCount": "Coaches",
     "reviews": "Reviews",
-    "visit": "Plan a visit",
+    "visit": "Book now",
     "perVisit": "per visit",
     "planDescription": "Save a personal visit plan on this device. This is not a booking; confirm availability with the club before visiting.",
     "date": "Visit date",
@@ -163,9 +214,12 @@
     "branches": "Club branches",
     "viewLocation": "View branch location",
     "featured": "Featured",
-    "compare": "Compare club"
+    "compare": "Compare club",
+    "viewFullscreen": "View image fullscreen"
   },
   "Coaches": {
+    "popular": "Popular coaches",
+    "reviews": "Reviews",
     "title": "Club coaches",
     "previous": "Previous coach",
     "next": "Next coach",
@@ -192,6 +246,7 @@
     "photo": "Photo {number}"
   },
   "Social": {
+    "profiles": "Find us online",
     "title": "Share this on",
     "shareOn": "Share on {platform}",
     "facebook": "Facebook",
@@ -255,12 +310,13 @@
     "empty": "No reviews yet."
   },
   "CoachDetail": {
-    "back": "Back to club",
+    "back": "Back to discovery",
     "gallery": "Coach gallery",
     "photo": "Photo",
     "about": "About the coach",
     "club": "View club",
-    "description": "Training tailored to your goals and fitness level, with a focus on proper technique and steady progress."
+    "description": "Training tailored to your goals and fitness level, with a focus on proper technique and steady progress.",
+    "share": "Share coach"
   },
   "Copy": {
     "clubType": "Club type",
@@ -814,7 +870,8 @@
     "sessionAlreadyReserved": "You already reserved this session. Open My bookings to see its details.",
     "membershipExhausted": "No unreserved sessions remain on this membership. Check its balance and active bookings.",
     "nativePushUnavailable": "Native notification delivery is not configured for this platform.",
-    "serviceUnavailable": "This service is unavailable."
+    "serviceUnavailable": "This service is unavailable.",
+    "phoneChangesDisabled": "Mobile number changes are currently disabled."
   },
   "Preview": {
     "atlasAthleticClub": "Atlas Athletic Club",
@@ -1043,6 +1100,7 @@
     "uploadImage": "Upload image"
   },
   "Catalog": {
+    "imageUrl": "Image URL",
     "noTariff": "Prices not announced yet",
     "noRating": "No ratings yet",
     "loading": "Loading club information…",
@@ -1359,7 +1417,8 @@
     "moveCaption": "GYM4ME / EVERY DAY",
     "moveLine1": "MAKE",
     "moveLine2": "YOUR",
-    "moveLine3": "MOVE."
+    "moveLine3": "MOVE.",
+    "nameLabel": "Full name"
   },
   "PrivacyDesign": {
     "dataTitle": "Only the information your account needs",
@@ -3582,5 +3641,147 @@
     "home": "Return home",
     "notFoundTitle": "Page not found",
     "notFoundDescription": "This address does not exist or is no longer available. Continue from the home page."
+  },
+  "CoachSamples": {
+    "title": "Student transformations",
+    "before": "Before",
+    "after": "After",
+    "compare": "Compare before and after",
+    "position": "{value}% before image revealed",
+    "sample": "Sample {number}",
+    "caption": "Caption (optional)",
+    "fileHint": "JPG, PNG or WebP · up to 4 MB per image. Choose photos with similar framing.",
+    "invalidFile": "Choose a JPG, PNG or WebP image under 4 MB.",
+    "save": "Save sample",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "swap": "Swap before / after",
+    "up": "Move sample up",
+    "down": "Move sample down",
+    "delete": "Delete sample",
+    "add": "Add sample",
+    "count": "{count} / 5",
+    "hint": "Add up to five before-and-after pairs. Samples appear on your public coach profile.",
+    "empty": "No student samples yet.",
+    "limit": "You can add up to five samples.",
+    "bothRequired": "Choose both a before and an after image.",
+    "imageUnavailable": "This image is unavailable."
+  },
+  "WorkoutTimer": {
+    "title": "Workout timer",
+    "elapsed": "Workout time",
+    "rest": "Rest",
+    "mode": "Timer mode",
+    "restDuration": "Rest · {seconds}s",
+    "pause": "Pause timer",
+    "start": "Start or resume timer",
+    "restart": "Restart timer",
+    "reset": "Reset timer",
+    "collapse": "Collapse timer",
+    "expand": "Expand timer",
+    "finished": "Rest complete",
+    "hint": "Track your workout or choose a rest interval. Pause before switching."
+  },
+  "ClubFaq": {
+    "title": "Frequently asked questions",
+    "hint": "Add up to 20 questions and answers. These appear on your public club page when you save the profile.",
+    "question": "Question {number}",
+    "answer": "Answer",
+    "up": "Move question up",
+    "down": "Move question down",
+    "remove": "Remove question",
+    "add": "Add question"
+  },
+  "DiscoveryRoutes": {
+    "classes": "Classes",
+    "viewClasses": "Explore club classes",
+    "backToClub": "Back to club"
+  },
+  "SearchInput": {
+    "search": "Search",
+    "clear": "Clear search"
+  },
+  "CoachInformation": {
+    "details": "Coach information",
+    "specialties": "Specialties",
+    "experience": "Coaching experience",
+    "years": "{count, plural, one {# year} other {# years}}",
+    "trainingAt": "Training location",
+    "location": "City and area",
+    "goals": "Goals I can help with",
+    "noServices": "No bookable services are currently listed."
+  },
+  "ClassCatalog": {
+    "save": "Save class",
+    "unsave": "Remove saved class",
+    "minutes": "min",
+    "calories": "kcal",
+    "score": "Score"
+  },
+  "CatalogIcons": {
+    "label": "Icon",
+    "choose": "Choose icon",
+    "reset": "Use default",
+    "title": "Sandow icon library",
+    "description": "Choose a duotone font icon for this category. Search by its English name.",
+    "search": "Search icons (for example: swim, barbell, run)",
+    "empty": "No matching icons",
+    "more": "Show more"
+  },
+  "DiscoveryAdmin": {
+    "title": "Discovery content",
+    "hint": "Create, arrange and publish banners and sections for each discovery page.",
+    "create": "New section",
+    "edit": "Edit section",
+    "page": "Page",
+    "home": "Discovery",
+    "clubs": "Clubs",
+    "coaches": "Coaches",
+    "classes": "Classes",
+    "map": "Map",
+    "heading": "Title",
+    "subtitle": "Subtitle",
+    "position": "Display order",
+    "layout": "Layout",
+    "ratio": "Image ratio",
+    "single": "Single banner",
+    "carousel": "Carousel",
+    "grid": "Grid",
+    "slide": "Slide",
+    "image": "HTTPS image URL",
+    "href": "Internal link (optional)",
+    "moveUp": "Move up",
+    "remove": "Remove",
+    "addSlide": "Add slide",
+    "published": "Published",
+    "draft": "Draft",
+    "save": "Save"
+  },
+  "BusinessFlow": {
+    "progress": "Step {current} of {total}",
+    "previous": "Previous step",
+    "next": "Continue",
+    "phones": "Club contact numbers",
+    "phoneLabel": "Contact label",
+    "labelExamples": "For example, management office or reception",
+    "phoneNumber": "Phone number",
+    "extension": "Extension (optional)",
+    "primaryPhone": "Primary number",
+    "remove": "Remove number",
+    "addPhone": "Add contact number",
+    "mapHint": "Click the map or drag the marker. You can also enter coordinates manually.",
+    "mapLabel": "Choose branch location on the map",
+    "mapUnavailable": "The map is unavailable. Enter coordinates manually.",
+    "initialTitle": "Initial platform data",
+    "initialHint": "Add sports, equipment, amenities, categories, accessibility options and initial Iran locations. Existing data stays unchanged.",
+    "initialize": "Add initial data",
+    "initialAdded": "Added {count} new entries.",
+    "review": "Review and save",
+    "section": "Section {number}"
+  },
+  "ProfileRefresh": {
+    "hint": "Manage your personal details and profile visibility.",
+    "phoneFixed": "Your sign-in mobile number cannot currently be changed."
   }
 }

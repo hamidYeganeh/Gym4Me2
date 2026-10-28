@@ -34,6 +34,7 @@ export function publicServiceFixtures(now = new Date()): ServiceDto[] {
     changes: Partial<ServiceDto> = {},
   ): ServiceDto => ({
     id: webFixtureId(index),
+    publicId: `fixture-service-${index}`,
     organizationId: webFixtureId(900),
     branchId: webFixtureId(901),
     clubName: "باشگاه نمونه آفتاب",

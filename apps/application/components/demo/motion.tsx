@@ -1,77 +1,84 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { Check, Copy, Heart, Star, Sun, Moon } from "lucide-react";
 import { useTheme } from "@repo/theme/provider";
+import {
+  CheckIcon as Check,
+  Copy1Icon as Copy,
+  HeartIcon as Heart,
+  MoonIcon as Moon,
+  StarFullIcon as Star,
+  SunIcon as Sun,
+} from "@repo/ui/icons";
+import { AnimatedThemeToggler } from "@repo/ui/kit/AnimatedThemeToggler";
+import { AnimateIcon } from "@repo/ui/kit/AnimateIcon";
+import { AnimateUIProvider } from "@repo/ui/kit/AnimateUIProvider";
+import { AutoHeight } from "@repo/ui/kit/AutoHeight";
+import { Blur } from "@repo/ui/kit/Blur";
 import { Button, buttonVariants } from "@repo/ui/kit/Button";
-import { RippleButton, RippleButtonRipples } from "@repo/ui/kit/RippleButton";
-import { LiquidButton } from "@repo/ui/kit/LiquidButton";
+import { Click } from "@repo/ui/kit/Click";
+import { CodeBlock } from "@repo/ui/kit/CodeBlock";
+import { CopyButton, CopyButtonIcon } from "@repo/ui/kit/CopyButton";
+import { CountingNumber } from "@repo/ui/kit/CountingNumber";
+import { Cursor, CursorContainer, CursorProvider } from "@repo/ui/kit/Cursor";
+import { Effect } from "@repo/ui/kit/Effect";
+import { Fade } from "@repo/ui/kit/Fade";
 import {
   FlipButton,
-  FlipButtonFront,
   FlipButtonBack,
+  FlipButtonFront,
 } from "@repo/ui/kit/FlipButton";
-import { CopyButton, CopyButtonIcon } from "@repo/ui/kit/CopyButton";
-import { IconButton, IconButtonParticles } from "@repo/ui/kit/IconButton";
+import { GithubStars, GithubStarsNumber } from "@repo/ui/kit/GitHubStars";
 import {
   GitHubStarsButton,
   GitHubStarsButtonNumber,
 } from "@repo/ui/kit/GitHubStarsButton";
-import { GithubStars, GithubStarsNumber } from "@repo/ui/kit/GitHubStars";
-import { AnimatedThemeToggler } from "@repo/ui/kit/AnimatedThemeToggler";
-import { ThemeToggler } from "@repo/ui/kit/ThemeToggler";
-import { ThemeTogglerButton } from "@repo/ui/kit/ThemeTogglerButton";
 import { GradientText } from "@repo/ui/kit/GradientText";
+import { Highlight } from "@repo/ui/kit/Highlight";
 import { HighlightText } from "@repo/ui/kit/HighlightText";
+import { IconButton, IconButtonParticles } from "@repo/ui/kit/IconButton";
+import { ImageZoom, Image as ZoomImage } from "@repo/ui/kit/ImageZoom";
+import { LiquidButton } from "@repo/ui/kit/LiquidButton";
+import { Magnetic } from "@repo/ui/kit/Magnetic";
 import { MorphingText } from "@repo/ui/kit/MorphingText";
+import { MotionGrid, MotionGridCells } from "@repo/ui/kit/MotionGrid";
+import { PageTransition } from "@repo/ui/kit/PageTransition";
+import { Particles, ParticlesEffect } from "@repo/ui/kit/Particles";
+import {
+  PinnedList,
+  PinnedListItem,
+  PinnedListItems,
+  PinnedListPinned,
+  PinnedListUnpinned,
+} from "@repo/ui/kit/PinnedList";
+import { RippleButton, RippleButtonRipples } from "@repo/ui/kit/RippleButton";
 import { RollingText } from "@repo/ui/kit/RollingText";
 import { RotatingText, RotatingTextContainer } from "@repo/ui/kit/RotatingText";
-import { ShimmeringText } from "@repo/ui/kit/ShimmeringText";
-import { SlidingText } from "@repo/ui/kit/SlidingText";
-import { SplittingText } from "@repo/ui/kit/SplittingText";
-import { SwappingText } from "@repo/ui/kit/SwappingText";
-import { TypingText, TypingTextCursor } from "@repo/ui/kit/TypingText";
-import { CountingNumber } from "@repo/ui/kit/CountingNumber";
-import { SlidingNumber } from "@repo/ui/kit/SlidingNumber";
+import { ScrollFade } from "@repo/ui/kit/ScrollFade";
 import {
   ScrollingNumber,
   ScrollingNumberContainer,
-  ScrollingNumberItems,
   ScrollingNumberHighlight,
+  ScrollingNumberItems,
 } from "@repo/ui/kit/ScrollingNumber";
-import { Fade } from "@repo/ui/kit/Fade";
-import { Blur } from "@repo/ui/kit/Blur";
-import { Slide } from "@repo/ui/kit/Slide";
-import { Zoom } from "@repo/ui/kit/Zoom";
-import { Effect } from "@repo/ui/kit/Effect";
-import { AutoHeight } from "@repo/ui/kit/AutoHeight";
-import { Tilt, TiltContent } from "@repo/ui/kit/Tilt";
-import { Shine } from "@repo/ui/kit/Shine";
-import { Magnetic } from "@repo/ui/kit/Magnetic";
-import { Highlight } from "@repo/ui/kit/Highlight";
-import { ImageZoom, Image as ZoomImage } from "@repo/ui/kit/ImageZoom";
-import { ScrollFade } from "@repo/ui/kit/ScrollFade";
-import { Particles, ParticlesEffect } from "@repo/ui/kit/Particles";
-import { Click } from "@repo/ui/kit/Click";
-import { Cursor, CursorContainer, CursorProvider } from "@repo/ui/kit/Cursor";
-import { MotionGrid, MotionGridCells } from "@repo/ui/kit/MotionGrid";
-import { Spring, SpringProvider, SpringElement } from "@repo/ui/kit/Spring";
-import {
-  PinnedList,
-  PinnedListPinned,
-  PinnedListUnpinned,
-  PinnedListItems,
-  PinnedListItem,
-} from "@repo/ui/kit/PinnedList";
 import {
   ScrollProgress,
   ScrollProgressContainer,
   ScrollProgressProvider,
 } from "@repo/ui/kit/ScrollProgress";
-import { CodeBlock } from "@repo/ui/kit/CodeBlock";
-import { PageTransition } from "@repo/ui/kit/PageTransition";
-import { AnimateUIProvider } from "@repo/ui/kit/AnimateUIProvider";
-import { AnimateIcon } from "@repo/ui/kit/AnimateIcon";
+import { ShimmeringText } from "@repo/ui/kit/ShimmeringText";
+import { Shine } from "@repo/ui/kit/Shine";
+import { Slide } from "@repo/ui/kit/Slide";
+import { SlidingNumber } from "@repo/ui/kit/SlidingNumber";
+import { SlidingText } from "@repo/ui/kit/SlidingText";
+import { SplittingText } from "@repo/ui/kit/SplittingText";
+import { Spring, SpringElement, SpringProvider } from "@repo/ui/kit/Spring";
+import { SwappingText } from "@repo/ui/kit/SwappingText";
+import { ThemeToggler } from "@repo/ui/kit/ThemeToggler";
+import { ThemeTogglerButton } from "@repo/ui/kit/ThemeTogglerButton";
+import { Tilt, TiltContent } from "@repo/ui/kit/Tilt";
+import { TypingText, TypingTextCursor } from "@repo/ui/kit/TypingText";
+import { Zoom } from "@repo/ui/kit/Zoom";
+import { useRef, useState } from "react";
 import type { DemoExample } from "./types";
 
 const text = "برای خودت وقت بذار";

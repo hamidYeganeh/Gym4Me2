@@ -4,6 +4,7 @@ import type { clubCardStyles } from "./ClubCard.styles";
 export type ClubPhoto = { src: string; alt: string };
 export type ClubSummary = {
   id: string;
+  slug?: string;
   href?: string;
   name: string;
   category: string;

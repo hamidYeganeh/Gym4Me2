@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { Plus } from "lucide-react";
+import { PlusIcon as Plus } from "../icons";
 import { BottomSheet } from "../kit/BottomSheet";
 import { Button } from "../kit/Button";
 

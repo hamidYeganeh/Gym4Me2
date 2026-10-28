@@ -1,4 +1,5 @@
 "use client";
+import { BusinessFormSteps } from "./business-form-steps";
 import { useRef, useState, type FormEvent } from "react";
 import { toast } from "../kit/Sileo";
 import { changeReasonError } from "./change-reason";
@@ -384,136 +385,146 @@ function TariffForm({
       className="grid gap-5 rounded-2xl border p-4 [&_input]:min-h-11 [&_select]:min-h-11"
     >
       <fieldset disabled={save.isPending} className="grid gap-5">
-        <h3 className="font-semibold">{t(previous ? "revise" : "add")}</h3>
-        <TextField
-          name="tariffName"
-          label={t("name")}
-          defaultValue={previous?.name ?? ""}
-          required
-          minLength={2}
-          maxLength={120}
-        />
-        <div className="grid gap-4 sm:grid-cols-2">
-          <Field>
-            <FieldLabel htmlFor="serviceType">{t("service")}</FieldLabel>
-            <NativeSelect
-              id="serviceType"
-              name="serviceType"
-              defaultValue={previous?.serviceType ?? "visit"}
-            >
-              {services.map((service) => (
-                <NativeSelectOption key={service} value={service}>
-                  {t(`service_${service}`)}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="unit">{t("unit")}</FieldLabel>
-            <NativeSelect
-              id="unit"
-              name="unit"
-              defaultValue={previous?.unit ?? "visit"}
-            >
-              {units.map((unit) => (
-                <NativeSelectOption key={unit} value={unit}>
-                  {t(`unit_${unit}`)}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </Field>
-        </div>
-        {!previous && (
-          <Field>
-            <FieldLabel htmlFor="tariffBranch">{t("branch")}</FieldLabel>
-            <NativeSelect
-              id="tariffBranch"
-              name="tariffBranch"
-              defaultValue={allBranches ? "" : club.branches[0]?.id}
-            >
-              {allBranches && (
-                <NativeSelectOption value="">
-                  {t("allBranches")}
-                </NativeSelectOption>
-              )}
-              {club.branches.map((branch) => (
-                <NativeSelectOption key={branch.id} value={branch.id}>
-                  {branch.name}
-                </NativeSelectOption>
-              ))}
-            </NativeSelect>
-          </Field>
-        )}
-        <TextField
-          name="priceToman"
-          type="number"
-          label={t("price")}
-          defaultValue={previous?.priceToman ?? ""}
-          required
-          min={0}
-          max={1000000000}
-          step={1}
-        />
-        <div className="grid gap-4 sm:grid-cols-2">
-          <TextField
-            name="durationDays"
-            type="number"
-            label={t("duration")}
-            defaultValue={previous?.durationDays ?? ""}
-            min={1}
-            max={3660}
-            step={1}
-          />
-          <TextField
-            name="sessionCount"
-            type="number"
-            label={t("sessions")}
-            defaultValue={previous?.sessionCount ?? ""}
-            min={1}
-            max={10000}
-            step={1}
-          />
-        </div>
-        <Field>
-          <FieldLabel htmlFor="includedServices">{t("included")}</FieldLabel>
-          <Textarea
-            id="includedServices"
-            name="includedServices"
-            defaultValue={previous?.includedServices?.join("\n") ?? ""}
-          />
-        </Field>
-        <Field>
-          <FieldLabel htmlFor="conditions">{t("conditions")}</FieldLabel>
-          <Textarea
-            id="conditions"
-            name="conditions"
-            defaultValue={previous?.conditions ?? ""}
-            required
-            minLength={2}
-            maxLength={5000}
-          />
-        </Field>
-        {previous && (
-          <ChangeReasonField
-            value={reason}
-            onChange={setReason}
-            error={attempted ? changeReasonError(reason) : undefined}
-            disabled={save.isPending}
-          />
-        )}
-        <div className="flex gap-3">
-          <Submit busy={save.isPending}>{t("save")}</Submit>
-          <Button
-            type="button"
-            variant="ghost"
-            disabled={save.isPending}
-            onClick={() => {
-              if (!pending.current) onDone();
-            }}
-          >
-            {t("cancel")}
-          </Button>
-        </div>
+        <BusinessFormSteps labels={[t("name"), t("price"), t("conditions")]}>
+          <div className="grid gap-5">
+            <h3 className="font-semibold">{t(previous ? "revise" : "add")}</h3>
+            <TextField
+              name="tariffName"
+              label={t("name")}
+              defaultValue={previous?.name ?? ""}
+              required
+              minLength={2}
+              maxLength={120}
+            />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field>
+                <FieldLabel htmlFor="serviceType">{t("service")}</FieldLabel>
+                <NativeSelect
+                  id="serviceType"
+                  name="serviceType"
+                  defaultValue={previous?.serviceType ?? "visit"}
+                >
+                  {services.map((service) => (
+                    <NativeSelectOption key={service} value={service}>
+                      {t(`service_${service}`)}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="unit">{t("unit")}</FieldLabel>
+                <NativeSelect
+                  id="unit"
+                  name="unit"
+                  defaultValue={previous?.unit ?? "visit"}
+                >
+                  {units.map((unit) => (
+                    <NativeSelectOption key={unit} value={unit}>
+                      {t(`unit_${unit}`)}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              </Field>
+            </div>
+            {!previous && (
+              <Field>
+                <FieldLabel htmlFor="tariffBranch">{t("branch")}</FieldLabel>
+                <NativeSelect
+                  id="tariffBranch"
+                  name="tariffBranch"
+                  defaultValue={allBranches ? "" : club.branches[0]?.id}
+                >
+                  {allBranches && (
+                    <NativeSelectOption value="">
+                      {t("allBranches")}
+                    </NativeSelectOption>
+                  )}
+                  {club.branches.map((branch) => (
+                    <NativeSelectOption key={branch.id} value={branch.id}>
+                      {branch.name}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelect>
+              </Field>
+            )}
+          </div>
+          <div className="grid gap-5">
+            <TextField
+              name="priceToman"
+              type="number"
+              label={t("price")}
+              defaultValue={previous?.priceToman ?? ""}
+              required
+              min={0}
+              max={1000000000}
+              step={1}
+            />
+            <div className="grid gap-4 sm:grid-cols-2">
+              <TextField
+                name="durationDays"
+                type="number"
+                label={t("duration")}
+                defaultValue={previous?.durationDays ?? ""}
+                min={1}
+                max={3660}
+                step={1}
+              />
+              <TextField
+                name="sessionCount"
+                type="number"
+                label={t("sessions")}
+                defaultValue={previous?.sessionCount ?? ""}
+                min={1}
+                max={10000}
+                step={1}
+              />
+            </div>
+          </div>
+          <div className="grid gap-5">
+            <Field>
+              <FieldLabel htmlFor="includedServices">
+                {t("included")}
+              </FieldLabel>
+              <Textarea
+                id="includedServices"
+                name="includedServices"
+                defaultValue={previous?.includedServices?.join("\n") ?? ""}
+              />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="conditions">{t("conditions")}</FieldLabel>
+              <Textarea
+                id="conditions"
+                name="conditions"
+                defaultValue={previous?.conditions ?? ""}
+                required
+                minLength={2}
+                maxLength={5000}
+              />
+            </Field>
+            {previous && (
+              <ChangeReasonField
+                value={reason}
+                onChange={setReason}
+                error={attempted ? changeReasonError(reason) : undefined}
+                disabled={save.isPending}
+              />
+            )}
+            <div className="flex gap-3">
+              <Submit busy={save.isPending}>{t("save")}</Submit>
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={save.isPending}
+                onClick={() => {
+                  if (!pending.current) onDone();
+                }}
+              >
+                {t("cancel")}
+              </Button>
+            </div>
+          </div>
+        </BusinessFormSteps>
       </fieldset>
       <ErrorNotice error={save.error} />
     </form>

@@ -1,6 +1,9 @@
 "use client";
+import {
+  Calendar1Icon as CalendarDays,
+  ChevronLeftIcon as ChevronLeft,
+} from "@repo/ui/icons";
 import Link from "next/link";
-import { CalendarDays, ChevronLeft } from "lucide-react";
 import { useLuma } from "./common";
 export function ServicesLink() {
   const t = useLuma();

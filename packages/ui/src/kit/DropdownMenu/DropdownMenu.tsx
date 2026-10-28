@@ -18,9 +18,9 @@ import type {
   DropdownMenuTriggerProps,
 } from "./DropdownMenu.types";
 
-import { cn } from "@repo/ui/lib/utils";
-import { CheckIcon, ChevronRightIcon } from "lucide-react";
 import { DropdownMenu as DropdownMenuPrimitive } from "@animate-ui/react/primitives/radix-ui";
+import { cn } from "@repo/ui/lib/utils";
+import { CheckIcon, ChevronRightIcon } from "../../icons";
 
 function DropdownMenu({ ...props }: DropdownMenuProps) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;

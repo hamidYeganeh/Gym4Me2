@@ -65,7 +65,7 @@ export function DiscoverOffers() {
         }}
         className="grid gap-4 rounded-2xl border p-4"
       >
-        <Field name="q" label={t("goal")} required={false} />
+        <Field type="search" name="q" label={t("goal")} required={false} />
         <Field name="level" label={t("level")}>
           <NativeSelect name="level" defaultValue="any">
             <NativeSelectOption value="any">{t("all")}</NativeSelectOption>

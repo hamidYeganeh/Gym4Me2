@@ -1,18 +1,18 @@
 "use client";
+import { useTranslations } from "@repo/i18n";
 import { useRef, type ReactNode } from "react";
 import { useOverlayHistory } from "../hooks/use-overlay-history";
-import { useTranslations } from "@repo/i18n";
-import { X } from "lucide-react";
+import { CloseXIcon as X } from "../icons";
 import { Button } from "../kit/Button";
-import { restoreOverlayFocus } from "../lib/active-surface";
 import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetDescription,
 } from "../kit/Sheet";
+import { restoreOverlayFocus } from "../lib/active-surface";
 
 export function HostSheet({
   open,

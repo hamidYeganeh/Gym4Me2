@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily Gym4Me database backup
+
+[Timer]
+OnCalendar=*-*-* 02:00:00 Asia/Tehran
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

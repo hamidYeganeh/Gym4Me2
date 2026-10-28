@@ -1,22 +1,21 @@
 "use client";
-import { SuccessNotice } from "../account/common";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { useTranslations } from "@repo/i18n";
 import { useApiContext } from "@repo/api/provider";
 import {
   useSportsCommand,
   useSportsQuery,
-  type ServiceDto,
   type ServiceCoverDto,
   type ServiceCoverResultDto,
+  type ServiceDto,
 } from "@repo/api/sports";
+import { useTranslations } from "@repo/i18n";
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { Loading, SuccessNotice } from "../account/common";
+import { BarbellHorizontalIcon as Dumbbell } from "../icons";
 import { Button } from "../kit/Button";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "../kit/Field";
 import { Input } from "../kit/Input";
-import { Field, FieldGroup, FieldLabel, FieldDescription } from "../kit/Field";
-import { Loading } from "../account/common";
 import { QueryError } from "./query-error";
-import { Dumbbell } from "lucide-react";
 
 /** Small public cover for catalog rows; a missing cover remains an honest icon. */
 export function ServiceCoverThumbnail({

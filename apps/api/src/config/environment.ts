@@ -17,6 +17,10 @@ const environmentSchema = z.object({
     .enum(['development', 'test', 'production'])
     .default('development'),
   API_HOST: z.string().min(1).default('0.0.0.0'),
+  TRUST_LOOPBACK_PROXY: z
+    .enum(['true', 'false'])
+    .default('false')
+    .transform((value) => value === 'true'),
   AUTH_WEBSITE_ORIGIN: z.url().default('http://localhost:7084'),
   PORT: z.coerce.number().int().min(1).max(65535).default(7088),
   DATABASE_URL: databaseUrl,
@@ -154,6 +158,8 @@ export function validateEnvironment(input: Record<string, unknown>) {
   if (result.data.NODE_ENV === 'production' && !result.data.AUTH_SECRET) {
     throw new Error('Invalid API configuration: AUTH_SECRET');
   }
+  if (result.data.TRUST_LOOPBACK_PROXY && result.data.API_HOST !== '127.0.0.1')
+    throw new Error('TRUST_LOOPBACK_PROXY requires API_HOST=127.0.0.1');
   if (result.data.DEMO_LOCAL_WEB_ENABLED && !result.data.DEMO_MODE)
     throw new Error('DEMO_LOCAL_WEB_ENABLED requires DEMO_MODE');
   if (result.data.DELETION_JOURNAL_PROVIDER === 'vercel-blob') {
