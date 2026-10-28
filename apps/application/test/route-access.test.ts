@@ -9,6 +9,7 @@ import {
 test("first launch, discovery and booking information are public on web and native shells", () => {
   for (const path of [
     "/",
+    "/demo",
     "/discovery",
     "/discovery/",
     "/discovery/map",

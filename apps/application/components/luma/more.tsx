@@ -37,6 +37,11 @@ export function MorePage() {
       <QueryState query={navigation} compact>
         {null}
       </QueryState>
+      {process.env.NODE_ENV === "development" && (
+        <Section title="توسعه">
+          <Row title="دمو" meta="نمایش کامپوننت‌ها" href="/demo" />
+        </Section>
+      )}
     </LumaPage>
   );
 }

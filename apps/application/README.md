@@ -2,6 +2,15 @@
 
 See the [workspace README](../../README.md) for setup, ports, shared packages, and validation commands.
 
+## Component demo
+
+Open [the demo](http://localhost:7081/demo) while running `pnpm --filter application dev`.
+The Persian gallery includes searchable, interactive examples of the shared UI kit.
+Cards and application sections have their own categories. Open `/demo?category=cards`
+or `/demo?category=sections` to show either category directly.
+The More page links to it in development. The route returns not found in all other
+environments, including production and native exports.
+
 ## Discovery map
 
 `/discovery/map` uses Neshan's official Web SDK. Create a **Web SDK** key in
