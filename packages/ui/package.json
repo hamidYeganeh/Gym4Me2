@@ -17,6 +17,7 @@
     "./recovery": "./src/recovery.tsx",
     "./account": "./src/account/index.ts",
     "./analytics": "./src/analytics/panel.tsx",
+    "./analytics-overview": "./src/analytics/overview.tsx",
     "./mobile-page": "./src/mobile-page.tsx",
     "./sports": "./src/sports/workspace.tsx",
     "./sports-eligibility": "./src/sports/eligibility.tsx",

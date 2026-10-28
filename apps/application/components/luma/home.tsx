@@ -1,5 +1,6 @@
 "use client";
-import { useAccount } from "@repo/api/profile";
+import { useAccount, useProductNavigation } from "@repo/api/profile";
+import { AnalyticsOverview } from "@repo/ui/analytics-overview";
 import {
   useSportsQuery,
   type BookingPageDto,
@@ -37,6 +38,7 @@ function GuestHome({ settled }: { settled: boolean }) {
   return <Discovery />;
 }
 function SignedInHome() {
+  const navigation = useProductNavigation();
   const t = useLuma();
   const simple = useTranslations("SimpleApp");
   const locale = useLocale();
@@ -64,6 +66,11 @@ function SignedInHome() {
         </Link>
       }
     >
+      {navigation.data?.canCoach && (
+        <div className="mb-6">
+          <AnalyticsOverview surface="coach" compact />
+        </div>
+      )}
       <p className="luma-meta mb-5">{simple("homeHint")}</p>
       <Link className="luma-cta gap-2" href="/discovery">
         <Compass size={20} />

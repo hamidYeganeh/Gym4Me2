@@ -1,6 +1,7 @@
 "use client";
 import { getDirection, useLocale, useTranslations } from "@repo/i18n";
 import { AnalyticsPanel } from "../analytics/panel";
+import { AnalyticsOverview } from "../analytics/overview";
 import { DemoPanel } from "../training/service-reviews";
 import "../workspace-design.css";
 import { workspaceNavigation } from "./workspace-navigation";
@@ -395,6 +396,9 @@ function BusinessOverview({ name }: { name: string | null }) {
       ) : (
         query.data && (
           <>
+            {query.data.some((organization) =>
+              ["owner", "manager", "accountant"].includes(organization.role),
+            ) && <AnalyticsOverview surface="business" />}
             <div className="grid gap-4 sm:grid-cols-3">
               <Metric
                 label={t("Copy.myOrganizations")}

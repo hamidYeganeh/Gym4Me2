@@ -18,6 +18,7 @@ import { NativeSelect, NativeSelectOption } from "../kit/NativeSelect";
 import { AccountDesignPage } from "./account-design";
 import { CoachingSessions, StudentSessionJourney } from "./practice-sessions";
 import { AnalyticsPanel } from "../analytics/panel";
+import { AnalyticsOverview } from "../analytics/overview";
 import { Loading, QueryError } from "./common";
 import {
   usePracticeAction,
@@ -70,7 +71,7 @@ export function CoachingPracticePanel() {
     { view: "summary" },
   );
   const a = usePracticeAction();
-  const [tab, setTab] = useState("sessions");
+  const [tab, setTab] = useState("overview");
   if (q.isLoading) return <Loading />;
   if (q.error) return <QueryError error={q.error} retry={q.refetch} />;
   if (!q.data) return null;
@@ -85,7 +86,14 @@ export function CoachingPracticePanel() {
     <section className="space-y-5">
       <nav aria-label={t("workspace")} className="practice-navigation">
         {(
-          ["sessions", "calendar", "profile", "finance", "analytics"] as const
+          [
+            "overview",
+            "sessions",
+            "calendar",
+            "profile",
+            "finance",
+            "analytics",
+          ] as const
         ).map((x) => (
           <Button
             key={x}
@@ -102,6 +110,12 @@ export function CoachingPracticePanel() {
         </Button>
       </nav>
       {(a.saved || Boolean(a.error)) && <PracticeFeedback action={a} />}
+      {tab === "overview" && (
+        <AnalyticsOverview
+          surface="coach"
+          onViewDetails={() => setTab("analytics")}
+        />
+      )}
       {tab === "analytics" && <AnalyticsPanel surface="coach" />}
       {tab === "profile" && (
         <>

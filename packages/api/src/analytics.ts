@@ -51,6 +51,7 @@ export type AnalyticsReport = {
 export function useAnalytics(
   surface: AnalyticsSurface,
   filters: AnalyticsFilters,
+  enabled = true,
 ) {
   const path =
     surface === "coach" ? "profile/coach-analytics" : `${surface}/analytics`;
@@ -58,7 +59,7 @@ export function useAnalytics(
     (scope) => [...scope, "analytics", surface, filters],
     (api, signal) =>
       api.request({ path, method: "GET", query: filters }, { signal }),
-    true,
+    enabled,
     60_000,
   );
 }
