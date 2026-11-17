@@ -3,7 +3,7 @@ name: frontend
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, codex/gym4me-baseline]
 
 permissions:
   contents: read
@@ -12,6 +12,20 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: gym4me_test
+          POSTGRES_USER: gym4me
+          POSTGRES_PASSWORD: gym4me_ci
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U gym4me -d gym4me_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -39,7 +53,16 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm test
-      - run: npm run test:e2e --workspace backend
+      - name: Apply PostgreSQL migrations
+        env:
+          POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+        run: |
+          cat apps/backend/migrations/*.sql |
+            docker exec -i "$POSTGRES_CONTAINER" psql -U gym4me -d gym4me_test -v ON_ERROR_STOP=1 -1 -f -
+      - name: Test backend against PostgreSQL
+        env:
+          DATABASE_URL: postgresql://gym4me:gym4me_ci@127.0.0.1:${{ job.services.postgres.ports[5432] }}/gym4me_test
+        run: npm run test:e2e --workspace backend
       - run: npm run build
       - run: npm run build:native --workspace application
       - run: test -f apps/application/out/index.html

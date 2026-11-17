@@ -56,7 +56,6 @@ Throttled responses are HTTP 429 with a `Retry-After` header and a JSON `retryAf
 
 Existing browser and SQLite records require a verified mapping to owner accounts before import. The onboarding migration creates the PostgreSQL tables without importing legacy records.
 
-
 ## Publication and club resources
 
 - In the admin panel, open `/club/resources` to add and maintain the locations, types, sports, equipment, and amenities. The migration seeds Iran plus the existing club types and common media types. Add provinces, cities and sports before accepting new applications. Resources use stable IDs. Deactivation removes an option and its descendants from public selection while keeping existing references.

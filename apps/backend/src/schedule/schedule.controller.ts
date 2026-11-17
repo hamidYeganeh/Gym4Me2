@@ -16,6 +16,27 @@ import { Auth, phoneOf } from '../onboarding/auth';
 import { tokenOf } from '../onboarding/auth.controller';
 import { Database } from '../onboarding/database';
 
+type Reservation = {
+  id: string;
+  sessionId: string;
+  name: string;
+  phone: string;
+  notes: string;
+  status: 'confirmed' | 'pending' | 'waitlisted';
+};
+
+type Schedule = {
+  clubs: {
+    id: string;
+    name: string;
+    cover: string;
+    address: string;
+    canWrite: boolean;
+  }[];
+  sessions: unknown[];
+  reservations: Reservation[];
+};
+
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const writable = "a.role IN ('owner', 'manager')";
 const sessionFields = `s.details || jsonb_build_object(
@@ -64,7 +85,7 @@ export class ScheduleController {
   @Get()
   async schedule(@Req() request: Request, @Param('scope') scope: string) {
     const access = await this.access(request, scope);
-    const { rows } = await this.db.pool.query(
+    const { rows } = await this.db.pool.query<Schedule>(
       `WITH allowed_clubs AS (
          SELECT c.id, c.profile, $2::boolean OR EXISTS (
            SELECT 1 FROM club_memberships a WHERE a.club_id = c.id AND a.account_id = $1 AND ${writable}
@@ -199,7 +220,7 @@ export class ScheduleController {
         : session.approval
           ? 'pending'
           : 'confirmed';
-      const created = await client.query(
+      const created = await client.query<Reservation>(
         `INSERT INTO fitness_reservations (session_id,name,phone,notes,status) VALUES ($1,$2,$3,$4,$5)
          RETURNING id, session_id AS "sessionId", name, phone, notes, status`,
         [sessionId, name, phone, notes, status],

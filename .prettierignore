@@ -12,6 +12,7 @@
 **/*.tsbuildinfo
 package-lock.json
 reports/
+.codex-staging/
 # Local and sensitive files
 **/.env*
 **/*.pem
