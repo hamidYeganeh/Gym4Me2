@@ -1,59 +1,38 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
+  "globalEnv": ["NODE_ENV", "PANEL_OTP_API_ORIGIN"],
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        ".env*"
-      ],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "!.next/dev/**",
-        "dist/**"
-      ],
-      "env": [
-        "API_URL"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
     },
     "lint": {
-      "dependsOn": [
-        "^lint"
-      ]
+      "dependsOn": ["^lint"]
     },
     "check-types": {
-      "dependsOn": [
-        "^check-types"
-      ]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true,
-      "passThroughEnv": [
-        "PORT",
-        "API_URL",
-        "CORS_ORIGINS"
-      ]
-    },
-    "start": {
-      "cache": false,
-      "persistent": true,
-      "passThroughEnv": [
-        "PORT",
-        "CORS_ORIGINS"
-      ]
+      "dependsOn": ["^check-types"]
     },
     "test": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "coverage/**"
-      ]
+      "outputs": ["coverage/**"],
+      "passThroughEnv": ["TMPDIR"]
+    },
+    "dev": {
+      "env": ["PORT"],
+      "cache": false,
+      "persistent": true
+    },
+    "@repo/storybook#build": {
+      "outputs": ["storybook-static/**"]
+    },
+    "application#build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
+    },
+    "backend#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     }
   }
 }

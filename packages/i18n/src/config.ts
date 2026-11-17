@@ -1,11 +1,18 @@
-export const locales = ["fa", "en"] as const;
+export const locales = ["en", "fa"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "fa";
-export const localeCookie = "gym4me-locale";
-export const timeZone = "Asia/Tehran";
+export const localeCookieName = "gym4me-locale";
+
 export function isLocale(value: unknown): value is Locale {
-  return typeof value === "string" && locales.includes(value as Locale);
+  return typeof value === "string" && locales.some((locale) => locale === value);
 }
-export function getDirection(locale: Locale) {
-  return locale === "fa" ? "rtl" : "ltr";
+
+export function getLocaleConfig(locale: Locale): {
+  lang: Locale;
+  dir: "rtl" | "ltr";
+} {
+  return {
+    lang: locale,
+    dir: locale === "fa" ? "rtl" : "ltr",
+  };
 }

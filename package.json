@@ -1,37 +1,58 @@
 {
-  "name": "Gym4Me",
+  "name": "gym4me",
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "build:storybook": "npm run build --workspace=@repo/storybook",
+    "check": "npm run lint && npm run check-types && npm run check:deps && npm run format:check",
     "check-types": "turbo run check-types",
-    "start": "turbo run start",
-    "test": "turbo run test",
-    "icons:build": "pnpm --filter @repo/theme icons:build",
-    "mobile:build": "pnpm --filter application build:native",
-    "mobile:sync": "pnpm --filter application native:sync",
-    "mobile:android": "pnpm --filter application native:android",
-    "mobile:ios": "pnpm --filter application native:ios",
-    "db:up": "docker compose up -d --wait postgres",
-    "db:down": "docker compose stop postgres",
-    "db:generate": "pnpm --filter api db:generate",
-    "db:migrate": "pnpm --filter api db:migrate",
-    "db:studio": "pnpm --filter api db:studio",
-    "db:test:up": "docker compose --profile test up -d --wait postgres-test",
-    "db:test:down": "docker compose --profile test stop postgres-test",
-    "test:db": "pnpm --filter api test:db",
-    "infra:up": "docker compose up -d --wait postgres storage",
-    "storage:up": "docker compose up -d --wait storage"
+    "check:deps": "depcruise packages apps --config .dependency-cruiser.cjs --ts-config apps/admin/tsconfig.json",
+    "dev": "turbo run dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "turbo run lint && eslint *.mjs .dependency-cruiser.cjs --max-warnings 0",
+    "lint:fix": "eslint . --fix --max-warnings 0",
+    "prepare": "husky",
+    "storybook": "npm run dev --workspace=@repo/storybook",
+    "test": "turbo run test"
   },
   "devDependencies": {
-    "prettier": "3.9.6",
-    "turbo": "^2.11.7",
-    "typescript": "7.0.2"
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
+    "@repo/eslint-config": "*",
+    "@repo/prettier-config": "*",
+    "@types/node": "^24",
+    "dependency-cruiser": "^18.7.2",
+    "eslint": "10.9.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "npm-check-updates": "^23.1.1",
+    "prettier": "3.9.10",
+    "shadcn": "^4.23.0",
+    "turbo": "^2.11.10",
+    "typescript": "~6.0.3"
   },
-  "packageManager": "pnpm@11.25.0",
   "engines": {
-    "node": ">=24"
-  }
+    "node": ">=24.15.0"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": "^12.2.1"
+    }
+  },
+  "volta": {
+    "node": "24.15.0",
+    "npm": "12.2.1"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "allowScripts": {
+    "esbuild": false,
+    "@swc/core": false,
+    "@parcel/watcher": false
+  },
+  "packageManager": "npm@12.2.1"
 }

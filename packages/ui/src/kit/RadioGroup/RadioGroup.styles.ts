@@ -1,13 +1,32 @@
-import { cva } from "class-variance-authority";
-export const radioGroupVariants = cva("");
+import { cn } from "tailwind-variants";
 
-export const radioGroupStyles = {
-  radioGroup: cva("grid w-full gap-3"),
-  radioGroupItem: cva(
-    "group/radio-group-item peer relative flex aspect-square size-4 shrink-0 rounded-full border border-transparent bg-input/90 outline-none group-has-[:focus-visible]/field-label:border-transparent group-has-[:focus-visible]/field-label:ring-0 after:absolute after:-inset-x-3 after:-inset-y-2    disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20   data-checked:bg-primary data-checked:text-primary-foreground ",
-  ),
-  radioGroupItem2: cva("flex size-4 items-center justify-center"),
-  radioGroupItem3: cva(
-    "absolute top-1/2 start-1/2 size-2 -translate-x-1/2 rtl:translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-foreground ",
-  ),
-};
+import { tv } from "../../lib/variants";
+
+export const radioGroupSlots = tv({
+  slots: {
+    root: cn("grid gap-theme-3"),
+    item: cn(
+      "inline-flex shrink-0 items-center justify-center rounded-theme-full border border-theme-input bg-theme-background outline-none theme-motion-colors focus-visible:ring-2 focus-visible:ring-theme-ring data-disabled:pointer-events-none data-disabled:opacity-50",
+    ),
+    indicator: cn("inline-flex size-full items-center justify-center"),
+  },
+  variants: {
+    color: {
+      neutral: { item: "data-checked:border-theme-foreground data-checked:text-theme-foreground" },
+      primary: { item: "data-checked:border-theme-primary data-checked:text-theme-primary" },
+      secondary: { item: "data-checked:border-theme-secondary data-checked:text-theme-secondary" },
+      error: { item: "data-checked:border-theme-error data-checked:text-theme-error" },
+      success: { item: "data-checked:border-theme-success data-checked:text-theme-success" },
+      warning: { item: "data-checked:border-theme-warning data-checked:text-theme-warning" },
+      info: { item: "data-checked:border-theme-info data-checked:text-theme-info" },
+    },
+    size: {
+      xs: { item: "size-theme-3" },
+      sm: { item: "size-theme-3-5" },
+      md: { item: "size-theme-4" },
+      lg: { item: "size-theme-5" },
+      xl: { item: "size-theme-6" },
+    },
+  },
+  defaultVariants: { color: "primary", size: "md" },
+});

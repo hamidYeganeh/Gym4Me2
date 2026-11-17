@@ -1,0 +1,4 @@
+/* Prettier's Tailwind plugin sorts classes against this file. Apps import
+ * Tailwind themselves before @repo/theme/tailwind.css; do not import this file. */
+@import "tailwindcss";
+@import "./tailwind.css";

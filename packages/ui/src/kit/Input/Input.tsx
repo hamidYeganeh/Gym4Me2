@@ -1,19 +1,21 @@
 "use client";
 
-import { Input as InputPrimitive } from "@base-ui/react/input";
-import { cn } from "@repo/ui/lib/utils";
-import { inputStyles } from "./Input.styles";
 import type { InputProps } from "./Input.types";
+import type { FC } from "react";
 
-function Input({ className, type, ...props }: InputProps) {
+import { inputVariants } from "./Input.styles";
+
+const Input: FC<InputProps> = (props) => {
+  const { className, variant, color, size, htmlSize, radius, shadow, ...rest } = props;
+
   return (
-    <InputPrimitive
-      type={type}
+    <input
       data-slot="input"
-      className={cn(inputStyles.input(), className)}
-      {...props}
+      size={htmlSize}
+      className={inputVariants({ variant, color, size, radius, shadow, className })}
+      {...rest}
     />
   );
-}
+};
 
-export { Input };
+export default Input;

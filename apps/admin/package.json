@@ -3,30 +3,41 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 7082",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start --port 7082",
-    "lint": "eslint",
-    "check-types": "next typegen && tsc --noEmit"
+    "start": "next start -p 3001",
+    "lint": "eslint . --max-warnings 0",
+    "check-types": "next typegen && tsc --noEmit",
+    "test": "node --test lib/phone.test.ts features/clubs/sessions/session-store.test.mjs features/clubs/club-request-name.test.mjs"
   },
   "dependencies": {
-    "@repo/api": "workspace:*",
-    "@repo/i18n": "workspace:*",
-    "@repo/theme": "workspace:*",
-    "@repo/ui": "workspace:*",
-    "next": "16.4.2",
-    "next-intl": "^4.13.0",
+    "@repo/api": "*",
+    "@tanstack/react-query": "^5.107.1",
+    "@base-ui/react": "^1.9.0",
+    "@tanstack/react-table": "^8.21.3",
+    "next": "16.4.6",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "@repo/theme": "*",
+    "@repo/ui": "*",
+    "@repo/i18n": "*",
+    "@animate-ui/react": "^2.4.2",
+    "@hookform/resolvers": "^5.2.2",
+    "@repo/icons": "*",
+    "motion": "^14.9.0",
+    "react-hook-form": "^7.62.0",
+    "swiper": "^14.4.0",
+    "zod": "^4.2.0"
   },
   "devDependencies": {
-    "@tailwindcss/turbopack": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.4.2",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "eslint": "10.9.1",
+    "tailwindcss": "4.3.3",
+    "typescript": "~6.0.3",
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@tailwindcss/postcss": "4.3.3"
   }
 }

@@ -1,62 +1,38 @@
-import { WorkspaceShell } from "@repo/ui/account";
-import { AdminPageTransitions } from "./page-transitions";
-import { ApiProvider } from "@repo/api/provider";
+import localFont from "next/font/local";
+
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import {
-  NextIntlClientProvider,
-  getDirection,
-  isLocale,
-  defaultLocale,
-} from "@repo/i18n";
-import { getLocale, getTranslations } from "@repo/i18n/server";
-import { iranSansX } from "@repo/theme/fonts";
-import { ThemeProvider } from "@repo/theme/provider";
-import { DirectionProvider } from "@repo/ui/kit/Direction";
-import { TooltipProvider } from "@repo/ui/kit/Tooltip";
-import { Toaster } from "@repo/ui/kit/Sileo";
+
 import "./globals.css";
-import "@repo/ui/focus.css";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("Metadata");
-  return {
-    title: { default: t("adminTitle"), template: t("adminTemplate") },
-    description: t("adminDescription"),
-  };
-}
+import { AdminProviders } from "../lib/AdminProviders";
 
-export default async function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  const value = await getLocale();
-  const locale = isLocale(value) ? value : defaultLocale;
-  const direction = getDirection(locale);
+const iranSansX = localFont({
+  src: "../../../packages/theme/src/fonts/iransansx-variable.woff2",
+  weight: "100 1000",
+  display: "swap",
+  adjustFontFallback: false,
+  variable: "--next-font-primary",
+});
+
+export const metadata: Metadata = {
+  title: { default: "Gym4Me Admin", template: "%s · Gym4Me Admin" },
+  description: "Manage the Gym4Me platform.",
+};
+
+const RootLayout = (props: { children: ReactNode }) => {
+  const { children } = props;
+
   return (
-    <html
-      lang={locale}
-      dir={direction}
-      className={iranSansX.variable}
-      suppressHydrationWarning
-    >
-      <body data-gym-focus="admin" className="min-h-dvh antialiased">
-        <NextIntlClientProvider>
-          <ApiProvider application="admin" locale={locale}>
-            <ThemeProvider>
-              <DirectionProvider dir={direction}>
-                <TooltipProvider>
-                  <WorkspaceShell client="admin">
-                    <AdminPageTransitions>{children}</AdminPageTransitions>
-                  </WorkspaceShell>
-                  <Toaster dir={direction} />
-                </TooltipProvider>
-              </DirectionProvider>
-            </ThemeProvider>
-          </ApiProvider>
-        </NextIntlClientProvider>
+    <html lang="en" className={`dark ${iranSansX.variable}`}>
+      <body
+        style={{ fontVariationSettings: '"DOTS" 4' }}
+        className="bg-theme-background font-theme-primary text-theme-foreground"
+      >
+        <AdminProviders>{children}</AdminProviders>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

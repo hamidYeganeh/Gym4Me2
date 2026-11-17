@@ -1,3 +1,10 @@
-export * from "./Table";
-export * from "./Table.styles";
+export { default, default as Table } from "./Table";
+export { default as TableHeader } from "./TableHeader";
+export { default as TableBody } from "./TableBody";
+export { default as TableFooter } from "./TableFooter";
+export { default as TableRow } from "./TableRow";
+export { default as TableHead } from "./TableHead";
+export { default as TableCell } from "./TableCell";
+export { default as TableCaption } from "./TableCaption";
 export type * from "./Table.types";
+export * from "./Table.styles";

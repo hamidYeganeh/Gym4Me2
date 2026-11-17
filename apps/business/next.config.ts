@@ -1,57 +1,31 @@
-import type { NextConfig } from "next";
-import createNextIntlPlugin from "next-intl/plugin";
+import { withI18n } from "@repo/i18n/plugin";
 
-const nextConfig: NextConfig = {
-  ...(process.env.GYM_STAGING_WEB === "true"
-    ? {
-        distDir: ".next-staging",
-        typescript: { tsconfigPath: "tsconfig.staging.json" },
-      }
-    : {}),
-  ...(process.env.GYM_QA_WEB === "true"
-    ? {
-        distDir: ".next-qa",
-        experimental: { cpus: 1, webpackMemoryOptimizations: true },
-      }
-    : {}),
-  transpilePackages: ["@repo/ui", "@repo/theme", "@repo/i18n", "@repo/api"],
-  turbopack: {
-    rules: { "*.css": { loaders: ["@tailwindcss/turbopack"], as: "*.css" } },
-  },
-  webpack(config) {
-    if (process.env.GYM_QA_WEB === "true") config.cache = false;
-    // Process the same Tailwind entry when using Next's Webpack fallback.
-    function addTailwind(rule: unknown) {
-      if (!rule || typeof rule !== "object") return;
-      if ("oneOf" in rule && Array.isArray(rule.oneOf))
-        rule.oneOf.forEach(addTailwind);
-      if ("rules" in rule && Array.isArray(rule.rules))
-        rule.rules.forEach(addTailwind);
-      if (
-        "use" in rule &&
-        Array.isArray(rule.use) &&
-        rule.use.some(
-          (item: unknown) =>
-            item &&
-            typeof item === "object" &&
-            "loader" in item &&
-            typeof item.loader === "string" &&
-            item.loader.includes("/postcss-loader/"),
-        )
-      ) {
-        rule.use.push({ loader: require.resolve("@tailwindcss/turbopack") });
-      }
-    }
-    config.module.rules.forEach(addTailwind);
-    return config;
-  },
+export default withI18n()({
+  devIndicators: { position: "top-right" },
   async rewrites() {
+    const origin = (process.env.PANEL_OTP_API_ORIGIN ?? "http://127.0.0.1:3003").replace(/\/$/, "");
     return [
+      { source: "/api/schedule/:path*", destination: `${origin}/api/v1/business/schedule/:path*` },
+      { source: "/api/auth/otp/request", destination: `${origin}/api/v1/business/auth/otp` },
+      { source: "/api/auth/otp/verify", destination: `${origin}/api/v1/business/auth/otp/confirm` },
+      { source: "/api/auth/password/login", destination: `${origin}/api/v1/business/auth/login` },
+      { source: "/api/auth/logout", destination: `${origin}/api/v1/business/auth/logout` },
+      { source: "/api/auth/session", destination: `${origin}/api/v1/business/auth/session` },
       {
-        source: "/api/:path*",
-        destination: `${(process.env.API_URL ?? "http://localhost:7088").replace(/\/$/, "")}/api/:path*`,
+        source: "/api/auth/account/complete",
+        destination: `${origin}/api/v1/business/auth/account/complete`,
       },
+      {
+        source: "/api/auth/password/reset/request",
+        destination: `${origin}/api/v1/business/auth/password/reset/request`,
+      },
+      {
+        source: "/api/auth/password/reset/confirm",
+        destination: `${origin}/api/v1/business/auth/password/reset/confirm`,
+      },
+      { source: "/api/clubs/:path*", destination: `${origin}/api/v1/business/clubs/:path*` },
+      { source: "/api/resources/:path*", destination: `${origin}/api/v1/resources/:path*` },
     ];
   },
-};
-export default createNextIntlPlugin("./i18n/request.ts")(nextConfig);
+  transpilePackages: ["@repo/api", "@repo/theme", "@repo/ui", "@repo/icons", "@repo/i18n"],
+});

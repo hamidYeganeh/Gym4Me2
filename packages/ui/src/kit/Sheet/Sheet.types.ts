@@ -1,38 +1,26 @@
-import type { VariantProps } from "class-variance-authority";
-import { Dialog as SheetPrimitive } from "@animate-ui/react/primitives/radix-ui";
-import type * as React from "react";
-import type { sheetVariants } from "./Sheet.styles";
-export type SheetProps = React.ComponentProps<typeof SheetPrimitive.Root>;
+import type { sheetSlots } from "./Sheet.styles";
+import type { Dialog as Primitive } from "@base-ui/react/dialog";
+import type { ComponentPropsWithRef } from "react";
+import type { VariantProps } from "tailwind-variants";
 
-export type SheetTriggerProps = React.ComponentProps<
-  typeof SheetPrimitive.Trigger
->;
-
-export type SheetCloseProps = React.ComponentProps<typeof SheetPrimitive.Close>;
-
-export type SheetPortalProps = React.ComponentProps<
-  typeof SheetPrimitive.Portal
->;
-
-export type SheetOverlayProps = React.ComponentProps<
-  typeof SheetPrimitive.Overlay
->;
-
-export type SheetContentProps = React.ComponentProps<
-  typeof SheetPrimitive.Content
-> & {
-  side?: "top" | "right" | "bottom" | "left";
-  showCloseButton?: boolean;
+export type SheetProps<Payload = unknown> = Primitive.Root.Props<Payload>;
+export type SheetTriggerProps<Payload = unknown> = Primitive.Trigger.Props<Payload>;
+export type SheetPortalProps = ComponentPropsWithRef<typeof Primitive.Portal>;
+export type SheetOverlayProps = ComponentPropsWithRef<typeof Primitive.Backdrop>;
+export type SheetViewportProps = ComponentPropsWithRef<typeof Primitive.Viewport>;
+export type SheetPopupVariants = Pick<VariantProps<typeof sheetSlots>, "side">;
+export type SheetPopupProps = Omit<
+  ComponentPropsWithRef<typeof Primitive.Popup>,
+  keyof SheetPopupVariants
+> &
+  SheetPopupVariants;
+export type SheetTitleProps = ComponentPropsWithRef<typeof Primitive.Title>;
+export type SheetDescriptionProps = ComponentPropsWithRef<typeof Primitive.Description>;
+export type SheetCloseProps = ComponentPropsWithRef<typeof Primitive.Close>;
+export type SheetContentProps = SheetPopupProps & {
+  portalProps?: SheetPortalProps;
+  overlayProps?: SheetOverlayProps;
+  viewportProps?: SheetViewportProps;
 };
-
-export type SheetHeaderProps = React.ComponentProps<"div">;
-
-export type SheetFooterProps = React.ComponentProps<"div">;
-
-export type SheetTitleProps = React.ComponentProps<typeof SheetPrimitive.Title>;
-
-export type SheetDescriptionProps = React.ComponentProps<
-  typeof SheetPrimitive.Description
->;
-
-export type SheetVariants = VariantProps<typeof sheetVariants>;
+export type SheetHeaderProps = ComponentPropsWithRef<"div">;
+export type SheetFooterProps = ComponentPropsWithRef<"div">;

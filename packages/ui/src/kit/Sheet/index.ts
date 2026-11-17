@@ -1,3 +1,15 @@
-export * from "./Sheet";
-export * from "./Sheet.styles";
+export { default, default as Sheet } from "./Sheet";
+export { default as SheetTrigger } from "./SheetTrigger";
+export { default as SheetPortal } from "./SheetPortal";
+export { default as SheetOverlay } from "./SheetOverlay";
+export { default as SheetViewport } from "./SheetViewport";
+export { default as SheetPopup } from "./SheetPopup";
+export { default as SheetTitle } from "./SheetTitle";
+export { default as SheetDescription } from "./SheetDescription";
+export { default as SheetClose } from "./SheetClose";
 export type * from "./Sheet.types";
+export * from "./Sheet.styles";
+export * from "./AnimatedSheet/index";
+export { default as SheetContent } from "./SheetContent";
+export { default as SheetHeader } from "./SheetHeader";
+export { default as SheetFooter } from "./SheetFooter";

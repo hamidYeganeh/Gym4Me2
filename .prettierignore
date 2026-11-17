@@ -1,0 +1,21 @@
+# Dependencies and generated output
+**/node_modules/
+**/.next/
+**/.turbo/
+**/.vercel/
+**/dist/
+**/build/
+**/out/
+**/coverage/
+**/storybook-static/
+**/next-env.d.ts
+**/*.tsbuildinfo
+package-lock.json
+reports/
+# Local and sensitive files
+**/.env*
+**/*.pem
+
+# Capacitor projects are maintained by the native toolchains
+apps/application/android/
+apps/application/ios/

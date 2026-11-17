@@ -1,7 +1,9 @@
-import type { VariantProps } from "class-variance-authority";
-import type * as React from "react";
 import type { badgeVariants } from "./Badge.styles";
-export type BadgeProps = React.ComponentProps<"span"> &
-  VariantProps<typeof badgeVariants> & { asChild?: boolean };
+import type { ComponentPropsWithRef } from "react";
+import type { VariantProps } from "tailwind-variants";
 
 export type BadgeVariants = VariantProps<typeof badgeVariants>;
+export type BadgeProps = Omit<ComponentPropsWithRef<"span">, "color"> &
+  BadgeVariants & {
+    asChild?: boolean;
+  };

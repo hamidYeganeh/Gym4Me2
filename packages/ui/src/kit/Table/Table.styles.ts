@@ -1,20 +1,16 @@
-import { cva } from "class-variance-authority";
-export const tableVariants = cva("");
+import { tv } from "../../lib/variants";
 
-export const tableStyles = {
-  table: cva("relative w-full overflow-x-auto"),
-  table2: cva("w-full caption-bottom text-sm"),
-  tableHeader: cva("[&_tr]:border-b"),
-  tableBody: cva("[&_tr:last-child]:border-0"),
-  tableFooter: cva("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0"),
-  tableRow: cva(
-    "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
-  ),
-  tableHead: cva(
-    "h-12 px-3 text-start align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pe-0",
-  ),
-  tableCell: cva(
-    "p-3 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0",
-  ),
-  tableCaption: cva("mt-4 text-sm text-muted-foreground"),
-};
+export const tableSlots = tv({
+  slots: {
+    container:
+      "w-full overflow-x-auto rounded-theme-card border border-theme-border bg-theme-background shadow-theme-md",
+    root: "w-full border-collapse text-theme-body-md",
+    header: "bg-theme-primary text-theme-primary-foreground",
+    body: "[&>tr:nth-child(even)]:bg-theme-surface-soft",
+    footer: "border-t border-theme-border bg-theme-background",
+    row: "border-b border-theme-border last:border-b-0",
+    head: "px-theme-4 py-theme-5 text-center text-theme-body-large font-theme-bold first:px-theme-6 first:text-start",
+    cell: "px-theme-4 py-theme-4 align-middle first:px-theme-6",
+    caption: "caption-bottom p-theme-4 text-theme-muted-foreground",
+  },
+});

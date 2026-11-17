@@ -1,3 +1,3 @@
-export * from "./Skeleton";
-export * from "./Skeleton.styles";
+export { default, default as Skeleton } from "./Skeleton";
 export type * from "./Skeleton.types";
+export * from "./Skeleton.styles";

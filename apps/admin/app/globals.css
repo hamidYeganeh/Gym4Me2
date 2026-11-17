@@ -1,4 +1,33 @@
-@import "@repo/theme/globals.css";
-@import "@repo/theme/icons.css";
-@import "@repo/ui/luma-system.css";
-@source "../../../packages/ui/src";
+@import "tailwindcss";
+@import "@repo/theme/tailwind.css";
+@import "swiper/css" layer(components);
+@import "swiper/css/pagination" layer(components);
+
+@source "../../../packages/ui/src/kit";
+@source "../../../packages/ui/src/lib/club-pin-map.tsx";
+@source "../features";
+
+:root {
+  --duration-fast: 250ms;
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --acc-expand: var(--duration-fast);
+  --acc-collapse: var(--duration-fast);
+  --acc-chevron: var(--duration-fast);
+  --acc-ease: var(--ease-smooth-out);
+  --icon-swap-dur: 250ms;
+  --icon-swap-blur: 2px;
+  --icon-swap-start-scale: 0.25;
+  --icon-swap-ease: ease-in-out;
+}
+
+[data-profile-theme] {
+  --theme-color-background: var(--theme-ref-dark-canvas);
+  --theme-color-foreground: var(--theme-ref-neutral-50);
+  --theme-color-card: var(--theme-ref-neutral-900);
+  --theme-color-card-foreground: var(--theme-ref-neutral-50);
+  --theme-color-secondary: var(--theme-ref-neutral-850);
+  --theme-color-secondary-foreground: var(--theme-ref-neutral-50);
+  --theme-color-muted-foreground: var(--theme-ref-neutral-400);
+  --theme-color-border: var(--theme-ref-neutral-800);
+  --theme-color-input: var(--theme-ref-neutral-800);
+}

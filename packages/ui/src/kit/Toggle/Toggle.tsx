@@ -1,23 +1,23 @@
 "use client";
-import { toggleVariants } from "./Toggle.styles";
+
+import { Toggle as Primitive } from "@base-ui/react/toggle";
+
 import type { ToggleProps } from "./Toggle.types";
 
-import { cn } from "@repo/ui/lib/utils";
-import { Toggle as TogglePrimitive } from "@animate-ui/react/primitives/radix-ui";
+import { primitiveClassName } from "../../lib/primitive-classname";
+import { toggleSlots } from "./Toggle.styles";
 
-function Toggle({
-  className,
-  variant = "default",
-  size = "default",
-  ...props
-}: ToggleProps) {
+const Toggle = <Value extends string = string>(props: ToggleProps<Value>) => {
+  const { className, color, size, radius, variant, ...rest } = props;
   return (
-    <TogglePrimitive.Root
+    <Primitive
       data-slot="toggle"
-      className={cn(toggleVariants({ variant, size, className }))}
-      {...props}
+      className={primitiveClassName(
+        toggleSlots({ color, size, radius, variant }).root(),
+        className,
+      )}
+      {...rest}
     />
   );
-}
-
-export { Toggle };
+};
+export default Toggle;

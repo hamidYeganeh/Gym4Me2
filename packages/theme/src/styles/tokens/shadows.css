@@ -1,0 +1,19 @@
+/* Soft elevation from the landing design; one shadow colour for both modes. */
+:root {
+  --theme-shadow-color: var(--theme-ref-shadow);
+  --theme-shadow-none: 0 0 #0000;
+  --theme-shadow-xs: 0 1px 2px rgb(var(--theme-shadow-color) / 0.06); /* Inputs, chips at rest. */
+  --theme-shadow-sm: 0 2px 6px rgb(var(--theme-shadow-color) / 0.08); /* Buttons on hover. */
+  --theme-shadow-md: 0 12px 36px rgb(var(--theme-shadow-color) / 0.06); /* Cards and panels. */
+  --theme-shadow-lg: 0 16px 40px rgb(var(--theme-shadow-color) / 0.12); /* Popovers, hovered cards. */
+  --theme-shadow-xl: 0 24px 64px rgb(var(--theme-shadow-color) / 0.18); /* Modals, drawers. */
+  --theme-shadow-inner: inset 2px 2px 6px rgb(var(--theme-shadow-color) / 0.08);
+}
+
+.dark,
+[data-theme="dark"] {
+  --theme-shadow-sm: 0 2px 6px rgb(var(--theme-shadow-color) / 0.35);
+  --theme-shadow-md: 0 12px 36px rgb(var(--theme-shadow-color) / 0.4);
+  --theme-shadow-lg: 0 16px 40px rgb(var(--theme-shadow-color) / 0.45);
+  --theme-shadow-xl: 0 24px 64px rgb(var(--theme-shadow-color) / 0.5);
+}

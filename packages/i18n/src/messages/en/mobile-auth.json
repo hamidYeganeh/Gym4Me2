@@ -1,0 +1,22 @@
+{
+  "phoneTitle": "Continue with mobile",
+  "phoneHint": "We’ll send you a verification code.",
+  "phoneLabel": "Mobile number",
+  "phonePlaceholder": "0912 345 6789",
+  "codeTitle": "Enter verification code",
+  "codeHint": "Enter the six-digit code sent to",
+  "codeLabel": "Verification code",
+  "phoneError": "Enter a valid Iranian mobile number.",
+  "codeError": "Enter the six-digit code.",
+  "sendError": "We couldn’t send your code. Please try again.",
+  "verifyError": "That code is incorrect or has expired.",
+  "rateLimit": "Too many attempts. Please wait before trying again.",
+  "unavailable": "The service is unavailable. Please try again.",
+  "wait": "Please wait…",
+  "retryIn": "Try again in {remaining, number}s.",
+  "resendIn": "Resend in {remaining, number}s",
+  "send": "Send code",
+  "verify": "Verify and continue",
+  "edit": "Edit number",
+  "resend": "Resend code"
+}

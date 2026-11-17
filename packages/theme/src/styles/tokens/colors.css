@@ -1,0 +1,148 @@
+/*
+ * Layer 2: semantic colours.
+ *
+ * Every value points at a primitive in primitives.css. Components and apps use
+ * these roles (through Tailwind: bg-theme-primary, text-theme-muted-foreground …),
+ * never a primitive or a literal colour. Light and dark define the same names;
+ * the theme tests check that, and the contrast of the main text pairs.
+ */
+[data-theme="light"],
+:root {
+  color-scheme: light;
+
+  /* Surfaces and content. */
+  --theme-color-background: var(--theme-ref-white);
+  --theme-color-foreground: var(--theme-ref-black);
+  --theme-color-card: var(--theme-ref-white);
+  --theme-color-card-foreground: var(--theme-ref-black);
+  --theme-color-popover: var(--theme-ref-white);
+  --theme-color-popover-foreground: var(--theme-ref-black);
+  /* Light grey bands and soft cards (model cards, About section). */
+  --theme-color-surface-soft: var(--theme-ref-neutral-25);
+  /* Dark feature panels that stay dark in both modes (ads slider, steps panel). */
+  --theme-color-surface-dark: var(--theme-ref-black);
+  --theme-color-surface-dark-foreground: var(--theme-ref-white);
+  --theme-color-surface-dark-muted-foreground: var(--theme-ref-neutral-300);
+  --theme-color-surface-dark-border: var(--theme-ref-neutral-800);
+  /* Footer. */
+  --theme-color-navy: var(--theme-ref-navy-900);
+  --theme-color-navy-foreground: var(--theme-ref-white);
+
+  /* Interactive roles and their foreground colours. */
+  --theme-color-primary: var(--theme-ref-lime);
+  --theme-color-primary-foreground: var(--theme-ref-black);
+  --theme-color-primary-hover: var(--theme-ref-lime-hover);
+  --theme-color-secondary: var(--theme-ref-neutral-50);
+  --theme-color-secondary-foreground: var(--theme-ref-black);
+  /* Brand teal as a fill: small highlights, active markers. Never text on white. */
+  --theme-color-tertiary: var(--theme-ref-teal-500);
+  --theme-color-tertiary-foreground: var(--theme-ref-navy-900);
+  --theme-color-tertiary-hover: var(--theme-ref-teal-400);
+  /* Teal as text: links, labels, subtitles (AA on white and soft surfaces). */
+  --theme-color-accent: var(--theme-ref-teal-700);
+  --theme-color-accent-foreground: var(--theme-ref-white);
+  --theme-color-muted: var(--theme-ref-neutral-25);
+  --theme-color-muted-foreground: var(--theme-ref-neutral-600);
+  --theme-color-destructive: var(--theme-ref-red-600);
+  --theme-color-destructive-foreground: var(--theme-ref-white);
+
+  /* Boundaries and focus indicators. */
+  --theme-color-border: var(--theme-ref-neutral-100);
+  --theme-color-border-strong: var(--theme-ref-neutral-200);
+  --theme-color-input: var(--theme-ref-neutral-200);
+  --theme-color-ring: var(--theme-ref-teal-500);
+
+  /* Status colours: a fill with its foreground, and a text colour for warnings. */
+  --theme-color-error: var(--theme-color-destructive);
+  --theme-color-error-foreground: var(--theme-color-destructive-foreground);
+  --theme-color-success: var(--theme-ref-green-700);
+  --theme-color-success-foreground: var(--theme-ref-white);
+  --theme-color-warning: var(--theme-ref-amber-400);
+  --theme-color-warning-foreground: var(--theme-ref-black);
+  --theme-color-warning-text: var(--theme-ref-amber-700);
+  --theme-color-info: var(--theme-ref-blue-700);
+  --theme-color-info-foreground: var(--theme-ref-white);
+
+  /* Data visualization. */
+  --theme-color-chart-1: var(--theme-ref-chart-1);
+  --theme-color-chart-2: var(--theme-ref-chart-2);
+  --theme-color-chart-3: var(--theme-ref-chart-3);
+  --theme-color-chart-4: var(--theme-ref-chart-4);
+  --theme-color-chart-5: var(--theme-ref-chart-5);
+
+  /* Sidebar navigation (staff app). */
+  --theme-color-sidebar: var(--theme-ref-neutral-25);
+  --theme-color-sidebar-foreground: var(--theme-ref-black);
+  --theme-color-sidebar-primary: var(--theme-ref-lime);
+  --theme-color-sidebar-primary-foreground: var(--theme-ref-black);
+  --theme-color-sidebar-border: var(--theme-ref-neutral-100);
+  --theme-color-sidebar-ring: var(--theme-ref-teal-500);
+}
+
+.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces and content. */
+  --theme-color-background: var(--theme-ref-dark-canvas);
+  --theme-color-foreground: var(--theme-ref-neutral-50);
+  --theme-color-card: var(--theme-ref-dark-raised);
+  --theme-color-card-foreground: var(--theme-ref-neutral-50);
+  --theme-color-popover: var(--theme-ref-dark-overlay);
+  --theme-color-popover-foreground: var(--theme-ref-neutral-50);
+  --theme-color-surface-soft: var(--theme-ref-dark-raised);
+  --theme-color-surface-dark: var(--theme-ref-dark-recessed);
+  --theme-color-surface-dark-foreground: var(--theme-ref-white);
+  --theme-color-surface-dark-muted-foreground: var(--theme-ref-neutral-300);
+  --theme-color-surface-dark-border: var(--theme-ref-dark-divider);
+  --theme-color-navy: var(--theme-ref-navy-950);
+  --theme-color-navy-foreground: var(--theme-ref-white);
+
+  /* Interactive roles and their foreground colours. */
+  --theme-color-primary: var(--theme-ref-lime);
+  --theme-color-primary-foreground: var(--theme-ref-black);
+  --theme-color-primary-hover: var(--theme-ref-lime-hover);
+  --theme-color-secondary: var(--theme-ref-dark-control);
+  --theme-color-secondary-foreground: var(--theme-ref-neutral-50);
+  --theme-color-tertiary: var(--theme-ref-teal-400);
+  --theme-color-tertiary-foreground: var(--theme-ref-navy-900);
+  --theme-color-tertiary-hover: var(--theme-ref-teal-300);
+  --theme-color-accent: var(--theme-ref-teal-300);
+  --theme-color-accent-foreground: var(--theme-ref-black);
+  --theme-color-muted: var(--theme-ref-dark-raised);
+  --theme-color-muted-foreground: var(--theme-ref-dark-muted-text);
+  --theme-color-destructive: var(--theme-ref-red-300);
+  --theme-color-destructive-foreground: var(--theme-ref-black);
+
+  /* Boundaries and focus indicators. */
+  --theme-color-border: var(--theme-ref-dark-divider);
+  --theme-color-border-strong: var(--theme-ref-dark-outline);
+  --theme-color-input: var(--theme-ref-dark-outline);
+  --theme-color-ring: var(--theme-ref-lime);
+
+  /* Status colours. */
+  --theme-color-error: var(--theme-color-destructive);
+  --theme-color-error-foreground: var(--theme-color-destructive-foreground);
+  --theme-color-success: var(--theme-ref-green-400);
+  --theme-color-success-foreground: var(--theme-ref-black);
+  --theme-color-warning: var(--theme-ref-amber-300);
+  --theme-color-warning-foreground: var(--theme-ref-black);
+  --theme-color-warning-text: var(--theme-ref-amber-300);
+  --theme-color-info: var(--theme-ref-blue-300);
+  --theme-color-info-foreground: var(--theme-ref-black);
+
+  /* Data visualization. */
+  --theme-color-chart-1: var(--theme-ref-chart-1-dark);
+  --theme-color-chart-2: var(--theme-ref-chart-2-dark);
+  --theme-color-chart-3: var(--theme-ref-chart-3-dark);
+  --theme-color-chart-4: var(--theme-ref-chart-4-dark);
+  --theme-color-chart-5: var(--theme-ref-chart-5-dark);
+
+  /* Sidebar navigation (staff app). */
+  --theme-color-sidebar: var(--theme-ref-dark-recessed);
+  --theme-color-sidebar-foreground: var(--theme-ref-neutral-50);
+  --theme-color-sidebar-primary: var(--theme-ref-lime);
+  --theme-color-sidebar-primary-foreground: var(--theme-ref-black);
+  --theme-color-sidebar-border: var(--theme-ref-dark-divider);
+  --theme-color-sidebar-ring: var(--theme-ref-lime);
+}

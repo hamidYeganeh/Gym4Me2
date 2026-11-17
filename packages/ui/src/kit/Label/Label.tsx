@@ -1,18 +1,14 @@
-"use client";
-import { labelStyles } from "./Label.styles";
 import type { LabelProps } from "./Label.types";
+import type { FC } from "react";
 
-import { cn } from "@repo/ui/lib/utils";
-import { Label as LabelPrimitive } from "radix-ui";
+import { labelVariants } from "./Label.styles";
 
-function Label({ className, ...props }: LabelProps) {
+const Label: FC<LabelProps> = (props) => {
+  const { className, color, size, ...rest } = props;
+
   return (
-    <LabelPrimitive.Root
-      data-slot="label"
-      className={cn(labelStyles.label(), className)}
-      {...props}
-    />
+    <label data-slot="label" className={labelVariants({ color, size, className })} {...rest} />
   );
-}
+};
 
-export { Label };
+export default Label;

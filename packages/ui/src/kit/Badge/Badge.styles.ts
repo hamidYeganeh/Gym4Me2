@@ -1,23 +1,102 @@
-import { cva } from "class-variance-authority";
-export const badgeVariants = cva(
-  "group/badge inline-flex h-5 w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-3xl border border-transparent px-2 py-0.5 text-xs font-medium whitespace-nowrap transition-all    has-data-[icon=inline-end]:pe-1.5 has-data-[icon=inline-start]:ps-1.5 aria-invalid:border-destructive aria-invalid:ring-destructive/20  [&>svg]:pointer-events-none [&>svg]:size-3!",
-  {
-    variants: {
-      variant: {
-        contrast: "bg-foreground text-background",
-        default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
-        secondary:
-          "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
-        destructive:
-          "bg-destructive/10 text-destructive    [a]:hover:bg-destructive/20",
-        outline:
-          "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
-        ghost: "hover:bg-muted hover:text-muted-foreground ",
-        link: "text-primary underline-offset-4 hover:underline",
-      },
+import { cn } from "tailwind-variants";
+
+import { tv } from "../../lib/variants";
+
+export const badgeVariants = tv({
+  base: cn(
+    "inline-flex w-fit shrink-0 items-center justify-center gap-theme-1 whitespace-nowrap",
+    "text-theme-body2 font-theme-medium theme-motion-colors",
+    "focus-visible:ring-2 focus-visible:ring-theme-ring focus-visible:outline-none",
+    "[&_svg]:pointer-events-none [&_svg]:size-theme-3",
+  ),
+  variants: {
+    variant: { contained: "", outlined: "border bg-transparent", text: "bg-transparent" },
+    color: {
+      neutral: "",
+      primary: "",
+      secondary: "",
+      error: "",
+      success: "",
+      warning: "",
+      info: "",
     },
-    defaultVariants: {
-      variant: "default",
+    radius: {
+      none: "rounded-theme-none",
+      xs: "rounded-theme-xs",
+      sm: "rounded-theme-sm",
+      md: "rounded-theme-md",
+      lg: "rounded-theme-lg",
+      xl: "rounded-theme-xl",
+      "2xl": "rounded-theme-2xl",
+      "3xl": "rounded-theme-3xl",
+      full: "rounded-theme-full",
+    },
+    size: {
+      xs: "px-theme-2 py-theme-1 text-theme-caption",
+      sm: "px-theme-3 py-theme-1-5 text-theme-body2",
+      md: "px-theme-4 py-theme-2 text-theme-body2",
+      lg: "px-theme-5 py-theme-2-5 text-theme-body1",
+      xl: "px-theme-6 py-theme-3 text-theme-body-large",
+    },
+    shadow: {
+      none: "shadow-theme-none",
+      xs: "shadow-theme-xs",
+      sm: "shadow-theme-sm",
+      md: "shadow-theme-md",
+      lg: "shadow-theme-lg",
+      xl: "shadow-theme-xl",
     },
   },
-);
+  compoundVariants: [
+    { variant: "contained", color: "neutral", class: "bg-theme-foreground text-theme-background" },
+    {
+      variant: "outlined",
+      color: "neutral",
+      class: "border-theme-foreground text-theme-foreground",
+    },
+    { variant: "text", color: "neutral", class: "text-theme-foreground" },
+    {
+      variant: "contained",
+      color: "primary",
+      class: "bg-theme-primary text-theme-primary-foreground",
+    },
+    { variant: "outlined", color: "primary", class: "border-theme-primary text-theme-primary" },
+    { variant: "text", color: "primary", class: "text-theme-primary" },
+    {
+      variant: "contained",
+      color: "secondary",
+      class: "bg-theme-secondary text-theme-secondary-foreground",
+    },
+    {
+      variant: "outlined",
+      color: "secondary",
+      class: "border-theme-secondary text-theme-secondary-foreground",
+    },
+    { variant: "text", color: "secondary", class: "text-theme-secondary-foreground" },
+    { variant: "contained", color: "error", class: "bg-theme-error text-theme-error-foreground" },
+    { variant: "outlined", color: "error", class: "border-theme-error text-theme-error" },
+    { variant: "text", color: "error", class: "text-theme-error" },
+    {
+      variant: "contained",
+      color: "success",
+      class: "bg-theme-success text-theme-success-foreground",
+    },
+    { variant: "outlined", color: "success", class: "border-theme-success text-theme-success" },
+    { variant: "text", color: "success", class: "text-theme-success" },
+    {
+      variant: "contained",
+      color: "warning",
+      class: "bg-theme-warning text-theme-warning-foreground",
+    },
+    {
+      variant: "outlined",
+      color: "warning",
+      class: "border-theme-warning text-theme-warning-text",
+    },
+    { variant: "text", color: "warning", class: "text-theme-warning-text" },
+    { variant: "contained", color: "info", class: "bg-theme-info text-theme-info-foreground" },
+    { variant: "outlined", color: "info", class: "border-theme-info text-theme-info" },
+    { variant: "text", color: "info", class: "text-theme-info" },
+  ],
+  defaultVariants: { variant: "contained", color: "primary", size: "md", radius: "full" },
+});

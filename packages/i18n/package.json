@@ -1,46 +1,35 @@
 {
-  "name": "@repo/i18n",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
-  "exports": {
-    ".": "./src/index.ts",
-    "./request": "./src/request.ts",
-    "./server": "./src/server.ts",
-    "./actions": "./src/actions.ts",
-    "./client-provider": "./src/client-provider.tsx",
-    "./messages": "./src/messages.ts",
-    "./backend": {
-      "types": "./src/backend.d.cts",
-      "default": "./src/backend.cjs"
-    }
-  },
   "scripts": {
     "check-types": "tsc --noEmit",
-    "lint": "eslint . --max-warnings 0 && node scripts/check-copy.cjs",
-    "test": "node --test test/*.test.cjs",
-    "check-copy": "node scripts/check-copy.cjs"
-  },
-  "dependencies": {
-    "next-intl": "^4.13.0"
-  },
-  "peerDependencies": {
-    "next": "^16.4.2",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
-    "@eslint/js": "^9",
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@types/node": "^24",
-    "@types/react": "^19",
-    "eslint": "^9",
-    "globals": "^17.0.0",
-    "next": "16.4.2",
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@types/react": "19.2.18",
+    "typescript": "~6.0.3",
     "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.20.0"
-  }
+    "next": "16.4.3"
+  },
+  "name": "@repo/i18n",
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/server.ts",
+    "./config": "./src/config.ts",
+    "./request": "./src/request.ts",
+    "./actions": "./src/actions.ts",
+    "./plugin": "./src/plugin.ts",
+    "./messages/fa": "./src/messages/fa/index.ts"
+  },
+  "dependencies": {
+    "next-intl": "^4.14.9",
+    "server-only": "^0.0.1"
+  },
+  "peerDependencies": {
+    "next": "^16.4.3",
+    "react": "^19.0.0"
+  },
+  "type": "module"
 }

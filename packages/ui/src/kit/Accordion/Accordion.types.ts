@@ -1,21 +1,7 @@
-import type { VariantProps } from "class-variance-authority";
-import { Accordion as AccordionPrimitive } from "@animate-ui/react/primitives/radix-ui";
-import type * as React from "react";
-import type { accordionVariants } from "./Accordion.styles";
-export type AccordionProps = React.ComponentProps<
-  typeof AccordionPrimitive.Root
->;
+import type { Accordion as Primitive } from "@base-ui/react/accordion";
+import type { ComponentPropsWithRef } from "react";
 
-export type AccordionItemProps = React.ComponentProps<
-  typeof AccordionPrimitive.Item
->;
-
-export type AccordionTriggerProps = React.ComponentProps<
-  typeof AccordionPrimitive.Trigger
->;
-
-export type AccordionContentProps = React.ComponentProps<
-  typeof AccordionPrimitive.Content
->;
-
-export type AccordionVariants = VariantProps<typeof accordionVariants>;
+export type AccordionProps<Value = unknown> = Primitive.Root.Props<Value>;
+export type AccordionItemProps = ComponentPropsWithRef<typeof Primitive.Item>;
+export type AccordionTriggerProps = ComponentPropsWithRef<typeof Primitive.Trigger>;
+export type AccordionContentProps = ComponentPropsWithRef<typeof Primitive.Panel>;

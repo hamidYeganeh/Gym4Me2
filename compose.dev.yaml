@@ -1,0 +1,26 @@
+# Local development services. Start:  docker compose -f compose.dev.yaml up -d
+# Settings come from .env (copy .env.example → .env). Data stays in the "pgdata" volume.
+name: gym4me-dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-gym4me}
+      POSTGRES_USER: ${POSTGRES_USER:-gym4me}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      TZ: UTC
+    ports:
+      # Only reachable from this computer.
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

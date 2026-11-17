@@ -1,0 +1,25 @@
+/*
+ * Shape scale from the landing design: controls 12px, cards 16px, panels 22px.
+ * Prefer the semantic names (control, card, panel, pill); the size scale stays
+ * for cases they don't cover.
+ */
+:root {
+  --theme-radius-none: 0px;
+  --theme-radius-xs: 4px;
+  --theme-radius-sm: 8px;
+  --theme-radius-md: 12px;
+  --theme-radius-lg: 16px;
+  --theme-radius-xl: 22px;
+  --theme-radius-2xl: 24px;
+  --theme-radius-3xl: 28px;
+  --theme-radius-full: 9999px;
+
+  /* Semantic shapes. */
+  --theme-radius-control: var(--theme-radius-md); /* Buttons, inputs, selects. */
+  --theme-radius-card: var(--theme-radius-lg); /* Cards and small panels. */
+  --theme-radius-panel: var(--theme-radius-xl); /* Large panels, sections, modals. */
+  --theme-radius-pill: var(--theme-radius-full); /* Chips, badges, round icon buttons. */
+
+  /* Kept for older code: the card radius. */
+  --theme-radius: var(--theme-radius-card);
+}

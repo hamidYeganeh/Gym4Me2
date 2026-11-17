@@ -1,0 +1,343 @@
+.page {
+  max-width: 1120px;
+  margin: auto;
+  padding: 0 32px 128px;
+  color: var(--theme-color-foreground);
+}
+.brandbar {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 600;
+}
+.edition {
+  font-size: 12px;
+  letter-spacing: 0;
+  color: var(--theme-color-muted-foreground);
+}
+.club {
+  background: var(--theme-color-card);
+  border-radius: 24px;
+  overflow: hidden;
+}
+.hero {
+  position: relative;
+  height: 440px;
+  scroll-margin-top: 72px;
+}
+.heroImage {
+  object-fit: cover;
+}
+.heroNav {
+  position: absolute;
+  inset: 24px 24px auto;
+  display: flex;
+  justify-content: space-between;
+}
+.heroActions {
+  display: flex;
+  gap: 10px;
+}
+.heroNav svg {
+  width: 22px;
+  height: 22px;
+}
+.photoCount {
+  position: absolute;
+  right: 24px;
+  bottom: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--theme-color-surface-dark);
+  color: var(--theme-color-surface-dark-foreground);
+  padding: 10px 18px;
+  min-height: 44px;
+  cursor: pointer;
+}
+.details {
+  position: relative;
+  margin-top: -24px;
+  border-radius: 24px 24px 0 0;
+  padding: 28px 32px 0;
+  background: var(--theme-color-card);
+}
+.details h1 {
+  font-size: 36px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+.subtitle {
+  margin-top: 12px;
+  color: var(--theme-color-muted-foreground);
+  font-size: 18px;
+}
+.rating {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 16px 0;
+  font-size: 16px;
+}
+.rating svg {
+  width: 19px;
+  height: 19px;
+  color: var(--theme-color-muted-foreground);
+}
+.rating span {
+  color: var(--theme-color-muted-foreground);
+}
+.location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 16px;
+  padding: 16px;
+  background: var(--theme-color-secondary);
+}
+.location svg {
+  width: 20px;
+  height: 20px;
+}
+.thumbnails {
+  width: 100% !important;
+  min-width: 0;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px !important;
+  margin: 24px 0;
+}
+.thumbnail {
+  width: 100%;
+  min-width: 0;
+  position: relative;
+  height: 112px !important;
+  overflow: hidden;
+  border-radius: 16px !important;
+  padding: 0 !important;
+}
+.thumbnail[data-pressed] {
+  outline: 2px solid var(--theme-color-primary);
+  outline-offset: 2px;
+}
+.thumbnail img {
+  object-fit: cover;
+}
+.thumbnail span {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: var(--theme-color-surface-dark-foreground);
+  background: var(--theme-color-surface-dark);
+}
+.about {
+  padding: 12px 0 24px;
+  scroll-margin-top: 90px;
+}
+.about h2,
+.more h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 20px;
+}
+.about p {
+  font-size: 16px;
+  line-height: 1.8;
+}
+.notice {
+  font-size: 13px;
+  color: var(--theme-color-muted-foreground);
+}
+.notice:empty {
+  display: none;
+}
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 28px;
+  padding: 0 24px;
+  overflow: auto;
+  background: var(--theme-color-card);
+  border-bottom: 1px solid var(--theme-color-border);
+}
+.tabs a {
+  padding: 20px 0 16px;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+}
+.tabs a:hover,
+.tabs a:focus-visible {
+  border-color: var(--theme-color-foreground);
+}
+.content {
+  background: var(--theme-color-secondary);
+  padding: 32px;
+}
+.more {
+  padding: 40px 32px;
+  scroll-margin-top: 72px;
+}
+.content .more {
+  padding: 32px 0 0;
+}
+.membership {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.membership h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+.membership p,
+.membershipNote {
+  color: var(--theme-color-muted-foreground);
+  margin: 8px 0 16px;
+  line-height: 1.7;
+}
+.hours {
+  margin: 24px 0 40px;
+}
+.hours > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+}
+.hours dt span {
+  color: var(--theme-color-primary);
+  padding-right: 10px;
+}
+.amenityList {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.amenityList li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.amenityList svg {
+  width: 22px;
+  height: 22px;
+}
+.bookbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 18px max(24px, calc((100vw - 1000px) / 2)) calc(18px + env(safe-area-inset-bottom));
+  background: var(--theme-color-card);
+  border-top: 1px solid var(--theme-color-border);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+.bookbar strong {
+  font-size: 16px;
+  font-weight: 500;
+}
+.bookbar small {
+  display: block;
+  font-size: 12px;
+  color: var(--theme-color-muted-foreground);
+  margin-top: 4px;
+}
+@media (max-width: 760px) {
+  .page {
+    padding: 0 0 120px;
+  }
+  .brandbar {
+    display: none;
+  }
+  .club {
+    border-radius: 0;
+  }
+  .hero {
+    height: 340px;
+  }
+  .details {
+    padding: 24px 20px 0;
+  }
+  .details h1 {
+    font-size: 30px;
+  }
+  .heroNav {
+    inset: max(20px, env(safe-area-inset-top)) 20px auto;
+  }
+  .thumbnails {
+    width: 100% !important;
+    min-width: 0;
+    margin: 20px 0;
+  }
+  .thumbnail {
+    width: 100%;
+    min-width: 0;
+    height: 76px !important;
+  }
+  .tabs {
+    gap: 24px;
+    padding: 0 20px;
+  }
+  .content {
+    padding: 28px 20px;
+  }
+  .more {
+    padding: 32px 20px;
+  }
+  .bookbar {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .bookbar strong {
+    font-size: 14px;
+  }
+  .bookbar small {
+    max-width: 180px;
+  }
+  .amenityList {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tabs a[aria-current="location"] {
+  border-color: var(--theme-color-foreground);
+}
+.tabs a:not([aria-current]) {
+  color: var(--theme-color-muted-foreground);
+}
+.hours dd,
+.rating,
+.bookbar {
+  font-variant-numeric: tabular-nums;
+}
+.photoCount:focus-visible {
+  outline: 2px solid var(--theme-color-ring);
+  outline-offset: 4px;
+}
+.heroActions button,
+.heroNav > a {
+  width: 48px;
+  padding: 0;
+}

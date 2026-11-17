@@ -1,20 +1,10 @@
-import type { VariantProps } from "class-variance-authority";
-import type * as React from "react";
-import type { tableVariants } from "./Table.styles";
-export type TableProps = React.ComponentProps<"table">;
+import type { ComponentPropsWithRef } from "react";
 
-export type TableHeaderProps = React.ComponentProps<"thead">;
-
-export type TableBodyProps = React.ComponentProps<"tbody">;
-
-export type TableFooterProps = React.ComponentProps<"tfoot">;
-
-export type TableRowProps = React.ComponentProps<"tr">;
-
-export type TableHeadProps = React.ComponentProps<"th">;
-
-export type TableCellProps = React.ComponentProps<"td">;
-
-export type TableCaptionProps = React.ComponentProps<"caption">;
-
-export type TableVariants = VariantProps<typeof tableVariants>;
+export type TableProps = ComponentPropsWithRef<"table">;
+export type TableHeaderProps = ComponentPropsWithRef<"thead">;
+export type TableBodyProps = ComponentPropsWithRef<"tbody">;
+export type TableFooterProps = ComponentPropsWithRef<"tfoot">;
+export type TableRowProps = ComponentPropsWithRef<"tr">;
+export type TableHeadProps = ComponentPropsWithRef<"th">;
+export type TableCellProps = ComponentPropsWithRef<"td">;
+export type TableCaptionProps = ComponentPropsWithRef<"caption">;

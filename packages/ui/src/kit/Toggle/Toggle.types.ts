@@ -1,8 +1,10 @@
-import type { VariantProps } from "class-variance-authority";
-import { Toggle as TogglePrimitive } from "@animate-ui/react/primitives/radix-ui";
-import type * as React from "react";
-import type { toggleVariants } from "./Toggle.styles";
-export type ToggleProps = React.ComponentProps<typeof TogglePrimitive.Root> &
-  VariantProps<typeof toggleVariants>;
+import type { toggleSlots } from "./Toggle.styles";
+import type { Toggle as Primitive } from "@base-ui/react/toggle";
+import type { VariantProps } from "tailwind-variants";
 
-export type ToggleVariants = VariantProps<typeof toggleVariants>;
+export type ToggleVariants = VariantProps<typeof toggleSlots>;
+export type ToggleProps<Value extends string = string> = Omit<
+  Primitive.Props<Value>,
+  keyof ToggleVariants
+> &
+  ToggleVariants;

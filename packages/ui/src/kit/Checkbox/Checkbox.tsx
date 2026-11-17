@@ -1,26 +1,23 @@
 "use client";
-import { checkboxStyles } from "./Checkbox.styles";
+
+import { Checkbox as Primitive } from "@base-ui/react/checkbox";
+
 import type { CheckboxProps } from "./Checkbox.types";
+import type { FC } from "react";
 
-import { cn } from "@repo/ui/lib/utils";
-import { CheckIcon } from "lucide-react";
-import { Checkbox as CheckboxPrimitive } from "@animate-ui/react/primitives/radix-ui";
+import { primitiveClassName } from "../../lib/primitive-classname";
+import { checkboxVariants } from "./Checkbox.styles";
 
-function Checkbox({ className, ...props }: CheckboxProps) {
+const Checkbox: FC<CheckboxProps> = (props) => {
+  const { className, size, color, radius, ...rest } = props;
+
   return (
-    <CheckboxPrimitive.Root
-      data-slot="checkbox"
-      className={cn(checkboxStyles.checkbox(), className)}
-      {...props}
-    >
-      <CheckboxPrimitive.Indicator
-        data-slot="checkbox-indicator"
-        className={checkboxStyles.checkbox2()}
-      >
-        <CheckIcon />
-      </CheckboxPrimitive.Indicator>
-    </CheckboxPrimitive.Root>
+    <Primitive.Root
+      data-slot="checkbox-root"
+      className={primitiveClassName(checkboxVariants({ size, color, radius }), className)}
+      {...rest}
+    />
   );
-}
+};
 
-export { Checkbox };
+export default Checkbox;

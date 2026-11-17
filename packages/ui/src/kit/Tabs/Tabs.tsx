@@ -1,61 +1,21 @@
 "use client";
-import { tabsListVariants, tabsStyles } from "./Tabs.styles";
-import type {
-  TabsContentProps,
-  TabsListProps,
-  TabsProps,
-  TabsTriggerProps,
-} from "./Tabs.types";
 
-import { cn } from "@repo/ui/lib/utils";
-import { Tabs as TabsPrimitive } from "@animate-ui/react/primitives/radix-ui";
+import { Tabs as Primitive } from "@base-ui/react/tabs";
 
-function Tabs({ className, orientation = "horizontal", ...props }: TabsProps) {
+import type { TabsProps } from "./Tabs.types";
+import type { FC } from "react";
+
+import { primitiveClassName } from "../../lib/primitive-classname";
+import { tabsSlots } from "./Tabs.styles";
+
+const Tabs: FC<TabsProps> = (props) => {
+  const { className, ...rest } = props;
   return (
-    <TabsPrimitive.Root
-      data-slot="tabs"
-      data-orientation={orientation}
-      className={cn(tabsStyles.tabs(), className)}
-      {...props}
+    <Primitive.Root
+      data-slot="tabs-root"
+      className={primitiveClassName(tabsSlots({}).root(), className)}
+      {...rest}
     />
   );
-}
-
-function TabsList({ className, variant = "default", ...props }: TabsListProps) {
-  return (
-    <TabsPrimitive.List
-      data-slot="tabs-list"
-      data-variant={variant}
-      className={cn(tabsListVariants({ variant }), className)}
-      {...props}
-    />
-  );
-}
-
-function TabsTrigger({ className, ...props }: TabsTriggerProps) {
-  return (
-    <TabsPrimitive.Trigger
-      data-slot="tabs-trigger"
-      className={cn(
-        tabsStyles.tabsTrigger(),
-        tabsStyles.tabsTrigger2(),
-        tabsStyles.tabsTrigger3(),
-        tabsStyles.tabsTrigger4(),
-        className,
-      )}
-      {...props}
-    />
-  );
-}
-
-function TabsContent({ className, ...props }: TabsContentProps) {
-  return (
-    <TabsPrimitive.Content
-      data-slot="tabs-content"
-      className={cn(tabsStyles.tabsContent(), className)}
-      {...props}
-    />
-  );
-}
-
-export { Tabs, TabsContent, TabsList, TabsTrigger };
+};
+export default Tabs;

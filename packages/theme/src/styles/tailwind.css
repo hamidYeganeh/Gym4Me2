@@ -1,0 +1,206 @@
+@import "../theme.css";
+@import "./utilities.css";
+
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
+@theme inline {
+  /* shadcn color aliases use the same semantic tokens as the shared kit. */
+  --color-background: var(--theme-color-background);
+  --color-foreground: var(--theme-color-foreground);
+  --color-card: var(--theme-color-card);
+  --color-card-foreground: var(--theme-color-card-foreground);
+  --color-popover: var(--theme-color-popover);
+  --color-popover-foreground: var(--theme-color-popover-foreground);
+  --color-primary: var(--theme-color-primary);
+  --color-primary-foreground: var(--theme-color-primary-foreground);
+  --color-secondary: var(--theme-color-secondary);
+  --color-secondary-foreground: var(--theme-color-secondary-foreground);
+  --color-muted: var(--theme-color-muted);
+  --color-muted-foreground: var(--theme-color-muted-foreground);
+  --color-accent: var(--theme-color-accent);
+  --color-accent-foreground: var(--theme-color-accent-foreground);
+  --color-destructive: var(--theme-color-destructive);
+  --color-destructive-foreground: var(--theme-color-destructive-foreground);
+  --color-border: var(--theme-color-border);
+  --color-input: var(--theme-color-input);
+  --color-ring: var(--theme-color-ring);
+  --color-chart-1: var(--theme-color-chart-1);
+  --color-chart-2: var(--theme-color-chart-2);
+  --color-chart-3: var(--theme-color-chart-3);
+  --color-chart-4: var(--theme-color-chart-4);
+  --color-chart-5: var(--theme-color-chart-5);
+  --color-sidebar: var(--theme-color-sidebar);
+  --color-sidebar-foreground: var(--theme-color-sidebar-foreground);
+  --color-sidebar-primary: var(--theme-color-sidebar-primary);
+  --color-sidebar-primary-foreground: var(--theme-color-sidebar-primary-foreground);
+  --color-sidebar-border: var(--theme-color-sidebar-border);
+  --color-sidebar-ring: var(--theme-color-sidebar-ring);
+  --color-sidebar-accent: var(--theme-color-secondary);
+  --color-sidebar-accent-foreground: var(--theme-color-secondary-foreground);
+
+  /* Surfaces and content. */
+  --color-theme-background: var(--theme-color-background);
+  --color-theme-foreground: var(--theme-color-foreground);
+  --color-theme-card: var(--theme-color-card);
+  --color-theme-card-foreground: var(--theme-color-card-foreground);
+  --color-theme-popover: var(--theme-color-popover);
+  --color-theme-popover-foreground: var(--theme-color-popover-foreground);
+  --color-theme-surface-soft: var(--theme-color-surface-soft);
+  --color-theme-surface-dark: var(--theme-color-surface-dark);
+  --color-theme-surface-dark-foreground: var(--theme-color-surface-dark-foreground);
+  --color-theme-surface-dark-muted-foreground: var(--theme-color-surface-dark-muted-foreground);
+  --color-theme-surface-dark-border: var(--theme-color-surface-dark-border);
+  --color-theme-navy: var(--theme-color-navy);
+  --color-theme-navy-foreground: var(--theme-color-navy-foreground);
+
+  /* Interactive roles. */
+  --color-theme-primary: var(--theme-color-primary);
+
+  --color-theme-primary-foreground: var(--theme-color-primary-foreground);
+  --color-theme-primary-hover: var(--theme-color-primary-hover);
+  --color-theme-secondary: var(--theme-color-secondary);
+  --color-theme-secondary-foreground: var(--theme-color-secondary-foreground);
+  --color-theme-tertiary: var(--theme-color-tertiary);
+  --color-theme-tertiary-foreground: var(--theme-color-tertiary-foreground);
+  --color-theme-tertiary-hover: var(--theme-color-tertiary-hover);
+  --color-theme-accent: var(--theme-color-accent);
+  --color-theme-accent-foreground: var(--theme-color-accent-foreground);
+  --color-theme-muted: var(--theme-color-muted);
+  --color-theme-muted-foreground: var(--theme-color-muted-foreground);
+  --color-theme-destructive: var(--theme-color-destructive);
+  --color-theme-destructive-foreground: var(--theme-color-destructive-foreground);
+
+  /* Boundaries and focus. */
+  --color-theme-border: var(--theme-color-border);
+  --color-theme-border-strong: var(--theme-color-border-strong);
+  --color-theme-input: var(--theme-color-input);
+  --color-theme-ring: var(--theme-color-ring);
+
+  /* Status colors. */
+  --color-theme-error: var(--theme-color-error);
+  --color-theme-error-foreground: var(--theme-color-error-foreground);
+  --color-theme-success-foreground: var(--theme-color-success-foreground);
+  --color-theme-warning-foreground: var(--theme-color-warning-foreground);
+  --color-theme-warning-text: var(--theme-color-warning-text);
+  --color-theme-info-foreground: var(--theme-color-info-foreground);
+  --color-theme-success: var(--theme-color-success);
+  --color-theme-warning: var(--theme-color-warning);
+  --color-theme-info: var(--theme-color-info);
+
+  /* Charts. */
+  --color-theme-chart-1: var(--theme-color-chart-1);
+  --color-theme-chart-2: var(--theme-color-chart-2);
+  --color-theme-chart-3: var(--theme-color-chart-3);
+  --color-theme-chart-4: var(--theme-color-chart-4);
+  --color-theme-chart-5: var(--theme-color-chart-5);
+
+  /* Sidebar navigation. */
+  --color-theme-sidebar: var(--theme-color-sidebar);
+  --color-theme-sidebar-foreground: var(--theme-color-sidebar-foreground);
+  --color-theme-sidebar-primary: var(--theme-color-sidebar-primary);
+  --color-theme-sidebar-primary-foreground: var(--theme-color-sidebar-primary-foreground);
+  --color-theme-sidebar-border: var(--theme-color-sidebar-border);
+  --color-theme-sidebar-ring: var(--theme-color-sidebar-ring);
+
+  /* Shape. */
+  --radius-theme-sm: var(--theme-radius-sm);
+  --radius-theme-md: var(--theme-radius-md);
+  --radius-theme-lg: var(--theme-radius-lg);
+  --radius-theme-xl: var(--theme-radius-xl);
+  --radius-theme-control: var(--theme-radius-control);
+  --radius-theme-card: var(--theme-radius-card);
+  --radius-theme-panel: var(--theme-radius-panel);
+  --radius-theme-pill: var(--theme-radius-pill);
+
+  /* Typography. */
+  --tracking-theme-tight: var(--theme-tracking-tight);
+  --text-theme-display: var(--theme-text-display);
+  --text-theme-display--line-height: var(--theme-leading-display);
+  --text-theme-h1: var(--theme-text-h1);
+  --text-theme-h1--line-height: var(--theme-leading-h1);
+  --text-theme-h2: var(--theme-text-h2);
+  --text-theme-h2--line-height: var(--theme-leading-h2);
+  --text-theme-h3: var(--theme-text-h3);
+  --text-theme-h3--line-height: var(--theme-leading-h3);
+  --text-theme-h4: var(--theme-text-h4);
+  --text-theme-h4--line-height: var(--theme-leading-h4);
+  --text-theme-h5: var(--theme-text-h5);
+  --text-theme-h5--line-height: var(--theme-leading-h5);
+  --text-theme-h6: var(--theme-text-h6);
+  --text-theme-h6--line-height: var(--theme-leading-h6);
+  --text-theme-body1: var(--theme-text-body1);
+  --text-theme-body1--line-height: var(--theme-leading-body1);
+  --text-theme-caption: var(--theme-text-caption);
+  --text-theme-caption--line-height: var(--theme-leading-caption);
+  --text-theme-title: var(--theme-text-title);
+  --text-theme-title--line-height: var(--theme-leading-title);
+  --text-theme-body-large: var(--theme-text-body-large);
+  --text-theme-body-large--line-height: var(--theme-leading-body-large);
+  --text-theme-body-md: var(--theme-text-body-md);
+  --text-theme-body-md--line-height: var(--theme-leading-body-md);
+  --text-theme-label: var(--theme-text-label);
+  --text-theme-label--line-height: var(--theme-leading-label);
+  --text-theme-body2: var(--theme-text-body2);
+  --text-theme-body2--line-height: var(--theme-leading-body2);
+  --font-theme-sans: var(--theme-font-sans);
+  --font-theme-mono: var(--theme-font-mono);
+
+  /* Elevation. */
+  --shadow-theme-sm: var(--theme-shadow-sm);
+  --shadow-theme-md: var(--theme-shadow-md);
+
+  --font-theme-primary: var(--theme-font-primary);
+  --font-theme-fa-primary: var(--theme-font-fa-primary);
+  --radius-theme-none: var(--theme-radius-none);
+  --radius-theme-xs: var(--theme-radius-xs);
+  --radius-theme-2xl: var(--theme-radius-2xl);
+  --radius-theme-3xl: var(--theme-radius-3xl);
+  --radius-theme-full: var(--theme-radius-full);
+  --shadow-theme-none: var(--theme-shadow-none);
+  --shadow-theme-xs: var(--theme-shadow-xs);
+  --shadow-theme-lg: var(--theme-shadow-lg);
+  --shadow-theme-xl: var(--theme-shadow-xl);
+  --inset-shadow-theme-sm: var(--theme-shadow-inner);
+  --shadow-theme-focus: var(--theme-focus-ring);
+  --ease-theme-linear: var(--theme-ease-linear);
+  --ease-theme-in: var(--theme-ease-in);
+  --ease-theme-out: var(--theme-ease-out);
+  --ease-theme-in-out: var(--theme-ease-in-out);
+  --ease-theme-emphasized: var(--theme-ease-emphasized);
+  --spacing-theme-stack: var(--theme-space-stack);
+  --spacing-theme-section: var(--theme-space-section);
+  --spacing-theme-page: var(--theme-space-page);
+  --font-weight-theme-normal: var(--theme-font-weight-normal);
+  --font-weight-theme-medium: var(--theme-font-weight-medium);
+  --font-weight-theme-semibold: var(--theme-font-weight-semibold);
+  --font-weight-theme-bold: var(--theme-font-weight-bold);
+
+  /* Theme spacing. */
+  --spacing-theme-0: var(--theme-space-0);
+  --spacing-theme-1: var(--theme-space-1);
+  --spacing-theme-2: var(--theme-space-2);
+  --spacing-theme-3: var(--theme-space-3);
+  --spacing-theme-4: var(--theme-space-4);
+  --spacing-theme-5: var(--theme-space-5);
+  --spacing-theme-6: var(--theme-space-6);
+  --spacing-theme-7: var(--theme-space-7);
+  --spacing-theme-8: var(--theme-space-8);
+  --spacing-theme-9: var(--theme-space-9);
+  --spacing-theme-10: var(--theme-space-10);
+  --spacing-theme-4-5: var(--theme-space-4_5);
+  --spacing-theme-11: var(--theme-space-11);
+  --spacing-theme-13: var(--theme-space-13);
+  --spacing-theme-12: var(--theme-space-12);
+  --spacing-theme-16: var(--theme-space-16);
+  --spacing-theme-20: var(--theme-space-20);
+  --spacing-theme-24: var(--theme-space-24);
+  --spacing-theme-32: var(--theme-space-32);
+  --spacing-theme-40: var(--theme-space-40);
+  --spacing-theme-48: var(--theme-space-48);
+  --spacing-theme-64: var(--theme-space-64);
+  --spacing-theme-96: var(--theme-space-96);
+  --spacing-theme-0-5: var(--theme-space-0_5);
+  --spacing-theme-1-5: var(--theme-space-1_5);
+  --spacing-theme-2-5: var(--theme-space-2_5);
+  --spacing-theme-3-5: var(--theme-space-3_5);
+}

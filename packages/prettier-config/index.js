@@ -1,0 +1,35 @@
+/** @type {import("prettier").Config} */
+const config = {
+  plugins: ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  tailwindFunctions: ["cn"],
+  importOrder: [
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "<BUILTIN_MODULES>",
+    "",
+    "<TYPES>",
+    "",
+    "^(@repo/|@/)",
+    "",
+    "^[.]",
+  ],
+  importOrderTypeScriptVersion: "6.0.3",
+  printWidth: 100,
+  tabWidth: 2,
+  useTabs: false,
+  semi: true,
+  singleQuote: false,
+  jsxSingleQuote: false,
+  quoteProps: "as-needed",
+  trailingComma: "all",
+  bracketSpacing: true,
+  objectWrap: "preserve",
+  bracketSameLine: false,
+  arrowParens: "always",
+  endOfLine: "lf",
+  proseWrap: "preserve",
+  experimentalTernaries: true,
+  embeddedLanguageFormatting: "auto",
+};
+
+export default config;

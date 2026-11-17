@@ -1,17 +1,29 @@
-import { cva } from "class-variance-authority";
-export const sheetVariants = cva("");
+import { cn } from "tailwind-variants";
 
-export const sheetStyles = {
-  sheetOverlay: cva(
-    "fixed inset-0 z-50 bg-black/35 motion-reduce:animate-none motion-reduce:transition-none motion-reduce:backdrop-blur-none",
-  ),
-  sheetContent: cva(
-    "fixed z-50 flex flex-col bg-popover bg-clip-padding text-sm text-popover-foreground shadow-xl transition ease-[cubic-bezier(.2,.8,.2,1)] data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:h-auto data-[side=bottom]:border-t data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=left]:w-3/4 data-[side=left]:border-e data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=right]:w-3/4 data-[side=right]:border-s data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:h-auto data-[side=top]:border-b data-[side=left]:sm:max-w-sm data-[side=right]:sm:max-w-sm motion-reduce:animate-none motion-reduce:transition-none",
-  ),
-  sheetContent2: cva("absolute top-4 end-4 bg-secondary"),
-  sheetContent3: cva("sr-only"),
-  sheetHeader: cva("flex flex-col gap-1.5 p-6"),
-  sheetFooter: cva("mt-auto flex flex-col gap-2 p-6"),
-  sheetTitle: cva("font-heading text-base font-medium text-foreground"),
-  sheetDescription: cva("text-sm text-muted-foreground"),
-};
+import { tv } from "../../lib/variants";
+
+export const sheetSlots = tv({
+  slots: {
+    header: cn("flex flex-col gap-theme-2"),
+    footer: cn("mt-auto flex flex-col gap-theme-2 sm:flex-row sm:justify-end"),
+    overlay: cn("fixed inset-0 z-50 bg-theme-foreground/40"),
+    viewport: cn("pointer-events-none fixed inset-0 z-50"),
+    popup: cn(
+      "pointer-events-auto fixed flex flex-col gap-theme-4 overflow-y-auto bg-theme-background p-theme-6 text-theme-foreground shadow-theme-xl outline-none",
+    ),
+    title: cn("text-theme-h5 font-theme-semibold"),
+    description: cn("text-theme-body1 font-theme-normal text-theme-muted-foreground"),
+    close: cn(
+      "inline-flex items-center justify-center rounded-theme-sm p-theme-2 theme-motion-colors hover:bg-theme-muted focus-visible:ring-2 focus-visible:ring-theme-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
+    ),
+  },
+  variants: {
+    side: {
+      right: { popup: "inset-y-0 right-0 w-[min(90vw,28rem)] border-l border-theme-border" },
+      left: { popup: "inset-y-0 left-0 w-[min(90vw,28rem)] border-r border-theme-border" },
+      top: { popup: "inset-x-0 top-0 max-h-[90dvh] border-b border-theme-border" },
+      bottom: { popup: "inset-x-0 bottom-0 max-h-[90dvh] border-t border-theme-border" },
+    },
+  },
+  defaultVariants: { side: "right" },
+});

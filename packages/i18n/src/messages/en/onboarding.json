@@ -1,0 +1,66 @@
+{
+  "rateLimitNotice": "Too many attempts. This action is temporarily unavailable.",
+  "rateLimited": "Too many attempts. Try again in {seconds, number} seconds.",
+  "progress": "Step {current} of {total}",
+  "next": "Continue",
+  "finish": "Complete account",
+  "sendCode": "Send code",
+  "verify": "Verify number",
+  "back": "Back",
+  "signIn": "Sign in",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "artCaption": "Build your routine. Find your community. Make room for progress.",
+  "invalidPhone": "Enter a valid Iranian mobile number.",
+  "invalidCode": "Enter the six-digit verification code.",
+  "invalidPassword": "Use at least 8 characters.",
+  "invalidName": "Enter your full name.",
+  "invalidAge": "Enter an age between 1 and 120.",
+  "invalidUsername": "Use 3–32 letters, numbers, dots, underscores or hyphens.",
+  "chooseThree": "Choose at least three interests.",
+  "usernameTaken": "That username is already taken. Go back and choose another.",
+  "signInAgain": "Your verification has expired. Sign in again to continue.",
+  "unavailable": "We couldn’t complete this request. Please try again.",
+  "phone": {
+    "title": "Your mobile number",
+    "description": "Get started with a code sent to your phone.",
+    "label": "Mobile number"
+  },
+  "code": {
+    "title": "Check your phone",
+    "description": "Enter the six-digit code we sent you.",
+    "label": "Verification code"
+  },
+  "password": {
+    "title": "Choose a password",
+    "description": "Keep your account secure.",
+    "label": "Password"
+  },
+  "name": {
+    "title": "What’s your full name?",
+    "description": "Let’s get to know you.",
+    "label": "Full name"
+  },
+  "age": {
+    "title": "How old are you?",
+    "description": "Help us personalize your Gym4Me experience.",
+    "label": "Age"
+  },
+  "username": {
+    "title": "Choose a username",
+    "description": "Make your profile your own.",
+    "label": "Username"
+  },
+  "interests": {
+    "title": "What moves you?",
+    "description": "Choose at least three interests to personalize your experience."
+  },
+  "topics": {
+    "strength": "Strength",
+    "cardio": "Cardio",
+    "yoga": "Yoga",
+    "pilates": "Pilates",
+    "swimming": "Swimming",
+    "functional": "Functional training"
+  }
+}

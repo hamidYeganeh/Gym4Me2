@@ -1,39 +1,21 @@
-import type { VariantProps } from "class-variance-authority";
-import type * as React from "react";
-import { Drawer as DrawerPrimitive } from "@animate-ui/react/primitives/radix-ui/drawer";
-import type { drawerVariants } from "./Drawer.styles";
-export type DrawerProps = React.ComponentProps<typeof DrawerPrimitive.Root>;
+import type { Drawer as Primitive } from "@base-ui/react/drawer";
+import type { ComponentPropsWithRef } from "react";
 
-export type DrawerTriggerProps = React.ComponentProps<
-  typeof DrawerPrimitive.Trigger
->;
-
-export type DrawerPortalProps = React.ComponentProps<
-  typeof DrawerPrimitive.Portal
->;
-
-export type DrawerCloseProps = React.ComponentProps<
-  typeof DrawerPrimitive.Close
->;
-
-export type DrawerOverlayProps = React.ComponentProps<
-  typeof DrawerPrimitive.Overlay
->;
-
-export type DrawerContentProps = React.ComponentProps<
-  typeof DrawerPrimitive.Content
->;
-
-export type DrawerHeaderProps = React.ComponentProps<"div">;
-
-export type DrawerFooterProps = React.ComponentProps<"div">;
-
-export type DrawerTitleProps = React.ComponentProps<
-  typeof DrawerPrimitive.Title
->;
-
-export type DrawerDescriptionProps = React.ComponentProps<
-  typeof DrawerPrimitive.Description
->;
-
-export type DrawerVariants = VariantProps<typeof drawerVariants>;
+export type DrawerProps<Payload = unknown> = Primitive.Root.Props<Payload>;
+export type DrawerTriggerProps<Payload = unknown> = Primitive.Trigger.Props<Payload>;
+export type DrawerPortalProps = ComponentPropsWithRef<typeof Primitive.Portal>;
+export type DrawerOverlayProps = ComponentPropsWithRef<typeof Primitive.Backdrop>;
+export type DrawerViewportProps = ComponentPropsWithRef<typeof Primitive.Viewport>;
+export type DrawerPopupProps = ComponentPropsWithRef<typeof Primitive.Popup>;
+export type DrawerBodyProps = ComponentPropsWithRef<typeof Primitive.Content>;
+export type DrawerTitleProps = ComponentPropsWithRef<typeof Primitive.Title>;
+export type DrawerDescriptionProps = ComponentPropsWithRef<typeof Primitive.Description>;
+export type DrawerCloseProps = ComponentPropsWithRef<typeof Primitive.Close>;
+export type DrawerContentProps = DrawerPopupProps & {
+  portalProps?: DrawerPortalProps;
+  overlayProps?: DrawerOverlayProps;
+  viewportProps?: DrawerViewportProps;
+};
+export type DrawerHeaderProps = ComponentPropsWithRef<"div">;
+export type DrawerFooterProps = ComponentPropsWithRef<"div">;
+export type DrawerHandleProps = ComponentPropsWithRef<"div">;

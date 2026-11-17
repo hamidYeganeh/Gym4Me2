@@ -1,0 +1,45 @@
+name: frontend
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          # no "cache: npm" here: it runs npm 11 inside the repo
+      - name: Install npm from package.json volta.npm
+        run: |
+          npm_version=$(node -e '
+            const { volta } = require("./package.json");
+            const nvmrc = require("fs").readFileSync(".nvmrc", "utf8").trim();
+            if (volta.node !== nvmrc) {
+              console.error(`::error::.nvmrc (${nvmrc}) and package.json volta.node (${volta.node}) differ.`);
+              process.exit(1);
+            }
+            console.log(volta.npm);
+          ')
+          # Outside the repo, because devEngines refuses the bundled npm 11 inside it.
+          cd "$RUNNER_TEMP"
+          npm install --global "npm@$npm_version"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run test:e2e --workspace backend
+      - run: npm run build
+      - run: npm run build:native --workspace application
+      - run: test -f apps/application/out/index.html

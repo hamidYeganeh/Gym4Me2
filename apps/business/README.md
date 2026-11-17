@@ -1,3 +1,3 @@
-# business
+# Gym4Me Business
 
-See the [workspace README](../../README.md) for setup, ports, shared packages, and validation commands.
+See the [repository README](../../README.md) for workspace commands and [Club onboarding](../../docs/club-onboarding.md) for PostgreSQL setup, authentication, and the club approval workflow.

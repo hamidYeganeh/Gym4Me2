@@ -1,0 +1,36 @@
+/* Spacing scale: rem values respect the user’s root font size. */
+:root {
+  --theme-space-unit: 0.25rem;
+  --theme-space-0: 0px;
+  --theme-space-1: calc(var(--theme-space-unit) * 1);
+  --theme-space-2: calc(var(--theme-space-unit) * 2);
+  --theme-space-3: calc(var(--theme-space-unit) * 3);
+  --theme-space-4: calc(var(--theme-space-unit) * 4);
+  --theme-space-5: calc(var(--theme-space-unit) * 5);
+  --theme-space-6: calc(var(--theme-space-unit) * 6);
+  --theme-space-7: calc(var(--theme-space-unit) * 7);
+  --theme-space-8: calc(var(--theme-space-unit) * 8);
+  --theme-space-9: calc(var(--theme-space-unit) * 9);
+  --theme-space-10: calc(var(--theme-space-unit) * 10);
+  --theme-space-12: calc(var(--theme-space-unit) * 12);
+  --theme-space-16: calc(var(--theme-space-unit) * 16);
+  --theme-space-20: calc(var(--theme-space-unit) * 20);
+  --theme-space-24: calc(var(--theme-space-unit) * 24);
+  --theme-space-32: calc(var(--theme-space-unit) * 32);
+  --theme-space-40: calc(var(--theme-space-unit) * 40);
+  --theme-space-48: calc(var(--theme-space-unit) * 48);
+  --theme-space-64: calc(var(--theme-space-unit) * 64);
+  --theme-space-96: calc(var(--theme-space-unit) * 96);
+  --theme-space-0_5: calc(var(--theme-space-unit) * 0.5);
+  --theme-space-1_5: calc(var(--theme-space-unit) * 1.5);
+  --theme-space-2_5: calc(var(--theme-space-unit) * 2.5);
+  --theme-space-3_5: calc(var(--theme-space-unit) * 3.5);
+
+  --theme-space-4_5: calc(var(--theme-space-unit) * 4.5);
+  --theme-space-11: calc(var(--theme-space-unit) * 11);
+  --theme-space-13: calc(var(--theme-space-unit) * 13);
+  /* Semantic layout gaps. */
+  --theme-space-stack: var(--theme-space-4);
+  --theme-space-section: var(--theme-space-12);
+  --theme-space-page: clamp(1rem, 4vw, 3rem);
+}

@@ -1,15 +1,17 @@
-import { cn } from "@repo/ui/lib/utils";
-import { skeletonStyles } from "./Skeleton.styles";
 import type { SkeletonProps } from "./Skeleton.types";
+import type { FC } from "react";
 
-function Skeleton({ className, ...props }: SkeletonProps) {
+import { skeletonVariants } from "./Skeleton.styles";
+
+const Skeleton: FC<SkeletonProps> = (props) => {
+  const { className, radius, ...rest } = props;
   return (
     <div
+      aria-hidden="true"
       data-slot="skeleton"
-      className={cn(skeletonStyles.skeleton(), className)}
-      {...props}
+      className={skeletonVariants({ radius, className })}
+      {...rest}
     />
   );
-}
-
-export { Skeleton };
+};
+export default Skeleton;

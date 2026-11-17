@@ -2,47 +2,28 @@
   "name": "@repo/api",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./provider": "./src/provider.tsx",
-    "./auth": "./src/auth/index.ts",
-    "./profile": "./src/profile/index.ts",
-    "./business": "./src/business/index.ts",
-    "./admin": "./src/admin/index.ts",
-    "./catalog": "./src/catalog/index.ts",
-    "./system": "./src/system/index.ts",
-    "./select-options": "./src/select-options.ts",
-    "./analytics": "./src/analytics.ts",
-    "./sports": "./src/sports/index.ts",
-    "./training-offline": "./src/profile/training-offline.ts",
-    "./web-push": "./src/web-push.ts",
-    "./advanced-business": "./src/advanced-business.ts",
-    "./list-memory": "./src/list-memory.ts",
-    "./growth": "./src/growth.ts"
+    "./http": "./src/http.ts",
+    "./applicant-auth": "./src/applicant-auth.ts",
+    "./react-query": "./src/react-query.tsx",
+    "./schedule": "./src/schedule.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit",
-    "lint": "eslint . --max-warnings 0",
-    "test": "tsx --test test/*.test.ts"
+    "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.0.0"
+    "@tanstack/react-query": "^5.106.1",
+    "axios": "^1.21.0"
   },
   "peerDependencies": {
-    "react": "^19.3.0"
+    "react": "^19.0.0"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
-    "@repo/eslint-config": "workspace:*",
-    "@types/node": "^24",
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
     "@types/react": "^19",
-    "react": "19.3.0",
-    "typescript": "^5.9.3",
-    "tsx": "^4.23.15",
-    "eslint": "^9",
-    "typescript-eslint": "^8.20.0",
-    "@eslint/js": "^9",
-    "globals": "^17.0.0"
+    "eslint": "10.9.1",
+    "typescript": "~6.0.3"
   }
 }

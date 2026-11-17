@@ -1,0 +1,18 @@
+/*
+ * Layer 3: component tokens.
+ *
+ * Small decisions that several components share, pointing at semantic tokens.
+ * Change a component's look here (for example every button's radius) without
+ * touching the component.
+ */
+:root {
+  --theme-button-radius: var(--theme-radius-control);
+  --theme-input-radius: var(--theme-radius-control);
+  --theme-card-radius: var(--theme-radius-card);
+  --theme-panel-radius: var(--theme-radius-panel);
+
+  /* Keyboard focus: a teal halo, always visible. */
+  --theme-focus-ring-width: 3px;
+  --theme-focus-ring-color: color-mix(in srgb, var(--theme-color-ring) 30%, transparent);
+  --theme-focus-ring: 0 0 0 var(--theme-focus-ring-width) var(--theme-focus-ring-color);
+}

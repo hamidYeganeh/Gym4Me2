@@ -1,32 +1,55 @@
-# application
+# Gym4Me Application
 
-See the [workspace README](../../README.md) for setup, ports, shared packages, and validation commands.
+See the [repository README](../../README.md) for workspace commands and architecture.
 
-## Component demo
+## Published clubs
 
-Open [the demo](http://localhost:7081/demo) while running `pnpm --filter application dev`.
-The Persian gallery includes searchable, interactive examples of the shared UI kit.
-Cards and application sections have their own categories. Open `/demo?category=cards`
-or `/demo?category=sections` to show either category directly.
-The More page links to it in development. The route returns not found in all other
-environments, including production and native exports.
+The web directory at `/clubs/` links to published clubs at `/clubs/:clubId`.
+Run the production web build with `npm run start --workspace application`.
+The Capacitor bundle uses the exported directory page with `?id=:clubId` to
+load the same published details on devices.
 
-## Discovery map
+## Club detail
 
-`/discovery/map` uses Neshan's official Web SDK. Create a **Web SDK** key in
-[the Neshan platform](https://platform.neshan.org/), allow your website domain
-(and localhost for development), then set it in `apps/application/.env.local`:
+Open `/club/form-fitness/` (also linked from the home page). The responsive
+`/club/[clubId]` route uses the shared shadcn-style kit, Animate UI buttons and
+sheet, and existing theme tokens. Gallery selection, local favorites, native
+sharing with clipboard fallback, and visit information are interactive.
 
-```dotenv
-NEXT_PUBLIC_NESHAN_MAP_KEY=your-neshan-web-sdk-key
-```
+The catalogue in `features/club/clubs.ts` is explicitly sample data. Static export
+generates one route per catalogue entry; unknown IDs have no exported page.
+Add real catalogue entries there, or replace the catalogue with a build-time API
+when available. Runtime-created IDs require a hosting/routing strategy beyond
+the current Capacitor-compatible static export.
 
-Restart the dev server after changing the key; production and native exports need
-it at build time. This is a public map-display key, not a server services key.
-The SDK script and stylesheet load only on the map route. Without a key or if the
-map fails to load, search, filters, saved clubs, and club cards remain available.
+The visit sheet is informational: it does not reserve a session or take payment.
+Favorites persist on the current device only.
 
-The current catalog is sample data. Positions in `lib/club-map.ts` are approximate
-preview coordinates and must be replaced with verified branch coordinates before
-production use. Selecting a price marker selects its card; swiping cards selects
-the corresponding marker. Search, category, price, and saved filters apply to both.
+### Preview photography
+
+Local assets are sourced from Unsplash (illustrative, not photographs of a real
+FORM Fitness Club):
+
+- Training floor: https://images.unsplash.com/photo-1534438327276-14e5300c3a48
+- Strength: https://images.unsplash.com/photo-1517836357463-d25dfeac3438
+- Equipment: https://images.unsplash.com/photo-1540497077202-7c8a3999166f
+
+## Member reviews and club-owner sections
+
+The club detail includes section navigation, training highlights, two review
+previews, a category rating summary, neighbourhood information, a club-owner
+profile, and first-visit guidelines. The original fitness gallery and actions remain.
+
+All reviews live at `/clubs/[clubId]/reviews/`, e.g.
+`/clubs/form-fitness/reviews/`. The plural reviews route links back to the singular
+club detail route. Search matches review text, member name, and training type;
+sorting supports newest, highest rated, and lowest rated.
+
+Review counts, averages, category ratings, and distributions derive from
+`reviewEntries`; no independent hardcoded totals are used. Owner details and
+reviews are explicitly sample content. The location link searches the
+neighbourhood, not an invented club address.
+
+The shared Mobbin flow links were inaccessible during implementation. These
+sections use an Airbnb-inspired listing structure, not a verified reproduction
+of those particular flows.

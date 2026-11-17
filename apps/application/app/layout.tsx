@@ -1,67 +1,38 @@
-import { AppProviders } from "../components/app-providers";
-import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
+
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { getDirection, isLocale, defaultLocale } from "@repo/i18n";
-import { getLocale, getTranslations } from "@repo/i18n/server";
-import { iranSansX } from "@repo/theme/fonts";
-import { applicationThemeMigration } from "../lib/application-theme";
+
+import { I18nProvider } from "@repo/i18n";
+import messages from "@repo/i18n/messages/fa";
+
 import "./globals.css";
-import "@repo/ui/focus.css";
-import "./application-focus.css";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("Metadata");
-  return {
-    title: t("brand"),
-    description: t("description"),
-    manifest: "/manifest.webmanifest",
-    appleWebApp: {
-      capable: true,
-      title: "Gym4Me",
-      statusBarStyle: "black-translucent",
-    },
-    icons: {
-      icon: "/icons/icon-192.png",
-      apple: "/icons/icon-180.png",
-    },
-  };
-}
+const iranSansX = localFont({
+  src: "../../../packages/theme/src/fonts/iransansx-variable.woff2",
+  weight: "100 1000",
+  display: "swap",
+  adjustFontFallback: false,
+  variable: "--next-font-primary",
+});
 
-export default async function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  const value = await getLocale();
-  const locale = isLocale(value) ? value : defaultLocale;
-  const direction = getDirection(locale);
+export const metadata: Metadata = { title: "جیم‌فورمی", description: "همراه شما در مسیر تمرین" };
+
+const RootLayout = (props: { children: ReactNode }) => {
+  const { children } = props;
+
   return (
-    <html
-      lang={locale}
-      dir={direction}
-      className={`${iranSansX.variable} dark`}
-      suppressHydrationWarning
-    >
+    <html lang="fa" dir="rtl" className={`dark ${iranSansX.variable}`}>
       <body
-        data-gym-focus="application"
-        className="min-h-dvh select-none antialiased"
+        style={{ fontVariationSettings: '"DOTS" 4' }}
+        className="bg-theme-background font-theme-primary text-theme-foreground"
       >
-        <script
-          id="gym4me-theme-migration"
-          dangerouslySetInnerHTML={{ __html: applicationThemeMigration }}
-        />
-        <div className="application-frame mx-auto w-full max-w-xl">
-          <AppProviders locale={locale}>{children}</AppProviders>
-        </div>
+        <I18nProvider locale="fa" messages={messages} timeZone="Asia/Tehran">
+          {children}
+        </I18nProvider>
       </body>
     </html>
   );
-}
-
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  viewportFit: "cover",
-  themeColor: "#101113",
-  colorScheme: "dark light",
 };
+
+export default RootLayout;

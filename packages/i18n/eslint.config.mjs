@@ -1,13 +1,22 @@
-import js from "@eslint/js";
-import tseslint from "typescript-eslint";
-import globals from "globals";
-export default tseslint.config(
-  { ignores: ["node_modules/**", "assets/**", "src/icons/**"] },
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
+import { config } from "@repo/eslint-config/react-internal";
+
+export default [
+  ...config,
   {
-    files: ["**/*.cjs"],
-    rules: { "@typescript-eslint/no-require-imports": "off" },
+    files: ["src/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/*", "apps/*", "**/apps/**"],
+              message:
+                "Shared package boundaries must not depend on application or higher-level packages.",
+            },
+          ],
+        },
+      ],
+    },
   },
-  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
-);
+];

@@ -1,29 +1,23 @@
-import { cva } from "class-variance-authority";
-export const emptyMediaVariants = cva(
-  "mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0",
-  {
-    variants: {
-      variant: {
-        default: "bg-transparent",
-        icon: "flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted text-foreground [&_svg:not([class*='size-'])]:size-5",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
+import { cn } from "tailwind-variants";
+
+import { tv } from "../../lib/variants";
+
+export const emptySlots = tv({
+  slots: {
+    root: cn(
+      "flex flex-col items-center justify-center gap-theme-6 rounded-theme-lg border border-dashed border-theme-border p-theme-6 text-center",
+    ),
+    header: cn("flex max-w-sm flex-col items-center gap-theme-2"),
+    media: cn("flex items-center justify-center text-theme-muted-foreground"),
+    title: cn("text-theme-h5 font-theme-semibold"),
+    description: cn("text-theme-body2 text-theme-muted-foreground"),
+    content: cn("flex w-full max-w-sm flex-col items-center gap-theme-4"),
+  },
+  variants: {
+    variant: {
+      icon: { media: "size-12 rounded-theme-lg bg-theme-muted" },
+      plain: { media: "bg-transparent" },
     },
   },
-);
-
-export const emptyStyles = {
-  empty: cva(
-    "flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-2xl border border-border bg-muted/40 px-6 py-10 text-center text-balance",
-  ),
-  emptyHeader: cva("flex max-w-sm flex-col items-center gap-2"),
-  emptyTitle: cva("font-heading text-lg font-medium tracking-tight leading-relaxed"),
-  emptyDescription: cva(
-    "text-sm/relaxed text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
-  ),
-  emptyContent: cva(
-    "flex w-full max-w-sm min-w-0 flex-col items-center gap-4 text-sm text-balance",
-  ),
-};
+  defaultVariants: { variant: "plain" },
+});

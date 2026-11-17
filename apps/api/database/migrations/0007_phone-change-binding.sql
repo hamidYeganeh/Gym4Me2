@@ -1,1 +1,0 @@
-ALTER TABLE "otp_challenges" ADD COLUMN "requested_session_id" uuid;

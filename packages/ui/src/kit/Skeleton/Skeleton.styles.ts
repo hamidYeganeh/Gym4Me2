@@ -1,6 +1,15 @@
-import { cva } from "class-variance-authority";
-export const skeletonVariants = cva("");
+import { tv } from "../../lib/variants";
 
-export const skeletonStyles = {
-  skeleton: cva("animate-pulse rounded-2xl bg-muted"),
-};
+export const skeletonVariants = tv({
+  base: "rounded-theme-md bg-theme-muted motion-safe:animate-pulse",
+  variants: {
+    radius: {
+      none: "rounded-theme-none",
+      sm: "rounded-theme-sm",
+      md: "rounded-theme-md",
+      lg: "rounded-theme-lg",
+      full: "rounded-theme-full",
+    },
+  },
+  defaultVariants: { radius: "md" },
+});

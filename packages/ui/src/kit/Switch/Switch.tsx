@@ -1,24 +1,23 @@
 "use client";
-import { switchStyles } from "./Switch.styles";
+
+import { Switch as Primitive } from "@base-ui/react/switch";
+
 import type { SwitchProps } from "./Switch.types";
+import type { FC } from "react";
 
-import { cn } from "@repo/ui/lib/utils";
-import { Switch as SwitchPrimitive } from "@animate-ui/react/primitives/radix-ui";
+import { primitiveClassName } from "../../lib/primitive-classname";
+import { switchVariants } from "./Switch.styles";
 
-function Switch({ className, size = "default", ...props }: SwitchProps) {
+const Switch: FC<SwitchProps> = (props) => {
+  const { className, size, color, radius, ...rest } = props;
+
   return (
-    <SwitchPrimitive.Root
-      data-slot="switch"
-      data-size={size}
-      className={cn(switchStyles.switch(), className)}
-      {...props}
-    >
-      <SwitchPrimitive.Thumb
-        data-slot="switch-thumb"
-        className={switchStyles.switch2()}
-      />
-    </SwitchPrimitive.Root>
+    <Primitive.Root
+      data-slot="switch-root"
+      className={primitiveClassName(switchVariants({ size, color, radius }), className)}
+      {...rest}
+    />
   );
-}
+};
 
-export { Switch };
+export default Switch;

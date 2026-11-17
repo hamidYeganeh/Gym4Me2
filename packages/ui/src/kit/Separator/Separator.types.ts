@@ -1,9 +1,9 @@
-import type { VariantProps } from "class-variance-authority";
-import { Separator as SeparatorPrimitive } from "radix-ui";
-import type * as React from "react";
 import type { separatorVariants } from "./Separator.styles";
-export type SeparatorProps = React.ComponentProps<
-  typeof SeparatorPrimitive.Root
->;
+import type { ComponentPropsWithRef } from "react";
+import type { VariantProps } from "tailwind-variants";
 
 export type SeparatorVariants = VariantProps<typeof separatorVariants>;
+export type SeparatorProps = ComponentPropsWithRef<"div"> &
+  SeparatorVariants & {
+    decorative?: boolean;
+  };

@@ -1,21 +1,15 @@
-import { cva } from "class-variance-authority";
-export const accordionVariants = cva("");
+import { tv } from "../../lib/variants";
 
-export const accordionStyles = {
-  accordion: cva("flex w-full flex-col overflow-hidden rounded-2xl border"),
-  accordionItem: cva("not-last:border-b data-open:bg-muted/50"),
-  accordionTrigger: cva("flex"),
-  accordionTrigger2: cva(
-    "group/accordion-trigger relative flex flex-1 items-start justify-between gap-6 border border-transparent p-4 text-start text-sm font-medium transition-[color,background-color,border-color,box-shadow,opacity] outline-none hover:underline disabled:pointer-events-none disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ms-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
-  ),
-  accordionTrigger3: cva(
-    "pointer-events-none shrink-0 transition-transform group-aria-expanded/accordion-trigger:rotate-180",
-  ),
-  accordionTrigger4: cva(
-    "pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline",
-  ),
-  accordionContent: cva("overflow-hidden px-4 text-sm"),
-  accordionContent2: cva(
-    "h-(--radix-accordion-content-height) pt-0 pb-4 [&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
-  ),
-};
+export const accordionSlots = tv({
+  slots: {
+    root: "w-full overflow-hidden rounded-theme-2xl border border-theme-border",
+    item: "border-b border-theme-border bg-theme-secondary last:border-b-0 data-open:bg-theme-background",
+    header: "flex",
+    trigger:
+      "group flex min-h-24 w-full cursor-pointer items-center justify-between gap-theme-4 px-theme-6 py-theme-5 text-start font-theme-bold outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-theme-ring data-disabled:cursor-default data-disabled:opacity-50",
+    indicator:
+      "relative grid size-9 shrink-0 place-items-center rounded-full bg-theme-muted before:h-0.5 before:w-3.5 before:rounded-full before:bg-current after:absolute after:h-3.5 after:w-0.5 after:rounded-full after:bg-current motion-safe:after:transition-transform group-aria-expanded:after:scale-y-0",
+    content: "overflow-hidden text-theme-body1 leading-loose text-theme-muted-foreground",
+    body: "px-theme-6 pb-theme-10 pt-theme-3",
+  },
+});

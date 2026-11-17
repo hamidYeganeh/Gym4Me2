@@ -1,0 +1,14 @@
+{
+  "extends": "@repo/typescript-config/react-library.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["vite/client"]
+  },
+  "include": [
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
+    "../../packages/ui/src/kit/**/index.ts",
+    "../../packages/ui/src/providers/**/index.ts",
+    "../../packages/theme/src/index.ts"
+  ]
+}

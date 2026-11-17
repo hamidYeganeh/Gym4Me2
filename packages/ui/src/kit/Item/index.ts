@@ -1,3 +1,12 @@
-export * from "./Item";
-export * from "./Item.styles";
-export type * from "./Item.types";
+export { default, default as Item } from "./Item";
+export { default as ItemGroup } from "./ItemGroup";
+export { default as ItemSeparator } from "./ItemSeparator";
+export { default as ItemMedia } from "./ItemMedia";
+export { default as ItemContent } from "./ItemContent";
+export { default as ItemTitle } from "./ItemTitle";
+export { default as ItemDescription } from "./ItemDescription";
+export { default as ItemActions } from "./ItemActions";
+export { default as ItemHeader } from "./ItemHeader";
+export { default as ItemFooter } from "./ItemFooter";
+export * from "./Item.types";
+export { itemSlots } from "./Item.styles";

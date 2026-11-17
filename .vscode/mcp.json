@@ -2,15 +2,7 @@
   "servers": {
     "shadcn": {
       "command": "npx",
-      "args": [
-        "-y",
-        "shadcn@latest",
-        "mcp"
-      ]
-    },
-    "watermelon": {
-      "type": "http",
-      "url": "https://mcp.watermelon.sh/mcp"
+      "args": ["shadcn@latest", "mcp"]
     }
   }
 }

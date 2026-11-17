@@ -1,11 +1,62 @@
-import { cva } from "class-variance-authority";
-export const switchVariants = cva("");
+import { cn } from "tailwind-variants";
 
-export const switchStyles = {
-  switch: cva(
-    "peer group/switch relative inline-flex shrink-0 items-center rounded-full border-2 transition-[color,background-color,border-color,box-shadow,opacity] outline-none group-has-[:focus-visible]/field-label:ring-0 after:absolute after:-inset-x-3 after:-inset-y-2    aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[size=default]:h-5 data-[size=default]:w-11 data-[size=sm]:h-4 data-[size=sm]:w-7   data-checked:border-primary data-checked:bg-primary group-has-[:focus-visible]/field-label:data-checked:border-primary data-unchecked:border-transparent data-unchecked:bg-input/90 group-has-[:focus-visible]/field-label:data-unchecked:border-transparent data-disabled:cursor-not-allowed data-disabled:opacity-50",
-  ),
-  switch2: cva(
-    "pointer-events-none block rounded-full bg-background shadow-sm ring-0 not- group-data-[size=default]/switch:h-4 group-data-[size=default]/switch:w-6 group-data-[size=sm]/switch:h-3 group-data-[size=sm]/switch:w-4 data-checked:translate-x-[calc(100%-8px)] rtl:data-checked:-translate-x-[calc(100%-8px)]  data-unchecked:translate-x-0 rtl:data-unchecked:-translate-x-0 ",
-  ),
-};
+import type { ClassProp, VariantProps } from "tailwind-variants";
+
+import { tv } from "../../lib/variants";
+
+export const switchSlots = tv({
+  slots: {
+    root: cn(
+      "inline-flex shrink-0 items-center border border-transparent p-theme-0-5",
+      "bg-theme-input theme-motion-colors",
+      "outline-none focus-visible:ring-2 focus-visible:ring-theme-ring",
+      "data-disabled:pointer-events-none data-disabled:opacity-50",
+    ),
+    thumb: cn(
+      "block aspect-square h-full rounded-theme-full bg-theme-background shadow-theme-xs",
+      "data-checked:ms-auto",
+    ),
+  },
+  variants: {
+    color: {
+      neutral: { root: "data-checked:bg-theme-foreground" },
+      primary: { root: "data-checked:bg-theme-primary" },
+      secondary: { root: "data-checked:bg-theme-secondary" },
+      error: { root: "data-checked:bg-theme-error" },
+      success: { root: "data-checked:bg-theme-success" },
+      warning: { root: "data-checked:bg-theme-warning" },
+      info: { root: "data-checked:bg-theme-info" },
+    },
+    radius: {
+      none: { root: "rounded-theme-none" },
+      xs: { root: "rounded-theme-xs" },
+      sm: { root: "rounded-theme-sm" },
+      md: { root: "rounded-theme-md" },
+      lg: { root: "rounded-theme-lg" },
+      xl: { root: "rounded-theme-xl" },
+      "2xl": { root: "rounded-theme-2xl" },
+      "3xl": { root: "rounded-theme-3xl" },
+      full: { root: "rounded-theme-full" },
+    },
+    size: {
+      xs: { root: "h-theme-4 w-theme-7" },
+      sm: { root: "h-theme-4-5 w-theme-8" },
+      md: { root: "h-theme-5 w-theme-9" },
+      lg: { root: "h-theme-6 w-theme-11" },
+      xl: { root: "h-theme-7 w-theme-13" },
+    },
+  },
+});
+
+// Compatibility helpers retain the existing per-part recipe API.
+export const switchVariants = ({
+  size = "md",
+  color = "primary",
+  radius = "full",
+  class: classValue,
+  className,
+  ...props
+}: Pick<VariantProps<typeof switchSlots>, "size" | "color" | "radius"> & ClassProp = {}) =>
+  switchSlots({ size, color, radius, ...props }).root({ className: cn(classValue, className) });
+export const switchThumbVariants = ({ class: classValue, className, ...props }: ClassProp = {}) =>
+  switchSlots({ ...props }).thumb({ className: cn(classValue, className) });

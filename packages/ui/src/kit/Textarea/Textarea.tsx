@@ -1,15 +1,20 @@
-import { cn } from "@repo/ui/lib/utils";
-import { textareaStyles } from "./Textarea.styles";
-import type { TextareaProps } from "./Textarea.types";
+"use client";
 
-function Textarea({ className, ...props }: TextareaProps) {
+import type { TextareaProps } from "./Textarea.types";
+import type { FC } from "react";
+
+import { textareaVariants } from "./Textarea.styles";
+
+const Textarea: FC<TextareaProps> = (props) => {
+  const { className, variant, color, size, radius, shadow, resize, ...rest } = props;
+
   return (
     <textarea
       data-slot="textarea"
-      className={cn(textareaStyles.textarea(), className)}
-      {...props}
+      className={textareaVariants({ variant, color, size, radius, shadow, resize, className })}
+      {...rest}
     />
   );
-}
+};
 
-export { Textarea };
+export default Textarea;

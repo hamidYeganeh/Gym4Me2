@@ -1,0 +1,15 @@
+@utility theme-motion-colors {
+  transition: var(--theme-transition-colors);
+}
+
+@utility theme-motion-opacity {
+  transition: var(--theme-transition-opacity);
+}
+
+@utility theme-motion-transform {
+  transition: var(--theme-transition-transform);
+}
+
+@utility theme-motion-shadow {
+  transition: var(--theme-transition-shadow);
+}

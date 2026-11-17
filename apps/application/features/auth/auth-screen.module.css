@@ -1,0 +1,76 @@
+.shell {
+  min-block-size: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-block: max(var(--theme-space-4), env(safe-area-inset-top))
+    max(var(--theme-space-6), env(safe-area-inset-bottom));
+  padding-inline: var(--theme-space-5);
+  color: var(--theme-color-foreground);
+  background: var(--theme-color-background);
+}
+
+.content {
+  inline-size: min(100%, var(--theme-space-96));
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-inline: auto;
+  gap: var(--theme-space-5);
+}
+
+.screen,
+.screen form {
+  flex: 1;
+}
+
+.screen form > button[type="submit"] {
+  margin-block-start: auto;
+}
+
+.screen form {
+  padding-block-start: var(--theme-space-2);
+}
+
+.step {
+  --auth-direction: 1;
+  animation: auth-step var(--theme-duration-normal) var(--theme-ease-emphasized) both;
+}
+
+.step[data-backwards] {
+  --auth-direction: -1;
+}
+
+:global([dir="rtl"]) .step {
+  animation-name: auth-step-rtl;
+}
+
+.feedback {
+  animation: auth-feedback var(--theme-duration-fast) var(--theme-ease-out) both;
+}
+
+@keyframes auth-step {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--auth-direction) * var(--theme-space-2)));
+  }
+}
+
+@keyframes auth-step-rtl {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--auth-direction) * var(--theme-space-2) * -1));
+  }
+}
+
+@keyframes auth-feedback {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step,
+  .feedback {
+    animation: none;
+  }
+}

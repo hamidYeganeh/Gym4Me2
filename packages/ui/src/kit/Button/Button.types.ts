@@ -1,9 +1,12 @@
-import type { VariantProps } from "class-variance-authority";
-import type * as React from "react";
 import type { buttonVariants } from "./Button.styles";
-export type ButtonProps = React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  };
+import type { ComponentPropsWithRef } from "react";
+import type { VariantProps } from "tailwind-variants";
 
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
+
+export interface ButtonProps
+  extends Omit<ComponentPropsWithRef<"button">, "color">, ButtonVariants {
+  asChild?: boolean;
+  /** Shows progress while retaining the label and preventing activation. */
+  loading?: boolean;
+}

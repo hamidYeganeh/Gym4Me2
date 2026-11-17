@@ -1,0 +1,70 @@
+/* Raw Gym4Me palette. Semantic roles live in colors.css. */
+:root {
+  /* Brand. */
+  --theme-ref-black: #0b0b0d;
+  --theme-ref-lime: #20fa6d;
+  --theme-ref-lime-hover: #1de463;
+  --theme-ref-white: #ffffff;
+
+  /* Neutral ramp (warm-free greys of the landing design). */
+  --theme-ref-neutral-25: #f7f7f7;
+  --theme-ref-neutral-50: #f2f2f2;
+  --theme-ref-neutral-100: #e5e5e5;
+  --theme-ref-neutral-200: #d4d4d4;
+  --theme-ref-neutral-300: #bdbdbd;
+  --theme-ref-neutral-400: #a3a3a3;
+  --theme-ref-neutral-500: #737373;
+  --theme-ref-neutral-600: #5c5c5c;
+  --theme-ref-neutral-700: #3d3d3d;
+  --theme-ref-neutral-800: #2b2b2b;
+  --theme-ref-neutral-850: #262626;
+  --theme-ref-neutral-900: #171717;
+
+  /* Dark app surfaces, from recessed to elevated. */
+  --theme-ref-dark-recessed: #030710;
+  --theme-ref-dark-canvas: #040a14;
+  --theme-ref-dark-raised: #0b1422;
+  --theme-ref-dark-overlay: #121e2e;
+  --theme-ref-dark-control: #1a293b;
+  --theme-ref-dark-divider: #304158;
+  --theme-ref-dark-outline: #9d9d9d;
+  --theme-ref-dark-muted-text: #c8c8c8;
+
+  /* Teal: highlights and the focus ring (fills), accent text (700 / 300). */
+  --theme-ref-teal-300: #5cdbd7;
+  --theme-ref-teal-400: #28c7c7;
+  --theme-ref-teal-500: #18b9bc;
+  --theme-ref-teal-700: #08787d;
+
+  /* Navy: the footer. */
+  --theme-ref-navy-900: #112b42;
+  --theme-ref-navy-950: #0b2337;
+
+  /* Status. */
+  --theme-ref-green-400: #4fc2a4;
+  --theme-ref-green-700: #087c64;
+  --theme-ref-amber-300: #f5ce73;
+  --theme-ref-amber-400: #e0a43a;
+  --theme-ref-amber-700: #946000;
+  --theme-ref-red-300: #ffa0ac;
+  --theme-ref-red-400: #f07a8e;
+  --theme-ref-red-600: #b6344b;
+  --theme-ref-blue-300: #9fbfff;
+  --theme-ref-blue-400: #7aa7f7;
+  --theme-ref-blue-700: #2459c7;
+
+  /* Data visualization. */
+  --theme-ref-chart-1: #087f84;
+  --theme-ref-chart-2: #788b96;
+  --theme-ref-chart-3: #4faaa3;
+  --theme-ref-chart-4: #526570;
+  --theme-ref-chart-5: #ac9a78;
+  --theme-ref-chart-1-dark: #5cdbd7;
+  --theme-ref-chart-2-dark: #bfaaff;
+  --theme-ref-chart-3-dark: #99e889;
+  --theme-ref-chart-4-dark: #ffad94;
+  --theme-ref-chart-5-dark: #f5ce73;
+
+  /* Shadow colour (r g b), used with an alpha in shadows.css. */
+  --theme-ref-shadow: 0 0 0;
+}

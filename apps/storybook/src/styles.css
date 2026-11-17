@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "@repo/theme/tailwind.css";
+
+@source "../../../packages/ui/src";
+
+body {
+  margin: 0;
+  background: var(--theme-color-background);
+  color: var(--theme-color-foreground);
+  font-family: var(--theme-font-sans);
+}

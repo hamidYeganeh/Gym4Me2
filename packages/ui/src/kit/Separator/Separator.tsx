@@ -1,25 +1,20 @@
-"use client";
-import { separatorStyles } from "./Separator.styles";
 import type { SeparatorProps } from "./Separator.types";
+import type { FC } from "react";
 
-import { cn } from "@repo/ui/lib/utils";
-import { Separator as SeparatorPrimitive } from "radix-ui";
+import { separatorVariants } from "./Separator.styles";
 
-function Separator({
-  className,
-  orientation = "horizontal",
-  decorative = true,
-  ...props
-}: SeparatorProps) {
+const Separator: FC<SeparatorProps> = (props) => {
+  const { className, orientation = "horizontal", decorative = true, ...rest } = props;
+
   return (
-    <SeparatorPrimitive.Root
+    <div
       data-slot="separator"
-      decorative={decorative}
-      orientation={orientation}
-      className={cn(separatorStyles.separator(), className)}
-      {...props}
+      className={separatorVariants({ orientation, className })}
+      role={decorative ? "none" : "separator"}
+      aria-orientation={decorative ? undefined : (orientation ?? undefined)}
+      {...rest}
     />
   );
-}
+};
 
-export { Separator };
+export default Separator;

@@ -1,32 +1,14 @@
-import { Button } from "@repo/ui/kit/Button";
-import type { InputProps } from "@repo/ui/kit/Input";
-import type { VariantProps } from "class-variance-authority";
-import type * as React from "react";
-import type {
-  inputGroupAddonVariants,
-  inputGroupButtonVariants,
-} from "./InputGroup.styles";
-export type InputGroupProps = React.ComponentProps<"div">;
+import type { ButtonProps } from "../Button/Button.types";
+import type { InputProps } from "../Input/Input.types";
+import type { TextareaProps } from "../Textarea/Textarea.types";
+import type { ComponentPropsWithRef } from "react";
 
-export type InputGroupAddonProps = React.ComponentProps<"div"> &
-  VariantProps<typeof inputGroupAddonVariants>;
+export type InputGroupProps = ComponentPropsWithRef<"div">;
+export type InputGroupTextProps = ComponentPropsWithRef<"span">;
 
-export type InputGroupButtonProps = Omit<
-  React.ComponentProps<typeof Button>,
-  "size"
-> &
-  VariantProps<typeof inputGroupButtonVariants>;
-
-export type InputGroupTextProps = React.ComponentProps<"span">;
-
+export type InputGroupAddonProps = ComponentPropsWithRef<"div"> & {
+  align?: "inline-start" | "inline-end" | "block-start" | "block-end";
+};
 export type InputGroupInputProps = InputProps;
-
-export type InputGroupTextareaProps = React.ComponentProps<"textarea">;
-
-export type InputGroupAddonVariants = VariantProps<
-  typeof inputGroupAddonVariants
->;
-
-export type InputGroupButtonVariants = VariantProps<
-  typeof inputGroupButtonVariants
->;
+export type InputGroupTextareaProps = TextareaProps;
+export type InputGroupButtonProps = ButtonProps;

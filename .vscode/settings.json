@@ -1,0 +1,28 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.suggest.autoImports": true,
+  "javascript.suggest.autoImports": true,
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "javascript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "typescript.preferences.importModuleSpecifierEnding": "minimal",
+  "javascript.preferences.importModuleSpecifierEnding": "minimal",
+  "typescript.preferences.autoImportSpecifierExcludeRegexes": ["^@repo/(ui|i18n|theme)(/|$)"],
+  "javascript.preferences.autoImportSpecifierExcludeRegexes": ["^@repo/(ui|i18n|theme)(/|$)"],
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "**/*.storybook.*",
+    "**/.next/**",
+    "**/storybook-static/**",
+    "**/reports/**"
+  ],
+  "javascript.preferences.autoImportFileExcludePatterns": [
+    "**/*.storybook.*",
+    "**/.next/**",
+    "**/storybook-static/**",
+    "**/reports/**"
+  ],
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always"
+}

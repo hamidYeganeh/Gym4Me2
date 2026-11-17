@@ -1,0 +1,31 @@
+{
+  "name": "@repo/storybook",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "storybook build",
+    "check-types": "tsc --noEmit",
+    "dev": "storybook dev -p 6006",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@repo/theme": "*",
+    "@repo/ui": "*",
+    "motion": "^14.9.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "@storybook/addon-docs": "^10.6.0",
+    "@storybook/react-vite": "^10.6.0",
+    "@tailwindcss/vite": "^4",
+    "@types/node": "^24.19.2",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "storybook": "^10.6.0",
+    "tailwindcss": "^4",
+    "typescript": "~6.0.3",
+    "vite": "^7.3.0"
+  }
+}

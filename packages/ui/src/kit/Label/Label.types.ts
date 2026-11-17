@@ -1,7 +1,6 @@
-import type { VariantProps } from "class-variance-authority";
-import { Label as LabelPrimitive } from "radix-ui";
-import type * as React from "react";
 import type { labelVariants } from "./Label.styles";
-export type LabelProps = React.ComponentProps<typeof LabelPrimitive.Root>;
+import type { ComponentPropsWithRef } from "react";
+import type { VariantProps } from "tailwind-variants";
 
 export type LabelVariants = VariantProps<typeof labelVariants>;
+export type LabelProps = Omit<ComponentPropsWithRef<"label">, "color"> & LabelVariants;

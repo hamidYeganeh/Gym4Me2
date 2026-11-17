@@ -1,0 +1,367 @@
+.shell {
+  --theme-color-background: var(--theme-ref-neutral-900);
+  --insights-surface: var(--theme-ref-neutral-850);
+  --insights-line: var(--theme-ref-neutral-700);
+  --insights-muted: var(--theme-ref-neutral-400);
+  --insights-accent: var(--theme-color-primary);
+  --rail-width: 80px;
+
+  min-block-size: 100dvh;
+  background: var(--theme-color-background);
+  color: var(--theme-ref-neutral-50);
+}
+
+.shell :is(a, button, summary, select):focus-visible {
+  outline: 2px solid var(--insights-accent);
+  outline-offset: 4px;
+}
+
+.content {
+  min-inline-size: 0;
+  min-block-size: 100dvh;
+  padding-inline-start: var(--rail-width);
+}
+
+.skip {
+  position: fixed;
+  z-index: 30;
+  inset-block-start: 12px;
+  inset-inline-start: 12px;
+  padding: 12px;
+  background: var(--insights-surface);
+}
+
+.skip:not(:focus) {
+  clip-path: inset(50%);
+}
+
+.sidebar {
+  position: fixed;
+  z-index: 10;
+  inset-block: 0;
+  inset-inline-start: 0;
+  display: flex;
+  inline-size: var(--rail-width);
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 12px;
+  border-inline-end: 1px solid var(--theme-ref-neutral-800);
+  background: var(--theme-color-background);
+}
+
+.brand {
+  display: grid;
+  inline-size: 48px;
+  block-size: 48px;
+  place-items: center;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-block: auto;
+}
+
+.navigation a,
+.floatingCreate {
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--insights-muted);
+}
+
+.navigation a {
+  inline-size: 48px;
+  block-size: 48px;
+}
+
+.navigation a:hover,
+.navigation a[aria-current="page"],
+.create,
+.floatingCreate {
+  background: var(--insights-surface);
+  color: inherit;
+}
+
+.navigation a[aria-current="page"] {
+  color: var(--insights-accent);
+}
+
+.panelLabel {
+  color: var(--insights-muted);
+  font-size: 12px;
+}
+
+.floatingCreate {
+  position: fixed;
+  inset-block-end: 24px;
+  inset-inline-end: 24px;
+  inline-size: 56px;
+  block-size: 56px;
+  border: 1px solid var(--insights-line);
+}
+
+.main {
+  max-inline-size: 1200px;
+  margin-inline: auto;
+  padding: clamp(24px, 4vw, 64px);
+  font-variant-numeric: tabular-nums;
+}
+
+.header,
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header {
+  justify-content: space-between;
+  margin-block-end: 32px;
+}
+
+.header h1 {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.demo,
+.comparisonHeader p {
+  margin-block-start: 8px;
+  color: var(--insights-muted);
+  font-size: 14px;
+}
+
+.actions select,
+.menu summary {
+  min-block-size: 44px;
+  border: 1px solid var(--insights-line);
+  border-radius: 8px;
+  background: var(--theme-color-background);
+  color: inherit;
+  cursor: pointer;
+}
+
+.actions select {
+  padding-inline: 12px;
+  color-scheme: dark;
+  font-size: 14px;
+}
+
+.menu {
+  position: relative;
+}
+
+.menu summary {
+  display: grid;
+  inline-size: 44px;
+  place-items: center;
+  list-style: none;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.menuContent {
+  position: absolute;
+  z-index: 2;
+  inset-inline-end: 0;
+  inline-size: 192px;
+  margin-block-start: 8px;
+  padding: 4px;
+  border: 1px solid var(--insights-line);
+  border-radius: 12px;
+  background: var(--insights-surface);
+}
+
+.menuContent :is(a, button) {
+  display: block;
+  inline-size: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: start;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.menuContent :is(a, button):hover {
+  background: var(--insights-line);
+}
+
+.totals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-block-end: 24px;
+}
+
+.totals > div,
+.comparison {
+  padding: 24px;
+  border: 1px solid var(--insights-line);
+  border-radius: 16px;
+  background: var(--insights-surface);
+}
+
+.totals dt {
+  color: var(--insights-muted);
+  font-size: 14px;
+}
+
+.totals dd {
+  margin-block-start: 8px;
+  font-size: clamp(24px, 4vw, 44px);
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.comparisonHeader h2 {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.breakdown {
+  margin-block-start: 24px;
+}
+
+.metricRow {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) 152px;
+  align-items: center;
+  gap: 24px;
+  padding-block: 20px;
+  border-block-start: 1px solid var(--insights-line);
+}
+
+.metricRow:last-child {
+  padding-block-end: 0;
+}
+
+.metricRow h3 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.bar {
+  display: flex;
+  block-size: 12px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--theme-ref-neutral-500);
+}
+
+.bar span {
+  block-size: 100%;
+  background: var(--insights-accent);
+}
+
+.counts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  text-align: end;
+}
+
+.counts dt {
+  color: var(--insights-muted);
+  font-size: 12px;
+}
+
+.counts dt::before {
+  display: inline-block;
+  inline-size: 8px;
+  block-size: 8px;
+  margin-inline-end: 4px;
+  border-radius: 2px;
+  background: var(--theme-ref-neutral-500);
+  content: "";
+}
+
+.counts > div:first-child dt::before {
+  background: var(--insights-accent);
+}
+
+.counts dd {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .floatingCreate {
+    display: none;
+  }
+
+  .metricRow {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+
+  .bar {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .content {
+    padding-inline-start: 0;
+    padding-block-end: calc(72px + env(safe-area-inset-bottom));
+  }
+
+  .sidebar {
+    inset: auto 0 0;
+    inline-size: 100%;
+    padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
+    border: 0;
+    border-block-start: 1px solid var(--insights-line);
+  }
+
+  .navigation {
+    inline-size: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .brand,
+  .panelLabel {
+    display: none;
+  }
+
+  .main {
+    padding: 24px 16px;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-block-end: 24px;
+  }
+
+  .totals {
+    gap: 8px;
+    margin-block-end: 16px;
+  }
+
+  .totals > div {
+    padding: 12px 8px;
+    border-radius: 12px;
+  }
+
+  .totals dt {
+    font-size: 12px;
+  }
+
+  .comparison {
+    padding: 16px;
+  }
+
+  .comparisonHeader h2 {
+    font-size: 20px;
+  }
+}

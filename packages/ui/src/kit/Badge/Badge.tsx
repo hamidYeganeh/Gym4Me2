@@ -1,24 +1,23 @@
-import { cn } from "@repo/ui/lib/utils";
-import { Slot } from "radix-ui";
-import { badgeVariants } from "./Badge.styles";
-import type { BadgeProps } from "./Badge.types";
+"use client";
 
-function Badge({
-  className,
-  variant = "default",
-  asChild = false,
-  ...props
-}: BadgeProps) {
-  const Comp = asChild ? Slot.Root : "span";
+import { Slot } from "@radix-ui/react-slot";
+
+import type { BadgeProps } from "./Badge.types";
+import type { FC } from "react";
+
+import { badgeVariants } from "./Badge.styles";
+
+const Badge: FC<BadgeProps> = (props) => {
+  const { className, variant, color, size, radius, shadow, asChild = false, ...rest } = props;
+  const Comp = asChild ? Slot : "span";
 
   return (
     <Comp
       data-slot="badge"
-      data-variant={variant}
-      className={cn(badgeVariants({ variant }), className)}
-      {...props}
+      className={badgeVariants({ variant, color, size, radius, shadow, className })}
+      {...rest}
     />
   );
-}
+};
 
-export { Badge };
+export default Badge;

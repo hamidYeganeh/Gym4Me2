@@ -1,8 +1,11 @@
-import { cva } from "class-variance-authority";
-export const separatorVariants = cva("");
+import { cn } from "tailwind-variants";
 
-export const separatorStyles = {
-  separator: cva(
-    "shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch",
-  ),
-};
+import { tv } from "../../lib/variants";
+
+export const separatorVariants = tv({
+  base: cn("shrink-0", "bg-theme-border"),
+  variants: {
+    orientation: { horizontal: "h-px w-full", vertical: "h-full min-h-theme-4 w-px self-stretch" },
+  },
+  defaultVariants: { orientation: "horizontal" },
+});
